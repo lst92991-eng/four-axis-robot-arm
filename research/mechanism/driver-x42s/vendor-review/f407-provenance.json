@@ -1,0 +1,9 @@
+{
+  "archive": "D:\\BaiduNetdiskDownload\\ZDT_XS系列第二代闭环步进电机资料\\9. 例程_STM32F407\\HAL库\\X固件模式\\CAN通讯\\STM32F407_CAN通讯__梯形曲线加减速位置模式控制.rar",
+  "sha256": "0d6774f8f4dc3d4a139f0e5e7ffaf9439fbe69b1a904562ed52584c0d31767a1",
+  "files": {
+    "X_V2.c": "545a13e4b1c53ef0e54d353c1cb3dd179fd5213cb7140a23d77e9f7e53a42d15",
+    "can.c": "04ac2c7661da7b883c7c7a9c3ed3af5d5351fb39b9de3c14547bea8996cb08ac",
+    "main.c": "1748b2226f93e82bf9c7d19ab572b5cb1dd19bf5ba211fa607fe1a80605f47f1"
+  }
+}

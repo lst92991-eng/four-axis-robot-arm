@@ -1,0 +1,349 @@
+{
+  "parts": [
+    {
+      "name": "01_clamp_right",
+      "quantity": 1,
+      "bounds_mm": [
+        -65.0,
+        -5.400000095367432,
+        -10.0,
+        40.0,
+        126.0,
+        12.799999237060547
+      ],
+      "volume_mm3": 39175.94279081063,
+      "watertight": true,
+      "sketches": "pass"
+    },
+    {
+      "name": "02_clamp_left",
+      "quantity": 1,
+      "bounds_mm": [
+        -65.0,
+        -5.400000095367432,
+        -12.799999237060547,
+        40.0,
+        126.0,
+        10.0
+      ],
+      "volume_mm3": 39175.94279081063,
+      "watertight": true,
+      "sketches": "pass"
+    },
+    {
+      "name": "03_truss_200",
+      "quantity": 4,
+      "bounds_mm": [
+        0.0,
+        -1.2000000424450263e-05,
+        -4.0,
+        200.0,
+        45.0,
+        8.0
+      ],
+      "volume_mm3": 16390.136572173466,
+      "watertight": true,
+      "sketches": "pass"
+    },
+    {
+      "name": "04_camera_B_crossbar",
+      "quantity": 1,
+      "bounds_mm": [
+        -73.0,
+        -32.0,
+        -6.0,
+        73.0,
+        16.0,
+        3.0
+      ],
+      "volume_mm3": 12656.120670613664,
+      "watertight": true,
+      "sketches": "pass"
+    },
+    {
+      "name": "05_pcb_support",
+      "quantity": 2,
+      "bounds_mm": [
+        -73.0,
+        -5.0,
+        -1.2000000424450263e-05,
+        73.0,
+        5.0,
+        15.0
+      ],
+      "volume_mm3": 4761.199893933995,
+      "watertight": true,
+      "sketches": "pass"
+    }
+  ],
+  "physical_print_count": 9,
+  "old_CAD_volume_mm3": 1640987.6114991459,
+  "new_STL_volume_mm3": 166090.95232879676,
+  "volume_reduction_percent": 89.87859803663831,
+  "view_cones": [
+    {
+      "board_rectangle_mm": [
+        520,
+        480
+      ],
+      "frame_surface_intrusions": 0
+    },
+    {
+      "board_rectangle_mm": [
+        800,
+        600
+      ],
+      "frame_surface_intrusions": 0
+    }
+  ],
+  "neighbor_envelope_surface_intrusions": [],
+  "pcb_support_vs_all_component_envelope_overlaps": [],
+  "original_files_unchanged": [
+    {
+      "file": "40T型螺母M8孔.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "40x40x500.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "40型材M4T型螺母.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "40型材角件.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "42步进电机L40.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "42步进电机L60.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "61mm光轴.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "8-16联轴器.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "8mm键槽法兰.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "8x10x3mm轴套.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "bearing_6900.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "DLE42-L2BJ-长款50.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "FF ______________[FF12].SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "FF丝杆支撑座[FF10].sldprt",
+      "matches_original": true
+    },
+    {
+      "file": "FF固定铝板.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "GT20同步轮.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "GT60同步轮.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "J1机械臂.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "J1机械臂.step.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "J2机械臂.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "L型Z轴支架.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "L型支架底座.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "L型支架竖板.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "L型机械臂支架.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M3x4mm紧固螺丝.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M3内六角x10mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M3内六角x12mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M3内六角x16mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M3内六角小头x16mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M4内六角x16mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M4内六角x18mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M4内六角小头x16mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M5x30mm紧固螺丝.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M5内六角x16.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M5内六角x20.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M5螺母.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M6内六角x22.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M6小头内六角x22.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M8内六角x16mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "M8内六角x18mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "MGW12H滑块.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "MGW12_500mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "RRING-C-INT-22.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "SCARA四轴机械臂总成 物料明细表.XLSX",
+      "matches_original": true
+    },
+    {
+      "file": "SCARA四轴机械臂总成.SLDASM",
+      "matches_original": true
+    },
+    {
+      "file": "SKF_608-2ZZ.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "T型丝杆500mm.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "T型丝杆螺母.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "光轴固定环.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "内径8mm法兰.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "单头六角螺柱M3x30+6.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "同步带节.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "型材顶部电机固定件.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "底座.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "方键条销.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "电机支撑铝板.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "第二机械臂.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "紧凑型轴承座.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "轴承座.SLDASM",
+      "matches_original": true
+    },
+    {
+      "file": "轴承座8mm内径.SLDPRT",
+      "matches_original": true
+    },
+    {
+      "file": "铝型材挤压角座.SLDPRT",
+      "matches_original": true
+    }
+  ],
+  "user_pcb_sha256": "9257c54aeaabd7dcd8516fe5a2116082f5853761bc8a7e3a3fe0598bb94234c9",
+  "scope": "静态几何和保守包络校核；不是打印配合、承载、长期蠕变、实物排线、光学标定或全关节扫掠验收。"
+}

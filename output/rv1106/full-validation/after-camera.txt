@@ -1,0 +1,230 @@
+MemTotal:         174240 kB
+
+MemFree:           92108 kB
+
+MemAvailable:     147484 kB
+
+Buffers:            1888 kB
+
+Cached:            56928 kB
+
+SwapCached:            0 kB
+
+Active:            24640 kB
+
+Inactive:          41368 kB
+
+Active(anon):        480 kB
+
+Inactive(anon):     7592 kB
+
+Active(file):      24160 kB
+
+Inactive(file):    33776 kB
+
+Unevictable:           0 kB
+
+Mlocked:               0 kB
+
+SwapTotal:             0 kB
+
+SwapFree:              0 kB
+
+Dirty:               300 kB
+
+Writeback:             0 kB
+
+AnonPages:          7212 kB
+
+Mapped:            19288 kB
+
+Shmem:               880 kB
+
+KReclaimable:       4044 kB
+
+Slab:               9820 kB
+
+SReclaimable:       4044 kB
+
+SUnreclaim:         5776 kB
+
+KernelStack:         648 kB
+
+PageTables:          616 kB
+
+NFS_Unstable:          0 kB
+
+Bounce:                0 kB
+
+WritebackTmp:          0 kB
+
+CommitLimit:       87120 kB
+
+Committed_AS:      27696 kB
+
+VmallocTotal:    1032192 kB
+
+VmallocUsed:        1116 kB
+
+VmallocChunk:          0 kB
+
+Percpu:               64 kB
+
+CmaTotal:          77824 kB
+
+CmaAllocated:        120 kB
+
+CmaReleased:       77704 kB
+
+CmaFree:               0 kB
+
+UID       PID PPID  C STIME TTY          TIME CMD
+
+root        1    0  0 17:50 ?        00:00:00 init
+
+root        2    0  0 17:50 ?        00:00:00 [kthreadd]
+
+root        3    2  0 17:50 ?        00:00:00 [kworker/0:0-events_freezable]
+
+root        4    2  0 17:50 ?        00:00:00 [kworker/0:0H-kblockd]
+
+root        5    2  0 17:50 ?        00:00:00 [kworker/u2:0-events_unbound]
+
+root        6    2  0 17:50 ?        00:00:00 [mm_percpu_wq]
+
+root        7    2  0 17:50 ?        00:00:00 [ksoftirqd/0]
+
+root        8    2  0 17:50 ?        00:00:00 [kdevtmpfs]
+
+root        9    2  0 17:50 ?        00:00:00 [oom_reaper]
+
+root       10    2  0 17:50 ?        00:00:00 [writeback]
+
+root       11    2  0 17:50 ?        00:00:00 [kcompactd0]
+
+root       12    2  0 17:50 ?        00:00:00 [ksmd]
+
+root       28    2  0 17:50 ?        00:00:00 [kblockd]
+
+root       29    2  0 17:50 ?        00:00:00 [kconsole]
+
+root       30    2  0 17:50 ?        00:00:00 [devfreq_wq]
+
+root       31    2  0 17:50 ?        00:00:00 [watchdogd]
+
+root       32    2  0 17:50 ?        00:00:00 [rpciod]
+
+root       33    2  0 17:50 ?        00:00:00 [kworker/0:1-events]
+
+root       34    2  0 17:50 ?        00:00:00 [kworker/u3:0]
+
+root       35    2  0 17:50 ?        00:00:00 [xprtiod]
+
+root       36    2  0 17:50 ?        00:00:00 [irq/24-rockchip]
+
+root       45    2  0 17:50 ?        00:00:00 [kswapd0]
+
+root       46    2  0 17:50 ?        00:00:00 [nfsiod]
+
+root       47    2  0 17:50 ?        00:00:00 [irq/63-rockchip]
+
+root       48    2  0 17:50 ?        00:00:00 [irq/64-rockchip]
+
+root       49    2  0 17:50 ?        00:00:00 [irq/65-rockchip]
+
+root       50    2  0 17:50 ?        00:00:00 [hwrng]
+
+root       51    2  0 17:50 ?        00:00:00 [kworker/u2:1-events_unbound]
+
+root       52    2  0 17:50 ?        00:00:00 [spi0]
+
+root       53    2  0 17:50 ?        00:00:00 [stmmac_wq]
+
+root       55    2  0 17:50 ?        00:00:00 [kworker/0:2-events]
+
+root       56    2  0 17:50 ?        00:00:00 [irq/22-RTC alar]
+
+root       57    2  0 17:50 ?        00:00:00 [kworker/0:3-events_long]
+
+root       58    2  0 17:50 ?        00:00:00 [kworker/0:4-events]
+
+root       59    2  0 17:50 ?        00:00:00 [kworker/u2:2-events_unbound]
+
+root       60    2  0 17:50 ?        00:00:00 [kworker/0:5-events_freezable]
+
+root       61    2  0 17:50 ?        00:00:00 [ipv6_addrconf]
+
+root       62    2  0 17:50 ?        00:00:00 [mmc_complete]
+
+root       63    2  0 17:50 ?        00:00:00 [kworker/0:1H-mmc_complete]
+
+root       64    2  0 17:50 ?        00:00:00 [jbd2/mmcblk0p7-]
+
+root       65    2  0 17:50 ?        00:00:00 [ext4-rsv-conver]
+
+root       83    1  0 17:50 ?        00:00:00 /sbin/syslogd -n
+
+root       87    1  0 17:50 ?        00:00:00 /sbin/klogd -n
+
+root       98    1  0 17:50 ?        00:00:00 /sbin/udevd -d
+
+root      111    2  0 17:50 ?        00:00:00 [kworker/0:2H-kblockd]
+
+root      114    2  0 17:50 ?        00:00:00 [kworker/0:3H-kblockd]
+
+root      140    2  0 17:50 ?        00:00:00 [jbd2/mmcblk0p6-]
+
+root      141    2  0 17:50 ?        00:00:00 [ext4-rsv-conver]
+
+root      148    2  0 17:50 ?        00:00:00 [jbd2/mmcblk0p5-]
+
+root      149    2  0 17:50 ?        00:00:00 [ext4-rsv-conver]
+
+dbus      164    1  0 17:50 ?        00:00:00 dbus-daemon --system
+
+dhcpcd    185    1  0 17:50 ?        00:00:00 dhcpcd: [manager] [ip4] [ip6]
+
+root      186  185  0 17:50 ?        00:00:00 dhcpcd: [privileged proxy]
+
+dhcpcd    187  185  0 17:50 ?        00:00:00 dhcpcd: [network proxy]
+
+dhcpcd    188  185  0 17:50 ?        00:00:00 dhcpcd: [control proxy]
+
+root      208    1  0 17:50 ?        00:00:00 /usr/sbin/ntpd -g -p /var/run/ntpd
+
+root      220    1  0 17:50 ?        00:00:00 sshd: /usr/sbin/sshd [listener] 0 
+
+root      225    1  0 17:50 ?        00:00:00 /usr/sbin/telnetd -F
+
+root      259    1  0 17:50 ?        00:00:00 /usr/bin/adbd
+
+root      268    2  0 17:50 ?        00:00:00 [irq/66-dwc3]
+
+dhcpcd    291  186  0 17:50 ?        00:00:00 dhcpcd: [BPF BOOTP] eth0
+
+root      292    1  0 17:50 ?        00:00:00 smbd -D
+
+root      295  292  0 17:50 ?        00:00:00 smbd -D
+
+root      296  292  0 17:50 ?        00:00:00 smbd -D
+
+root      297    1  0 17:50 ?        00:00:00 nmbd -D
+
+root      341    1  0 17:50 ttyFIQ0  00:00:00 /sbin/getty -L console 0 vt100
+
+dhcpcd    342  186  0 17:50 ?        00:00:00 dhcpcd: [BPF ARP] eth0 169.254.13.
+
+dhcpcd    359  186  0 17:50 ?        00:00:00 dhcpcd: [BPF BOOTP] usb0
+
+dhcpcd    360  186  0 17:50 ?        00:00:00 dhcpcd: [BPF ARP] usb0 169.254.78.
+
+root      390    2  0 17:51 ?        00:00:00 [rknpu_power_off]
+
+root      414    2  0 17:52 ?        00:00:00 [irq/50-ffa70000]
+
+root      498  220  0 17:53 ?        00:00:00 sshd: root@notty
+
+root      500  498 14 17:53 ?        00:00:05 ./scara_robot config/robot.json
+
+root      561  259  0 17:54 pts/0    00:00:00 ps -ef
+

@@ -1,0 +1,51 @@
+{
+  "date_Asia_Shanghai": "2026-10-09",
+  "decision": "V2 rejected by user; print recommendation withdrawn",
+  "user_board_status": "not yet selected or purchased",
+  "official_source": "https://wiki.luckfox.com/MIS5001-5MP-Camera/",
+  "lens_B_nominal": {
+    "focal_length_mm": 2.88,
+    "horizontal_fov_deg": 87.5,
+    "vertical_fov_deg": 56.5,
+    "diagonal_fov_deg": 95.5
+  },
+  "runtime_read_only_query": {
+    "node": "/dev/video11",
+    "width": 1280,
+    "height": 960,
+    "fourcc": "NV12",
+    "bytes_per_line": 1280,
+    "size_image_bytes": 1843200
+  },
+  "empirically_measured_fov": null,
+  "known_height_camera_frame": null,
+  "recognition_verified_at_626mm": false,
+  "assumptions": [
+    "vertical optical axis",
+    "nominal VFOV applies to current capture",
+    "35mm piece used only for budget"
+  ],
+  "budget": [
+    {
+      "height_cm": 40,
+      "nominal_vertical_coverage_mm": 429.85550571152515,
+      "nominal_piece_raw_diameter_px": 78.16580119029315
+    },
+    {
+      "height_cm": 50,
+      "nominal_vertical_coverage_mm": 537.3193821394065,
+      "nominal_piece_raw_diameter_px": 62.53264095223452
+    },
+    {
+      "height_cm": 60,
+      "nominal_vertical_coverage_mm": 644.7832585672877,
+      "nominal_piece_raw_diameter_px": 52.110534126862106
+    },
+    {
+      "height_cm": 62.64,
+      "nominal_vertical_coverage_mm": 673.1537219442483,
+      "nominal_piece_raw_diameter_px": 49.91430471921658
+    }
+  ],
+  "recognition_pipeline": "warp -> 720x800 chess-piece ROI -> letterbox to 640x640; nominal rectified 35mm piece becomes 56px; this does not recover raw image detail"
+}

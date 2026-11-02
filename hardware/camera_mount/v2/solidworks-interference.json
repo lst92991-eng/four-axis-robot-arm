@@ -1,0 +1,8 @@
+{
+  "document": "camera_bridge.SLDASM",
+  "print_components": 9,
+  "interference_count": 0,
+  "scope": "SolidWorks打印桥架自身干涉；接触面不计。原机械邻近包络与完整PCB器件包络另见validation.json。",
+  "full_joint_sweep_verified": false,
+  "physical_print_load_verified": false
+}

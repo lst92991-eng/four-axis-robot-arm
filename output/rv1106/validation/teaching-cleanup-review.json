@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-08",
+  "scope": "vision/main.cpp only; vendor/build/tests excluded from LOC",
+  "before": {
+    "physical_lines": 237,
+    "nonblank_noncomment_lines": 190,
+    "sha256": "5992db224d30a6421568835148bd6313234d058adfc5b15759d87020e4cb278f"
+  },
+  "after": {
+    "physical_lines": 228,
+    "nonblank_noncomment_lines": 178,
+    "sha256": "35234b80f2118ad4f2fb99ed34341fb7f17d37a65626c44e4d571d50f25e3e79"
+  },
+  "new_production_files": 0,
+  "new_abstractions": 0,
+  "changes": [
+    "OpenCV circle replaces hand-written mask loop",
+    "one annotation color; B/W/./? convey state",
+    "boolean replaces unused unknown-cell count",
+    "capture uses relative paths after entering application directory",
+    "build jobs configured once"
+  ],
+  "synthetic_board_cases_passed": 10,
+  "invalid_input_cases_passed": 3,
+  "capture_script_cases_passed": 6,
+  "source_backup": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-teaching-final-e084cbafcad941f99376b90d622d0caf",
+  "mask_equivalence": {
+    "old_pixels": 709,
+    "circle_pixels": 709,
+    "different_pixels": 0,
+    "tested_on": "RV1106 / OpenCV 5.0.0"
+  },
+  "real_capture": {
+    "launch_directory": "/tmp",
+    "frame_bytes": 1843200,
+    "source_jpeg_bytes": 234733,
+    "recognition_exit": 1,
+    "board_result_present": false,
+    "note": "Real acquisition and NV12 conversion succeeded; current scene has no detected board. Printed-board accuracy remains unvalidated."
+  },
+  "final_review": "No evident redundant production logic remains; further reductions would change accepted behavior or obscure the sequential teaching flow."
+}

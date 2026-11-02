@@ -1,0 +1,2 @@
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-ar qc libscara_motor.a CMakeFiles/scara_motor.dir/can.cpp.o CMakeFiles/scara_motor.dir/motor.cpp.o
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-ranlib libscara_motor.a

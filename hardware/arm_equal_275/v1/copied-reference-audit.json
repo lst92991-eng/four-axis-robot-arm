@@ -1,0 +1,944 @@
+[
+  {
+    "name": "EQ275_M3内六角x16mm-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M5内六角x16-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M5内六角x16.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-22",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-21",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M5内六角x16-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M5内六角x16.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M5内六角x16-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M5内六角x16.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M5内六角x16-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M5内六角x16.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-19",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-20",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-25",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-24",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-26",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-23",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x10mm-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x10mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x10mm-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x10mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_8x10x3mm轴套-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_8x10x3mm轴套.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_8mm键槽法兰-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_8mm键槽法兰.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-17",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x10mm-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x10mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x10mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x10mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3x4mm紧固螺丝-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-16",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_光轴固定环-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_光轴固定环.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-15",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-14",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-19",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-15",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-16",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-14",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x18mm-18",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-17",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-9",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-9",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x16mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x16mm-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6内六角x22-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-19",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_紧凑型轴承座-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_紧凑型轴承座.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6小头内六角x22-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6小头内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-27",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-29",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-18",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-9",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_T型丝杆500mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_T型丝杆500mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_8-16联轴器-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_8-16联轴器.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_T型丝杆螺母-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_T型丝杆螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M6小头内六角x22-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M6小头内六角x22.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-28",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-10",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-16",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-30",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_FF丝杆支撑座[FF10]-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_FF丝杆支撑座[FF10].sldprt",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-17",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角x12mm-18",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角x12mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-9",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_61mm光轴-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_61mm光轴.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-22",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-23",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-24",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-25",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M4内六角x16mm-26",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M4内六角x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-11",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M3内六角小头x16mm-12",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_底座-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_底座.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_42步进电机L60-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_42步进电机L60.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40x40x500-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40x40x500.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材M4T型螺母-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材M4T型螺母.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_MGW12H滑块-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_MGW12H滑块.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_MGW12_500mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_MGW12_500mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_电机支撑铝板-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_电机支撑铝板.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_42步进电机L60-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_42步进电机L60.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_DLE42-L2BJ-长款50-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_DLE42-L2BJ-长款50.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_FF固定铝板-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_FF固定铝板.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40型材角件-9",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40型材角件.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_铝型材挤压角座-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_铝型材挤压角座.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_单头六角螺柱M3x30+6-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_单头六角螺柱M3x30+6.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_L型支架竖板-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_L型支架竖板.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_42步进电机L60-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_42步进电机L60.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_FF ______________[FF12]-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_FF ______________[FF12].SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_L型支架底座-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_L型支架底座.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_单头六角螺柱M3x30+6-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_单头六角螺柱M3x30+6.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_单头六角螺柱M3x30+6-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_单头六角螺柱M3x30+6.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_单头六角螺柱M3x30+6-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_单头六角螺柱M3x30+6.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_铝型材挤压角座-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_铝型材挤压角座.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_方键条销-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_方键条销.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_第二机械臂-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_第二机械臂.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_J1机械臂-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_J1机械臂.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_42步进电机L40-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_42步进电机L40.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_轴承座8mm内径-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_轴承座8mm内径.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-5",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-4",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-8",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_内径8mm法兰-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_内径8mm法兰.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "装配体1^EQ275_SCARA四轴机械臂总成-1",
+    "path": "C:\\Users\\lst\\AppData\\Local\\Temp\\swx46404\\VC~~\\EQ275_SCARA四轴机械臂总成\\装配体1^EQ275_SCARA四轴机械臂总成.SLDASM",
+    "virtual": true,
+    "suppressed": true
+  },
+  {
+    "name": "装配体1^EQ275_SCARA四轴机械臂总成-1/皮带1-2^装配体1_SCARA四轴机械臂总成-1",
+    "path": "C:\\Users\\lst\\AppData\\Local\\Temp\\swx46404\\VC~~\\装配体1_SCARA四轴机械臂总成\\皮带1-2^装配体1_SCARA四轴机械臂总成.SLDPRT",
+    "virtual": true,
+    "suppressed": false
+  },
+  {
+    "name": "装配体1^EQ275_SCARA四轴机械臂总成-1/GT20同步轮-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_GT20同步轮.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "装配体1^EQ275_SCARA四轴机械臂总成-1/GT60同步轮-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_GT60同步轮.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-3",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_SKF_608-2ZZ-1",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_SKF_608-2ZZ.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-6",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-7",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_40T型螺母M8孔-9",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_40T型螺母M8孔.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  },
+  {
+    "name": "EQ275_M8内六角x18mm-2",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_M8内六角x18mm.SLDPRT",
+    "virtual": false,
+    "suppressed": true
+  }
+]

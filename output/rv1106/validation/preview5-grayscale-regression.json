@@ -1,0 +1,255 @@
+{
+  "binary": "/home/st/.cache/scara-live-preview/preview5-next",
+  "binary_sha256": "287e42e2244f55345690baa0c5a63dc53c0cd874f6a5687d6f84eda376ba755f",
+  "same_binary_used": true,
+  "baseline_preview5_passed": 15,
+  "baseline_preview5_total": 15,
+  "baseline_preview5_sha256": "edad1aed3082138c1f9c87f8129dd00452dd80874ad20992f28c3080811c1717",
+  "temporary_broadway_stopped": true,
+  "bind": "127.0.0.1:18087",
+  "fixture_method": "Original 900x900 PNG converted to grayscale and centered without resizing on 1280x960 white canvas. BT.601 limited Y=16+219*gray/255; U=V=128. Gains 0.7/0.9/1.1; horizontal gain 0.75..1.1; Gaussian noise sigma2 seed42. Synthetic labels only, not physical whole-board acceptance.",
+  "passed": 15,
+  "total": 15,
+  "results": [
+    {
+      "case": "empty",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "0",
+        "white": "0",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "mixed",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "rotated",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "perspective",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "missing-marker",
+      "passed": true,
+      "exit": 1,
+      "expected_exit": 1,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "0",
+        "black": "0",
+        "white": "0",
+        "uncertain": "225"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "uncertain",
+      "passed": true,
+      "exit": 2,
+      "expected_exit": 2,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "0",
+        "white": "0",
+        "uncertain": "1"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "duplicate-marker",
+      "passed": true,
+      "exit": 1,
+      "expected_exit": 1,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "0",
+        "black": "0",
+        "white": "0",
+        "uncertain": "225"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "turned-marker",
+      "passed": true,
+      "exit": 1,
+      "expected_exit": 1,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "0",
+        "black": "0",
+        "white": "0",
+        "uncertain": "225"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "swapped-markers",
+      "passed": true,
+      "exit": 1,
+      "expected_exit": 1,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "0",
+        "black": "0",
+        "white": "0",
+        "uncertain": "225"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "white-background",
+      "passed": true,
+      "exit": 2,
+      "expected_exit": 2,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "0",
+        "white": "0",
+        "uncertain": "225"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "mixed-gain-0.7",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "mixed-gain-0.9",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "mixed-gain-1.1",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "mixed-gradient",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    },
+    {
+      "case": "mixed-noise-sigma2",
+      "passed": true,
+      "exit": 0,
+      "expected_exit": 0,
+      "result": {
+        "OpenCV": "5.0.0",
+        "located": "1",
+        "black": "3",
+        "white": "3",
+        "uncertain": "0"
+      },
+      "mismatch_count": 0,
+      "mismatches": [],
+      "view_saved": true
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "empty.png": {
+    "exit": 0,
+    "source": "earlier on-device smoke test"
+  },
+  "mixed.png": {
+    "exit": 0,
+    "output": "SCARA_EXIT=0\n\nW . . . . . . . . . . . . . B\n\nMarkers=4, max corner error=0.182289 px\n\nBlack=3, white=3, empty=219, unknown=0\n\nSaved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/mixed"
+  },
+  "rotated.png": {
+    "exit": 0,
+    "output": "SCARA_EXIT=0\n\nW . . . . . . . . . . . . . B\n\nMarkers=4, max corner error=0.182274 px\n\nBlack=3, white=3, empty=219, unknown=0\n\nSaved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/rotated"
+  },
+  "perspective.png": {
+    "exit": 0,
+    "output": "SCARA_EXIT=0\n\nW . . . . . . . . . . . . . B\n\nMarkers=4, max corner error=0.482594 px\n\nBlack=3, white=3, empty=219, unknown=0\n\nSaved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/perspective"
+  },
+  "missing-marker.png": {
+    "exit": 1,
+    "output": "SCARA_EXIT=1\n\nSaved source.jpg to /root/scara-vision-v1/tests/missing-marker\n\nError: Missing marker ID 0"
+  },
+  "uncertain.png": {
+    "exit": 2,
+    "output": "SCARA_EXIT=2\n\n. . . . . . . . . . . . . . .\n\nMarkers=4, max corner error=0.182289 px\n\nBlack=0, white=0, empty=224, unknown=1\n\nSaved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/uncertain"
+  }
+}

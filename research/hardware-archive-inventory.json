@@ -1,0 +1,1302 @@
+{
+  "archive": "D:\\App\\WeChat\\chat_data\\xwechat_files\\wxid_q6cgqi9xjpft22_691b\\msg\\file\\2026-10\\尚硅谷嵌入式项目之四轴机械臂2026.0917.zip",
+  "sha256": "6e82640044d92745a4cce0fdaa148ae4fd66cf0a6610798295a6f7aebefe1209",
+  "files": [
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/40T型螺母M8孔.SLDPRT",
+      "bytes": 85465
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/40x40x500.SLDPRT",
+      "bytes": 296610
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/40型材M4T型螺母.SLDPRT",
+      "bytes": 85243
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/40型材角件.SLDPRT",
+      "bytes": 94396
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/42步进电机L40.SLDPRT",
+      "bytes": 195437
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/42步进电机L60.SLDPRT",
+      "bytes": 194064
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/61mm光轴.SLDPRT",
+      "bytes": 98544
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/8-16联轴器.SLDPRT",
+      "bytes": 76434
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/8mm键槽法兰.SLDPRT",
+      "bytes": 97778
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/8x10x3mm轴套.SLDPRT",
+      "bytes": 84537
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/bearing_6900.SLDPRT",
+      "bytes": 49750
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/DLE42-L2BJ-长款50.SLDPRT",
+      "bytes": 750408
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/FF ______________[FF12].SLDPRT",
+      "bytes": 303091
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/FF丝杆支撑座[FF10].sldprt",
+      "bytes": 1303978
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/FF固定铝板.SLDPRT",
+      "bytes": 136314
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/GT20同步轮.SLDPRT",
+      "bytes": 157044
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/GT60同步轮.SLDPRT",
+      "bytes": 179620
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/J1机械臂.SLDPRT",
+      "bytes": 302758
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/J1机械臂.step.SLDPRT",
+      "bytes": 148945
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/J2机械臂.SLDPRT",
+      "bytes": 73493
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/L型Z轴支架.SLDPRT",
+      "bytes": 142417
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/L型支架底座.SLDPRT",
+      "bytes": 162553
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/L型支架竖板.SLDPRT",
+      "bytes": 104868
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/L型机械臂支架.SLDPRT",
+      "bytes": 106875
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M3x4mm紧固螺丝.SLDPRT",
+      "bytes": 164785
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M3内六角x10mm.SLDPRT",
+      "bytes": 123561
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M3内六角x12mm.SLDPRT",
+      "bytes": 103866
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M3内六角x16mm.SLDPRT",
+      "bytes": 123444
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M3内六角小头x16mm.SLDPRT",
+      "bytes": 130205
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M4内六角x16mm.SLDPRT",
+      "bytes": 123000
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M4内六角x18mm.SLDPRT",
+      "bytes": 119798
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M4内六角小头x16mm.SLDPRT",
+      "bytes": 76451
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M5x30mm紧固螺丝.SLDPRT",
+      "bytes": 129232
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M5内六角x16.SLDPRT",
+      "bytes": 121749
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M5内六角x20.SLDPRT",
+      "bytes": 121797
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M5螺母.SLDPRT",
+      "bytes": 80745
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M6内六角x22.SLDPRT",
+      "bytes": 128432
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M6小头内六角x22.SLDPRT",
+      "bytes": 120022
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M8内六角x16mm.SLDPRT",
+      "bytes": 124024
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/M8内六角x18mm.SLDPRT",
+      "bytes": 126457
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/MGW12H滑块.SLDPRT",
+      "bytes": 94478
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/MGW12_500mm.SLDPRT",
+      "bytes": 130070
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/RRING-C-INT-22.SLDPRT",
+      "bytes": 52600
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/SCARA四轴机械臂总成 物料明细表.XLSX",
+      "bytes": 4601672
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/SCARA四轴机械臂总成.SLDASM",
+      "bytes": 4861009
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/SKF_608-2ZZ.SLDPRT",
+      "bytes": 647640
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/T型丝杆500mm.SLDPRT",
+      "bytes": 64672
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/T型丝杆螺母.SLDPRT",
+      "bytes": 100636
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/光轴固定环.SLDPRT",
+      "bytes": 114786
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/内径8mm法兰.SLDPRT",
+      "bytes": 138637
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/单头六角螺柱M3x30+6.SLDPRT",
+      "bytes": 83291
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/同步带节.SLDPRT",
+      "bytes": 71185
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/型材顶部电机固定件.SLDPRT",
+      "bytes": 107003
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/底座.SLDPRT",
+      "bytes": 145103
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/方键条销.SLDPRT",
+      "bytes": 69568
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/电机支撑铝板.SLDPRT",
+      "bytes": 124052
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/第二机械臂.SLDPRT",
+      "bytes": 149895
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/紧凑型轴承座.SLDPRT",
+      "bytes": 102857
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/轴承座.SLDASM",
+      "bytes": 165671
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/轴承座8mm内径.SLDPRT",
+      "bytes": 107757
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/铝型材挤压角座.SLDPRT",
+      "bytes": 221276
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/T型丝杆500mm/T型丝杆500mm.DWG",
+      "bytes": 45727
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/T型丝杆500mm/T型丝杆500mm.JPG",
+      "bytes": 52079
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/T型丝杆500mm/T型丝杆500mm.SLDDRW",
+      "bytes": 96460
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/T型丝杆500mm/T型丝杆500mm.STEP",
+      "bytes": 15232
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/T型丝杆500mm.zip",
+      "bytes": 118432
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/光轴加工/61mm光轴.JPG",
+      "bytes": 127018
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/光轴加工/61mm光轴.SLDDRW",
+      "bytes": 137210
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/光轴加工/61mm光轴.STEP",
+      "bytes": 58532
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/FF固定铝板.DWG",
+      "bytes": 64299
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/FF固定铝板.SLDDRW",
+      "bytes": 143822
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/FF固定铝板.STEP",
+      "bytes": 64881
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/J1机械臂.DWG",
+      "bytes": 73160
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/J1机械臂.SLDDRW",
+      "bytes": 174311
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/J1机械臂.STEP",
+      "bytes": 149912
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/L型支架底座.DWG",
+      "bytes": 67303
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/L型支架底座.SLDDRW",
+      "bytes": 144572
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/L型支架底座.STEP",
+      "bytes": 97634
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/L型支架竖板.DWG",
+      "bytes": 60786
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/L型支架竖板.SLDDRW",
+      "bytes": 128642
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/L型支架竖板.STEP",
+      "bytes": 55860
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/底座.DWG",
+      "bytes": 68705
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/底座.SLDDRW",
+      "bytes": 154838
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/底座.STEP",
+      "bytes": 87886
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/电机支撑铝板.DWG",
+      "bytes": 61733
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/电机支撑铝板.SLDDRW",
+      "bytes": 135789
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/电机支撑铝板.STEP",
+      "bytes": 66125
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/第二机械臂.DWG",
+      "bytes": 63825
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/第二机械臂.SLDDRW",
+      "bytes": 139931
+    },
+    {
+      "path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/铝材加工V1.1/第二机械臂.STEP",
+      "bytes": 98037
+    }
+  ],
+  "bom_path": "尚硅谷嵌入式项目之四轴机械臂2026.0917/资料/SCARA四轴机械臂机械结构V1.1/SCARA四轴机械臂总成 物料明细表.XLSX",
+  "sheets": [
+    {
+      "name": "物料清单汇总",
+      "rows": [
+        {
+          "A1": "SCARA四轴机械臂总成\n物料清单"
+        },
+        {
+          "A2": "序号",
+          "B2": "!缩略图",
+          "C2": "!文件名",
+          "D2": "!统计数量",
+          "E2": "单价",
+          "F2": "零件数量",
+          "G2": "总价",
+          "H2": "材质",
+          "I2": "名称",
+          "J2": "代号",
+          "K2": "表面处理",
+          "L2": "品牌",
+          "M2": "型号",
+          "N2": "购买链接",
+          "O2": "!当前配置",
+          "P2": "!包络尺寸",
+          "Q2": "!特征类型"
+        },
+        {
+          "A3": "1",
+          "C3": "40X40X500",
+          "D3": "1",
+          "E3": 31.9,
+          "F3": "",
+          "G3": 31.9,
+          "H3": "",
+          "I3": "",
+          "J3": "",
+          "K3": "",
+          "L3": "",
+          "M3": "",
+          "N3": "https://item.taobao.com/item.htm?id=42186524126&mi_id=0000XovrNDg_VzCJzkLkKGlPhWJ949jFKKemsK1IV4ND2uc&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY",
+          "O3": "Default",
+          "P3": "510.0*40.0*40.0",
+          "Q3": "拉伸特征件"
+        },
+        {
+          "A4": "2",
+          "C4": "底座",
+          "D4": "1",
+          "E4": 0,
+          "F4": "",
+          "G4": 0,
+          "H4": "",
+          "I4": "“图样名称”",
+          "J4": "“图样代号”",
+          "K4": "",
+          "L4": "",
+          "M4": "",
+          "N4": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O4": "默认",
+          "P4": "160.0*120.0*14.0",
+          "Q4": "拉伸特征件"
+        },
+        {
+          "A5": "3",
+          "C5": "40型材M4T型螺母",
+          "D5": "7",
+          "E5": 1.1,
+          "F5": "",
+          "G5": 7.700000000000001,
+          "H5": "",
+          "I5": "",
+          "J5": "",
+          "K5": "",
+          "L5": "",
+          "M5": "",
+          "N5": "https://detail.tmall.com/item.htm?id=616377778128&mi_id=0000z9oddBFr3eQmDH-p7xY5zSuiuwcpn_t5xhXDxpZ54qU&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=4341850512049",
+          "O5": "默认",
+          "P5": "18.0*18.0*9.0",
+          "Q5": "拉伸特征件"
+        },
+        {
+          "A6": "4",
+          "C6": "MGW12H滑块",
+          "D6": "1",
+          "E6": 9.6,
+          "F6": "",
+          "G6": 9.6,
+          "H6": "",
+          "I6": "",
+          "J6": "",
+          "K6": "",
+          "L6": "",
+          "M6": "",
+          "N6": "https://item.taobao.com/item.htm?id=682149189012&mi_id=0000M5DD2-iOujL3hsI0xxDpahpbUvV7JyHxFqp9jYPfyd4&skuId=6154655426494&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY",
+          "O6": "默认",
+          "P6": "60.4*40.0*10.6",
+          "Q6": "外输入件"
+        },
+        {
+          "A7": "5",
+          "C7": "MGW12_500MM",
+          "D7": "1",
+          "E7": 4.32,
+          "F7": "",
+          "G7": 4.32,
+          "H7": "",
+          "I7": "",
+          "J7": "",
+          "K7": "",
+          "L7": "",
+          "M7": "",
+          "N7": "https://item.taobao.com/item.htm?id=682149189012&mi_id=0000M5DD2-iOujL3hsI0xxDpahpbUvV7JyHxFqp9jYPfyd4&skuId=6154655426504&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY",
+          "O7": "MGW12R270",
+          "P7": "510.0*24.0*8.5",
+          "Q7": "拉伸特征件"
+        },
+        {
+          "A8": "6",
+          "C8": "42步进电机L60",
+          "D8": "3",
+          "E8": 37.45,
+          "F8": "",
+          "G8": 112.35000000000001,
+          "H8": "",
+          "I8": "“图样名称”",
+          "J8": "“图样代号”",
+          "K8": "",
+          "L8": "",
+          "M8": "",
+          "N8": "https://item.taobao.com/item.htm?id=682797640293&mi_id=0000wtMzerMIRquDz8rsoVQa-KF3cyIL0f9vvLNpho1N8Po&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5764545574392",
+          "O8": "默认",
+          "P8": "84.0*47.5*42.0",
+          "Q8": ""
+        },
+        {
+          "A9": "7",
+          "C9": "DLE42-L2BJ-长款50",
+          "D9": "1",
+          "E9": 136,
+          "F9": "",
+          "G9": 136,
+          "H9": "",
+          "I9": "“图样名称”",
+          "J9": "“图样代号”",
+          "K9": "",
+          "L9": "",
+          "M9": "",
+          "N9": "https://item.taobao.com/item.htm?id=803939973032&mi_id=0000rE50kSgzc7JhK_GCIGWJ46kX4B5-OY8tAS6HbDGKn9M&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6108484128777",
+          "O9": "默认",
+          "P9": "87.5*42.0*42.0",
+          "Q9": ""
+        },
+        {
+          "A10": "8",
+          "C10": "FF固定铝板",
+          "D10": "1",
+          "E10": 0,
+          "F10": "",
+          "G10": 0,
+          "H10": "",
+          "I10": "“图样名称”",
+          "J10": "“图样代号”",
+          "K10": "",
+          "L10": "",
+          "M10": "",
+          "N10": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O10": "默认",
+          "P10": "161.0*120.0*10.0",
+          "Q10": "拉伸特征件"
+        },
+        {
+          "A11": "9",
+          "C11": "40型材角件",
+          "D11": "9",
+          "E11": 0.7,
+          "F11": "",
+          "G11": 6.3,
+          "H11": "",
+          "I11": "“图样名称”",
+          "J11": "“图样代号”",
+          "K11": "",
+          "L11": "",
+          "M11": "",
+          "N11": "https://item.taobao.com/item.htm?id=640646193916&mi_id=000020oXmj-s7s49YrugWYkmHttVwdskJla_R_AmDpZ_mtg&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=4778318563320",
+          "O11": "默认",
+          "P11": "40.0*40.0*35.0",
+          "Q11": ""
+        },
+        {
+          "A12": "10",
+          "C12": "电机支撑铝板",
+          "D12": "1",
+          "E12": 0,
+          "F12": "",
+          "G12": 0,
+          "H12": "",
+          "I12": "“图样名称”",
+          "J12": "“图样代号”",
+          "K12": "",
+          "L12": "",
+          "M12": "",
+          "N12": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O12": "默认",
+          "P12": "161.0*120.0*10.0",
+          "Q12": "拉伸特征件"
+        },
+        {
+          "A13": "11",
+          "C13": "单头六角螺柱M3X30+6",
+          "D13": "4",
+          "E13": 0.5,
+          "F13": "",
+          "G13": 2,
+          "H13": "",
+          "I13": "“图样名称”",
+          "J13": "“图样代号”",
+          "K13": "",
+          "L13": "",
+          "M13": "",
+          "N13": "https://detail.tmall.com/item.htm?id=1064845053427&mi_id=0000kOudO3_eoaCXEY34ATVIgO4qV3Yo4jS3MPJGpr9C1Y4&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6276396031422",
+          "O13": "默认",
+          "P13": "36.0*5.3*4.6",
+          "Q13": "拉伸特征件"
+        },
+        {
+          "A14": "12",
+          "C14": "L型支架底座",
+          "D14": "1",
+          "E14": 0,
+          "F14": "",
+          "G14": 0,
+          "H14": "",
+          "I14": "“图样名称”",
+          "J14": "“图样代号”",
+          "K14": "",
+          "L14": "",
+          "M14": "",
+          "N14": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O14": "默认",
+          "P14": "160.0*100.0*10.0",
+          "Q14": "拉伸特征件"
+        },
+        {
+          "A15": "13",
+          "C15": "L型支架竖板",
+          "D15": "1",
+          "E15": 0,
+          "F15": "",
+          "G15": 0,
+          "H15": "",
+          "I15": "“图样名称”",
+          "J15": "“图样代号”",
+          "K15": "",
+          "L15": "",
+          "M15": "",
+          "N15": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O15": "默认",
+          "P15": "100.0*80.0*10.0",
+          "Q15": "拉伸特征件"
+        },
+        {
+          "A16": "14",
+          "C16": "铝型材挤压角座",
+          "D16": "2",
+          "E16": 6.58,
+          "G16": 13.16,
+          "H16": "",
+          "I16": "“图样名称”",
+          "J16": "“图样代号”",
+          "K16": "",
+          "L16": "",
+          "M16": "",
+          "N16": "https://item.taobao.com/item.htm?id=887526872813&mi_id=0000AlMFrgZwTBqusBZOtD8so3-IDGow6R7q7THCEOjSuqk&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5896773910703",
+          "O16": "默认",
+          "P16": "80.0*80.0*20.0",
+          "Q16": "拉伸特征件"
+        },
+        {
+          "A17": "15",
+          "C17": "方键条销",
+          "D17": "1",
+          "E17": 0.24,
+          "F17": "",
+          "G17": 0.24,
+          "H17": "",
+          "I17": "“图样名称”",
+          "J17": "“图样代号”",
+          "K17": "",
+          "L17": "",
+          "M17": "",
+          "N17": "https://detail.tmall.com/item.htm?id=714593941988&mi_id=0000XWSbsoipTy4tIapYTlFK1ehtKIHvvITJw8_-nNqE5Is&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5844172493064",
+          "O17": "默认",
+          "P17": "14.0*3.0*3.0",
+          "Q17": "拉伸特征件"
+        },
+        {
+          "A18": "16",
+          "C18": "61MM光轴",
+          "D18": "1",
+          "E18": 27,
+          "F18": "",
+          "G18": 27,
+          "H18": "",
+          "I18": "“图样名称”",
+          "J18": "“图样代号”",
+          "K18": "",
+          "L18": "",
+          "M18": "",
+          "N18": "https://item.taobao.com/item.htm?id=1000006936044&mi_id=0000vhWiAxNND6Ghc18ANKcRN14qfCfTeZSdrr3GeDXNBd8&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY",
+          "O18": "默认",
+          "P18": "77.0*25.0*25.0",
+          "Q18": "拉伸特征件"
+        },
+        {
+          "A19": "17",
+          "C19": "第二机械臂",
+          "D19": "1",
+          "E19": 0,
+          "F19": "",
+          "G19": 0,
+          "H19": "",
+          "I19": "“图样名称”",
+          "J19": "“图样代号”",
+          "K19": "",
+          "L19": "",
+          "M19": "",
+          "N19": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O19": "默认",
+          "P19": "330.0*60.0*10.0",
+          "Q19": "拉伸特征件"
+        },
+        {
+          "A20": "18",
+          "C20": "J1机械臂",
+          "D20": "1",
+          "E20": 0,
+          "F20": "",
+          "G20": 0,
+          "H20": "",
+          "I20": "“图样名称”",
+          "J20": "“图样代号”",
+          "K20": "",
+          "L20": "",
+          "M20": "",
+          "N20": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O20": "默认",
+          "P20": "250.0*60.0*10.0",
+          "Q20": "拉伸特征件"
+        },
+        {
+          "A21": "19",
+          "C21": "42步进电机L40",
+          "D21": "1",
+          "E21": 21.64,
+          "F21": "",
+          "G21": 21.64,
+          "H21": "",
+          "I21": "“图样名称”",
+          "J21": "“图样代号”",
+          "K21": "",
+          "L21": "",
+          "M21": "",
+          "N21": "https://item.taobao.com/item.htm?id=682797640293&mi_id=0000wtMzerMIRquDz8rsoVQa-KF3cyIL0f9vvLNpho1N8Po&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5764545574390",
+          "O21": "默认",
+          "P21": "64.0*47.5*42.0",
+          "Q21": "外输入件"
+        },
+        {
+          "A22": "20",
+          "C22": "轴承座8MM内径",
+          "D22": "1",
+          "E22": 3.6,
+          "F22": "",
+          "G22": 3.6,
+          "H22": "",
+          "I22": "“图样名称”",
+          "J22": "“图样代号”",
+          "K22": "",
+          "L22": "",
+          "M22": "",
+          "N22": "https://item.taobao.com/item.htm?id=956130699726&mi_id=00006uw-_OKaDUBnuVEpFKuRa31wSUD_Yvol-E6_4VQ7ul4&skuId=6048919558382&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY",
+          "O22": "默认",
+          "P22": "45.0*45.0*12.0",
+          "Q22": "拉伸特征件"
+        },
+        {
+          "A23": "21",
+          "C23": "FF ______________[FF12]",
+          "D23": "1",
+          "E23": 13.2,
+          "F23": "",
+          "G23": 13.2,
+          "H23": "",
+          "I23": "“图样名称”",
+          "J23": "“图样代号”",
+          "K23": "",
+          "L23": "",
+          "M23": "",
+          "N23": "https://item.taobao.com/item.htm?id=888311413134&mi_id=0000wel6WUbBcEOzi0ZgtorTK-BlvFFlsE8mGMaEHjdXJmk&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX&skuId=5731547568844",
+          "O23": "默认",
+          "P23": "52.0*52.0*15.0",
+          "Q23": "外输入件"
+        },
+        {
+          "A24": "22",
+          "C24": "SKF_608-2ZZ",
+          "D24": "1",
+          "E24": 0,
+          "F24": "",
+          "G24": 0,
+          "H24": "",
+          "I24": "",
+          "J24": "",
+          "K24": "",
+          "L24": "",
+          "M24": "",
+          "N24": "20已有",
+          "O24": "Default",
+          "P24": "22.0*22.0*7.0",
+          "Q24": "外输入件"
+        },
+        {
+          "A25": "23",
+          "C25": "内径8MM法兰",
+          "D25": "1",
+          "E25": 4,
+          "F25": "",
+          "G25": 4,
+          "H25": "",
+          "I25": "“图样名称”",
+          "J25": "“图样代号”",
+          "K25": "",
+          "L25": "",
+          "M25": "",
+          "N25": "https://item.taobao.com/item.htm?id=810393942266&mi_id=0000XJJzgZ0UxYihYaV4HhspnE3osjJ2vRz28hVmKvf3amc&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5504044821918",
+          "O25": "默认",
+          "P25": "50.0*50.0*18.0",
+          "Q25": "拉伸特征件"
+        },
+        {
+          "A26": "24",
+          "C26": "装配体1^SCARA四轴机械臂总成",
+          "D26": "1",
+          "E26": 2.4,
+          "F26": "",
+          "G26": 2.4,
+          "H26": "",
+          "I26": "“图样名称”",
+          "J26": "“图样代号”",
+          "K26": "",
+          "L26": "",
+          "M26": "",
+          "N26": "https://item.taobao.com/item.htm?id=678621605036&mi_id=0000_y7qwHQSMKLTWh3n8yYN3Ga27KBixyDx5HDMiP68xvI&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY",
+          "O26": "默认",
+          "P26": "176.2*48.1*17.0",
+          "Q26": ""
+        },
+        {
+          "A27": "25",
+          "C27": "GT20同步轮",
+          "D27": "1",
+          "E27": 6.4,
+          "F27": "",
+          "G27": 6.4,
+          "H27": "",
+          "I27": "“图样名称”",
+          "J27": "“图样代号”",
+          "K27": "",
+          "L27": "",
+          "M27": "",
+          "N27": "24已有",
+          "O27": "默认",
+          "P27": "16.0*16.0*16.0",
+          "Q27": "拉伸特征件"
+        },
+        {
+          "A28": "26",
+          "C28": "GT60同步轮",
+          "D28": "1",
+          "E28": 6.4,
+          "F28": "",
+          "G28": 6.4,
+          "H28": "",
+          "I28": "“图样名称”",
+          "J28": "“图样代号”",
+          "K28": "",
+          "L28": "",
+          "M28": "",
+          "N28": "24已有",
+          "O28": "默认",
+          "P28": "43.6*43.6*16.0",
+          "Q28": "拉伸特征件"
+        },
+        {
+          "A29": "27",
+          "C29": "皮带1-2^装配体1_SCARA四轴机械臂总成",
+          "D29": "1",
+          "E29": 0,
+          "F29": "",
+          "G29": 0,
+          "H29": "",
+          "I29": "“图样名称”",
+          "J29": "“图样代号”",
+          "K29": "",
+          "L29": "",
+          "M29": "",
+          "N29": "24已有",
+          "O29": "默认",
+          "P29": "172.2*45.1*6.0",
+          "Q29": ""
+        },
+        {
+          "A30": "28",
+          "C30": "40T型螺母M8孔",
+          "D30": "9",
+          "E30": 8.1,
+          "F30": "",
+          "G30": 72.89999999999999,
+          "H30": "",
+          "I30": "“图样名称”",
+          "J30": "“图样代号”",
+          "K30": "",
+          "L30": "",
+          "M30": "",
+          "N30": "https://detail.tmall.com/item.htm?id=1015889000673&mi_id=00001iSk1XYOH_p027ZaTz8RpVYhiXI-9Rw9ldAoEVLYljo&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6019840852274",
+          "O30": "默认",
+          "P30": "19.6*19.3*9.4",
+          "Q30": "拉伸特征件"
+        },
+        {
+          "A31": "29",
+          "C31": "M8内六角X18MM",
+          "D31": "9",
+          "E31": 0.76,
+          "F31": "",
+          "G31": 6.84,
+          "H31": "",
+          "I31": "“图样名称”",
+          "J31": "“图样代号”",
+          "K31": "",
+          "L31": "",
+          "M31": "",
+          "N31": "https://detail.tmall.com/item.htm?ali_refid=a3_420434_1006%3A1123480325%3AH%3AbHyajQsknfaSk4EcAgEqU7j8n%2BUhzrQw%3A1fa49a4001d57b84803b1ab814359e0a&ali_trackid=282_1fa49a4001d57b84803b1ab814359e0a&id=635755541429&mi_id=0000eK7GNDTm8yrytt_OhXmx-SYiEDzvL-smgbSfL_oI438&mm_sceneid=1_0_116096069_0&priceTId=214783f817877103535351513e1064&skuId=6034934741160&spm=a21n57.1.hoverItem.2&utparam=%7B%22aplus_abtest%22%3A%22c0eaa57e10fda0a3049b640d874dbf62%22%7D&xxc=ad_ztc",
+          "O31": "默认",
+          "P31": "26.0*13.2*13.2",
+          "Q31": "拉伸特征件"
+        },
+        {
+          "A32": "30",
+          "C32": "M8内六角X16MM",
+          "D32": "9",
+          "E32": 0.44,
+          "F32": "",
+          "G32": 3.96,
+          "H32": "",
+          "I32": "“图样名称”",
+          "J32": "“图样代号”",
+          "K32": "",
+          "L32": "",
+          "M32": "",
+          "N32": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954143",
+          "O32": "默认",
+          "P32": "24.0*13.2*13.2",
+          "Q32": "拉伸特征件"
+        },
+        {
+          "A33": "31",
+          "C33": "M3内六角X16MM",
+          "D33": "8",
+          "E33": 0.06,
+          "F33": "",
+          "G33": 0.48,
+          "H33": "",
+          "I33": "“图样名称”",
+          "J33": "“图样代号”",
+          "K33": "",
+          "L33": "",
+          "M33": "",
+          "N33": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954247",
+          "O33": "默认",
+          "P33": "19.0*4.5*4.5",
+          "Q33": "拉伸特征件"
+        },
+        {
+          "A34": "32",
+          "C34": "M4内六角X16MM",
+          "D34": "14",
+          "E34": 0.1,
+          "F34": "",
+          "G34": 1.4000000000000001,
+          "H34": "",
+          "I34": "“图样名称”",
+          "J34": "“图样代号”",
+          "K34": "",
+          "L34": "",
+          "M34": "",
+          "N34": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954121",
+          "O34": "默认",
+          "P34": "20.0*7.0*7.0",
+          "Q34": "拉伸特征件"
+        },
+        {
+          "A35": "33",
+          "C35": "M6内六角X22",
+          "D35": "8",
+          "E35": 0.28,
+          "F35": "",
+          "G35": 2.24,
+          "H35": "",
+          "I35": "“图样名称”",
+          "J35": "“图样代号”",
+          "K35": "",
+          "L35": "",
+          "M35": "",
+          "N35": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954267",
+          "O35": "默认",
+          "P35": "28.0*8.5*8.5",
+          "Q35": "拉伸特征件"
+        },
+        {
+          "A36": "34",
+          "C36": "M3内六角X12MM",
+          "D36": "12",
+          "E36": 0.05,
+          "F36": "",
+          "G36": 0.6000000000000001,
+          "H36": "",
+          "I36": "“图样名称”",
+          "J36": "“图样代号”",
+          "K36": "",
+          "L36": "",
+          "M36": "",
+          "N36": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954162",
+          "O36": "默认",
+          "P36": "15.0*5.6*5.6",
+          "Q36": "拉伸特征件"
+        },
+        {
+          "A37": "35",
+          "C37": "M5内六角X16",
+          "D37": "4",
+          "E37": 0.14,
+          "F37": "",
+          "G37": 0.56,
+          "H37": "",
+          "I37": "“图样名称”",
+          "J37": "“图样代号”",
+          "K37": "",
+          "L37": "",
+          "M37": "",
+          "N37": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954124",
+          "O37": "默认",
+          "P37": "21.0*8.7*8.7",
+          "Q37": "拉伸特征件"
+        },
+        {
+          "A38": "36",
+          "C38": "M3X4MM紧固螺丝",
+          "D38": "8",
+          "E38": 0.03,
+          "F38": "",
+          "G38": 0.24,
+          "H38": "",
+          "I38": "“图样名称”",
+          "J38": "“图样代号”",
+          "K38": "",
+          "L38": "",
+          "M38": "",
+          "N38": "https://detail.tmall.com/item.htm?id=594669176030&mi_id=0000ssfWGs1cXYoS0gLVg6fl7u0eQqYDwzDx56gXRpQOqiE&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5212250638930",
+          "O38": "默认",
+          "P38": "4.0*3.0*3.0",
+          "Q38": "拉伸特征件"
+        },
+        {
+          "A39": "37",
+          "C39": "M4内六角X18MM",
+          "D39": "7",
+          "E39": 0.1,
+          "F39": "",
+          "G39": 0.7000000000000001,
+          "H39": "",
+          "I39": "“图样名称”",
+          "J39": "“图样代号”",
+          "K39": "",
+          "L39": "",
+          "M39": "",
+          "N39": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954115",
+          "O39": "默认",
+          "P39": "22.0*7.0*7.0",
+          "Q39": "拉伸特征件"
+        },
+        {
+          "A40": "38",
+          "C40": "M3内六角X10MM",
+          "D40": "4",
+          "E40": 0.045,
+          "F40": "",
+          "G40": 0.18,
+          "H40": "",
+          "I40": "“图样名称”",
+          "J40": "“图样代号”",
+          "K40": "",
+          "L40": "",
+          "M40": "",
+          "N40": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954161",
+          "O40": "默认",
+          "P40": "13.0*5.6*5.6",
+          "Q40": "拉伸特征件"
+        },
+        {
+          "A41": "39",
+          "C41": "8MM键槽法兰",
+          "D41": "1",
+          "E41": 49,
+          "F41": "",
+          "G41": 49,
+          "H41": "",
+          "I41": "“图样名称”",
+          "J41": "“图样代号”",
+          "K41": "",
+          "L41": "",
+          "M41": "",
+          "N41": "https://item.taobao.com/item.htm?id=646053203889&last_time=1787645102&mi_id=0000xY7MFSZUyu99ropAha3p0gZ0xGDEU5m_es2RTfy-wDw&scm=1007.13982.82927.0&skuId=4819679654458&spm=tbpc.mytb_footmark.item.goods&upStreamPrice=900",
+          "O41": "默认",
+          "P41": "56.8*56.8*26.4",
+          "Q41": "拉伸特征件"
+        },
+        {
+          "A42": "40",
+          "C42": "光轴固定环",
+          "D42": "1",
+          "E42": 1.46,
+          "F42": "",
+          "G42": 1.46,
+          "H42": "",
+          "I42": "“图样名称”",
+          "J42": "“图样代号”",
+          "K42": "",
+          "L42": "",
+          "M42": "",
+          "N42": "https://item.taobao.com/item.htm?id=619356285942&last_time=1787709516&mi_id=0000WPjeFXHyJOOvx1epVGbQO_Ht4Ut0M7L3LDOfCS980QA&scm=1007.13982.82927.0&skuId=4548285279873&spm=tbpc.mytb_footmark.item.goods&upStreamPrice=420",
+          "O42": "默认",
+          "P42": "16.0*16.0*9.0",
+          "Q42": "拉伸特征件"
+        },
+        {
+          "A43": "41",
+          "C43": "8X10X3MM轴套",
+          "D43": "1",
+          "E43": 1.58,
+          "F43": "",
+          "G43": 1.58,
+          "H43": "",
+          "I43": "“图样名称”",
+          "J43": "“图样代号”",
+          "K43": "",
+          "L43": "",
+          "M43": "",
+          "N43": "https://detail.tmall.com/item.htm?from=cart&id=828294760080&mi_id=0000IFKfNy4l6zlU9VlbAyZ2x1xI5Ze6RFZgETR1Z5rrpLk&skuId=5725507891397&spm=a1z0d.6639537%2F202410.item.d828294760080.32ae7484qhtmF2&upStreamPrice=158",
+          "O43": "默认",
+          "P43": "10.0*10.0*3.0",
+          "Q43": "拉伸特征件"
+        },
+        {
+          "A44": "42",
+          "C44": "M3内六角小头X16MM",
+          "D44": "4",
+          "E44": 0.096,
+          "F44": "",
+          "G44": 0.384,
+          "H44": "",
+          "I44": "“图样名称”",
+          "J44": "“图样代号”",
+          "K44": "",
+          "L44": "",
+          "M44": "",
+          "N44": "https://detail.tmall.com/item.htm?abbucket=13&id=1014711509698&mi_id=00000BseZXuXyaSQnuQmKSmUUY8EFIjhqMNUCcvJ8srpscA&ns=1&skuId=6184246686387&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%22cd9ebd383b1617460e2772c4b80f2844%22%7D&xxc=taobaoSearch",
+          "O44": "默认",
+          "P44": "19.0*4.5*4.5",
+          "Q44": "拉伸特征件"
+        },
+        {
+          "A45": "43",
+          "C45": "M5内六角X20",
+          "D45": "6",
+          "E45": 0.16,
+          "F45": "",
+          "G45": 0.96,
+          "H45": "",
+          "I45": "“图样名称”",
+          "J45": "“图样代号”",
+          "K45": "",
+          "L45": "",
+          "M45": "",
+          "N45": "https://detail.tmall.com/item.htm?id=719419602291&mi_id=0000sgs9aX0D-PGZPqfqi3fB_PJdKWZKvldAnSbl2H1_XLw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5184720954123",
+          "O45": "默认",
+          "P45": "25.0*8.7*8.7",
+          "Q45": "拉伸特征件"
+        },
+        {
+          "A46": "44",
+          "C46": "M5螺母",
+          "D46": "6",
+          "E46": 0.05,
+          "F46": "",
+          "G46": 0.30000000000000004,
+          "H46": "",
+          "I46": "“图样名称”",
+          "J46": "“图样代号”",
+          "K46": "",
+          "L46": "",
+          "M46": "",
+          "N46": "https://detail.tmall.com/item.htm?abbucket=13&id=549640610734&mi_id=0000znNkD5F316nDZEco0tSi2g_aI9ooUJ1ZzMdXMbhXdo0&ns=1&priceTId=214783f817877104341695463e1064&skuId=5878960725795&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%225cb2145fc98f40ac9885ed6015a24a6e%22%7D&xxc=taobaoSearch",
+          "O46": "默认",
+          "P46": "9.2*8.0*4.0",
+          "Q46": "拉伸特征件"
+        },
+        {
+          "A47": "45",
+          "C47": "T型丝杆500MM",
+          "D47": "1",
+          "E47": 31,
+          "F47": "",
+          "G47": 31,
+          "H47": "",
+          "I47": "“图样名称”",
+          "J47": "“图样代号”",
+          "K47": "",
+          "L47": "",
+          "M47": "",
+          "N47": "https://detail.tmall.com/item.htm?from=detail&id=603397368654&mi_id=0000P0HEY5WwtMFyLG3ve3Kc6J0q64YoIxUc7A-RLl5uAKk&spm=tbpc.orderdetail.suborder_itempic.1.78656aa6nEBclS",
+          "O47": "默认",
+          "P47": "500.0*16.0*16.0",
+          "Q47": "拉伸特征件"
+        },
+        {
+          "A48": "46",
+          "C48": "8-16联轴器",
+          "D48": "1",
+          "E48": 14,
+          "F48": "",
+          "G48": 14,
+          "H48": "",
+          "I48": "“图样名称”",
+          "J48": "“图样代号”",
+          "K48": "",
+          "L48": "",
+          "M48": "",
+          "N48": "https://item.taobao.com/item.htm?id=542079833024&mi_id=0000CRt17CdNt649Lab_4TkK3rz_UBW9UsqF-e9LAus9a7Y&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=3420729994034",
+          "O48": "默认",
+          "P48": "40.0*32.0*32.0",
+          "Q48": "拉伸特征件"
+        },
+        {
+          "A49": "47",
+          "C49": "紧凑型轴承座",
+          "D49": "1",
+          "E49": 8.7,
+          "F49": "",
+          "G49": 8.7,
+          "H49": "",
+          "I49": "“图样名称”",
+          "J49": "“图样代号”",
+          "K49": "",
+          "L49": "",
+          "M49": "",
+          "N49": "https://item.taobao.com/item.htm?id=603698055369&mi_id=0000v4RIAyVWlLZBLGt0w8pefObwhKbSGDDcSsdXdLCf-x8&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+          "O49": "默认",
+          "P49": "60.0*40.0*14.0",
+          "Q49": "拉伸特征件"
+        },
+        {
+          "A50": "48",
+          "C50": "T型丝杆螺母",
+          "D50": "1",
+          "E50": 9,
+          "F50": "",
+          "G50": 9,
+          "H50": "",
+          "I50": "“图样名称”",
+          "J50": "“图样代号”",
+          "K50": "",
+          "L50": "",
+          "M50": "",
+          "N50": "https://detail.tmall.com/item.htm?from=detail&id=603397368654&mi_id=0000P0HEY5WwtMFyLG3ve3Kc6J0q64YoIxUc7A-RLl5uAKk&spm=tbpc.orderdetail.suborder_itempic.1.78656aa6nEBclS",
+          "O50": "默认",
+          "P50": "40.0*40.0*28.0",
+          "Q50": "拉伸特征件"
+        },
+        {
+          "A51": "49",
+          "C51": "M6小头内六角X22",
+          "D51": "2",
+          "E51": 0.276,
+          "F51": "",
+          "G51": 0.552,
+          "H51": "",
+          "I51": "“图样名称”",
+          "J51": "“图样代号”",
+          "K51": "",
+          "L51": "",
+          "M51": "",
+          "N51": "https://detail.tmall.com/item.htm?id=769310055673&mi_id=0000SNMzIFSi2RHnyRbLqit5y6jB91wcJKTBmc6WESSlRlw&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5968660082276",
+          "O51": "默认",
+          "P51": "28.0*10.2*10.2",
+          "Q51": "拉伸特征件"
+        },
+        {
+          "A52": "50",
+          "C52": "FF丝杆支撑座[FF10]",
+          "D52": "1",
+          "E52": 4,
+          "F52": "",
+          "G52": 4,
+          "H52": "",
+          "I52": "FF丝杆支撑座 FF10",
+          "J52": "GB／T 276-2013",
+          "K52": "",
+          "L52": "",
+          "M52": "FF10",
+          "N52": "https://item.taobao.com/item.htm?id=953421002594&mi_id=0000N3-PgnEQcu_xSH05UX04cfKDdd84vplG_5yOoJB2yv4&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6041746163822",
+          "O52": "FF10",
+          "P52": "43.0*43.0*12.0",
+          "Q52": "旋转特征件"
+        },
+        {
+          "C53": "所有铝板共计",
+          "G53": 180
+        },
+        {
+          "F54": 799.2460000000001
+        }
+      ]
+    }
+  ]
+}

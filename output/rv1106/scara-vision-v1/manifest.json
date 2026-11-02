@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-08",
+  "target": "RV1106 ARMv7 hard-float uClibc 1.0.31",
+  "camera": "MIS5001",
+  "opencv_version": "5.0.0",
+  "opencv_commit": "40738fb16ceddb5fb3fea747585f7ce6abb0605b",
+  "compiler": "Rockchip GCC 8.3.0, C++17",
+  "files": {
+    "camera-mis5001.sh": {
+      "bytes": 531,
+      "sha256": "702cce647a8fce04717a7def18343f132cbe99d479564ebb878501f29610b45e"
+    },
+    "capture.sh": {
+      "bytes": 1895,
+      "sha256": "a8803c7b97db5049f446d1698bb827caacb09c62324d1e2b4998e0e4cd423578"
+    },
+    "lib/libopencv_core.so.500": {
+      "bytes": 2928804,
+      "sha256": "3e9d3f32ba578634021db5d643d732cadc0d37e8e8e8135e1a3ce2829e239784"
+    },
+    "lib/libopencv_imgcodecs.so.500": {
+      "bytes": 1121116,
+      "sha256": "f22ca56cdffdd62f2bcb78a91acd0f5a3f8b93ee368cee5ce0256c7a52a02582"
+    },
+    "lib/libopencv_imgproc.so.500": {
+      "bytes": 5739768,
+      "sha256": "b8f201d85f267ec01178ce8ff79bfc0e1bb41e7dd5ae0ecf84d943d1f3119c6a"
+    },
+    "licenses/libjpeg-README.ijg": {
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    },
+    "licenses/libjpeg-turbo-LICENSE.md": {
+      "bytes": 5620,
+      "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430"
+    },
+    "licenses/libpng-LICENSE.txt": {
+      "bytes": 5345,
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526"
+    },
+    "licenses/OpenCV-LICENSE.txt": {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "licenses/zlib-LICENSE.txt": {
+      "bytes": 1002,
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2"
+    },
+    "README.txt": {
+      "bytes": 869,
+      "sha256": "6d3dda8c86d00e0b2b12a7099f7fa20322aba3695afb7e75d7307e4fc1bda365"
+    },
+    "scara_vision": {
+      "bytes": 5564,
+      "sha256": "74f35fa755a17d276c9ad5d24468099e76acff9e9acc68cf3ce8352ebcb1cf3d"
+    }
+  },
+  "application_revision": "step1-nv12-to-bgr-2026-10-08",
+  "source_sha256": "b5854618364d2fb4c94599108a5f86db6dc590f6c5deb6da508c9976754ab781"
+}

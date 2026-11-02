@@ -1,0 +1,45 @@
+Pikafish current ARMv7 / RV1106 compatibility build
+
+Upstream: https://github.com/official-pikafish/Pikafish.git
+Commit: 1c66b9b21cf2f280ce3b3ffa80c1c6609f2b29ff
+Compiler: Ubuntu arm-linux-gnueabihf-g++ 13.3.0
+Build host: WSL Ubuntu-24.04-D, user lst
+Target: ARMv7-A Cortex-A7, NEONv1, hard-float, static GNU/Linux ELF EABI5
+
+Installation used:
+sudo apt-get update -qq
+sudo apt-get install -y -qq g++-arm-linux-gnueabihf libboost-dev qemu-user ripgrep
+Boost is NOT used by this port (the package was requested before selecting upstream fallback).
+
+Build:
+git checkout 1c66b9b21cf2f280ce3b3ffa80c1c6609f2b29ff
+git apply rv1106-armv7.patch
+bash build-rv1106.sh
+
+Changes:
+1. src/uint128.h restores upstream software Bitboard arithmetic from tag
+   Pikafish-2023-03-05 (4762ca3), renamed u128 with compound operators constexpr.
+2. src/misc.h includes that fallback only for 32-bit GNU-compatible compilers.
+3. src/nnue/nnue_accumulator.cpp uses equivalent widening pairwise addition
+   for the horizontal byte sum on ARMv7; ARMv8 retains vaddv_u8.
+No search, NNUE network format, or evaluation algorithm changes.
+
+Validation:
+- ELF is static ARM EABI5 with v7/NEONv1 and VFP register ABI attributes.
+- QEMU CPU cortex-a7: uci + isready produce uciok + readyok.
+- u128 compared to native unsigned __int128: 100000 deterministic random
+  pairs, all bitwise/subtraction/multiplication operators and shift boundaries.
+- ARMv7 NEON sum checked against all 65536 equality masks under QEMU.
+- Official benchmark: bench 8 1 3 default depth, 49 positions.
+  Patched ARM QEMU and unmodified x86-64 reference both return 13989 nodes.
+  Scores, PVs, node counts, and bestmove match at every depth; only time/nps differ.
+- Initial-position perft depth 3: 79666 nodes.
+- Matching downloaded pikafish.nnue reports 61 MiB in-memory network.
+  NNUE SHA256: 6b74ac7bbd299dc26a17803135b616eda9248bef0cbfc7b811bfcf981832ba29
+- /usr/bin/time -v peak RSS: QEMU 182744 KiB, native reference 173964 KiB.
+  These are HOST measurements, not RV1106 physical measurements.
+- This subtask did not connect to or modify the board. Real-board verification
+  is pending with the parent task and must not be inferred from QEMU success.
+
+The copied executable is stripped; the WSL build retains the unstripped original.
+Place the matching pikafish.nnue beside pikafish (or set UCI EvalFile).

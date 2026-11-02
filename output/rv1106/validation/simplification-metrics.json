@@ -1,0 +1,34 @@
+{
+  "scope": "vision/main.cpp only; libraries, scripts, assets and tests excluded",
+  "before": {
+    "physical_lines": 505,
+    "nonblank_lines": 481,
+    "code_lines": 300,
+    "functions": [
+      "require",
+      "parseNv12Dimension",
+      "readNv12",
+      "insideImage",
+      "boardPoint",
+      "findBoardTransform",
+      "isBoardColor",
+      "checkBackground",
+      "classifyPoint",
+      "annotate",
+      "saveResults",
+      "main"
+    ]
+  },
+  "after": {
+    "physical_lines": 286,
+    "nonblank_lines": 274,
+    "code_lines": 223,
+    "functions": [
+      "readImage",
+      "rectifyBoard",
+      "recognizeBoard",
+      "saveResults",
+      "main"
+    ]
+  }
+}

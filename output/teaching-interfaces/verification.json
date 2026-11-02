@@ -1,0 +1,26 @@
+{
+  "interface": "Can::Can(const char*)",
+  "files": [
+    {
+      "path": "teaching/robot/can.hpp",
+      "physical": 14,
+      "effective": 9,
+      "sha256": "4d0d4630ba3ff1adb22146a7716b9af2efb6bd2607a5001d71b42e1f42549185"
+    },
+    {
+      "path": "teaching/robot/can.cpp",
+      "physical": 45,
+      "effective": 33,
+      "sha256": "230f6b231941569b87d4f3b517b98a995789c66f34edd7ad8488b7d97b8d3a82"
+    }
+  ],
+  "host_compile": "GCC13 C++17 -Wall -Wextra -Wpedantic -Werror passed",
+  "arm_compile": "GCC8.3 Cortex-A7 uClibc ARM EABI5 object passed",
+  "isolated_vcan": "construction succeeds, transmits no frames; 20 missing-interface and 20 non-CAN-interface failures leak no fd",
+  "not_tested": [
+    "real CAN",
+    "socket creation failure injection",
+    "error subscription failure injection"
+  ],
+  "hardware_motion": false
+}

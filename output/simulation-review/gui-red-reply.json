@@ -1,0 +1,10 @@
+{
+  "opencv": "5.0.0",
+  "robot_side": "red",
+  "ply": 2,
+  "move": "a6a5",
+  "fen": "rnbakabnr/9/1c5c1/2p1p1p1p/p8/9/P1P1P1P1P/4C2C1/9/RNBAKABNR w - - 0 1",
+  "virtual_motion_seconds": 7.999999999999917,
+  "last_motion_seconds": 0.0,
+  "captured_by_arm": 0
+}

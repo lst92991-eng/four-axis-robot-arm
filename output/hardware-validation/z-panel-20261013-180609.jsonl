@@ -1,0 +1,5 @@
+{"time": 1791885969.0627742, "startup_rx": true, "id": 2147483904, "data": [254, 2, 107]}
+{"time": 1791885969.2599366, "tx": true, "id": 256, "data": [254, 152, 0, 107]}
+{"time": 1791885969.2599366, "rx": true, "id": 536870916, "data": [0, 12, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885969.260936, "event": "can_error", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00", "phase": "waiting_reply_FE", "last_command": {"id": "0x80000100", "data": [254, 152, 0, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180609.jsonl"}
+{"time": 1791885969.2619364, "event": "fault", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00"}

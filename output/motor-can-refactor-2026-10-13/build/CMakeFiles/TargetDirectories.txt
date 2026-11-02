@@ -1,0 +1,4 @@
+/mnt/c/Users/lst/Desktop/scara/output/motor-can-refactor-2026-10-13/build/CMakeFiles/scara_motor.dir
+/mnt/c/Users/lst/Desktop/scara/output/motor-can-refactor-2026-10-13/build/CMakeFiles/scara_motor_test.dir
+/mnt/c/Users/lst/Desktop/scara/output/motor-can-refactor-2026-10-13/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/lst/Desktop/scara/output/motor-can-refactor-2026-10-13/build/CMakeFiles/rebuild_cache.dir

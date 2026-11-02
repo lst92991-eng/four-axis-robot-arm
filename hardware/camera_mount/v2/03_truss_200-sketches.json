@@ -1,0 +1,132 @@
+{
+  "status": "pass",
+  "sketches": [
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 2,
+      "relation_count": 10,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图1",
+        "D2@草图1"
+      ],
+      "errors": [],
+      "name": "草图1",
+      "consumed_by": [
+        "45高4厚桁架毛坯"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 10,
+      "relation_count": 65,
+      "fix_count": 0,
+      "dimension_names": [
+        "D10@草图2",
+        "D1@草图2",
+        "D2@草图2",
+        "D3@草图2",
+        "D4@草图2",
+        "D5@草图2",
+        "D6@草图2",
+        "D7@草图2",
+        "D8@草图2",
+        "D9@草图2"
+      ],
+      "errors": [],
+      "name": "草图2",
+      "consumed_by": [
+        "六个三角减重窗"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 4,
+      "relation_count": 20,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图3",
+        "D2@草图3",
+        "D3@草图3",
+        "D4@草图3"
+      ],
+      "errors": [],
+      "name": "草图3",
+      "consumed_by": [
+        "始末端半厚搭接"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 6,
+      "relation_count": 18,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图4",
+        "D2@草图4",
+        "D3@草图4",
+        "D4@草图4",
+        "D5@草图4",
+        "D6@草图4"
+      ],
+      "errors": [],
+      "name": "草图4",
+      "consumed_by": [
+        "搭接与梁根3p4孔"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 8,
+      "relation_count": 134,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图5",
+        "D2@草图5",
+        "D3@草图5",
+        "D4@草图5",
+        "D5@草图5",
+        "D6@草图5",
+        "D7@草图5",
+        "D8@草图5"
+      ],
+      "errors": [],
+      "name": "草图5",
+      "consumed_by": [
+        "顶面局部固定耳"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 7,
+      "relation_count": 15,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图6",
+        "D2@草图6",
+        "D3@草图6",
+        "D4@草图6",
+        "D5@草图6",
+        "D6@草图6",
+        "D7@草图6"
+      ],
+      "errors": [],
+      "name": "草图6",
+      "consumed_by": [
+        "顶面固定耳3p4孔"
+      ],
+      "dangling": false
+    }
+  ]
+}

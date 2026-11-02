@@ -1,0 +1,88 @@
+{
+  "status": "pass",
+  "sketches": [
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 4,
+      "relation_count": 10,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图1",
+        "D2@草图1",
+        "D3@草图1",
+        "D4@草图1"
+      ],
+      "errors": [],
+      "name": "草图1",
+      "consumed_by": [
+        "相机横梁146x48"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 5,
+      "relation_count": 29,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图2",
+        "D2@草图2",
+        "D3@草图2",
+        "D4@草图2",
+        "D5@草图2"
+      ],
+      "errors": [],
+      "name": "草图2",
+      "consumed_by": [
+        "横梁左右减重窗"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 5,
+      "relation_count": 12,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图3",
+        "D2@草图3",
+        "D3@草图3",
+        "D4@草图3",
+        "D5@草图3"
+      ],
+      "errors": [],
+      "name": "草图3",
+      "consumed_by": [
+        "背面6mm间隔柱"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 9,
+      "relation_count": 18,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图4",
+        "D2@草图4",
+        "D3@草图4",
+        "D4@草图4",
+        "D5@草图4",
+        "D6@草图4",
+        "D7@草图4",
+        "D8@草图4",
+        "D9@草图4"
+      ],
+      "errors": [],
+      "name": "草图4",
+      "consumed_by": [
+        "相机2p8孔与梁端3p4孔"
+      ],
+      "dangling": false
+    }
+  ]
+}

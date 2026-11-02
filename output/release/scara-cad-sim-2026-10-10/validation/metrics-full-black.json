@@ -1,0 +1,1 @@
+{"samples":35437,"can_frames":298436,"raw_xy_rmse_mm":0.479215,"ekf_xy_rmse_mm":0.253689,"placements":90,"max_placement_error_mm":1.05444,"same_command_tick_p95_wall_ms":0.021558}

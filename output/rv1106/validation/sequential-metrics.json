@@ -1,0 +1,21 @@
+{
+  "scope": "vision/main.cpp, source-line count excluding blank/comment lines but including braces; no new algorithm or entry",
+  "before": {
+    "physical_lines": 286,
+    "code_lines": 223,
+    "functions": [
+      "readImage",
+      "rectifyBoard",
+      "recognizeBoard",
+      "saveResults",
+      "main"
+    ]
+  },
+  "after": {
+    "physical_lines": 386,
+    "code_lines": 303,
+    "functions": [
+      "main"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "a": "61mm光轴-2",
+    "b": "FF丝杆支撑座[FF10]-2",
+    "groups": [
+      2,
+      1
+    ],
+    "status": true,
+    "bodies": 1,
+    "faces": 0
+  },
+  {
+    "a": "SKF_608-2ZZ-1",
+    "b": "61mm光轴-2",
+    "groups": [
+      1,
+      2
+    ],
+    "status": true,
+    "bodies": 1,
+    "faces": 0
+  },
+  {
+    "a": "方键条销-1",
+    "b": "DLE42-L2BJ-长款50-2",
+    "groups": [
+      0,
+      1
+    ],
+    "status": true,
+    "bodies": 1,
+    "faces": 0
+  },
+  {
+    "a": "8mm键槽法兰-1",
+    "b": "DLE42-L2BJ-长款50-2",
+    "groups": [
+      0,
+      1
+    ],
+    "status": true,
+    "bodies": 1,
+    "faces": 0
+  },
+  {
+    "a": "8x10x3mm轴套-1",
+    "b": "61mm光轴-2",
+    "groups": [
+      1,
+      2
+    ],
+    "status": true,
+    "bodies": 1,
+    "faces": 0
+  }
+]

@@ -1,0 +1,906 @@
+{
+  "dataset": {
+    "repository": "https://github.com/nrl-ai/chessai-data",
+    "commit": "6fbcacfc9ab9aade3d034ee6e9ecf821d1a9d397",
+    "subdirectory": "data/data_02",
+    "origin": "https://universe.roboflow.com/hommoner-oclm2/chinese-chess-jtqlg",
+    "version": 2,
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "original_class_count": 7,
+    "derived_class_count": 14,
+    "color_labels": "Derived from image ink; rules and complete contact-sheet visual review. Six ambiguous cases reviewed by the root agent.",
+    "no_model_predictions_as_labels": true
+  },
+  "dataset_zip_sha256": "b573f76bd8f6aff8718108080fc3372795a2ba8255744eeb4c14725be4e2494e",
+  "training": {
+    "dataset_zip_sha256": "b573f76bd8f6aff8718108080fc3372795a2ba8255744eeb4c14725be4e2494e",
+    "dataset_images": 218,
+    "dataset_boxes": 2694,
+    "train_images": 174,
+    "val_images": 22,
+    "test_images": 22,
+    "class_order": "kabnrcpKABNRCP",
+    "source_status": "Real CC BY 4.0 photos; 14 labels derived from original 7 types and reviewed ink color. Not original-author 14-class annotations.",
+    "architecture": "airockchip YOLOv5s rk_opt@v6.2.1 ReLU",
+    "source_commit": "23a20ef3e5fa648e765e4a70b30edbfd3aaf8c8c",
+    "imgsz": 640,
+    "batch_size": 4,
+    "epochs_max": 150,
+    "patience": 30,
+    "seed": 42,
+    "autoanchor": false,
+    "horizontal_flip": false,
+    "rotation_degrees": 15,
+    "evaluation": "best checkpoint on val; independent grouped test untouched until final evaluation",
+    "optimizer": "AdamW",
+    "class_loss_weight": 2.0,
+    "mosaic": false,
+    "initialization_source": "https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5s.pt",
+    "initialization_sha256": "8b3b748c1e592ddd8868022e8732fde20025197328490623cc16c6f24d0782ee",
+    "reason": "First nano run localized pieces and ink color but confused glyph types. Selection/tuning used train/val only; test opened after final model selection.",
+    "epochs_completed": 150,
+    "selected_epoch_from_csv": 145,
+    "best_training_checkpoint_sha256": "6ba88eea53123fbd19715e13d63f6e3a36ea64b8980724d966d4c12689a84fc3",
+    "portable_checkpoint_sha256": "b18cabfe0202b05ad4b127cbe52632aa7d20026af2f5b9d5c9186ab476050a61",
+    "validation_metrics_csv": {
+      "epoch": 145.0,
+      "train/box_loss": 0.016741,
+      "train/obj_loss": 0.030529,
+      "train/cls_loss": 0.0079737,
+      "metrics/precision": 0.99256,
+      "metrics/recall": 0.99893,
+      "metrics/mAP_0.5": 0.995,
+      "metrics/mAP_0.5:0.95": 0.85014,
+      "val/box_loss": 0.016207,
+      "val/obj_loss": 0.027879,
+      "val/cls_loss": 0.0055887,
+      "x/lr0": 8.8e-05,
+      "x/lr1": 8.8e-05,
+      "x/lr2": 8.8e-05
+    },
+    "test_log": "test-final.log",
+    "test_source": "22 grouped holdout photos / 277 derived-label boxes; opened after model selection",
+    "test_summary": {
+      "precision": 0.993,
+      "recall": 0.997,
+      "map50": 0.995,
+      "map50_95": 0.845
+    },
+    "test_metrics_precision": "rounded to 3 decimals by official val.py console; raw predictions saved separately",
+    "opencv": "5.0.0",
+    "torch": "2.7.1+cu128"
+  },
+  "rknn_conversion": {
+    "target": "rv1106",
+    "toolkit": "1.6.0",
+    "input": [
+      1,
+      3,
+      640,
+      640
+    ],
+    "training_profile": "pinned Rockchip YOLOv5 ReLU, autoanchor disabled",
+    "input_order": "RGB",
+    "class_order": "kabnrcpKABNRCP",
+    "original_names": [
+      "k",
+      "a",
+      "b",
+      "n",
+      "r",
+      "c",
+      "p",
+      "K",
+      "A",
+      "B",
+      "N",
+      "R",
+      "C",
+      "P"
+    ],
+    "class_permutation": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "anchors": [
+      [
+        10,
+        13,
+        16,
+        30,
+        33,
+        23
+      ],
+      [
+        30,
+        61,
+        62,
+        45,
+        59,
+        119
+      ],
+      [
+        116,
+        90,
+        156,
+        198,
+        373,
+        326
+      ]
+    ],
+    "head_strides": [
+      8,
+      16,
+      32
+    ],
+    "output_values": "sigmoid probabilities, INT8 native NHWC",
+    "source_checkpoint_sha256": "b18cabfe0202b05ad4b127cbe52632aa7d20026af2f5b9d5c9186ab476050a61",
+    "rknn_sha256": "c843fac9714d97ca3b478193fb98557fef3146ca4c216a98380295a87c693943",
+    "calibration_images": 174,
+    "accuracy_status": "Conversion only. Real validation and board inference remain separate."
+  },
+  "hardware": {
+    "soc": "RV1106",
+    "opencv_runtime": "5.0.0",
+    "rknn_runtime": "1.6.0 (2de554906@2024-01-17T14:53:41)",
+    "rknpu_driver": "0.9.2",
+    "native_output_layout": "INT8 NHWC; logical/native channels 57; explicit w_stride=0. Larger size_with_stride is allocation capacity, not a reason to infer C64 data stride.",
+    "output_payload_bytes": [
+      364800,
+      91200,
+      22800
+    ],
+    "output_allocated_bytes": [
+      409600,
+      102400,
+      25600
+    ],
+    "quantization": {
+      "zero_point": -128,
+      "scale": 0.00392156862745098
+    },
+    "sdk_memory_bytes": {
+      "weights": 7117184,
+      "internal": 6144000,
+      "dma_allocated": 13467648
+    },
+    "io_tensor_allocations_bytes": 1766400,
+    "memory_interpretation": "SDK counters and process VmHWM are different scopes; do not add them blindly or call VmHWM total NPU memory. See phase snapshots. CmaFree was present and zero.",
+    "resources_released": true,
+    "mem_available_after_cleanup_mib": 146
+  },
+  "npu_evaluation": {
+    "val": {
+      "split": "val",
+      "images": 22,
+      "ground_truth_boxes": 204,
+      "TP": 204,
+      "FP": 0,
+      "FN": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "perfect_frames": 22,
+      "score_threshold": 0.5,
+      "nms_iou_threshold": 0.45,
+      "nms": "class-agnostic",
+      "matching_iou_threshold": 0.5,
+      "mean_detect_ms": 85.20446409090908,
+      "median_detect_ms": 85.03191699999999,
+      "max_detect_ms": 85.978958,
+      "timing_scope": "OpenCV letterbox + NPU run + NMS; excludes input file decoding",
+      "per_class": [
+        {
+          "classId": 0,
+          "piece": "k",
+          "ground_truth": 10,
+          "TP": 10,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 1,
+          "piece": "a",
+          "ground_truth": 11,
+          "TP": 11,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 2,
+          "piece": "b",
+          "ground_truth": 9,
+          "TP": 9,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 3,
+          "piece": "n",
+          "ground_truth": 17,
+          "TP": 17,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 4,
+          "piece": "r",
+          "ground_truth": 15,
+          "TP": 15,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 5,
+          "piece": "c",
+          "ground_truth": 15,
+          "TP": 15,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 6,
+          "piece": "p",
+          "ground_truth": 23,
+          "TP": 23,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 7,
+          "piece": "K",
+          "ground_truth": 9,
+          "TP": 9,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 8,
+          "piece": "A",
+          "ground_truth": 9,
+          "TP": 9,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 9,
+          "piece": "B",
+          "ground_truth": 10,
+          "TP": 10,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 10,
+          "piece": "N",
+          "ground_truth": 16,
+          "TP": 16,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 11,
+          "piece": "R",
+          "ground_truth": 15,
+          "TP": 15,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 12,
+          "piece": "C",
+          "ground_truth": 17,
+          "TP": 17,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 13,
+          "piece": "P",
+          "ground_truth": 28,
+          "TP": 28,
+          "FP": 0,
+          "FN": 0
+        }
+      ],
+      "per_image": [
+        {
+          "image": "04.rf.04ecf9fb093a4db2a009c15771aa1904.jpg",
+          "gt": 25,
+          "TP": 25,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.978958
+        },
+        {
+          "image": "128.rf.056e401430a9dbadd418e7496e7b2581.jpg",
+          "gt": 5,
+          "TP": 5,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.961333
+        },
+        {
+          "image": "13.rf.b7298375f0ee103231e7ea2d160264a9.jpg",
+          "gt": 25,
+          "TP": 25,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.621958
+        },
+        {
+          "image": "213.rf.8bab4c8af50644b21e12e7f766572b01.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.90225
+        },
+        {
+          "image": "227.rf.d15d8b1099709b0a9ad4be891ff823b7.jpg",
+          "gt": 1,
+          "TP": 1,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.021709
+        },
+        {
+          "image": "228.rf.845b19f612df0b1897164cba7d0a8705.jpg",
+          "gt": 1,
+          "TP": 1,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.016167
+        },
+        {
+          "image": "229.rf.3fe4427294f0be6a90281747fd3299bf.jpg",
+          "gt": 1,
+          "TP": 1,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.985833
+        },
+        {
+          "image": "24.rf.9eadc3312ceaa8d214077a8fdb5f264a.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.028125
+        },
+        {
+          "image": "241.rf.9e1fd3a1f4fa0b1db1bbecdc7093cb53.jpg",
+          "gt": 2,
+          "TP": 2,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.031625
+        },
+        {
+          "image": "244.rf.3217a096a29e49909b30b75e837e58ac.jpg",
+          "gt": 2,
+          "TP": 2,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.001583
+        },
+        {
+          "image": "315.rf.944a35487ffd5dbb597beac298cdd585.jpg",
+          "gt": 12,
+          "TP": 12,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.184459
+        },
+        {
+          "image": "325.rf.84b0550239dd34b71dd3371907fa97f9.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.957084
+        },
+        {
+          "image": "35.rf.ddb8c6c1bfde77429bd823052ea2f8c2.jpg",
+          "gt": 10,
+          "TP": 10,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.232875
+        },
+        {
+          "image": "39.rf.3420ef68387ab031828b46c25bf63de0.jpg",
+          "gt": 8,
+          "TP": 8,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.075084
+        },
+        {
+          "image": "40.rf.b2fe9eec4ef6a083eb41306e526e671e.jpg",
+          "gt": 6,
+          "TP": 6,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.032209
+        },
+        {
+          "image": "51.rf.2665cb5a3627a0cb20879e92f02849ae.jpg",
+          "gt": 5,
+          "TP": 5,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.990208
+        },
+        {
+          "image": "66.rf.91a60702ba7e729fed8d773deb1e7ef9.jpg",
+          "gt": 5,
+          "TP": 5,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.005666
+        },
+        {
+          "image": "69.rf.7f3e74d70562265df6b3477e9782e8ca.jpg",
+          "gt": 6,
+          "TP": 6,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.030167
+        },
+        {
+          "image": "74.rf.7ce012eb475a348ed1140c10f3daa093.jpg",
+          "gt": 11,
+          "TP": 11,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.292667
+        },
+        {
+          "image": "78.rf.0a6b252dd96dea0baacd9b5440163a3f.jpg",
+          "gt": 5,
+          "TP": 5,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.014125
+        },
+        {
+          "image": "85.rf.15ca1d26a90a03a0e3d23869d1aa2893.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.036
+        },
+        {
+          "image": "91.rf.847e8779fa302f2a930ab068b3a70a66.jpg",
+          "gt": 2,
+          "TP": 2,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.098125
+        }
+      ],
+      "memory_log": [
+        "MEMSTATE process_start available_kb=141272 cmafree_kb=0 rss_kb=4104 hwm_kb=4104",
+        "MEMSTATE inspected_model_loaded available_kb=140948 cmafree_kb=0 rss_kb=4424 hwm_kb=4424",
+        "SDKMEM inspected_model_loaded rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMSTATE inspected_model_released available_kb=140964 cmafree_kb=0 rss_kb=4424 hwm_kb=4424",
+        "MEMSTATE detector_loaded available_kb=140948 cmafree_kb=0 rss_kb=4424 hwm_kb=4424",
+        "SDKMEM detector_loaded rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMSTATE first_inference_finished available_kb=139016 cmafree_kb=0 rss_kb=7744 hwm_kb=8648",
+        "SDKMEM first_inference_finished rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMORY_KB baseline_available=141300 lowest_observed_available=138988 vm_hwm=8652 vm_rss=5940",
+        "MEMSTATE before_detector_close available_kb=140808 cmafree_kb=0 rss_kb=5940 hwm_kb=8652",
+        "SDKMEM before_detector_close rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMSTATE after_detector_close available_kb=140852 cmafree_kb=0 rss_kb=5940 hwm_kb=8652"
+      ]
+    },
+    "test": {
+      "split": "test",
+      "images": 22,
+      "ground_truth_boxes": 277,
+      "TP": 277,
+      "FP": 0,
+      "FN": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "perfect_frames": 22,
+      "score_threshold": 0.5,
+      "nms_iou_threshold": 0.45,
+      "nms": "class-agnostic",
+      "matching_iou_threshold": 0.5,
+      "mean_detect_ms": 85.31430318181818,
+      "median_detect_ms": 85.12831249999999,
+      "max_detect_ms": 86.105251,
+      "timing_scope": "OpenCV letterbox + NPU run + NMS; excludes input file decoding",
+      "per_class": [
+        {
+          "classId": 0,
+          "piece": "k",
+          "ground_truth": 8,
+          "TP": 8,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 1,
+          "piece": "a",
+          "ground_truth": 17,
+          "TP": 17,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 2,
+          "piece": "b",
+          "ground_truth": 23,
+          "TP": 23,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 3,
+          "piece": "n",
+          "ground_truth": 19,
+          "TP": 19,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 4,
+          "piece": "r",
+          "ground_truth": 21,
+          "TP": 21,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 5,
+          "piece": "c",
+          "ground_truth": 16,
+          "TP": 16,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 6,
+          "piece": "p",
+          "ground_truth": 34,
+          "TP": 34,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 7,
+          "piece": "K",
+          "ground_truth": 8,
+          "TP": 8,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 8,
+          "piece": "A",
+          "ground_truth": 16,
+          "TP": 16,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 9,
+          "piece": "B",
+          "ground_truth": 22,
+          "TP": 22,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 10,
+          "piece": "N",
+          "ground_truth": 19,
+          "TP": 19,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 11,
+          "piece": "R",
+          "ground_truth": 20,
+          "TP": 20,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 12,
+          "piece": "C",
+          "ground_truth": 16,
+          "TP": 16,
+          "FP": 0,
+          "FN": 0
+        },
+        {
+          "classId": 13,
+          "piece": "P",
+          "ground_truth": 38,
+          "TP": 38,
+          "FP": 0,
+          "FN": 0
+        }
+      ],
+      "per_image": [
+        {
+          "image": "10.rf.ff23659fe5066195f4ea761aa3a37094.jpg",
+          "gt": 28,
+          "TP": 28,
+          "FP": 0,
+          "FN": 0,
+          "ms": 86.105251
+        },
+        {
+          "image": "104.rf.27a970a604945efe16ea2202ecc7dea9.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.226458
+        },
+        {
+          "image": "111.rf.55dedf32fe1387b0c64f19190269f850.jpg",
+          "gt": 2,
+          "TP": 2,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.916417
+        },
+        {
+          "image": "118.rf.feaf4955fd6bc722cfe160b865539bd7.jpg",
+          "gt": 8,
+          "TP": 8,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.101042
+        },
+        {
+          "image": "120.rf.2ee3cbbdbbf59e9cb2fc00ac0a05ee14.jpg",
+          "gt": 9,
+          "TP": 9,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.085
+        },
+        {
+          "image": "124.rf.742e952eda52677ee12bd3f6e276f985.jpg",
+          "gt": 7,
+          "TP": 7,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.038333
+        },
+        {
+          "image": "133.rf.ff6af3c82fbbe10d729f0018c4a21008.jpg",
+          "gt": 13,
+          "TP": 13,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.238125
+        },
+        {
+          "image": "143.rf.64a14b6211106f4d485bb7de986325f9.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.053792
+        },
+        {
+          "image": "19.rf.f1f865903b13d2cd282d2dba62911a64.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.043875
+        },
+        {
+          "image": "204.rf.ff2161d28bef31ff6e18199c33ced7ab.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.857042
+        },
+        {
+          "image": "208.rf.c7729718213da15470242a0b7bbb88f9.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.8235
+        },
+        {
+          "image": "222.rf.a99b5d4e2d21f43a7362b1fddc1afe93.jpg",
+          "gt": 1,
+          "TP": 1,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.950833
+        },
+        {
+          "image": "311.rf.ff0da58bdc0e1dbdaf036b5d2dff8a05.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.014708
+        },
+        {
+          "image": "318.rf.79912652f786f0c7c8fc479f147bfbdd.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.939292
+        },
+        {
+          "image": "320.rf.12d9cec51f0ba926a4cfe2a010fe71cf.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.869876
+        },
+        {
+          "image": "324.rf.87fd6887237e2b1d0ea2a05d433417d3.jpg",
+          "gt": 32,
+          "TP": 32,
+          "FP": 0,
+          "FN": 0,
+          "ms": 86.078708
+        },
+        {
+          "image": "42.rf.7b6eab93318c9cc38e0fb45d1d963178.jpg",
+          "gt": 5,
+          "TP": 5,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.129042
+        },
+        {
+          "image": "55.rf.d8bcea7a4b5eea667b6a40cefd097b43.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.127583
+        },
+        {
+          "image": "58.rf.336f4a30f34ef5a16d7921998dad7ea8.jpg",
+          "gt": 8,
+          "TP": 8,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.209542
+        },
+        {
+          "image": "59.rf.24fde9ffe4a40936f9bf9eb978e4356a.jpg",
+          "gt": 8,
+          "TP": 8,
+          "FP": 0,
+          "FN": 0,
+          "ms": 85.131958
+        },
+        {
+          "image": "83.rf.8bf6a8e885c51b93445d91b0b5ff1e27.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.990209
+        },
+        {
+          "image": "88.rf.3857e147eb2844ee8ca98970a6476d47.jpg",
+          "gt": 4,
+          "TP": 4,
+          "FP": 0,
+          "FN": 0,
+          "ms": 84.984084
+        }
+      ],
+      "memory_log": [
+        "MEMSTATE process_start available_kb=140156 cmafree_kb=0 rss_kb=3972 hwm_kb=3972",
+        "MEMSTATE inspected_model_loaded available_kb=139832 cmafree_kb=0 rss_kb=4252 hwm_kb=4252",
+        "SDKMEM inspected_model_loaded rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMSTATE inspected_model_released available_kb=139848 cmafree_kb=0 rss_kb=4252 hwm_kb=4252",
+        "MEMSTATE detector_loaded available_kb=139832 cmafree_kb=0 rss_kb=4292 hwm_kb=4292",
+        "SDKMEM detector_loaded rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMSTATE first_inference_finished available_kb=137900 cmafree_kb=0 rss_kb=7708 hwm_kb=8612",
+        "SDKMEM first_inference_finished rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMORY_KB baseline_available=140184 lowest_observed_available=137872 vm_hwm=8616 vm_rss=5904",
+        "MEMSTATE before_detector_close available_kb=139692 cmafree_kb=0 rss_kb=5904 hwm_kb=8616",
+        "SDKMEM before_detector_close rc=0 weights=7117184 internal=6144000 dma=13467648",
+        "MEMSTATE after_detector_close available_kb=139736 cmafree_kb=0 rss_kb=5904 hwm_kb=8616"
+      ]
+    }
+  },
+  "fp32_comparison": {
+    "val": {
+      "FP32_TP": 204,
+      "FP32_FP": 0,
+      "FP32_FN": 0,
+      "GT": 204,
+      "matched_fp32_npu_boxes": 204,
+      "mean_abs_corner_difference_px": 0.4024455521362897,
+      "max_abs_corner_difference_px": 3.2058562441406195,
+      "mean_abs_confidence_difference": 0.0026728317727332017,
+      "note": "Same frozen score 0.50 / class-agnostic NMS IoU 0.45 / matching IoU 0.50. No tuning using test."
+    },
+    "test": {
+      "FP32_TP": 277,
+      "FP32_FP": 0,
+      "FP32_FN": 0,
+      "GT": 277,
+      "matched_fp32_npu_boxes": 277,
+      "mean_abs_corner_difference_px": 0.40467034096924276,
+      "max_abs_corner_difference_px": 4.227995966796868,
+      "mean_abs_confidence_difference": 0.002583856111937153,
+      "note": "Same frozen score 0.50 / class-agnostic NMS IoU 0.45 / matching IoU 0.50. No tuning using test."
+    }
+  },
+  "scope_limit": "Real-photo derived-label internal dataset only; this does not prove accuracy on the user camera, printed pieces or other chess sets. Robot/camera/game-loop validation remains separate.",
+  "report_date": "2026-10-09",
+  "training_environment_actual": {
+    "torch": "2.7.1+cu128",
+    "torchvision": "0.22.1+cu128",
+    "cuda_runtime": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "capability": [
+      12,
+      0
+    ],
+    "compiled_arches": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120",
+      "compute_120"
+    ],
+    "cudnn": 90701,
+    "opencv": "5.0.0",
+    "numpy": "2.2.6",
+    "opencv_module": "/home/lst/.cache/scara-xiangqi-train/venv/lib/python3.12/site-packages/cv2/__init__.py",
+    "cuda_matmul_matches_cpu": true,
+    "cuda_amp_convolution_backward_finite": true,
+    "cuda_nms": [
+      0,
+      2
+    ],
+    "memory_free_total_bytes": [
+      7315914752,
+      8546484224
+    ]
+  },
+  "calibration_reproduction": {
+    "opencv": "5.0.0",
+    "train_images": 174,
+    "all_174_png_raw_sha256_match_conversion_inputs": true
+  },
+  "vendor_patch_dry_run_on_pinned_source": true,
+  "tested_detector_source_sha256": {
+    "vision/detector.cpp": "5ee859eb37745483791ddd2ebbd43ffb66feef5dbe1f480a147b0f05f9990617",
+    "vision/detector.hpp": "0b9504008d898fe60b93d3fad85ed1899ee82c1dd661577f4e849ec1456e7bc2"
+  }
+}

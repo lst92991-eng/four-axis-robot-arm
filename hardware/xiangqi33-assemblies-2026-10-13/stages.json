@@ -1,0 +1,990 @@
+[
+  {
+    "label": "old",
+    "source": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13",
+    "main": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\SCARA_FRONT_195_275_CHESS33.SLDASM",
+    "links_mm": [
+      195,
+      275
+    ],
+    "prefix": "O33_",
+    "dimensions": [
+      {
+        "file": "O33_piece_black_a.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_a.Part"
+      },
+      {
+        "file": "O33_piece_black_b.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_b.Part"
+      },
+      {
+        "file": "O33_piece_black_c.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_c.Part"
+      },
+      {
+        "file": "O33_piece_black_k.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_k.Part"
+      },
+      {
+        "file": "O33_piece_black_n.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_n.Part"
+      },
+      {
+        "file": "O33_piece_black_p.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_p.Part"
+      },
+      {
+        "file": "O33_piece_black_r.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_black_r.Part"
+      },
+      {
+        "file": "O33_piece_red_A.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_A.Part"
+      },
+      {
+        "file": "O33_piece_red_B.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_B.Part"
+      },
+      {
+        "file": "O33_piece_red_C.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_C.Part"
+      },
+      {
+        "file": "O33_piece_red_K.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_K.Part"
+      },
+      {
+        "file": "O33_piece_red_N.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_N.Part"
+      },
+      {
+        "file": "O33_piece_red_P.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_P.Part"
+      },
+      {
+        "file": "O33_piece_red_R.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@O33_piece_red_R.Part"
+      }
+    ],
+    "reference_rewrites": [
+      {
+        "assembly": "O33_OLD_DRIVE_ASSEMBLY.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\GT20同步轮.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_GT20同步轮.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_DRIVE_ASSEMBLY.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\GT60同步轮.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_GT60同步轮.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_DRIVE_ASSEMBLY.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_BELT.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_BELT.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40x40x500.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_40x40x500.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_底座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_底座.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40型材M4T型螺母.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_40型材M4T型螺母.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_MGW12H滑块.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_MGW12H滑块.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_MGW12_500mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_MGW12_500mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_42步进电机L60.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_42步进电机L60.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_DLE42-L2BJ-长款50.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_DLE42-L2BJ-长款50.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_J1机械臂.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_J1机械臂.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_FF固定铝板.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_FF固定铝板.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40型材角件.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_40型材角件.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_电机支撑铝板.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_电机支撑铝板.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_单头六角螺柱M3x30+6.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_单头六角螺柱M3x30+6.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_L型支架底座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_L型支架底座.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_L型支架竖板.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_L型支架竖板.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_铝型材挤压角座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_铝型材挤压角座.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_方键条销.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_方键条销.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_61mm光轴.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_61mm光轴.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_第二机械臂.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_第二机械臂.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_42步进电机L40.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_42步进电机L40.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_FF ______________[FF12].SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_FF ______________[FF12].SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_FF丝杆支撑座[FF10].sldprt",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_FF丝杆支撑座[FF10].sldprt"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_轴承座8mm内径.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_轴承座8mm内径.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_SKF_608-2ZZ.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_SKF_608-2ZZ.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_内径8mm法兰.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_内径8mm法兰.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40T型螺母M8孔.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_40T型螺母M8孔.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M8内六角x18mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M8内六角x18mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M8内六角x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M8内六角x16mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M3内六角x16mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M4内六角x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M4内六角x16mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M6内六角x22.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M6内六角x22.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角x12mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M3内六角x12mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M5内六角x16.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M5内六角x16.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3x4mm紧固螺丝.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M3x4mm紧固螺丝.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M4内六角x18mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M4内六角x18mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角x10mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M3内六角x10mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_8mm键槽法兰.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_8mm键槽法兰.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_光轴固定环.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_光轴固定环.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_8x10x3mm轴套.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_8x10x3mm轴套.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角小头x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M3内六角小头x16mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_T型丝杆500mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_T型丝杆500mm.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_8-16联轴器.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_8-16联轴器.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_紧凑型轴承座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_紧凑型轴承座.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_T型丝杆螺母.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_T型丝杆螺母.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M6小头内六角x22.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_M6小头内六角x22.SLDPRT"
+      },
+      {
+        "assembly": "O33_OLD_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_DRIVE_ASSEMBLY.SLDASM",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_DRIVE_ASSEMBLY.SLDASM"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_SCARA四轴机械臂总成.SLDASM",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_OLD_SCARA四轴机械臂总成.SLDASM"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\board_315x350_pitch35.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_board_315x350_pitch35.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_r.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_r.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_n.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_n.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_b.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_b.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_a.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_a.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_k.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_k.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_c.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_c.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_p.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_black_p.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_P.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_P.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_C.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_C.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_R.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_R.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_N.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_N.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_B.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_B.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_A.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_A.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_K.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_piece_red_K.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_0_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_aruco_id_0_60mm.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_1_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_aruco_id_1_60mm.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_2_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_aruco_id_2_60mm.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_195_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_3_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\old\\SolidWorks\\O33_aruco_id_3_60mm.SLDPRT"
+      }
+    ]
+  },
+  {
+    "label": "long",
+    "source": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13",
+    "main": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\SCARA_FRONT_275_275_CHESS33.SLDASM",
+    "links_mm": [
+      275,
+      275
+    ],
+    "prefix": "N33_",
+    "dimensions": [
+      {
+        "file": "N33_LONG_piece_black_a.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_a.Part"
+      },
+      {
+        "file": "N33_LONG_piece_black_b.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_b.Part"
+      },
+      {
+        "file": "N33_LONG_piece_black_c.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_c.Part"
+      },
+      {
+        "file": "N33_LONG_piece_black_k.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_k.Part"
+      },
+      {
+        "file": "N33_LONG_piece_black_n.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_n.Part"
+      },
+      {
+        "file": "N33_LONG_piece_black_p.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_p.Part"
+      },
+      {
+        "file": "N33_LONG_piece_black_r.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_black_r.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_A.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_A.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_B.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_B.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_C.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_C.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_K.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_K.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_N.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_N.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_P.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_P.Part"
+      },
+      {
+        "file": "N33_LONG_piece_red_R.SLDPRT",
+        "diameter_mm": 33,
+        "bbox_size_mm": [
+          33.0,
+          33.0,
+          8.1
+        ],
+        "driving_dimension": "D1@草图1@N33_LONG_piece_red_R.Part"
+      }
+    ],
+    "reference_rewrites": [
+      {
+        "assembly": "N33_EQ275_DRIVE_ASSEMBLY.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_EQ275_GT20同步轮.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_EQ275_GT20同步轮.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_DRIVE_ASSEMBLY.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_EQ275_GT60同步轮.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_EQ275_GT60同步轮.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_DRIVE_ASSEMBLY.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_BELT.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_BELT.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40x40x500.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_40x40x500.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_底座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_底座.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40型材M4T型螺母.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_40型材M4T型螺母.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_MGW12H滑块.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_MGW12H滑块.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_MGW12_500mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_MGW12_500mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_42步进电机L60.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_42步进电机L60.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_DLE42-L2BJ-长款50.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_DLE42-L2BJ-长款50.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_J1机械臂.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_J1机械臂.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_FF固定铝板.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_FF固定铝板.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40型材角件.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_40型材角件.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_电机支撑铝板.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_电机支撑铝板.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_单头六角螺柱M3x30+6.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_单头六角螺柱M3x30+6.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_L型支架底座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_L型支架底座.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_L型支架竖板.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_L型支架竖板.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_铝型材挤压角座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_铝型材挤压角座.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_方键条销.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_方键条销.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_61mm光轴.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_61mm光轴.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_第二机械臂.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_第二机械臂.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_42步进电机L40.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_42步进电机L40.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_FF ______________[FF12].SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_FF ______________[FF12].SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_FF丝杆支撑座[FF10].sldprt",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_FF丝杆支撑座[FF10].sldprt"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_轴承座8mm内径.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_轴承座8mm内径.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_SKF_608-2ZZ.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_SKF_608-2ZZ.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_内径8mm法兰.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_内径8mm法兰.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40T型螺母M8孔.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_40T型螺母M8孔.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M8内六角x18mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M8内六角x18mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M8内六角x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M8内六角x16mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M3内六角x16mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M4内六角x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M4内六角x16mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M6内六角x22.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M6内六角x22.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角x12mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M3内六角x12mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M5内六角x16.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M5内六角x16.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M3x4mm紧固螺丝.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M4内六角x18mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M4内六角x18mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角x10mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M3内六角x10mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_8mm键槽法兰.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_8mm键槽法兰.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_光轴固定环.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_光轴固定环.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_8x10x3mm轴套.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_8x10x3mm轴套.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角小头x16mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M3内六角小头x16mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_T型丝杆500mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_T型丝杆500mm.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_8-16联轴器.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_8-16联轴器.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_紧凑型轴承座.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_紧凑型轴承座.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_T型丝杆螺母.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_T型丝杆螺母.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M6小头内六角x22.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_M6小头内六角x22.SLDPRT"
+      },
+      {
+        "assembly": "N33_EQ275_SCARA四轴机械臂总成.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_DRIVE_ASSEMBLY.SLDASM",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_DRIVE_ASSEMBLY.SLDASM"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_SCARA四轴机械臂总成.SLDASM",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_EQ275_SCARA四轴机械臂总成.SLDASM"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_board_315x350_pitch35.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_board_315x350_pitch35.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_r.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_r.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_n.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_n.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_b.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_b.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_a.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_a.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_k.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_k.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_c.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_c.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_p.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_black_p.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_P.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_P.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_C.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_C.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_R.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_R.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_N.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_N.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_B.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_B.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_A.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_A.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_K.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_piece_red_K.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_0_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_aruco_id_0_60mm.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_1_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_aruco_id_1_60mm.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_2_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_aruco_id_2_60mm.SLDPRT"
+      },
+      {
+        "assembly": "SCARA_FRONT_275_275_CHESS33.SLDASM",
+        "old": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_3_60mm.SLDPRT",
+        "new": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi33-assemblies-2026-10-13\\long\\SolidWorks\\N33_LONG_aruco_id_3_60mm.SLDPRT"
+      }
+    ]
+  }
+]

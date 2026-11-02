@@ -1,0 +1,33 @@
+{
+  "local_date": "2026-10-10",
+  "checkpoint": "stage1_PC_USB_enumeration",
+  "module_user_confirmed": "ZDT_CANable V1.0",
+  "usb_product_description": "candleLight USB to CAN adapter",
+  "usb_vid": "1D50",
+  "usb_pid": "606F",
+  "windows_CAN_interface": {
+    "interface": "MI_00",
+    "pnp_status": "OK",
+    "service": "WinUSB",
+    "driver_inf": "oem147.inf",
+    "driver_provider": "libwdi",
+    "problem_code": 0
+  },
+  "firmware_family_from_USB_descriptor": "candleLight",
+  "exact_firmware_build": null,
+  "initial_observation": "The module appeared under VMware vmusb. A later read-only enumeration showed its native VID/PID and WinUSB binding on the Windows host.",
+  "active_host_at_final_observation": "Windows",
+  "Ubuntu_VM_observation": "SSH reached st-virtual-machine; lsusb did not list the adapter at that time.",
+  "CAN_bus_connected_user_report": false,
+  "CAN_bus_tx_rx_verified": false,
+  "motor_query_sent": false,
+  "motor_enable_or_motion_sent": false,
+  "firmware_driver_or_USB_assignment_changed_by_agent": false,
+  "result": "USB recognition checkpoint passed; CAN bus and motor communication remain untested",
+  "read_only_evidence_commands": [
+    "Get-PnpDevice -PresentOnly",
+    "Get-PnpDeviceProperty: service, inf, provider, problem code",
+    "VMware vmrun list and focused USB log reads",
+    "SSH Ubuntu: lsusb and network interface listing"
+  ]
+}

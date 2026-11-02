@@ -1,0 +1,17 @@
+{
+  "source": "恢复首次读取到的ply13盘面中上一手g0e2前的盘面，用户已确认当时被将军；不是读取后来已变化的实时盘面",
+  "fen": "r1bakab1r/9/1Rn1c1n2/p1p5p/6p2/9/P1P1P1P1P/2N3NC1/9/2BAKAB1R w - - 0 1",
+  "requested_move": "b7c7",
+  "checkers": [
+    "Checkers: e7 "
+  ],
+  "legal": [
+    "d0e1",
+    "f0e1",
+    "g0e2",
+    "c2e1",
+    "g2e1",
+    "c0e2"
+  ],
+  "engine_output": "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)\nid name Pikafish dev 2026-10-09\nid author the Pikafish developers (see AUTHORS file)\n\noption name Debug Log File type string default \noption name Threads type spin default 1 min 1 max 1024\noption name Hash type spin default 16 min 1 max 33554432\noption name Clear Hash type button\noption name Ponder type check default false\noption name MultiPV type spin default 1 min 1 max 500\noption name Skill Level type spin default 20 min 0 max 20\noption name Move Overhead type spin default 10 min 0 max 5000\noption name Slow Mover type spin default 100 min 10 max 1000\noption name nodestime type spin default 0 min 0 max 10000\noption name Sixty Move Rule type check default true\noption name Mate Threat Depth type spin default 1 min 0 max 10\noption name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold\noption name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule\noption name UCI_LimitStrength type check default false\noption name UCI_Elo type spin default 1350 min 1350 max 2850\noption name UCI_WDLCentipawn type check default true\noption name UCI_ShowWDL type check default false\noption name EvalFile type string default pikafish.nnue\nuciok\nreadyok\n\n +---+---+---+---+---+---+---+---+---+\n | r |   | b | a | k | a | b |   | r | 9\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 8\n +---+---+---+---+---+---+---+---+---+\n |   | R | n |   | c |   | n |   |   | 7\n +---+---+---+---+---+---+---+---+---+\n | p |   | p |   |   |   |   |   | p | 6\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   | p |   |   | 5\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 4\n +---+---+---+---+---+---+---+---+---+\n | P |   | P |   | P |   | P |   | P | 3\n +---+---+---+---+---+---+---+---+---+\n |   |   | N |   |   |   | N | C |   | 2\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 1\n +---+---+---+---+---+---+---+---+---+\n |   |   | B | A | K | A | B |   | R | 0\n +---+---+---+---+---+---+---+---+---+\n   a   b   c   d   e   f   g   h   i\n\nFen: r1bakab1r/9/1Rn1c1n2/p1p5p/6p2/9/P1P1P1P1P/2N3NC1/9/2BAKAB1R w - - 0 1\nKey: 84DA176E28D1FAE2\nCheckers: e7 \nd0e1: 1\nf0e1: 1\ng0e2: 1\nc2e1: 1\ng2e1: 1\nc0e2: 1\n\nNodes searched: 6\n\n"
+}

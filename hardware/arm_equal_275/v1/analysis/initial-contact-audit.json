@@ -1,0 +1,41 @@
+{
+  "body_count": 207,
+  "contacts": [
+    {
+      "pair": [
+        "61mm光轴-2",
+        "8x10x3mm轴套-1"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "61mm光轴-2",
+        "FF丝杆支撑座[FF10]-2"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "SKF_608-2ZZ-1",
+        "61mm光轴-2"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "DLE42-L2BJ-长款50-2",
+        "8mm键槽法兰-1"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "DLE42-L2BJ-长款50-2",
+        "方键条销-1"
+      ],
+      "accepted_joint_contact": true
+    }
+  ],
+  "unknown": []
+}

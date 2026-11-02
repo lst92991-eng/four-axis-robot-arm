@@ -1,0 +1,17 @@
+Pikafish dev-20261001-m-1c66b9b2 by the Pikafish developers (see AUTHORS file)
+id name Pikafish dev-20261001-m-1c66b9b2
+id author the Pikafish developers (see AUTHORS file)
+
+option name Debug Log File type string default <empty>
+option name NumaPolicy type string default auto
+option name Threads type spin default 1 min 1 max 1024
+option name Hash type spin default 16 min 1 max 2048
+option name Clear Hash type button
+option name Ponder type check default false
+option name MultiPV type spin default 1 min 1 max 128
+option name Move Overhead type spin default 10 min 0 max 5000
+option name nodestime type spin default 0 min 0 max 10000
+option name UCI_ShowWDL type check default false
+option name EvalFile type string default pikafish.nnue
+uciok
+readyok

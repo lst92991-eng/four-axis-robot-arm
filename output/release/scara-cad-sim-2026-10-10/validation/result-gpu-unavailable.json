@@ -1,0 +1,4 @@
+{
+    "result": "error",
+    "message": "GPU未连接；请先在Windows运行start-gpu.ps1，不回退CPU"
+}

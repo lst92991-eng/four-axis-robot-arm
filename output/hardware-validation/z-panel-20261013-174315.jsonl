@@ -1,0 +1,4 @@
+{"time": 1791884595.7207737, "startup_rx": true, "id": 536870948, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791884595.7217731, "event": "can_error", "value": "控制器状态；未收到ACK；核对节点供电、CAN H/L、终端和速率；ID=0x20000024 DATA=00 00 00 00 00 00 00 00", "phase": "startup", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-174315.jsonl"}
+{"time": 1791884595.9744592, "startup_rx": true, "id": 536870948, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791884595.9754593, "event": "can_error", "value": "控制器状态；未收到ACK；核对节点供电、CAN H/L、终端和速率；ID=0x20000024 DATA=00 00 00 00 00 00 00 00", "phase": "startup", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-174315.jsonl"}

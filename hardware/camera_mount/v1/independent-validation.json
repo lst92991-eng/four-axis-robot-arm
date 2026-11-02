@@ -1,0 +1,983 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-09T07:52:34.474075+00:00",
+  "reviewer": "independent agent gomoku_robots",
+  "units": "mm",
+  "input_provenance": {
+    "parts_manifest_sha256": "f8ebf234b85ebc974a1c4688be627fcf075085f63239e40c3d07a26aeaabe822",
+    "assembly_layout_sha256": "b97ae6db578aed03fcce7bb8703c2501c40eac7233e6ce72094efaca1e9c6c73",
+    "source_build_script_sha256": "397ebb94ad289baf8f1c648ae247fb443ae5d44976cc9db2c0862d7a0668c4e6",
+    "assembly_transform_origin": "assembly-layout.json component transform arrays; parent reports these were read from SolidWorks comp.Transform2. No COM used by this validation.",
+    "stl_inputs": "SHA256 recorded separately for each file below"
+  },
+  "method": {
+    "implementation": "Python standard library and NumPy, independent binary STL reader; no model repair or modification",
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "vertex_merge_decimal_places_mm": 6,
+    "stl_units": "STL itself has no unit metadata; exported coordinate extents match the millimetre design.",
+    "transform": "row-vector world_mm = (local_mm @ reshape(m[0:9],3,3))*m[12] + m[9:12]*1000. Thus world_x=m0*x+m3*y+m6*z+m9*1000 at unit scale.",
+    "visibility": "Clip every transformed surface triangle against each closed rectangular pyramid from the reference lens point to the z=0 board plane. Count positive-area intersections greater than 1e-6 mm2, using 1e-7 mm half-space tolerance.",
+    "self_intersection_test_performed": false
+  },
+  "parts": [
+    {
+      "part": "01_base",
+      "stl_sha256": "1dad607857887df0e34fc4959488fad3e0b38ad9b3f0bf5c4ab6183a53fa6dd8",
+      "triangles": 1382,
+      "vertices_after_merge": 677,
+      "bounds_mm": [
+        [
+          -70.0,
+          -70.0,
+          -1.2e-05
+        ],
+        [
+          70.0,
+          70.0,
+          18.0
+        ]
+      ],
+      "extents_mm": [
+        140.0,
+        140.0,
+        18.000012
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 199766.859824,
+      "cad_volume_difference_percent": 0.0039683,
+      "default_quantity": 1,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "02_mast_150",
+      "stl_sha256": "b06c400136dc6ef9ce87ca630d9f413d3364a9a50f3452bfefac21915872a917",
+      "triangles": 1320,
+      "vertices_after_merge": 644,
+      "bounds_mm": [
+        [
+          -40.0,
+          -40.0,
+          -1.2e-05
+        ],
+        [
+          40.0,
+          40.0,
+          158.0
+        ]
+      ],
+      "extents_mm": [
+        80.0,
+        80.0,
+        158.000012
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 202765.888226,
+      "cad_volume_difference_percent": 0.0022899,
+      "default_quantity": 4,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "03_height_spacer_50",
+      "stl_sha256": "fc1cbdc1865889fb068c50cf9923466fb01519824ac8201fc07cbb112e9a2576",
+      "triangles": 1320,
+      "vertices_after_merge": 644,
+      "bounds_mm": [
+        [
+          -40.0,
+          -40.0,
+          -1.2e-05
+        ],
+        [
+          40.0,
+          40.0,
+          58.0
+        ]
+      ],
+      "extents_mm": [
+        80.0,
+        80.0,
+        58.000012
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 115981.869732,
+      "cad_volume_difference_percent": 0.0042942,
+      "default_quantity": 0,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "04_rear_braced_boom",
+      "stl_sha256": "2d12b0795a86013629e37db833f620144b8ea7af50842665908993b5a101d0c7",
+      "triangles": 1308,
+      "vertices_after_merge": 634,
+      "bounds_mm": [
+        [
+          -40.0,
+          -1.2e-05,
+          -40.0
+        ],
+        [
+          150.0,
+          120.0,
+          40.0
+        ]
+      ],
+      "extents_mm": [
+        190.0,
+        120.000012,
+        80.0
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 295376.277316,
+      "cad_volume_difference_percent": 0.0193018,
+      "default_quantity": 1,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "05_front_boom",
+      "stl_sha256": "f8d41325ffa5640b7a50c5ce9b3a68b5003653b4952bbc20bf3173465035c15e",
+      "triangles": 1468,
+      "vertices_after_merge": 718,
+      "bounds_mm": [
+        [
+          0.0,
+          -20.0,
+          -10.0
+        ],
+        [
+          200.0,
+          20.0,
+          10.0
+        ]
+      ],
+      "extents_mm": [
+        200.0,
+        40.0,
+        20.0
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 142277.463307,
+      "cad_volume_difference_percent": 0.0635034,
+      "default_quantity": 1,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "06_splice_plate",
+      "stl_sha256": "cf05e841b26c8ead0795da51e06e393e392694888fa8c781fa550eeb1e8fe789",
+      "triangles": 604,
+      "vertices_after_merge": 296,
+      "bounds_mm": [
+        [
+          -40.0,
+          -20.0,
+          -1.2e-05
+        ],
+        [
+          40.0,
+          20.0,
+          6.0
+        ]
+      ],
+      "extents_mm": [
+        80.0,
+        40.0,
+        6.000012
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 18820.256596,
+      "cad_volume_difference_percent": 0.010307,
+      "default_quantity": 2,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "07_camera_B_carrier",
+      "stl_sha256": "076da80f632959baefc65e8f2af0e2f00272fb1d1cd0d93cbaa53d6bdd0cf8c1",
+      "triangles": 1820,
+      "vertices_after_merge": 896,
+      "bounds_mm": [
+        [
+          0.0,
+          -46.0,
+          -30.0
+        ],
+        [
+          90.0,
+          20.0,
+          30.0
+        ]
+      ],
+      "extents_mm": [
+        90.0,
+        66.0,
+        60.0
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 45953.038605,
+      "cad_volume_difference_percent": 0.0014147,
+      "default_quantity": 1,
+      "closed_oriented_single_shell": true
+    },
+    {
+      "part": "08_board_tray",
+      "stl_sha256": "dd9b70c2db5a8920068fc045375d80a499825f71e7b2616a788e9f4524722952",
+      "triangles": 1944,
+      "vertices_after_merge": 944,
+      "bounds_mm": [
+        [
+          -80.0,
+          -60.0,
+          -1.2e-05
+        ],
+        [
+          80.0,
+          60.0,
+          6.0
+        ]
+      ],
+      "extents_mm": [
+        160.0,
+        120.0,
+        6.000012
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "inconsistent_oriented_edges": 0,
+      "degenerate_faces": 0,
+      "surface_components": 1,
+      "normal_disagreement_faces": 0,
+      "signed_volume_mm3": 109110.504947,
+      "cad_volume_difference_percent": 0.0204188,
+      "default_quantity": 1,
+      "closed_oriented_single_shell": true
+    }
+  ],
+  "camera_holes": {
+    "status": "pass",
+    "stl_section_plane": "local Y=-37mm; coordinates reported as local X,Z",
+    "holes": [
+      {
+        "bounds_mm": [
+          [
+            51.85,
+            -11.9
+          ],
+          [
+            54.65,
+            -9.1
+          ]
+        ],
+        "centre_mm": [
+          53.25,
+          -10.5
+        ],
+        "extents_mm": [
+          2.8,
+          2.8
+        ],
+        "closed_degree_two": true
+      },
+      {
+        "bounds_mm": [
+          [
+            51.85,
+            9.1
+          ],
+          [
+            54.65,
+            11.9
+          ]
+        ],
+        "centre_mm": [
+          53.25,
+          10.5
+        ],
+        "extents_mm": [
+          2.8,
+          2.8
+        ],
+        "closed_degree_two": true
+      },
+      {
+        "bounds_mm": [
+          [
+            65.35001,
+            9.1
+          ],
+          [
+            68.15,
+            11.9
+          ]
+        ],
+        "centre_mm": [
+          66.75,
+          10.5
+        ],
+        "extents_mm": [
+          2.79999,
+          2.8
+        ],
+        "closed_degree_two": true
+      },
+      {
+        "bounds_mm": [
+          [
+            65.35001,
+            -11.9
+          ],
+          [
+            68.15,
+            -9.1
+          ]
+        ],
+        "centre_mm": [
+          66.75,
+          -10.5
+        ],
+        "extents_mm": [
+          2.79999,
+          2.8
+        ],
+        "closed_degree_two": true
+      }
+    ],
+    "centre_pitch_XZ_mm": [
+      13.5,
+      21.0
+    ],
+    "hole_diameter_design_mm": 2.8,
+    "caveat": "Printed carrier hole diameter does not establish the real PCB hole diameter or exact optical-axis offset."
+  },
+  "mast_fit": {
+    "status": "nominal geometry pass; physical fit untested",
+    "socket_mm": [
+      40.4,
+      40.4
+    ],
+    "peg_mm": [
+      39.6,
+      39.6
+    ],
+    "nominal_clearance_per_side_mm": 0.4,
+    "mast_total_height_mm": 158,
+    "mast_net_stack_increment_mm": 150,
+    "spacer_total_height_mm": 58,
+    "spacer_net_stack_increment_mm": 50,
+    "height_adjustment": "Discrete flange-stack increments, not continuously adjustable."
+  },
+  "assembly_visibility": {
+    "status": "pass",
+    "uses_actual_saved_transform_arrays": true,
+    "component_count": 11,
+    "reference_lens_mm": [
+      0.0,
+      250.0,
+      646.4
+    ],
+    "board_footprint_mm": {
+      "x": [
+        -260,
+        260
+      ],
+      "y": [
+        10,
+        490
+      ],
+      "z": 0
+    },
+    "margin_footprint_mm": {
+      "x": [
+        -400,
+        400
+      ],
+      "y": [
+        -50,
+        550
+      ],
+      "z": 0
+    },
+    "components": [
+      {
+        "part": "01_base",
+        "label": "锚固底脚",
+        "source_transform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.63,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -70.0,
+            560.0,
+            -1.2e-05
+          ],
+          [
+            70.0,
+            700.0,
+            18.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "02_mast_150",
+        "label": "立柱1",
+        "source_transform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.63,
+          0.009999999999999995,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -40.0,
+            590.0,
+            9.999988
+          ],
+          [
+            40.0,
+            670.0,
+            168.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "02_mast_150",
+        "label": "立柱2",
+        "source_transform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.63,
+          0.16,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -40.0,
+            590.0,
+            159.999988
+          ],
+          [
+            40.0,
+            670.0,
+            318.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "02_mast_150",
+        "label": "立柱3",
+        "source_transform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.63,
+          0.31000000000000005,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -40.0,
+            590.0,
+            309.999988
+          ],
+          [
+            40.0,
+            670.0,
+            468.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "02_mast_150",
+        "label": "立柱4",
+        "source_transform": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.63,
+          0.4600000000000001,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -40.0,
+            590.0,
+            459.999988
+          ],
+          [
+            40.0,
+            670.0,
+            618.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "04_rear_braced_boom",
+        "label": "带三角撑后臂",
+        "source_transform": [
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.63,
+          0.61,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -40.0,
+            480.0,
+            609.999988
+          ],
+          [
+            40.0,
+            670.0,
+            730.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "05_front_boom",
+        "label": "前臂",
+        "source_transform": [
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.48,
+          0.71,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -10.0,
+            280.0,
+            690.0
+          ],
+          [
+            10.0,
+            480.0,
+            730.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "06_splice_plate",
+        "label": "拼接板左",
+        "source_transform": [
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          0.0,
+          -0.01,
+          0.48,
+          0.71,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -16.0,
+            440.0,
+            690.0
+          ],
+          [
+            -9.999988,
+            520.0,
+            730.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "06_splice_plate",
+        "label": "拼接板右",
+        "source_transform": [
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.016,
+          0.48,
+          0.71,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            10.0,
+            440.0,
+            690.0
+          ],
+          [
+            16.000012,
+            520.0,
+            730.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "07_camera_B_carrier",
+        "label": "MIS5001_B安装座",
+        "source_transform": [
+          0.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          -1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.31,
+          0.71,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -30.0,
+            220.0,
+            664.0
+          ],
+          [
+            30.0,
+            310.0,
+            730.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      },
+      {
+        "part": "08_board_tray",
+        "label": "短排线主板托盘",
+        "source_transform": [
+          0.0,
+          -1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.375,
+          0.73,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_determinant": 1.0,
+        "scale": 1.0,
+        "world_bounds_mm": [
+          [
+            -60.0,
+            295.0,
+            729.999988
+          ],
+          [
+            60.0,
+            455.0,
+            736.0
+          ]
+        ],
+        "board_520x480": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        },
+        "margin_800x600": {
+          "intersecting_surface_triangles": 0,
+          "clipped_surface_area_mm2": 0.0
+        }
+      }
+    ],
+    "caveat": "This validates only the printed support geometry in the saved assembly pose, with a nominal pinhole reference. It is not a measurement of the MIS5001 current 4:3 optical field, focus, lens entrance pupil, printed deformation, or unmodelled cables/boards/fasteners."
+  },
+  "manufacturing_notes": [
+    {
+      "parts": [
+        "02_mast_150",
+        "03_height_spacer_50"
+      ],
+      "note": "Upright printing has a 15mm external overhang on each side beneath the upper flange. Supports or a reviewed alternate orientation are required; the current geometry is not entirely support-free."
+    },
+    {
+      "parts": [
+        "04_rear_braced_boom",
+        "07_camera_B_carrier"
+      ],
+      "note": "Support selection must cover the transverse mounting-ring/brace transition and camera clamp/roof overhangs. Keep removable support accessible and avoid damaging mating surfaces and bores."
+    },
+    {
+      "parts": [
+        "05_front_boom"
+      ],
+      "note": "The 200mm long part needs build-plate clearance including any brim. Flat beam/splice printing keeps the main bending plane in XY; small horizontal holes may need cleaning."
+    },
+    {
+      "parts": [
+        "01_base"
+      ],
+      "note": "The 140x140mm foot must be anchored through its M5 clearance holes to a rigid table or baseboard. It is not a free-standing counterweight."
+    },
+    {
+      "parts": [
+        "02_mast_150",
+        "04_rear_braced_boom",
+        "06_splice_plate",
+        "07_camera_B_carrier"
+      ],
+      "note": "Physical tests should check flange roots, rear-arm mounting-ring transition, bolted splice and camera clamp for joint motion and long-term sag. Mesh validity alone does not validate strength or stiffness."
+    },
+    {
+      "parts": [
+        "08_board_tray"
+      ],
+      "note": "Use the actual 160mm FFC and verify the complete connector-to-connector route, bend allowance and strain relief. Actual PCB size, insulation and connector keep-outs remain to be checked."
+    }
+  ],
+  "summary": {
+    "all_8_parts_closed_oriented_single_shell": true,
+    "all_actual_assembly_work_cones_clear": true,
+    "default_unique_printed_types": 7,
+    "default_print_count": 11,
+    "optional_type": "03_height_spacer_50",
+    "default_cad_solid_volume_mm3": 1641188.21,
+    "solid_volume_note": "Geometry volume is not a slicer filament estimate; infill and supports change actual material use."
+  },
+  "not_validated": [
+    "Physical printing and print-to-part dimensional fit",
+    "Real PCB hole diameter and optical-axis offset",
+    "Fastener length/engagement, torque, loaded stiffness, vibration and long-term creep",
+    "Actual 160mm FFC routing and electrical connection",
+    "Lens calibration, current capture FOV, image quality and chess recognition",
+    "Real robot/tool/cable swept-volume clearance",
+    "General mesh self-intersections or CAD component interference beyond the stated work-view pyramids"
+  ],
+  "model_files_modified": false
+}

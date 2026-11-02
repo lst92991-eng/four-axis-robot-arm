@@ -1,0 +1,29 @@
+{
+  "stop_confirmed": true,
+  "samples": [
+    [
+      0.0274658203125,
+      0,
+      8,
+      3
+    ],
+    [
+      0.0274658203125,
+      0,
+      8,
+      3
+    ],
+    [
+      0.0274658203125,
+      0,
+      8,
+      3
+    ]
+  ],
+  "encoder_calibration_flags": [
+    59,
+    3,
+    107
+  ],
+  "hardware_fault_clear_sent": false
+}

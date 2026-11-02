@@ -1,0 +1,74 @@
+{
+  "user_confirmed": {
+    "piece_diameter_mm": 35,
+    "pitch_xy_mm": [
+      40,
+      40
+    ],
+    "columns": 9,
+    "rows": 10,
+    "grid_span_mm": [
+      320,
+      360
+    ]
+  },
+  "cad_link_mm": [
+    195,
+    275
+  ],
+  "ideal_radius_mm": [
+    80,
+    470
+  ],
+  "recommended_candidate": {
+    "grid_x_mm": [
+      -180,
+      180
+    ],
+    "grid_y_mm": [
+      96,
+      416
+    ],
+    "center_mm": [
+      0,
+      256
+    ],
+    "near_far_point_radius_mm": [
+      98.0612053770501,
+      453.2725449439884
+    ],
+    "point_radial_margins_mm": [
+      18.0612053770501,
+      16.727455056011593
+    ],
+    "continuous_rectangle_margins_mm": [
+      16,
+      16.727455056011593
+    ],
+    "absolute_q2_degrees": [
+      31.129613322776837,
+      165.9334289013955
+    ],
+    "max_fk_roundtrip_error_mm": 1.6077746776921858e-13,
+    "reachable_points": 90
+  },
+  "centered_front_rectangle_near_edge_intervals_mm": {
+    "landscape": [
+      80,
+      114.16586692184819
+    ],
+    "portrait": [
+      80,
+      81.92759587968703
+    ]
+  },
+  "centered_front_square_entire_area_ideal_max_side_mm": 355.1610668943384,
+  "unknown": [
+    "真实关节限位",
+    "折臂自碰撞及路径",
+    "工具TCP与工作高度",
+    "成品棋盘外尺寸",
+    "线缆与相机支架"
+  ],
+  "validation_scope": "只验证无约束2R平面几何；没有实物动作、碰撞验收或Z可达性证明。"
+}

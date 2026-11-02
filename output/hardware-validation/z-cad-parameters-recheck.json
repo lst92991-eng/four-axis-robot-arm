@@ -1,0 +1,867 @@
+{
+  "assembly": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_SCARA四轴机械臂总成.SLDASM",
+  "save_before": true,
+  "parts": [
+    {
+      "name": "OLD_T型丝杆500mm-1",
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_T型丝杆500mm.SLDPRT",
+      "save_before": true,
+      "features": [
+        {
+          "name": "收藏",
+          "type": "FavoriteFolder",
+          "dimensions": []
+        },
+        {
+          "name": "历史记录",
+          "type": "HistoryFolder",
+          "dimensions": []
+        },
+        {
+          "name": "选择集",
+          "type": "SelectionSetFolder",
+          "dimensions": []
+        },
+        {
+          "name": "传感器",
+          "type": "SensorFolder",
+          "dimensions": []
+        },
+        {
+          "name": "设计活页夹",
+          "type": "DocsFolder",
+          "dimensions": []
+        },
+        {
+          "name": "注解",
+          "type": "DetailCabinet",
+          "dimensions": []
+        },
+        {
+          "name": "注释",
+          "type": "NotesAreaFtrFolder",
+          "dimensions": []
+        },
+        {
+          "name": "注释区域1",
+          "type": "AnnotationViewFeat",
+          "dimensions": []
+        },
+        {
+          "name": "注释1___EndTag___",
+          "type": "FtrFolder",
+          "dimensions": []
+        },
+        {
+          "name": "标注",
+          "type": "InkMarkupFolder",
+          "dimensions": []
+        },
+        {
+          "name": "光源与相机",
+          "type": "EnvFolder",
+          "dimensions": []
+        },
+        {
+          "name": "环境光源",
+          "type": "AmbientLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 1",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 2",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 3",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 4",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "实体",
+          "type": "SolidBodyFolder",
+          "dimensions": []
+        },
+        {
+          "name": "曲面实体",
+          "type": "SurfaceBodyFolder",
+          "dimensions": []
+        },
+        {
+          "name": "备注",
+          "type": "CommentsFolder",
+          "dimensions": []
+        },
+        {
+          "name": "方程式",
+          "type": "EqnFolder",
+          "dimensions": []
+        },
+        {
+          "name": "材质 <未指定>",
+          "type": "MaterialFolder",
+          "dimensions": []
+        },
+        {
+          "name": "前视基准面",
+          "type": "RefPlane",
+          "dimensions": []
+        },
+        {
+          "name": "上视基准面",
+          "type": "RefPlane",
+          "dimensions": []
+        },
+        {
+          "name": "右视基准面",
+          "type": "RefPlane",
+          "dimensions": []
+        },
+        {
+          "name": "原点",
+          "type": "OriginProfileFeature",
+          "dimensions": []
+        },
+        {
+          "name": "Tables",
+          "type": "ConfigTableFolder",
+          "dimensions": []
+        },
+        {
+          "name": "Configuration Table",
+          "type": "NativeConfigurationTableFeature",
+          "dimensions": []
+        },
+        {
+          "name": "草图1",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图1@OLD_T型丝杆500mm.Part",
+              "system_value": 0.016
+            }
+          ]
+        },
+        {
+          "name": "凸台-拉伸1",
+          "type": "Extrusion",
+          "dimensions": [
+            {
+              "name": "D1@凸台-拉伸1@OLD_T型丝杆500mm.Part",
+              "system_value": 0.5
+            },
+            {
+              "name": "D1@草图1@OLD_T型丝杆500mm.Part",
+              "system_value": 0.016
+            }
+          ]
+        },
+        {
+          "name": "草图1",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图1@OLD_T型丝杆500mm.Part",
+              "system_value": 0.016
+            }
+          ]
+        },
+        {
+          "name": "装饰螺纹线1",
+          "type": "CosmeticThread",
+          "dimensions": [
+            {
+              "name": "D2@装饰螺纹线1@OLD_T型丝杆500mm.Part",
+              "system_value": 0.015
+            }
+          ]
+        },
+        {
+          "name": "草图2",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图2@OLD_T型丝杆500mm.Part",
+              "system_value": 0.009
+            }
+          ]
+        },
+        {
+          "name": "切除-拉伸1",
+          "type": "ICE",
+          "dimensions": [
+            {
+              "name": "D1@切除-拉伸1@OLD_T型丝杆500mm.Part",
+              "system_value": 0.011
+            },
+            {
+              "name": "D1@草图2@OLD_T型丝杆500mm.Part",
+              "system_value": 0.009
+            }
+          ]
+        },
+        {
+          "name": "草图2",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图2@OLD_T型丝杆500mm.Part",
+              "system_value": 0.009
+            }
+          ]
+        }
+      ],
+      "equations": [],
+      "properties": {
+        "": {
+          "Description": {
+            "raw": "",
+            "resolved": "",
+            "status": 2
+          },
+          "Weight": {
+            "raw": "\"SW-Mass@OLD_T型丝杆500mm.SLDPRT\"",
+            "resolved": "0.099",
+            "status": 2
+          },
+          "Material": {
+            "raw": "\"SW-Material@OLD_T型丝杆500mm.SLDPRT\"",
+            "resolved": "材质 <未指定>",
+            "status": 2
+          },
+          "质量": {
+            "raw": "\"SW-Mass@OLD_T型丝杆500mm.SLDPRT\"",
+            "resolved": "0.099",
+            "status": 2
+          },
+          "材料": {
+            "raw": "\"SW-Material@OLD_T型丝杆500mm.SLDPRT\"",
+            "resolved": "材质 <未指定>",
+            "status": 2
+          },
+          "单重": {
+            "raw": "\"SW-Mass@OLD_T型丝杆500mm.SLDPRT\"",
+            "resolved": "0.099",
+            "status": 2
+          },
+          "零件号": {
+            "raw": "  ",
+            "resolved": "  ",
+            "status": 2
+          },
+          "设计": {
+            "raw": "   ",
+            "resolved": "   ",
+            "status": 2
+          },
+          "审核": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "标准审查": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "工艺审查": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "批准": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "日期": {
+            "raw": "2007,12,3",
+            "resolved": "2007,12,3",
+            "status": 2
+          },
+          "校核": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "主管设计": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "校对": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "审定": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "阶段标记S": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "阶段标记A": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "阶段标记B": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "替代": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "图幅": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "版本": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "备注": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "名称": {
+            "raw": "“图样名称”",
+            "resolved": "“图样名称”",
+            "status": 2
+          },
+          "代号": {
+            "raw": "“图样代号”",
+            "resolved": "“图样代号”",
+            "status": 2
+          },
+          "共X张": {
+            "raw": "1",
+            "resolved": "1",
+            "status": 2
+          },
+          "第X张": {
+            "raw": "1",
+            "resolved": "1",
+            "status": 2
+          }
+        },
+        "默认": {}
+      },
+      "equation_count": 0,
+      "save_after": true
+    },
+    {
+      "name": "OLD_T型丝杆螺母-1",
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_T型丝杆螺母.SLDPRT",
+      "save_before": true,
+      "features": [
+        {
+          "name": "收藏",
+          "type": "FavoriteFolder",
+          "dimensions": []
+        },
+        {
+          "name": "历史记录",
+          "type": "HistoryFolder",
+          "dimensions": []
+        },
+        {
+          "name": "选择集",
+          "type": "SelectionSetFolder",
+          "dimensions": []
+        },
+        {
+          "name": "传感器",
+          "type": "SensorFolder",
+          "dimensions": []
+        },
+        {
+          "name": "设计活页夹",
+          "type": "DocsFolder",
+          "dimensions": []
+        },
+        {
+          "name": "注解",
+          "type": "DetailCabinet",
+          "dimensions": []
+        },
+        {
+          "name": "注释",
+          "type": "NotesAreaFtrFolder",
+          "dimensions": []
+        },
+        {
+          "name": "注释区域1",
+          "type": "AnnotationViewFeat",
+          "dimensions": []
+        },
+        {
+          "name": "注释1___EndTag___",
+          "type": "FtrFolder",
+          "dimensions": []
+        },
+        {
+          "name": "标注",
+          "type": "InkMarkupFolder",
+          "dimensions": []
+        },
+        {
+          "name": "光源与相机",
+          "type": "EnvFolder",
+          "dimensions": []
+        },
+        {
+          "name": "环境光源",
+          "type": "AmbientLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 1",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 2",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 3",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "线光源 4",
+          "type": "DirectionLight",
+          "dimensions": []
+        },
+        {
+          "name": "实体",
+          "type": "SolidBodyFolder",
+          "dimensions": []
+        },
+        {
+          "name": "曲面实体",
+          "type": "SurfaceBodyFolder",
+          "dimensions": []
+        },
+        {
+          "name": "备注",
+          "type": "CommentsFolder",
+          "dimensions": []
+        },
+        {
+          "name": "方程式",
+          "type": "EqnFolder",
+          "dimensions": []
+        },
+        {
+          "name": "材质 <未指定>",
+          "type": "MaterialFolder",
+          "dimensions": []
+        },
+        {
+          "name": "前视基准面",
+          "type": "RefPlane",
+          "dimensions": []
+        },
+        {
+          "name": "上视基准面",
+          "type": "RefPlane",
+          "dimensions": []
+        },
+        {
+          "name": "右视基准面",
+          "type": "RefPlane",
+          "dimensions": []
+        },
+        {
+          "name": "原点",
+          "type": "OriginProfileFeature",
+          "dimensions": []
+        },
+        {
+          "name": "Tables",
+          "type": "ConfigTableFolder",
+          "dimensions": []
+        },
+        {
+          "name": "Configuration Table",
+          "type": "NativeConfigurationTableFeature",
+          "dimensions": []
+        },
+        {
+          "name": "草图1",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图1@OLD_T型丝杆螺母.Part",
+              "system_value": 0.04
+            }
+          ]
+        },
+        {
+          "name": "凸台-拉伸1",
+          "type": "Extrusion",
+          "dimensions": [
+            {
+              "name": "D1@凸台-拉伸1@OLD_T型丝杆螺母.Part",
+              "system_value": 0.028
+            },
+            {
+              "name": "D1@草图1@OLD_T型丝杆螺母.Part",
+              "system_value": 0.04
+            }
+          ]
+        },
+        {
+          "name": "草图1",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图1@OLD_T型丝杆螺母.Part",
+              "system_value": 0.04
+            }
+          ]
+        },
+        {
+          "name": "草图2",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图2@OLD_T型丝杆螺母.Part",
+              "system_value": 0.022
+            }
+          ]
+        },
+        {
+          "name": "切除-拉伸1",
+          "type": "ICE",
+          "dimensions": [
+            {
+              "name": "D1@切除-拉伸1@OLD_T型丝杆螺母.Part",
+              "system_value": 0.023
+            },
+            {
+              "name": "D1@草图2@OLD_T型丝杆螺母.Part",
+              "system_value": 0.022
+            }
+          ]
+        },
+        {
+          "name": "草图2",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图2@OLD_T型丝杆螺母.Part",
+              "system_value": 0.022
+            }
+          ]
+        },
+        {
+          "name": "草图3",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图3@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            }
+          ]
+        },
+        {
+          "name": "切除-拉伸2",
+          "type": "ICE",
+          "dimensions": [
+            {
+              "name": "D1@切除-拉伸2@OLD_T型丝杆螺母.Part",
+              "system_value": 0.028
+            },
+            {
+              "name": "D1@草图3@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            }
+          ]
+        },
+        {
+          "name": "草图3",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图3@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            }
+          ]
+        },
+        {
+          "name": "草图4",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            },
+            {
+              "name": "D2@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.0045
+            },
+            {
+              "name": "D3@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            },
+            {
+              "name": "D4@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.0045
+            }
+          ]
+        },
+        {
+          "name": "切除-拉伸3",
+          "type": "ICE",
+          "dimensions": [
+            {
+              "name": "D1@切除-拉伸3@OLD_T型丝杆螺母.Part",
+              "system_value": 0.005
+            },
+            {
+              "name": "D1@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            },
+            {
+              "name": "D2@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.0045
+            },
+            {
+              "name": "D3@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            },
+            {
+              "name": "D4@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.0045
+            }
+          ]
+        },
+        {
+          "name": "草图4",
+          "type": "ProfileFeature",
+          "dimensions": [
+            {
+              "name": "D1@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            },
+            {
+              "name": "D2@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.0045
+            },
+            {
+              "name": "D3@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.016
+            },
+            {
+              "name": "D4@草图4@OLD_T型丝杆螺母.Part",
+              "system_value": 0.0045
+            }
+          ]
+        }
+      ],
+      "equations": [],
+      "properties": {
+        "": {
+          "Description": {
+            "raw": "",
+            "resolved": "",
+            "status": 2
+          },
+          "Weight": {
+            "raw": "\"SW-Mass@OLD_T型丝杆螺母.SLDPRT\"",
+            "resolved": "0.009",
+            "status": 2
+          },
+          "Material": {
+            "raw": "\"SW-Material@OLD_T型丝杆螺母.SLDPRT\"",
+            "resolved": "材质 <未指定>",
+            "status": 2
+          },
+          "质量": {
+            "raw": "\"SW-Mass@OLD_T型丝杆螺母.SLDPRT\"",
+            "resolved": "0.009",
+            "status": 2
+          },
+          "材料": {
+            "raw": "\"SW-Material@OLD_T型丝杆螺母.SLDPRT\"",
+            "resolved": "材质 <未指定>",
+            "status": 2
+          },
+          "单重": {
+            "raw": "\"SW-Mass@OLD_T型丝杆螺母.SLDPRT\"",
+            "resolved": "0.009",
+            "status": 2
+          },
+          "零件号": {
+            "raw": "  ",
+            "resolved": "  ",
+            "status": 2
+          },
+          "设计": {
+            "raw": "   ",
+            "resolved": "   ",
+            "status": 2
+          },
+          "审核": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "标准审查": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "工艺审查": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "批准": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "日期": {
+            "raw": "2007,12,3",
+            "resolved": "2007,12,3",
+            "status": 2
+          },
+          "校核": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "主管设计": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "校对": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "审定": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "阶段标记S": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "阶段标记A": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "阶段标记B": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "替代": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "图幅": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "版本": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "备注": {
+            "raw": " ",
+            "resolved": " ",
+            "status": 2
+          },
+          "名称": {
+            "raw": "“图样名称”",
+            "resolved": "“图样名称”",
+            "status": 2
+          },
+          "代号": {
+            "raw": "“图样代号”",
+            "resolved": "“图样代号”",
+            "status": 2
+          },
+          "共X张": {
+            "raw": "1",
+            "resolved": "1",
+            "status": 2
+          },
+          "第X张": {
+            "raw": "1",
+            "resolved": "1",
+            "status": 2
+          }
+        },
+        "默认": {}
+      },
+      "equation_count": 0,
+      "save_after": true
+    }
+  ],
+  "limits": [
+    {
+      "name": "LimitDistance1",
+      "type": "MateLimitDistanceDim",
+      "minimum_m": -1.0225154056797692e-12,
+      "maximum_m": 0.3274999999989775,
+      "current_m": 0.10430384313701269,
+      "suppressed": false,
+      "components": [
+        "OLD_L型支架竖板-1",
+        "OLD_FF固定铝板-1"
+      ]
+    }
+  ],
+  "screw_mates": [],
+  "save_after": true,
+  "cosmetic_thread_readback": {
+    "feature": "装饰螺纹线1",
+    "Standard": -2,
+    "StandardType": "",
+    "Size": "",
+    "ThreadCallout": "",
+    "Diameter_m": 0.015,
+    "BlindDepth_m": 0.489,
+    "EndCondition": 1,
+    "conclusion": "装饰螺纹规格和标注为空，未取得导程或旋向；15mm为装饰螺纹直径，489mm为深度，均不是导程。",
+    "api_references": [
+      "https://help.solidworks.com/2026/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICosmeticThreadFeatureData~ThreadCallout.html",
+      "https://help.solidworks.com/2015/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.ICosmeticThreadFeatureData~Size.html"
+    ]
+  }
+}

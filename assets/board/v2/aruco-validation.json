@@ -1,0 +1,658 @@
+{
+    "opencv_runtime_version": "5.0.0",
+    "opencv_header_version": "5.0.0",
+    "dictionary": "DICT_4X4_50",
+    "detector_parameters": "OpenCV 5.0.0 defaults",
+    "source": "PDF rasterizations only; board.png is the A1 render crop at 2 px/mm; A4 pages rendered at 72 dpi",
+    "resize_interpolation": "INTER_AREA",
+    "center_tolerance_px": 2.0,
+    "scope": "Rendering validation only; this does not validate real-camera performance",
+    "images": [
+        {
+            "image": "board_1020px",
+            "width_px": 1020,
+            "height_px": 1020,
+            "expected_ids": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "detected_ids": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 2,
+                    "center_px": [
+                        947.5,
+                        947.5
+                    ],
+                    "expected_center_px": [
+                        948.0,
+                        948.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            900.0,
+                            900.0
+                        ],
+                        [
+                            995.0,
+                            900.0
+                        ],
+                        [
+                            995.0,
+                            995.0
+                        ],
+                        [
+                            900.0,
+                            995.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 3,
+                    "center_px": [
+                        71.5,
+                        947.5
+                    ],
+                    "expected_center_px": [
+                        72.0,
+                        948.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            24.0,
+                            900.0
+                        ],
+                        [
+                            119.0,
+                            900.0
+                        ],
+                        [
+                            119.0,
+                            995.0
+                        ],
+                        [
+                            24.0,
+                            995.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 1,
+                    "center_px": [
+                        947.5,
+                        71.5
+                    ],
+                    "expected_center_px": [
+                        948.0,
+                        72.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            900.0,
+                            24.0
+                        ],
+                        [
+                            995.0,
+                            24.0
+                        ],
+                        [
+                            995.0,
+                            119.0
+                        ],
+                        [
+                            900.0,
+                            119.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 0,
+                    "center_px": [
+                        71.5,
+                        71.5
+                    ],
+                    "expected_center_px": [
+                        72.0,
+                        72.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            24.0,
+                            24.0
+                        ],
+                        [
+                            119.0,
+                            24.0
+                        ],
+                        [
+                            119.0,
+                            119.0
+                        ],
+                        [
+                            24.0,
+                            119.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        },
+        {
+            "image": "board_510px",
+            "width_px": 510,
+            "height_px": 510,
+            "expected_ids": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "detected_ids": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 2,
+                    "center_px": [
+                        473.5,
+                        473.5
+                    ],
+                    "expected_center_px": [
+                        474.0,
+                        474.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            450.0,
+                            450.0
+                        ],
+                        [
+                            497.0,
+                            450.0
+                        ],
+                        [
+                            497.0,
+                            497.0
+                        ],
+                        [
+                            450.0,
+                            497.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 3,
+                    "center_px": [
+                        35.5,
+                        473.5
+                    ],
+                    "expected_center_px": [
+                        36.0,
+                        474.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            12.0,
+                            450.0
+                        ],
+                        [
+                            59.0,
+                            450.0
+                        ],
+                        [
+                            59.0,
+                            497.0
+                        ],
+                        [
+                            12.0,
+                            497.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 1,
+                    "center_px": [
+                        473.5,
+                        35.5
+                    ],
+                    "expected_center_px": [
+                        474.0,
+                        36.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            450.0,
+                            12.0
+                        ],
+                        [
+                            497.0,
+                            12.0
+                        ],
+                        [
+                            497.0,
+                            59.0
+                        ],
+                        [
+                            450.0,
+                            59.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 0,
+                    "center_px": [
+                        35.5,
+                        35.5
+                    ],
+                    "expected_center_px": [
+                        36.0,
+                        36.0
+                    ],
+                    "center_error_px": 0.70710678118654757,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            12.0,
+                            12.0
+                        ],
+                        [
+                            59.0,
+                            12.0
+                        ],
+                        [
+                            59.0,
+                            59.0
+                        ],
+                        [
+                            12.0,
+                            59.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        },
+        {
+            "image": "board_400px",
+            "width_px": 400,
+            "height_px": 400,
+            "expected_ids": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "detected_ids": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 2,
+                    "center_px": [
+                        371.5,
+                        371.5
+                    ],
+                    "expected_center_px": [
+                        371.76470947265625,
+                        371.76470947265625
+                    ],
+                    "center_error_px": 0.37435572631909869,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            353.0,
+                            353.0
+                        ],
+                        [
+                            390.0,
+                            353.0
+                        ],
+                        [
+                            390.0,
+                            390.0
+                        ],
+                        [
+                            353.0,
+                            390.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 3,
+                    "center_px": [
+                        27.5,
+                        371.5
+                    ],
+                    "expected_center_px": [
+                        28.235294342041016,
+                        371.76470947265625
+                    ],
+                    "center_error_px": 0.78149144227654854,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            9.0,
+                            353.0
+                        ],
+                        [
+                            46.0,
+                            353.0
+                        ],
+                        [
+                            46.0,
+                            390.0
+                        ],
+                        [
+                            9.0,
+                            390.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 1,
+                    "center_px": [
+                        371.5,
+                        27.5
+                    ],
+                    "expected_center_px": [
+                        371.76470947265625,
+                        28.235294342041016
+                    ],
+                    "center_error_px": 0.78149144227654854,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            353.0,
+                            9.0
+                        ],
+                        [
+                            390.0,
+                            9.0
+                        ],
+                        [
+                            390.0,
+                            46.0
+                        ],
+                        [
+                            353.0,
+                            46.0
+                        ]
+                    ]
+                },
+                {
+                    "id": 0,
+                    "center_px": [
+                        27.5,
+                        27.5
+                    ],
+                    "expected_center_px": [
+                        28.235294342041016,
+                        28.235294342041016
+                    ],
+                    "center_error_px": 1.0398632308506057,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            9.0,
+                            9.0
+                        ],
+                        [
+                            46.0,
+                            9.0
+                        ],
+                        [
+                            46.0,
+                            46.0
+                        ],
+                        [
+                            9.0,
+                            46.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        },
+        {
+            "image": "a4-1.png",
+            "width_px": 596,
+            "height_px": 842,
+            "expected_ids": [
+                0
+            ],
+            "detected_ids": [
+                0
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 0,
+                    "center_px": [
+                        129.5,
+                        163.5
+                    ],
+                    "expected_center_px": [
+                        130.39370727539062,
+                        164.40945434570312
+                    ],
+                    "center_error_px": 1.275076429475674,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            62.0,
+                            96.0
+                        ],
+                        [
+                            197.0,
+                            96.0
+                        ],
+                        [
+                            197.0,
+                            231.0
+                        ],
+                        [
+                            62.0,
+                            231.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        },
+        {
+            "image": "a4-2.png",
+            "width_px": 596,
+            "height_px": 842,
+            "expected_ids": [
+            ],
+            "detected_ids": [
+            ],
+            "ids_match": 1,
+            "markers": [
+            ],
+            "passed": 1
+        },
+        {
+            "image": "a4-3.png",
+            "width_px": 596,
+            "height_px": 842,
+            "expected_ids": [
+                1
+            ],
+            "detected_ids": [
+                1
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 1,
+                    "center_px": [
+                        464.5,
+                        163.5
+                    ],
+                    "expected_center_px": [
+                        464.88189697265625,
+                        164.40945434570312
+                    ],
+                    "center_error_px": 0.98638354844467457,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            397.0,
+                            96.0
+                        ],
+                        [
+                            532.0,
+                            96.0
+                        ],
+                        [
+                            532.0,
+                            231.0
+                        ],
+                        [
+                            397.0,
+                            231.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        },
+        {
+            "image": "a4-4.png",
+            "width_px": 596,
+            "height_px": 842,
+            "expected_ids": [
+                3
+            ],
+            "detected_ids": [
+                3
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 3,
+                    "center_px": [
+                        129.5,
+                        696.5
+                    ],
+                    "expected_center_px": [
+                        130.39370727539062,
+                        697.3228759765625
+                    ],
+                    "center_error_px": 1.214840552043692,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            62.0,
+                            629.0
+                        ],
+                        [
+                            197.0,
+                            629.0
+                        ],
+                        [
+                            197.0,
+                            764.0
+                        ],
+                        [
+                            62.0,
+                            764.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        },
+        {
+            "image": "a4-5.png",
+            "width_px": 596,
+            "height_px": 842,
+            "expected_ids": [
+            ],
+            "detected_ids": [
+            ],
+            "ids_match": 1,
+            "markers": [
+            ],
+            "passed": 1
+        },
+        {
+            "image": "a4-6.png",
+            "width_px": 596,
+            "height_px": 842,
+            "expected_ids": [
+                2
+            ],
+            "detected_ids": [
+                2
+            ],
+            "ids_match": 1,
+            "markers": [
+                {
+                    "id": 2,
+                    "center_px": [
+                        464.5,
+                        696.5
+                    ],
+                    "expected_center_px": [
+                        464.88189697265625,
+                        697.3228759765625
+                    ],
+                    "center_error_px": 0.9071770337302949,
+                    "upright": 1,
+                    "corners_px": [
+                        [
+                            397.0,
+                            629.0
+                        ],
+                        [
+                            532.0,
+                            629.0
+                        ],
+                        [
+                            532.0,
+                            764.0
+                        ],
+                        [
+                            397.0,
+                            764.0
+                        ]
+                    ]
+                }
+            ],
+            "passed": 1
+        }
+    ],
+    "all_passed": 1
+}

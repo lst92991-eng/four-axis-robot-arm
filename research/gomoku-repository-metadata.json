@@ -1,0 +1,242 @@
+[
+  {
+    "repo": "zzh112119/gomoku_game",
+    "branch": "master",
+    "size_kb": 495,
+    "pushed_at": "2018-12-13T03:11:19Z",
+    "archived": false,
+    "license": null,
+    "sha": "7bd09db668da0cc39d3deb3db4bb7ed4f4bbb9f5",
+    "last_commit": "2018-12-13T03:11:19Z",
+    "languages": {
+      "Python": 27794,
+      "C++": 2801
+    }
+  },
+  {
+    "repo": "Ciaran-byte/FiveChess",
+    "branch": "master",
+    "size_kb": 53311,
+    "pushed_at": "2020-11-06T15:50:18Z",
+    "archived": false,
+    "license": null,
+    "sha": "7de3fb27235ddcaa5c3f7b79e0c342d30e03b6cc",
+    "last_commit": "2020-11-06T15:48:50Z",
+    "languages": {
+      "C++": 90229,
+      "C": 265
+    }
+  },
+  {
+    "repo": "KanghwaSisters/24-2-Omok",
+    "branch": "main",
+    "size_kb": 208820,
+    "pushed_at": "2025-03-25T15:59:08Z",
+    "archived": false,
+    "license": null,
+    "sha": "f5d530d907157c7d8955efcd4d870e7124c7993c",
+    "last_commit": "2025-03-25T15:59:04Z",
+    "languages": {
+      "Jupyter Notebook": 1309379,
+      "Python": 103226,
+      "C++": 17759,
+      "JavaScript": 5367,
+      "HTML": 1757,
+      "CSS": 871
+    }
+  },
+  {
+    "repo": "hri5-boardgame-robot/Koch_Gomoku_robot",
+    "branch": "main",
+    "size_kb": 10529,
+    "pushed_at": "2025-02-03T10:24:45Z",
+    "archived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "sha": "062ed4214aa97c348c7b0da4de9ff259ca2dcf2a",
+    "last_commit": "2025-02-03T10:24:45Z",
+    "languages": {
+      "Python": 116710
+    }
+  },
+  {
+    "repo": "kittiyojiang/gomoku-robot",
+    "branch": "main",
+    "size_kb": 5615,
+    "pushed_at": "2026-08-29T10:12:56Z",
+    "archived": false,
+    "license": null,
+    "sha": "0178a66d50dd0032171070cbf4069d0b7c0cd89d",
+    "last_commit": "2026-08-29T09:54:59Z",
+    "languages": {
+      "Python": 274533
+    }
+  },
+  {
+    "repo": "kittiyojiang/gomoku-arm-controller",
+    "branch": "main",
+    "size_kb": 9,
+    "pushed_at": "2026-05-19T06:11:33Z",
+    "archived": false,
+    "license": null,
+    "sha": "6dad3baf4c486093e5073f8ae5096770378a2bdf",
+    "last_commit": "2026-05-19T06:02:38Z",
+    "languages": {
+      "Python": 12696
+    }
+  },
+  {
+    "repo": "52HZ-GGG/Gobang-Human-Machine-Game-System",
+    "branch": "main",
+    "size_kb": 19,
+    "pushed_at": "2026-05-18T08:34:35Z",
+    "archived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "sha": "7c9bfa8eabf022e9732e462b3a990f14d00d7226",
+    "last_commit": "2026-05-18T08:34:19Z",
+    "languages": {
+      "Jupyter Notebook": 63084
+    }
+  },
+  {
+    "repo": "raghavansh/Tic-Tac-Toe-playing-4dof-robotic-arm",
+    "branch": "main",
+    "size_kb": 15,
+    "pushed_at": "2022-06-28T13:25:13Z",
+    "archived": false,
+    "license": null,
+    "sha": "6c6c1427bdf6cd3b3e82a33ebeebc1cb7f7c8804",
+    "last_commit": "2022-06-28T13:25:13Z",
+    "languages": {
+      "C++": 27995,
+      "Python": 10801
+    }
+  },
+  {
+    "repo": "Miq26/gomoku-thesis-proj",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "OSU-AIMS/tic-tac-toe",
+    "branch": "TheGame",
+    "size_kb": 111944,
+    "pushed_at": "2022-06-01T21:23:28Z",
+    "archived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    },
+    "sha": "33768e68941356f1b44fad6117cf907bb244ed9a",
+    "last_commit": "2022-06-01T21:23:22Z",
+    "languages": {
+      "Python": 120060,
+      "CMake": 539
+    }
+  },
+  {
+    "repo": "wholol/Tic-Tac-Toe-Robot-Arm",
+    "branch": "master",
+    "size_kb": 14,
+    "pushed_at": "2020-03-09T10:05:45Z",
+    "archived": false,
+    "license": null,
+    "sha": "b9c3dd9996df6f68dc3a45ce47b3b6f9a7220c33",
+    "last_commit": "2020-03-09T10:05:44Z",
+    "languages": {
+      "Python": 19067,
+      "C++": 18956
+    }
+  },
+  {
+    "repo": "TooAboil/FiveInARowRobot",
+    "branch": "master",
+    "size_kb": 34124,
+    "pushed_at": "2018-11-24T17:37:32Z",
+    "archived": false,
+    "license": null,
+    "sha": "9d1fa5cb9a4ac91d80077e78a177cad4bf6e794a",
+    "last_commit": "2018-11-24T17:37:31Z",
+    "languages": {
+      "Python": 66070,
+      "C": 19485,
+      "C++": 13687,
+      "Clarion": 1474
+    }
+  },
+  {
+    "repo": "Agenicy/Gomoku-With-Robot-Arm",
+    "branch": "master",
+    "size_kb": 12979,
+    "pushed_at": "2020-10-01T02:34:14Z",
+    "archived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "sha": "68e900dbff3b08642e8a575052b2ff86d00dae1f",
+    "last_commit": "2020-10-01T02:34:04Z"
+  },
+  {
+    "repo": "ese-519/GomoBot",
+    "branch": "master",
+    "size_kb": 1771,
+    "pushed_at": "2018-12-15T02:06:59Z",
+    "archived": false,
+    "license": null,
+    "sha": "67f9eba4f59f97e98db96ffec9a755f63239f448",
+    "last_commit": "2018-12-15T02:06:56Z"
+  },
+  {
+    "repo": "omegaliii/gomoku_robot",
+    "branch": "master",
+    "size_kb": 1152,
+    "pushed_at": "2019-01-17T07:54:15Z",
+    "archived": false,
+    "license": null,
+    "sha": "19d5f032a1a1938a13e71a2bb4e9116405d3987b",
+    "last_commit": "2019-01-17T07:54:15Z"
+  },
+  {
+    "repo": "Robin-WZQ/Gobang-Chess",
+    "branch": "main",
+    "size_kb": 806,
+    "pushed_at": "2023-04-16T11:05:07Z",
+    "archived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "sha": "0e04090fa841f430658e950483f236c811e8f544",
+    "last_commit": "2023-04-16T11:05:07Z"
+  },
+  {
+    "repo": "muhuahu/Dofbot_GoBang",
+    "branch": "master",
+    "size_kb": 57,
+    "pushed_at": "2025-04-12T04:32:16Z",
+    "archived": false,
+    "license": null,
+    "sha": "48f7c77a84b0e494f18ab16bf8cd67e16d4c573f",
+    "last_commit": "2025-04-12T04:27:49Z"
+  }
+]

@@ -1,0 +1,19 @@
+Saved source.jpg to /root/scara-vision-v1/tests/rotated
+B . . . . . . . . . . . . . W
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . B W . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+W . . . . . . . . . . . . . B
+Markers=4, max corner error=0.182274 px
+Black=3, white=3, empty=219, unknown=0
+Saved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/rotated

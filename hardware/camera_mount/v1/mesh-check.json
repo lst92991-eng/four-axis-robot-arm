@@ -1,0 +1,146 @@
+[
+  {
+    "file": "01_base.STL",
+    "triangles": 1382,
+    "bounds_mm": [
+      [
+        -70.0,
+        -70.0,
+        -1.2000000424450263e-05
+      ],
+      [
+        70.0,
+        70.0,
+        18.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 199766.85982359445
+  },
+  {
+    "file": "02_mast_150.STL",
+    "triangles": 1320,
+    "bounds_mm": [
+      [
+        -40.0,
+        -40.0,
+        -1.2000000424450263e-05
+      ],
+      [
+        40.0,
+        40.0,
+        158.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 202765.88822565807
+  },
+  {
+    "file": "03_height_spacer_50.STL",
+    "triangles": 1320,
+    "bounds_mm": [
+      [
+        -40.0,
+        -40.0,
+        -1.2000000424450263e-05
+      ],
+      [
+        40.0,
+        40.0,
+        58.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 115981.86973200618
+  },
+  {
+    "file": "04_rear_braced_boom.STL",
+    "triangles": 1308,
+    "bounds_mm": [
+      [
+        -40.0,
+        -1.2000000424450263e-05,
+        -40.0
+      ],
+      [
+        150.0,
+        120.0,
+        40.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 295376.277316238
+  },
+  {
+    "file": "05_front_boom.STL",
+    "triangles": 1468,
+    "bounds_mm": [
+      [
+        0.0,
+        -20.0,
+        -10.0
+      ],
+      [
+        200.0,
+        20.0,
+        10.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 142277.46330746292
+  },
+  {
+    "file": "06_splice_plate.STL",
+    "triangles": 604,
+    "bounds_mm": [
+      [
+        -40.0,
+        -20.0,
+        -1.2000000424450263e-05
+      ],
+      [
+        40.0,
+        20.0,
+        6.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 18820.256596351926
+  },
+  {
+    "file": "07_camera_B_carrier.STL",
+    "triangles": 1820,
+    "bounds_mm": [
+      [
+        0.0,
+        -46.0,
+        -30.0
+      ],
+      [
+        90.0,
+        20.0,
+        30.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 45953.03860546715
+  },
+  {
+    "file": "08_board_tray.STL",
+    "triangles": 1944,
+    "bounds_mm": [
+      [
+        -80.0,
+        -60.0,
+        -1.2000000424450263e-05
+      ],
+      [
+        80.0,
+        60.0,
+        6.0
+      ]
+    ],
+    "watertight_edges": true,
+    "volume_mm3": 109110.50494720491
+  }
+]

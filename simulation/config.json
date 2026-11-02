@@ -1,0 +1,81 @@
+{
+  "robot_side": "red",
+  "max_plies": 20,
+  "scripted_moves": [
+    "b2b9",
+    "h7h0"
+  ],
+  "think_ms": 100,
+  "seed": 42,
+  "noise": 1,
+  "piece_diameter_mm": 25,
+  "piece_height_mm": 6,
+  "pitch_mm": 30,
+  "board_size_mm": [
+    400,
+    430
+  ],
+  "board_center_mm": [
+    -170,
+    200
+  ],
+  "board_angle_deg": 130,
+  "camera_position_mm": [
+    -170,
+    200,
+    450
+  ],
+  "vertical_fov_deg": 56.5,
+  "image_size_px": [
+    1280,
+    960
+  ],
+  "lift_mm": 10,
+  "screw_lead_mm": 4,
+  "screw_lead_source": "provisional simulation value; CAD lead not yet verified",
+  "motor_ratio": [
+    1,
+    50,
+    3,
+    1
+  ],
+  "motor_sign": [
+    1,
+    -1,
+    1,
+    1
+  ],
+  "servo_tau_s": 0.015,
+  "sprite_variant": 3,
+  "camera_pixel_noise": 1.2,
+  "notes": [
+    "仅仿真假设，不覆盖旧机实物标定",
+    "导程4、J2速比3、棋子高6及噪声均待实物核对",
+    "相机H/V标称不配4:3；仿真按VFOV和方形像素建立一致内参",
+    "旧机4度CAD采样当前Z/R，未含抑制传动总成；不是连续碰撞认证",
+    "相机450mm及棋盘中心上方是新仿真参数，不是已验证实物安装位置",
+    "贴图编号3仅表示所选训练照片外观，不代表不同棋具均已通过",
+    "3D采用原始CAD实体；20mm末端电磁铁长度及14mm棋盘厚度为显示/可达假设，待实物核对"
+  ],
+  "backlash_mm_deg": [
+    0.08,
+    0.12,
+    0.18,
+    0.08
+  ],
+  "zero_error_mm_deg": [
+    0,
+    0.04,
+    -0.06,
+    0.02
+  ],
+  "park_xy_mm": [
+    120,
+    350
+  ],
+  "tcp_sensor_noise_mm": 0.2,
+  "motor_max_rpm": 600,
+  "motor_accel_rpm_s": 1200,
+  "tool_length_mm": 20,
+  "board_thickness_mm": 14
+}

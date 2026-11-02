@@ -1,0 +1,30 @@
+feat(can): 新增已审定的SocketCAN初始化接口
+
+接口与用途
+新增robot::Can::Can(const char* interface)。输入为教学代码传入的有效接口名称，例如can0；成功后保存绑定到该接口的非阻塞CAN句柄，失败抛出runtime_error。
+这是新教学项目的第一个接口。本提交只含teaching/robot/can.hpp、can.cpp及README进度说明，不包含析构、收发或电机运动接口。
+
+用户定案
+用户已确认完整候选方法“这版我已经可以接受了”。源码与总规划10.7保存的已确认完整方法逐字核对一致。
+
+设计原因
+1. 使用if_nametoindex直接按名称查询编号，省去ifreq、strcpy和ioctl准备过程；参考linux-can/can-utils/cansend.c。
+2. 保留接口名参数，便于解释连接哪个Linux设备；CAN接口不是电机节点，构造不负责CAN ID或电机报文。
+3. 教学调用保证名称正确，按用户要求不加入判空/长度检查；仍检查系统查询结果，因为接口尚未创建时会返回0，而SocketCAN的索引0表示所有接口。
+4. SOCK_NONBLOCK为后续有限等待的接收接口准备；本接口不自动配置速率、扫描设备或重连。
+5. 显式订阅CAN_ERR_MASK，让后续收帧能够取得实际总线错误；SocketCAN默认不交付错误帧，本项目已有ACK等错误经历。
+6. 分别检查socket、bind、setsockopt，保持执行步骤和失败原因清楚；不为压行数把多个系统操作合并为一个条件。
+7. 不使用require辅助封装或整层try/catch。绑定或订阅失败时直接close后throw，避免初始化失败泄漏句柄。沿用既有异常调用约定，不在本提交扩展另一套错误码框架。
+
+来源与取舍
+采用Linux SocketCAN官方API及can-utils的接口查询经验，独立编写本项目方法；不引入FD/XL、多协议适配、线程队列或ROS插件。详细来源在首次提交的技术栈调研中。
+
+验证
+WSL GCC13：C++17、-Wall -Wextra -Wpedantic -Werror编译通过。
+固定GCC8.3 Cortex-A7/uClibc工具链：交叉编译目标文件通过，ELF32 ARM EABI5。
+unshare -Urn独立网络命名空间vcan0：成功初始化，无发送帧；不存在接口及非CAN接口各20次失败，文件描述符数未增长。
+没有操作真实CAN或电机；未故障注入socket创建失败和setsockopt失败。验证材料在原工作区output/teaching-interfaces/，未作为生产源码纳入提交。
+
+当前边界
+析构/关闭、复制限制、发送和接收尚待分别讨论，本阶段仅可编译初始化目标文件，不是完整长驻通信库。离线成功路径由短生命周期验证进程退出回收socket；初始化失败的资源由本方法关闭。
+README明确此边界，不添加未批准接口或空实现。后续一个确认接口对应一个独立提交，本次仅本地提交、不推送。

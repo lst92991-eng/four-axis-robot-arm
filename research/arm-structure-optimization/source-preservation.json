@@ -1,0 +1,27 @@
+{
+  "save_before": true,
+  "save_after": true,
+  "baseline_connections": [
+    [
+      "61mm光轴-2",
+      "FF丝杆支撑座[FF10]-2"
+    ],
+    [
+      "SKF_608-2ZZ-1",
+      "61mm光轴-2"
+    ],
+    [
+      "方键条销-1",
+      "DLE42-L2BJ-长款50-2"
+    ],
+    [
+      "8mm键槽法兰-1",
+      "DLE42-L2BJ-长款50-2"
+    ],
+    [
+      "8x10x3mm轴套-1",
+      "61mm光轴-2"
+    ]
+  ],
+  "source_document": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SCARA四轴机械臂总成.SLDASM"
+}

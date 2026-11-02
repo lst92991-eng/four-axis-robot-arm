@@ -1,0 +1,1270 @@
+{
+  "assembly": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SCARA四轴机械臂总成.SLDASM",
+  "assembly_sha256": "ad6d5cbd4f92b9ce317e6f9d838e39e0de86c7bdd7abfc160c5b4d05346e2d62",
+  "links_mm": [
+    195,
+    275
+  ],
+  "group_names": [
+    "fixed",
+    "Z carriage",
+    "shoulder",
+    "elbow",
+    "screw"
+  ],
+  "cad_to_world": "XY围绕肩轴旋转180度；板面选CAD Z=1000mm；模型单位m",
+  "shaft_tip_reference_m": 0.24127235929312163,
+  "board_plane_cad_m": 1.0,
+  "z_shift_range_m": [
+    -0.223196156862,
+    0.104303843137
+  ],
+  "scope": "原始CAD可见三角网格；紧固件分组供显示，未作为新的连续碰撞认证；末端电磁铁20mm为显示假设",
+  "save_flag_before": false,
+  "save_flag_after": false,
+  "parts": [
+    {
+      "name": "40x40x500-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40x40x500.SLDPRT",
+      "sha256": "523dd463e1603e26cfdf54a36f4ba96893cd35087046c0a5fe554b7dc4c1e4c8",
+      "triangles": 2068,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "MGW12H滑块-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\MGW12H滑块.SLDPRT",
+      "sha256": "891c34d0b0678067f23cbd810ce5e5f95fc897f602145092c74f855b380dc8a0",
+      "triangles": 868,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "42步进电机L60-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\42步进电机L60.SLDPRT",
+      "sha256": "d407c69fb3e56f71f148c16853b0889f8f682b8f549be146c25dc8aed95ab9d4",
+      "triangles": 1344,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "底座-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\底座.SLDPRT",
+      "sha256": "ac4dd3bda350f1eadf03f8cab3be71b263a4ffecabf174c09af388bdc211080c",
+      "triangles": 1644,
+      "bbox_outside_mm": 1.4901161138336505e-06
+    },
+    {
+      "name": "40型材M4T型螺母-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "MGW12_500mm-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\MGW12_500mm.SLDPRT",
+      "sha256": "907b1a4065e6b5cd9d42d660af77c85accc67530e19ab40d4af821abab7b201f",
+      "triangles": 2884,
+      "bbox_outside_mm": 2.3096799819932734e-07
+    },
+    {
+      "name": "40型材角件-4",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "DLE42-L2BJ-长款50-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\DLE42-L2BJ-长款50.SLDPRT",
+      "sha256": "d3ff31d4a304ddf7e4aec8728df91ff31c2ed736fc641632a4f66e1f833a8c31",
+      "triangles": 26252,
+      "bbox_outside_mm": 2.145716271328979e-06
+    },
+    {
+      "name": "FF固定铝板-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\FF固定铝板.SLDPRT",
+      "sha256": "100491ad322bddd09dbd4f3c8fab3adc24ab60315de2d67c8c957668a66ea60c",
+      "triangles": 968,
+      "bbox_outside_mm": 2.5033950468156263e-06
+    },
+    {
+      "name": "40型材角件-8",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "42步进电机L60-3",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\42步进电机L60.SLDPRT",
+      "sha256": "d407c69fb3e56f71f148c16853b0889f8f682b8f549be146c25dc8aed95ab9d4",
+      "triangles": 1344,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "单头六角螺柱M3x30+6-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\单头六角螺柱M3x30+6.SLDPRT",
+      "sha256": "9f73c8483527f6f879a2da142996360d7be3c80b957fb028a8128fc84a61b71f",
+      "triangles": 280,
+      "bbox_outside_mm": 5.103648059723298e-08
+    },
+    {
+      "name": "40型材角件-3",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "42步进电机L60-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\42步进电机L60.SLDPRT",
+      "sha256": "d407c69fb3e56f71f148c16853b0889f8f682b8f549be146c25dc8aed95ab9d4",
+      "triangles": 1344,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "40型材角件-5",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "40型材角件-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "40型材角件-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "40型材角件-6",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "电机支撑铝板-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\电机支撑铝板.SLDPRT",
+      "sha256": "6d18b07df4153263c622ba584ca1e0e84762acf236e8c21b0f4a817550716e3a",
+      "triangles": 1192,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "40型材角件-7",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "40型材角件-9",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材角件.SLDPRT",
+      "sha256": "c530d9655ea9840e0254088b8ea9c12d56335b1cb85689b03c47493da45be1db",
+      "triangles": 300,
+      "bbox_outside_mm": 1.490116086078075e-07
+    },
+    {
+      "name": "单头六角螺柱M3x30+6-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\单头六角螺柱M3x30+6.SLDPRT",
+      "sha256": "9f73c8483527f6f879a2da142996360d7be3c80b957fb028a8128fc84a61b71f",
+      "triangles": 280,
+      "bbox_outside_mm": 5.103648059723298e-08
+    },
+    {
+      "name": "轴承座8mm内径-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\轴承座8mm内径.SLDPRT",
+      "sha256": "c78332c97f3b9c3d6e5f782addfce21a141c27d2c78d59a2a306ce1869994280",
+      "triangles": 1256,
+      "bbox_outside_mm": 8.940696308301632e-07
+    },
+    {
+      "name": "铝型材挤压角座-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\铝型材挤压角座.SLDPRT",
+      "sha256": "f7e1710d5cdc3666b95e579d71a147ad6b0aab6cd1c1e0f50ac93bdfefba15fa",
+      "triangles": 1192,
+      "bbox_outside_mm": 6.938893903907228e-15
+    },
+    {
+      "name": "单头六角螺柱M3x30+6-3",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\单头六角螺柱M3x30+6.SLDPRT",
+      "sha256": "9f73c8483527f6f879a2da142996360d7be3c80b957fb028a8128fc84a61b71f",
+      "triangles": 280,
+      "bbox_outside_mm": 5.103648059723298e-08
+    },
+    {
+      "name": "第二机械臂-1",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\第二机械臂.SLDPRT",
+      "sha256": "49ca3c92e6f29dc8b6f3ea6d5c678b0bf1d9ce96d182174e7270e2ffabf0f5a6",
+      "triangles": 2010,
+      "bbox_outside_mm": 6.556510945276983e-06
+    },
+    {
+      "name": "单头六角螺柱M3x30+6-4",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\单头六角螺柱M3x30+6.SLDPRT",
+      "sha256": "9f73c8483527f6f879a2da142996360d7be3c80b957fb028a8128fc84a61b71f",
+      "triangles": 280,
+      "bbox_outside_mm": 5.103648059723298e-08
+    },
+    {
+      "name": "J1机械臂-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\J1机械臂.SLDPRT",
+      "sha256": "08ae176605091f8c632ae4b1adf69c170cf43867e0f3a6a614925603bbc5b962",
+      "triangles": 2980,
+      "bbox_outside_mm": 1.1102230246251565e-13
+    },
+    {
+      "name": "L型支架底座-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\L型支架底座.SLDPRT",
+      "sha256": "9680cc90a490b86f1a8b933e38f19cc7f267cb7be3fbf44dced951637ac34b0c",
+      "triangles": 1924,
+      "bbox_outside_mm": 7.450580499779313e-07
+    },
+    {
+      "name": "铝型材挤压角座-2",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\铝型材挤压角座.SLDPRT",
+      "sha256": "f7e1710d5cdc3666b95e579d71a147ad6b0aab6cd1c1e0f50ac93bdfefba15fa",
+      "triangles": 1192,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "L型支架竖板-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\L型支架竖板.SLDPRT",
+      "sha256": "4ba3fbefa0780c48e575a48cb9f681fc445057ab5e525316e9e40b6d002188e2",
+      "triangles": 940,
+      "bbox_outside_mm": 7.450580638557192e-07
+    },
+    {
+      "name": "方键条销-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\方键条销.SLDPRT",
+      "sha256": "708cb7352845bcd1f1860b6cc9e5918e1ce0f09bf09ad2c9a0c737d64be0dd88",
+      "triangles": 188,
+      "bbox_outside_mm": 2.911870744526368e-08
+    },
+    {
+      "name": "42步进电机L40-1",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\42步进电机L40.SLDPRT",
+      "sha256": "9aeb132473949d4413be9e9a3fab1abf57b718153294ecd8c256087acd519f49",
+      "triangles": 1352,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "内径8mm法兰-1",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\内径8mm法兰.SLDPRT",
+      "sha256": "142b6da168799b81bd30e0815d5612688d20b06b811dd2bd75fd54c98ffa15e3",
+      "triangles": 1722,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "40T型螺母M8孔-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.7103891660505983e-07
+    },
+    {
+      "name": "40T型螺母M8孔-6",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.710389131356129e-07
+    },
+    {
+      "name": "40T型螺母M8孔-3",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.710389114008894e-07
+    },
+    {
+      "name": "40T型螺母M8孔-4",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.710389131356129e-07
+    },
+    {
+      "name": "40T型螺母M8孔-9",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.7103891660505983e-07
+    },
+    {
+      "name": "40T型螺母M8孔-7",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.7103891487033636e-07
+    },
+    {
+      "name": "M8内六角x18mm-5",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "FF ______________[FF12]-3",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\FF ______________[FF12].SLDPRT",
+      "sha256": "12131e40033137117cd1524deb3e5722898331905be6eb9033850bd72a8622ef",
+      "triangles": 67014,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "SKF_608-2ZZ-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SKF_608-2ZZ.SLDPRT",
+      "sha256": "a82ac3f4f1f7bdda82e1fb4aadcf0129a397a2f91e29b1dccab53c27ed687809",
+      "triangles": 58840,
+      "bbox_outside_mm": 2.1606672007123962e-07
+    },
+    {
+      "name": "40T型螺母M8孔-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.7103891487033636e-07
+    },
+    {
+      "name": "40T型螺母M8孔-5",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.7103891660505983e-07
+    },
+    {
+      "name": "40T型螺母M8孔-8",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40T型螺母M8孔.SLDPRT",
+      "sha256": "25f6a6300cc4765266790ba9e5c2083f61106667f9882a95dd35ca61cc554647",
+      "triangles": 188,
+      "bbox_outside_mm": 3.7103891487033636e-07
+    },
+    {
+      "name": "M8内六角x18mm-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x18mm-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x18mm-3",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x18mm-4",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x18mm-6",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x18mm-7",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x18mm-8",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x16mm-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M8内六角x18mm-9",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x18mm.SLDPRT",
+      "sha256": "b190ccca2fec0bbd8bf2b8f17b02b942c8c9e9d7d50eeaad44ae1b7a70c554c0",
+      "triangles": 390,
+      "bbox_outside_mm": 5.364418041720054e-07
+    },
+    {
+      "name": "M8内六角x16mm-6",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M8内六角x16mm-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M8内六角x16mm-3",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M8内六角x16mm-7",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M4内六角x16mm-6",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-8",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M8内六角x16mm-8",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M3内六角x16mm-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M8内六角x16mm-9",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M8内六角x16mm-4",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M8内六角x16mm-5",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M8内六角x16mm.SLDPRT",
+      "sha256": "c31b782a090f3af18c76cc4ddea9492044696cb5abcf6b54e19ddef72d4b4bf5",
+      "triangles": 390,
+      "bbox_outside_mm": 2.0861623539758511e-07
+    },
+    {
+      "name": "M3内六角x16mm-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x16mm-3",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x16mm-4",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-5",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-7",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x16mm-5",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x16mm-6",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M6内六角x22-3",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673521297439e-07
+    },
+    {
+      "name": "M6内六角x22-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "M6内六角x22-5",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "M6内六角x22-6",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673521297439e-07
+    },
+    {
+      "name": "M6内六角x22-2",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "M6内六角x22-4",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673521297439e-07
+    },
+    {
+      "name": "M6内六角x22-7",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673521297439e-07
+    },
+    {
+      "name": "M6内六角x22-8",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6内六角x22.SLDPRT",
+      "sha256": "bd7749df5971cc04cece00eba7b0387fc8a0c5c1312deff875204274cefc3776",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "M3内六角x16mm-7",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-5",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-9",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-6",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-12",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M5内六角x16-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M5内六角x16.SLDPRT",
+      "sha256": "dcc007e16cc2f4b8a6fe66cdf80ec4e7e84d7badd0c47a0d475824adc788a122",
+      "triangles": 374,
+      "bbox_outside_mm": 6.10947403778539e-08
+    },
+    {
+      "name": "M5内六角x16-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M5内六角x16.SLDPRT",
+      "sha256": "dcc007e16cc2f4b8a6fe66cdf80ec4e7e84d7badd0c47a0d475824adc788a122",
+      "triangles": 374,
+      "bbox_outside_mm": 6.10947403778539e-08
+    },
+    {
+      "name": "M5内六角x16-3",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M5内六角x16.SLDPRT",
+      "sha256": "dcc007e16cc2f4b8a6fe66cdf80ec4e7e84d7badd0c47a0d475824adc788a122",
+      "triangles": 374,
+      "bbox_outside_mm": 6.10947403778539e-08
+    },
+    {
+      "name": "M3内六角x12mm-7",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M5内六角x16-4",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M5内六角x16.SLDPRT",
+      "sha256": "dcc007e16cc2f4b8a6fe66cdf80ec4e7e84d7badd0c47a0d475824adc788a122",
+      "triangles": 374,
+      "bbox_outside_mm": 6.10947403778539e-08
+    },
+    {
+      "name": "M3内六角x16mm-8",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x16mm.SLDPRT",
+      "sha256": "ca9b561d0fd01b25d67645f0d05a4436d0ef149af26f2143157f7ea412bb64e1",
+      "triangles": 358,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-8",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-10",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-11",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3x4mm紧固螺丝-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x18mm-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "M3x4mm紧固螺丝-4",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3x4mm紧固螺丝-5",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x10mm-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x10mm.SLDPRT",
+      "sha256": "6e099aad52c357d6b5f1c1995cd55758ba782a61cab2bd280092dd2f67a272a0",
+      "triangles": 374,
+      "bbox_outside_mm": 2.682210009652408e-07
+    },
+    {
+      "name": "M3内六角x10mm-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x10mm.SLDPRT",
+      "sha256": "6e099aad52c357d6b5f1c1995cd55758ba782a61cab2bd280092dd2f67a272a0",
+      "triangles": 374,
+      "bbox_outside_mm": 2.682210009652408e-07
+    },
+    {
+      "name": "8mm键槽法兰-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\8mm键槽法兰.SLDPRT",
+      "sha256": "98a963fbaeeee958ff4a86bd947a793e7e1b1c6e65b0a294990d80220d2de64d",
+      "triangles": 930,
+      "bbox_outside_mm": 7.450567940381347e-08
+    },
+    {
+      "name": "M3x4mm紧固螺丝-7",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3x4mm紧固螺丝-3",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 1.3036682844358438e-08
+    },
+    {
+      "name": "M3x4mm紧固螺丝-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3x4mm紧固螺丝-6",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3x4mm紧固螺丝-8",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3x4mm紧固螺丝.SLDPRT",
+      "sha256": "391ea3236ac2e56da7e6c371969a46734077e5ce9355f27321ef71a27e44f95a",
+      "triangles": 238,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "40型材M4T型螺母-14",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "M4内六角x18mm-14",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "M3内六角x10mm-3",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x10mm.SLDPRT",
+      "sha256": "6e099aad52c357d6b5f1c1995cd55758ba782a61cab2bd280092dd2f67a272a0",
+      "triangles": 374,
+      "bbox_outside_mm": 2.682210009652408e-07
+    },
+    {
+      "name": "8x10x3mm轴套-1",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\8x10x3mm轴套.SLDPRT",
+      "sha256": "f8f48f85e10eb0d444e4dd0bfd50ed344556257e0d3f7457e759f76e6591649a",
+      "triangles": 456,
+      "bbox_outside_mm": 2.6076918402395677e-08
+    },
+    {
+      "name": "M3内六角x10mm-4",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x10mm.SLDPRT",
+      "sha256": "6e099aad52c357d6b5f1c1995cd55758ba782a61cab2bd280092dd2f67a272a0",
+      "triangles": 374,
+      "bbox_outside_mm": 2.682210009652408e-07
+    },
+    {
+      "name": "光轴固定环-1",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\光轴固定环.SLDPRT",
+      "sha256": "a9c601f1e2c09412c98febbb19882740db1b6bd12197932e286b153da70c9d0e",
+      "triangles": 1156,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x18mm-15",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "M4内六角x18mm-16",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "M4内六角x18mm-17",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "M4内六角x18mm-18",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "M4内六角x18mm-19",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x18mm.SLDPRT",
+      "sha256": "d0dd811cc7280f12860f6f3b9ca45127f5b59888b35f402d15d406604ce0274d",
+      "triangles": 358,
+      "bbox_outside_mm": 1.0803341858253712e-07
+    },
+    {
+      "name": "8-16联轴器-1",
+      "group": 4,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\8-16联轴器.SLDPRT",
+      "sha256": "be40412a83d39cc5e9cdb830b723f6fdd596151c09975a91de7c511d63eeffcf",
+      "triangles": 476,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M6小头内六角x22-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6小头内六角x22.SLDPRT",
+      "sha256": "d67ae0f00a13506696bdb39884789efce6862bf60ecea23a977a908675598904",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "40型材M4T型螺母-18",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "40型材M4T型螺母-17",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "M4内六角x16mm-9",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "T型丝杆500mm-1",
+      "group": 4,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\T型丝杆500mm.SLDPRT",
+      "sha256": "ec30bc5565f871e8b129e3177991704712fc21940dd28caed0f50eae3a0e35fa",
+      "triangles": 216,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "40型材M4T型螺母-19",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "40型材M4T型螺母-16",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "T型丝杆螺母-1",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\T型丝杆螺母.SLDPRT",
+      "sha256": "9e4592d935e353eafe40b3c5bb0cddecc4076b285a17e5b23f8f5794cdd5da4e",
+      "triangles": 984,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "40型材M4T型螺母-15",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\40型材M4T型螺母.SLDPRT",
+      "sha256": "42ef5a0130d464d2567b3c8636080a63afb595f7456fe7a67ad043cbdf0481bb",
+      "triangles": 144,
+      "bbox_outside_mm": 5.215406231884323e-08
+    },
+    {
+      "name": "紧凑型轴承座-1",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\紧凑型轴承座.SLDPRT",
+      "sha256": "39d3a41e2b59c947f443d76630a9636504328140253810c8641cf70f55f8c437",
+      "triangles": 712,
+      "bbox_outside_mm": 4.321338842316891e-07
+    },
+    {
+      "name": "FF丝杆支撑座[FF10]-2",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\FF丝杆支撑座[FF10].sldprt",
+      "sha256": "9e4965c77d6a023d4a6705a8396b56adc05f2df76f884633e441f535771997d7",
+      "triangles": 62154,
+      "bbox_outside_mm": 1.791131687411962e-07
+    },
+    {
+      "name": "M6小头内六角x22-2",
+      "group": 0,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M6小头内六角x22.SLDPRT",
+      "sha256": "d67ae0f00a13506696bdb39884789efce6862bf60ecea23a977a908675598904",
+      "triangles": 374,
+      "bbox_outside_mm": 8.642673243741683e-07
+    },
+    {
+      "name": "M4内六角x16mm-19",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-9",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-15",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-5",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-8",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-17",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-20",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-18",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-21",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-6",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角x12mm-16",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角x12mm.SLDPRT",
+      "sha256": "a8b9c1f9f505cc01211b1daac2bba7c2cce0131079ae00bdec6ba530e8e3ec76",
+      "triangles": 366,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-7",
+      "group": 1,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-10",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-11",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-26",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-22",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-23",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M3内六角小头x16mm-12",
+      "group": 2,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M3内六角小头x16mm.SLDPRT",
+      "sha256": "5e67f714913514dbfbb0ac24a11cea10f66eecf674e051cc6308aefe9f09da89",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "61mm光轴-2",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\61mm光轴.SLDPRT",
+      "sha256": "03445e3fe7fc3c38f0dbd0bfcad8373bef67bce9970a2eefb5eee3e40b1f97e2",
+      "triangles": 1248,
+      "bbox_outside_mm": 3.6358831501104305e-06
+    },
+    {
+      "name": "M4内六角x16mm-24",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    },
+    {
+      "name": "M4内六角x16mm-25",
+      "group": 3,
+      "source": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\M4内六角x16mm.SLDPRT",
+      "sha256": "87e25d7b655bffb73b968567032b6f39ac3dd34eb1f1f4798273889adcdf9031",
+      "triangles": 374,
+      "bbox_outside_mm": 0
+    }
+  ],
+  "skipped": [
+    {
+      "name": "装配体1^SCARA四轴机械臂总成-1",
+      "reason": "原CAD被抑制的传动子装配，不擅自恢复"
+    },
+    {
+      "name": "装配体1^SCARA四轴机械臂总成-1/皮带1-2^装配体1_SCARA四轴机械臂总成-1",
+      "reason": "原CAD被抑制的传动子装配，不擅自恢复"
+    },
+    {
+      "name": "装配体1^SCARA四轴机械臂总成-1/GT20同步轮-1",
+      "reason": "原CAD被抑制的传动子装配，不擅自恢复"
+    },
+    {
+      "name": "装配体1^SCARA四轴机械臂总成-1/GT60同步轮-1",
+      "reason": "原CAD被抑制的传动子装配，不擅自恢复"
+    }
+  ],
+  "mesh_sha256": "8c0735e0181a7705a4a294f17f43f8e02236a0fbed7c67dc0d8f89b91f30049a"
+}

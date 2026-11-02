@@ -1,0 +1,62 @@
+{
+  "empty.png": {
+    "exit": 0,
+    "passed": true,
+    "input": "empty.nv12",
+    "program_stdout_lines": 0
+  },
+  "mixed.png": {
+    "exit": 0,
+    "passed": true,
+    "input": "mixed.nv12",
+    "program_stdout_lines": 0
+  },
+  "rotated.png": {
+    "exit": 0,
+    "passed": true,
+    "input": "rotated.nv12",
+    "program_stdout_lines": 0
+  },
+  "perspective.png": {
+    "exit": 0,
+    "passed": true,
+    "input": "perspective.nv12",
+    "program_stdout_lines": 0
+  },
+  "missing-marker.png": {
+    "exit": 1,
+    "passed": true,
+    "input": "missing-marker.nv12",
+    "program_stdout_lines": 0
+  },
+  "uncertain.png": {
+    "exit": 2,
+    "passed": true,
+    "input": "uncertain.nv12",
+    "program_stdout_lines": 0
+  },
+  "duplicate-marker.png": {
+    "exit": 1,
+    "passed": true,
+    "input": "duplicate-marker.nv12",
+    "program_stdout_lines": 0
+  },
+  "turned-marker.png": {
+    "exit": 1,
+    "passed": true,
+    "input": "turned-marker.nv12",
+    "program_stdout_lines": 0
+  },
+  "swapped-markers.png": {
+    "exit": 1,
+    "passed": true,
+    "input": "swapped-markers.nv12",
+    "program_stdout_lines": 0
+  },
+  "white-background.png": {
+    "exit": 2,
+    "passed": true,
+    "input": "white-background.nv12",
+    "program_stdout_lines": 0
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "kind": "isolated fake camera and recognizer; no real camera accessed",
+  "invocation_cwd": "/tmp",
+  "capture_sha256": "0b1048feac71fca9d39334c2e079bfd692a9d58e36f802b642a60083ae68adab",
+  "all_passed": true,
+  "results": [
+    {
+      "case": "capture-rejected",
+      "exit": 1,
+      "seconds": 0.03,
+      "passed": true,
+      "stale_files": [],
+      "lock_released": true,
+      "source_retained": false,
+      "board_results_retained": false,
+      "message": "Camera capture failed; see camera.log."
+    },
+    {
+      "case": "ignore-term",
+      "exit": 124,
+      "seconds": 22.04,
+      "passed": true,
+      "stale_files": [],
+      "lock_released": true,
+      "source_retained": false,
+      "board_results_retained": false,
+      "message": "Killed\nCamera capture timed out; see camera.log."
+    },
+    {
+      "case": "term-returns-zero",
+      "exit": 124,
+      "seconds": 20.03,
+      "passed": true,
+      "stale_files": [],
+      "lock_released": true,
+      "source_retained": false,
+      "board_results_retained": false,
+      "message": "Camera capture timed out; see camera.log."
+    },
+    {
+      "case": "recognition-failed",
+      "exit": 1,
+      "seconds": 0.06,
+      "passed": true,
+      "stale_files": [],
+      "lock_released": true,
+      "source_retained": true,
+      "board_results_retained": false,
+      "message": "Recognition failed: check camera.nv12 and the four board markers."
+    },
+    {
+      "case": "success",
+      "exit": 0,
+      "seconds": 0.06,
+      "passed": true,
+      "stale_files": [],
+      "lock_released": true,
+      "source_retained": true,
+      "board_results_retained": true,
+      "message": "Done: live/annotated.png"
+    },
+    {
+      "case": "uncertain",
+      "exit": 2,
+      "seconds": 0.06,
+      "passed": true,
+      "stale_files": [],
+      "lock_released": true,
+      "source_retained": true,
+      "board_results_retained": true,
+      "message": "Uncertain cells: see live/annotated.png"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "original_assembly": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SCARA四轴机械臂总成.SLDASM",
+  "original_assembly_sha256": "42d75c8cc76da8c43b351f9c857fffed658a2c09febaa11f47c1b6cb3e27ec7b",
+  "original_file_bytes_unchanged": true,
+  "source_before_read": "research/mechanism/camera-mount-layout-evidence.json",
+  "mount_actual_components": "assembly-layout.json",
+  "reference_cad_to_robot": {
+    "rotation": [
+      -1,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "translation_mm": [
+      0.508123,
+      -155.215866,
+      -986
+    ]
+  },
+  "original_rebuild_session": "A reference-scene rebuild raised an unsaved flag. Source file bytes were never overwritten. Session recovery copy retained in TEMP; original reloaded without rebuilding, save flag verified false.",
+  "layout_step_exported": true,
+  "all_joint_sweep_verified": false,
+  "physical_print_fit_load_verified": false
+}

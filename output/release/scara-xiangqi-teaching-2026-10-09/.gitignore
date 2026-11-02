@@ -1,0 +1,7 @@
+/build/
+/tmp/
+/output/rv1106/
+/output/release/
+/output/build-entry-validation/
+__pycache__/
+/tools/robot-viewer/connection.json

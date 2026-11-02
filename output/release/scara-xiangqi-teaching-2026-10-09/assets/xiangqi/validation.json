@@ -1,0 +1,176 @@
+{
+  "pdf_page_checks": [
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 1,
+      "page_mm": [
+        210.00000333333332,
+        297.0000127777778
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        10.371666666666666,
+        10.583333333333334,
+        14.843333333333334,
+        10.403333333333364
+      ]
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 2,
+      "page_mm": [
+        210.00000333333332,
+        297.0000127777778
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        10.371666666666666,
+        10.583333333333334,
+        14.843333333333334,
+        10.403333333333364
+      ]
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 3,
+      "page_mm": [
+        210.00000333333332,
+        297.0000127777778
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        10.371666666666666,
+        10.583333333333334,
+        23.098333333333358,
+        10.403333333333364
+      ]
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 4,
+      "page_mm": [
+        210.00000333333332,
+        297.0000127777778
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        10.371666666666666,
+        10.583333333333334,
+        14.843333333333334,
+        10.403333333333364
+      ]
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 5,
+      "page_mm": [
+        210.00000333333332,
+        297.0000127777778
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        10.371666666666666,
+        10.583333333333334,
+        14.843333333333334,
+        10.403333333333364
+      ]
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 6,
+      "page_mm": [
+        210.00000333333332,
+        297.0000127777778
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        10.371666666666666,
+        10.583333333333334,
+        23.098333333333358,
+        10.403333333333364
+      ]
+    },
+    {
+      "pdf": "xiangqi-board-a1.pdf",
+      "page": 1,
+      "page_mm": [
+        594.0001666666666,
+        840.9999972222221
+      ],
+      "ruler_100mm_verified": true,
+      "print_instructions_present": true,
+      "rendered_ink_margins_mm_ltrb": [
+        56.96857142857142,
+        30.84285714285714,
+        64.95428571428579,
+        40.174285714285816
+      ]
+    }
+  ],
+  "source_config_unchanged": true,
+  "visual_pages_reviewed": 7,
+  "corner_stone_to_marker_quiet_mm": 5.127416997969522,
+  "pdf_sha256": {
+    "xiangqi-board-a4-tiles.pdf": "b71aa8a5ec9a25f100f735c0551964fdab974d7f760bd34051ab1b953d7a1946",
+    "xiangqi-board-a1.pdf": "49ae24a1acd3a43d3ae5546507e5f524992c1bfe508ad0fd6c703558ed2e0449"
+  },
+  "scope": "Digital PDF geometry/render verification only; no printer measurement or physical camera calibration performed.",
+  "marker_vector_geometry": [
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 1,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 2,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 3,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 4,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 5,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    },
+    {
+      "pdf": "xiangqi-board-a4-tiles.pdf",
+      "page": 6,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    },
+    {
+      "pdf": "xiangqi-board-a1.pdf",
+      "page": 1,
+      "source_black_squares_48mm": 4,
+      "source_white_pads_64mm": 4,
+      "note": "Full scene vectors exist under clipping; native raster check separately verifies visible markers."
+    }
+  ],
+  "native_opencv5_validation": "native-opencv5-validation.json"
+}

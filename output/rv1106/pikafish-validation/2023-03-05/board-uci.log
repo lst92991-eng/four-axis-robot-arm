@@ -1,0 +1,161 @@
+26170.093 > uci
+26170.359 < ENGINE_PID=479
+26170.421 < Pikafish dev 2026-10-08 by the Pikafish developers (see AUTHORS file)
+26171.421 < id name Pikafish dev 2026-10-08
+26171.421 < id author the Pikafish developers (see AUTHORS file)
+26171.421 < 
+26171.421 < option name Debug Log File type string default
+26171.421 < option name Threads type spin default 1 min 1 max 1024
+26171.421 < option name Hash type spin default 16 min 1 max 2048
+26171.421 < option name Clear Hash type button
+26171.421 < option name Ponder type check default false
+26171.421 < option name MultiPV type spin default 1 min 1 max 500
+26171.421 < option name Skill Level type spin default 20 min 0 max 20
+26171.421 < option name Move Overhead type spin default 10 min 0 max 5000
+26171.421 < option name Slow Mover type spin default 100 min 10 max 1000
+26171.421 < option name nodestime type spin default 0 min 0 max 10000
+26171.421 < option name Sixty Move Rule type check default true
+26171.421 < option name Mate Threat Depth type spin default 1 min 0 max 10
+26171.421 < option name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold
+26171.421 < option name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule
+26171.421 < option name UCI_LimitStrength type check default false
+26171.421 < option name UCI_Elo type spin default 1350 min 1350 max 2850
+26171.421 < option name UCI_WDLCentipawn type check default true
+26171.421 < option name UCI_ShowWDL type check default false
+26171.421 < option name EvalFile type string default pikafish.nnue
+26171.421 < uciok
+26171.421 > setoption name Threads value 1
+26171.421 > setoption name Hash value 4
+26171.421 > isready
+26171.484 < readyok
+26171.812 > position startpos
+26171.812 > go movetime 1000
+26171.812 < info string NNUE evaluation using pikafish.nnue enabled
+26171.828 < info depth 1 seldepth 1 multipv 1 score cp 8 nodes 74 nps 10571 hashfull 0 tbhits 0 time 7 pv b2e2
+26171.828 < info depth 2 seldepth 2 multipv 1 score cp 20 nodes 191 nps 14692 hashfull 0 tbhits 0 time 13 pv h2e2
+26171.828 < info depth 3 seldepth 2 multipv 1 score cp 21 nodes 267 nps 15705 hashfull 0 tbhits 0 time 17 pv b2e2
+26171.828 < info depth 4 seldepth 2 multipv 1 score cp 65 nodes 342 nps 18000 hashfull 0 tbhits 0 time 19 pv b2e2
+26171.828 < info depth 5 seldepth 2 multipv 1 score cp 320 nodes 389 nps 19450 hashfull 0 tbhits 0 time 20 pv b2e2
+26171.843 < info depth 6 seldepth 6 multipv 1 score cp 30 nodes 925 nps 22560 hashfull 1 tbhits 0 time 41 pv h2e2 h7e7 h0g2
+26171.890 < info depth 7 seldepth 5 multipv 1 score cp 35 nodes 1636 nps 20197 hashfull 2 tbhits 0 time 81 pv b2e2 b7e7 b0c2
+26171.953 < info depth 8 seldepth 8 multipv 1 score cp 34 nodes 2980 nps 19735 hashfull 5 tbhits 0 time 151 pv b2e2 h7e7 h0g2 b9c7 b0c2 h9g7
+26172.093 < info depth 9 seldepth 9 multipv 1 score cp 33 nodes 5312 nps 19107 hashfull 9 tbhits 0 time 278 pv h2e2 b7e7 h0g2 b9c7 i0h0 h9g7 b0c2
+26172.734 < info depth 10 seldepth 10 multipv 1 score cp 30 nodes 17643 nps 19114 hashfull 26 tbhits 0 time 923 pv b2e2 b7e7 b0c2 b9c7 a0b0 a9a8
+26172.843 < info depth 11 seldepth 11 multipv 1 score cp 22 upperbound nodes 19559 nps 18770 hashfull 31 tbhits 0 time 1042 pv b2e2 b7e7
+26172.859 < bestmove b2e2 ponder b7e7
+26172.859 > isready
+26172.859 < readyok
+26173.187 > position startpos moves b2e2
+26173.187 > go movetime 1000
+26173.187 < info string NNUE evaluation using pikafish.nnue enabled
+26173.187 < info depth 1 seldepth 1 multipv 1 score cp -20 nodes 58 nps 19333 hashfull 0 tbhits 0 time 3 pv b7e7 b0c2
+26173.187 < info depth 2 seldepth 2 multipv 1 score cp -20 nodes 113 nps 28250 hashfull 0 tbhits 0 time 4 pv b7e7 b0c2
+26173.187 < info depth 3 seldepth 3 multipv 1 score cp -20 nodes 167 nps 33400 hashfull 0 tbhits 0 time 5 pv b7e7 b0c2 b9c7
+26173.203 < info depth 4 seldepth 4 multipv 1 score cp -17 nodes 229 nps 38166 hashfull 0 tbhits 0 time 6 pv b7e7 b0c2 b9c7 a0b0
+26173.203 < info depth 5 seldepth 5 multipv 1 score cp -17 nodes 303 nps 37875 hashfull 0 tbhits 0 time 8 pv b7e7 b0c2 b9c7 a0b0 h9g7
+26173.203 < info depth 6 seldepth 6 multipv 1 score cp -19 nodes 460 nps 30666 hashfull 0 tbhits 0 time 15 pv b7e7 h0g2 b9c7 g3g4
+26173.218 < info depth 7 seldepth 5 multipv 1 score cp -23 nodes 864 nps 25411 hashfull 1 tbhits 0 time 34 pv b7e7 h0g2 b9c7 g3g4 h9g7 b0c2
+26173.250 < info depth 8 seldepth 7 multipv 1 score cp -15 nodes 1396 nps 24068 hashfull 3 tbhits 0 time 58 pv b7e7 h0g2 h9g7 g3g4 b9c7 b0c2 a9b9
+26173.328 < info depth 9 seldepth 8 multipv 1 score cp -14 nodes 3084 nps 22028 hashfull 5 tbhits 0 time 140 pv b7e7 a0a1 e7e3 f0e1 h7e7
+26173.671 < info depth 10 seldepth 11 multipv 1 score cp -17 nodes 9381 nps 19184 hashfull 17 tbhits 0 time 489 pv b9c7 b0c2 a9b9 h0g2 h7e7 h2i2 h9g7
+26174.203 < info depth 11 seldepth 15 multipv 1 score cp -11 lowerbound nodes 18683 nps 18534 hashfull 33 tbhits 0 time 1008 pv b9c7
+26174.218 < bestmove b9c7 ponder b0c2
+26174.218 > isready
+26174.218 < readyok
+26174.531 > position startpos moves b2e2 b9c7
+26174.531 > go movetime 3000
+26174.546 < info string NNUE evaluation using pikafish.nnue enabled
+26174.546 < info depth 1 seldepth 1 multipv 1 score cp 12 nodes 41 nps 20500 hashfull 0 tbhits 0 time 2 pv b0c2
+26174.546 < info depth 2 seldepth 2 multipv 1 score cp 12 nodes 83 nps 27666 hashfull 0 tbhits 0 time 3 pv b0c2 g6g5
+26174.546 < info depth 3 seldepth 4 multipv 1 score cp 12 nodes 169 nps 33800 hashfull 0 tbhits 0 time 5 pv h0g2 g6g5 b0c2 h9g7
+26174.546 < info depth 4 seldepth 4 multipv 1 score cp 12 nodes 216 nps 36000 hashfull 0 tbhits 0 time 6 pv h0g2 g6g5 b0c2 h9g7
+26174.546 < info depth 5 seldepth 5 multipv 1 score cp 12 nodes 301 nps 33444 hashfull 0 tbhits 0 time 9 pv h0g2 g6g5 b0c2 h9g7 a0b0
+26174.546 < info depth 6 seldepth 6 multipv 1 score cp 12 nodes 383 nps 31916 hashfull 0 tbhits 0 time 12 pv h0g2 g6g5 b0c2 h9g7 a0b0 a9b9
+26174.562 < info depth 7 seldepth 7 multipv 1 score cp 12 nodes 691 nps 28791 hashfull 1 tbhits 0 time 24 pv g3g4 h7e7 h0g2 h9g7 b0c2
+26174.609 < info depth 8 seldepth 8 multipv 1 score cp 12 nodes 1691 nps 22851 hashfull 2 tbhits 0 time 74 pv b0c2 g6g5 h0i2 h9g7 h2f2
+26174.640 < info depth 9 seldepth 9 multipv 1 score cp 14 nodes 2437 nps 23432 hashfull 3 tbhits 0 time 104 pv b0c2 a9b9 h2f2 h9g7 h0g2 c6c5 i0h0 i9h9
+26174.734 < info depth 10 seldepth 12 multipv 1 score cp 15 nodes 4294 nps 21257 hashfull 7 tbhits 0 time 202 pv b0c2 a9b9 h2f2 h7h1 a0b0 h9g7 b0b6
+26175.281 < info depth 11 seldepth 13 multipv 1 score cp 24 nodes 14484 nps 19546 hashfull 26 tbhits 0 time 741 pv b0c2 a9b9 a0b0 b7b3 c3c4 h7e7 g3g4 h9g7 h2g2 i9h9 g2g6
+26176.156 < info depth 12 seldepth 15 multipv 1 score cp 28 nodes 30398 nps 18741 hashfull 50 tbhits 0 time 1622 pv b0c2 c6c5 a0b0 a9b9 b0b4 h9g7 h2g2
+26177.609 < info depth 13 seldepth 16 multipv 1 score cp 20 upperbound nodes 55102 nps 17971 hashfull 97 tbhits 0 time 3066 pv b0c2 h9g7
+26177.625 < bestmove b0c2 ponder h9g7
+26177.625 > isready
+26177.625 < readyok
+26177.953 > position startpos moves b2e2 b9c7 b0c2
+26177.953 > go movetime 3000
+26177.968 < info string NNUE evaluation using pikafish.nnue enabled
+26177.968 < info depth 1 seldepth 1 multipv 1 score cp -19 nodes 45 nps 22500 hashfull 0 tbhits 0 time 2 pv h9g7
+26177.968 < info depth 2 seldepth 2 multipv 1 score cp -19 nodes 93 nps 31000 hashfull 0 tbhits 0 time 3 pv h9g7 a0b0
+26177.968 < info depth 3 seldepth 3 multipv 1 score cp -19 nodes 145 nps 48333 hashfull 0 tbhits 0 time 3 pv h9g7 a0b0 a9b9
+26177.984 < info depth 4 seldepth 4 multipv 1 score cp -18 nodes 221 nps 44200 hashfull 0 tbhits 0 time 5 pv h9g7 g3g4 a9b9
+26177.984 < info depth 5 seldepth 5 multipv 1 score cp -17 nodes 332 nps 41500 hashfull 0 tbhits 0 time 8 pv h9g7 g3g4 a9b9 a0b0 c6c5
+26177.984 < info depth 6 seldepth 7 multipv 1 score cp -13 nodes 838 nps 41900 hashfull 0 tbhits 0 time 20 pv h9g7 g3g4 a9b9 a0b0 c6c5
+26177.984 < info depth 7 seldepth 7 multipv 1 score cp -13 nodes 1207 nps 37718 hashfull 0 tbhits 0 time 32 pv h9g7 c3c4 a9b9 a0b0 g6g5 h0i2 i9i8 h2g2
+26178.093 < info depth 8 seldepth 10 multipv 1 score cp -10 nodes 3854 nps 28338 hashfull 4 tbhits 0 time 136 pv h9g7 h2f2 a9b9 h0g2 b7a7 i0h0 i9h9 g3g4
+26178.250 < info depth 9 seldepth 7 multipv 1 score cp -10 nodes 7218 nps 24804 hashfull 9 tbhits 0 time 291 pv h9g7 h2f2 a9b9 h0g2 b7a7 i0h0 i9h9
+26178.437 < info depth 10 seldepth 12 multipv 1 score cp -16 nodes 11836 nps 24556 hashfull 15 tbhits 0 time 482 pv a9b9 a0b0 h9g7 b0b4 c6c5 g3g4 h7i7 h0g2 b7a7 b4b9 c7b9
+26178.984 < info depth 11 seldepth 13 multipv 1 score cp -12 nodes 22331 nps 21786 hashfull 35 tbhits 0 time 1025 pv a9b9 a0b0 h9g7 b0b4 g9e7 h2g2 c6c5 h0i2 b7a7
+26180.796 < info depth 12 seldepth 18 multipv 1 score cp -21 nodes 56939 nps 20048 hashfull 92 tbhits 0 time 2840 pv a9b9 a0b0 g6g5 b0b4 h9g7 g3g4 g5g4 b4g4 h7h8 h2g2 h8g8 g4f4 i9i8 c3c4 g9e7 i0i1
+26180.968 < info depth 13 seldepth 18 multipv 1 score cp -21 nodes 60160 nps 19946 hashfull 96 tbhits 0 time 3016 pv a9b9 a0b0 g6g5 b0b4 h9g7 g3g4 g5g4 b4g4 h7h8 h2g2 h8g8 g4f4 i9i8 c3c4 g9e7 i0i1
+26181.000 < bestmove a9b9 ponder a0b0
+26181.000 > isready
+26181.000 < readyok
+26181.265 > position startpos moves b2e2 b9c7 b0c2 a9b9
+26181.265 > go movetime 3000
+26181.265 < info string NNUE evaluation using pikafish.nnue enabled
+26181.265 < info depth 1 seldepth 1 multipv 1 score cp 21 nodes 36 nps 18000 hashfull 0 tbhits 0 time 2 pv a0b0
+26181.265 < info depth 2 seldepth 2 multipv 1 score cp 23 nodes 80 nps 26666 hashfull 0 tbhits 0 time 3 pv a0b0 h9g7
+26181.265 < info depth 3 seldepth 3 multipv 1 score cp 21 nodes 141 nps 35250 hashfull 0 tbhits 0 time 4 pv a0b0 c6c5 h0g2
+26181.281 < info depth 4 seldepth 4 multipv 1 score cp 21 nodes 192 nps 38400 hashfull 0 tbhits 0 time 5 pv a0b0 c6c5 h0g2 b7b3
+26181.281 < info depth 5 seldepth 5 multipv 1 score cp 21 nodes 247 nps 35285 hashfull 0 tbhits 0 time 7 pv a0b0 c6c5 h0g2 b7b3 g3g4
+26181.281 < info depth 6 seldepth 6 multipv 1 score cp 23 nodes 318 nps 35333 hashfull 0 tbhits 0 time 9 pv a0b0 c6c5 h0g2 h9g7 g3g4 i9i8
+26181.281 < info depth 7 seldepth 7 multipv 1 score cp 23 nodes 417 nps 37909 hashfull 0 tbhits 0 time 11 pv a0b0 c6c5 h0g2 h9g7 g3g4 i9i8 b0b4
+26181.296 < info depth 8 seldepth 10 multipv 1 score cp 23 nodes 632 nps 35111 hashfull 0 tbhits 0 time 18 pv a0b0 c6c5 h0g2 h9g7 g3g4 i9i8 b0b4 b7a7
+26181.296 < info depth 9 seldepth 8 multipv 1 score cp 23 nodes 809 nps 36772 hashfull 0 tbhits 0 time 22 pv a0b0 c6c5 h0g2 h9g7 g3g4 i9i8 b0b4 b7a7
+26181.406 < info depth 10 seldepth 12 multipv 1 score cp 16 nodes 3167 nps 24361 hashfull 3 tbhits 0 time 130 pv a0b0 c6c5 h0g2 b7b3 h2i2 h9i7 i0h0 i9h9 i2i6
+26181.718 < info depth 11 seldepth 15 multipv 1 score cp 15 nodes 8998 nps 20040 hashfull 17 tbhits 0 time 449 pv a0b0 c6c5 b0b4 h9g7 h0g2 b7a7 b4b9 c7b9 h2i2 h7h3 i0h0 i9h9 g3g4
+26182.078 < info depth 12 seldepth 16 multipv 1 score cp 15 nodes 16575 nps 20387 hashfull 31 tbhits 0 time 813 pv a0b0 h9g7 h2g2 g6g5 h0i2 g7h5 i0i1 g9e7 b0b4
+26182.953 < info depth 13 seldepth 17 multipv 1 score cp 19 nodes 32794 nps 19497 hashfull 64 tbhits 0 time 1682 pv a0b0 h9g7 g3g4 c6c5 b0b6 b7a7 b6c6 a7a8 h0g2 a8c8 c6d6 b9b4
+26184.328 < info depth 14 seldepth 20 multipv 1 score cp 27 lowerbound nodes 58959 nps 19318 hashfull 113 tbhits 0 time 3052 pv a0b0
+26184.328 < bestmove a0b0 ponder h9g7
+26184.328 > isready
+26184.328 < readyok
+26184.656 > position startpos moves b2e2 b9c7 b0c2 a9b9 a0b0
+26184.656 > go movetime 3000
+26184.656 < info string NNUE evaluation using pikafish.nnue enabled
+26184.656 < info depth 1 seldepth 1 multipv 1 score cp -17 nodes 43 nps 21500 hashfull 0 tbhits 0 time 2 pv h9g7
+26184.656 < info depth 2 seldepth 2 multipv 1 score cp -17 nodes 86 nps 28666 hashfull 0 tbhits 0 time 3 pv h9g7 g3g4
+26184.656 < info depth 3 seldepth 3 multipv 1 score cp -17 nodes 133 nps 33250 hashfull 0 tbhits 0 time 4 pv h9g7 g3g4 c6c5
+26184.671 < info depth 4 seldepth 4 multipv 1 score cp -17 nodes 183 nps 36600 hashfull 0 tbhits 0 time 5 pv h9g7 g3g4 c6c5 h0g2
+26184.671 < info depth 5 seldepth 6 multipv 1 score cp -17 nodes 243 nps 40500 hashfull 0 tbhits 0 time 6 pv h9g7 g3g4 c6c5 h0g2 b7b3 h2h4
+26184.671 < info depth 6 seldepth 6 multipv 1 score cp -17 nodes 304 nps 38000 hashfull 0 tbhits 0 time 8 pv h9g7 g3g4 c6c5 h0g2 b7b3 h2h4
+26184.671 < info depth 7 seldepth 9 multipv 1 score cp -17 nodes 399 nps 39900 hashfull 0 tbhits 0 time 10 pv h9g7 g3g4 c6c5 h0g2 b7b3 h2h4 i9i8 c3c4 g6g5
+26184.671 < info depth 8 seldepth 10 multipv 1 score cp -17 nodes 595 nps 37187 hashfull 0 tbhits 0 time 16 pv h9g7 g3g4 c6c5 h0g2 b7b3 h2h4 i9i8 c3c4 g6g5 g4g5
+26184.687 < info depth 9 seldepth 13 multipv 1 score cp -17 nodes 902 nps 36080 hashfull 1 tbhits 0 time 25 pv h9g7 g3g4 c6c5 h0g2 b7b3 h2h4 i9i8 c3c4 g6g5 g4g5 c5c4 g5g6 g7e8
+26185.062 < info depth 10 seldepth 17 multipv 1 score cp -27 nodes 9279 nps 22911 hashfull 20 tbhits 0 time 405 pv h9g7 g3g4 c6c5 h0g2 h7h3 c3c4 c5c4 b0b6 c4c3 b6c6 c7e8 g2f4 c3c2 g4g5 g6g5 f4h3
+26185.437 < info depth 11 seldepth 19 multipv 1 score cp -20 nodes 16788 nps 21385 hashfull 34 tbhits 0 time 785 pv h9g7 g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6c6 a7a8 e3e4 a8c8 c6d6 c7b5 e4e5 c5c4 e5f5 f9e8
+26186.125 < info depth 12 seldepth 18 multipv 1 score cp -14 nodes 29918 nps 20394 hashfull 62 tbhits 0 time 1467 pv h9g7 g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6c6 a7a8 e3e4 a8c8 c6d6 c7b5 e4e5 c5c4 e5e6 c8e8
+26187.421 < info depth 13 seldepth 18 multipv 1 score cp -14 nodes 54304 nps 19682 hashfull 108 tbhits 0 time 2759 pv h9g7 g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6c6 a7a8 e3e4 a8c8 c6d6 c7b5 e4e5 c5c4 e5e6 c8e8
+26187.687 < info depth 14 seldepth 18 multipv 1 score cp -14 nodes 59234 nps 19600 hashfull 117 tbhits 0 time 3022 pv h9g7 g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6c6 a7a8 e3e4 a8c8 c6d6 c7b5 e4e5 c5c4 e5e6 c8e8
+26187.687 < bestmove h9g7 ponder g3g4
+26187.687 > isready
+26187.687 < readyok
+26188.015 > position startpos moves b2e2 b9c7 b0c2 a9b9 a0b0 h9g7
+26188.015 > go infinite
+26188.031 < info string NNUE evaluation using pikafish.nnue enabled
+26188.031 < info depth 1 seldepth 1 multipv 1 score cp 15 nodes 41 nps 20500 hashfull 0 tbhits 0 time 2 pv g3g4
+26188.031 < info depth 2 seldepth 2 multipv 1 score cp 33 nodes 83 nps 27666 hashfull 0 tbhits 0 time 3 pv g3g4 c6c5 h0g2
+26188.031 < info depth 3 seldepth 3 multipv 1 score cp 33 nodes 126 nps 42000 hashfull 0 tbhits 0 time 3 pv g3g4 c6c5 h0g2
+26188.031 < info depth 4 seldepth 4 multipv 1 score cp 33 nodes 180 nps 36000 hashfull 0 tbhits 0 time 5 pv g3g4 c6c5 h0g2
+26188.031 < info depth 5 seldepth 5 multipv 1 score cp 15 nodes 276 nps 46000 hashfull 0 tbhits 0 time 6 pv g3g4 c6c5 h0g2 i9i8 b0b6
+26188.031 < info depth 6 seldepth 6 multipv 1 score cp 17 nodes 373 nps 46625 hashfull 0 tbhits 0 time 8 pv g3g4 c6c5 h0g2 h7h3 c3c4 c5c4
+26188.046 < info depth 7 seldepth 9 multipv 1 score cp 17 nodes 708 nps 41647 hashfull 0 tbhits 0 time 17 pv g3g4 c6c5 h0g2 h7h3 c3c4 c5c4
+26188.046 < info depth 8 seldepth 9 multipv 1 score cp 21 nodes 949 nps 41260 hashfull 0 tbhits 0 time 23 pv g3g4 c6c5 h0g2 h7h3 c3c4 c5c4 b0b6 c4c3 b6c6 c7e8
+26188.078 < info depth 9 seldepth 13 multipv 1 score cp 25 nodes 2205 nps 38017 hashfull 2 tbhits 0 time 58 pv g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6b9 c7b9 i0i1 i8f8
+26188.093 < info depth 10 seldepth 12 multipv 1 score cp 25 nodes 2815 nps 37533 hashfull 2 tbhits 0 time 75 pv g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6b9 c7b9 i0i1 i8f8 i1b1 b9c7 b1b4
+26188.328 < info depth 11 seldepth 14 multipv 1 score cp 25 nodes 7691 nps 24809 hashfull 12 tbhits 0 time 310 pv g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6b9 c7b9 i0i1 i8f8 i1b1 b9c7 b1b4
+26188.515 > stop
+26188.515 < info depth 12 seldepth 14 multipv 1 score cp 25 nodes 11456 nps 22866 hashfull 21 tbhits 0 time 501 pv g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6b9 c7b9 i0i1 i8f8 i1b1 b9c7 b1b4
+26188.531 < bestmove g3g4 ponder c6c5
+26188.859 > stop
+26188.859 > quit

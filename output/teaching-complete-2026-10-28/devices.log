@@ -1,0 +1,2 @@
+devices: simulated GPIO lease, no-renewal and release-failure cases passed
+devices: protocol, watchdog, fault and four-axis Motion integration cases passed

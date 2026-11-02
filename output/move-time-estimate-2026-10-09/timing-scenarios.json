@@ -1,0 +1,555 @@
+{
+  "confirmed": {
+    "j1_ratio": 50,
+    "L1_mm": 195,
+    "L2_mm": 275
+  },
+  "assumptions": {
+    "j2_ratio": 3,
+    "lift_height_mm": 20,
+    "lift_source": "用户指定20mm计时方案，未实测通过净空",
+    "suction_s": 0.5,
+    "release_s": 0.3,
+    "communication_and_settling_allowance_per_transfer_s": 0.2,
+    "wait_xy_mm": [
+      0,
+      440
+    ],
+    "capture_bin_xy_mm": [
+      270,
+      210
+    ],
+    "r_axis": "保持当前相对第二臂姿态，不独立旋转棋子"
+  },
+  "thinking": {
+    "configured_search_budget_s": 1.0,
+    "source": "config/robot.json think_ms；chess/pikafish.cpp go movetime",
+    "scope": "仅搜索预算，不是完整思考阶段实测值；不含引擎启动/加载、合法性检查、退出、视觉识别",
+    "reference_measurement_source": "output/rv1106/pikafish-validation/2023-03-05/board-results.json",
+    "reference_measured_search_s": [
+      1.047,
+      1.031
+    ],
+    "reference_measured_startup_s": 1.328,
+    "startup_policy": "当前main.cpp思考分支调用engine.start并在搜索后close；启动耗时应单列。历史独立引擎测试不等于当前完整视觉联动时延。"
+  },
+  "profiles": [
+    {
+      "name": "较慢假设",
+      "j1_motor_rpm": 300,
+      "j1_motor_acc_rpm_s": 600,
+      "joint_v_deg_s": 36,
+      "joint_a_deg_s2": 72,
+      "z_v_mm_s": 20,
+      "z_a_mm_s2": 80,
+      "j2_motor_rpm_assuming_3_to_1": 18.0,
+      "j2_motor_acc_rpm_s_assuming_3_to_1": 36.0
+    },
+    {
+      "name": "中档假设",
+      "j1_motor_rpm": 600,
+      "j1_motor_acc_rpm_s": 1200,
+      "joint_v_deg_s": 72,
+      "joint_a_deg_s2": 144,
+      "z_v_mm_s": 40,
+      "z_a_mm_s2": 160,
+      "j2_motor_rpm_assuming_3_to_1": 36.0,
+      "j2_motor_acc_rpm_s_assuming_3_to_1": 72.0
+    },
+    {
+      "name": "较快假设",
+      "j1_motor_rpm": 900,
+      "j1_motor_acc_rpm_s": 1800,
+      "joint_v_deg_s": 108,
+      "joint_a_deg_s2": 216,
+      "z_v_mm_s": 60,
+      "z_a_mm_s2": 240,
+      "j2_motor_rpm_assuming_3_to_1": 54.0,
+      "j2_motor_acc_rpm_s_assuming_3_to_1": 108.0
+    }
+  ],
+  "cases": [
+    {
+      "name": "相邻交点40mm",
+      "a": [
+        20,
+        256
+      ],
+      "b": [
+        -20,
+        256
+      ],
+      "capture": false,
+      "route_xy_mm": [
+        [
+          0,
+          440
+        ],
+        [
+          20,
+          256
+        ],
+        [
+          -20,
+          256
+        ],
+        [
+          0,
+          440
+        ]
+      ],
+      "elbow_sign": -1,
+      "joints_deg": [
+        [
+          24.619977328657114,
+          -41.80184419314107
+        ],
+        [
+          69.09637740290515,
+          -116.41603129247179
+        ],
+        [
+          78.03069552568365,
+          -116.41603129247179
+        ],
+        [
+          24.619977328657114,
+          -41.80184419314107
+        ]
+      ],
+      "delta_deg": [
+        [
+          44.47640007424803,
+          74.6141870993307
+        ],
+        [
+          8.934318122778507,
+          0.0
+        ],
+        [
+          53.41071819702654,
+          74.6141870993307
+        ]
+      ],
+      "horizontal_totals_s": [
+        5.849754445120999,
+        3.570788470735038,
+        2.788500072872705
+      ],
+      "path_sample_count": 321,
+      "timings": [
+        {
+          "profile": "较慢假设",
+          "horizontal_all_legs_s": 5.849754445120999,
+          "vertical_s": 5.0,
+          "mechanical_motion_s": 10.849754445120999,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 11.849754445120999,
+          "whole_cycle_s": 11.849754445120999,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 12.849754445120999,
+          "source_to_destination_horizontal_s": 0.7045218284915153
+        },
+        {
+          "profile": "中档假设",
+          "horizontal_all_legs_s": 3.570788470735038,
+          "vertical_s": 3.0,
+          "mechanical_motion_s": 6.570788470735038,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 7.570788470735038,
+          "whole_cycle_s": 7.570788470735038,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 8.570788470735039,
+          "source_to_destination_horizontal_s": 0.4981721624202963
+        },
+        {
+          "profile": "较快假设",
+          "horizontal_all_legs_s": 2.788500072872705,
+          "vertical_s": 2.333333333333333,
+          "mechanical_motion_s": 5.121833406206038,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 6.121833406206038,
+          "whole_cycle_s": 6.121833406206038,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 7.121833406206038,
+          "source_to_destination_horizontal_s": 0.4067558673295437
+        }
+      ]
+    },
+    {
+      "name": "沿棋盘200mm",
+      "a": [
+        -100,
+        296
+      ],
+      "b": [
+        100,
+        296
+      ],
+      "capture": false,
+      "route_xy_mm": [
+        [
+          0,
+          440
+        ],
+        [
+          -100,
+          296
+        ],
+        [
+          100,
+          296
+        ],
+        [
+          0,
+          440
+        ]
+      ],
+      "elbow_sign": 1,
+      "joints_deg": [
+        [
+          -24.619977328657114,
+          41.80184419314107
+        ],
+        [
+          -41.825388063024434,
+          98.59801948510312
+        ],
+        [
+          -79.15921661146488,
+          98.59801948510312
+        ],
+        [
+          -24.619977328657114,
+          41.80184419314107
+        ]
+      ],
+      "delta_deg": [
+        [
+          17.20541073436732,
+          56.79617529196205
+        ],
+        [
+          37.33382854844045,
+          0.0
+        ],
+        [
+          54.53923928280777,
+          56.79617529196205
+        ]
+      ],
+      "horizontal_totals_s": [
+        5.692393864787904,
+        3.596196932393952,
+        2.8832659578485567
+      ],
+      "path_sample_count": 306,
+      "timings": [
+        {
+          "profile": "较慢假设",
+          "horizontal_all_legs_s": 5.692393864787904,
+          "vertical_s": 5.0,
+          "mechanical_motion_s": 10.692393864787904,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 11.692393864787904,
+          "whole_cycle_s": 11.692393864787904,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 12.692393864787904,
+          "source_to_destination_horizontal_s": 1.5370507930122348
+        },
+        {
+          "profile": "中档假设",
+          "horizontal_all_legs_s": 3.596196932393952,
+          "vertical_s": 3.0,
+          "mechanical_motion_s": 6.596196932393952,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 7.596196932393952,
+          "whole_cycle_s": 7.596196932393952,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 8.596196932393951,
+          "source_to_destination_horizontal_s": 1.0185253965061174
+        },
+        {
+          "profile": "较快假设",
+          "horizontal_all_legs_s": 2.8832659578485567,
+          "vertical_s": 2.333333333333333,
+          "mechanical_motion_s": 5.21659929118189,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 6.21659929118189,
+          "whole_cycle_s": 6.21659929118189,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 7.21659929118189,
+          "source_to_destination_horizontal_s": 0.8314849339233332
+        }
+      ]
+    },
+    {
+      "name": "横跨长边360mm",
+      "a": [
+        -180,
+        336
+      ],
+      "b": [
+        180,
+        336
+      ],
+      "capture": false,
+      "route_xy_mm": [
+        [
+          0,
+          440
+        ],
+        [
+          -180,
+          336
+        ],
+        [
+          180,
+          336
+        ],
+        [
+          0,
+          440
+        ]
+      ],
+      "elbow_sign": -1,
+      "joints_deg": [
+        [
+          24.619977328657114,
+          -41.80184419314107
+        ],
+        [
+          71.75551536538467,
+          -72.83840904932481
+        ],
+        [
+          15.398335145466348,
+          -72.83840904932481
+        ],
+        [
+          24.619977328657114,
+          -41.80184419314107
+        ]
+      ],
+      "delta_deg": [
+        [
+          47.13553803672755,
+          31.036564856183738
+        ],
+        [
+          56.35718021991832,
+          0.0
+        ],
+        [
+          9.221642183190767,
+          31.036564856183738
+        ]
+      ],
+      "horizontal_totals_s": [
+        5.236924530911934,
+        3.3659067007010846,
+        2.7142298668178224
+      ],
+      "path_sample_count": 274,
+      "timings": [
+        {
+          "profile": "较慢假设",
+          "horizontal_all_legs_s": 5.236924530911934,
+          "vertical_s": 5.0,
+          "mechanical_motion_s": 10.236924530911935,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 11.236924530911935,
+          "whole_cycle_s": 11.236924530911935,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 12.236924530911935,
+          "source_to_destination_horizontal_s": 2.0654772283310647
+        },
+        {
+          "profile": "中档假设",
+          "horizontal_all_legs_s": 3.3659067007010846,
+          "vertical_s": 3.0,
+          "mechanical_motion_s": 6.3659067007010846,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 7.3659067007010846,
+          "whole_cycle_s": 7.3659067007010846,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 8.365906700701085,
+          "source_to_destination_horizontal_s": 1.2827386141655324
+        },
+        {
+          "profile": "较快假设",
+          "horizontal_all_legs_s": 2.7142298668178224,
+          "vertical_s": 2.333333333333333,
+          "mechanical_motion_s": 5.0475632001511554,
+          "suction_release_s": 0.8,
+          "communication_settling_allowance_s": 0.2,
+          "tool_and_allowance_s": 1.0,
+          "mechanical_execution_s": 6.0475632001511554,
+          "whole_cycle_s": 6.0475632001511554,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 7.0475632001511554,
+          "source_to_destination_horizontal_s": 1.0218257427770214
+        }
+      ]
+    },
+    {
+      "name": "横跨360mm并吃子",
+      "a": [
+        -180,
+        336
+      ],
+      "b": [
+        180,
+        336
+      ],
+      "capture": true,
+      "route_xy_mm": [
+        [
+          0,
+          440
+        ],
+        [
+          180,
+          336
+        ],
+        [
+          270,
+          210
+        ],
+        [
+          -180,
+          336
+        ],
+        [
+          180,
+          336
+        ],
+        [
+          0,
+          440
+        ]
+      ],
+      "elbow_sign": -1,
+      "joints_deg": [
+        [
+          24.619977328657114,
+          -41.80184419314107
+        ],
+        [
+          15.398335145466348,
+          -72.83840904932481
+        ],
+        [
+          1.3480885894158519,
+          -88.21005047708445
+        ],
+        [
+          71.75551536538467,
+          -72.83840904932481
+        ],
+        [
+          15.398335145466348,
+          -72.83840904932481
+        ],
+        [
+          24.619977328657114,
+          -41.80184419314107
+        ]
+      ],
+      "delta_deg": [
+        [
+          9.221642183190767,
+          31.036564856183738
+        ],
+        [
+          14.050246556050496,
+          15.371641427759641
+        ],
+        [
+          70.40742677596882,
+          15.371641427759641
+        ],
+        [
+          56.35718021991832,
+          0.0
+        ],
+        [
+          9.221642183190767,
+          31.036564856183738
+        ]
+      ],
+      "horizontal_totals_s": [
+        8.169603112274439,
+        5.271079962403582,
+        4.223528711205742
+      ],
+      "path_sample_count": 416,
+      "timings": [
+        {
+          "profile": "较慢假设",
+          "horizontal_all_legs_s": 8.169603112274439,
+          "vertical_s": 10.0,
+          "mechanical_motion_s": 18.169603112274437,
+          "suction_release_s": 1.6,
+          "communication_settling_allowance_s": 0.4,
+          "tool_and_allowance_s": 2.0,
+          "mechanical_execution_s": 20.169603112274437,
+          "whole_cycle_s": 20.169603112274437,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 21.169603112274437,
+          "source_to_destination_horizontal_s": 2.0654772283310647
+        },
+        {
+          "profile": "中档假设",
+          "horizontal_all_legs_s": 5.271079962403582,
+          "vertical_s": 6.0,
+          "mechanical_motion_s": 11.271079962403583,
+          "suction_release_s": 1.6,
+          "communication_settling_allowance_s": 0.4,
+          "tool_and_allowance_s": 2.0,
+          "mechanical_execution_s": 13.271079962403583,
+          "whole_cycle_s": 13.271079962403583,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 14.271079962403583,
+          "source_to_destination_horizontal_s": 1.2827386141655324
+        },
+        {
+          "profile": "较快假设",
+          "horizontal_all_legs_s": 4.223528711205742,
+          "vertical_s": 4.666666666666666,
+          "mechanical_motion_s": 8.89019537787241,
+          "suction_release_s": 1.6,
+          "communication_settling_allowance_s": 0.4,
+          "tool_and_allowance_s": 2.0,
+          "mechanical_execution_s": 10.89019537787241,
+          "whole_cycle_s": 10.89019537787241,
+          "search_budget_s": 1.0,
+          "mechanical_plus_search_budget_s": 11.89019537787241,
+          "source_to_destination_horizontal_s": 1.0218257427770214
+        }
+      ]
+    }
+  ],
+  "perception": {
+    "total_seconds": null,
+    "note": "采集、稳定帧确认、YOLO推理、棋局校验与落子后复核单独计时；不能用单次NPU推理时间代替完整视觉链路。"
+  },
+  "scope": "机械执行从参考等待点通行高度静止出发，到抓取、搬运、放下、抬升、回等待点静止结束。吃子包括先移走目标棋子。纯运动、吸放、通信停稳及搜索预算分开。whole_cycle_s保留旧键，仍仅指机械执行，不是人机对战总响应时间；总响应还需视觉、引擎启动/合法性检查/退出等开销。速度加速度与工具延迟均为假设，非实测能力。",
+  "collision_scope": "离线查4度CAD构型矩阵：关节路径每0.5度以内采样，要求相邻四个CAD格点均通过。没有新增SolidWorks连续碰撞验证；Z工作高度、工具和其他棋子未验收。不是可直接执行的运动计划。"
+}

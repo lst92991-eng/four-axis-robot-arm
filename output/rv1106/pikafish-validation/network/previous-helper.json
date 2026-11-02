@@ -1,0 +1,5 @@
+{
+  "ProcessId": 34140,
+  "Name": "python.exe",
+  "CommandLine": "\"D:\\hermes-agent\\.hermes-runtime\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  \"C:\\Users\\lst\\.ssh\\rpi5-direct-link\\rpi5-dhcp.py\" --interface 13 --mac 2c:cf:67:f4:b6:6b "
+}

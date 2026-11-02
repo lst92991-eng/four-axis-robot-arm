@@ -1,0 +1,14 @@
+{
+  "archive": "D:\\BaiduNetdiskDownload\\ZDT_XS系列第二代闭环步进电机资料\\14.例程_TI_MSPM0G3507\\X固件模式\\串口通讯\\MSPM0G3507_串口通讯__梯形曲线加减速位置模式控制.rar",
+  "archive_sha256": "a6515b3b0b0bef641125ea9a138e74085dccd02ff9077a69ec00edcf8e3a3173",
+  "files": {
+    "X_V2.c": {
+      "sha256_original": "fa723a01357744792981262725a6e1d5234f9819c4de80417a5880519fd5d31c",
+      "bytes": 104763
+    },
+    "X_V2.h": {
+      "sha256_original": "35830b95bc0b49679b789626382fd7a51358aca4f003fd1e2bb0860b89ea4f6b",
+      "bytes": 15818
+    }
+  }
+}

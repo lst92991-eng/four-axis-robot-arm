@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>象棋与机械臂 · RV1106</title>
+<style>
+:root{color-scheme:light;--ink:#33342e;--muted:#777b70;--line:#d9dfd3;--red:#ad4338;--green:#3f7058}
+*{box-sizing:border-box}body{margin:0;background:#f3f5ef;color:var(--ink);font:15px/1.5 "Microsoft YaHei",sans-serif}
+.page{max-width:1280px;margin:auto;padding:22px}header,.meta,.bar,.facts{display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1{font:600 29px "SimSun",serif;margin:0 0 5px}p{margin:0}.muted,.note{color:var(--muted);font-size:12px}.meta{justify-content:flex-end;flex-wrap:wrap;font-size:12px}
+.tag{padding:5px 10px;background:#e2e8dc;border-radius:4px}.layout{display:grid;grid-template-columns:minmax(340px,.85fr) minmax(450px,1.15fr);gap:18px;margin-top:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.bar{padding:11px 16px;border-bottom:1px solid var(--line);font-size:13px}
+svg{width:100%;display:block}#board{background:#eee1c9;max-height:calc(100dvh - 315px)}#arm{background:#fcfdf9;max-height:calc(100dvh - 455px)}
+.grid{stroke:#9c8663;stroke-width:1;fill:none}.piece-text{font:600 27px "KaiTi","SimSun",serif;text-anchor:middle;dominant-baseline:central}
+.cell:focus-visible circle{stroke:#3f7058;stroke-width:3}.cell{outline:none;cursor:pointer}.facts{padding:11px 16px;flex-wrap:wrap;font-size:12px;background:#f7f9f3}
+.status{padding:12px 16px;border-top:1px solid var(--line);min-height:76px}#phase{font-size:19px}#message{font-size:13px;color:var(--muted);margin-top:4px}
+.trays{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 16px;border-top:1px solid var(--line);font-size:12px}.tray{display:grid;grid-template-columns:repeat(15,1fr);gap:2px;margin-top:3px;font-size:14px}.tray span{border:1px solid #d9dfd3;min-height:23px;text-align:center;background:#f6f8f1}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}button{font:inherit;padding:9px 16px;border:1px solid #cbd3c4;background:#fff;border-radius:5px;cursor:pointer}
+button:hover:enabled{background:#e8eee1}button:focus-visible{outline:3px solid #6a9270;outline-offset:2px}button:disabled{opacity:.4;cursor:default}.primary{background:#3f7058;color:#fff;border-color:#3f7058}
+#notice{min-height:22px;color:var(--red);font-size:13px;padding-top:7px}footer{font-size:11px;color:var(--muted);margin-top:9px}.red{color:var(--red)}
+.images{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}.images img{width:100%;max-height:360px;object-fit:contain;background:#eef1e8}.images[hidden]{display:none}
+@media(max-width:850px){.page{padding:14px}.layout{grid-template-columns:1fr}header{align-items:flex-start}h1{font-size:24px}#board,#arm{max-height:none}.meta{max-width:170px}.controls button{padding:8px 11px}}
+</style>
+<div class="page">
+<header><div><h1>象棋与机械臂</h1><p class="muted">RV1106 · 识别、思考、取放、确认</p></div><div class="meta"><span id="mode" class="tag">等待连接</span><span id="version">OpenCV —</span></div></header>
+<main class="layout">
+<section class="card"><div class="bar"><strong>中国象棋</strong><span id="turn">红方在下 · 黑方在上</span></div>
+<svg id="board" viewBox="0 0 540 590" aria-label="9列10行象棋棋盘"><g id="grid" class="grid"></g><g id="pieces"></g></svg>
+<div class="bar note">红方落子：先选棋子，再选绿色落点。<span id="lastMove"></span></div></section>
+<section class="card"><div class="bar"><strong>虚拟 SCARA · XY 俯视</strong><span class="note">示意不代表实体运动</span></div>
+<svg id="arm" viewBox="0 0 600 455" aria-label="虚拟两连杆机械臂、实际模拟盘面和末端位置"></svg>
+<div class="facts"><span id="tcp">TCP —</span><span id="height">Z —</span><span id="vacuum">吸盘 —</span></div>
+<div class="trays"><div><span class="note">被吃红子</span><div id="capturedRed" class="tray red">—</div></div><div><span class="note">被吃黑子</span><div id="capturedBlack" class="tray">—</div></div></div>
+<div class="status" aria-live="polite"><strong id="phase">等待程序状态</strong><p id="message">—</p></div></section>
+</main>
+<div class="controls"><button class="primary" data-command="new">新局</button><button data-command="pause" title="停止当前动作并保留场景，需新局复位">暂停</button><button data-command="scan">摄像识别</button><button data-command="resign">认输</button><button data-command="draw">和棋</button><button data-command="demo 3">演示 3 回合</button></div>
+<p id="notice" role="alert"></p><footer>左侧为已确认棋局，右侧为虚拟场景。动作和盘面确认完成后才切换回合。</footer>
+<div id="images" class="images" hidden><section class="card"><div class="bar">最近一次采集 · BGR与角标</div><img id="cameraImage" alt="最近一次相机图像"></section><section class="card"><div class="bar">透视校正与棋子检测</div><img id="boardImage" alt="四角定位成功后显示校正棋盘"></section></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const names={k:'将',a:'士',b:'象',n:'马',r:'车',c:'炮',p:'卒',K:'帅',A:'仕',B:'相',N:'马',R:'车',C:'炮',P:'兵','?':'?'};
+const phases={waiting:'等待落子',thinking:'引擎思考',scanning:'摄像识别',moving:'虚拟取放中',paused:'已停止 · 需新局复位',finished:'棋局结束',error:'需要处理'};
+const results={red_won:'红方胜',black_won:'黑方胜',draw:'和棋',review:'等待裁定'};
+let state={},selected='',busy=false,online=false,boardKey='',imageVersion=0;
+const red=p=>Boolean(p)&&p>='A'&&p<='Z';
+const square=(r,c)=>String.fromCharCode(97+c)+(9-r);
+const at=(board,r,c)=>board?.[r]?.[c]||'.';
+function svg(tag,attrs,parent,text){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;parent.append(e);return e;}
+function piece(parent,x,y,p,size=21){if(!names[p])return;svg('circle',{cx:x,cy:y,r:size,fill:'#fff6e5',stroke:red(p)?'#ad4338':'#555b51','stroke-width':1.4},parent);svg('text',{x,y:y+1,fill:red(p)?'#ad4338':'#333b32',class:'piece-text',style:`font-size:${size*1.25}px`},parent,names[p]);}
+function canPlay(){return online&&!busy&&state.connected&&state.phase==='waiting'&&state.turn==='red'&&state.result==='playing';}
+for(let r=0;r<10;r++)svg('path',{d:`M50 ${52+r*54}H490`},$('grid'));
+for(let c=0;c<9;c++){let x=50+c*55;svg('path',{d:c===0||c===8?`M${x} 52V538`:`M${x} 52V268M${x} 322V538`},$('grid'));svg('text',{x,y:28,fill:'#947f5e','text-anchor':'middle','font-size':12},$('grid'),String.fromCharCode(97+c));}
+for(const r of [0,7]){let y=52+r*54;svg('path',{d:`M215 ${y}L325 ${y+108}M325 ${y}L215 ${y+108}`},$('grid'));}
+svg('text',{x:162,y:302,fill:'#947f5e','font-size':23,'text-anchor':'middle'},$('grid'),'楚河');svg('text',{x:378,y:302,fill:'#947f5e','font-size':23,'text-anchor':'middle'},$('grid'),'漢界');
+function choose(r,c){
+  if(!canPlay())return;
+  const cell=square(r,c),legal=Array.isArray(state.legal)?state.legal:[];
+  if(selected&&legal.includes(selected+cell)){const move=selected+cell;selected='';send('move '+move);}
+  else selected=selected!==cell&&red(at(state.board,r,c))&&legal.some(m=>m.startsWith(cell))?cell:'';
+  drawBoard();
+}
+function drawBoard(){
+  const key=JSON.stringify([state.board,state.legal,state.move,selected,canPlay()]);if(key===boardKey)return;boardKey=key;
+  $('pieces').replaceChildren();const legal=Array.isArray(state.legal)?state.legal:[];
+  for(let r=0;r<10;r++)for(let c=0;c<9;c++){
+    const x=50+c*55,y=52+r*54,cell=square(r,c),p=at(state.board,r,c);
+    const g=svg('g',{class:'cell',role:'button',tabindex:canPlay()?0:-1,'aria-label':cell+' '+(names[p]||'空位')},$('pieces'));
+    svg('circle',{cx:x,cy:y,r:25,fill:state.move?.includes(cell)?'#b8824226':'transparent',stroke:'none'},g);piece(g,x,y,p);
+    if(cell===selected)svg('circle',{cx:x,cy:y,r:24,fill:'none',stroke:'#3f7058','stroke-width':3},g);
+    if(selected&&legal.includes(selected+cell))svg('circle',{cx:x,cy:y,r:names[p]?23:6,fill:names[p]?'none':'#3f7058',stroke:'#3f7058','stroke-width':2},g);
+    g.addEventListener('click',()=>choose(r,c));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(r,c);}});
+  }
+}
+function drawArm(){
+  const arm=$('arm');arm.replaceChildren();const point=(x,y)=>[150+.65*y,235-.65*x],g=state.geometry;
+  if(!g||!g.links||!g.origin||!g.row_step||!g.col_step)return;
+  const cell=(r,c)=>point(g.origin[0]+r*g.row_step[0]+c*g.col_step[0],g.origin[1]+r*g.row_step[1]+c*g.col_step[1]);
+  for(let r=0;r<10;r++){const a=cell(r,0),b=cell(r,8);svg('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#d8dfd0'},arm);}
+  for(let c=0;c<9;c++){const a=cell(0,c),b=cell(9,c);svg('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#d8dfd0'},arm);}
+  for(let r=0;r<10;r++)for(let c=0;c<9;c++){const p=cell(r,c);piece(arm,p[0],p[1],at(state.world,r,c),11);}
+  svg('text',{x:15,y:28,fill:'#77806f','font-size':12},arm,'+X 向上 · +Y 向右 · mm');
+  const q=state.joints,t=state.tcp;
+  if(Array.isArray(q)&&q.length===4&&q.every(Number.isFinite)){
+    const elbow=[g.links[0]*Math.cos(q[0]),g.links[0]*Math.sin(q[0])];
+    const end=[elbow[0]+g.links[1]*Math.cos(q[0]+q[1]),elbow[1]+g.links[1]*Math.sin(q[0]+q[1])];
+    const a=point(0,0),b=point(...elbow),c=point(...end);
+    svg('polyline',{points:[a,b,c].map(p=>p.join(',')).join(' '),fill:'none',stroke:'#54776d','stroke-width':12,'stroke-linecap':'round','stroke-linejoin':'round',opacity:.88},arm);
+    for(const p of [a,b])svg('circle',{cx:p[0],cy:p[1],r:9,fill:'#e8eee0',stroke:'#446254','stroke-width':3},arm);
+  }
+  if(Array.isArray(t)&&t.length===4&&t.every(Number.isFinite)){
+    const p=point(t[0],t[1]);svg('circle',{cx:p[0],cy:p[1],r:7,fill:'#b88342',stroke:'#fff','stroke-width':2},arm);
+    piece(arm,p[0],p[1],state.carried,12);
+    $('tcp').textContent=`TCP ${t[0].toFixed(1)}, ${t[1].toFixed(1)} mm`;$('height').textContent=`Z ${t[2].toFixed(1)} mm`;
+  }else{$('tcp').textContent='TCP —';$('height').textContent='Z —';}
+  const suction=state.vacuum, suctionText=(suction===true||suction===1)?'开启':(suction===false||suction===0)?'关闭':'未提供';
+  $('vacuum').textContent='吸盘 '+suctionText+' · 载荷 '+(names[state.carried]||'无');
+}
+function render(){
+  if(state.image_version&&state.image_version!==imageVersion){
+    imageVersion=state.image_version;$('images').hidden=!state.camera_image;
+    for(const name of ['camera','board']){const img=$(name+'Image');img.hidden=!state[name+'_image'];if(!img.hidden)img.src='/'+name+'.jpg?v='+imageVersion;}
+  }
+  $('version').textContent='OpenCV '+(state.opencv||'—');
+  $('mode').textContent=!online?'连接中断':!state.connected?'等待连接':state.source==='camera'?'相机输入 · 虚拟机械臂':state.source==='virtual'?'仿真输入 · 虚拟机械臂':'输入来源未提供';
+  $('phase').textContent=results[state.result]||phases[state.phase]||'等待状态';$('message').textContent=state.message||'—';
+  $('turn').textContent=state.turn==='red'?'红方 · 人类':state.turn==='black'?'黑方 · 皮卡鱼':'红方在下 · 黑方在上';$('lastMove').textContent=state.move||'';
+  for(const [id,key] of [['capturedRed','captured_red'],['capturedBlack','captured_black']]){
+    $(id).replaceChildren();for(const p of String(state[key]||'').padEnd(15,'.').slice(0,15)){const slot=document.createElement('span');slot.textContent=names[p]||' ';$(id).append(slot);}
+  }
+  if(!canPlay())selected='';drawBoard();drawArm();
+  for(const button of document.querySelectorAll('[data-command]')){
+    const command=button.dataset.command,control=command==='new'||command==='pause';
+    const decision=(command==='resign'||command==='draw')&&state.phase==='finished'&&state.result==='review';
+    button.disabled=busy||!online||!state.connected||(!control&&!decision&&!canPlay())||(command==='scan'&&!state.camera_available);
+  }
+}
+async function send(command){
+  busy=true;$('notice').textContent='';render();
+  try{const response=await fetch('/api/command',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command})});const answer=await response.json();if(!response.ok)throw Error(answer.error||'发送失败');}
+  catch(error){$('notice').textContent=error.message;}finally{busy=false;render();}
+}
+for(const button of document.querySelectorAll('[data-command]'))button.addEventListener('click',()=>send(button.dataset.command));
+async function poll(){try{const response=await fetch('/api/state',{cache:'no-store'});if(!response.ok)throw Error();state=await response.json();online=true;}catch{online=false;}render();setTimeout(poll,160);}
+poll();
+</script>
+</html>

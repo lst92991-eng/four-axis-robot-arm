@@ -1,0 +1,203 @@
+{
+  "method": "父聊天4度构型图小格并集；摆位平移10mm、旋转5度初筛。绿色小格插值不是新的实体干涉检查。",
+  "grid_mm": [
+    360,
+    320
+  ],
+  "max_points": 88,
+  "best_layouts": [
+    {
+      "center_mm": [
+        -220,
+        180
+      ],
+      "rotation_deg": 50,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -260,
+        130
+      ],
+      "rotation_deg": 55,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -230,
+        170
+      ],
+      "rotation_deg": 55,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -210,
+        200
+      ],
+      "rotation_deg": 55,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -250,
+        140
+      ],
+      "rotation_deg": 60,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -260,
+        120
+      ],
+      "rotation_deg": 65,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -240,
+        160
+      ],
+      "rotation_deg": 65,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -280,
+        60
+      ],
+      "rotation_deg": 70,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -270,
+        100
+      ],
+      "rotation_deg": 70,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -280,
+        30
+      ],
+      "rotation_deg": 80,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -280,
+        50
+      ],
+      "rotation_deg": 80,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        -280,
+        70
+      ],
+      "rotation_deg": 85,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        280,
+        70
+      ],
+      "rotation_deg": 95,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        280,
+        30
+      ],
+      "rotation_deg": 100,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        280,
+        50
+      ],
+      "rotation_deg": 100,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        280,
+        60
+      ],
+      "rotation_deg": 110,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        270,
+        100
+      ],
+      "rotation_deg": 110,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        260,
+        120
+      ],
+      "rotation_deg": 115,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        240,
+        160
+      ],
+      "rotation_deg": 115,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        250,
+        140
+      ],
+      "rotation_deg": 120,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        260,
+        130
+      ],
+      "rotation_deg": 125,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        230,
+        170
+      ],
+      "rotation_deg": 125,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        210,
+        200
+      ],
+      "rotation_deg": 125,
+      "points_in_sampled_field": 88
+    },
+    {
+      "center_mm": [
+        220,
+        180
+      ],
+      "rotation_deg": 130,
+      "points_in_sampled_field": 88
+    }
+  ],
+  "searched_layouts": 116964
+}

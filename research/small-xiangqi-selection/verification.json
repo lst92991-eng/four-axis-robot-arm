@@ -1,0 +1,533 @@
+[
+  {
+    "pitch_mm": 32,
+    "theta_deg": 0,
+    "center_xy_mm": [
+      290,
+      50
+    ],
+    "fk_max_error_mm": 1.8198773652309366e-13,
+    "tested_pose_perturbations": 27,
+    "all_90_supported_cases": 27,
+    "min_supported_points_in_perturbation": 90,
+    "scope": "只在原4度CAD采样支持域内检查，±3mm/±0.5°是离线扰动输入，不是机器人实测定位精度。",
+    "cases": [
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      }
+    ]
+  },
+  {
+    "pitch_mm": 32,
+    "theta_deg": 45,
+    "center_xy_mm": [
+      216,
+      216
+    ],
+    "fk_max_error_mm": 2.0495186137532011e-13,
+    "tested_pose_perturbations": 27,
+    "all_90_supported_cases": 27,
+    "min_supported_points_in_perturbation": 90,
+    "scope": "只在原4度CAD采样支持域内检查，±3mm/±0.5°是离线扰动输入，不是机器人实测定位精度。",
+    "cases": [
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      }
+    ]
+  },
+  {
+    "pitch_mm": 30,
+    "theta_deg": 0,
+    "center_xy_mm": [
+      290,
+      50
+    ],
+    "fk_max_error_mm": 2.21980646867526e-13,
+    "tested_pose_perturbations": 27,
+    "all_90_supported_cases": 27,
+    "min_supported_points_in_perturbation": 90,
+    "scope": "只在原4度CAD采样支持域内检查，±3mm/±0.5°是离线扰动输入，不是机器人实测定位精度。",
+    "cases": [
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": -3,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 0,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": -3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 0,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": -0.5,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": 0,
+        "supported": 90
+      },
+      {
+        "dx_mm": 3,
+        "dy_mm": 3,
+        "dtheta_deg": 0.5,
+        "supported": 90
+      }
+    ]
+  }
+]

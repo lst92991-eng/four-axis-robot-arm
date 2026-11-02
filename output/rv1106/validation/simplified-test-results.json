@@ -1,0 +1,58 @@
+{
+  "empty.png": {
+    "exit": 0,
+    "expected_exit": 0,
+    "decoded_this_run": true,
+    "board_verified": true
+  },
+  "mixed.png": {
+    "exit": 0,
+    "expected_exit": 0,
+    "decoded_this_run": true,
+    "board_verified": true
+  },
+  "rotated.png": {
+    "exit": 0,
+    "expected_exit": 0,
+    "decoded_this_run": true,
+    "board_verified": true
+  },
+  "perspective.png": {
+    "exit": 0,
+    "expected_exit": 0,
+    "decoded_this_run": true,
+    "board_verified": true
+  },
+  "missing-marker.png": {
+    "exit": 1,
+    "expected_exit": 1,
+    "decoded_this_run": true
+  },
+  "uncertain.png": {
+    "exit": 2,
+    "expected_exit": 2,
+    "decoded_this_run": true,
+    "board_verified": true
+  },
+  "duplicate-marker.png": {
+    "exit": 1,
+    "expected_exit": 1,
+    "decoded_this_run": true
+  },
+  "turned-marker.png": {
+    "exit": 1,
+    "expected_exit": 1,
+    "decoded_this_run": true
+  },
+  "swapped-markers.png": {
+    "exit": 1,
+    "expected_exit": 1,
+    "decoded_this_run": true
+  },
+  "white-background.png": {
+    "exit": 2,
+    "expected_exit": 2,
+    "decoded_this_run": true,
+    "board_verified": true
+  }
+}

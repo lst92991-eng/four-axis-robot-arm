@@ -1,0 +1,42 @@
+{
+  "empty.png": {
+    "exit": 0,
+    "passed": true
+  },
+  "mixed.png": {
+    "exit": 0,
+    "passed": true
+  },
+  "rotated.png": {
+    "exit": 0,
+    "passed": true
+  },
+  "perspective.png": {
+    "exit": 0,
+    "passed": true
+  },
+  "missing-marker.png": {
+    "exit": 1,
+    "passed": true
+  },
+  "uncertain.png": {
+    "exit": 2,
+    "passed": true
+  },
+  "duplicate-marker.png": {
+    "exit": 1,
+    "passed": true
+  },
+  "turned-marker.png": {
+    "exit": 1,
+    "passed": true
+  },
+  "swapped-markers.png": {
+    "exit": 1,
+    "passed": true
+  },
+  "white-background.png": {
+    "exit": 2,
+    "passed": true
+  }
+}

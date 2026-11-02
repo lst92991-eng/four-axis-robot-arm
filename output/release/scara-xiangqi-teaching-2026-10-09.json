@@ -1,0 +1,8 @@
+{
+  "archive": "scara-xiangqi-teaching-2026-10-09.zip",
+  "archive_bytes": 60825242,
+  "archive_sha256": "1e6421fb412c3acbd7eff24ed8252fbf80fd9df2f6735e46c144b7801f2c10af",
+  "files": 139,
+  "contents_verified": true,
+  "scope": "source, runtime, fixed model/data, print PDFs, verification; no personal connection configuration or caches"
+}

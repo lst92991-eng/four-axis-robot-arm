@@ -1,0 +1,3612 @@
+[
+  {
+    "repository": "EDGE-tronics/Chess-Robot",
+    "sha": "ae8b41e6c88e06cb916f2e0bb924aaf459a9cabd",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\EDGE-tronics__Chess-Robot",
+    "all_tracked_files": 60,
+    "source_files": [
+      {
+        "path": "ArmControl.py",
+        "bytes": 11488,
+        "physical": 299,
+        "nonblank": 251
+      },
+      {
+        "path": "ChessLogic.py",
+        "bytes": 6862,
+        "physical": 148,
+        "nonblank": 127
+      },
+      {
+        "path": "Interface.py",
+        "bytes": 31841,
+        "physical": 819,
+        "nonblank": 726
+      },
+      {
+        "path": "VisionModule.py",
+        "bytes": 4191,
+        "physical": 119,
+        "nonblank": 91
+      },
+      {
+        "path": "lss.py",
+        "bytes": 13615,
+        "physical": 359,
+        "nonblank": 293
+      },
+      {
+        "path": "lss_const.py",
+        "bytes": 4660,
+        "physical": 178,
+        "nonblank": 157
+      }
+    ],
+    "python_files": [
+      {
+        "path": "ArmControl.py",
+        "bytes": 11488,
+        "physical": 299,
+        "nonblank": 251
+      },
+      {
+        "path": "ChessLogic.py",
+        "bytes": 6862,
+        "physical": 148,
+        "nonblank": 127
+      },
+      {
+        "path": "Interface.py",
+        "bytes": 31841,
+        "physical": 819,
+        "nonblank": 726
+      },
+      {
+        "path": "VisionModule.py",
+        "bytes": 4191,
+        "physical": 119,
+        "nonblank": 91
+      },
+      {
+        "path": "lss.py",
+        "bytes": 13615,
+        "physical": 359,
+        "nonblank": 293
+      },
+      {
+        "path": "lss_const.py",
+        "bytes": 4660,
+        "physical": 178,
+        "nonblank": 157
+      }
+    ]
+  },
+  {
+    "repository": "niklasf/python-chess",
+    "sha": "0c6bdaccfcb3b09cdbe94b0f81e948cb2a356015",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\niklasf__python-chess",
+    "all_tracked_files": 205,
+    "source_files": [
+      {
+        "path": "chess/__init__.py",
+        "bytes": 154649,
+        "physical": 4412,
+        "nonblank": 3577
+      },
+      {
+        "path": "chess/engine.py",
+        "bytes": 126573,
+        "physical": 3114,
+        "nonblank": 2526
+      },
+      {
+        "path": "chess/gaviota.py",
+        "bytes": 59342,
+        "physical": 1994,
+        "nonblank": 1535
+      },
+      {
+        "path": "chess/pgn.py",
+        "bytes": 61302,
+        "physical": 1916,
+        "nonblank": 1521
+      },
+      {
+        "path": "chess/polyglot.py",
+        "bytes": 27389,
+        "physical": 522,
+        "nonblank": 438
+      },
+      {
+        "path": "chess/svg.py",
+        "bytes": 32625,
+        "physical": 515,
+        "nonblank": 430
+      },
+      {
+        "path": "chess/syzygy.py",
+        "bytes": 69356,
+        "physical": 1973,
+        "nonblank": 1620
+      },
+      {
+        "path": "chess/variant.py",
+        "bytes": 45858,
+        "physical": 1100,
+        "nonblank": 890
+      },
+      {
+        "path": "docs/conf.py",
+        "bytes": 1253,
+        "physical": 52,
+        "nonblank": 42
+      },
+      {
+        "path": "examples/bratko_kopec/bratko_kopec.py",
+        "bytes": 4988,
+        "physical": 155,
+        "nonblank": 120
+      },
+      {
+        "path": "examples/chess960_pos_list.py",
+        "bytes": 585,
+        "physical": 27,
+        "nonblank": 19
+      },
+      {
+        "path": "examples/perft/perft.py",
+        "bytes": 4338,
+        "physical": 135,
+        "nonblank": 109
+      },
+      {
+        "path": "examples/polyglot_tree.py",
+        "bytes": 1134,
+        "physical": 41,
+        "nonblank": 29
+      },
+      {
+        "path": "examples/push_san.py",
+        "bytes": 1996,
+        "physical": 109,
+        "nonblank": 80
+      },
+      {
+        "path": "examples/xray_attacks.py",
+        "bytes": 2316,
+        "physical": 61,
+        "nonblank": 42
+      },
+      {
+        "path": "fuzz/engine.py",
+        "bytes": 1270,
+        "physical": 53,
+        "nonblank": 38
+      },
+      {
+        "path": "fuzz/epd.py",
+        "bytes": 580,
+        "physical": 25,
+        "nonblank": 20
+      },
+      {
+        "path": "fuzz/fen.py",
+        "bytes": 545,
+        "physical": 26,
+        "nonblank": 21
+      },
+      {
+        "path": "fuzz/pgn.py",
+        "bytes": 571,
+        "physical": 31,
+        "nonblank": 22
+      },
+      {
+        "path": "python-chess-stub/setup.py",
+        "bytes": 826,
+        "physical": 26,
+        "nonblank": 24
+      },
+      {
+        "path": "release.py",
+        "bytes": 3561,
+        "physical": 117,
+        "nonblank": 88
+      },
+      {
+        "path": "setup.py",
+        "bytes": 3239,
+        "physical": 97,
+        "nonblank": 81
+      },
+      {
+        "path": "test.py",
+        "bytes": 214703,
+        "physical": 5031,
+        "nonblank": 4082
+      }
+    ],
+    "python_files": [
+      {
+        "path": "chess/__init__.py",
+        "bytes": 154649,
+        "physical": 4412,
+        "nonblank": 3577
+      },
+      {
+        "path": "chess/engine.py",
+        "bytes": 126573,
+        "physical": 3114,
+        "nonblank": 2526
+      },
+      {
+        "path": "chess/gaviota.py",
+        "bytes": 59342,
+        "physical": 1994,
+        "nonblank": 1535
+      },
+      {
+        "path": "chess/pgn.py",
+        "bytes": 61302,
+        "physical": 1916,
+        "nonblank": 1521
+      },
+      {
+        "path": "chess/polyglot.py",
+        "bytes": 27389,
+        "physical": 522,
+        "nonblank": 438
+      },
+      {
+        "path": "chess/svg.py",
+        "bytes": 32625,
+        "physical": 515,
+        "nonblank": 430
+      },
+      {
+        "path": "chess/syzygy.py",
+        "bytes": 69356,
+        "physical": 1973,
+        "nonblank": 1620
+      },
+      {
+        "path": "chess/variant.py",
+        "bytes": 45858,
+        "physical": 1100,
+        "nonblank": 890
+      },
+      {
+        "path": "docs/conf.py",
+        "bytes": 1253,
+        "physical": 52,
+        "nonblank": 42
+      },
+      {
+        "path": "examples/bratko_kopec/bratko_kopec.py",
+        "bytes": 4988,
+        "physical": 155,
+        "nonblank": 120
+      },
+      {
+        "path": "examples/chess960_pos_list.py",
+        "bytes": 585,
+        "physical": 27,
+        "nonblank": 19
+      },
+      {
+        "path": "examples/perft/perft.py",
+        "bytes": 4338,
+        "physical": 135,
+        "nonblank": 109
+      },
+      {
+        "path": "examples/polyglot_tree.py",
+        "bytes": 1134,
+        "physical": 41,
+        "nonblank": 29
+      },
+      {
+        "path": "examples/push_san.py",
+        "bytes": 1996,
+        "physical": 109,
+        "nonblank": 80
+      },
+      {
+        "path": "examples/xray_attacks.py",
+        "bytes": 2316,
+        "physical": 61,
+        "nonblank": 42
+      },
+      {
+        "path": "fuzz/engine.py",
+        "bytes": 1270,
+        "physical": 53,
+        "nonblank": 38
+      },
+      {
+        "path": "fuzz/epd.py",
+        "bytes": 580,
+        "physical": 25,
+        "nonblank": 20
+      },
+      {
+        "path": "fuzz/fen.py",
+        "bytes": 545,
+        "physical": 26,
+        "nonblank": 21
+      },
+      {
+        "path": "fuzz/pgn.py",
+        "bytes": 571,
+        "physical": 31,
+        "nonblank": 22
+      },
+      {
+        "path": "python-chess-stub/setup.py",
+        "bytes": 826,
+        "physical": 26,
+        "nonblank": 24
+      },
+      {
+        "path": "release.py",
+        "bytes": 3561,
+        "physical": 117,
+        "nonblank": 88
+      },
+      {
+        "path": "setup.py",
+        "bytes": 3239,
+        "physical": 97,
+        "nonblank": 81
+      },
+      {
+        "path": "test.py",
+        "bytes": 214703,
+        "physical": 5031,
+        "nonblank": 4082
+      }
+    ]
+  },
+  {
+    "repository": "renchizhhhh/OpenChessRobot",
+    "sha": "264d4e1a3d76fb069dca686d545d4bb52e00424a",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\renchizhhhh__OpenChessRobot",
+    "all_tracked_files": 132,
+    "source_files": [
+      {
+        "path": "src/open_chess_robot/scripts/__init__.py",
+        "bytes": 0,
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "src/open_chess_robot/scripts/check_piece_offset.py",
+        "bytes": 8666,
+        "physical": 219,
+        "nonblank": 179
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chess_commander.py",
+        "bytes": 11241,
+        "physical": 275,
+        "nonblank": 242
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chess_robo_player.py",
+        "bytes": 36438,
+        "physical": 813,
+        "nonblank": 732
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chess_robot_recovery.py",
+        "bytes": 521,
+        "physical": 15,
+        "nonblank": 13
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/__init__.py",
+        "bytes": 0,
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/classifier/__init__.py",
+        "bytes": 39,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/classifier/occ_models.py",
+        "bytes": 7022,
+        "physical": 254,
+        "nonblank": 205
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/classifier/piece_models.py",
+        "bytes": 4659,
+        "physical": 166,
+        "nonblank": 132
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/__init__.py",
+        "bytes": 2738,
+        "physical": 82,
+        "nonblank": 68
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/coordinates.py",
+        "bytes": 886,
+        "physical": 29,
+        "nonblank": 20
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/__init__.py",
+        "bytes": 234,
+        "physical": 6,
+        "nonblank": 5
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/dataset.py",
+        "bytes": 2462,
+        "physical": 91,
+        "nonblank": 68
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/datasets.py",
+        "bytes": 311,
+        "physical": 17,
+        "nonblank": 15
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/transforms.py",
+        "bytes": 4988,
+        "physical": 147,
+        "nonblank": 114
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/evaluation.py",
+        "bytes": 6183,
+        "physical": 141,
+        "nonblank": 123
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/exceptions.py",
+        "bytes": 581,
+        "physical": 21,
+        "nonblank": 15
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/models.py",
+        "bytes": 482,
+        "physical": 23,
+        "nonblank": 16
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/registry.py",
+        "bytes": 1757,
+        "physical": 68,
+        "nonblank": 50
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/statistics.py",
+        "bytes": 3401,
+        "physical": 104,
+        "nonblank": 83
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/__init__.py",
+        "bytes": 203,
+        "physical": 7,
+        "nonblank": 6
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/create_configs.py",
+        "bytes": 1949,
+        "physical": 48,
+        "nonblank": 39
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/optimizer.py",
+        "bytes": 780,
+        "physical": 24,
+        "nonblank": 19
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/train.py",
+        "bytes": 7749,
+        "physical": 214,
+        "nonblank": 172
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/train_classifier.py",
+        "bytes": 1378,
+        "physical": 44,
+        "nonblank": 34
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/__init__.py",
+        "bytes": 74,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/detect_corners.py",
+        "bytes": 20043,
+        "physical": 525,
+        "nonblank": 408
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/gen_occ_data.py",
+        "bytes": 6260,
+        "physical": 153,
+        "nonblank": 127
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/gen_pie_data.py",
+        "bytes": 6584,
+        "physical": 167,
+        "nonblank": 134
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/recognizer/__init__.py",
+        "bytes": 38,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/recognizer/recognizer.py",
+        "bytes": 13593,
+        "physical": 318,
+        "nonblank": 263
+      },
+      {
+        "path": "src/open_chess_robot/scripts/collect_board_corners.py",
+        "bytes": 5412,
+        "physical": 142,
+        "nonblank": 118
+      },
+      {
+        "path": "src/open_chess_robot/scripts/data_collect_chess_commander.py",
+        "bytes": 3697,
+        "physical": 101,
+        "nonblank": 92
+      },
+      {
+        "path": "src/open_chess_robot/scripts/data_collect_chess_robot.py",
+        "bytes": 3291,
+        "physical": 99,
+        "nonblank": 85
+      },
+      {
+        "path": "src/open_chess_robot/scripts/engine/__init__.py",
+        "bytes": 22,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/engine/wrapper.py",
+        "bytes": 32026,
+        "physical": 846,
+        "nonblank": 740
+      },
+      {
+        "path": "src/open_chess_robot/scripts/eva_chess_commander.py",
+        "bytes": 7837,
+        "physical": 194,
+        "nonblank": 175
+      },
+      {
+        "path": "src/open_chess_robot/scripts/eva_chess_robot.py",
+        "bytes": 1298,
+        "physical": 37,
+        "nonblank": 30
+      },
+      {
+        "path": "src/open_chess_robot/scripts/hri_chess_commander.py",
+        "bytes": 38039,
+        "physical": 892,
+        "nonblank": 811
+      },
+      {
+        "path": "src/open_chess_robot/scripts/hri_chess_robot.py",
+        "bytes": 11036,
+        "physical": 272,
+        "nonblank": 250
+      },
+      {
+        "path": "src/open_chess_robot/scripts/llm_chess_commander.py",
+        "bytes": 3206,
+        "physical": 81,
+        "nonblank": 68
+      },
+      {
+        "path": "src/open_chess_robot/scripts/llm_commentary_manager.py",
+        "bytes": 5579,
+        "physical": 141,
+        "nonblank": 117
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/__init__.py",
+        "bytes": 54,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/board_geometry.py",
+        "bytes": 3823,
+        "physical": 105,
+        "nonblank": 84
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/board_recognition.py",
+        "bytes": 11092,
+        "physical": 274,
+        "nonblank": 247
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/camera_config.py",
+        "bytes": 16014,
+        "physical": 394,
+        "nonblank": 350
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/llm_clients.py",
+        "bytes": 9976,
+        "physical": 234,
+        "nonblank": 200
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/llm_commentary.py",
+        "bytes": 8837,
+        "physical": 232,
+        "nonblank": 180
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/logger.py",
+        "bytes": 673,
+        "physical": 17,
+        "nonblank": 16
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/move_result.py",
+        "bytes": 1539,
+        "physical": 38,
+        "nonblank": 28
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/move_sequences.py",
+        "bytes": 3927,
+        "physical": 132,
+        "nonblank": 103
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/paths.py",
+        "bytes": 1143,
+        "physical": 46,
+        "nonblank": 33
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/piece_offset.py",
+        "bytes": 25407,
+        "physical": 566,
+        "nonblank": 502
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/recognition_augment.py",
+        "bytes": 2069,
+        "physical": 62,
+        "nonblank": 45
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/recognition_confidence.py",
+        "bytes": 2195,
+        "physical": 59,
+        "nonblank": 47
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/recognition_projection.py",
+        "bytes": 2450,
+        "physical": 64,
+        "nonblank": 53
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/script_imports.py",
+        "bytes": 311,
+        "physical": 10,
+        "nonblank": 8
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/settings.py",
+        "bytes": 8123,
+        "physical": 239,
+        "nonblank": 209
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/startup_checks.py",
+        "bytes": 1185,
+        "physical": 47,
+        "nonblank": 35
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/tts_sinks.py",
+        "bytes": 1807,
+        "physical": 51,
+        "nonblank": 40
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ros_param_manager.py",
+        "bytes": 1329,
+        "physical": 34,
+        "nonblank": 29
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/__init__.py",
+        "bytes": 260,
+        "physical": 4,
+        "nonblank": 4
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/benchmark_commander.py",
+        "bytes": 5495,
+        "physical": 135,
+        "nonblank": 123
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/board_fit.py",
+        "bytes": 1367,
+        "physical": 65,
+        "nonblank": 43
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/camera_config.py",
+        "bytes": 12290,
+        "physical": 309,
+        "nonblank": 279
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/eva_best.py",
+        "bytes": 7212,
+        "physical": 172,
+        "nonblank": 152
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/eva_single.py",
+        "bytes": 7195,
+        "physical": 173,
+        "nonblank": 153
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/logger.py",
+        "bytes": 544,
+        "physical": 14,
+        "nonblank": 13
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/recap/__init__.py",
+        "bytes": 239,
+        "physical": 7,
+        "nonblank": 5
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/recap/config.py",
+        "bytes": 3854,
+        "physical": 109,
+        "nonblank": 89
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/recap/path_manager.py",
+        "bytes": 4644,
+        "physical": 165,
+        "nonblank": 120
+      },
+      {
+        "path": "src/open_chess_robot/setup.py",
+        "bytes": 892,
+        "physical": 37,
+        "nonblank": 33
+      },
+      {
+        "path": "src/open_chess_robot/test/smoke_llm_commentary.py",
+        "bytes": 7327,
+        "physical": 189,
+        "nonblank": 150
+      },
+      {
+        "path": "src/open_chess_robot/test/test_check_piece_offset.py",
+        "bytes": 5872,
+        "physical": 139,
+        "nonblank": 116
+      },
+      {
+        "path": "src/open_chess_robot/test/test_command_result.py",
+        "bytes": 2323,
+        "physical": 67,
+        "nonblank": 46
+      },
+      {
+        "path": "src/open_chess_robot/test/test_configuration.py",
+        "bytes": 6365,
+        "physical": 170,
+        "nonblank": 145
+      },
+      {
+        "path": "src/open_chess_robot/test/test_llm_commentary.py",
+        "bytes": 11583,
+        "physical": 312,
+        "nonblank": 248
+      },
+      {
+        "path": "src/open_chess_robot/test/test_move_sequences.py",
+        "bytes": 8458,
+        "physical": 231,
+        "nonblank": 180
+      },
+      {
+        "path": "src/open_chess_robot/test/test_recognition.py",
+        "bytes": 3003,
+        "physical": 92,
+        "nonblank": 63
+      },
+      {
+        "path": "src/open_chess_robot/test/test_recognition_augment.py",
+        "bytes": 2341,
+        "physical": 69,
+        "nonblank": 53
+      }
+    ],
+    "python_files": [
+      {
+        "path": "src/open_chess_robot/scripts/__init__.py",
+        "bytes": 0,
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "src/open_chess_robot/scripts/check_piece_offset.py",
+        "bytes": 8666,
+        "physical": 219,
+        "nonblank": 179
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chess_commander.py",
+        "bytes": 11241,
+        "physical": 275,
+        "nonblank": 242
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chess_robo_player.py",
+        "bytes": 36438,
+        "physical": 813,
+        "nonblank": 732
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chess_robot_recovery.py",
+        "bytes": 521,
+        "physical": 15,
+        "nonblank": 13
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/__init__.py",
+        "bytes": 0,
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/classifier/__init__.py",
+        "bytes": 39,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/classifier/occ_models.py",
+        "bytes": 7022,
+        "physical": 254,
+        "nonblank": 205
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/classifier/piece_models.py",
+        "bytes": 4659,
+        "physical": 166,
+        "nonblank": 132
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/__init__.py",
+        "bytes": 2738,
+        "physical": 82,
+        "nonblank": 68
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/coordinates.py",
+        "bytes": 886,
+        "physical": 29,
+        "nonblank": 20
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/__init__.py",
+        "bytes": 234,
+        "physical": 6,
+        "nonblank": 5
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/dataset.py",
+        "bytes": 2462,
+        "physical": 91,
+        "nonblank": 68
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/datasets.py",
+        "bytes": 311,
+        "physical": 17,
+        "nonblank": 15
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/dataset/transforms.py",
+        "bytes": 4988,
+        "physical": 147,
+        "nonblank": 114
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/evaluation.py",
+        "bytes": 6183,
+        "physical": 141,
+        "nonblank": 123
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/exceptions.py",
+        "bytes": 581,
+        "physical": 21,
+        "nonblank": 15
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/models.py",
+        "bytes": 482,
+        "physical": 23,
+        "nonblank": 16
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/registry.py",
+        "bytes": 1757,
+        "physical": 68,
+        "nonblank": 50
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/statistics.py",
+        "bytes": 3401,
+        "physical": 104,
+        "nonblank": 83
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/__init__.py",
+        "bytes": 203,
+        "physical": 7,
+        "nonblank": 6
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/create_configs.py",
+        "bytes": 1949,
+        "physical": 48,
+        "nonblank": 39
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/optimizer.py",
+        "bytes": 780,
+        "physical": 24,
+        "nonblank": 19
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/train.py",
+        "bytes": 7749,
+        "physical": 214,
+        "nonblank": 172
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/core/training/train_classifier.py",
+        "bytes": 1378,
+        "physical": 44,
+        "nonblank": 34
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/__init__.py",
+        "bytes": 74,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/detect_corners.py",
+        "bytes": 20043,
+        "physical": 525,
+        "nonblank": 408
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/gen_occ_data.py",
+        "bytes": 6260,
+        "physical": 153,
+        "nonblank": 127
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/preprocessing/gen_pie_data.py",
+        "bytes": 6584,
+        "physical": 167,
+        "nonblank": 134
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/recognizer/__init__.py",
+        "bytes": 38,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/chessrec/recognizer/recognizer.py",
+        "bytes": 13593,
+        "physical": 318,
+        "nonblank": 263
+      },
+      {
+        "path": "src/open_chess_robot/scripts/collect_board_corners.py",
+        "bytes": 5412,
+        "physical": 142,
+        "nonblank": 118
+      },
+      {
+        "path": "src/open_chess_robot/scripts/data_collect_chess_commander.py",
+        "bytes": 3697,
+        "physical": 101,
+        "nonblank": 92
+      },
+      {
+        "path": "src/open_chess_robot/scripts/data_collect_chess_robot.py",
+        "bytes": 3291,
+        "physical": 99,
+        "nonblank": 85
+      },
+      {
+        "path": "src/open_chess_robot/scripts/engine/__init__.py",
+        "bytes": 22,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/engine/wrapper.py",
+        "bytes": 32026,
+        "physical": 846,
+        "nonblank": 740
+      },
+      {
+        "path": "src/open_chess_robot/scripts/eva_chess_commander.py",
+        "bytes": 7837,
+        "physical": 194,
+        "nonblank": 175
+      },
+      {
+        "path": "src/open_chess_robot/scripts/eva_chess_robot.py",
+        "bytes": 1298,
+        "physical": 37,
+        "nonblank": 30
+      },
+      {
+        "path": "src/open_chess_robot/scripts/hri_chess_commander.py",
+        "bytes": 38039,
+        "physical": 892,
+        "nonblank": 811
+      },
+      {
+        "path": "src/open_chess_robot/scripts/hri_chess_robot.py",
+        "bytes": 11036,
+        "physical": 272,
+        "nonblank": 250
+      },
+      {
+        "path": "src/open_chess_robot/scripts/llm_chess_commander.py",
+        "bytes": 3206,
+        "physical": 81,
+        "nonblank": 68
+      },
+      {
+        "path": "src/open_chess_robot/scripts/llm_commentary_manager.py",
+        "bytes": 5579,
+        "physical": 141,
+        "nonblank": 117
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/__init__.py",
+        "bytes": 54,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/board_geometry.py",
+        "bytes": 3823,
+        "physical": 105,
+        "nonblank": 84
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/board_recognition.py",
+        "bytes": 11092,
+        "physical": 274,
+        "nonblank": 247
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/camera_config.py",
+        "bytes": 16014,
+        "physical": 394,
+        "nonblank": 350
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/llm_clients.py",
+        "bytes": 9976,
+        "physical": 234,
+        "nonblank": 200
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/llm_commentary.py",
+        "bytes": 8837,
+        "physical": 232,
+        "nonblank": 180
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/logger.py",
+        "bytes": 673,
+        "physical": 17,
+        "nonblank": 16
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/move_result.py",
+        "bytes": 1539,
+        "physical": 38,
+        "nonblank": 28
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/move_sequences.py",
+        "bytes": 3927,
+        "physical": 132,
+        "nonblank": 103
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/paths.py",
+        "bytes": 1143,
+        "physical": 46,
+        "nonblank": 33
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/piece_offset.py",
+        "bytes": 25407,
+        "physical": 566,
+        "nonblank": 502
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/recognition_augment.py",
+        "bytes": 2069,
+        "physical": 62,
+        "nonblank": 45
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/recognition_confidence.py",
+        "bytes": 2195,
+        "physical": 59,
+        "nonblank": 47
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/recognition_projection.py",
+        "bytes": 2450,
+        "physical": 64,
+        "nonblank": 53
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/script_imports.py",
+        "bytes": 311,
+        "physical": 10,
+        "nonblank": 8
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/settings.py",
+        "bytes": 8123,
+        "physical": 239,
+        "nonblank": 209
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/startup_checks.py",
+        "bytes": 1185,
+        "physical": 47,
+        "nonblank": 35
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ocr_runtime/tts_sinks.py",
+        "bytes": 1807,
+        "physical": 51,
+        "nonblank": 40
+      },
+      {
+        "path": "src/open_chess_robot/scripts/ros_param_manager.py",
+        "bytes": 1329,
+        "physical": 34,
+        "nonblank": 29
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/__init__.py",
+        "bytes": 260,
+        "physical": 4,
+        "nonblank": 4
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/benchmark_commander.py",
+        "bytes": 5495,
+        "physical": 135,
+        "nonblank": 123
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/board_fit.py",
+        "bytes": 1367,
+        "physical": 65,
+        "nonblank": 43
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/camera_config.py",
+        "bytes": 12290,
+        "physical": 309,
+        "nonblank": 279
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/eva_best.py",
+        "bytes": 7212,
+        "physical": 172,
+        "nonblank": 152
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/eva_single.py",
+        "bytes": 7195,
+        "physical": 173,
+        "nonblank": 153
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/logger.py",
+        "bytes": 544,
+        "physical": 14,
+        "nonblank": 13
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/recap/__init__.py",
+        "bytes": 239,
+        "physical": 7,
+        "nonblank": 5
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/recap/config.py",
+        "bytes": 3854,
+        "physical": 109,
+        "nonblank": 89
+      },
+      {
+        "path": "src/open_chess_robot/scripts/utili/recap/path_manager.py",
+        "bytes": 4644,
+        "physical": 165,
+        "nonblank": 120
+      },
+      {
+        "path": "src/open_chess_robot/setup.py",
+        "bytes": 892,
+        "physical": 37,
+        "nonblank": 33
+      },
+      {
+        "path": "src/open_chess_robot/test/smoke_llm_commentary.py",
+        "bytes": 7327,
+        "physical": 189,
+        "nonblank": 150
+      },
+      {
+        "path": "src/open_chess_robot/test/test_check_piece_offset.py",
+        "bytes": 5872,
+        "physical": 139,
+        "nonblank": 116
+      },
+      {
+        "path": "src/open_chess_robot/test/test_command_result.py",
+        "bytes": 2323,
+        "physical": 67,
+        "nonblank": 46
+      },
+      {
+        "path": "src/open_chess_robot/test/test_configuration.py",
+        "bytes": 6365,
+        "physical": 170,
+        "nonblank": 145
+      },
+      {
+        "path": "src/open_chess_robot/test/test_llm_commentary.py",
+        "bytes": 11583,
+        "physical": 312,
+        "nonblank": 248
+      },
+      {
+        "path": "src/open_chess_robot/test/test_move_sequences.py",
+        "bytes": 8458,
+        "physical": 231,
+        "nonblank": 180
+      },
+      {
+        "path": "src/open_chess_robot/test/test_recognition.py",
+        "bytes": 3003,
+        "physical": 92,
+        "nonblank": 63
+      },
+      {
+        "path": "src/open_chess_robot/test/test_recognition_augment.py",
+        "bytes": 2341,
+        "physical": 69,
+        "nonblank": 53
+      }
+    ]
+  },
+  {
+    "repository": "Star-Robot/chinese-chess-robot",
+    "sha": "07ce94891768f307b8fe4abe504dc05d277f51bd",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\Star-Robot__chinese-chess-robot",
+    "all_tracked_files": 242,
+    "source_files": [
+      {
+        "path": "chessplayer/src/arm_calibrator/arm_calibrator.cpp",
+        "bytes": 3657,
+        "physical": 119,
+        "nonblank": 101
+      },
+      {
+        "path": "chessplayer/src/arm_tester/arm_tester.cpp",
+        "bytes": 12104,
+        "physical": 363,
+        "nonblank": 322
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/arm/arm.cpp",
+        "bytes": 6990,
+        "physical": 221,
+        "nonblank": 190
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/calibrator/calibrator.cpp",
+        "bytes": 5967,
+        "physical": 181,
+        "nonblank": 155
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/camera/camera.cpp",
+        "bytes": 5952,
+        "physical": 202,
+        "nonblank": 170
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/detector/detector.cpp",
+        "bytes": 13904,
+        "physical": 422,
+        "nonblank": 377
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/game/game.cpp",
+        "bytes": 13121,
+        "physical": 393,
+        "nonblank": 349
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/chess_manager.cpp",
+        "bytes": 16557,
+        "physical": 492,
+        "nonblank": 453
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/chess_manager.hpp",
+        "bytes": 3374,
+        "physical": 125,
+        "nonblank": 99
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/pipe.cpp",
+        "bytes": 3537,
+        "physical": 156,
+        "nonblank": 136
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/pipe.hpp",
+        "bytes": 574,
+        "physical": 25,
+        "nonblank": 21
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/situator.cpp",
+        "bytes": 8922,
+        "physical": 270,
+        "nonblank": 232
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/ucci_engine.cpp",
+        "bytes": 3653,
+        "physical": 108,
+        "nonblank": 91
+      },
+      {
+        "path": "chessplayer/src/chinese_chess/situator/ucci_engine.hpp",
+        "bytes": 722,
+        "physical": 31,
+        "nonblank": 23
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/arm_controller.cpp",
+        "bytes": 7578,
+        "physical": 219,
+        "nonblank": 183
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/arm_controller.hpp",
+        "bytes": 695,
+        "physical": 37,
+        "nonblank": 21
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/command_manager.cpp",
+        "bytes": 8576,
+        "physical": 265,
+        "nonblank": 244
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/command_manager.hpp",
+        "bytes": 3235,
+        "physical": 123,
+        "nonblank": 101
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/config.cpp",
+        "bytes": 1745,
+        "physical": 49,
+        "nonblank": 48
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/config.hpp",
+        "bytes": 921,
+        "physical": 43,
+        "nonblank": 31
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/serial_manager.cpp",
+        "bytes": 2196,
+        "physical": 76,
+        "nonblank": 67
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/serial_manager.hpp",
+        "bytes": 461,
+        "physical": 22,
+        "nonblank": 18
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/uart.cpp",
+        "bytes": 4891,
+        "physical": 241,
+        "nonblank": 220
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/uart.hpp",
+        "bytes": 1413,
+        "physical": 65,
+        "nonblank": 54
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/util.cpp",
+        "bytes": 4196,
+        "physical": 168,
+        "nonblank": 153
+      },
+      {
+        "path": "chessplayer/src/common/arm_tools/util.hpp",
+        "bytes": 530,
+        "physical": 22,
+        "nonblank": 17
+      },
+      {
+        "path": "chessplayer/src/common/json.hpp",
+        "bytes": 728351,
+        "physical": 20842,
+        "nonblank": 17413
+      },
+      {
+        "path": "chessplayer/src/common/timer.hpp",
+        "bytes": 776,
+        "physical": 43,
+        "nonblank": 36
+      },
+      {
+        "path": "chessplayer/src/global/interactor/interactor.cpp",
+        "bytes": 2861,
+        "physical": 106,
+        "nonblank": 88
+      },
+      {
+        "path": "chessplayer/src/global/mode_ctrl/mode_ctrl.cpp",
+        "bytes": 3749,
+        "physical": 130,
+        "nonblank": 109
+      },
+      {
+        "path": "chessplayer/src/global/voice/decoder/decoder.cpp",
+        "bytes": 137,
+        "physical": 8,
+        "nonblank": 6
+      },
+      {
+        "path": "chessplayer/src/global/voice/decoder/decoder.h",
+        "bytes": 378,
+        "physical": 18,
+        "nonblank": 15
+      },
+      {
+        "path": "chessplayer/src/global/voice/decoder/ffmpeg_decoder.cpp",
+        "bytes": 4258,
+        "physical": 113,
+        "nonblank": 103
+      },
+      {
+        "path": "chessplayer/src/global/voice/decoder/ffmpeg_decoder.h",
+        "bytes": 852,
+        "physical": 35,
+        "nonblank": 30
+      },
+      {
+        "path": "chessplayer/src/global/voice/decoder/pcm_reader.cpp",
+        "bytes": 624,
+        "physical": 27,
+        "nonblank": 22
+      },
+      {
+        "path": "chessplayer/src/global/voice/decoder/pcm_reader.h",
+        "bytes": 447,
+        "physical": 23,
+        "nonblank": 19
+      },
+      {
+        "path": "chessplayer/src/global/voice/player/alsa_player.cpp",
+        "bytes": 1318,
+        "physical": 38,
+        "nonblank": 33
+      },
+      {
+        "path": "chessplayer/src/global/voice/player/alsa_player.h",
+        "bytes": 496,
+        "physical": 21,
+        "nonblank": 17
+      },
+      {
+        "path": "chessplayer/src/global/voice/player/pcm_dumper.cpp",
+        "bytes": 464,
+        "physical": 20,
+        "nonblank": 16
+      },
+      {
+        "path": "chessplayer/src/global/voice/player/pcm_dumper.h",
+        "bytes": 362,
+        "physical": 20,
+        "nonblank": 16
+      },
+      {
+        "path": "chessplayer/src/global/voice/player/player.cpp",
+        "bytes": 153,
+        "physical": 8,
+        "nonblank": 6
+      },
+      {
+        "path": "chessplayer/src/global/voice/player/player.h",
+        "bytes": 380,
+        "physical": 19,
+        "nonblank": 15
+      },
+      {
+        "path": "chessplayer/src/global/voice/voice.cpp",
+        "bytes": 2817,
+        "physical": 96,
+        "nonblank": 74
+      },
+      {
+        "path": "tinyros/exe/ros_core.cpp",
+        "bytes": 121,
+        "physical": 14,
+        "nonblank": 11
+      },
+      {
+        "path": "tinyros/exe/ros_node.cpp",
+        "bytes": 1326,
+        "physical": 40,
+        "nonblank": 34
+      },
+      {
+        "path": "tinyros/exe/ros_run.cpp",
+        "bytes": 594,
+        "physical": 27,
+        "nonblank": 21
+      },
+      {
+        "path": "tinyros/src/base/core.cpp",
+        "bytes": 8537,
+        "physical": 239,
+        "nonblank": 207
+      },
+      {
+        "path": "tinyros/src/base/core.hpp",
+        "bytes": 3106,
+        "physical": 111,
+        "nonblank": 95
+      },
+      {
+        "path": "tinyros/src/base/node.cpp",
+        "bytes": 2191,
+        "physical": 96,
+        "nonblank": 80
+      },
+      {
+        "path": "tinyros/src/base/node.hpp",
+        "bytes": 4732,
+        "physical": 143,
+        "nonblank": 123
+      },
+      {
+        "path": "tinyros/src/base/parameter_server.cpp",
+        "bytes": 2149,
+        "physical": 74,
+        "nonblank": 61
+      },
+      {
+        "path": "tinyros/src/base/parameter_server.hpp",
+        "bytes": 1213,
+        "physical": 53,
+        "nonblank": 42
+      },
+      {
+        "path": "tinyros/src/base/publisher.hpp",
+        "bytes": 1785,
+        "physical": 73,
+        "nonblank": 61
+      },
+      {
+        "path": "tinyros/src/base/publisher_proxy.cpp",
+        "bytes": 2416,
+        "physical": 80,
+        "nonblank": 66
+      },
+      {
+        "path": "tinyros/src/base/publisher_proxy.hpp",
+        "bytes": 1267,
+        "physical": 55,
+        "nonblank": 45
+      },
+      {
+        "path": "tinyros/src/base/stub.hpp",
+        "bytes": 1330,
+        "physical": 56,
+        "nonblank": 47
+      },
+      {
+        "path": "tinyros/src/base/subscriber.hpp",
+        "bytes": 3726,
+        "physical": 120,
+        "nonblank": 105
+      },
+      {
+        "path": "tinyros/src/base/subscriber_proxy.cpp",
+        "bytes": 1982,
+        "physical": 67,
+        "nonblank": 56
+      },
+      {
+        "path": "tinyros/src/base/subscriber_proxy.hpp",
+        "bytes": 1763,
+        "physical": 72,
+        "nonblank": 60
+      },
+      {
+        "path": "tinyros/src/base/topic.cpp",
+        "bytes": 1956,
+        "physical": 85,
+        "nonblank": 69
+      },
+      {
+        "path": "tinyros/src/base/topic.hpp",
+        "bytes": 2025,
+        "physical": 76,
+        "nonblank": 63
+      },
+      {
+        "path": "tinyros/src/message/std_msgs.cpp",
+        "bytes": 5679,
+        "physical": 207,
+        "nonblank": 176
+      },
+      {
+        "path": "tinyros/src/message/std_msgs.hpp",
+        "bytes": 2782,
+        "physical": 95,
+        "nonblank": 81
+      },
+      {
+        "path": "tinyros/src/util/util.cpp",
+        "bytes": 1831,
+        "physical": 79,
+        "nonblank": 62
+      },
+      {
+        "path": "tinyros/src/util/util.hpp",
+        "bytes": 5805,
+        "physical": 228,
+        "nonblank": 197
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/boundingbox.py",
+        "bytes": 960,
+        "physical": 33,
+        "nonblank": 26
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/client.py",
+        "bytes": 14370,
+        "physical": 334,
+        "nonblank": 297
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/labels.py",
+        "bytes": 1382,
+        "physical": 83,
+        "nonblank": 82
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/processing.py",
+        "bytes": 2107,
+        "physical": 51,
+        "nonblank": 44
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/render.py",
+        "bytes": 3170,
+        "physical": 110,
+        "nonblank": 99
+      },
+      {
+        "path": "yolov7/detect.py",
+        "bytes": 9327,
+        "physical": 196,
+        "nonblank": 165
+      },
+      {
+        "path": "yolov7/export.py",
+        "bytes": 9162,
+        "physical": 205,
+        "nonblank": 179
+      },
+      {
+        "path": "yolov7/hubconf.py",
+        "bytes": 3583,
+        "physical": 97,
+        "nonblank": 75
+      },
+      {
+        "path": "yolov7/models/__init__.py",
+        "bytes": 6,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/models/common.py",
+        "bytes": 84388,
+        "physical": 2019,
+        "nonblank": 1612
+      },
+      {
+        "path": "yolov7/models/experimental.py",
+        "bytes": 10898,
+        "physical": 272,
+        "nonblank": 232
+      },
+      {
+        "path": "yolov7/models/yolo.py",
+        "bytes": 40066,
+        "physical": 843,
+        "nonblank": 727
+      },
+      {
+        "path": "yolov7/split_train_val.py",
+        "bytes": 1468,
+        "physical": 47,
+        "nonblank": 41
+      },
+      {
+        "path": "yolov7/test.py",
+        "bytes": 17596,
+        "physical": 363,
+        "nonblank": 318
+      },
+      {
+        "path": "yolov7/train.py",
+        "bytes": 38012,
+        "physical": 708,
+        "nonblank": 639
+      },
+      {
+        "path": "yolov7/train_aux.py",
+        "bytes": 37435,
+        "physical": 699,
+        "nonblank": 630
+      },
+      {
+        "path": "yolov7/utils/__init__.py",
+        "bytes": 6,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/utils/activations.py",
+        "bytes": 2248,
+        "physical": 72,
+        "nonblank": 54
+      },
+      {
+        "path": "yolov7/utils/add_nms.py",
+        "bytes": 5616,
+        "physical": 155,
+        "nonblank": 139
+      },
+      {
+        "path": "yolov7/utils/autoanchor.py",
+        "bytes": 7147,
+        "physical": 160,
+        "nonblank": 137
+      },
+      {
+        "path": "yolov7/utils/aws/__init__.py",
+        "bytes": 5,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/utils/aws/resume.py",
+        "bytes": 1113,
+        "physical": 37,
+        "nonblank": 29
+      },
+      {
+        "path": "yolov7/utils/datasets.py",
+        "bytes": 56229,
+        "physical": 1320,
+        "nonblank": 1086
+      },
+      {
+        "path": "yolov7/utils/general.py",
+        "bytes": 36872,
+        "physical": 892,
+        "nonblank": 720
+      },
+      {
+        "path": "yolov7/utils/google_utils.py",
+        "bytes": 4873,
+        "physical": 123,
+        "nonblank": 106
+      },
+      {
+        "path": "yolov7/utils/loss.py",
+        "bytes": 74944,
+        "physical": 1697,
+        "nonblank": 1365
+      },
+      {
+        "path": "yolov7/utils/metrics.py",
+        "bytes": 9310,
+        "physical": 227,
+        "nonblank": 185
+      },
+      {
+        "path": "yolov7/utils/plots.py",
+        "bytes": 20921,
+        "physical": 489,
+        "nonblank": 413
+      },
+      {
+        "path": "yolov7/utils/torch_utils.py",
+        "bytes": 15646,
+        "physical": 378,
+        "nonblank": 308
+      },
+      {
+        "path": "yolov7/utils/wandb_logging/__init__.py",
+        "bytes": 6,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/utils/wandb_logging/log_dataset.py",
+        "bytes": 815,
+        "physical": 24,
+        "nonblank": 16
+      },
+      {
+        "path": "yolov7/utils/wandb_logging/wandb_utils.py",
+        "bytes": 16265,
+        "physical": 306,
+        "nonblank": 276
+      },
+      {
+        "path": "yolov7/voc_label.py",
+        "bytes": 2416,
+        "physical": 73,
+        "nonblank": 65
+      }
+    ],
+    "python_files": [
+      {
+        "path": "yolov7/deploy/triton-inference-server/boundingbox.py",
+        "bytes": 960,
+        "physical": 33,
+        "nonblank": 26
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/client.py",
+        "bytes": 14370,
+        "physical": 334,
+        "nonblank": 297
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/labels.py",
+        "bytes": 1382,
+        "physical": 83,
+        "nonblank": 82
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/processing.py",
+        "bytes": 2107,
+        "physical": 51,
+        "nonblank": 44
+      },
+      {
+        "path": "yolov7/deploy/triton-inference-server/render.py",
+        "bytes": 3170,
+        "physical": 110,
+        "nonblank": 99
+      },
+      {
+        "path": "yolov7/detect.py",
+        "bytes": 9327,
+        "physical": 196,
+        "nonblank": 165
+      },
+      {
+        "path": "yolov7/export.py",
+        "bytes": 9162,
+        "physical": 205,
+        "nonblank": 179
+      },
+      {
+        "path": "yolov7/hubconf.py",
+        "bytes": 3583,
+        "physical": 97,
+        "nonblank": 75
+      },
+      {
+        "path": "yolov7/models/__init__.py",
+        "bytes": 6,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/models/common.py",
+        "bytes": 84388,
+        "physical": 2019,
+        "nonblank": 1612
+      },
+      {
+        "path": "yolov7/models/experimental.py",
+        "bytes": 10898,
+        "physical": 272,
+        "nonblank": 232
+      },
+      {
+        "path": "yolov7/models/yolo.py",
+        "bytes": 40066,
+        "physical": 843,
+        "nonblank": 727
+      },
+      {
+        "path": "yolov7/split_train_val.py",
+        "bytes": 1468,
+        "physical": 47,
+        "nonblank": 41
+      },
+      {
+        "path": "yolov7/test.py",
+        "bytes": 17596,
+        "physical": 363,
+        "nonblank": 318
+      },
+      {
+        "path": "yolov7/train.py",
+        "bytes": 38012,
+        "physical": 708,
+        "nonblank": 639
+      },
+      {
+        "path": "yolov7/train_aux.py",
+        "bytes": 37435,
+        "physical": 699,
+        "nonblank": 630
+      },
+      {
+        "path": "yolov7/utils/__init__.py",
+        "bytes": 6,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/utils/activations.py",
+        "bytes": 2248,
+        "physical": 72,
+        "nonblank": 54
+      },
+      {
+        "path": "yolov7/utils/add_nms.py",
+        "bytes": 5616,
+        "physical": 155,
+        "nonblank": 139
+      },
+      {
+        "path": "yolov7/utils/autoanchor.py",
+        "bytes": 7147,
+        "physical": 160,
+        "nonblank": 137
+      },
+      {
+        "path": "yolov7/utils/aws/__init__.py",
+        "bytes": 5,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/utils/aws/resume.py",
+        "bytes": 1113,
+        "physical": 37,
+        "nonblank": 29
+      },
+      {
+        "path": "yolov7/utils/datasets.py",
+        "bytes": 56229,
+        "physical": 1320,
+        "nonblank": 1086
+      },
+      {
+        "path": "yolov7/utils/general.py",
+        "bytes": 36872,
+        "physical": 892,
+        "nonblank": 720
+      },
+      {
+        "path": "yolov7/utils/google_utils.py",
+        "bytes": 4873,
+        "physical": 123,
+        "nonblank": 106
+      },
+      {
+        "path": "yolov7/utils/loss.py",
+        "bytes": 74944,
+        "physical": 1697,
+        "nonblank": 1365
+      },
+      {
+        "path": "yolov7/utils/metrics.py",
+        "bytes": 9310,
+        "physical": 227,
+        "nonblank": 185
+      },
+      {
+        "path": "yolov7/utils/plots.py",
+        "bytes": 20921,
+        "physical": 489,
+        "nonblank": 413
+      },
+      {
+        "path": "yolov7/utils/torch_utils.py",
+        "bytes": 15646,
+        "physical": 378,
+        "nonblank": 308
+      },
+      {
+        "path": "yolov7/utils/wandb_logging/__init__.py",
+        "bytes": 6,
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "yolov7/utils/wandb_logging/log_dataset.py",
+        "bytes": 815,
+        "physical": 24,
+        "nonblank": 16
+      },
+      {
+        "path": "yolov7/utils/wandb_logging/wandb_utils.py",
+        "bytes": 16265,
+        "physical": 306,
+        "nonblank": 276
+      },
+      {
+        "path": "yolov7/voc_label.py",
+        "bytes": 2416,
+        "physical": 73,
+        "nonblank": 65
+      }
+    ]
+  },
+  {
+    "repository": "thomasahle/sunfish",
+    "sha": "e396948acbd80cdcbad3dccfb07e878fba9df8f4",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\thomasahle__sunfish",
+    "all_tracked_files": 244,
+    "source_files": [
+      {
+        "path": "compressed.py",
+        "bytes": 6871,
+        "physical": 126,
+        "nonblank": 126
+      },
+      {
+        "path": "formal/scripts/model_audit.py",
+        "bytes": 9374,
+        "physical": 210,
+        "nonblank": 184
+      },
+      {
+        "path": "formal/scripts/standpat_terminal_search.py",
+        "bytes": 9077,
+        "physical": 226,
+        "nonblank": 185
+      },
+      {
+        "path": "nnue_4k/lichess/cost_gate.py",
+        "bytes": 9415,
+        "physical": 231,
+        "nonblank": 200
+      },
+      {
+        "path": "nnue_4k/lichess/extra_game_handlers.py",
+        "bytes": 2764,
+        "physical": 78,
+        "nonblank": 62
+      },
+      {
+        "path": "nnue_4k/packed/bench.py",
+        "bytes": 2220,
+        "physical": 62,
+        "nonblank": 53
+      },
+      {
+        "path": "nnue_4k/packed/build_ext.py",
+        "bytes": 2979,
+        "physical": 83,
+        "nonblank": 68
+      },
+      {
+        "path": "nnue_4k/packed/build_kb.py",
+        "bytes": 1659,
+        "physical": 50,
+        "nonblank": 40
+      },
+      {
+        "path": "nnue_4k/packed/embed_tables.py",
+        "bytes": 2075,
+        "physical": 60,
+        "nonblank": 48
+      },
+      {
+        "path": "nnue_4k/packed/make_random_net.py",
+        "bytes": 1216,
+        "physical": 32,
+        "nonblank": 27
+      },
+      {
+        "path": "nnue_4k/packed/pnet.py",
+        "bytes": 35976,
+        "physical": 846,
+        "nonblank": 747
+      },
+      {
+        "path": "nnue_4k/packed/shapecheck.py",
+        "bytes": 3055,
+        "physical": 81,
+        "nonblank": 69
+      },
+      {
+        "path": "nnue_4k/packed/test_quant.py",
+        "bytes": 2677,
+        "physical": 75,
+        "nonblank": 66
+      },
+      {
+        "path": "nnue_4k/packed/train_packed.py",
+        "bytes": 31500,
+        "physical": 659,
+        "nonblank": 604
+      },
+      {
+        "path": "nnue_4k/packed/verify.py",
+        "bytes": 3896,
+        "physical": 90,
+        "nonblank": 78
+      },
+      {
+        "path": "nnue_4k/pst_entry.py",
+        "bytes": 42975,
+        "physical": 846,
+        "nonblank": 768
+      },
+      {
+        "path": "nnue_4k/sunfish_nnue.py",
+        "bytes": 50535,
+        "physical": 1027,
+        "nonblank": 932
+      },
+      {
+        "path": "nnue_4k/tests/__init__.py",
+        "bytes": 0,
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "nnue_4k/tests/test_cost_gate.py",
+        "bytes": 4698,
+        "physical": 113,
+        "nonblank": 93
+      },
+      {
+        "path": "nnue_4k/tests/test_eviction_race.py",
+        "bytes": 4537,
+        "physical": 119,
+        "nonblank": 104
+      },
+      {
+        "path": "nnue_4k/tests/test_mtd_stability.py",
+        "bytes": 4592,
+        "physical": 127,
+        "nonblank": 103
+      },
+      {
+        "path": "nnue_4k/tests/test_packed_fen.py",
+        "bytes": 4833,
+        "physical": 119,
+        "nonblank": 104
+      },
+      {
+        "path": "nnue_4k/tests/test_time_budget.py",
+        "bytes": 3928,
+        "physical": 100,
+        "nonblank": 75
+      },
+      {
+        "path": "sunfish.py",
+        "bytes": 32941,
+        "physical": 662,
+        "nonblank": 589
+      },
+      {
+        "path": "sunfish_ui/__init__.py",
+        "bytes": 446,
+        "physical": 9,
+        "nonblank": 8
+      },
+      {
+        "path": "sunfish_ui/fancy.py",
+        "bytes": 13930,
+        "physical": 371,
+        "nonblank": 318
+      },
+      {
+        "path": "sunfish_ui/uci.py",
+        "bytes": 53083,
+        "physical": 1031,
+        "nonblank": 948
+      },
+      {
+        "path": "tests/mock_lichess.py",
+        "bytes": 38042,
+        "physical": 849,
+        "nonblank": 752
+      },
+      {
+        "path": "tests/test_blunder_scan.py",
+        "bytes": 22394,
+        "physical": 588,
+        "nonblank": 498
+      },
+      {
+        "path": "tests/test_book_tools.py",
+        "bytes": 16887,
+        "physical": 352,
+        "nonblank": 283
+      },
+      {
+        "path": "tests/test_bot_integration.py",
+        "bytes": 35237,
+        "physical": 720,
+        "nonblank": 621
+      },
+      {
+        "path": "tests/test_classic_time_budget.py",
+        "bytes": 25472,
+        "physical": 529,
+        "nonblank": 437
+      },
+      {
+        "path": "tests/test_cpu_credit.py",
+        "bytes": 14076,
+        "physical": 391,
+        "nonblank": 297
+      },
+      {
+        "path": "tests/test_eviction_race.py",
+        "bytes": 3798,
+        "physical": 96,
+        "nonblank": 83
+      },
+      {
+        "path": "tests/test_go_depth_promotion.py",
+        "bytes": 4257,
+        "physical": 106,
+        "nonblank": 85
+      },
+      {
+        "path": "tests/test_lichess_config.py",
+        "bytes": 4960,
+        "physical": 120,
+        "nonblank": 90
+      },
+      {
+        "path": "tests/test_model_audit.py",
+        "bytes": 809,
+        "physical": 23,
+        "nonblank": 19
+      },
+      {
+        "path": "tests/test_pack_sh_levers.py",
+        "bytes": 6514,
+        "physical": 151,
+        "nonblank": 128
+      },
+      {
+        "path": "tests/test_ponder_deadline.py",
+        "bytes": 3794,
+        "physical": 113,
+        "nonblank": 88
+      },
+      {
+        "path": "tests/test_pv_reporting.py",
+        "bytes": 6252,
+        "physical": 141,
+        "nonblank": 112
+      },
+      {
+        "path": "tests/test_regressions.py",
+        "bytes": 24887,
+        "physical": 588,
+        "nonblank": 482
+      },
+      {
+        "path": "tests/test_terminal_bench.py",
+        "bytes": 7398,
+        "physical": 177,
+        "nonblank": 150
+      },
+      {
+        "path": "tests/test_tm_pool.py",
+        "bytes": 40763,
+        "physical": 829,
+        "nonblank": 675
+      },
+      {
+        "path": "tests/test_tm_surrogate.py",
+        "bytes": 25996,
+        "physical": 498,
+        "nonblank": 414
+      },
+      {
+        "path": "tests/test_tt_consistency.py",
+        "bytes": 12434,
+        "physical": 293,
+        "nonblank": 251
+      },
+      {
+        "path": "tests/test_tuning_tools.py",
+        "bytes": 83060,
+        "physical": 1607,
+        "nonblank": 1502
+      },
+      {
+        "path": "tests/test_uci_interfaces.py",
+        "bytes": 22849,
+        "physical": 541,
+        "nonblank": 441
+      },
+      {
+        "path": "tests/test_xboard_polyglot.py",
+        "bytes": 4768,
+        "physical": 135,
+        "nonblank": 119
+      },
+      {
+        "path": "tools/blunder_scan.py",
+        "bytes": 36856,
+        "physical": 944,
+        "nonblank": 831
+      },
+      {
+        "path": "tools/book/attribute.py",
+        "bytes": 9163,
+        "physical": 200,
+        "nonblank": 173
+      },
+      {
+        "path": "tools/book/build_repertoire.py",
+        "bytes": 5662,
+        "physical": 124,
+        "nonblank": 109
+      },
+      {
+        "path": "tools/book/rebuild.py",
+        "bytes": 10255,
+        "physical": 222,
+        "nonblank": 186
+      },
+      {
+        "path": "tools/build/compress.py",
+        "bytes": 3074,
+        "physical": 66,
+        "nonblank": 55
+      },
+      {
+        "path": "tools/build/legality_gate.py",
+        "bytes": 3517,
+        "physical": 92,
+        "nonblank": 82
+      },
+      {
+        "path": "tools/build/make_pst_entry.py",
+        "bytes": 6017,
+        "physical": 122,
+        "nonblank": 109
+      },
+      {
+        "path": "tools/clean_draws.py",
+        "bytes": 779,
+        "physical": 19,
+        "nonblank": 18
+      },
+      {
+        "path": "tools/ctwin/difftest.py",
+        "bytes": 9879,
+        "physical": 257,
+        "nonblank": 229
+      },
+      {
+        "path": "tools/ctwin/gen_tables.py",
+        "bytes": 1306,
+        "physical": 37,
+        "nonblank": 30
+      },
+      {
+        "path": "tools/ctwin/match.py",
+        "bytes": 9677,
+        "physical": 249,
+        "nonblank": 221
+      },
+      {
+        "path": "tools/ctwin/nodescreen.py",
+        "bytes": 3228,
+        "physical": 83,
+        "nonblank": 72
+      },
+      {
+        "path": "tools/ctwin/npsprofile.py",
+        "bytes": 10714,
+        "physical": 251,
+        "nonblank": 223
+      },
+      {
+        "path": "tools/ctwin/pyref.py",
+        "bytes": 8841,
+        "physical": 231,
+        "nonblank": 191
+      },
+      {
+        "path": "tools/ctwin/sunfish.c",
+        "bytes": 61277,
+        "physical": 1469,
+        "nonblank": 1389
+      },
+      {
+        "path": "tools/ctwin/tmlib.py",
+        "bytes": 39814,
+        "physical": 760,
+        "nonblank": 674
+      },
+      {
+        "path": "tools/ctwin/tmmatrix.py",
+        "bytes": 5765,
+        "physical": 123,
+        "nonblank": 110
+      },
+      {
+        "path": "tools/ctwin/tmsim.py",
+        "bytes": 10828,
+        "physical": 247,
+        "nonblank": 215
+      },
+      {
+        "path": "tools/ctwin/variants.py",
+        "bytes": 10222,
+        "physical": 248,
+        "nonblank": 200
+      },
+      {
+        "path": "tools/ctwin/vmatch.py",
+        "bytes": 21259,
+        "physical": 457,
+        "nonblank": 417
+      },
+      {
+        "path": "tools/lichess/cpu_credit.py",
+        "bytes": 15887,
+        "physical": 376,
+        "nonblank": 326
+      },
+      {
+        "path": "tools/lichess/extra_game_handlers.py",
+        "bytes": 4557,
+        "physical": 113,
+        "nonblank": 89
+      },
+      {
+        "path": "tools/screens/cluster_elo.py",
+        "bytes": 3438,
+        "physical": 77,
+        "nonblank": 68
+      },
+      {
+        "path": "tools/screens/opening_gate.py",
+        "bytes": 2994,
+        "physical": 72,
+        "nonblank": 60
+      },
+      {
+        "path": "tools/tester.py",
+        "bytes": 17214,
+        "physical": 511,
+        "nonblank": 431
+      },
+      {
+        "path": "tools/tune/audit_consensus.py",
+        "bytes": 7636,
+        "physical": 174,
+        "nonblank": 149
+      },
+      {
+        "path": "tools/tune/calibrate_panel.py",
+        "bytes": 5659,
+        "physical": 138,
+        "nonblank": 121
+      },
+      {
+        "path": "tools/tune/chess_tuning_tools/fastchess_shim.py",
+        "bytes": 8605,
+        "physical": 225,
+        "nonblank": 201
+      },
+      {
+        "path": "tools/tune/chess_tuning_tools/make_config.py",
+        "bytes": 4634,
+        "physical": 111,
+        "nonblank": 100
+      },
+      {
+        "path": "tools/tune/chess_tuning_tools/patch_ctt.py",
+        "bytes": 4507,
+        "physical": 105,
+        "nonblank": 93
+      },
+      {
+        "path": "tools/tune/clop/clop_fastchess.py",
+        "bytes": 6245,
+        "physical": 158,
+        "nonblank": 134
+      },
+      {
+        "path": "tools/tune/clop/make_config.py",
+        "bytes": 1775,
+        "physical": 49,
+        "nonblank": 44
+      },
+      {
+        "path": "tools/tune/freeze_panel.py",
+        "bytes": 15637,
+        "physical": 361,
+        "nonblank": 313
+      },
+      {
+        "path": "tools/tune/freeze_recommendations.py",
+        "bytes": 6987,
+        "physical": 151,
+        "nonblank": 134
+      },
+      {
+        "path": "tools/tune/gating.py",
+        "bytes": 1646,
+        "physical": 48,
+        "nonblank": 45
+      },
+      {
+        "path": "tools/tune/locking.py",
+        "bytes": 697,
+        "physical": 25,
+        "nonblank": 22
+      },
+      {
+        "path": "tools/tune/logistic_gp/adaptive_gp.py",
+        "bytes": 68247,
+        "physical": 1502,
+        "nonblank": 1369
+      },
+      {
+        "path": "tools/tune/logistic_gp/logistic_gp.py",
+        "bytes": 34598,
+        "physical": 771,
+        "nonblank": 698
+      },
+      {
+        "path": "tools/tune/logistic_gp/report_gp.py",
+        "bytes": 5150,
+        "physical": 124,
+        "nonblank": 109
+      },
+      {
+        "path": "tools/tune/logistic_gp/sunfish_gate.py",
+        "bytes": 8246,
+        "physical": 214,
+        "nonblank": 190
+      },
+      {
+        "path": "tools/tune/logistic_gp/test_logistic_gp.py",
+        "bytes": 94721,
+        "physical": 2001,
+        "nonblank": 1839
+      },
+      {
+        "path": "tools/tune/opponent_panel.py",
+        "bytes": 2919,
+        "physical": 67,
+        "nonblank": 56
+      },
+      {
+        "path": "tools/tune/pentanomial.py",
+        "bytes": 4996,
+        "physical": 123,
+        "nonblank": 104
+      },
+      {
+        "path": "tools/tune/plot_recovery.py",
+        "bytes": 15313,
+        "physical": 338,
+        "nonblank": 304
+      },
+      {
+        "path": "tools/tune/rbfopt/run_rbfopt.py",
+        "bytes": 15813,
+        "physical": 373,
+        "nonblank": 328
+      },
+      {
+        "path": "tools/tune/recommend.py",
+        "bytes": 13591,
+        "physical": 343,
+        "nonblank": 297
+      },
+      {
+        "path": "tools/tune/recovery_decision.py",
+        "bytes": 17820,
+        "physical": 356,
+        "nonblank": 320
+      },
+      {
+        "path": "tools/tune/recovery_starts.py",
+        "bytes": 2840,
+        "physical": 74,
+        "nonblank": 63
+      },
+      {
+        "path": "tools/tune/screen_starts.py",
+        "bytes": 5188,
+        "physical": 126,
+        "nonblank": 107
+      },
+      {
+        "path": "tools/tune/spsa/candidates.py",
+        "bytes": 3078,
+        "physical": 82,
+        "nonblank": 71
+      },
+      {
+        "path": "tools/tune/spsa/pool.py",
+        "bytes": 2229,
+        "physical": 61,
+        "nonblank": 54
+      },
+      {
+        "path": "tools/tune/spsa/spsa.py",
+        "bytes": 19992,
+        "physical": 450,
+        "nonblank": 402
+      },
+      {
+        "path": "tools/tune/test_training_protocol.py",
+        "bytes": 13527,
+        "physical": 281,
+        "nonblank": 262
+      },
+      {
+        "path": "tools/tune/texel/texel_data.py",
+        "bytes": 3752,
+        "physical": 104,
+        "nonblank": 95
+      },
+      {
+        "path": "tools/tune/texel/texel_taper.py",
+        "bytes": 3408,
+        "physical": 101,
+        "nonblank": 84
+      },
+      {
+        "path": "tools/tune/texel/texel_tune.py",
+        "bytes": 3634,
+        "physical": 99,
+        "nonblank": 84
+      },
+      {
+        "path": "tools/tune/training_protocol.py",
+        "bytes": 12353,
+        "physical": 256,
+        "nonblank": 225
+      },
+      {
+        "path": "tools/tune/uci_wrapper.py",
+        "bytes": 210,
+        "physical": 9,
+        "nonblank": 6
+      },
+      {
+        "path": "tools/tune/validate.py",
+        "bytes": 11528,
+        "physical": 279,
+        "nonblank": 242
+      },
+      {
+        "path": "tools/tune/verify_recovery.py",
+        "bytes": 7310,
+        "physical": 166,
+        "nonblank": 143
+      },
+      {
+        "path": "tools/validate_terminal_bench.py",
+        "bytes": 2528,
+        "physical": 68,
+        "nonblank": 60
+      }
+    ],
+    "python_files": [
+      {
+        "path": "compressed.py",
+        "bytes": 6871,
+        "physical": 126,
+        "nonblank": 126
+      },
+      {
+        "path": "formal/scripts/model_audit.py",
+        "bytes": 9374,
+        "physical": 210,
+        "nonblank": 184
+      },
+      {
+        "path": "formal/scripts/standpat_terminal_search.py",
+        "bytes": 9077,
+        "physical": 226,
+        "nonblank": 185
+      },
+      {
+        "path": "nnue_4k/lichess/cost_gate.py",
+        "bytes": 9415,
+        "physical": 231,
+        "nonblank": 200
+      },
+      {
+        "path": "nnue_4k/lichess/extra_game_handlers.py",
+        "bytes": 2764,
+        "physical": 78,
+        "nonblank": 62
+      },
+      {
+        "path": "nnue_4k/packed/bench.py",
+        "bytes": 2220,
+        "physical": 62,
+        "nonblank": 53
+      },
+      {
+        "path": "nnue_4k/packed/build_ext.py",
+        "bytes": 2979,
+        "physical": 83,
+        "nonblank": 68
+      },
+      {
+        "path": "nnue_4k/packed/build_kb.py",
+        "bytes": 1659,
+        "physical": 50,
+        "nonblank": 40
+      },
+      {
+        "path": "nnue_4k/packed/embed_tables.py",
+        "bytes": 2075,
+        "physical": 60,
+        "nonblank": 48
+      },
+      {
+        "path": "nnue_4k/packed/make_random_net.py",
+        "bytes": 1216,
+        "physical": 32,
+        "nonblank": 27
+      },
+      {
+        "path": "nnue_4k/packed/pnet.py",
+        "bytes": 35976,
+        "physical": 846,
+        "nonblank": 747
+      },
+      {
+        "path": "nnue_4k/packed/shapecheck.py",
+        "bytes": 3055,
+        "physical": 81,
+        "nonblank": 69
+      },
+      {
+        "path": "nnue_4k/packed/test_quant.py",
+        "bytes": 2677,
+        "physical": 75,
+        "nonblank": 66
+      },
+      {
+        "path": "nnue_4k/packed/train_packed.py",
+        "bytes": 31500,
+        "physical": 659,
+        "nonblank": 604
+      },
+      {
+        "path": "nnue_4k/packed/verify.py",
+        "bytes": 3896,
+        "physical": 90,
+        "nonblank": 78
+      },
+      {
+        "path": "nnue_4k/pst_entry.py",
+        "bytes": 42975,
+        "physical": 846,
+        "nonblank": 768
+      },
+      {
+        "path": "nnue_4k/sunfish_nnue.py",
+        "bytes": 50535,
+        "physical": 1027,
+        "nonblank": 932
+      },
+      {
+        "path": "nnue_4k/tests/__init__.py",
+        "bytes": 0,
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "nnue_4k/tests/test_cost_gate.py",
+        "bytes": 4698,
+        "physical": 113,
+        "nonblank": 93
+      },
+      {
+        "path": "nnue_4k/tests/test_eviction_race.py",
+        "bytes": 4537,
+        "physical": 119,
+        "nonblank": 104
+      },
+      {
+        "path": "nnue_4k/tests/test_mtd_stability.py",
+        "bytes": 4592,
+        "physical": 127,
+        "nonblank": 103
+      },
+      {
+        "path": "nnue_4k/tests/test_packed_fen.py",
+        "bytes": 4833,
+        "physical": 119,
+        "nonblank": 104
+      },
+      {
+        "path": "nnue_4k/tests/test_time_budget.py",
+        "bytes": 3928,
+        "physical": 100,
+        "nonblank": 75
+      },
+      {
+        "path": "sunfish.py",
+        "bytes": 32941,
+        "physical": 662,
+        "nonblank": 589
+      },
+      {
+        "path": "sunfish_ui/__init__.py",
+        "bytes": 446,
+        "physical": 9,
+        "nonblank": 8
+      },
+      {
+        "path": "sunfish_ui/fancy.py",
+        "bytes": 13930,
+        "physical": 371,
+        "nonblank": 318
+      },
+      {
+        "path": "sunfish_ui/uci.py",
+        "bytes": 53083,
+        "physical": 1031,
+        "nonblank": 948
+      },
+      {
+        "path": "tests/mock_lichess.py",
+        "bytes": 38042,
+        "physical": 849,
+        "nonblank": 752
+      },
+      {
+        "path": "tests/test_blunder_scan.py",
+        "bytes": 22394,
+        "physical": 588,
+        "nonblank": 498
+      },
+      {
+        "path": "tests/test_book_tools.py",
+        "bytes": 16887,
+        "physical": 352,
+        "nonblank": 283
+      },
+      {
+        "path": "tests/test_bot_integration.py",
+        "bytes": 35237,
+        "physical": 720,
+        "nonblank": 621
+      },
+      {
+        "path": "tests/test_classic_time_budget.py",
+        "bytes": 25472,
+        "physical": 529,
+        "nonblank": 437
+      },
+      {
+        "path": "tests/test_cpu_credit.py",
+        "bytes": 14076,
+        "physical": 391,
+        "nonblank": 297
+      },
+      {
+        "path": "tests/test_eviction_race.py",
+        "bytes": 3798,
+        "physical": 96,
+        "nonblank": 83
+      },
+      {
+        "path": "tests/test_go_depth_promotion.py",
+        "bytes": 4257,
+        "physical": 106,
+        "nonblank": 85
+      },
+      {
+        "path": "tests/test_lichess_config.py",
+        "bytes": 4960,
+        "physical": 120,
+        "nonblank": 90
+      },
+      {
+        "path": "tests/test_model_audit.py",
+        "bytes": 809,
+        "physical": 23,
+        "nonblank": 19
+      },
+      {
+        "path": "tests/test_pack_sh_levers.py",
+        "bytes": 6514,
+        "physical": 151,
+        "nonblank": 128
+      },
+      {
+        "path": "tests/test_ponder_deadline.py",
+        "bytes": 3794,
+        "physical": 113,
+        "nonblank": 88
+      },
+      {
+        "path": "tests/test_pv_reporting.py",
+        "bytes": 6252,
+        "physical": 141,
+        "nonblank": 112
+      },
+      {
+        "path": "tests/test_regressions.py",
+        "bytes": 24887,
+        "physical": 588,
+        "nonblank": 482
+      },
+      {
+        "path": "tests/test_terminal_bench.py",
+        "bytes": 7398,
+        "physical": 177,
+        "nonblank": 150
+      },
+      {
+        "path": "tests/test_tm_pool.py",
+        "bytes": 40763,
+        "physical": 829,
+        "nonblank": 675
+      },
+      {
+        "path": "tests/test_tm_surrogate.py",
+        "bytes": 25996,
+        "physical": 498,
+        "nonblank": 414
+      },
+      {
+        "path": "tests/test_tt_consistency.py",
+        "bytes": 12434,
+        "physical": 293,
+        "nonblank": 251
+      },
+      {
+        "path": "tests/test_tuning_tools.py",
+        "bytes": 83060,
+        "physical": 1607,
+        "nonblank": 1502
+      },
+      {
+        "path": "tests/test_uci_interfaces.py",
+        "bytes": 22849,
+        "physical": 541,
+        "nonblank": 441
+      },
+      {
+        "path": "tests/test_xboard_polyglot.py",
+        "bytes": 4768,
+        "physical": 135,
+        "nonblank": 119
+      },
+      {
+        "path": "tools/blunder_scan.py",
+        "bytes": 36856,
+        "physical": 944,
+        "nonblank": 831
+      },
+      {
+        "path": "tools/book/attribute.py",
+        "bytes": 9163,
+        "physical": 200,
+        "nonblank": 173
+      },
+      {
+        "path": "tools/book/build_repertoire.py",
+        "bytes": 5662,
+        "physical": 124,
+        "nonblank": 109
+      },
+      {
+        "path": "tools/book/rebuild.py",
+        "bytes": 10255,
+        "physical": 222,
+        "nonblank": 186
+      },
+      {
+        "path": "tools/build/compress.py",
+        "bytes": 3074,
+        "physical": 66,
+        "nonblank": 55
+      },
+      {
+        "path": "tools/build/legality_gate.py",
+        "bytes": 3517,
+        "physical": 92,
+        "nonblank": 82
+      },
+      {
+        "path": "tools/build/make_pst_entry.py",
+        "bytes": 6017,
+        "physical": 122,
+        "nonblank": 109
+      },
+      {
+        "path": "tools/clean_draws.py",
+        "bytes": 779,
+        "physical": 19,
+        "nonblank": 18
+      },
+      {
+        "path": "tools/ctwin/difftest.py",
+        "bytes": 9879,
+        "physical": 257,
+        "nonblank": 229
+      },
+      {
+        "path": "tools/ctwin/gen_tables.py",
+        "bytes": 1306,
+        "physical": 37,
+        "nonblank": 30
+      },
+      {
+        "path": "tools/ctwin/match.py",
+        "bytes": 9677,
+        "physical": 249,
+        "nonblank": 221
+      },
+      {
+        "path": "tools/ctwin/nodescreen.py",
+        "bytes": 3228,
+        "physical": 83,
+        "nonblank": 72
+      },
+      {
+        "path": "tools/ctwin/npsprofile.py",
+        "bytes": 10714,
+        "physical": 251,
+        "nonblank": 223
+      },
+      {
+        "path": "tools/ctwin/pyref.py",
+        "bytes": 8841,
+        "physical": 231,
+        "nonblank": 191
+      },
+      {
+        "path": "tools/ctwin/tmlib.py",
+        "bytes": 39814,
+        "physical": 760,
+        "nonblank": 674
+      },
+      {
+        "path": "tools/ctwin/tmmatrix.py",
+        "bytes": 5765,
+        "physical": 123,
+        "nonblank": 110
+      },
+      {
+        "path": "tools/ctwin/tmsim.py",
+        "bytes": 10828,
+        "physical": 247,
+        "nonblank": 215
+      },
+      {
+        "path": "tools/ctwin/variants.py",
+        "bytes": 10222,
+        "physical": 248,
+        "nonblank": 200
+      },
+      {
+        "path": "tools/ctwin/vmatch.py",
+        "bytes": 21259,
+        "physical": 457,
+        "nonblank": 417
+      },
+      {
+        "path": "tools/lichess/cpu_credit.py",
+        "bytes": 15887,
+        "physical": 376,
+        "nonblank": 326
+      },
+      {
+        "path": "tools/lichess/extra_game_handlers.py",
+        "bytes": 4557,
+        "physical": 113,
+        "nonblank": 89
+      },
+      {
+        "path": "tools/screens/cluster_elo.py",
+        "bytes": 3438,
+        "physical": 77,
+        "nonblank": 68
+      },
+      {
+        "path": "tools/screens/opening_gate.py",
+        "bytes": 2994,
+        "physical": 72,
+        "nonblank": 60
+      },
+      {
+        "path": "tools/tester.py",
+        "bytes": 17214,
+        "physical": 511,
+        "nonblank": 431
+      },
+      {
+        "path": "tools/tune/audit_consensus.py",
+        "bytes": 7636,
+        "physical": 174,
+        "nonblank": 149
+      },
+      {
+        "path": "tools/tune/calibrate_panel.py",
+        "bytes": 5659,
+        "physical": 138,
+        "nonblank": 121
+      },
+      {
+        "path": "tools/tune/chess_tuning_tools/fastchess_shim.py",
+        "bytes": 8605,
+        "physical": 225,
+        "nonblank": 201
+      },
+      {
+        "path": "tools/tune/chess_tuning_tools/make_config.py",
+        "bytes": 4634,
+        "physical": 111,
+        "nonblank": 100
+      },
+      {
+        "path": "tools/tune/chess_tuning_tools/patch_ctt.py",
+        "bytes": 4507,
+        "physical": 105,
+        "nonblank": 93
+      },
+      {
+        "path": "tools/tune/clop/clop_fastchess.py",
+        "bytes": 6245,
+        "physical": 158,
+        "nonblank": 134
+      },
+      {
+        "path": "tools/tune/clop/make_config.py",
+        "bytes": 1775,
+        "physical": 49,
+        "nonblank": 44
+      },
+      {
+        "path": "tools/tune/freeze_panel.py",
+        "bytes": 15637,
+        "physical": 361,
+        "nonblank": 313
+      },
+      {
+        "path": "tools/tune/freeze_recommendations.py",
+        "bytes": 6987,
+        "physical": 151,
+        "nonblank": 134
+      },
+      {
+        "path": "tools/tune/gating.py",
+        "bytes": 1646,
+        "physical": 48,
+        "nonblank": 45
+      },
+      {
+        "path": "tools/tune/locking.py",
+        "bytes": 697,
+        "physical": 25,
+        "nonblank": 22
+      },
+      {
+        "path": "tools/tune/logistic_gp/adaptive_gp.py",
+        "bytes": 68247,
+        "physical": 1502,
+        "nonblank": 1369
+      },
+      {
+        "path": "tools/tune/logistic_gp/logistic_gp.py",
+        "bytes": 34598,
+        "physical": 771,
+        "nonblank": 698
+      },
+      {
+        "path": "tools/tune/logistic_gp/report_gp.py",
+        "bytes": 5150,
+        "physical": 124,
+        "nonblank": 109
+      },
+      {
+        "path": "tools/tune/logistic_gp/sunfish_gate.py",
+        "bytes": 8246,
+        "physical": 214,
+        "nonblank": 190
+      },
+      {
+        "path": "tools/tune/logistic_gp/test_logistic_gp.py",
+        "bytes": 94721,
+        "physical": 2001,
+        "nonblank": 1839
+      },
+      {
+        "path": "tools/tune/opponent_panel.py",
+        "bytes": 2919,
+        "physical": 67,
+        "nonblank": 56
+      },
+      {
+        "path": "tools/tune/pentanomial.py",
+        "bytes": 4996,
+        "physical": 123,
+        "nonblank": 104
+      },
+      {
+        "path": "tools/tune/plot_recovery.py",
+        "bytes": 15313,
+        "physical": 338,
+        "nonblank": 304
+      },
+      {
+        "path": "tools/tune/rbfopt/run_rbfopt.py",
+        "bytes": 15813,
+        "physical": 373,
+        "nonblank": 328
+      },
+      {
+        "path": "tools/tune/recommend.py",
+        "bytes": 13591,
+        "physical": 343,
+        "nonblank": 297
+      },
+      {
+        "path": "tools/tune/recovery_decision.py",
+        "bytes": 17820,
+        "physical": 356,
+        "nonblank": 320
+      },
+      {
+        "path": "tools/tune/recovery_starts.py",
+        "bytes": 2840,
+        "physical": 74,
+        "nonblank": 63
+      },
+      {
+        "path": "tools/tune/screen_starts.py",
+        "bytes": 5188,
+        "physical": 126,
+        "nonblank": 107
+      },
+      {
+        "path": "tools/tune/spsa/candidates.py",
+        "bytes": 3078,
+        "physical": 82,
+        "nonblank": 71
+      },
+      {
+        "path": "tools/tune/spsa/pool.py",
+        "bytes": 2229,
+        "physical": 61,
+        "nonblank": 54
+      },
+      {
+        "path": "tools/tune/spsa/spsa.py",
+        "bytes": 19992,
+        "physical": 450,
+        "nonblank": 402
+      },
+      {
+        "path": "tools/tune/test_training_protocol.py",
+        "bytes": 13527,
+        "physical": 281,
+        "nonblank": 262
+      },
+      {
+        "path": "tools/tune/texel/texel_data.py",
+        "bytes": 3752,
+        "physical": 104,
+        "nonblank": 95
+      },
+      {
+        "path": "tools/tune/texel/texel_taper.py",
+        "bytes": 3408,
+        "physical": 101,
+        "nonblank": 84
+      },
+      {
+        "path": "tools/tune/texel/texel_tune.py",
+        "bytes": 3634,
+        "physical": 99,
+        "nonblank": 84
+      },
+      {
+        "path": "tools/tune/training_protocol.py",
+        "bytes": 12353,
+        "physical": 256,
+        "nonblank": 225
+      },
+      {
+        "path": "tools/tune/uci_wrapper.py",
+        "bytes": 210,
+        "physical": 9,
+        "nonblank": 6
+      },
+      {
+        "path": "tools/tune/validate.py",
+        "bytes": 11528,
+        "physical": 279,
+        "nonblank": 242
+      },
+      {
+        "path": "tools/tune/verify_recovery.py",
+        "bytes": 7310,
+        "physical": 166,
+        "nonblank": 143
+      },
+      {
+        "path": "tools/validate_terminal_bench.py",
+        "bytes": 2528,
+        "physical": 68,
+        "nonblank": 60
+      }
+    ]
+  },
+  {
+    "repository": "walker8088/moonfish",
+    "sha": "52c44c3f2d187ad239a2c36325f9f224138fed53",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\walker8088__moonfish",
+    "all_tracked_files": 14,
+    "source_files": [
+      {
+        "path": "hardfish.py",
+        "bytes": 629,
+        "physical": 26,
+        "nonblank": 23
+      },
+      {
+        "path": "io_test.py",
+        "bytes": 602,
+        "physical": 29,
+        "nonblank": 23
+      },
+      {
+        "path": "moonfish.py",
+        "bytes": 27023,
+        "physical": 654,
+        "nonblank": 568
+      },
+      {
+        "path": "moonfish_test.py",
+        "bytes": 7145,
+        "physical": 213,
+        "nonblank": 175
+      },
+      {
+        "path": "moonfish_ucci.py",
+        "bytes": 4014,
+        "physical": 136,
+        "nonblank": 109
+      },
+      {
+        "path": "tools.py",
+        "bytes": 9686,
+        "physical": 264,
+        "nonblank": 231
+      },
+      {
+        "path": "zobrist.py",
+        "bytes": 422,
+        "physical": 19,
+        "nonblank": 13
+      }
+    ],
+    "python_files": [
+      {
+        "path": "hardfish.py",
+        "bytes": 629,
+        "physical": 26,
+        "nonblank": 23
+      },
+      {
+        "path": "io_test.py",
+        "bytes": 602,
+        "physical": 29,
+        "nonblank": 23
+      },
+      {
+        "path": "moonfish.py",
+        "bytes": 27023,
+        "physical": 654,
+        "nonblank": 568
+      },
+      {
+        "path": "moonfish_test.py",
+        "bytes": 7145,
+        "physical": 213,
+        "nonblank": 175
+      },
+      {
+        "path": "moonfish_ucci.py",
+        "bytes": 4014,
+        "physical": 136,
+        "nonblank": 109
+      },
+      {
+        "path": "tools.py",
+        "bytes": 9686,
+        "physical": 264,
+        "nonblank": 231
+      },
+      {
+        "path": "zobrist.py",
+        "bytes": 422,
+        "physical": 19,
+        "nonblank": 13
+      }
+    ]
+  },
+  {
+    "repository": "yizhepku/Raspberry-Chess",
+    "sha": "89b6ad54300f7fa9fc854c9f123f00cf2f04725a",
+    "snapshot": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-chess-research-20261008\\yizhepku__Raspberry-Chess",
+    "all_tracked_files": 12,
+    "source_files": [
+      {
+        "path": "arm.py",
+        "bytes": 3020,
+        "physical": 109,
+        "nonblank": 96
+      },
+      {
+        "path": "exceptions.py",
+        "bytes": 178,
+        "physical": 10,
+        "nonblank": 6
+      },
+      {
+        "path": "main.py",
+        "bytes": 3506,
+        "physical": 116,
+        "nonblank": 92
+      },
+      {
+        "path": "positions.py",
+        "bytes": 4660,
+        "physical": 149,
+        "nonblank": 124
+      },
+      {
+        "path": "vision.py",
+        "bytes": 6635,
+        "physical": 224,
+        "nonblank": 182
+      }
+    ],
+    "python_files": [
+      {
+        "path": "arm.py",
+        "bytes": 3020,
+        "physical": 109,
+        "nonblank": 96
+      },
+      {
+        "path": "exceptions.py",
+        "bytes": 178,
+        "physical": 10,
+        "nonblank": 6
+      },
+      {
+        "path": "main.py",
+        "bytes": 3506,
+        "physical": 116,
+        "nonblank": 92
+      },
+      {
+        "path": "positions.py",
+        "bytes": 4660,
+        "physical": 149,
+        "nonblank": 124
+      },
+      {
+        "path": "vision.py",
+        "bytes": 6635,
+        "physical": 224,
+        "nonblank": 182
+      }
+    ]
+  }
+]

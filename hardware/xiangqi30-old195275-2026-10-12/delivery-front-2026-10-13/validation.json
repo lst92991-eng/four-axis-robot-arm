@@ -1,0 +1,1268 @@
+{
+  "reopened": true,
+  "top_components": 38,
+  "all_components": 195,
+  "outside_package_references": [],
+  "legacy_virtual_stored_paths": [],
+  "reference_rewrites": [],
+  "stored_dependencies": [
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_SCARA四轴机械臂总成.SLDASM",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40x40x500.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_底座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40型材M4T型螺母.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_MGW12H滑块.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_MGW12_500mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_42步进电机L60.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_DLE42-L2BJ-长款50.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_J1机械臂.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_FF固定铝板.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40型材角件.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_电机支撑铝板.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_单头六角螺柱M3x30+6.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_L型支架底座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_L型支架竖板.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_铝型材挤压角座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_方键条销.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_61mm光轴.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_第二机械臂.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_42步进电机L40.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_FF ______________[FF12].SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_FF丝杆支撑座[FF10].sldprt",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_轴承座8mm内径.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_SKF_608-2ZZ.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_内径8mm法兰.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_40T型螺母M8孔.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M8内六角x18mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M8内六角x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M4内六角x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M6内六角x22.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角x12mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M5内六角x16.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3x4mm紧固螺丝.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M4内六角x18mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角x10mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_8mm键槽法兰.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_光轴固定环.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_8x10x3mm轴套.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M3内六角小头x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_T型丝杆500mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_8-16联轴器.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_紧凑型轴承座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_T型丝杆螺母.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_M6小头内六角x22.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_DRIVE_ASSEMBLY.SLDASM",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\GT20同步轮.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\GT60同步轮.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\OLD_BELT.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\board_315x350_pitch35.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_r.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_n.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_b.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_a.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_k.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_c.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_black_p.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_P.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_C.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_R.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_N.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_B.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_A.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\piece_red_K.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_0_60mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_1_60mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_2_60mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SolidWorks\\aruco_id_3_60mm.SLDPRT"
+  ],
+  "components": [
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1",
+      "file": "OLD_SCARA四轴机械臂总成.SLDASM",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_MGW12H滑块-1",
+      "file": "OLD_MGW12H滑块.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_42步进电机L60-2",
+      "file": "OLD_42步进电机L60.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_FF固定铝板-1",
+      "file": "OLD_FF固定铝板.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40x40x500-1",
+      "file": "OLD_40x40x500.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_底座-1",
+      "file": "OLD_底座.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_42步进电机L60-1",
+      "file": "OLD_42步进电机L60.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_DLE42-L2BJ-长款50-2",
+      "file": "OLD_DLE42-L2BJ-长款50.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-2",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_MGW12_500mm-1",
+      "file": "OLD_MGW12_500mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-5",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-8",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-6",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-4",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_电机支撑铝板-1",
+      "file": "OLD_电机支撑铝板.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-9",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_L型支架竖板-1",
+      "file": "OLD_L型支架竖板.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_单头六角螺柱M3x30+6-2",
+      "file": "OLD_单头六角螺柱M3x30+6.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-1",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-2",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-3",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材角件-7",
+      "file": "OLD_40型材角件.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_单头六角螺柱M3x30+6-1",
+      "file": "OLD_单头六角螺柱M3x30+6.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_单头六角螺柱M3x30+6-3",
+      "file": "OLD_单头六角螺柱M3x30+6.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_42步进电机L60-3",
+      "file": "OLD_42步进电机L60.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_单头六角螺柱M3x30+6-4",
+      "file": "OLD_单头六角螺柱M3x30+6.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_L型支架底座-1",
+      "file": "OLD_L型支架底座.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_第二机械臂-1",
+      "file": "OLD_第二机械臂.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_J1机械臂-2",
+      "file": "OLD_J1机械臂.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_FF ______________[FF12]-3",
+      "file": "OLD_FF ______________[FF12].SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_铝型材挤压角座-2",
+      "file": "OLD_铝型材挤压角座.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_42步进电机L40-1",
+      "file": "OLD_42步进电机L40.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_铝型材挤压角座-1",
+      "file": "OLD_铝型材挤压角座.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_方键条销-1",
+      "file": "OLD_方键条销.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_轴承座8mm内径-1",
+      "file": "OLD_轴承座8mm内径.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_内径8mm法兰-1",
+      "file": "OLD_内径8mm法兰.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_DRIVE_ASSEMBLY-1",
+      "file": "OLD_DRIVE_ASSEMBLY.SLDASM",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_DRIVE_ASSEMBLY-1/GT60同步轮-1",
+      "file": "GT60同步轮.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_DRIVE_ASSEMBLY-1/GT20同步轮-1",
+      "file": "GT20同步轮.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_DRIVE_ASSEMBLY-1/OLD_BELT-1",
+      "file": "OLD_BELT.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-1",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_SKF_608-2ZZ-1",
+      "file": "OLD_SKF_608-2ZZ.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-2",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-1",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-4",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-3",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-7",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-5",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-6",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-9",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-3",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-4",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-7",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40T型螺母M8孔-8",
+      "file": "OLD_40T型螺母M8孔.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-2",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-5",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-6",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-8",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-1",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-7",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-1",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-2",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-3",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-6",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-8",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-9",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x18mm-9",
+      "file": "OLD_M8内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-4",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M8内六角x16mm-5",
+      "file": "OLD_M8内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-6",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-7",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-5",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-3",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-4",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-1",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-3",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-8",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-2",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-6",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-4",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-2",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M5内六角x16-3",
+      "file": "OLD_M5内六角x16.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-8",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-2",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M5内六角x16-1",
+      "file": "OLD_M5内六角x16.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-7",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-8",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-5",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6内六角x22-5",
+      "file": "OLD_M6内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-6",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x16mm-7",
+      "file": "OLD_M3内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M5内六角x16-2",
+      "file": "OLD_M5内六角x16.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-26",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M5内六角x16-4",
+      "file": "OLD_M5内六角x16.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-23",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-19",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-20",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-21",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-24",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-25",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-1",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-6",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-22",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-3",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-5",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-2",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-4",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_8mm键槽法兰-1",
+      "file": "OLD_8mm键槽法兰.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-14",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x10mm-1",
+      "file": "OLD_M3内六角x10mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x10mm-3",
+      "file": "OLD_M3内六角x10mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_8x10x3mm轴套-1",
+      "file": "OLD_8x10x3mm轴套.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-19",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x10mm-4",
+      "file": "OLD_M3内六角x10mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-1",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-7",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3x4mm紧固螺丝-8",
+      "file": "OLD_M3x4mm紧固螺丝.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x10mm-2",
+      "file": "OLD_M3内六角x10mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_光轴固定环-1",
+      "file": "OLD_光轴固定环.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-15",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-16",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-17",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x18mm-18",
+      "file": "OLD_M4内六角x18mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_紧凑型轴承座-1",
+      "file": "OLD_紧凑型轴承座.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-16",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-14",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-18",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_T型丝杆500mm-1",
+      "file": "OLD_T型丝杆500mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_8-16联轴器-1",
+      "file": "OLD_8-16联轴器.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-30",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-19",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-15",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_40型材M4T型螺母-17",
+      "file": "OLD_40型材M4T型螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-9",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_T型丝杆螺母-1",
+      "file": "OLD_T型丝杆螺母.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6小头内六角x22-1",
+      "file": "OLD_M6小头内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M6小头内六角x22-2",
+      "file": "OLD_M6小头内六角x22.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-28",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-29",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-27",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-5",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-16",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-11",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-17",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-22",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-24",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-8",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-6",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_FF丝杆支撑座[FF10]-2",
+      "file": "OLD_FF丝杆支撑座[FF10].sldprt",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角x12mm-18",
+      "file": "OLD_M3内六角x12mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-9",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-7",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-10",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M3内六角小头x16mm-12",
+      "file": "OLD_M3内六角小头x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_61mm光轴-2",
+      "file": "OLD_61mm光轴.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-23",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-26",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "OLD_SCARA四轴机械臂总成-1/OLD_M4内六角x16mm-25",
+      "file": "OLD_M4内六角x16mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_r-2",
+      "file": "piece_black_r.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_k-1",
+      "file": "piece_black_k.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_b-2",
+      "file": "piece_black_b.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_n-2",
+      "file": "piece_black_n.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "board_315x350_pitch35-1",
+      "file": "board_315x350_pitch35.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_p-1",
+      "file": "piece_black_p.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_r-1",
+      "file": "piece_black_r.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_a-1",
+      "file": "piece_black_a.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_b-1",
+      "file": "piece_black_b.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_a-2",
+      "file": "piece_black_a.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_n-1",
+      "file": "piece_black_n.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_c-1",
+      "file": "piece_black_c.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_c-2",
+      "file": "piece_black_c.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_C-2",
+      "file": "piece_red_C.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_C-1",
+      "file": "piece_red_C.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_p-4",
+      "file": "piece_black_p.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_p-2",
+      "file": "piece_black_p.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_p-3",
+      "file": "piece_black_p.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_black_p-5",
+      "file": "piece_black_p.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_P-3",
+      "file": "piece_red_P.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_P-2",
+      "file": "piece_red_P.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_P-4",
+      "file": "piece_red_P.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_P-5",
+      "file": "piece_red_P.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_P-1",
+      "file": "piece_red_P.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_R-2",
+      "file": "piece_red_R.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_B-1",
+      "file": "piece_red_B.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_A-2",
+      "file": "piece_red_A.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "aruco_id_3_60mm-1",
+      "file": "aruco_id_3_60mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_N-1",
+      "file": "piece_red_N.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_B-2",
+      "file": "piece_red_B.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_A-1",
+      "file": "piece_red_A.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_R-1",
+      "file": "piece_red_R.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_K-1",
+      "file": "piece_red_K.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "piece_red_N-2",
+      "file": "piece_red_N.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "aruco_id_0_60mm-1",
+      "file": "aruco_id_0_60mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "aruco_id_1_60mm-1",
+      "file": "aruco_id_1_60mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    },
+    {
+      "component": "aruco_id_2_60mm-1",
+      "file": "aruco_id_2_60mm.SLDPRT",
+      "virtual": false,
+      "suppressed": false
+    }
+  ],
+  "board_center_cad_m": [
+    0.0005081229999999715,
+    -0.43521586600000006,
+    1.0
+  ],
+  "board_reference_pose_verified": true,
+  "marker_check": "OpenCV 5.0.0 decoded all four IDs from rendered A4 PDF",
+  "geometry_scope": "front reference layout, old-screw collision grid supports 86/90; 4 points need exact recheck",
+  "source_note": "source SLDASM resaved by native Pack and Go; 44 source part hashes unchanged",
+  "original_arm_warning": "original internal mates/interferences retained; not a mechanical safety acceptance",
+  "cam_data": "User approved discarding CAM machining metadata for reference copies",
+  "step_refreshed_after_reference_repair": true,
+  "preview_images_checked": true,
+  "virtual_drive_externalized": true,
+  "source_reference_counts": {
+    "outside": 0
+  },
+  "geometry_note": "same source native drive/belt geometry; component packaging changed to external files"
+}

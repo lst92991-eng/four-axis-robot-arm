@@ -1,0 +1,89 @@
+[
+  {
+    "side": "red",
+    "debug": true,
+    "noise": 1,
+    "exit": 0,
+    "stdout": "OpenCV 5.0.0 | robot=red | wall=4.12395s | virtual=119.8s\n",
+    "stderr": "",
+    "status": {
+      "opencv": "5.0.0",
+      "robot_side": "red",
+      "ply": 20,
+      "move": "c9e7",
+      "fen": "r2k1ab2/9/4b1n2/pR2p1p1p/2p6/6P2/P1c1P3P/2N1B1C2/9/3AKAB2 w - - 0 1",
+      "virtual_motion_seconds": 119.7999999999933,
+      "last_motion_seconds": 0.0,
+      "captured_by_arm": 4
+    }
+  },
+  {
+    "side": "black",
+    "debug": true,
+    "noise": 1,
+    "exit": 0,
+    "stdout": "OpenCV 5.0.0 | robot=black | wall=4.0593s | virtual=124.66s\n",
+    "stderr": "",
+    "status": {
+      "opencv": "5.0.0",
+      "robot_side": "black",
+      "ply": 20,
+      "move": "c9e7",
+      "fen": "r2k1ab2/9/4b1n2/pR2p1p1p/2p6/6P2/P1c1P3P/2N1B1C2/9/3AKAB2 w - - 0 1",
+      "virtual_motion_seconds": 124.65999999999234,
+      "last_motion_seconds": 9.379999999998134,
+      "captured_by_arm": 4
+    }
+  },
+  {
+    "side": "red",
+    "debug": false,
+    "noise": 1,
+    "exit": 0,
+    "stdout": "OpenCV 5.0.0 | robot=red | wall=4.03203s | virtual=119.8s\n",
+    "stderr": "",
+    "status": {
+      "opencv": "5.0.0",
+      "robot_side": "red",
+      "ply": 20,
+      "move": "c9e7",
+      "fen": "r2k1ab2/9/4b1n2/pR2p1p1p/2p6/6P2/P1c1P3P/2N1B1C2/9/3AKAB2 w - - 0 1",
+      "virtual_motion_seconds": 119.7999999999933,
+      "last_motion_seconds": 0.0,
+      "captured_by_arm": 4
+    }
+  },
+  {
+    "side": "red",
+    "debug": true,
+    "noise": 0,
+    "exit": 0,
+    "stdout": "OpenCV 5.0.0 | robot=red | wall=2.58586s | virtual=106.04s\n",
+    "stderr": "",
+    "status": {
+      "opencv": "5.0.0",
+      "robot_side": "red",
+      "ply": 20,
+      "move": "c9e7",
+      "fen": "r2k1ab2/9/4b1n2/pR2p1p1p/2p6/6P2/P1c1P3P/2N1B1C2/9/3AKAB2 w - - 0 1",
+      "virtual_motion_seconds": 106.03999999999604,
+      "last_motion_seconds": 0.0,
+      "captured_by_arm": 4
+    }
+  },
+  {
+    "rejection": "side",
+    "exit": 1,
+    "message": "机器人颜色应为red或black\n"
+  },
+  {
+    "rejection": "camera",
+    "exit": 1,
+    "message": "相机无法完整覆盖棋盘和白边\n"
+  },
+  {
+    "rejection": "lift",
+    "exit": 1,
+    "message": "棋子间距或10mm抬升净空不满足仿真假设\n"
+  }
+]

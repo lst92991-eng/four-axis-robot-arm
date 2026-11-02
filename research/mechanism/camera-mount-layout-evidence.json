@@ -1,0 +1,666 @@
+{
+  "created_local": "2026-10-09T15:02:53.552447+08:00",
+  "scope": "原总装只读COM几何测量；建议安装坐标，不是实机标定或全关节碰撞验证。",
+  "assembly": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SCARA四轴机械臂总成.SLDASM",
+  "assembly_sha256": "42d75c8cc76da8c43b351f9c857fffed658a2c09febaa11f47c1b6cb3e27ec7b",
+  "matches_cached_original_sha256": true,
+  "save_flag_before": false,
+  "save_flag_after": false,
+  "readonly_methods": [
+    "GetOpenDocumentByName",
+    "GetComponents(False)",
+    "IComponent2.GetBox(False,False)",
+    "FirstFeature/GetFirstSubFeature",
+    "GetDefinition getters",
+    "GetSpecificFeature2/MateEntity getters"
+  ],
+  "measurement_caveat": "GetBox是装配坐标下当前姿态的近似轴对齐包络；不等于全关节扫掠。IsFixed=False不等于能运动，绝大多数静止零件依靠配合固定。未ActivateDoc、选择、重建、修改配合、保存或切换视角。",
+  "component_count_including_subassembly_and_children": 157,
+  "overall_current_bbox_cad_mm": [
+    -59.491877,
+    -660.554357,
+    986.0,
+    60.508123,
+    58.784134,
+    1580.0
+  ],
+  "overall_current_size_mm": [
+    120.0,
+    719.338491,
+    594.0
+  ],
+  "key_components": [
+    {
+      "name": "40x40x500-1",
+      "bbox_cad_mm": [
+        -19.491877,
+        -21.215866,
+        1000.0,
+        20.508123,
+        18.784134,
+        1510.0
+      ],
+      "is_fixed_flag": true,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -20.0,
+        -174.0,
+        14.0,
+        20.0,
+        -134.0,
+        524.0
+      ]
+    },
+    {
+      "name": "底座-1",
+      "bbox_cad_mm": [
+        -59.491877,
+        -101.215866,
+        986.0,
+        60.508123,
+        58.784134,
+        1000.0
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -60.0,
+        -214.0,
+        0.0,
+        60.0,
+        -54.0,
+        14.0
+      ]
+    },
+    {
+      "name": "MGW12H滑块-1",
+      "bbox_cad_mm": [
+        -19.49198,
+        -35.215969,
+        1253.853365,
+        20.508123,
+        -24.615763,
+        1314.253571
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -20.0,
+        -130.600103,
+        267.853365,
+        20.000103,
+        -119.999897,
+        328.253571
+      ]
+    },
+    {
+      "name": "42步进电机L60-2",
+      "bbox_cad_mm": [
+        -32.890277,
+        -186.525761,
+        1335.750968,
+        29.116001,
+        -126.607988,
+        1419.753468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -28.607878,
+        -28.607878,
+        349.750968,
+        33.3984,
+        31.309895,
+        433.753468
+      ]
+    },
+    {
+      "name": "42步进电机L60-1",
+      "bbox_cad_mm": [
+        -22.632809,
+        -108.377975,
+        1495.9975,
+        23.189468,
+        -57.534521,
+        1580.0
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -22.681345,
+        -97.681345,
+        509.9975,
+        23.140932,
+        -46.837891,
+        594.0
+      ]
+    },
+    {
+      "name": "FF固定铝板-1",
+      "bbox_cad_mm": [
+        -59.491877,
+        -102.215866,
+        1448.157311,
+        60.508123,
+        58.784134,
+        1458.157311
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -60.0,
+        -214.0,
+        462.157311,
+        60.0,
+        -53.0,
+        472.157311
+      ]
+    },
+    {
+      "name": "MGW12_500mm-1",
+      "bbox_cad_mm": [
+        -11.491877,
+        -29.715866,
+        1000.0,
+        12.508123,
+        -21.215866,
+        1510.0
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -12.0,
+        -134.0,
+        14.0,
+        12.0,
+        -125.5,
+        524.0
+      ]
+    },
+    {
+      "name": "DLE42-L2BJ-长款50-2",
+      "bbox_cad_mm": [
+        -28.099789,
+        -183.823778,
+        1272.253468,
+        29.116035,
+        -126.607954,
+        1359.753468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -28.607912,
+        -28.607912,
+        286.253468,
+        28.607912,
+        28.607912,
+        373.753468
+      ]
+    },
+    {
+      "name": "T型丝杆螺母-1",
+      "bbox_cad_mm": [
+        -19.491877,
+        -100.215866,
+        1225.853468,
+        20.508123,
+        -60.215866,
+        1253.853468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -20.0,
+        -95.0,
+        239.853468,
+        20.0,
+        -55.0,
+        267.853468
+      ]
+    },
+    {
+      "name": "T型丝杆500mm-1",
+      "bbox_cad_mm": [
+        -8.538311,
+        -89.2623,
+        992.5,
+        9.554557,
+        -71.169431,
+        1492.5
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -9.046434,
+        -84.046435,
+        6.5,
+        9.046434,
+        -65.953566,
+        506.5
+      ]
+    },
+    {
+      "name": "8-16联轴器-1",
+      "bbox_cad_mm": [
+        -19.915159,
+        -100.639147,
+        1472.5,
+        20.931405,
+        -59.792584,
+        1512.5
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -20.423282,
+        -95.423282,
+        486.5,
+        20.423282,
+        -54.576719,
+        526.5
+      ]
+    },
+    {
+      "name": "61mm光轴-2",
+      "bbox_cad_mm": [
+        -16.567195,
+        -367.291183,
+        1251.272362,
+        17.583441,
+        -333.140548,
+        1330.272362
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -17.075318,
+        177.924682,
+        265.272362,
+        17.075318,
+        212.075317,
+        344.272362
+      ]
+    },
+    {
+      "name": "电机支撑铝板-1",
+      "bbox_cad_mm": [
+        -59.491877,
+        -102.215866,
+        1510.0,
+        60.508123,
+        58.784134,
+        1520.0
+      ],
+      "is_fixed_flag": false,
+      "role": "stationary spatial envelope (screw/coupler may rotate)",
+      "bbox_proposed_robot_mm": [
+        -60.0,
+        -214.0,
+        524.0,
+        60.0,
+        -53.0,
+        534.0
+      ]
+    },
+    {
+      "name": "42步进电机L60-3",
+      "bbox_cad_mm": [
+        -20.985468,
+        -233.444976,
+        1299.750968,
+        21.014532,
+        -185.944976,
+        1383.753468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -20.506409,
+        30.72911,
+        313.750968,
+        21.493591,
+        78.22911,
+        397.753468
+      ]
+    },
+    {
+      "name": "L型支架底座-1",
+      "bbox_cad_mm": [
+        -49.491877,
+        -195.215866,
+        1253.853468,
+        50.508123,
+        -35.215866,
+        1263.853468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -50.0,
+        -120.0,
+        267.853468,
+        50.0,
+        40.0,
+        277.853468
+      ]
+    },
+    {
+      "name": "第二机械臂-1",
+      "bbox_cad_mm": [
+        -29.491877,
+        -655.215866,
+        1255.272362,
+        30.508123,
+        -325.215866,
+        1265.272362
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -30.0,
+        170.0,
+        269.272362,
+        30.0,
+        500.0,
+        279.272362
+      ]
+    },
+    {
+      "name": "42步进电机L40-1",
+      "bbox_cad_mm": [
+        -20.491877,
+        -646.215866,
+        1241.269862,
+        21.508123,
+        -598.715866,
+        1305.272362
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -21.0,
+        443.5,
+        255.269862,
+        21.0,
+        491.0,
+        319.272362
+      ]
+    },
+    {
+      "name": "L型支架竖板-1",
+      "bbox_cad_mm": [
+        -49.491877,
+        -45.215866,
+        1263.853468,
+        50.508123,
+        -35.215866,
+        1343.853468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -50.0,
+        -120.0,
+        277.853468,
+        50.0,
+        -110.0,
+        357.853468
+      ]
+    },
+    {
+      "name": "铝型材挤压角座-1",
+      "bbox_cad_mm": [
+        -49.491877,
+        -125.215866,
+        1263.853468,
+        -29.491877,
+        -45.215866,
+        1343.853468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        30.0,
+        -110.0,
+        277.853468,
+        50.0,
+        -30.0,
+        357.853468
+      ]
+    },
+    {
+      "name": "铝型材挤压角座-2",
+      "bbox_cad_mm": [
+        30.508123,
+        -125.215866,
+        1263.853468,
+        50.508123,
+        -45.215866,
+        1343.853468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -50.0,
+        -110.0,
+        277.853468,
+        -30.0,
+        -30.0,
+        357.853468
+      ]
+    },
+    {
+      "name": "J1机械臂-2",
+      "bbox_cad_mm": [
+        -29.491877,
+        -380.215866,
+        1283.753468,
+        30.508123,
+        -130.215866,
+        1293.753468
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -30.0,
+        -25.0,
+        297.753468,
+        30.0,
+        225.0,
+        307.753468
+      ]
+    },
+    {
+      "name": "内径8mm法兰-1",
+      "bbox_cad_mm": [
+        -34.830368,
+        -660.554357,
+        1237.272362,
+        35.846614,
+        -589.877375,
+        1255.272362
+      ],
+      "is_fixed_flag": false,
+      "role": "moves with Z carriage; some also rotate with J1/J2",
+      "bbox_proposed_robot_mm": [
+        -35.338491,
+        434.661509,
+        251.272362,
+        35.338491,
+        505.338491,
+        269.272362
+      ]
+    }
+  ],
+  "z_limit_mate": {
+    "name": "LimitDistance1",
+    "type": "MateLimitDistanceDim",
+    "is_advanced": true,
+    "minimum_mm": -1.0225154056797692e-09,
+    "maximum_mm": 327.4999999989775,
+    "distance_parameter_mm": 104.30384313701269,
+    "flip_dimension": false,
+    "mate_alignment": 1,
+    "entities": [
+      {
+        "component": "L型支架竖板-1",
+        "reference_type": 3,
+        "entity_params_SI": [
+          -0.0494918769966627,
+          -0.03521586575796044,
+          1.3438534676468117,
+          -0.0,
+          -0.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "component": "FF固定铝板-1",
+        "reference_type": 3,
+        "entity_params_SI": [
+          0.0005081230033411226,
+          -0.041715865757985145,
+          1.4481573107838244,
+          -1.1102230246251565e-16,
+          7.395570986446986e-32,
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "suppressed": false
+  },
+  "z_limit_interpretation": {
+    "mate_gap_current_geometry_mm": 104.30384313701269,
+    "upward_remaining_mm": 104.30384313701269,
+    "downward_remaining_mm": 223.19615686196482,
+    "cad_gap_span_mm": 327.4999999989775,
+    "highest_z_moving_component": "42步进电机L60-2",
+    "current_top_cad_mm": 1419.753468,
+    "upper_limit_top_cad_mm": 1524.057311137013,
+    "table_plane_assumption_cad_z_mm": 986.0,
+    "upper_limit_moving_top_above_assumed_table_mm": 538.0573111370129,
+    "highest_stationary_top_above_assumed_table_mm": 594.0,
+    "not_verified": "只依CAD限位把Z相关总成平移推算；不保证实物限位、上限姿态没有自身碰撞、电缆软管和未来吸盘可用空间。"
+  },
+  "proposed_right_handed_frame": {
+    "anchor": "肩旋转轴XY；Z零点另以底座底面假设为桌面",
+    "formula_mm": [
+      "robotX = 0.508123003337 - CAD_X",
+      "robotY = -155.215865757977 - CAD_Y",
+      "robotZ = CAD_Z - 986.0 (仅桌面等于底座底面时)"
+    ],
+    "rotation_cad_to_robot": [
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        -1,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ],
+    "cad_current_extended_arm_robot_direction": "+Y",
+    "shoulder_xy_cad_mm": [
+      0.508123003337,
+      -155.215865757977
+    ],
+    "column_xy_robot_mm": [
+      0,
+      -154
+    ],
+    "not_calibrated": true
+  },
+  "software_board": {
+    "source": "app/config.hpp",
+    "outer_xy_robot_mm": [
+      -260,
+      10,
+      260,
+      490
+    ],
+    "grid_center_xy_robot_mm": [
+      0,
+      250
+    ],
+    "grid_xy_robot_mm": [
+      -180,
+      90,
+      180,
+      410
+    ],
+    "paper_uv_to_robot": [
+      "x = 260 - v",
+      "y = 10 + u"
+    ],
+    "orientation": "纸面u向右为robot+Y，v向下为robot-X；纸板520长边沿robotX、480短边沿robotY。",
+    "lens_xy_cad_mm": [
+      0.508123003337,
+      -405.215865757977
+    ],
+    "capture_slots_center_range_robot_mm": {
+      "red": [
+        -310,
+        90,
+        -230,
+        250
+      ],
+      "black": [
+        230,
+        90,
+        310,
+        250
+      ]
+    }
+  },
+  "camera_support_proposal": {
+    "type": "独立桌夹/固定底座侧立柱，不连接Z滑台或移动L支架",
+    "mast_center_robot_mm": [
+      560,
+      250,
+      0
+    ],
+    "lens_robot_mm": [
+      0,
+      250,
+      650
+    ],
+    "lens_cad_mm": [
+      0.508123003337,
+      -405.215865757977,
+      1636.0
+    ],
+    "nominal_horizontal_boom_mm": 560,
+    "mechanical_adjustment_lens_height_above_board_mm": [
+      450,
+      850
+    ],
+    "trial_lens_height_mm": 650,
+    "height_safety_note": "可调机械范围不是全范围运动安全承诺。450mm低于CAD最高运动件推算538mm，需限Z/静止调焦；650mm时镜头到最高运动件的标高差约112mm，但横梁、云台最低点还需扣除并独立检查。",
+    "sweep_note": "195+275=470mm仅腕轴理想半径。用末端法兰近似bbox角点作为保守附加半径，裸CAD可先按R520mm圈外布置立柱；这不是全组件/全关节扫掠验算，软管、线缆、吸盘未建模。",
+    "mast_radial_distance_mm": 613.2699242584786,
+    "mast_footprint_requirement": "立柱/夹具/底座最靠肩轴的实体先保留在R550mm以外；悬臂允许从高处跨入，最低面另验Z上限净空。",
+    "camera_fov_requirement": "1280x960横置、图像宽沿robotX；包含520x480纸板并留10%总尺寸余量，至少覆盖704x528mm的4:3视场。650mm高度约需HFOV56.9°、VFOV44.2°。MIS5001型号/IQ不能证明当前镜头实际视场，必须实拍四码都入镜后定高度。",
+    "occlusion_note": "运动中的手臂仍可能遮挡棋盘；相机支架不挡纸板不等于机械臂永不遮挡。采集安排在手臂停车、图像稳定后。"
+  },
+  "unknowns": [
+    "棋盘面相对底座底面的实测高度",
+    "肩零角和CAD到软件方位的实机标定",
+    "完整关节限位及全运动碰撞/电缆包络",
+    "镜头实际焦距/视角、畸变与安装方向",
+    "打印材料、悬臂挠度、桌夹强度和紧固件尺寸",
+    "末端吸盘及软管在原总装中缺失"
+  ],
+  "api_reference": "https://help.solidworks.com/2025/English/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IDistanceMateFeatureData_members.html"
+}

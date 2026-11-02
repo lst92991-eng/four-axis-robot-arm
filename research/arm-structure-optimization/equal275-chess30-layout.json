@@ -1,0 +1,78 @@
+{
+  "results": [
+    {
+      "piece_diameter_mm": 30,
+      "pitch_mm": 40,
+      "intersection_span_mm": [
+        320,
+        360
+      ],
+      "piece_edge_gap_mm": 10,
+      "best_sampled_layout": {
+        "center_mm": [
+          -210,
+          210
+        ],
+        "rotation_ccw_deg": 135,
+        "corners_mm": [
+          [
+            30.416305603426167,
+            224.14213562373092
+          ],
+          [
+            -195.85786437626902,
+            450.41630560342617
+          ],
+          [
+            -450.41630560342617,
+            195.85786437626908
+          ],
+          [
+            -224.14213562373098,
+            -30.41630560342614
+          ]
+        ],
+        "field_boundary_margin_mm": 58.191773512881134,
+        "covered_intersections": 90
+      }
+    },
+    {
+      "piece_diameter_mm": 30,
+      "pitch_mm": 35,
+      "intersection_span_mm": [
+        280,
+        315
+      ],
+      "piece_edge_gap_mm": 5,
+      "best_sampled_layout": {
+        "center_mm": [
+          -190,
+          230
+        ],
+        "rotation_ccw_deg": 130,
+        "corners_mm": [
+          [
+            20.64226514735455,
+            223.99282648897304
+          ],
+          [
+            -159.33826556487648,
+            438.48527056228687
+          ],
+          [
+            -400.6422651473546,
+            236.00717351102696
+          ],
+          [
+            -220.66173443512352,
+            21.51472943771313
+          ]
+        ],
+        "field_boundary_margin_mm": 81.82129150079683,
+        "covered_intersections": 90
+      }
+    }
+  ],
+  "branch": "positive q2 only",
+  "scope": "275+275mm，当前Z与R姿态，4度CAD采样单元插值；摆位按10mm/5度初筛；边界距离不是实体机械净空；未验证抓手TCP、棋子高度及连续抬升路径。"
+}

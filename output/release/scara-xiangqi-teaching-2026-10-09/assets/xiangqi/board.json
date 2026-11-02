@@ -1,0 +1,314 @@
+{
+  "source": "app/config.hpp",
+  "source_sha256": "e05f03b3ea22274513fe5a16e47aaaf7ea8e2c581bd8c200d00f595cf04d7482",
+  "project_dimensions_mm": {
+    "PieceDiameter": 35.0,
+    "Pitch": 40.0,
+    "BoardWidth": 480.0,
+    "BoardHeight": 520.0,
+    "GridStart": 80.0,
+    "MarkerSide": 48.0,
+    "MarkerInset": 32.0
+  },
+  "board_size_mm": [
+    480.0,
+    520.0
+  ],
+  "grid": {
+    "rows": 10,
+    "cols": 9,
+    "origin_mm": [
+      80.0,
+      80.0
+    ],
+    "spacing_mm": 40.0,
+    "last_point_mm": [
+      400.0,
+      440.0
+    ],
+    "line_width_mm": 0.35,
+    "palaces": [
+      [
+        0,
+        2,
+        3,
+        5
+      ],
+      [
+        7,
+        9,
+        3,
+        5
+      ]
+    ],
+    "river_between_rows": [
+      4,
+      5
+    ],
+    "pawn_cannon_corner_marks": true,
+    "orientation": "row0 black top, row9 red bottom, col0 left from red viewpoint",
+    "uci": "file=a+col; rank=9-row"
+  },
+  "aruco": {
+    "dictionary": "DICT_4X4_50",
+    "dictionary_source": "https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/objdetect/src/aruco/predefined_dictionaries.hpp",
+    "black_square_mm": 48.0,
+    "quiet_zone_mm": 8.0,
+    "cell_mm": 8.0,
+    "markers": [
+      {
+        "id": 0,
+        "center_mm": [
+          32.0,
+          32.0
+        ],
+        "upright": true,
+        "inner_bits": [
+          [
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      {
+        "id": 1,
+        "center_mm": [
+          448.0,
+          32.0
+        ],
+        "upright": true,
+        "inner_bits": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      {
+        "id": 2,
+        "center_mm": [
+          448.0,
+          488.0
+        ],
+        "upright": true,
+        "inner_bits": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": 3,
+        "center_mm": [
+          32.0,
+          488.0
+        ],
+        "upright": true,
+        "inner_bits": [
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            0
+          ]
+        ]
+      }
+    ]
+  },
+  "a4": {
+    "page_mm": [
+      210,
+      297
+    ],
+    "viewport_mm": [
+      180.0,
+      270.0
+    ],
+    "page_origin_mm": [
+      15.0,
+      13.5
+    ],
+    "overlap_mm": [
+      30.0,
+      20.0
+    ],
+    "ruler_mm": 100,
+    "ruler_orientation": "vertical",
+    "pages": [
+      {
+        "page": 1,
+        "global_origin_mm": [
+          0.0,
+          0.0
+        ],
+        "complete_marker_ids": [
+          0
+        ]
+      },
+      {
+        "page": 2,
+        "global_origin_mm": [
+          150.0,
+          0.0
+        ],
+        "complete_marker_ids": []
+      },
+      {
+        "page": 3,
+        "global_origin_mm": [
+          300.0,
+          0.0
+        ],
+        "complete_marker_ids": [
+          1
+        ]
+      },
+      {
+        "page": 4,
+        "global_origin_mm": [
+          0.0,
+          250.0
+        ],
+        "complete_marker_ids": [
+          3
+        ]
+      },
+      {
+        "page": 5,
+        "global_origin_mm": [
+          150.0,
+          250.0
+        ],
+        "complete_marker_ids": []
+      },
+      {
+        "page": 6,
+        "global_origin_mm": [
+          300.0,
+          250.0
+        ],
+        "complete_marker_ids": [
+          2
+        ]
+      }
+    ]
+  },
+  "a1": {
+    "page_mm": [
+      594,
+      841
+    ],
+    "board_origin_mm": [
+      57.0,
+      110
+    ],
+    "ruler_mm": 100
+  },
+  "print": {
+    "scale_percent": 100,
+    "single_sided": true,
+    "grayscale": true,
+    "instructions": "关闭适合页面/缩放；先量100mm标尺；拼接重叠30/20mm；保留外侧纸边和全部白边。"
+  },
+  "robot-placement": {
+    "calibrated": false,
+    "status": "uncalibrated simulation layout only",
+    "squarePose_source_expression": "(4.5-row)*Pitch, 90.0+col*Pitch, 12.0, 0.0",
+    "note": "No running calibration, mechanical zero, limits, or board height was changed."
+  },
+  "piece_reference": {
+    "model": "Deli 9566",
+    "catalog_size_mm": 35,
+    "source_url": "https://www.deliworld.com/product/educational-toy/",
+    "note": "One product example, not a unique market standard."
+  },
+  "corner_stone_to_marker_quiet_mm": 5.127416997969522,
+  "canonical_png": {
+    "file": "board.png",
+    "size_px": [
+      960,
+      1040
+    ],
+    "pixels_per_mm": 2,
+    "method": "Poppler PDF raster at 50.8 dpi, integer-coordinate crop; PDFs remain print masters."
+  }
+}

@@ -1,0 +1,6 @@
+OpenCV=5.0.0
+OpenCV_expected_commit=40738fb16ceddb5fb3fea747585f7ce6abb0605b
+Expected_toolchain_source=LuckfoxTECH/luckfox-pico@824b817f889c2cbff1d48fcdb18ab494a68f69d1
+Compiler=8.3.0
+RKNN_link_library_sha256=d6259f5f8537acc15b0c3686010109bf4182e654281aad180a44bfd73ce929cc
+RKNN_runtime=/oem/usr/lib/librknnmrt.so (not replaced by this package)

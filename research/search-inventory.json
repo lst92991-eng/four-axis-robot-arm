@@ -1,0 +1,1112 @@
+[
+  {
+    "query": "SCARA chess",
+    "rows": [
+      {
+        "repo": "AvQ1301/chinese_chess_bot_307",
+        "url": "https://github.com/AvQ1301/chinese_chess_bot_307",
+        "kib": 304760,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "rpd123/SCARA",
+        "url": "https://github.com/rpd123/SCARA",
+        "kib": 8224,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "dongvua90/ChessMainboard_Scara",
+        "url": "https://github.com/dongvua90/ChessMainboard_Scara",
+        "kib": 20234,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "disisid17/ChessPlayingRobot",
+        "url": "https://github.com/disisid17/ChessPlayingRobot",
+        "kib": 62914,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "alexeydavydov7151/SmartChess_Scara",
+        "url": "https://github.com/alexeydavydov7151/SmartChess_Scara",
+        "kib": 0,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Svenbruning/SCARA-Chess-Robot",
+        "url": "https://github.com/Svenbruning/SCARA-Chess-Robot",
+        "kib": 0,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "MitchellTurton/Chess-Scara-Arm",
+        "url": "https://github.com/MitchellTurton/Chess-Scara-Arm",
+        "kib": 135554,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "MostafaOkasha/ChessMate",
+        "url": "https://github.com/MostafaOkasha/ChessMate",
+        "kib": 27447,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "42Hugo/Chess_Robot",
+        "url": "https://github.com/42Hugo/Chess_Robot",
+        "kib": 35,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Bhargav1026/AI-enabled-Chess-Robot",
+        "url": "https://github.com/Bhargav1026/AI-enabled-Chess-Robot",
+        "kib": 9767,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "jacobeddy26/capstone",
+        "url": "https://github.com/jacobeddy26/capstone",
+        "kib": 210,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "OopsWamps/chessrobot",
+        "url": "https://github.com/OopsWamps/chessrobot",
+        "kib": 1778,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "SidhuBalkaran/Virtual-SCARA-3D-Robot-",
+        "url": "https://github.com/SidhuBalkaran/Virtual-SCARA-3D-Robot-",
+        "kib": 13,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "hiepnh04/chinese_chess_bot_307",
+        "url": "https://github.com/hiepnh04/chinese_chess_bot_307",
+        "kib": 5789,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "thanh11072035-arch/chinese_chess_bot_307",
+        "url": "https://github.com/thanh11072035-arch/chinese_chess_bot_307",
+        "kib": 42048,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "nguyendoanphuong636-prog/chinese_chess_bot_307",
+        "url": "https://github.com/nguyendoanphuong636-prog/chinese_chess_bot_307",
+        "kib": 5785,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "tamvu317/chinese_chess_bot_307",
+        "url": "https://github.com/tamvu317/chinese_chess_bot_307",
+        "kib": 119707,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "TooAboil/FiveInARowRobot",
+        "url": "https://github.com/TooAboil/FiveInARowRobot",
+        "kib": 34124,
+        "branch": "master",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "gomoku robot",
+    "rows": [
+      {
+        "repo": "hri5-boardgame-robot/Koch_Gomoku_robot",
+        "url": "https://github.com/hri5-boardgame-robot/Koch_Gomoku_robot",
+        "kib": 10529,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Agenicy/Gomoku-With-Robot-Arm",
+        "url": "https://github.com/Agenicy/Gomoku-With-Robot-Arm",
+        "kib": 12979,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "chinmoyacharjee/Gomoku-AI",
+        "url": "https://github.com/chinmoyacharjee/Gomoku-AI",
+        "kib": 3737,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "AnonymeMeow/GomokuRobot",
+        "url": "https://github.com/AnonymeMeow/GomokuRobot",
+        "kib": 14,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "canpu/mcts-tutorial",
+        "url": "https://github.com/canpu/mcts-tutorial",
+        "kib": 9995,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "KITTIYOJIANG/gomoku_RobotArm",
+        "url": "https://github.com/KITTIYOJIANG/gomoku_RobotArm",
+        "kib": 4513,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "meitiever82/gomoku-robot",
+        "url": "https://github.com/meitiever82/gomoku-robot",
+        "kib": 2709,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "ese-519/GomoBot",
+        "url": "https://github.com/ese-519/GomoBot",
+        "kib": 1771,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "KITTIYOJIANG/gomoku-robot",
+        "url": "https://github.com/KITTIYOJIANG/gomoku-robot",
+        "kib": 5615,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "omegaliii/gomoku_robot",
+        "url": "https://github.com/omegaliii/gomoku_robot",
+        "kib": 1152,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "qjcina/GomokuBot",
+        "url": "https://github.com/qjcina/GomokuBot",
+        "kib": 131,
+        "branch": "master",
+        "archived": true
+      },
+      {
+        "repo": "mrson88/RL_robot_Gomoku",
+        "url": "https://github.com/mrson88/RL_robot_Gomoku",
+        "kib": 185,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "bjrjk/Gomoku",
+        "url": "https://github.com/bjrjk/Gomoku",
+        "kib": 88,
+        "branch": "master",
+        "archived": true
+      },
+      {
+        "repo": "anxionyx/GOMOKU-AI-ROBOT",
+        "url": "https://github.com/anxionyx/GOMOKU-AI-ROBOT",
+        "kib": 20,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "lukycyti/Gomoku",
+        "url": "https://github.com/lukycyti/Gomoku",
+        "kib": 82,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "chaoyuhao/so101_gomoku",
+        "url": "https://github.com/chaoyuhao/so101_gomoku",
+        "kib": 187,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "mthudangn/robotic-vacuum-gomoku-algorithm-reinforcement",
+        "url": "https://github.com/mthudangn/robotic-vacuum-gomoku-algorithm-reinforcement",
+        "kib": 96,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "leolai64/Gomoku-Console",
+        "url": "https://github.com/leolai64/Gomoku-Console",
+        "kib": 31,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "yuchenhan1998/Tic-Tac-Toe",
+        "url": "https://github.com/yuchenhan1998/Tic-Tac-Toe",
+        "kib": 9,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "wangdushe/K210-Based-Intelligent-Gomoku-Playing-Robot-System",
+        "url": "https://github.com/wangdushe/K210-Based-Intelligent-Gomoku-Playing-Robot-System",
+        "kib": 6,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "beautifulchoi/Koch_Gomoku_robot",
+        "url": "https://github.com/beautifulchoi/Koch_Gomoku_robot",
+        "kib": 10529,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Xiang-ruiqing/gomoku_robot",
+        "url": "https://github.com/Xiang-ruiqing/gomoku_robot",
+        "kib": 1152,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "squarezhong/SUSTech-EE368-Project",
+        "url": "https://github.com/squarezhong/SUSTech-EE368-Project",
+        "kib": 1580,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Eric716/Gomoku-With-Robot-Arm",
+        "url": "https://github.com/Eric716/Gomoku-With-Robot-Arm",
+        "kib": 12979,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "kuihao/Gomoku-With-Robot-Arm",
+        "url": "https://github.com/kuihao/Gomoku-With-Robot-Arm",
+        "kib": 12985,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "mariendo/Gomoku-AI",
+        "url": "https://github.com/mariendo/Gomoku-AI",
+        "kib": 3737,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "shiguangmofang/GomoBot",
+        "url": "https://github.com/shiguangmofang/GomoBot",
+        "kib": 1771,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "Vinz974/GomoBot",
+        "url": "https://github.com/Vinz974/GomoBot",
+        "kib": 1771,
+        "branch": "master",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "五子棋 机械臂",
+    "rows": [
+      {
+        "repo": "Robin-WZQ/Gobang-Chess",
+        "url": "https://github.com/Robin-WZQ/Gobang-Chess",
+        "kib": 806,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "muhuahu/Dofbot_GoBang",
+        "url": "https://github.com/muhuahu/Dofbot_GoBang",
+        "kib": 57,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "wangduan7639/Gobang-Chess",
+        "url": "https://github.com/wangduan7639/Gobang-Chess",
+        "kib": 806,
+        "branch": "main",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "下棋机器人",
+    "rows": [
+      {
+        "repo": "yizhepku/Raspberry-Chess",
+        "url": "https://github.com/yizhepku/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "Yuxuan10086/WSChessRobot",
+        "url": "https://github.com/Yuxuan10086/WSChessRobot",
+        "kib": 9002,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Dujltqzv/Some-Many-Books",
+        "url": "https://github.com/Dujltqzv/Some-Many-Books",
+        "kib": 2710343,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "EsataSoftware/chessrobot",
+        "url": "https://github.com/EsataSoftware/chessrobot",
+        "kib": 10161,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "linggm3/Othello-Game-AI",
+        "url": "https://github.com/linggm3/Othello-Game-AI",
+        "kib": 2343,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "awesomefly/Fe-Fool",
+        "url": "https://github.com/awesomefly/Fe-Fool",
+        "kib": 588789,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "ZachZheng0316/doubleChess",
+        "url": "https://github.com/ZachZheng0316/doubleChess",
+        "kib": 0,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "pxvr-official/1",
+        "url": "https://github.com/pxvr-official/1",
+        "kib": 1,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "yunhungo/jingziqi",
+        "url": "https://github.com/yunhungo/jingziqi",
+        "kib": 104,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "penglisha/my-dice-app",
+        "url": "https://github.com/penglisha/my-dice-app",
+        "kib": 42023,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "huanjka119/Raspberry-Chess",
+        "url": "https://github.com/huanjka119/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "TheFive666/Raspberry-Chess",
+        "url": "https://github.com/TheFive666/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "dingjun84/Raspberry-Chess",
+        "url": "https://github.com/dingjun84/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "liqianjie/Raspberry-Chess",
+        "url": "https://github.com/liqianjie/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "stuartchen1949/Raspberry-Chess",
+        "url": "https://github.com/stuartchen1949/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "ghost-yu/Raspberry-Chess",
+        "url": "https://github.com/ghost-yu/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "hgdsys007/Raspberry-Chess",
+        "url": "https://github.com/hgdsys007/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "netbuddy/Raspberry-Chess",
+        "url": "https://github.com/netbuddy/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "matrix10/Raspberry-Chess",
+        "url": "https://github.com/matrix10/Raspberry-Chess",
+        "kib": 19502,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "moumingtao/-",
+        "url": "https://github.com/moumingtao/-",
+        "kib": 1299,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "CUGZSQ/jingziqi",
+        "url": "https://github.com/CUGZSQ/jingziqi",
+        "kib": 104,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "OopsWamps/chessrobot",
+        "url": "https://github.com/OopsWamps/chessrobot",
+        "kib": 1778,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "YogeLiu/Book",
+        "url": "https://github.com/YogeLiu/Book",
+        "kib": 2710343,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Talath9801/wuziqi",
+        "url": "https://github.com/Talath9801/wuziqi",
+        "kib": 9,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "xigua-tree/chinese_chess_robot",
+        "url": "https://github.com/xigua-tree/chinese_chess_robot",
+        "kib": 326,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "igoodful/Books",
+        "url": "https://github.com/igoodful/Books",
+        "kib": 10,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "okdaydream/wuziqi",
+        "url": "https://github.com/okdaydream/wuziqi",
+        "kib": 9,
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "songguangqi/Books-Free-Books__lTbgykio",
+        "url": "https://github.com/songguangqi/Books-Free-Books__lTbgykio",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "apachecn/Some-Many-Books",
+        "url": "https://github.com/apachecn/Some-Many-Books",
+        "kib": 10,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "zdn200dali/-",
+        "url": "https://github.com/zdn200dali/-",
+        "kib": 0,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Lrgtalent/Books-Free-Books",
+        "url": "https://github.com/Lrgtalent/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "mmpp406/Books-Free-Books",
+        "url": "https://github.com/mmpp406/Books-Free-Books",
+        "kib": 158,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Jadynjin/Books-Free-Books",
+        "url": "https://github.com/Jadynjin/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "mj5219054/Books-Free-Books",
+        "url": "https://github.com/mj5219054/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "wikison/Books-Free-Books",
+        "url": "https://github.com/wikison/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "fengjliu/Books-Free-Books",
+        "url": "https://github.com/fengjliu/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "baolijin/Books-Free-Books",
+        "url": "https://github.com/baolijin/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Mrdogithub/Books-Free-Books",
+        "url": "https://github.com/Mrdogithub/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "dpc525/Books-Free-Books",
+        "url": "https://github.com/dpc525/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "liujinwhu/Books-Free-Books",
+        "url": "https://github.com/liujinwhu/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "qxpBlog/Books-Free-Books",
+        "url": "https://github.com/qxpBlog/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "StevenGrow/Books-Free-Books",
+        "url": "https://github.com/StevenGrow/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "wenxuefeng3930/Books-Free-Books",
+        "url": "https://github.com/wenxuefeng3930/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Jeromeyoung/Books-Free-Books",
+        "url": "https://github.com/Jeromeyoung/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "nusqx/Books-Free-Books",
+        "url": "https://github.com/nusqx/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "bupabupala/Books-Free-Books",
+        "url": "https://github.com/bupabupala/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "netforfreedom/Books-Free-Books",
+        "url": "https://github.com/netforfreedom/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "deamonHub/Books-Free-Books",
+        "url": "https://github.com/deamonHub/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "feimm/Books-Free-Books",
+        "url": "https://github.com/feimm/Books-Free-Books",
+        "kib": 59,
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "ValeriaWong/Some-Many-Books",
+        "url": "https://github.com/ValeriaWong/Some-Many-Books",
+        "kib": 10,
+        "branch": "main",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "SCARA chess fork:false",
+    "rows": [
+      {
+        "repo": "AvQ1301/chinese_chess_bot_307",
+        "url": "https://github.com/AvQ1301/chinese_chess_bot_307",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "rpd123/SCARA",
+        "url": "https://github.com/rpd123/SCARA",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "dongvua90/ChessMainboard_Scara",
+        "url": "https://github.com/dongvua90/ChessMainboard_Scara",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "disisid17/ChessPlayingRobot",
+        "url": "https://github.com/disisid17/ChessPlayingRobot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "alexeydavydov7151/SmartChess_Scara",
+        "url": "https://github.com/alexeydavydov7151/SmartChess_Scara",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Svenbruning/SCARA-Chess-Robot",
+        "url": "https://github.com/Svenbruning/SCARA-Chess-Robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "MitchellTurton/Chess-Scara-Arm",
+        "url": "https://github.com/MitchellTurton/Chess-Scara-Arm",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "MostafaOkasha/ChessMate",
+        "url": "https://github.com/MostafaOkasha/ChessMate",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "42Hugo/Chess_Robot",
+        "url": "https://github.com/42Hugo/Chess_Robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Bhargav1026/AI-enabled-Chess-Robot",
+        "url": "https://github.com/Bhargav1026/AI-enabled-Chess-Robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "jacobeddy26/capstone",
+        "url": "https://github.com/jacobeddy26/capstone",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "OopsWamps/chessrobot",
+        "url": "https://github.com/OopsWamps/chessrobot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "SidhuBalkaran/Virtual-SCARA-3D-Robot-",
+        "url": "https://github.com/SidhuBalkaran/Virtual-SCARA-3D-Robot-",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "TooAboil/FiveInARowRobot",
+        "url": "https://github.com/TooAboil/FiveInARowRobot",
+        "branch": "master",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "gomoku robot fork:false",
+    "rows": [
+      {
+        "repo": "hri5-boardgame-robot/Koch_Gomoku_robot",
+        "url": "https://github.com/hri5-boardgame-robot/Koch_Gomoku_robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Agenicy/Gomoku-With-Robot-Arm",
+        "url": "https://github.com/Agenicy/Gomoku-With-Robot-Arm",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "chinmoyacharjee/Gomoku-AI",
+        "url": "https://github.com/chinmoyacharjee/Gomoku-AI",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "AnonymeMeow/GomokuRobot",
+        "url": "https://github.com/AnonymeMeow/GomokuRobot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "canpu/mcts-tutorial",
+        "url": "https://github.com/canpu/mcts-tutorial",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "KITTIYOJIANG/gomoku_RobotArm",
+        "url": "https://github.com/KITTIYOJIANG/gomoku_RobotArm",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "meitiever82/gomoku-robot",
+        "url": "https://github.com/meitiever82/gomoku-robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "ese-519/GomoBot",
+        "url": "https://github.com/ese-519/GomoBot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "KITTIYOJIANG/gomoku-robot",
+        "url": "https://github.com/KITTIYOJIANG/gomoku-robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "omegaliii/gomoku_robot",
+        "url": "https://github.com/omegaliii/gomoku_robot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "qjcina/GomokuBot",
+        "url": "https://github.com/qjcina/GomokuBot",
+        "branch": "master",
+        "archived": true
+      },
+      {
+        "repo": "mrson88/RL_robot_Gomoku",
+        "url": "https://github.com/mrson88/RL_robot_Gomoku",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "bjrjk/Gomoku",
+        "url": "https://github.com/bjrjk/Gomoku",
+        "branch": "master",
+        "archived": true
+      },
+      {
+        "repo": "anxionyx/GOMOKU-AI-ROBOT",
+        "url": "https://github.com/anxionyx/GOMOKU-AI-ROBOT",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "lukycyti/Gomoku",
+        "url": "https://github.com/lukycyti/Gomoku",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "chaoyuhao/so101_gomoku",
+        "url": "https://github.com/chaoyuhao/so101_gomoku",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "mthudangn/robotic-vacuum-gomoku-algorithm-reinforcement",
+        "url": "https://github.com/mthudangn/robotic-vacuum-gomoku-algorithm-reinforcement",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "leolai64/Gomoku-Console",
+        "url": "https://github.com/leolai64/Gomoku-Console",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "yuchenhan1998/Tic-Tac-Toe",
+        "url": "https://github.com/yuchenhan1998/Tic-Tac-Toe",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "wangdushe/K210-Based-Intelligent-Gomoku-Playing-Robot-System",
+        "url": "https://github.com/wangdushe/K210-Based-Intelligent-Gomoku-Playing-Robot-System",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "squarezhong/SUSTech-EE368-Project",
+        "url": "https://github.com/squarezhong/SUSTech-EE368-Project",
+        "branch": "main",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "gobang robot fork:false",
+    "rows": [
+      {
+        "repo": "zhiyiYo/Alpha-Gobang-Zero",
+        "url": "https://github.com/zhiyiYo/Alpha-Gobang-Zero",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "zycliao/hand",
+        "url": "https://github.com/zycliao/hand",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "haoao-aoao/Gobang-chess-robot",
+        "url": "https://github.com/haoao-aoao/Gobang-chess-robot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "RLi43/Baxter_gobang",
+        "url": "https://github.com/RLi43/Baxter_gobang",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "zengxinch/RobotGobang",
+        "url": "https://github.com/zengxinch/RobotGobang",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "lijuan123/gobang-robot",
+        "url": "https://github.com/lijuan123/gobang-robot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "LEONHLY/Gobang-Robot",
+        "url": "https://github.com/LEONHLY/Gobang-Robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "RogerLHJ/gobang_robot",
+        "url": "https://github.com/RogerLHJ/gobang_robot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "Lurito/gobang-ai",
+        "url": "https://github.com/Lurito/gobang-ai",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "1g1412/robot-arm-and-gobang",
+        "url": "https://github.com/1g1412/robot-arm-and-gobang",
+        "branch": "main",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "五子棋 机械臂 fork:false",
+    "rows": [
+      {
+        "repo": "Robin-WZQ/Gobang-Chess",
+        "url": "https://github.com/Robin-WZQ/Gobang-Chess",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "muhuahu/Dofbot_GoBang",
+        "url": "https://github.com/muhuahu/Dofbot_GoBang",
+        "branch": "master",
+        "archived": false
+      }
+    ]
+  },
+  {
+    "query": "下棋机器人 fork:false",
+    "rows": [
+      {
+        "repo": "yizhepku/Raspberry-Chess",
+        "url": "https://github.com/yizhepku/Raspberry-Chess",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "Yuxuan10086/WSChessRobot",
+        "url": "https://github.com/Yuxuan10086/WSChessRobot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "Dujltqzv/Some-Many-Books",
+        "url": "https://github.com/Dujltqzv/Some-Many-Books",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "EsataSoftware/chessrobot",
+        "url": "https://github.com/EsataSoftware/chessrobot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "linggm3/Othello-Game-AI",
+        "url": "https://github.com/linggm3/Othello-Game-AI",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "awesomefly/Fe-Fool",
+        "url": "https://github.com/awesomefly/Fe-Fool",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "ZachZheng0316/doubleChess",
+        "url": "https://github.com/ZachZheng0316/doubleChess",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "pxvr-official/1",
+        "url": "https://github.com/pxvr-official/1",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "yunhungo/jingziqi",
+        "url": "https://github.com/yunhungo/jingziqi",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "penglisha/my-dice-app",
+        "url": "https://github.com/penglisha/my-dice-app",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "moumingtao/-",
+        "url": "https://github.com/moumingtao/-",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "OopsWamps/chessrobot",
+        "url": "https://github.com/OopsWamps/chessrobot",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "Talath9801/wuziqi",
+        "url": "https://github.com/Talath9801/wuziqi",
+        "branch": "master",
+        "archived": false
+      },
+      {
+        "repo": "xigua-tree/chinese_chess_robot",
+        "url": "https://github.com/xigua-tree/chinese_chess_robot",
+        "branch": "main",
+        "archived": false
+      },
+      {
+        "repo": "zdn200dali/-",
+        "url": "https://github.com/zdn200dali/-",
+        "branch": "main",
+        "archived": false
+      }
+    ]
+  }
+]

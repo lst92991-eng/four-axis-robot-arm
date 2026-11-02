@@ -1,0 +1,19 @@
+Saved source.jpg to /root/scara-vision-v1/tests/uncertain
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . ? . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . .
+Markers=4, max corner error=0.182289 px
+Black=0, white=0, empty=224, unknown=1
+Saved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/uncertain

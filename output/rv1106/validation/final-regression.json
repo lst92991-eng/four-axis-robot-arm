@@ -1,0 +1,39 @@
+{
+  "valid": {
+    "exit": 0,
+    "tail": [
+      "",
+      "Black=3, white=3, empty=219, unknown=0",
+      "",
+      "Saved rectify.png, annotated.png, board.csv to /root/scara-vision-v1/tests/reuse",
+      "",
+      "SCARA_EXIT=0"
+    ]
+  },
+  "missing": {
+    "exit": 1,
+    "tail": [
+      "Saved source.jpg to /root/scara-vision-v1/tests/reuse",
+      "",
+      "Error: Missing marker ID 0",
+      "",
+      "SCARA_EXIT=1"
+    ]
+  },
+  "bad_nv12": {
+    "exit": 1,
+    "tail": [
+      "Error: NV12 requires one tightly packed frame: width*height*3/2 bytes; no padding/multiple frames",
+      "",
+      "SCARA_EXIT=1"
+    ]
+  },
+  "odd_width": {
+    "exit": 1,
+    "tail": [
+      "Error: NV12 width/height must be positive even integers <= 2048",
+      "",
+      "SCARA_EXIT=1"
+    ]
+  }
+}

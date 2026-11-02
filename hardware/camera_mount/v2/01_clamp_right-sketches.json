@@ -1,0 +1,188 @@
+{
+  "status": "pass",
+  "sketches": [
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 6,
+      "relation_count": 10,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图1",
+        "D2@草图1",
+        "D3@草图1",
+        "D4@草图1",
+        "D5@草图1",
+        "D6@草图1"
+      ],
+      "errors": [],
+      "name": "草图1",
+      "consumed_by": [
+        "卡座外侧承力框"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 6,
+      "relation_count": 10,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图2",
+        "D2@草图2",
+        "D3@草图2",
+        "D4@草图2",
+        "D5@草图2",
+        "D6@草图2"
+      ],
+      "errors": [],
+      "name": "草图2",
+      "consumed_by": [
+        "承力框减重窗口"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 5,
+      "relation_count": 29,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图3",
+        "D2@草图3",
+        "D3@草图3",
+        "D4@草图3",
+        "D5@草图3"
+      ],
+      "errors": [],
+      "name": "草图3",
+      "consumed_by": [
+        "上卡唇"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 5,
+      "relation_count": 29,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图4",
+        "D2@草图4",
+        "D3@草图4",
+        "D4@草图4",
+        "D5@草图4"
+      ],
+      "errors": [],
+      "name": "草图4",
+      "consumed_by": [
+        "下卡唇螺母承力底"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 10,
+      "relation_count": 58,
+      "fix_count": 0,
+      "dimension_names": [
+        "D10@草图5",
+        "D1@草图5",
+        "D2@草图5",
+        "D3@草图5",
+        "D4@草图5",
+        "D5@草图5",
+        "D6@草图5",
+        "D7@草图5",
+        "D8@草图5",
+        "D9@草图5"
+      ],
+      "errors": [],
+      "name": "草图5",
+      "consumed_by": [
+        "下卡唇M3螺母防转槽"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 4,
+      "relation_count": 10,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图6",
+        "D2@草图6",
+        "D3@草图6",
+        "D4@草图6"
+      ],
+      "errors": [],
+      "name": "草图6",
+      "consumed_by": [
+        "梁根后挡"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 4,
+      "relation_count": 10,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图7",
+        "D2@草图7",
+        "D3@草图7",
+        "D4@草图7"
+      ],
+      "errors": [],
+      "name": "草图7",
+      "consumed_by": [
+        "梁根外夹片"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 4,
+      "relation_count": 6,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图8",
+        "D2@草图8",
+        "D3@草图8",
+        "D4@草图8"
+      ],
+      "errors": [],
+      "name": "草图8",
+      "consumed_by": [
+        "梁根两孔3p4"
+      ],
+      "dangling": false
+    },
+    {
+      "status": "pass",
+      "constrained_status": 3,
+      "dimension_count": 4,
+      "relation_count": 6,
+      "fix_count": 0,
+      "dimension_names": [
+        "D1@草图9",
+        "D2@草图9",
+        "D3@草图9",
+        "D4@草图9"
+      ],
+      "errors": [],
+      "name": "草图9",
+      "consumed_by": [
+        "板边压紧孔3p4"
+      ],
+      "dangling": false
+    }
+  ]
+}

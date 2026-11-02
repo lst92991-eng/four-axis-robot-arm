@@ -1,0 +1,7 @@
+{
+  "argv": [
+    "/absolute/path/scara_robot",
+    "config/robot.json"
+  ],
+  "cwd": "/absolute/path/project"
+}

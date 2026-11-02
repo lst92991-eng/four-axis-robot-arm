@@ -1,0 +1,14 @@
+{
+  "missing": {
+    "exit": 1,
+    "passed": true
+  },
+  "short": {
+    "exit": 1,
+    "passed": true
+  },
+  "extra-byte": {
+    "exit": 1,
+    "passed": true
+  }
+}

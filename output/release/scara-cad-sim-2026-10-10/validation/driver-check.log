@@ -1,0 +1,9 @@
+case 0 PASS
+case 1 PASS
+case 2 PASS
+case 3 PASS
+case 4 PASS
+case 5 PASS
+case 6 PASS
+case 7 PASS
+SocketCAN/vcan、分包、四轴ACK、反馈到位、故障停止、KF/EKF PASS

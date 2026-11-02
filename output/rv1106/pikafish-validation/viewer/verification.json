@@ -1,0 +1,16 @@
+{
+  "browser_human_move": "e3e4",
+  "board_engine_reply": "b7e7",
+  "human_move_and_reply_passed": true,
+  "undo_restored_start": true,
+  "pause_during_search_no_stale_move": true,
+  "legal_start_moves": 44,
+  "bad_requests": {
+    "unknown_action": 400,
+    "invalid_time": 400,
+    "cross_origin": 403
+  },
+  "console_errors": 0,
+  "backend_lines": 335,
+  "frontend_lines": 298
+}

@@ -1,0 +1,1314 @@
+[
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "moving",
+    "message": "虚拟机械臂执行 e4a4",
+    "source": "virtual",
+    "turn": "black",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "....c....",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "....c....",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      0.3414655342930139,
+      2.0637085887384217,
+      19.495173120000022,
+      -2.4051741230314354
+    ],
+    "tcp": [
+      -19.999999999999964,
+      250.00000000000006,
+      19.495173120000022,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "moving",
+    "message": "虚拟机械臂执行 e4a4",
+    "source": "virtual",
+    "turn": "black",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "....c....",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      ".........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      0.055588311786625065,
+      2.4110274253037236,
+      70.0,
+      -2.4666157370903488
+    ],
+    "tcp": [
+      -19.999581645406543,
+      182.6759452512727,
+      70.0,
+      0.0
+    ],
+    "carried": "c",
+    "vacuum": 1,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "moving",
+    "message": "虚拟机械臂执行 e4a4",
+    "source": "virtual",
+    "turn": "black",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "....c....",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      ".........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974092,
+      2.9433773456830914,
+      45.083525148607485,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.999999999999993,
+      89.99999999999996,
+      45.083525148607485,
+      0.0
+    ],
+    "carried": "c",
+    "vacuum": 1,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "moving",
+    "message": "虚拟机械臂执行 e4a4",
+    "source": "virtual",
+    "turn": "black",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "....c....",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974088,
+      2.9433773456830914,
+      56.69284797139249,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999997,
+      89.99999999999997,
+      56.69284797139249,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "thinking",
+    "message": "正在核对合法走法",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "a9a7",
+      "a9a8",
+      "i9i7",
+      "i9i8",
+      "d9e8",
+      "f9e8",
+      "e4e1",
+      "e4e2",
+      "e4e3",
+      "e4a4",
+      "e4b4",
+      "e4c4",
+      "e4d4",
+      "e4f4",
+      "e4g4",
+      "e4h4",
+      "e4i4",
+      "e4e5",
+      "e7a7",
+      "e7b7",
+      "e7c7",
+      "e7d7",
+      "e7f7",
+      "e7g7",
+      "e7h7",
+      "e7i7",
+      "e7e8",
+      "a6a5",
+      "c6c5",
+      "e6e5",
+      "g6g5",
+      "i6i5",
+      "b9a7",
+      "b9c7",
+      "h9g7",
+      "h9i7",
+      "c9a7",
+      "g9i7",
+      "e9e8"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  },
+  {
+    "opencv": "5.0.0",
+    "mode": "simulation",
+    "phase": "waiting",
+    "message": "机器走法已执行并在虚拟棋盘复核，轮到红方",
+    "source": "virtual",
+    "turn": "red",
+    "result": "playing",
+    "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+    "move": "e4a4",
+    "camera_available": 1,
+    "board": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "world": [
+      "rnbakabnr",
+      ".........",
+      "....c....",
+      "p.p.p.p.p",
+      ".........",
+      "c........",
+      "P.P...P.P",
+      ".C.....C.",
+      "........R",
+      "RNBAKABN."
+    ],
+    "legal": [
+      "i1e1",
+      "d0e1",
+      "f0e1",
+      "b2e2",
+      "h2e2",
+      "c0e2",
+      "g0e2"
+    ],
+    "joints": [
+      -0.7243202421974086,
+      2.9433773456830914,
+      70.0,
+      -2.2190571034856825
+    ],
+    "tcp": [
+      -19.99999999999995,
+      90.00000000000001,
+      70.0,
+      0.0
+    ],
+    "carried": ".",
+    "vacuum": 0,
+    "geometry": {
+      "links": [
+        195.0,
+        275.0
+      ],
+      "origin": [
+        180.0,
+        90.0
+      ],
+      "row_step": [
+        -40.0,
+        0.0
+      ],
+      "col_step": [
+        0.0,
+        40.0
+      ]
+    },
+    "captured_red": "P..............",
+    "captured_black": "...............",
+    "connected": true
+  }
+]

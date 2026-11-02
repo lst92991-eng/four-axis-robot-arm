@@ -1,0 +1,1762 @@
+[
+  {
+    "repo": "52HZ-GGG/Gobang-Human-Machine-Game-System",
+    "counted_files": 1,
+    "physical_lines": 1461,
+    "nonblank_lines_including_comments": 1261,
+    "files": [
+      {
+        "path": "五子棋人机对弈系统.ipynb",
+        "kind": "notebook-code-cells",
+        "physical_lines": 1461,
+        "nonblank_lines_including_comments": 1261,
+        "file_bytes": 63084,
+        "sha256": "0439129589ec19923a3374212991b6effa8becd33d2f7cf557c7853d4043ef30"
+      }
+    ]
+  },
+  {
+    "repo": "Agenicy/Gomoku-With-Robot-Arm",
+    "counted_files": 33,
+    "physical_lines": 6190,
+    "nonblank_lines_including_comments": 5165,
+    "files": [
+      {
+        "path": "ESgomoku/Braccio/solver.py",
+        "kind": "source",
+        "physical_lines": 104,
+        "nonblank_lines_including_comments": 86,
+        "file_bytes": 3824,
+        "sha256": "a99ad3754b981ee2ab434c737981f9d2c8ff98a17b00accb2c349d712d1ef785"
+      },
+      {
+        "path": "ESgomoku/braccio_player.py",
+        "kind": "source",
+        "physical_lines": 463,
+        "nonblank_lines_including_comments": 381,
+        "file_bytes": 18841,
+        "sha256": "08c92dda1e7b19c3842bf2bd21568edb3a4d98422be4ab65df17fa4230b103ee"
+      },
+      {
+        "path": "ESgomoku/camera/camera.py",
+        "kind": "source",
+        "physical_lines": 243,
+        "nonblank_lines_including_comments": 185,
+        "file_bytes": 7959,
+        "sha256": "76f4c4966f8f5c59a9c4cd1cf0452147282553bbbe257d8d4c994f82652b52ad"
+      },
+      {
+        "path": "ESgomoku/camera/detect.py",
+        "kind": "source",
+        "physical_lines": 259,
+        "nonblank_lines_including_comments": 202,
+        "file_bytes": 8718,
+        "sha256": "e4ed37745cc809134abdb258b623f9ff417c7a8ce23dada8fbfe218d846ffe52"
+      },
+      {
+        "path": "ESgomoku/game.py",
+        "kind": "source",
+        "physical_lines": 229,
+        "nonblank_lines_including_comments": 201,
+        "file_bytes": 8468,
+        "sha256": "81856da18007d41e8a40de359ad6767ba5deb3641ff84d5db4b8acd0f54497c8"
+      },
+      {
+        "path": "ESgomoku/game_engine.py",
+        "kind": "source",
+        "physical_lines": 226,
+        "nonblank_lines_including_comments": 190,
+        "file_bytes": 8046,
+        "sha256": "d33745d7e169ea84f68ef87ff4871c71271e398444c9e8c6805c45ae58ed4ce9"
+      },
+      {
+        "path": "ESgomoku/game_master.py",
+        "kind": "source",
+        "physical_lines": 191,
+        "nonblank_lines_including_comments": 154,
+        "file_bytes": 4374,
+        "sha256": "522d0eec085532097df60e2ff1ec78a1a74a3276b942488741247a09e9c0d35c"
+      },
+      {
+        "path": "ESgomoku/game_server.py",
+        "kind": "source",
+        "physical_lines": 181,
+        "nonblank_lines_including_comments": 147,
+        "file_bytes": 4169,
+        "sha256": "450ddb1879673b86fbf94f3ed409c9083d0677be9d18619b930388c3646f5e01"
+      },
+      {
+        "path": "ESgomoku/game_with_ui.py",
+        "kind": "source",
+        "physical_lines": 81,
+        "nonblank_lines_including_comments": 66,
+        "file_bytes": 2135,
+        "sha256": "6d1391b9f407e534761089bccd533e46598b12d9197f0b2db83b628146ac1299"
+      },
+      {
+        "path": "ESgomoku/gtts.py",
+        "kind": "source",
+        "physical_lines": 19,
+        "nonblank_lines_including_comments": 17,
+        "file_bytes": 610,
+        "sha256": "85e5d1ce4cc7bd93efd164e301c0f932c896e5dd48ed4d968f36796c408eff2d"
+      },
+      {
+        "path": "ESgomoku/human_play.py",
+        "kind": "source",
+        "physical_lines": 87,
+        "nonblank_lines_including_comments": 70,
+        "file_bytes": 2891,
+        "sha256": "00d0511227d6aa13e94cff1377b959e9c7434c2f089b790cff762ef897999f28"
+      },
+      {
+        "path": "ESgomoku/main.py",
+        "kind": "source",
+        "physical_lines": 254,
+        "nonblank_lines_including_comments": 185,
+        "file_bytes": 7636,
+        "sha256": "f45f9cdf2c0bce277cbf4a1ccd8b21cdadfffdc8faefba4ad0e085ccc28fc6e2"
+      },
+      {
+        "path": "ESgomoku/MainScreen.py",
+        "kind": "source",
+        "physical_lines": 176,
+        "nonblank_lines_including_comments": 169,
+        "file_bytes": 9688,
+        "sha256": "a99137b4057e92790219ff23f3f0d095148f48a30f2dd269c3b4c4e06b4d5913"
+      },
+      {
+        "path": "ESgomoku/mcts_alphaZero.py",
+        "kind": "source",
+        "physical_lines": 229,
+        "nonblank_lines_including_comments": 191,
+        "file_bytes": 8172,
+        "sha256": "d02425dde864dbf644edec5d67ad45d9f6ce0160e82f669cc2416cf9355fb2b3"
+      },
+      {
+        "path": "ESgomoku/mcts_pure.py",
+        "kind": "source",
+        "physical_lines": 206,
+        "nonblank_lines_including_comments": 173,
+        "file_bytes": 7192,
+        "sha256": "9940c9f63c30bd5aaf461168c13afabca2f7912c015ecc01ab51cf7d3e20f83c"
+      },
+      {
+        "path": "ESgomoku/ML_AI.py",
+        "kind": "source",
+        "physical_lines": 33,
+        "nonblank_lines_including_comments": 26,
+        "file_bytes": 875,
+        "sha256": "46455fa3e7324d8640857c3bb63225235ae8fc6b79a910e1d0bd510ea1170f4d"
+      },
+      {
+        "path": "ESgomoku/play_with_robot.py",
+        "kind": "source",
+        "physical_lines": 160,
+        "nonblank_lines_including_comments": 133,
+        "file_bytes": 5810,
+        "sha256": "14bd3fdc9fef5977eff140c63082536cf5c63783695bcb3a830d10648770d4ec"
+      },
+      {
+        "path": "ESgomoku/policy_value_net_keras.py",
+        "kind": "source",
+        "physical_lines": 113,
+        "nonblank_lines_including_comments": 92,
+        "file_bytes": 4917,
+        "sha256": "6b684eb099383ce1bd0d9495edf33871fa429f024505fdc2fe4ce68ba4d04224"
+      },
+      {
+        "path": "ESgomoku/policy_value_net_numpy.py",
+        "kind": "source",
+        "physical_lines": 115,
+        "nonblank_lines_including_comments": 92,
+        "file_bytes": 4037,
+        "sha256": "da949f884f3532523b8b51af21a0edbd01c1f3834abe35462776711869e13ad1"
+      },
+      {
+        "path": "ESgomoku/pruning_tree.py",
+        "kind": "source",
+        "physical_lines": 271,
+        "nonblank_lines_including_comments": 225,
+        "file_bytes": 10754,
+        "sha256": "535fb94bdba70090766e8c77de86c3aecd6f6807e64c9ba95073502064cf844e"
+      },
+      {
+        "path": "ESgomoku/serial/usb.py",
+        "kind": "source",
+        "physical_lines": 374,
+        "nonblank_lines_including_comments": 322,
+        "file_bytes": 11590,
+        "sha256": "bd9f084b958fa0d71638919de7106ad7ef0dedd6c6c9e2afdfb96c573d4af548"
+      },
+      {
+        "path": "ESgomoku/train.py",
+        "kind": "source",
+        "physical_lines": 317,
+        "nonblank_lines_including_comments": 279,
+        "file_bytes": 15634,
+        "sha256": "8367fab764792e79e48696e3c902726ff3f80e49a15258068a891735c37626b7"
+      },
+      {
+        "path": "TriainModel-9_9_5/game.py",
+        "kind": "source",
+        "physical_lines": 223,
+        "nonblank_lines_including_comments": 196,
+        "file_bytes": 8208,
+        "sha256": "dc68fa0837531157bc3746c4bb58e0bdaf6120cc69105d037426e8b33a777be5"
+      },
+      {
+        "path": "TriainModel-9_9_5/human_play.py",
+        "kind": "source",
+        "physical_lines": 88,
+        "nonblank_lines_including_comments": 71,
+        "file_bytes": 2921,
+        "sha256": "0e81c3794f139cba0fd064589591c8b07b7fadb50847bff2019b9487de6eece0"
+      },
+      {
+        "path": "TriainModel-9_9_5/mcts_alphaZero.py",
+        "kind": "source",
+        "physical_lines": 218,
+        "nonblank_lines_including_comments": 184,
+        "file_bytes": 7844,
+        "sha256": "42aad1b83276205494e56677ad7a655349c7d84cb9f1c5ece9ded71f0db1f4f6"
+      },
+      {
+        "path": "TriainModel-9_9_5/mcts_pure.py",
+        "kind": "source",
+        "physical_lines": 205,
+        "nonblank_lines_including_comments": 172,
+        "file_bytes": 7188,
+        "sha256": "1a8dca61626257ec72c24e282eddb5e1968258d61f874c6cac5fab6b1af64811"
+      },
+      {
+        "path": "TriainModel-9_9_5/policy_value_net.py",
+        "kind": "source",
+        "physical_lines": 121,
+        "nonblank_lines_including_comments": 112,
+        "file_bytes": 5125,
+        "sha256": "2734c7bdbb8c627821569dce31c6a02e06461f02ecdf93d84c291c70e6bdda65"
+      },
+      {
+        "path": "TriainModel-9_9_5/policy_value_net_keras.py",
+        "kind": "source",
+        "physical_lines": 119,
+        "nonblank_lines_including_comments": 99,
+        "file_bytes": 5091,
+        "sha256": "94fc182b85f84eabcc96d52ae5baaad83b4a0ad71c20e782d44f61d1d7284791"
+      },
+      {
+        "path": "TriainModel-9_9_5/policy_value_net_numpy.py",
+        "kind": "source",
+        "physical_lines": 115,
+        "nonblank_lines_including_comments": 92,
+        "file_bytes": 4037,
+        "sha256": "da949f884f3532523b8b51af21a0edbd01c1f3834abe35462776711869e13ad1"
+      },
+      {
+        "path": "TriainModel-9_9_5/train.py",
+        "kind": "source",
+        "physical_lines": 319,
+        "nonblank_lines_including_comments": 281,
+        "file_bytes": 15685,
+        "sha256": "87089f4f73aa279dd0666927b8b11e2cf83bc461831942fa734375e917323c41"
+      },
+      {
+        "path": "Unity/ESgomoku/Assets/Scripts/Board/BoardClick.cs",
+        "kind": "source",
+        "physical_lines": 173,
+        "nonblank_lines_including_comments": 143,
+        "file_bytes": 5751,
+        "sha256": "66e74836f6b20f6228c4f79ede4fdeadc9b585de67f0890c8467fd2f3c194df4"
+      },
+      {
+        "path": "Unity/ESgomoku/Assets/Scripts/System/ScreenClickedEvent.cs",
+        "kind": "source",
+        "physical_lines": 107,
+        "nonblank_lines_including_comments": 89,
+        "file_bytes": 1983,
+        "sha256": "54cc8dba1f77dd7974591a15e9a895a9f96871911934aec243b23d2891577a08"
+      },
+      {
+        "path": "Unity/ESgomoku/Assets/Scripts/System/Socket_Client.cs",
+        "kind": "source",
+        "physical_lines": 171,
+        "nonblank_lines_including_comments": 140,
+        "file_bytes": 5395,
+        "sha256": "a5c1aaf3fac37ad9978ef54240c6d6acb850d24fd06f46d0b062d027ab9a4b40"
+      }
+    ]
+  },
+  {
+    "repo": "ese-519/GomoBot",
+    "counted_files": 9,
+    "physical_lines": 1220,
+    "nonblank_lines_including_comments": 1013,
+    "files": [
+      {
+        "path": "gomoku_game/Game_board.py",
+        "kind": "source",
+        "physical_lines": 239,
+        "nonblank_lines_including_comments": 202,
+        "file_bytes": 6675,
+        "sha256": "8a6fa725843337781a0b7d77037f88208802b07d6a8178c9ae6f7b74bc113f74"
+      },
+      {
+        "path": "gomoku_game/Game_evaluation_functions.py",
+        "kind": "source",
+        "physical_lines": 309,
+        "nonblank_lines_including_comments": 251,
+        "file_bytes": 8913,
+        "sha256": "f9e7ff47119b9735efaeb33a5712f5880fb263d0e578318b321cc75fb89c929c"
+      },
+      {
+        "path": "gomoku_game/Game_main.py",
+        "kind": "source",
+        "physical_lines": 158,
+        "nonblank_lines_including_comments": 125,
+        "file_bytes": 4215,
+        "sha256": "7e2f2e5fdcdd0cd0613a5f69b937e2a88fe47a9c6d944871104187666ac2a1a5"
+      },
+      {
+        "path": "gomoku_game/Openmv_piece_detection.py",
+        "kind": "source",
+        "physical_lines": 85,
+        "nonblank_lines_including_comments": 73,
+        "file_bytes": 2533,
+        "sha256": "f7f459e4f7595e9705ae4d876054dd279d3470a31ca83cc634d90cc5f854d0dd"
+      },
+      {
+        "path": "gomoku_game/Serial_arm_communication.py",
+        "kind": "source",
+        "physical_lines": 185,
+        "nonblank_lines_including_comments": 162,
+        "file_bytes": 4767,
+        "sha256": "6c6efbb074b2cf657365e308bf555cd50d56f0f308e9dfc149cd8ab7978ad58b"
+      },
+      {
+        "path": "gomoku_game/Serial_camera_reader.py",
+        "kind": "source",
+        "physical_lines": 40,
+        "nonblank_lines_including_comments": 33,
+        "file_bytes": 716,
+        "sha256": "0d1dec640cf68516f36379418c60730a6a5e4afebab917caa33458bf5b39f8b2"
+      },
+      {
+        "path": "mbed_communication/main.cpp",
+        "kind": "source",
+        "physical_lines": 12,
+        "nonblank_lines_including_comments": 10,
+        "file_bytes": 214,
+        "sha256": "d8c46cdaf9df0a7ce0d8a61032ae98bb3bcf0a6012dbd08502c071f5919f8fab"
+      },
+      {
+        "path": "openmv/openmv_find_circle.py",
+        "kind": "source",
+        "physical_lines": 85,
+        "nonblank_lines_including_comments": 73,
+        "file_bytes": 2533,
+        "sha256": "f7f459e4f7595e9705ae4d876054dd279d3470a31ca83cc634d90cc5f854d0dd"
+      },
+      {
+        "path": "piece_detect/main.cpp",
+        "kind": "source",
+        "physical_lines": 107,
+        "nonblank_lines_including_comments": 84,
+        "file_bytes": 2587,
+        "sha256": "bdf4c4d5c961660f8e7a039a06859585746611cffefcb0ec99e10df7c3910039"
+      }
+    ]
+  },
+  {
+    "repo": "hri5-boardgame-robot/Koch_Gomoku_robot",
+    "counted_files": 20,
+    "physical_lines": 3202,
+    "nonblank_lines_including_comments": 2650,
+    "files": [
+      {
+        "path": "dynamixel.py",
+        "kind": "source",
+        "physical_lines": 313,
+        "nonblank_lines_including_comments": 269,
+        "file_bytes": 14278,
+        "sha256": "a03c0b516eb1731b28ba56cb43bd9a7495718d4d8fce1f2bec9af837a800a88d"
+      },
+      {
+        "path": "Gomoku_AI/reference_model.py",
+        "kind": "source",
+        "physical_lines": 204,
+        "nonblank_lines_including_comments": 168,
+        "file_bytes": 7048,
+        "sha256": "96abf433f1e5b7579f7ff56477cc7bd3ed578701ea2fb7dd0e81a1f2ddb3e124"
+      },
+      {
+        "path": "Gomoku_AI/test_Vanilla_reference.py",
+        "kind": "source",
+        "physical_lines": 142,
+        "nonblank_lines_including_comments": 122,
+        "file_bytes": 4800,
+        "sha256": "4fb1367866e04d4bda6689713f4c2bc2d5c747c3d51d318b2e9c4a5fa82c87fa"
+      },
+      {
+        "path": "Gomoku_AI/Vanilla_MCTS/game.py",
+        "kind": "source",
+        "physical_lines": 275,
+        "nonblank_lines_including_comments": 222,
+        "file_bytes": 9975,
+        "sha256": "d705d1fb0619365e4d8357d4348b68c6d489f746ba0509a65dc761f0151b47b7"
+      },
+      {
+        "path": "Gomoku_AI/Vanilla_MCTS/mcts_alphaZero.py",
+        "kind": "source",
+        "physical_lines": 171,
+        "nonblank_lines_including_comments": 139,
+        "file_bytes": 6590,
+        "sha256": "fd16a4a9aa7ca5747d11cbc7d8893a5aa26624b91cb0257a8de613c5e8a14be7"
+      },
+      {
+        "path": "Gomoku_AI/Vanilla_MCTS/policy_value_net.py",
+        "kind": "source",
+        "physical_lines": 83,
+        "nonblank_lines_including_comments": 65,
+        "file_bytes": 3281,
+        "sha256": "975d73f3c150ab8931b57bf06efee27cb47aacd7743c41e57ec6a067c1a3a833"
+      },
+      {
+        "path": "Gomoku_AI/Vanilla_MCTS/renju_rule.py",
+        "kind": "source",
+        "physical_lines": 147,
+        "nonblank_lines_including_comments": 129,
+        "file_bytes": 4732,
+        "sha256": "3644359ab3e496722f6bf348c4c5c7b0164306e49f764c170aed5c73032a400f"
+      },
+      {
+        "path": "Gomoku_AI/Vanilla_MCTS/test.py",
+        "kind": "source",
+        "physical_lines": 60,
+        "nonblank_lines_including_comments": 48,
+        "file_bytes": 2093,
+        "sha256": "0863ffb9f9e80f0c51bc5be94dad16f9e3161c6e5122c774a306ae1811067b00"
+      },
+      {
+        "path": "Gomoku_AI/Vanilla_MCTS/train_local.py",
+        "kind": "source",
+        "physical_lines": 129,
+        "nonblank_lines_including_comments": 107,
+        "file_bytes": 5454,
+        "sha256": "93b3b98cfe633a5fee31bd7fc6c791415e8880c3b31fa02b03da872b353e30d7"
+      },
+      {
+        "path": "interface.py",
+        "kind": "source",
+        "physical_lines": 82,
+        "nonblank_lines_including_comments": 68,
+        "file_bytes": 2675,
+        "sha256": "e14fb6e33a5ff515dd8d88efcc58f0fde02c1f4000a88d1d48c2a14af986f771"
+      },
+      {
+        "path": "omoku_bot_v2.py",
+        "kind": "source",
+        "physical_lines": 278,
+        "nonblank_lines_including_comments": 232,
+        "file_bytes": 10135,
+        "sha256": "ac2fbecb3862518e3839c325bbc6605d9f00c34eabfa3d9da3fd685c111eb7ab"
+      },
+      {
+        "path": "play.py",
+        "kind": "source",
+        "physical_lines": 220,
+        "nonblank_lines_including_comments": 178,
+        "file_bytes": 7953,
+        "sha256": "96640b97009bcfdd98b6266a68e1dd3199298f92ca36829f73fed680e2c2b9f8"
+      },
+      {
+        "path": "robot.py",
+        "kind": "source",
+        "physical_lines": 231,
+        "nonblank_lines_including_comments": 198,
+        "file_bytes": 8263,
+        "sha256": "40c34a58eb71b85eef72a9c920da183df60c47f3b54c9d0987e95a6d6e3dcd20"
+      },
+      {
+        "path": "sync_simul_real.py",
+        "kind": "source",
+        "physical_lines": 112,
+        "nonblank_lines_including_comments": 90,
+        "file_bytes": 4191,
+        "sha256": "f291fa42d603ebc5ad079ecab40e74db5f9254f83a69a19a0b11a735cf54839d"
+      },
+      {
+        "path": "tt.py",
+        "kind": "source",
+        "physical_lines": 28,
+        "nonblank_lines_including_comments": 18,
+        "file_bytes": 593,
+        "sha256": "a434970d25222e04ab730cbfe72af90517baae4acbbdca551910d4427c2f6963"
+      },
+      {
+        "path": "vision/__init__.py",
+        "kind": "source",
+        "physical_lines": 2,
+        "nonblank_lines_including_comments": 2,
+        "file_bytes": 43,
+        "sha256": "366d30fb105639f5e6e76b944ede0ebeb5441d1df99621ad6c92a8902f626123"
+      },
+      {
+        "path": "vision/initial.py",
+        "kind": "source",
+        "physical_lines": 242,
+        "nonblank_lines_including_comments": 201,
+        "file_bytes": 8998,
+        "sha256": "4dfcc251f41b1d2b3fbe9ca366e5a73309b9cbf547449d4901cea5b50c5befbb"
+      },
+      {
+        "path": "vision/test_camera.py",
+        "kind": "source",
+        "physical_lines": 54,
+        "nonblank_lines_including_comments": 46,
+        "file_bytes": 1473,
+        "sha256": "9b095912e2996520697a116918ea3cb94d6460d4090ff806b75a6366d53c17ae"
+      },
+      {
+        "path": "vision/test_vision.py",
+        "kind": "source",
+        "physical_lines": 168,
+        "nonblank_lines_including_comments": 139,
+        "file_bytes": 5114,
+        "sha256": "39bc4350fc4a0b85327e7aff64724e55409f78498737d881dcf482d00dd41d55"
+      },
+      {
+        "path": "vision/utils.py",
+        "kind": "source",
+        "physical_lines": 261,
+        "nonblank_lines_including_comments": 209,
+        "file_bytes": 9021,
+        "sha256": "6ce701d7a9af7db52c0af16d9eb68b02d18ba9b1015c21d96045005cd5f81434"
+      }
+    ]
+  },
+  {
+    "repo": "kittiyojiang/gomoku-arm-controller",
+    "counted_files": 9,
+    "physical_lines": 407,
+    "nonblank_lines_including_comments": 307,
+    "files": [
+      {
+        "path": "arm_controller/__init__.py",
+        "kind": "source",
+        "physical_lines": 3,
+        "nonblank_lines_including_comments": 2,
+        "file_bytes": 87,
+        "sha256": "6e1f5c9d00b856cf0317395dd44dfed8ea1bb634477363e0f6d74432fc6a8365"
+      },
+      {
+        "path": "arm_controller/cli.py",
+        "kind": "source",
+        "physical_lines": 47,
+        "nonblank_lines_including_comments": 34,
+        "file_bytes": 1561,
+        "sha256": "ed2dc6aaec721d0138abd782b22d23a34a1d6bcbcc5e4ff08e718f3ffebfdf6a"
+      },
+      {
+        "path": "arm_controller/config.py",
+        "kind": "source",
+        "physical_lines": 32,
+        "nonblank_lines_including_comments": 24,
+        "file_bytes": 567,
+        "sha256": "7a4fb45f0a34e60b27c8e15e65a22322f495177b5f8d8ddb14a090808820292a"
+      },
+      {
+        "path": "arm_controller/coordinate_mapper.py",
+        "kind": "source",
+        "physical_lines": 46,
+        "nonblank_lines_including_comments": 34,
+        "file_bytes": 1625,
+        "sha256": "3091f4a28944e006747f24cf36f6ada9a3c40977f0a9a21d0674787eb42e9d0f"
+      },
+      {
+        "path": "arm_controller/serial_protocol.py",
+        "kind": "source",
+        "physical_lines": 71,
+        "nonblank_lines_including_comments": 51,
+        "file_bytes": 2276,
+        "sha256": "1530346962603b90f6a35a859ed196b44306ac74c6c5314dc90adbb28eb460cb"
+      },
+      {
+        "path": "arm_controller/stm32_controller.py",
+        "kind": "source",
+        "physical_lines": 108,
+        "nonblank_lines_including_comments": 87,
+        "file_bytes": 3751,
+        "sha256": "25e8e5898156da575a7a74775b60b9904ea5b2a7cca77132b6e155513b631719"
+      },
+      {
+        "path": "arm_controller/teach_pendant.py",
+        "kind": "source",
+        "physical_lines": 48,
+        "nonblank_lines_including_comments": 38,
+        "file_bytes": 1384,
+        "sha256": "f76d3856ba81bb4ea0d88a8200e572f1d3919e842e0e11949027f648afe85542"
+      },
+      {
+        "path": "tests/test_coordinate_mapper.py",
+        "kind": "source",
+        "physical_lines": 20,
+        "nonblank_lines_including_comments": 14,
+        "file_bytes": 662,
+        "sha256": "3553583c4096df997caca1791659c3ab54a73480eb4c756477aeda1ecec49430"
+      },
+      {
+        "path": "tests/test_serial_protocol.py",
+        "kind": "source",
+        "physical_lines": 32,
+        "nonblank_lines_including_comments": 23,
+        "file_bytes": 783,
+        "sha256": "397c10cbea7a6012cc941dd08982a21841f57174d3955e050585f5b2ae70743c"
+      }
+    ]
+  },
+  {
+    "repo": "kittiyojiang/gomoku-robot",
+    "counted_files": 47,
+    "physical_lines": 7255,
+    "nonblank_lines_including_comments": 6039,
+    "files": [
+      {
+        "path": "app/__init__.py",
+        "kind": "source",
+        "physical_lines": 1,
+        "nonblank_lines_including_comments": 1,
+        "file_bytes": 40,
+        "sha256": "d8b5ecda0fe8173b976ed5960f2cd114d935484edf2b184f5c49b1a90f80e7b6"
+      },
+      {
+        "path": "app/calibration_lite/__init__.py",
+        "kind": "source",
+        "physical_lines": 2,
+        "nonblank_lines_including_comments": 2,
+        "file_bytes": 123,
+        "sha256": "56dd42dd3515f167ddc16d1b26c1825493e3d82ca87609174652c7eb0a97b701"
+      },
+      {
+        "path": "app/calibration_lite/launcher.py",
+        "kind": "source",
+        "physical_lines": 48,
+        "nonblank_lines_including_comments": 39,
+        "file_bytes": 1701,
+        "sha256": "35ee903908feb39cd789fdb62ff4f09eb27d099f025a80d8d999b73ad85484cf"
+      },
+      {
+        "path": "arm/command_arm.py",
+        "kind": "source",
+        "physical_lines": 113,
+        "nonblank_lines_including_comments": 89,
+        "file_bytes": 4104,
+        "sha256": "d9ae757ef8c538e7413d83316321a24ca61f6bd27fb464ac41b62ca5ac436770"
+      },
+      {
+        "path": "arm/test.py",
+        "kind": "source",
+        "physical_lines": 44,
+        "nonblank_lines_including_comments": 36,
+        "file_bytes": 1166,
+        "sha256": "e2894abf4393873a6a77275c24125c37628722b945872177efc687d796b21ab7"
+      },
+      {
+        "path": "arm/test_arm.py",
+        "kind": "source",
+        "physical_lines": 90,
+        "nonblank_lines_including_comments": 66,
+        "file_bytes": 3687,
+        "sha256": "0535f54b43777a322290893452aec8f0fb52af15c74900bc1ff7e901bdbcba87"
+      },
+      {
+        "path": "calibration_tools/apriltag_calibrate.py",
+        "kind": "source",
+        "physical_lines": 195,
+        "nonblank_lines_including_comments": 164,
+        "file_bytes": 7175,
+        "sha256": "cc7b6686e8f5b9c0a9f89d09371536239c8eab222c0df99cb228d1e2e6a8bc02"
+      },
+      {
+        "path": "calibration_tools/getpoint.py",
+        "kind": "source",
+        "physical_lines": 102,
+        "nonblank_lines_including_comments": 81,
+        "file_bytes": 3748,
+        "sha256": "78a62b1118d14c16dfbbe69813247ad20f67edcfff799891dd85dc301ec4f76b"
+      },
+      {
+        "path": "calibration_tools/live_calibrate.py",
+        "kind": "source",
+        "physical_lines": 103,
+        "nonblank_lines_including_comments": 83,
+        "file_bytes": 3463,
+        "sha256": "6c89991c56b8b4a6387b717b072d8f0aa155ec2b77dfe552251b19baadbf395c"
+      },
+      {
+        "path": "calibration_tools/live_camera.py",
+        "kind": "source",
+        "physical_lines": 54,
+        "nonblank_lines_including_comments": 43,
+        "file_bytes": 1941,
+        "sha256": "94d50812e0a47b8d252dfb1539230ec0a0cd88d58c41ac6573233a3798736ad3"
+      },
+      {
+        "path": "calibration_tools/vision_pipeline.py",
+        "kind": "source",
+        "physical_lines": 104,
+        "nonblank_lines_including_comments": 90,
+        "file_bytes": 4165,
+        "sha256": "8ea6de0bc0755333afdece24976afbe3166018a506cd8b2b601b5ec935cb94aa"
+      },
+      {
+        "path": "camera_preview.py",
+        "kind": "source",
+        "physical_lines": 18,
+        "nonblank_lines_including_comments": 16,
+        "file_bytes": 511,
+        "sha256": "b70379725ac4ee76f984608c5dc41dfbb23b3de84a1fb374cbf0676fd158afe2"
+      },
+      {
+        "path": "demo_ai_to_arm_mock.py",
+        "kind": "source",
+        "physical_lines": 122,
+        "nonblank_lines_including_comments": 94,
+        "file_bytes": 3446,
+        "sha256": "fc8b36ddb3597c8a437aa955fbf25009431736d01a5ed4fb080cead1176b990e"
+      },
+      {
+        "path": "findCam.py",
+        "kind": "source",
+        "physical_lines": 18,
+        "nonblank_lines_including_comments": 15,
+        "file_bytes": 483,
+        "sha256": "f7e610bf1c782bc8326c6d0cfa22266d45fb3aac6bc02b3ec868f1761d69d939"
+      },
+      {
+        "path": "gomoku/__init__.py",
+        "kind": "source",
+        "physical_lines": 1,
+        "nonblank_lines_including_comments": 1,
+        "file_bytes": 33,
+        "sha256": "24066efa1377a71af2a2a1c80368b3258cd3016efac4f80d8406c2a880ddebc6"
+      },
+      {
+        "path": "gomoku/ai.py",
+        "kind": "source",
+        "physical_lines": 290,
+        "nonblank_lines_including_comments": 240,
+        "file_bytes": 9843,
+        "sha256": "3c79cdef3bb3a706d351597c299d0ea00266f76af0419e45063f326678207b0e"
+      },
+      {
+        "path": "gomoku/ai_debug.py",
+        "kind": "source",
+        "physical_lines": 48,
+        "nonblank_lines_including_comments": 35,
+        "file_bytes": 1114,
+        "sha256": "910e59cec603cf7629954ce7f8313ca7a5826676af0ee9ab0a109c8924449b98"
+      },
+      {
+        "path": "gomoku/ai_logic.py",
+        "kind": "source",
+        "physical_lines": 55,
+        "nonblank_lines_including_comments": 43,
+        "file_bytes": 1799,
+        "sha256": "9371df8379af6f3ff3c92425b4828e535cc6103fbbe3adb04ae90a3b845ce9c9"
+      },
+      {
+        "path": "gomoku/camera_interface.py",
+        "kind": "source",
+        "physical_lines": 238,
+        "nonblank_lines_including_comments": 195,
+        "file_bytes": 9826,
+        "sha256": "e2dc93ed7d6101351c72533b2d9c8524a24788d3eb0b96abc835c95637307a19"
+      },
+      {
+        "path": "gomoku/cli.py",
+        "kind": "source",
+        "physical_lines": 143,
+        "nonblank_lines_including_comments": 113,
+        "file_bytes": 4139,
+        "sha256": "9085675bbe7521e3c81f9cb8aa5d412748e96e0329d7446f7033b8ae507fefa9"
+      },
+      {
+        "path": "gomoku/config.py",
+        "kind": "source",
+        "physical_lines": 30,
+        "nonblank_lines_including_comments": 26,
+        "file_bytes": 1194,
+        "sha256": "5c29c443aac7e156def3b527512f95aefca766f844ad98bb4b9009abfc49bef9"
+      },
+      {
+        "path": "gomoku/core.py",
+        "kind": "source",
+        "physical_lines": 104,
+        "nonblank_lines_including_comments": 81,
+        "file_bytes": 3071,
+        "sha256": "682de2a6b0df1b26d0e0226534172a5d90cb48bede00693f139ad6b87d04d987"
+      },
+      {
+        "path": "gomoku/gui_qt.py",
+        "kind": "source",
+        "physical_lines": 1207,
+        "nonblank_lines_including_comments": 1055,
+        "file_bytes": 53774,
+        "sha256": "a0be87611a8f2d6520a5b78e411b876127bb24891ff47ce317bb39490002b9ef"
+      },
+      {
+        "path": "gomoku/record.py",
+        "kind": "source",
+        "physical_lines": 95,
+        "nonblank_lines_including_comments": 80,
+        "file_bytes": 2766,
+        "sha256": "32cef863828e48dc3c0cc5d5a577fe038498486223cbc45476ec499b3c22977d"
+      },
+      {
+        "path": "gomoku/replay.py",
+        "kind": "source",
+        "physical_lines": 63,
+        "nonblank_lines_including_comments": 46,
+        "file_bytes": 1656,
+        "sha256": "0985a2ec107f5fe50bd6f0b67d46180cab40477619b9f02841f4ee4eff366f13"
+      },
+      {
+        "path": "gomoku/robot_api.py",
+        "kind": "source",
+        "physical_lines": 475,
+        "nonblank_lines_including_comments": 398,
+        "file_bytes": 17422,
+        "sha256": "75a74e330b5c004536392350ccd7d4e21421f721570ea399b81dc57ca18944f9"
+      },
+      {
+        "path": "gomoku/selfplay.py",
+        "kind": "source",
+        "physical_lines": 110,
+        "nonblank_lines_including_comments": 89,
+        "file_bytes": 3195,
+        "sha256": "5ce7044512edbfef509b72653a309f17e4b2faa3ab70f2acf91e1e5745870bb0"
+      },
+      {
+        "path": "gomoku/stm32_controller.py",
+        "kind": "source",
+        "physical_lines": 88,
+        "nonblank_lines_including_comments": 64,
+        "file_bytes": 2682,
+        "sha256": "f055bc1a3ab7f84a77c31e1c0cf89e2c0344140b4c65bfc601b5de6943060257"
+      },
+      {
+        "path": "Gomoku_Vision_System_Pro/ai_engine.py",
+        "kind": "source",
+        "physical_lines": 221,
+        "nonblank_lines_including_comments": 192,
+        "file_bytes": 9937,
+        "sha256": "a0985921ece3e59c0cd42ea4c50f6c0b29adbb41a6342a22d84b7612be38c0ab"
+      },
+      {
+        "path": "Gomoku_Vision_System_Pro/calibration.py",
+        "kind": "source",
+        "physical_lines": 96,
+        "nonblank_lines_including_comments": 77,
+        "file_bytes": 3794,
+        "sha256": "2078839f8a90a909575230022c03272fc48640f86abedd9d2bc0e8706891f45b"
+      },
+      {
+        "path": "Gomoku_Vision_System_Pro/main.py",
+        "kind": "source",
+        "physical_lines": 446,
+        "nonblank_lines_including_comments": 372,
+        "file_bytes": 19738,
+        "sha256": "44503a3c4723580ae0236daebc33aadf1ab3b593a1e947c8f561f0fb6d09521f"
+      },
+      {
+        "path": "main.py",
+        "kind": "source",
+        "physical_lines": 33,
+        "nonblank_lines_including_comments": 27,
+        "file_bytes": 1023,
+        "sha256": "7a0cf4648d0a5c37f26b92cfbac21177ea22b3a76440567eda7290e31148da16"
+      },
+      {
+        "path": "piece_center_detect.py",
+        "kind": "source",
+        "physical_lines": 971,
+        "nonblank_lines_including_comments": 820,
+        "file_bytes": 34257,
+        "sha256": "f38d2c8cc968a5ccdb625fe6eee16344b71bd2ea204e36a6628feffc07e8bed6"
+      },
+      {
+        "path": "servo_pump_control.py",
+        "kind": "source",
+        "physical_lines": 247,
+        "nonblank_lines_including_comments": 214,
+        "file_bytes": 9169,
+        "sha256": "472ba7b6cd91a530d4ea56d9adfdf8dcad02e388fcb3d8db24fa763137076040"
+      },
+      {
+        "path": "tests/test_ai_to_arm_demo.py",
+        "kind": "source",
+        "physical_lines": 21,
+        "nonblank_lines_including_comments": 15,
+        "file_bytes": 711,
+        "sha256": "f4792c790b7537daba3d58c525de5896c13eccbd1ca850ac63b1c1131583ef36"
+      },
+      {
+        "path": "tests/test_core_ai.py",
+        "kind": "source",
+        "physical_lines": 31,
+        "nonblank_lines_including_comments": 23,
+        "file_bytes": 844,
+        "sha256": "3ea28201be42d284ca114bcaa2bf2e809124fbf5dd7b016aea6fb32563bc18d1"
+      },
+      {
+        "path": "tests/test_live_vision_monitor.py",
+        "kind": "source",
+        "physical_lines": 57,
+        "nonblank_lines_including_comments": 42,
+        "file_bytes": 1642,
+        "sha256": "8ce0068e019d7fea92df7eeb70b418a7f69a74344e5f1e9a1d02673372b4d032"
+      },
+      {
+        "path": "tests/test_vision_benchmark_dataset.py",
+        "kind": "source",
+        "physical_lines": 36,
+        "nonblank_lines_including_comments": 27,
+        "file_bytes": 1300,
+        "sha256": "60bf97e090a39206b5b21d16a101b0df83b3a2507cb42d48c93cbb0755177b07"
+      },
+      {
+        "path": "tests/test_vision_modules.py",
+        "kind": "source",
+        "physical_lines": 27,
+        "nonblank_lines_including_comments": 20,
+        "file_bytes": 930,
+        "sha256": "be63bdf2f8dba1614ba5151b55ac79c20c4d7315c3d84f19031b0711ec4c2152"
+      },
+      {
+        "path": "tools/benchmark_vision.py",
+        "kind": "source",
+        "physical_lines": 175,
+        "nonblank_lines_including_comments": 136,
+        "file_bytes": 5582,
+        "sha256": "ae0117220a9985ed93df29b4911bef2461cdee57b1347422125a04ddf973e132"
+      },
+      {
+        "path": "tools/live_vision_monitor.py",
+        "kind": "source",
+        "physical_lines": 237,
+        "nonblank_lines_including_comments": 190,
+        "file_bytes": 8955,
+        "sha256": "eca55be4bf67556f44697e100e95f901112390934e8c382b6faf69d3b2c00185"
+      },
+      {
+        "path": "vision/__init__.py",
+        "kind": "source",
+        "physical_lines": 2,
+        "nonblank_lines_including_comments": 1,
+        "file_bytes": 68,
+        "sha256": "034cad619803f4cc1d63e1c40a3dcadb202de25136dfc4511f7b480dcd001490"
+      },
+      {
+        "path": "vision/board_detector.py",
+        "kind": "source",
+        "physical_lines": 111,
+        "nonblank_lines_including_comments": 86,
+        "file_bytes": 3656,
+        "sha256": "835c8668260959d084e8ff7361954c77d120a9dbdfb84f2f4c289db3595084a8"
+      },
+      {
+        "path": "vision/detection_cli.py",
+        "kind": "source",
+        "physical_lines": 84,
+        "nonblank_lines_including_comments": 75,
+        "file_bytes": 4746,
+        "sha256": "1152057731336b7125e9ec7e9d2207c80fe6a1658450b2068578eb2adace2420"
+      },
+      {
+        "path": "vision/grid_mapper.py",
+        "kind": "source",
+        "physical_lines": 70,
+        "nonblank_lines_including_comments": 50,
+        "file_bytes": 2449,
+        "sha256": "58b99817ccbe1f612fe1d50943138a2dcc27c8a01305f85e0ca248671a2ea85d"
+      },
+      {
+        "path": "vision/stone_detector.py",
+        "kind": "source",
+        "physical_lines": 377,
+        "nonblank_lines_including_comments": 347,
+        "file_bytes": 15711,
+        "sha256": "f0b7ea149e8ff8b73364f9d9a23e700a9f064b752fa36c958931c5dcf86759f6"
+      },
+      {
+        "path": "vision/vision_demo.py",
+        "kind": "source",
+        "physical_lines": 52,
+        "nonblank_lines_including_comments": 40,
+        "file_bytes": 1754,
+        "sha256": "bae630f6ea42b205fb703e3a8b77dd559b1422c406fcfb1bdffc9ff2e03d51c5"
+      }
+    ]
+  },
+  {
+    "repo": "muhuahu/Dofbot_GoBang",
+    "counted_files": 6,
+    "physical_lines": 1194,
+    "nonblank_lines_including_comments": 1044,
+    "files": [
+      {
+        "path": "ESP32/boot.py",
+        "kind": "source",
+        "physical_lines": 342,
+        "nonblank_lines_including_comments": 321,
+        "file_bytes": 10752,
+        "sha256": "19389d36a74ea2aef523d32e7d108746e4daa013418c79df342224be8cf927ff"
+      },
+      {
+        "path": "ESP32/ServoDrive.py",
+        "kind": "source",
+        "physical_lines": 79,
+        "nonblank_lines_including_comments": 69,
+        "file_bytes": 2569,
+        "sha256": "cf94aedf6a597835ff22c23e8c2cf2e6fe7f91b8a6c52ef6f61aa9bd556751dd"
+      },
+      {
+        "path": "pi/a_star_search.py",
+        "kind": "source",
+        "physical_lines": 272,
+        "nonblank_lines_including_comments": 225,
+        "file_bytes": 11060,
+        "sha256": "79a289707efb5c31d8a01c12351cabf320974b6bb1430fd36de74589a96be003"
+      },
+      {
+        "path": "pi/camera_recognize.py",
+        "kind": "source",
+        "physical_lines": 294,
+        "nonblank_lines_including_comments": 256,
+        "file_bytes": 10897,
+        "sha256": "ff9ae887380009e95aff5fd1a2bfc6ec670d96200cc34087dfed9c434bdd2df2"
+      },
+      {
+        "path": "pi/constants.py",
+        "kind": "source",
+        "physical_lines": 27,
+        "nonblank_lines_including_comments": 20,
+        "file_bytes": 650,
+        "sha256": "d200bab51b5fd76bc7f35441608a6fb36e5049470804dbb3c5fa7ef40d49f1f6"
+      },
+      {
+        "path": "pi/start.py",
+        "kind": "source",
+        "physical_lines": 180,
+        "nonblank_lines_including_comments": 153,
+        "file_bytes": 5477,
+        "sha256": "adc23d9cc35e5f7c13bbba3ab01235053ec77a22ed4f664fa023623e293812aa"
+      }
+    ]
+  },
+  {
+    "repo": "omegaliii/gomoku_robot",
+    "counted_files": 14,
+    "physical_lines": 2012,
+    "nonblank_lines_including_comments": 1635,
+    "files": [
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/boardstate.py",
+        "kind": "source",
+        "physical_lines": 10,
+        "nonblank_lines_including_comments": 8,
+        "file_bytes": 177,
+        "sha256": "cc3b3d125d92ca4583e3c95041d4d679828846720fda8a9a3d8d0ac4896bd285"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/camera_srv.py",
+        "kind": "source",
+        "physical_lines": 44,
+        "nonblank_lines_including_comments": 32,
+        "file_bytes": 1120,
+        "sha256": "fe66e042dc2beb8a373cdd8c2aa796b2fbfb2d7f394eb411c1d3200fbbcd0a2d"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/cvh.py",
+        "kind": "source",
+        "physical_lines": 342,
+        "nonblank_lines_including_comments": 262,
+        "file_bytes": 11004,
+        "sha256": "23b73a441c65e7eb3d1b31f59c590e90572b8e8978c2a4a9c1d11a31bdde2508"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/display_helper.py",
+        "kind": "source",
+        "physical_lines": 29,
+        "nonblank_lines_including_comments": 23,
+        "file_bytes": 799,
+        "sha256": "23b50d8a081c6128e86e70f68493f3416142018c047fea89781f444de3238abb"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/evaluate.py",
+        "kind": "source",
+        "physical_lines": 117,
+        "nonblank_lines_including_comments": 102,
+        "file_bytes": 4875,
+        "sha256": "cc3fa2fc4cb1b5cb5d804ac9e2385fe6cfb19c2c48f1bc342ad28469821da698"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/gomoku.py",
+        "kind": "source",
+        "physical_lines": 87,
+        "nonblank_lines_including_comments": 71,
+        "file_bytes": 2356,
+        "sha256": "3ce88afc401401cfd3ad54b642f29a9e5a3fc936f5e901edce0bcacf52d3f830"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/gomoku_ai.py",
+        "kind": "source",
+        "physical_lines": 451,
+        "nonblank_lines_including_comments": 381,
+        "file_bytes": 14552,
+        "sha256": "1772e0a95ebbc49d6bcfc2bec62b738b0d740489d3b27c0181add9214f603373"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/gomuku_sub.py",
+        "kind": "source",
+        "physical_lines": 68,
+        "nonblank_lines_including_comments": 50,
+        "file_bytes": 2250,
+        "sha256": "dea562cc30faa1209fd4b802aa641e69375bb227c9ec19e4a0836c175fc53e09"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/image_process.py",
+        "kind": "source",
+        "physical_lines": 155,
+        "nonblank_lines_including_comments": 117,
+        "file_bytes": 4424,
+        "sha256": "f037c4f84ac760e9334ee62eaad8668d281cb65324397f805e1412abae21d405"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_brain/src/wegame.py",
+        "kind": "source",
+        "physical_lines": 215,
+        "nonblank_lines_including_comments": 204,
+        "file_bytes": 7630,
+        "sha256": "077e0515259dc3373f473fa8e9146f90bced416bb152dbc86b2d00c1af02f0bb"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_controller/src/display_helper.py",
+        "kind": "source",
+        "physical_lines": 29,
+        "nonblank_lines_including_comments": 23,
+        "file_bytes": 799,
+        "sha256": "23b50d8a081c6128e86e70f68493f3416142018c047fea89781f444de3238abb"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_controller/src/gomoku_sub.py",
+        "kind": "source",
+        "physical_lines": 87,
+        "nonblank_lines_including_comments": 62,
+        "file_bytes": 2693,
+        "sha256": "d8121c8cce108ececc35a1af43e5cf3b9766a7f6020f16db71c4c13ca0ee1992"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_controller/src/path_planner.py",
+        "kind": "source",
+        "physical_lines": 156,
+        "nonblank_lines_including_comments": 112,
+        "file_bytes": 4845,
+        "sha256": "de7db8d56bf129a47eecbc2d75667db73173ea359ddfceae79f2924fe83313e9"
+      },
+      {
+        "path": "gomoku_robot/src/gomoku_controller/src/progresser.py",
+        "kind": "source",
+        "physical_lines": 222,
+        "nonblank_lines_including_comments": 188,
+        "file_bytes": 6721,
+        "sha256": "43dd9802e9f9cb4c3b4227d86896b07929a0b0f10b72d0fdba79a67216cb835c"
+      }
+    ]
+  },
+  {
+    "repo": "raghavansh/Tic-Tac-Toe-playing-4dof-robotic-arm",
+    "counted_files": 2,
+    "physical_lines": 1096,
+    "nonblank_lines_including_comments": 992,
+    "files": [
+      {
+        "path": "code.py",
+        "kind": "source",
+        "physical_lines": 273,
+        "nonblank_lines_including_comments": 250,
+        "file_bytes": 10801,
+        "sha256": "c1042386a0d2a5a0805641a65fd6e742dc3c59d4f089179c79a28e07dbbbe91c"
+      },
+      {
+        "path": "StandardFirmata.ino",
+        "kind": "source",
+        "physical_lines": 823,
+        "nonblank_lines_including_comments": 742,
+        "file_bytes": 27995,
+        "sha256": "10eff7e38501872bb4e50520a49a46722d8ed4fd593cdcd81031482da51e7034"
+      }
+    ]
+  },
+  {
+    "repo": "Robin-WZQ/Gobang-Chess",
+    "counted_files": 34,
+    "physical_lines": 3479,
+    "nonblank_lines_including_comments": 2951,
+    "files": [
+      {
+        "path": "源码/博弈单元/AI_alpha_beta.py",
+        "kind": "source",
+        "physical_lines": 445,
+        "nonblank_lines_including_comments": 369,
+        "file_bytes": 15513,
+        "sha256": "8f735de59b9b345ab9d7598eda24ac786833191c750300efe24b39f2db814210"
+      },
+      {
+        "path": "源码/博弈单元/Camera.py",
+        "kind": "source",
+        "physical_lines": 93,
+        "nonblank_lines_including_comments": 85,
+        "file_bytes": 3250,
+        "sha256": "777975b599dced9f45f1dc70709a1f31c53182d57f92a65c206c9c2919bd92ef"
+      },
+      {
+        "path": "源码/博弈单元/capture.py",
+        "kind": "source",
+        "physical_lines": 147,
+        "nonblank_lines_including_comments": 130,
+        "file_bytes": 5957,
+        "sha256": "e355acc02c1e7c5030ef15facbcc94465d2bbc1a86061a5e2fe01d99e9c89451"
+      },
+      {
+        "path": "源码/博弈单元/Checkboard.py",
+        "kind": "source",
+        "physical_lines": 64,
+        "nonblank_lines_including_comments": 52,
+        "file_bytes": 2070,
+        "sha256": "69bee574997ae798a32076d1a0ffb016af6088cad6c269237b68e6e22cf744d6"
+      },
+      {
+        "path": "源码/博弈单元/DrawUI.py",
+        "kind": "source",
+        "physical_lines": 103,
+        "nonblank_lines_including_comments": 88,
+        "file_bytes": 5071,
+        "sha256": "13f678ae1fa791e5abaf60e2752a322c7cb330a7067b868aefbd75b3922e9584"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/AI_alpha_beta.py",
+        "kind": "source",
+        "physical_lines": 178,
+        "nonblank_lines_including_comments": 144,
+        "file_bytes": 5902,
+        "sha256": "0a516e22ded1c396374d34a542c7c86cb04830aa356deb87a7442ee97170add3"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/Camera.py",
+        "kind": "source",
+        "physical_lines": 93,
+        "nonblank_lines_including_comments": 85,
+        "file_bytes": 3250,
+        "sha256": "777975b599dced9f45f1dc70709a1f31c53182d57f92a65c206c9c2919bd92ef"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/capture.py",
+        "kind": "source",
+        "physical_lines": 147,
+        "nonblank_lines_including_comments": 130,
+        "file_bytes": 5957,
+        "sha256": "e355acc02c1e7c5030ef15facbcc94465d2bbc1a86061a5e2fe01d99e9c89451"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/Checkboard.py",
+        "kind": "source",
+        "physical_lines": 62,
+        "nonblank_lines_including_comments": 50,
+        "file_bytes": 1997,
+        "sha256": "c5198d106291fd93c7ae4d721e8b0a6f0b4f2843c7ce3b3ae956b992fbb95014"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/DrawUI.py",
+        "kind": "source",
+        "physical_lines": 103,
+        "nonblank_lines_including_comments": 88,
+        "file_bytes": 5071,
+        "sha256": "13f678ae1fa791e5abaf60e2752a322c7cb330a7067b868aefbd75b3922e9584"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/move.py",
+        "kind": "source",
+        "physical_lines": 129,
+        "nonblank_lines_including_comments": 112,
+        "file_bytes": 3435,
+        "sha256": "3237821b353496bbd76b7b1c0647882a1ba69b72b08eba26fc4fc47ee7ba47b7"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/mygame.py",
+        "kind": "source",
+        "physical_lines": 70,
+        "nonblank_lines_including_comments": 55,
+        "file_bytes": 2065,
+        "sha256": "a45151c6120ed017aa66927da1a805607d7d23557aa3ebefdaaa7456ca14d27e"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/mygame_UI.py",
+        "kind": "source",
+        "physical_lines": 118,
+        "nonblank_lines_including_comments": 97,
+        "file_bytes": 4559,
+        "sha256": "8b37788a3ebcc6bad6b7e06b04f154d61100ff5920ee7ed91b27f696b364f434"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/MyModel.py",
+        "kind": "source",
+        "physical_lines": 18,
+        "nonblank_lines_including_comments": 16,
+        "file_bytes": 620,
+        "sha256": "a82d22c40f3572d079db62d6acd03fd1ea3057a6ed703352c6cd65a21bf053f2"
+      },
+      {
+        "path": "源码/博弈单元/lab3/test/recognize.py",
+        "kind": "source",
+        "physical_lines": 121,
+        "nonblank_lines_including_comments": 104,
+        "file_bytes": 4879,
+        "sha256": "d02c40ad91c5c9886447988a3a0d247c310fe2403f9925753746826123f0ac33"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/AI_alpha_beta.py",
+        "kind": "source",
+        "physical_lines": 178,
+        "nonblank_lines_including_comments": 144,
+        "file_bytes": 5902,
+        "sha256": "0a516e22ded1c396374d34a542c7c86cb04830aa356deb87a7442ee97170add3"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/Checkboard.py",
+        "kind": "source",
+        "physical_lines": 60,
+        "nonblank_lines_including_comments": 50,
+        "file_bytes": 2022,
+        "sha256": "2fe65358bdfd483a5e50bf1eac791168aa35e288a4acf3839c1e02202dbdbd5a"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/DrawUI.py",
+        "kind": "source",
+        "physical_lines": 103,
+        "nonblank_lines_including_comments": 88,
+        "file_bytes": 5052,
+        "sha256": "beef4a0c4381318e0aa6899b17aaa2fc882e83171a9557667e7411e46332c527"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/GA.py",
+        "kind": "source",
+        "physical_lines": 111,
+        "nonblank_lines_including_comments": 97,
+        "file_bytes": 3332,
+        "sha256": "ae5d7a67f2663769cc10a504e02ee0ee50e13a59d13fe56354956f8351461aa4"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/MyModel.py",
+        "kind": "source",
+        "physical_lines": 38,
+        "nonblank_lines_including_comments": 34,
+        "file_bytes": 1334,
+        "sha256": "711041018c1439c7f831f3f06b67ce9b6a78739e446e87143d420e2bc47c5fb2"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/test.py",
+        "kind": "source",
+        "physical_lines": 1,
+        "nonblank_lines_including_comments": 1,
+        "file_bytes": 32,
+        "sha256": "bc06c0629e508da929b24cde4dccb3f07e98c131b4483c055dfa6dc37f510a19"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/two_AI_chess.py",
+        "kind": "source",
+        "physical_lines": 107,
+        "nonblank_lines_including_comments": 87,
+        "file_bytes": 3694,
+        "sha256": "5925fc54dda25122e4ccf6711588e6a753f11aca7545cbb17a0795d58ce7e925"
+      },
+      {
+        "path": "源码/博弈单元/lab3/train/two_AI_chess_UI.py",
+        "kind": "source",
+        "physical_lines": 131,
+        "nonblank_lines_including_comments": 104,
+        "file_bytes": 4640,
+        "sha256": "40fa882efd570e57f31607aae5423770c4b911a896bba247e02b6962c634d83f"
+      },
+      {
+        "path": "源码/博弈单元/mygame.py",
+        "kind": "source",
+        "physical_lines": 70,
+        "nonblank_lines_including_comments": 55,
+        "file_bytes": 2062,
+        "sha256": "ca01f0dc5bbcccab464b993cb0cb8f4abc0c61752368a4675e92462f3f7ed105"
+      },
+      {
+        "path": "源码/博弈单元/mygame_UI.py",
+        "kind": "source",
+        "physical_lines": 113,
+        "nonblank_lines_including_comments": 93,
+        "file_bytes": 4452,
+        "sha256": "23e8462b3d5590396cf524d86f52019982f91c5980cd44e0fcc79b3eacbf58cf"
+      },
+      {
+        "path": "源码/博弈单元/MyModel.py",
+        "kind": "source",
+        "physical_lines": 18,
+        "nonblank_lines_including_comments": 16,
+        "file_bytes": 620,
+        "sha256": "a82d22c40f3572d079db62d6acd03fd1ea3057a6ed703352c6cd65a21bf053f2"
+      },
+      {
+        "path": "源码/博弈单元/recognize.py",
+        "kind": "source",
+        "physical_lines": 121,
+        "nonblank_lines_including_comments": 104,
+        "file_bytes": 4879,
+        "sha256": "d02c40ad91c5c9886447988a3a0d247c310fe2403f9925753746826123f0ac33"
+      },
+      {
+        "path": "源码/博弈单元/test.py",
+        "kind": "source",
+        "physical_lines": 58,
+        "nonblank_lines_including_comments": 47,
+        "file_bytes": 1253,
+        "sha256": "2315b76a5f73dd1cf8a2fa737a9e2599635e35ae71d55725f71402b1a1660007"
+      },
+      {
+        "path": "源码/控制单元/ANN.py",
+        "kind": "source",
+        "physical_lines": 69,
+        "nonblank_lines_including_comments": 61,
+        "file_bytes": 1894,
+        "sha256": "024cbd45fe573259bf73a2c42cfe9b8f684c3b33de1d8b2ba0c1b952ba8afa85"
+      },
+      {
+        "path": "源码/控制单元/move.py",
+        "kind": "source",
+        "physical_lines": 128,
+        "nonblank_lines_including_comments": 111,
+        "file_bytes": 3417,
+        "sha256": "9c0036232956e43b1e327241182074ed58e790abb979ae28eb3349ff21eff776"
+      },
+      {
+        "path": "源码/控制单元/sever.py",
+        "kind": "source",
+        "physical_lines": 24,
+        "nonblank_lines_including_comments": 21,
+        "file_bytes": 826,
+        "sha256": "5082459f37362b9b429776b140a52aafd80405a6ee4c07bca05ace3c37382ca7"
+      },
+      {
+        "path": "源码/控制单元/transmit.py",
+        "kind": "source",
+        "physical_lines": 18,
+        "nonblank_lines_including_comments": 18,
+        "file_bytes": 483,
+        "sha256": "90fffe564d9878bf78c9db0bfd937e553980b99f3941cc8eaf1b6d3d0f052dd1"
+      },
+      {
+        "path": "源码/视觉单元/Camera.py",
+        "kind": "source",
+        "physical_lines": 93,
+        "nonblank_lines_including_comments": 85,
+        "file_bytes": 3250,
+        "sha256": "777975b599dced9f45f1dc70709a1f31c53182d57f92a65c206c9c2919bd92ef"
+      },
+      {
+        "path": "源码/视觉单元/capture.py",
+        "kind": "source",
+        "physical_lines": 147,
+        "nonblank_lines_including_comments": 130,
+        "file_bytes": 5955,
+        "sha256": "8c2a07b49adac08bc9b4ca2d9fa932abafcb1cafbaecf02fcb092f44024b296a"
+      }
+    ]
+  },
+  {
+    "repo": "TooAboil/FiveInARowRobot",
+    "counted_files": 21,
+    "physical_lines": 2247,
+    "nonblank_lines_including_comments": 1981,
+    "files": [
+      {
+        "path": "Cpp/group18.cpp",
+        "kind": "source",
+        "physical_lines": 81,
+        "nonblank_lines_including_comments": 66,
+        "file_bytes": 2191,
+        "sha256": "dbe0674370899ab95efe5fe489ec57013bd8ab60c6a0fae43f51ddcd8b2e09d8"
+      },
+      {
+        "path": "Cpp/group18.h",
+        "kind": "source",
+        "physical_lines": 49,
+        "nonblank_lines_including_comments": 36,
+        "file_bytes": 1286,
+        "sha256": "eb11664a406717d54b080652a655b52ae633db0a75adf6c9341284a64e61e3a0"
+      },
+      {
+        "path": "Cpp/group18Dlg.cpp",
+        "kind": "source",
+        "physical_lines": 348,
+        "nonblank_lines_including_comments": 289,
+        "file_bytes": 8277,
+        "sha256": "c38c0d8b00030e6c6f05e2d1b3c02263533d77265dec885594f222c11d2443d2"
+      },
+      {
+        "path": "Cpp/group18Dlg.h",
+        "kind": "source",
+        "physical_lines": 63,
+        "nonblank_lines_including_comments": 53,
+        "file_bytes": 1724,
+        "sha256": "ea716f73955f1d82afda93de1ec1a9e514bc0eeaa5ec7efa00deab1a7b687a3f"
+      },
+      {
+        "path": "Cpp/Kld.h",
+        "kind": "source",
+        "physical_lines": 24,
+        "nonblank_lines_including_comments": 24,
+        "file_bytes": 1786,
+        "sha256": "e2b131816fe7239a7c7cc01a61ff232f6a968066e7d2457a7f4129589fb15fba"
+      },
+      {
+        "path": "Cpp/Pcomm.h",
+        "kind": "source",
+        "physical_lines": 180,
+        "nonblank_lines_including_comments": 166,
+        "file_bytes": 7224,
+        "sha256": "21e7cea3dd32c581e9af67fcfbb9592c13cc281fa26f3d894c1a9fc5210d6089"
+      },
+      {
+        "path": "Cpp/resource.h",
+        "kind": "source",
+        "physical_lines": 33,
+        "nonblank_lines_including_comments": 32,
+        "file_bytes": 1236,
+        "sha256": "87e24e995f8f2868fde6af4f827cbb84c15bdf4c025fdd3f93305076c3d6810b"
+      },
+      {
+        "path": "Cpp/StdAfx.cpp",
+        "kind": "source",
+        "physical_lines": 8,
+        "nonblank_lines_including_comments": 4,
+        "file_bytes": 209,
+        "sha256": "2ad3ddb44b097d5ab4ae1a0206f4348979feb0cf6db352c7f627189326388746"
+      },
+      {
+        "path": "Cpp/StdAfx.h",
+        "kind": "source",
+        "physical_lines": 28,
+        "nonblank_lines_including_comments": 21,
+        "file_bytes": 1102,
+        "sha256": "cd677fd203ccb1f9d693f5c8ad31d3d6847b3eb3b9f594a377491a4b36329bbf"
+      },
+      {
+        "path": "Cpp/WinIo.h",
+        "kind": "source",
+        "physical_lines": 31,
+        "nonblank_lines_including_comments": 26,
+        "file_bytes": 1092,
+        "sha256": "b938d1ab1f2a3e8b8a2d354160d757421ec79080f2508cdc67e9c70c41789887"
+      },
+      {
+        "path": "python/capturetest.py",
+        "kind": "source",
+        "physical_lines": 117,
+        "nonblank_lines_including_comments": 105,
+        "file_bytes": 3710,
+        "sha256": "bff9348e5db7dd7dc838573167b8efadcad8b24151b935065d00870e6c7825da"
+      },
+      {
+        "path": "python/game.py",
+        "kind": "source",
+        "physical_lines": 515,
+        "nonblank_lines_including_comments": 478,
+        "file_bytes": 36569,
+        "sha256": "8de46012bed565c650aeb04b4ccfc91c051a0c7c57a59db0395bd1cad7405ad5"
+      },
+      {
+        "path": "python/ImgProcess.py",
+        "kind": "source",
+        "physical_lines": 201,
+        "nonblank_lines_including_comments": 176,
+        "file_bytes": 6996,
+        "sha256": "741630a27005bc76d6066889f6a5b8b090b8d7ea1f1288ce789b50eac90c9e68"
+      },
+      {
+        "path": "python/main.py",
+        "kind": "source",
+        "physical_lines": 130,
+        "nonblank_lines_including_comments": 107,
+        "file_bytes": 3976,
+        "sha256": "f82e6819cdc0eb57fed1a52a18107be6cd9ee5be98b83cd157ec6cb46db85dff"
+      },
+      {
+        "path": "python/serial_commu.py",
+        "kind": "source",
+        "physical_lines": 80,
+        "nonblank_lines_including_comments": 66,
+        "file_bytes": 2917,
+        "sha256": "c72e7aa4d79d022c3cfe9ff5d3e3795d4c8a5686a945df446ddaae36f7a46e71"
+      },
+      {
+        "path": "python/SolveAngle.py",
+        "kind": "source",
+        "physical_lines": 122,
+        "nonblank_lines_including_comments": 122,
+        "file_bytes": 4189,
+        "sha256": "ae640f944ef559162c16409e8c3e12b6a27dd96a83f001f99dd5890ff2f2ec83"
+      },
+      {
+        "path": "python/test.py",
+        "kind": "source",
+        "physical_lines": 4,
+        "nonblank_lines_including_comments": 4,
+        "file_bytes": 158,
+        "sha256": "380453c436d3a58cd70ed0c32a6e9e83f1fb96791f9ce38d5af903bf62459ef0"
+      },
+      {
+        "path": "python/test2.py",
+        "kind": "source",
+        "physical_lines": 115,
+        "nonblank_lines_including_comments": 106,
+        "file_bytes": 3976,
+        "sha256": "72d4a30260e85d23e5ab7e4bec89d38ce37f3f1e0465fd52eb6f75fe7815c3a9"
+      },
+      {
+        "path": "python/test3.py",
+        "kind": "source",
+        "physical_lines": 10,
+        "nonblank_lines_including_comments": 8,
+        "file_bytes": 306,
+        "sha256": "df8a162a39f69fc0710ac0a530b8b8aa64164ecfaa19902eb7bdf5f4f4271da7"
+      },
+      {
+        "path": "python/testcamera.py",
+        "kind": "source",
+        "physical_lines": 28,
+        "nonblank_lines_including_comments": 26,
+        "file_bytes": 703,
+        "sha256": "c9e7e4e31023ed412a6aa1204066ce76a63109445e56a1c8a04b916846814285"
+      },
+      {
+        "path": "python/testcoordrecog.py",
+        "kind": "source",
+        "physical_lines": 80,
+        "nonblank_lines_including_comments": 66,
+        "file_bytes": 2570,
+        "sha256": "56d4bfb7b2a679f7daf464846e37c9dbea6a4d97fe5fb6a6b2c03b0dfb2f291c"
+      }
+    ]
+  },
+  {
+    "repo": "wholol/Tic-Tac-Toe-Robot-Arm",
+    "counted_files": 3,
+    "physical_lines": 1028,
+    "nonblank_lines_including_comments": 790,
+    "files": [
+      {
+        "path": "Arm Simulation/FABRIK Simulation.py",
+        "kind": "source",
+        "physical_lines": 228,
+        "nonblank_lines_including_comments": 160,
+        "file_bytes": 8618,
+        "sha256": "c203c386ce5e9da2da45d7c94132c2561051cc9d7ba49d5d56f0bb4105547b77"
+      },
+      {
+        "path": "Minimax Algorithm/Minimax.py",
+        "kind": "source",
+        "physical_lines": 301,
+        "nonblank_lines_including_comments": 245,
+        "file_bytes": 10449,
+        "sha256": "fc33fa75141e7de4e8ef74f15e6168d477f17c95a1a92ab7e1e075f0395e45ce"
+      },
+      {
+        "path": "Modifid FABRIK for Arduino/FABRIK Arduino.cpp",
+        "kind": "source",
+        "physical_lines": 499,
+        "nonblank_lines_including_comments": 385,
+        "file_bytes": 18956,
+        "sha256": "85510390e7583800d427489210d221af260612eb9af89375c2b799f98cf7faa4"
+      }
+    ]
+  },
+  {
+    "repo": "zzh112119/gomoku_game",
+    "counted_files": 8,
+    "physical_lines": 1135,
+    "nonblank_lines_including_comments": 940,
+    "files": [
+      {
+        "path": "Board.py",
+        "kind": "source",
+        "physical_lines": 239,
+        "nonblank_lines_including_comments": 202,
+        "file_bytes": 6675,
+        "sha256": "8a6fa725843337781a0b7d77037f88208802b07d6a8178c9ae6f7b74bc113f74"
+      },
+      {
+        "path": "Eval_funcs.py",
+        "kind": "source",
+        "physical_lines": 309,
+        "nonblank_lines_including_comments": 251,
+        "file_bytes": 8908,
+        "sha256": "1dcfc8008300811d8c34358ca9f997542ee9c15ba8ca5f1cbee36d359f17cfe3"
+      },
+      {
+        "path": "gomoku.py",
+        "kind": "source",
+        "physical_lines": 158,
+        "nonblank_lines_including_comments": 125,
+        "file_bytes": 4195,
+        "sha256": "6ffa56fb728f6917bdd44ec239659887ae0cf4ea17b40714934d8184558d093a"
+      },
+      {
+        "path": "gomoku_detect/gomoku_detect/main.cpp",
+        "kind": "source",
+        "physical_lines": 107,
+        "nonblank_lines_including_comments": 84,
+        "file_bytes": 2587,
+        "sha256": "bdf4c4d5c961660f8e7a039a06859585746611cffefcb0ec99e10df7c3910039"
+      },
+      {
+        "path": "mbed/main.cpp",
+        "kind": "source",
+        "physical_lines": 12,
+        "nonblank_lines_including_comments": 10,
+        "file_bytes": 214,
+        "sha256": "d8c46cdaf9df0a7ce0d8a61032ae98bb3bcf0a6012dbd08502c071f5919f8fab"
+      },
+      {
+        "path": "openmv_find_circle.py",
+        "kind": "source",
+        "physical_lines": 85,
+        "nonblank_lines_including_comments": 73,
+        "file_bytes": 2533,
+        "sha256": "f7f459e4f7595e9705ae4d876054dd279d3470a31ca83cc634d90cc5f854d0dd"
+      },
+      {
+        "path": "serial_commu.py",
+        "kind": "source",
+        "physical_lines": 185,
+        "nonblank_lines_including_comments": 162,
+        "file_bytes": 4767,
+        "sha256": "6c6efbb074b2cf657365e308bf555cd50d56f0f308e9dfc149cd8ab7978ad58b"
+      },
+      {
+        "path": "serial_r.py",
+        "kind": "source",
+        "physical_lines": 40,
+        "nonblank_lines_including_comments": 33,
+        "file_bytes": 716,
+        "sha256": "0d1dec640cf68516f36379418c60730a6a5e4afebab917caa33458bf5b39f8b2"
+      }
+    ]
+  }
+]

@@ -1,0 +1,140 @@
+[
+  {
+    "file": "main.cpp",
+    "physical": 305,
+    "nonblank": 293,
+    "effective": 286
+  },
+  {
+    "file": "algorithm/fk.cpp",
+    "physical": 18,
+    "nonblank": 15,
+    "effective": 15
+  },
+  {
+    "file": "algorithm/fk.hpp",
+    "physical": 25,
+    "nonblank": 19,
+    "effective": 13
+  },
+  {
+    "file": "algorithm/homography_ekf.cpp",
+    "physical": 169,
+    "nonblank": 156,
+    "effective": 153
+  },
+  {
+    "file": "algorithm/homography_ekf.hpp",
+    "physical": 43,
+    "nonblank": 37,
+    "effective": 25
+  },
+  {
+    "file": "algorithm/ik.cpp",
+    "physical": 35,
+    "nonblank": 29,
+    "effective": 27
+  },
+  {
+    "file": "algorithm/ik.hpp",
+    "physical": 12,
+    "nonblank": 9,
+    "effective": 5
+  },
+  {
+    "file": "algorithm/motion_plan.cpp",
+    "physical": 182,
+    "nonblank": 172,
+    "effective": 169
+  },
+  {
+    "file": "algorithm/motion_plan.hpp",
+    "physical": 48,
+    "nonblank": 40,
+    "effective": 33
+  },
+  {
+    "file": "app/commands.hpp",
+    "physical": 80,
+    "nonblank": 74,
+    "effective": 70
+  },
+  {
+    "file": "app/config.hpp",
+    "physical": 47,
+    "nonblank": 43,
+    "effective": 39
+  },
+  {
+    "file": "chess/board.cpp",
+    "physical": 284,
+    "nonblank": 261,
+    "effective": 260
+  },
+  {
+    "file": "chess/board.hpp",
+    "physical": 69,
+    "nonblank": 59,
+    "effective": 56
+  },
+  {
+    "file": "chess/pikafish.cpp",
+    "physical": 203,
+    "nonblank": 190,
+    "effective": 186
+  },
+  {
+    "file": "chess/pikafish.hpp",
+    "physical": 39,
+    "nonblank": 34,
+    "effective": 31
+  },
+  {
+    "file": "robot/simulator.cpp",
+    "physical": 208,
+    "nonblank": 196,
+    "effective": 193
+  },
+  {
+    "file": "robot/simulator.hpp",
+    "physical": 52,
+    "nonblank": 47,
+    "effective": 43
+  },
+  {
+    "file": "vision/board_vision.cpp",
+    "physical": 163,
+    "nonblank": 158,
+    "effective": 154
+  },
+  {
+    "file": "vision/board_vision.hpp",
+    "physical": 25,
+    "nonblank": 24,
+    "effective": 23
+  },
+  {
+    "file": "vision/camera.cpp",
+    "physical": 131,
+    "nonblank": 125,
+    "effective": 123
+  },
+  {
+    "file": "vision/camera.hpp",
+    "physical": 21,
+    "nonblank": 20,
+    "effective": 18
+  },
+  {
+    "file": "vision/detector.cpp",
+    "physical": 260,
+    "nonblank": 248,
+    "effective": 234
+  },
+  {
+    "file": "vision/detector.hpp",
+    "physical": 23,
+    "nonblank": 18,
+    "effective": 14
+  }
+]

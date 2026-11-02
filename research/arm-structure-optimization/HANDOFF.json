@@ -1,0 +1,20 @@
+{
+  "status": "equal275_CAD_copy_delivered",
+  "authorized_scope": "用户本次明确授权复制整机并把G1轴距195改275，G2保持275；此前参数计算限制仅对此次授权例外。",
+  "deliverable": "hardware/arm_equal_275/v1/SCARA_equal275_v1.zip",
+  "native_assembly": "hardware/arm_equal_275/v1/native/EQ275_SCARA四轴机械臂总成.SLDASM",
+  "workspace_plot": "hardware/arm_equal_275/v1/workspace-comparison.png",
+  "analysis": "hardware/arm_equal_275/v1/analysis/summary.json",
+  "important": [
+    "新CAD是候选方案，不是实装机械臂参数，不改现有客户端运行参数",
+    "原生零件孔槽及组件位置已回读验证，没有新增配合错误",
+    "原模型既有13项配合错误保留并记录",
+    "当前Z和固定末端R相对姿态，4度离散构型分析，含同步轮和皮带外形",
+    "未做连续碰撞、动态/强度或实机验收",
+    "新的工作区不代表纯圆环，采样最近约76.5mm、最远550mm",
+    "实际同步带规格需重新选型，不从CAD带长直接推采购齿数",
+    "未操作实物电机、未commit或push"
+  ],
+  "new_version_detail_plot": "hardware/arm_equal_275/v1/workspace-top-view.png",
+  "comparison_scope": "旧版未含抑制的传动总成；新版含同步轮及皮带外形。两版4度采样，非严格同范围面积增益比较。"
+}

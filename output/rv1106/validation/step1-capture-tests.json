@@ -1,0 +1,26 @@
+{
+  "scope": "step1 capture orchestration only; fake camera and converter; unchanged timeout cases not rerun",
+  "invocation_cwd": "/tmp",
+  "capture_sha256": "a8803c7b97db5049f446d1698bb827caacb09c62324d1e2b4998e0e4cd423578",
+  "all_passed": true,
+  "results": [
+    {
+      "case": "conversion-success",
+      "exit": 0,
+      "seconds": 0.06,
+      "source_exists": true,
+      "lock_released": true,
+      "message": "Done: live/source.jpg",
+      "passed": true
+    },
+    {
+      "case": "conversion-partial-file-failure",
+      "exit": 1,
+      "seconds": 0.06,
+      "source_exists": false,
+      "lock_released": true,
+      "message": "Conversion failed: check camera.nv12.",
+      "passed": true
+    }
+  ]
+}

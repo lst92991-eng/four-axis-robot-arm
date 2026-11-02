@@ -1,0 +1,15 @@
+{
+  "opencv_version": "5.0.0",
+  "radius": 15,
+  "width": 31,
+  "height": 31,
+  "old_nonzero_pixels": 709,
+  "circle_nonzero_pixels": 709,
+  "different_pixels": 0,
+  "equivalent": true,
+  "board_serial": "759dce9b268fd05e",
+  "board_program": "/root/scara-vision-v1/final-check/mask-compare",
+  "exit_code": 0,
+  "source_path": "/home/lst/.cache/scara-vision/mask-compare.cpp",
+  "scope": "31x31 CV_8UC1, center=(15,15), radius=15, value=255, FILLED, LINE_8; comparison performed on RV1106"
+}

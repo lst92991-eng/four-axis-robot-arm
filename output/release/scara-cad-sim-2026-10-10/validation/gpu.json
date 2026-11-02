@@ -1,0 +1,9 @@
+{
+    "backend": "CUDA:0 | NVIDIA GeForce RTX 5060 Laptop GPU | 28 ms",
+    "model_cuda": 1,
+    "input_cuda": 1,
+    "nms_cuda": 1,
+    "first_frame_ms": 28.43594000023586,
+    "allocated_mb": 32.7783203125,
+    "checkpoint_sha256": "b18cabfe0202b05ad4b127cbe52632aa7d20026af2f5b9d5c9186ab476050a61"
+}

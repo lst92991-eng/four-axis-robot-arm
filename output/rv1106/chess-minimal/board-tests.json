@@ -1,0 +1,55 @@
+[
+  {
+    "name": "human_two_rounds",
+    "passed": true,
+    "exit": 0,
+    "elapsed_seconds": 3.515
+  },
+  {
+    "name": "quit_before_confirm",
+    "passed": true,
+    "exit": 0,
+    "elapsed_seconds": 2.454
+  },
+  {
+    "name": "eof",
+    "passed": true,
+    "exit": 0,
+    "elapsed_seconds": 1.406
+  },
+  {
+    "name": "missing_engine",
+    "passed": true,
+    "exit": 1,
+    "elapsed_seconds": 0.359
+  },
+  {
+    "name": "cancel_wait",
+    "passed": true,
+    "exit": 130,
+    "elapsed_seconds": 0.344
+  },
+  {
+    "name": "cancel_think",
+    "passed": true,
+    "exit": 130,
+    "elapsed_seconds": 0.438
+  },
+  {
+    "name": "engine_timeout",
+    "passed": true,
+    "exit": 1,
+    "elapsed_seconds": 3.656
+  },
+  {
+    "name": "engine_exit",
+    "passed": true,
+    "exit": 1,
+    "elapsed_seconds": 0.375
+  },
+  {
+    "name": "closed_stdin",
+    "passed": true,
+    "exit": 1
+  }
+]

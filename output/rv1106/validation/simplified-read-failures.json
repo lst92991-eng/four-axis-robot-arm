@@ -1,0 +1,5 @@
+{
+  "bad_nv12_clears_previous": true,
+  "decode_exception_clears_previous": true,
+  "read_before_clearing_input_image": true
+}

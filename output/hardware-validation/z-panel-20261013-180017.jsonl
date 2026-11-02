@@ -1,0 +1,107 @@
+{"time": 1791885617.8779736, "tx": true, "id": 256, "data": [254, 152, 0, 107]}
+{"time": 1791885617.8789737, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.8799746, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_FE", "last_command": {"id": "0x80000100", "data": [254, 152, 0, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.8799746, "rx": true, "id": 2147483904, "data": [254, 2, 107]}
+{"time": 1791885617.8809736, "tx": true, "id": 256, "data": [54, 107]}
+{"time": 1791885617.8809736, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.8819747, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_36", "last_command": {"id": "0x80000100", "data": [54, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.8819747, "rx": true, "id": 2147483904, "data": [54, 1, 0, 0, 0, 7, 107]}
+{"time": 1791885617.8829741, "tx": true, "id": 256, "data": [53, 107]}
+{"time": 1791885617.8829741, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.883974, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_35", "last_command": {"id": "0x80000100", "data": [53, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.883974, "rx": true, "id": 2147483904, "data": [53, 0, 0, 0, 107]}
+{"time": 1791885617.883974, "tx": true, "id": 256, "data": [39, 107]}
+{"time": 1791885617.883974, "rx": true, "id": 2147483904, "data": [39, 0, 5, 107]}
+{"time": 1791885617.883974, "tx": true, "id": 256, "data": [58, 107]}
+{"time": 1791885617.883974, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.8854778, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3A", "last_command": {"id": "0x80000100", "data": [58, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.8854778, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.886483, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3A", "last_command": {"id": "0x80000100", "data": [58, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.886483, "rx": true, "id": 2147483904, "data": [58, 3, 107]}
+{"time": 1791885617.9074864, "tx": true, "id": 256, "data": [54, 107]}
+{"time": 1791885617.9074864, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9087045, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_36", "last_command": {"id": "0x80000100", "data": [54, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9087045, "rx": true, "id": 2147483904, "data": [54, 1, 0, 0, 0, 7, 107]}
+{"time": 1791885617.9087045, "tx": true, "id": 256, "data": [53, 107]}
+{"time": 1791885617.9097042, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9097042, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_35", "last_command": {"id": "0x80000100", "data": [53, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9107044, "rx": true, "id": 2147483904, "data": [53, 0, 0, 0, 107]}
+{"time": 1791885617.9107044, "tx": true, "id": 256, "data": [39, 107]}
+{"time": 1791885617.9107044, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9117079, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_27", "last_command": {"id": "0x80000100", "data": [39, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9117079, "rx": true, "id": 2147483904, "data": [39, 0, 5, 107]}
+{"time": 1791885617.9117079, "tx": true, "id": 256, "data": [58, 107]}
+{"time": 1791885617.9117079, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9127104, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3A", "last_command": {"id": "0x80000100", "data": [58, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9137092, "rx": true, "id": 2147483904, "data": [58, 3, 107]}
+{"time": 1791885617.934084, "tx": true, "id": 256, "data": [54, 107]}
+{"time": 1791885617.934084, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.935495, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_36", "last_command": {"id": "0x80000100", "data": [54, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.935495, "rx": true, "id": 2147483904, "data": [54, 1, 0, 0, 0, 7, 107]}
+{"time": 1791885617.935999, "tx": true, "id": 256, "data": [53, 107]}
+{"time": 1791885617.935999, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9370048, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_35", "last_command": {"id": "0x80000100", "data": [53, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9370048, "rx": true, "id": 2147483904, "data": [53, 0, 0, 0, 107]}
+{"time": 1791885617.9370048, "tx": true, "id": 256, "data": [39, 107]}
+{"time": 1791885617.938005, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.939004, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_27", "last_command": {"id": "0x80000100", "data": [39, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.939004, "rx": true, "id": 2147483904, "data": [39, 0, 5, 107]}
+{"time": 1791885617.939004, "tx": true, "id": 256, "data": [58, 107]}
+{"time": 1791885617.9400036, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9400036, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3A", "last_command": {"id": "0x80000100", "data": [58, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9400036, "rx": true, "id": 2147483904, "data": [58, 3, 107]}
+{"time": 1791885617.9410045, "tx": true, "id": 256, "data": [22, 107]}
+{"time": 1791885617.9410045, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9420044, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_16", "last_command": {"id": "0x80000100", "data": [22, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9420044, "rx": true, "id": 2147483904, "data": [22, 0, 0, 0, 0, 107]}
+{"time": 1791885617.9420044, "tx": true, "id": 256, "data": [26, 107]}
+{"time": 1791885617.9420044, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9435027, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_1A", "last_command": {"id": "0x80000100", "data": [26, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9435027, "rx": true, "id": 2147483904, "data": [26, 0, 6, 107]}
+{"time": 1791885617.9435027, "tx": true, "id": 256, "data": [59, 107]}
+{"time": 1791885617.9445064, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9445064, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3B", "last_command": {"id": "0x80000100", "data": [59, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.945508, "rx": true, "id": 2147483904, "data": [59, 3, 107]}
+{"time": 1791885617.945508, "tx": true, "id": 256, "data": [58, 107]}
+{"time": 1791885617.945508, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9465067, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3A", "last_command": {"id": "0x80000100", "data": [58, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9465067, "rx": true, "id": 2147483904, "data": [58, 3, 107]}
+{"time": 1791885617.9465067, "tx": true, "id": 256, "data": [36, 107]}
+{"time": 1791885617.947507, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.947507, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_24", "last_command": {"id": "0x80000100", "data": [36, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9485068, "rx": true, "id": 2147483904, "data": [36, 92, 128, 107]}
+{"time": 1791885617.9485068, "tx": true, "id": 256, "data": [66, 108, 107]}
+{"time": 1791885617.9485068, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9495068, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_42", "last_command": {"id": "0x80000100", "data": [66, 108, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9495068, "rx": true, "id": 2147483904, "data": [66, 33, 21, 25, 2, 3, 2, 0]}
+{"time": 1791885617.9495068, "rx": true, "id": 2147483905, "data": [66, 16, 1, 0, 4, 176, 11, 184]}
+{"time": 1791885617.9495068, "rx": true, "id": 2147483906, "data": [66, 19, 136, 5, 7, 1, 0, 1]}
+{"time": 1791885617.9505079, "rx": true, "id": 2147483907, "data": [66, 1, 0, 8, 8, 152, 7, 208]}
+{"time": 1791885617.9505079, "rx": true, "id": 2147483908, "data": [66, 0, 8, 107]}
+{"time": 1791885617.9505079, "tx": true, "id": 256, "data": [54, 107]}
+{"time": 1791885617.9505079, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.951507, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_36", "last_command": {"id": "0x80000100", "data": [54, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9525077, "rx": true, "id": 2147483904, "data": [54, 1, 0, 0, 0, 7, 107]}
+{"time": 1791885617.9525077, "tx": true, "id": 256, "data": [53, 107]}
+{"time": 1791885617.9525077, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9535067, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_35", "last_command": {"id": "0x80000100", "data": [53, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9535067, "rx": true, "id": 2147483904, "data": [53, 0, 0, 0, 107]}
+{"time": 1791885617.9535067, "tx": true, "id": 256, "data": [39, 107]}
+{"time": 1791885617.9535067, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.954508, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_27", "last_command": {"id": "0x80000100", "data": [39, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.954508, "rx": true, "id": 2147483904, "data": [39, 0, 5, 107]}
+{"time": 1791885617.955507, "tx": true, "id": 256, "data": [58, 107]}
+{"time": 1791885617.955507, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.955507, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_3A", "last_command": {"id": "0x80000100", "data": [58, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.9565072, "rx": true, "id": 2147483904, "data": [58, 3, 107]}
+{"time": 1791885617.9565072, "tx": true, "id": 256, "data": [22, 107]}
+{"time": 1791885617.9565072, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.957507, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_16", "last_command": {"id": "0x80000100", "data": [22, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.957507, "rx": true, "id": 2147483904, "data": [22, 0, 0, 0, 0, 107]}
+{"time": 1791885617.957507, "tx": true, "id": 256, "data": [104, 56, 0, 0, 0, 1, 244, 107]}
+{"time": 1791885617.9585073, "rx": true, "id": 536870916, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9585073, "event": "can_notice", "value": "空控制器状态通知（未指示具体故障）；ID=0x20000004 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_68", "last_command": {"id": "0x80000100", "data": [104, 56, 0, 0, 0, 1, 244, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}
+{"time": 1791885617.959819, "rx": true, "id": 2147483904, "data": [104, 2, 107]}
+{"time": 1791885617.959819, "tx": true, "id": 256, "data": [22, 107]}
+{"time": 1791885617.959819, "rx": true, "id": 536870948, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885617.9608238, "event": "can_error", "value": "控制器状态；未收到ACK；核对节点供电、CAN H/L、终端和速率；ID=0x20000024 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_16", "last_command": {"id": "0x80000100", "data": [22, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180017.jsonl"}

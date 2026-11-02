@@ -1,0 +1,26 @@
+{
+  "display": "isolated Xvfb :99; actual desktop not operated",
+  "yolo_drag": true,
+  "illegal_and_wrong_side_rejected": true,
+  "pause_and_single_20ms": true,
+  "clean_exit_with_preview_job": true,
+  "response": {
+    "opencv": "5.0.0",
+    "robot_side": "black",
+    "ply": 2,
+    "move": "a9b9",
+    "fen": "1rbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/7C1/9/RNBAKABNR w - - 0 1",
+    "virtual_motion_seconds": 17.499999999999716,
+    "last_motion_seconds": 17.499999999999716,
+    "captured_by_arm": 1
+  },
+  "metrics": {
+    "samples": 875,
+    "can_frames": 7306,
+    "raw_xy_rmse_mm": 0.52584,
+    "ekf_xy_rmse_mm": 0.24864,
+    "placements": 2,
+    "max_placement_error_mm": 0.343068,
+    "same_command_tick_p95_wall_ms": 69.8724
+  }
+}

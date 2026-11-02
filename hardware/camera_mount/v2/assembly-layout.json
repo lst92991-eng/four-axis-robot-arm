@@ -1,0 +1,209 @@
+{
+  "units": "mm",
+  "components": [
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\01_clamp_right.SLDPRT",
+      "label": "01_clamp_right",
+      "transform": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.06,
+        -0.13,
+        0.524,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\02_clamp_left.SLDPRT",
+      "label": "02_clamp_left",
+      "transform": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.06,
+        -0.13,
+        0.524,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\03_truss_200.SLDPRT",
+      "label": "镂空侧梁",
+      "transform": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0686,
+        -0.13,
+        0.605,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\03_truss_200.SLDPRT",
+      "label": "镂空侧梁",
+      "transform": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.0686,
+        0.049999999999999996,
+        0.605,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\03_truss_200.SLDPRT",
+      "label": "镂空侧梁",
+      "transform": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.06459999999999999,
+        -0.13,
+        0.605,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\03_truss_200.SLDPRT",
+      "label": "镂空侧梁",
+      "transform": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.06459999999999999,
+        0.049999999999999996,
+        0.605,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\04_camera_B_crossbar.SLDPRT",
+      "label": "相机横梁",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.25,
+        0.65,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\05_pcb_support.SLDPRT",
+      "label": "主板横条",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.146,
+        0.65,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\05_pcb_support.SLDPRT",
+      "label": "主板横条",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.204,
+        0.65,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "camera_lens_front_reference_mm": [
+    0,
+    250,
+    626.4
+  ],
+  "pcb_bottom_z_mm": 665
+}

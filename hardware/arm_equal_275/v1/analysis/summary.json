@@ -1,0 +1,52 @@
+{
+  "model": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\native\\EQ275_SCARA四轴机械臂总成.SLDASM",
+  "links_mm": [
+    275,
+    275
+  ],
+  "step_deg": 4,
+  "configurations": 8281,
+  "collision_free": 3939,
+  "connected": 3939,
+  "body_count": 207,
+  "body_pair_checks": 5711,
+  "elapsed_seconds": 50.293452501297,
+  "initial_contacts": [
+    {
+      "pair": [
+        "61mm光轴-2",
+        "8x10x3mm轴套-1"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "61mm光轴-2",
+        "FF丝杆支撑座[FF10]-2"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "SKF_608-2ZZ-1",
+        "61mm光轴-2"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "DLE42-L2BJ-长款50-2",
+        "8mm键槽法兰-1"
+      ],
+      "accepted_joint_contact": true
+    },
+    {
+      "pair": [
+        "DLE42-L2BJ-长款50-2",
+        "方键条销-1"
+      ],
+      "accepted_joint_contact": true
+    }
+  ],
+  "scope": "当前装配Z高度与末端R相对姿态，含修正后的同步轮与皮带外形；4度离散构型连通性，不是连续碰撞或实机安全验收。"
+}

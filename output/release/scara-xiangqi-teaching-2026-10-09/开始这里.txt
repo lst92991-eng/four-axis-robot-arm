@@ -1,0 +1,17 @@
+打开 README.md 从“先运行，再读代码”开始。
+
+当前运行包：output/rv1106/scara-robot
+一键上传：tools/deploy-robot.ps1 -Serial <你的ADB序列号>
+板端启动：sh /root/scara-robot/run-robot.sh
+图形界面：tools/robot-viewer/server.py（先复制并填写connection.example.json）
+源码重建：tools/BUILD.md
+主流程：main.cpp
+几何与运动参数：app/config.hpp
+正式打印稿：output/pdf/xiangqi-board-a4-tiles.pdf
+固定模型/真实数据与复训说明：model-training
+测试与验收：output/rv1106/full-validation/ACCEPTANCE.txt
+引擎对应源码：third-party-source/Pikafish-4762ca3.tar.gz
+
+整个交付包按根目录SHA256SUMS逐文件校验；板端运行包另有自己的SHA256SUMS。
+本包没有个人SSH私钥、个人连接配置、虚拟环境、训练框架缓存或历史五子棋输出。
+实体驱动尚未接入；这是一版已验证的软件与虚拟机械臂闭环。具体实测范围及限制见README。

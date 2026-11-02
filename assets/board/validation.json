@@ -1,0 +1,87 @@
+{
+  "pdfs": [
+    {
+      "file": "gomoku-board-a2.pdf",
+      "pages": 1,
+      "page_dimensions_mm": [
+        [
+          419.9999361111111,
+          594.0001666666666
+        ]
+      ],
+      "100_mm_ruler_verified_each_page": true,
+      "geometry_tolerance_mm": 0.001
+    },
+    {
+      "file": "gomoku-board-a4-tiles.pdf",
+      "pages": 6,
+      "page_dimensions_mm": [
+        [
+          210.00000333333335,
+          297.0000127777778
+        ],
+        [
+          210.00000333333335,
+          297.0000127777778
+        ],
+        [
+          210.00000333333335,
+          297.0000127777778
+        ],
+        [
+          210.00000333333335,
+          297.0000127777778
+        ],
+        [
+          210.00000333333335,
+          297.0000127777778
+        ],
+        [
+          210.00000333333335,
+          297.0000127777778
+        ]
+      ],
+      "100_mm_ruler_verified_each_page": true,
+      "geometry_tolerance_mm": 0.001
+    }
+  ],
+  "canonical_png": {
+    "size": [
+      820,
+      820
+    ],
+    "background_rgb": [
+      199,
+      167,
+      106
+    ]
+  },
+  "marker_bit_checks": [
+    {
+      "id": 0,
+      "inner_bits_and_black_border_match": true
+    },
+    {
+      "id": 1,
+      "inner_bits_and_black_border_match": true
+    },
+    {
+      "id": 2,
+      "inner_bits_and_black_border_match": true
+    },
+    {
+      "id": 3,
+      "inner_bits_and_black_border_match": true
+    }
+  ],
+  "detector_test": "Not run: cv2 unavailable; direct sampled-bit consistency checked instead.",
+  "20_mm_corner_stone_clearance_to_marker_black_mm": 5.556349186104045,
+  "20_mm_corner_stone_clearance_to_marker_quiet_mm": 1.3137084989847612,
+  "visual_inspection": "A2 full-page, six-page A4 contact sheet, A4 page 1 and canonical PNG inspected; no clipping or overlap found.",
+  "external_detector_validation": {
+    "date": "2026-10-08",
+    "runtime": "OpenCV 5.0.0 on actual RV1106",
+    "result": "IDs 0,1,2,3 detected; empty, mixed, rotated and perspective board states matched all 225 expected cells",
+    "evidence": "../../output/rv1106/validation/test-results.json"
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "case": "reject",
+    "returncode": 1,
+    "expected": 1,
+    "elapsed_seconds": 0.03,
+    "remaining_stale_outputs": [],
+    "vision_called": false,
+    "lock_exists": false,
+    "passed": true
+  },
+  {
+    "case": "ignore-term",
+    "returncode": 124,
+    "expected": 124,
+    "elapsed_seconds": 22.03,
+    "remaining_stale_outputs": [],
+    "vision_called": false,
+    "lock_exists": false,
+    "passed": true
+  },
+  {
+    "case": "term-exit-zero",
+    "returncode": 124,
+    "expected": 124,
+    "elapsed_seconds": 20.05,
+    "remaining_stale_outputs": [],
+    "vision_called": false,
+    "lock_exists": false,
+    "passed": true
+  }
+]

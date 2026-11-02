@@ -1,0 +1,15 @@
+{"time": 1791885981.049078, "startup_rx": true, "id": 2147483904, "data": [254, 2, 107]}
+{"time": 1791885981.2412505, "tx": true, "id": 256, "data": [254, 152, 0, 107]}
+{"time": 1791885981.2412505, "rx": true, "id": 536870916, "data": [0, 12, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885981.2423103, "event": "can_error", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00", "phase": "waiting_reply_FE", "last_command": {"id": "0x80000100", "data": [254, 152, 0, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180621.jsonl"}
+{"time": 1791885981.2433112, "event": "fault", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00"}
+{"time": 1791885981.4926167, "startup_rx": true, "id": 2147483904, "data": [254, 2, 107]}
+{"time": 1791885981.6936197, "tx": true, "id": 256, "data": [254, 152, 0, 107]}
+{"time": 1791885981.6936197, "rx": true, "id": 536870916, "data": [0, 12, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885981.694629, "event": "can_error", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00", "phase": "waiting_reply_FE", "last_command": {"id": "0x80000100", "data": [254, 152, 0, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180621.jsonl"}
+{"time": 1791885981.695621, "event": "fault", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00"}
+{"time": 1791885981.9072437, "startup_rx": true, "id": 2147483904, "data": [254, 2, 107]}
+{"time": 1791885982.1023092, "tx": true, "id": 256, "data": [254, 152, 0, 107]}
+{"time": 1791885982.1033092, "rx": true, "id": 536870916, "data": [0, 12, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885982.104317, "event": "can_error", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00", "phase": "waiting_reply_FE", "last_command": {"id": "0x80000100", "data": [254, 152, 0, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180621.jsonl"}
+{"time": 1791885982.104317, "event": "fault", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00"}

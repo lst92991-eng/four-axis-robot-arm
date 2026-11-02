@@ -1,0 +1,71 @@
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o benchmark.o benchmark.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o bitboard.o bitboard.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o evaluate.o evaluate.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o main.o main.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o misc.o misc.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o movegen.o movegen.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o movepick.o movepick.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o position.o position.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o search.o search.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o thread.o thread.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o timeman.o timeman.cpp
+position.cpp: In member function 'Stockfish::Position& Stockfish::Position::set(const string&, Stockfish::StateInfo*, Stockfish::Thread*)':
+position.cpp:127:40: warning: 'void* memset(void*, int, size_t)' clearing an object of type 'class Stockfish::Position' with no trivial copy-assignment; use value-initialization instead [-Wclass-memaccess]
+   std::memset(this, 0, sizeof(Position));
+                                        ^
+In file included from position.cpp:29:
+position.h:77:7: note: 'class Stockfish::Position' declared here
+ class Position {
+       ^~~~~~~~
+position.cpp:128:39: warning: 'void* memset(void*, int, size_t)' clearing an object of non-trivial type 'struct Stockfish::StateInfo'; use assignment or value-initialization instead [-Wclass-memaccess]
+   std::memset(si, 0, sizeof(StateInfo));
+                                       ^
+In file included from position.cpp:29:
+position.h:38:8: note: 'struct Stockfish::StateInfo' declared here
+ struct StateInfo {
+        ^~~~~~~~~
+position.cpp: In member function 'void Stockfish::Position::do_move(Stockfish::Move, Stockfish::StateInfo&, bool)':
+position.cpp:429:51: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of a non-trivial type 'struct Stockfish::StateInfo' leaves 4584 bytes unchanged [-Wclass-memaccess]
+   std::memcpy(&newSt, st, offsetof(StateInfo, key));
+                                                   ^
+In file included from position.cpp:29:
+position.h:38:8: note: 'struct Stockfish::StateInfo' declared here
+ struct StateInfo {
+        ^~~~~~~~~
+position.cpp: In member function 'void Stockfish::Position::do_null_move(Stockfish::StateInfo&)':
+position.cpp:561:59: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of a non-trivial type 'struct Stockfish::StateInfo' leaves 4288 bytes unchanged [-Wclass-memaccess]
+   std::memcpy(&newSt, st, offsetof(StateInfo, accumulator));
+                                                           ^
+In file included from position.cpp:29:
+position.h:38:8: note: 'struct Stockfish::StateInfo' declared here
+ struct StateInfo {
+        ^~~~~~~~~
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o tt.o tt.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o uci.o uci.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o ucioption.o ucioption.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o tune.o tune.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o evaluate_nnue.o nnue/evaluate_nnue.cpp
+In file included from uci.cpp:36:
+external/toml.hpp: In member function 'bool toml::v3::impl::utf8_reader<T>::read_next_block()':
+external/toml.hpp:12386:50: warning: requested alignment 32 is larger than 8 [-Wattributes]
+    TOML_OVERALIGNED char raw_bytes[block_capacity];
+                                                  ^
+external/toml.hpp: In function 'toml::v3::noex::parse_result toml::v3::impl::do_parse_file(std::string_view)':
+external/toml.hpp:15897:58: warning: requested alignment 32 is larger than 8 [-Wattributes]
+   TOML_OVERALIGNED char file_buffer[sizeof(void*) * 1024u];
+                                                          ^
+nnue/evaluate_nnue.cpp: In function 'Stockfish::Value Stockfish::Eval::NNUE::evaluate(const Stockfish::Position&, bool, int*)':
+nnue/evaluate_nnue.cpp:159:80: warning: requested alignment 64 is larger than 8 [-Wattributes]
+       TransformedFeatureType transformedFeatures[FeatureTransformer::BufferSize];
+                                                                                ^
+nnue/evaluate_nnue.cpp: In function 'Stockfish::Eval::NNUE::NnueEvalTrace Stockfish::Eval::NNUE::trace_evaluate(const Stockfish::Position&)':
+nnue/evaluate_nnue.cpp:200:80: warning: requested alignment 64 is larger than 8 [-Wattributes]
+       TransformedFeatureType transformedFeatures[FeatureTransformer::BufferSize];
+                                                                                ^
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o half_ka_v2_hm.o nnue/features/half_ka_v2_hm.cpp
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one   -c -o zip.o external/zip.cpp
+In file included from external/zip.cpp:39:
+external/miniz.h:4988:1: warning: multi-line comment [-Wcomment]
+ // #pragma message(                                                               \
+ ^
+/home/lst/.cache/scara-vision/luckfox-toolchain/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ -o pikafish benchmark.o bitboard.o evaluate.o main.o misc.o movegen.o movepick.o position.o search.o thread.o timeman.o tt.o uci.o ucioption.o tune.o evaluate_nnue.o half_ka_v2_hm.o zip.o   -latomic -Wl,--no-as-needed -lpthread  -Wall -Wcast-qual -fno-exceptions -std=c++17 -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -pedantic -Wextra -Wshadow -Wmissing-declarations -DUSE_PTHREADS -DNDEBUG -O3 -DUSE_POPCNT -DUSE_NEON=7 -mfpu=neon -flto -flto-partition=one -flto=jobserver

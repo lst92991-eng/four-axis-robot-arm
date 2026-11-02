@@ -1,0 +1,83 @@
+{
+  "opencv": "5.0.0",
+  "mode": "simulation",
+  "phase": "waiting",
+  "message": "机器走法已执行并在虚拟棋盘复核，轮到红方",
+  "source": "virtual",
+  "turn": "red",
+  "result": "playing",
+  "history": "e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4",
+  "move": "e4a4",
+  "camera_available": 1,
+  "board": [
+    "rnbakabnr",
+    ".........",
+    "....c....",
+    "p.p.p.p.p",
+    ".........",
+    "c........",
+    "P.P...P.P",
+    ".C.....C.",
+    "........R",
+    "RNBAKABN."
+  ],
+  "world": [
+    "rnbakabnr",
+    ".........",
+    "....c....",
+    "p.p.p.p.p",
+    ".........",
+    "c........",
+    "P.P...P.P",
+    ".C.....C.",
+    "........R",
+    "RNBAKABN."
+  ],
+  "legal": [
+    "i1e1",
+    "d0e1",
+    "f0e1",
+    "b2e2",
+    "h2e2",
+    "c0e2",
+    "g0e2"
+  ],
+  "joints": [
+    -0.7243202421974086,
+    2.9433773456830914,
+    70.0,
+    -2.2190571034856825
+  ],
+  "tcp": [
+    -19.99999999999995,
+    90.00000000000001,
+    70.0,
+    0.0
+  ],
+  "carried": ".",
+  "vacuum": 0,
+  "geometry": {
+    "links": [
+      195.0,
+      275.0
+    ],
+    "origin": [
+      180.0,
+      90.0
+    ],
+    "row_step": [
+      -40.0,
+      0.0
+    ],
+    "col_step": [
+      0.0,
+      40.0
+    ]
+  },
+  "captured_red": "P..............",
+  "captured_black": "...............",
+  "connected": true,
+  "image_version": 0,
+  "camera_image": false,
+  "board_image": false
+}

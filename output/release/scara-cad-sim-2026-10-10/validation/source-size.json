@@ -1,0 +1,56 @@
+[
+  {
+    "file": "x42s.cpp",
+    "physical": 290,
+    "nonblank": 289,
+    "effective": 285
+  },
+  {
+    "file": "x42s.hpp",
+    "physical": 44,
+    "nonblank": 41,
+    "effective": 40
+  },
+  {
+    "file": "motion_filter.cpp",
+    "physical": 52,
+    "nonblank": 51,
+    "effective": 50
+  },
+  {
+    "file": "motion_filter.hpp",
+    "physical": 15,
+    "nonblank": 13,
+    "effective": 12
+  },
+  {
+    "file": "sim.cpp",
+    "physical": 835,
+    "nonblank": 827,
+    "effective": 805
+  },
+  {
+    "file": "cad_view.cpp",
+    "physical": 334,
+    "nonblank": 332,
+    "effective": 328
+  },
+  {
+    "file": "yolo_gpu.cpp",
+    "physical": 114,
+    "nonblank": 113,
+    "effective": 112
+  },
+  {
+    "file": "gpu_server.py",
+    "physical": 105,
+    "nonblank": 99,
+    "effective": 97
+  },
+  {
+    "file": "start-gpu.ps1",
+    "physical": 61,
+    "nonblank": 61,
+    "effective": 59
+  }
+]

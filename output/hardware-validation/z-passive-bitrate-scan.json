@@ -1,0 +1,42 @@
+[
+  {
+    "bitrate": 500000,
+    "frames": []
+  },
+  {
+    "bitrate": 1000000,
+    "frames": []
+  },
+  {
+    "bitrate": 250000,
+    "frames": []
+  },
+  {
+    "bitrate": 125000,
+    "frames": []
+  },
+  {
+    "bitrate": 100000,
+    "frames": []
+  },
+  {
+    "bitrate": 800000,
+    "frames": []
+  },
+  {
+    "bitrate": 50000,
+    "frames": []
+  },
+  {
+    "bitrate": 83333,
+    "frames": []
+  },
+  {
+    "bitrate": 20000,
+    "frames": []
+  },
+  {
+    "bitrate": 10000,
+    "frames": []
+  }
+]

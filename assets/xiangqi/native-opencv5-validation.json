@@ -1,0 +1,147 @@
+{
+  "opencv": "5.0.0",
+  "runtime": "Native OpenCV5 CPU ArUcoDetector in WSL, actual Poppler page rasters and canonical crop",
+  "results": [
+    {
+      "image": "renders/a1-1.png",
+      "ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "upright": true,
+      "quiet_zones": [
+        {
+          "id": 0,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        },
+        {
+          "id": 1,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        },
+        {
+          "id": 2,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        },
+        {
+          "id": 3,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "image": "board.png",
+      "ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "upright": true,
+      "quiet_zones": [
+        {
+          "id": 0,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        },
+        {
+          "id": 1,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        },
+        {
+          "id": 2,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        },
+        {
+          "id": 3,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "image": "renders/a4-1.png",
+      "ids": [
+        0
+      ],
+      "upright": true,
+      "quiet_zones": [
+        {
+          "id": 0,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "image": "renders/a4-2.png",
+      "ids": [],
+      "upright": true,
+      "quiet_zones": [],
+      "passed": true
+    },
+    {
+      "image": "renders/a4-3.png",
+      "ids": [
+        1
+      ],
+      "upright": true,
+      "quiet_zones": [
+        {
+          "id": 1,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "image": "renders/a4-4.png",
+      "ids": [
+        3
+      ],
+      "upright": true,
+      "quiet_zones": [
+        {
+          "id": 3,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "image": "renders/a4-5.png",
+      "ids": [],
+      "upright": true,
+      "quiet_zones": [],
+      "passed": true
+    },
+    {
+      "image": "renders/a4-6.png",
+      "ids": [
+        2
+      ],
+      "upright": true,
+      "quiet_zones": [
+        {
+          "id": 2,
+          "minimum_gray": 255,
+          "white_fraction": 1.0
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "scope": "Digital rendering and detection, not a physical camera/printer test."
+}

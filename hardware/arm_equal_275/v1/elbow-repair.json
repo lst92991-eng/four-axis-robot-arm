@@ -1,0 +1,82 @@
+{
+  "elbow_pattern_translation_cad_mm": [
+    -3.2786273695961654e-13,
+    -39.9999999999997,
+    0.0
+  ],
+  "point_moves": [
+    false,
+    false,
+    false,
+    false
+  ],
+  "component_moves": [
+    {
+      "component": "8x10x3mm轴套-1",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 5.647850449853784e-14
+    },
+    {
+      "component": "光轴固定环-1",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 80.00000000004376
+    },
+    {
+      "component": "M3内六角x12mm-18",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 5.553824967135427e-14
+    },
+    {
+      "component": "FF丝杆支撑座[FF10]-2",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 2.288783399261119e-13
+    },
+    {
+      "component": "M3内六角x12mm-16",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 1.734723475976807e-15
+    },
+    {
+      "component": "M3内六角x12mm-17",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 1.734723475976807e-15
+    },
+    {
+      "component": "M3内六角x12mm-2",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 6.938893903907228e-15
+    },
+    {
+      "component": "M3x4mm紧固螺丝-6",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 9.235051122935229
+    },
+    {
+      "component": "M3x4mm紧固螺丝-8",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 79.46517369748372
+    },
+    {
+      "component": "M3x4mm紧固螺丝-5",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 79.46517369748962
+    },
+    {
+      "component": "M3x4mm紧固螺丝-7",
+      "method": "SetTransformAndSolve2",
+      "returned": true,
+      "residual_mm": 9.235051122961229
+    }
+  ],
+  "G1_volume_mm3": 136331.03696881456
+}

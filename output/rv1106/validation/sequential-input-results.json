@@ -1,0 +1,7 @@
+{
+  "odd-width": true,
+  "bad-number": true,
+  "bad-length": true,
+  "captured_nv12_decoded": true,
+  "decode_exception_cleanup": true
+}

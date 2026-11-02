@@ -1,0 +1,28 @@
+[
+  {
+    "version": "旧版  G1 195 ＋ G2 275 mm",
+    "links_mm": [
+      195,
+      275
+    ],
+    "sample_count": 3711,
+    "minimum_sampled_radius_mm": 125.18885600496178,
+    "maximum_sampled_radius_mm": 470.00000000000006,
+    "source": "output\\constrained-workspace-2026-10-09\\cad-collision-scan.npz",
+    "source_sha256": "eb90704774b9fae1e0c95a6bf92f9a0d5609c86d8026a403b6e2e7cb3c0affe1",
+    "scope_difference": "原扫描：未纳入被抑制的同步轮 / 皮带总成"
+  },
+  {
+    "version": "新版  G1 275 ＋ G2 275 mm",
+    "links_mm": [
+      275,
+      275
+    ],
+    "sample_count": 3939,
+    "minimum_sampled_radius_mm": 76.54520552803596,
+    "maximum_sampled_radius_mm": 550.0000000000001,
+    "source": "hardware\\arm_equal_275\\v1\\analysis\\workspace.npz",
+    "source_sha256": "092cc062f38ba42afbecb6fc00b0f92e61676f12bea9010ad21e68298ab1ecd2",
+    "scope_difference": "新扫描：已纳入修正后的同步轮 / 皮带外形"
+  }
+]

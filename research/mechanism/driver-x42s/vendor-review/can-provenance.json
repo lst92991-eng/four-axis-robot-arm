@@ -1,0 +1,22 @@
+{
+  "archive": "D:\\BaiduNetdiskDownload\\ZDT_XS系列第二代闭环步进电机资料\\10.例程_STM32F103\\HAL库\\X固件模式\\CAN通讯\\STM32F103_CAN通讯__梯形曲线加减速位置模式控制.rar",
+  "archive_sha256": "c02c48e11cafbd4ab7be75979b4c72b12a68822a5a706de1067603244abddccf",
+  "files": {
+    "X_V2.c": {
+      "sha256_original": "545a13e4b1c53ef0e54d353c1cb3dd179fd5213cb7140a23d77e9f7e53a42d15",
+      "bytes": 104655
+    },
+    "X_V2.h": {
+      "sha256_original": "5850be834abcaaa011fe76f291a91d7aa3ed8642e495f4431620adad52cf40c1",
+      "bytes": 15796
+    },
+    "can.c": {
+      "sha256_original": "9a477ad2e6cb44d634b72c2a54a0d60adc69c022d147fc2ded857a6f1d348c62",
+      "bytes": 6182
+    },
+    "main.c": {
+      "sha256_original": "72deecfd9de1a219c62e3ff23359582e775374124db265124dc8f1dc0df992f0",
+      "bytes": 6223
+    }
+  }
+}

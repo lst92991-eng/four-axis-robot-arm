@@ -1,0 +1,32 @@
+{
+  "gomoku-board-v2-a4-tiles.pdf": {
+    "pages": 6,
+    "page_mm": [
+      210,
+      297
+    ],
+    "marker_black_side_mm": 48,
+    "grid_pitch_mm": 25,
+    "grid_line_count": [
+      15,
+      15
+    ],
+    "ruler_mm": 100,
+    "passed": true
+  },
+  "gomoku-board-v2-a1.pdf": {
+    "pages": 1,
+    "page_mm": [
+      594,
+      841
+    ],
+    "marker_black_side_mm": 48,
+    "grid_pitch_mm": 25,
+    "grid_line_count": [
+      15,
+      15
+    ],
+    "ruler_mm": 100,
+    "passed": true
+  }
+}

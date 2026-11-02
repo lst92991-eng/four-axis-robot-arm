@@ -1,0 +1,5 @@
+{
+    "renderer": "SVGA3D; build: RELEASE;  LLVM;",
+    "vendor": "VMware, Inc.",
+    "version": "4.3 (Core Profile) Mesa 23.2.1-1ubuntu3.1~22.04.4"
+}

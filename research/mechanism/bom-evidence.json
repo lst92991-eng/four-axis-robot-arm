@@ -1,0 +1,396 @@
+{
+  "source": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-kinematics-inspect\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SCARA四轴机械臂总成 物料明细表.XLSX",
+  "sheets": [
+    "物料清单汇总"
+  ],
+  "rows": [
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A8": "6",
+        "C8": "42步进电机L60",
+        "D8": "3",
+        "E8": 37.45,
+        "F8": "",
+        "G8": "=D8*E8",
+        "H8": "",
+        "I8": "“图样名称”",
+        "J8": "“图样代号”",
+        "K8": "",
+        "L8": "",
+        "M8": "",
+        "N8": "https://item.taobao.com/item.htm?id=682797640293&mi_id=0000wtMzerMIRquDz8rsoVQa-KF3cyIL0f9vvLNpho1N8Po&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5764545574392",
+        "O8": "默认",
+        "P8": "84.0*47.5*42.0",
+        "Q8": ""
+      },
+      "links": {
+        "N8": "https://item.taobao.com/item.htm?id=682797640293&mi_id=0000wtMzerMIRquDz8rsoVQa-KF3cyIL0f9vvLNpho1N8Po&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5764545574392"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A9": "7",
+        "C9": "DLE42-L2BJ-长款50",
+        "D9": "1",
+        "E9": 136,
+        "F9": "",
+        "G9": "=D9*E9",
+        "H9": "",
+        "I9": "“图样名称”",
+        "J9": "“图样代号”",
+        "K9": "",
+        "L9": "",
+        "M9": "",
+        "N9": "https://item.taobao.com/item.htm?id=803939973032&mi_id=0000rE50kSgzc7JhK_GCIGWJ46kX4B5-OY8tAS6HbDGKn9M&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6108484128777",
+        "O9": "默认",
+        "P9": "87.5*42.0*42.0",
+        "Q9": ""
+      },
+      "links": {
+        "N9": "https://item.taobao.com/item.htm?id=803939973032&mi_id=0000rE50kSgzc7JhK_GCIGWJ46kX4B5-OY8tAS6HbDGKn9M&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6108484128777"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A12": "10",
+        "C12": "电机支撑铝板",
+        "D12": "1",
+        "E12": 0,
+        "F12": "",
+        "G12": "=D12*E12",
+        "H12": "",
+        "I12": "“图样名称”",
+        "J12": "“图样代号”",
+        "K12": "",
+        "L12": "",
+        "M12": "",
+        "N12": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX",
+        "O12": "默认",
+        "P12": "161.0*120.0*10.0",
+        "Q12": "拉伸特征件"
+      },
+      "links": {
+        "N12": "https://item.taobao.com/item.htm?id=563367553484&mi_id=0000Jwi5Xh5vd8Lxnu_8-I32RBmzTE27f2fgu-q2vXvEBqU&spm=tbpc.boughtlist.suborder_itemtitle.1.c1152e8dk5WcGX"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A21": "19",
+        "C21": "42步进电机L40",
+        "D21": "1",
+        "E21": 21.64,
+        "F21": "",
+        "G21": "=D21*E21",
+        "H21": "",
+        "I21": "“图样名称”",
+        "J21": "“图样代号”",
+        "K21": "",
+        "L21": "",
+        "M21": "",
+        "N21": "https://item.taobao.com/item.htm?id=682797640293&mi_id=0000wtMzerMIRquDz8rsoVQa-KF3cyIL0f9vvLNpho1N8Po&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5764545574390",
+        "O21": "默认",
+        "P21": "64.0*47.5*42.0",
+        "Q21": "外输入件"
+      },
+      "links": {
+        "N21": "https://item.taobao.com/item.htm?id=682797640293&mi_id=0000wtMzerMIRquDz8rsoVQa-KF3cyIL0f9vvLNpho1N8Po&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5764545574390"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A25": "23",
+        "C25": "内径8MM法兰",
+        "D25": "1",
+        "E25": 4,
+        "F25": "",
+        "G25": "=D25*E25",
+        "H25": "",
+        "I25": "“图样名称”",
+        "J25": "“图样代号”",
+        "K25": "",
+        "L25": "",
+        "M25": "",
+        "N25": "https://item.taobao.com/item.htm?id=810393942266&mi_id=0000XJJzgZ0UxYihYaV4HhspnE3osjJ2vRz28hVmKvf3amc&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5504044821918",
+        "O25": "默认",
+        "P25": "50.0*50.0*18.0",
+        "Q25": "拉伸特征件"
+      },
+      "links": {
+        "N25": "https://item.taobao.com/item.htm?id=810393942266&mi_id=0000XJJzgZ0UxYihYaV4HhspnE3osjJ2vRz28hVmKvf3amc&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=5504044821918"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A27": "25",
+        "C27": "GT20同步轮",
+        "D27": "1",
+        "E27": 6.4,
+        "F27": "",
+        "G27": "=D27*E27",
+        "H27": "",
+        "I27": "“图样名称”",
+        "J27": "“图样代号”",
+        "K27": "",
+        "L27": "",
+        "M27": "",
+        "N27": "24已有",
+        "O27": "默认",
+        "P27": "16.0*16.0*16.0",
+        "Q27": "拉伸特征件"
+      },
+      "links": {}
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A28": "26",
+        "C28": "GT60同步轮",
+        "D28": "1",
+        "E28": 6.4,
+        "F28": "",
+        "G28": "=D28*E28",
+        "H28": "",
+        "I28": "“图样名称”",
+        "J28": "“图样代号”",
+        "K28": "",
+        "L28": "",
+        "M28": "",
+        "N28": "24已有",
+        "O28": "默认",
+        "P28": "43.6*43.6*16.0",
+        "Q28": "拉伸特征件"
+      },
+      "links": {}
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A29": "27",
+        "C29": "皮带1-2^装配体1_SCARA四轴机械臂总成",
+        "D29": "1",
+        "E29": 0,
+        "F29": "",
+        "G29": "=D29*E29",
+        "H29": "",
+        "I29": "“图样名称”",
+        "J29": "“图样代号”",
+        "K29": "",
+        "L29": "",
+        "M29": "",
+        "N29": "24已有",
+        "O29": "默认",
+        "P29": "172.2*45.1*6.0",
+        "Q29": ""
+      },
+      "links": {}
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A41": "39",
+        "C41": "8MM键槽法兰",
+        "D41": "1",
+        "E41": 49,
+        "F41": "",
+        "G41": "=D41*E41",
+        "H41": "",
+        "I41": "“图样名称”",
+        "J41": "“图样代号”",
+        "K41": "",
+        "L41": "",
+        "M41": "",
+        "N41": "https://item.taobao.com/item.htm?id=646053203889&last_time=1787645102&mi_id=0000xY7MFSZUyu99ropAha3p0gZ0xGDEU5m_es2RTfy-wDw&scm=1007.13982.82927.0&skuId=4819679654458&spm=tbpc.mytb_footmark.item.goods&upStreamPrice=900",
+        "O41": "默认",
+        "P41": "56.8*56.8*26.4",
+        "Q41": "拉伸特征件"
+      },
+      "links": {
+        "N41": "https://item.taobao.com/item.htm?id=646053203889&last_time=1787645102&mi_id=0000xY7MFSZUyu99ropAha3p0gZ0xGDEU5m_es2RTfy-wDw&scm=1007.13982.82927.0&skuId=4819679654458&spm=tbpc.mytb_footmark.item.goods&upStreamPrice=900"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A47": "45",
+        "C47": "T型丝杆500MM",
+        "D47": "1",
+        "E47": 31,
+        "F47": "",
+        "G47": "=D47*E47",
+        "H47": "",
+        "I47": "“图样名称”",
+        "J47": "“图样代号”",
+        "K47": "",
+        "L47": "",
+        "M47": "",
+        "N47": "https://detail.tmall.com/item.htm?from=detail&id=603397368654&mi_id=0000P0HEY5WwtMFyLG3ve3Kc6J0q64YoIxUc7A-RLl5uAKk&spm=tbpc.orderdetail.suborder_itempic.1.78656aa6nEBclS",
+        "O47": "默认",
+        "P47": "500.0*16.0*16.0",
+        "Q47": "拉伸特征件"
+      },
+      "links": {
+        "N47": "https://detail.tmall.com/item.htm?from=detail&id=603397368654&mi_id=0000P0HEY5WwtMFyLG3ve3Kc6J0q64YoIxUc7A-RLl5uAKk&spm=tbpc.orderdetail.suborder_itempic.1.78656aa6nEBclS"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A50": "48",
+        "C50": "T型丝杆螺母",
+        "D50": "1",
+        "E50": 9,
+        "F50": "",
+        "G50": "=D50*E50",
+        "H50": "",
+        "I50": "“图样名称”",
+        "J50": "“图样代号”",
+        "K50": "",
+        "L50": "",
+        "M50": "",
+        "N50": "https://detail.tmall.com/item.htm?from=detail&id=603397368654&mi_id=0000P0HEY5WwtMFyLG3ve3Kc6J0q64YoIxUc7A-RLl5uAKk&spm=tbpc.orderdetail.suborder_itempic.1.78656aa6nEBclS",
+        "O50": "默认",
+        "P50": "40.0*40.0*28.0",
+        "Q50": "拉伸特征件"
+      },
+      "links": {
+        "N50": "https://detail.tmall.com/item.htm?from=detail&id=603397368654&mi_id=0000P0HEY5WwtMFyLG3ve3Kc6J0q64YoIxUc7A-RLl5uAKk&spm=tbpc.orderdetail.suborder_itempic.1.78656aa6nEBclS"
+      }
+    },
+    {
+      "sheet": "物料清单汇总",
+      "values": {
+        "A52": "50",
+        "C52": "FF丝杆支撑座[FF10]",
+        "D52": "1",
+        "E52": 4,
+        "F52": "",
+        "G52": "=D52*E52",
+        "H52": "",
+        "I52": "FF丝杆支撑座 FF10",
+        "J52": "GB／T 276-2013",
+        "K52": "",
+        "L52": "",
+        "M52": "FF10",
+        "N52": "https://item.taobao.com/item.htm?id=953421002594&mi_id=0000N3-PgnEQcu_xSH05UX04cfKDdd84vplG_5yOoJB2yv4&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6041746163822",
+        "O52": "FF10",
+        "P52": "43.0*43.0*12.0",
+        "Q52": "旋转特征件"
+      },
+      "links": {
+        "N52": "https://item.taobao.com/item.htm?id=953421002594&mi_id=0000N3-PgnEQcu_xSH05UX04cfKDdd84vplG_5yOoJB2yv4&spm=tbpc.boughtlist.suborder_itemtitle.1.6de82e8dJgz4rY&skuId=6041746163822"
+      }
+    }
+  ],
+  "images": [
+    {
+      "sheet": "物料清单汇总",
+      "row": 8,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-8-image-5.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 9,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-9-image-6.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 18,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-18-image-15.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 19,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-19-image-16.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 20,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-20-image-17.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 21,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-21-image-18.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 25,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-25-image-22.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 26,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-26-image-23.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 27,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-27-image-24.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 28,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-28-image-25.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 29,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-29-image-26.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 47,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-47-image-44.png"
+    },
+    {
+      "sheet": "物料清单汇总",
+      "row": 48,
+      "col": 2,
+      "width": 800,
+      "height": 800,
+      "file": "C:\\Users\\lst\\Desktop\\scara\\research\\mechanism\\bom-row-48-image-45.png"
+    }
+  ]
+}

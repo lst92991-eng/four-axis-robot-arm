@@ -1,0 +1,32 @@
+{
+  "checked_date": "2026-10-09",
+  "currency_context": "大陆购买以人民币结算为准；本次未登录电商账号，未取得具体收货地库存/结算价。",
+  "recommended_candidate": {
+    "name": "得力6732系列，明确选择28mm小号实木中国象棋SKU",
+    "purchase_search_terms": "得力 6732 小号 28mm 实木 中国象棋 折叠棋盘 非磁性",
+    "purchase_candidate_url": "https://item.jd.com/10211391885658.html",
+    "verified_listing_facts": ["商品目录存在28mm实木棋子折叠套装选项", "亚米6732页面标题明确标28mm，并说明实木棋子与防水折叠棋盘"],
+    "uncertain": ["所选大陆店铺发货版本及实测直径", "高度", "单枚重量", "木种", "是否有深雕字/环槽影响吸盘密封", "非磁性版本确认", "横纵交点间距（包括河界）", "最外侧交点跨度", "当前库存", "实时到手价"],
+    "price_reference": {"amount_cny":29.90,"type":"返利聚合页展示的淘宝参考报价，非本次验证的实时SKU结算价","url":"https://m.fanli.com/item/d40717026698"}
+  },
+  "smaller_backup": {
+    "name":"得力桦木中国象棋25mm店铺SKU；18710仅作检索线索",
+    "purchase_search_terms":"得力 桦木 中国象棋 25mm 2.5cm 非磁性 棋子",
+    "purchase_candidate_url":"https://item.jd.com/10041423354510.html",
+    "diameter_claim_mm":25,
+    "conflict":"京东目录有18710=25mm的SKU文字，但另一些目录/百科把18710写成28mm或3cm。因此不能把型号18710等同于25mm；需以所选版本实测为准。",
+    "price_reference":null,
+    "uncertain":["直径版本冲突", "高度", "单枚重量", "顶面密封性", "实际棋盘交点间距及跨度", "实时库存和价格"]
+  },
+  "sources":[
+    {"url":"https://www.jd.com/jiage/1318af4706e2bf8737f0.html","kind":"国内电商目录","supports":"28mm实木SKU、25mm桦木SKU、20/25/15.5mm磁石SKU存在；目录内容会变化","does_not_support":"任何一个SKU当前库存、实时价格或网格间距"},
+    {"url":"https://www.jd.com/hprm/670b0a8c91be01bc034.html","kind":"国内电商目录","supports":"得力小号28mm实木和25mm桦木规格入口","does_not_support":"特定SKU销量、到货版本、网格尺寸"},
+    {"url":"https://www.yami.com/zh/p/6732/1166003661","kind":"零售商直接商品页，海外规格交叉来源","supports":"6732页面标题为28mm；实木棋子、防水折叠棋盘","does_not_support":"大陆库存或大陆成交价；未将页面美元价格作为大陆报价"},
+    {"url":"https://mall.cnbm.com.cn/mall-view/product/search?businessType=1&cid=3304","kind":"B2B商城目录；标注货源供应商得力集团有限公司","supports":"6732目录277×156×27mm，6733目录321×182×30mm","does_not_support":"交点间距；这些目录尺寸不能当作网格跨度，也未据此擅自翻倍推展开尺寸"},
+    {"url":"https://m.fanli.com/item/d40717026698","kind":"返利聚合报价，次级来源","supports":"6732页面展示参考29.90元淘宝价","does_not_support":"当前地区、具体SKU、运费券后结算价"},
+    {"url":"https://www.qingzhoubanxue.com/","kind":"零售首页搜索索引，直接读取超时","supports":"索引存在6732及18710/18712商品入口","does_not_support":"已验证实时价或某个型号的完整商品规格；未作为主要购买入口"},
+    {"url":"https://wiki.smzdm.com/p/zmn1eo1/","kind":"次级商品百科，用于识别冲突","supports":"18710条目标题3cm、规格28mm，与目录25mm存在冲突","does_not_support":"准确发货直径"},
+    {"url":"https://www.jd.com/jiage/16721bb50f25d6a79f46.html","kind":"电商目录备查","supports":"曾检索到晨光28mm实木折叠选项","does_not_support":"稳定型号、实时价格或网格间距；未列为优先推荐"}
+  ],
+  "technical_recommendation_not_product_spec":{"preferred_piece_diameter_mm":[25,28],"suggested_grid_pitch_mm":[30,32],"calculation_source":"layout-evaluation.json","note":"这些格距是机械适配设计候选，不是对以上商品配套棋盘的实测或厂家标称。"}
+}

@@ -1,0 +1,15 @@
+/build/
+/tmp/
+__pycache__/
+/tools/robot-viewer/connection.json
+
+# Machine credentials and transient files; project archives and evidence are retained.
+.env
+.env.*
+!.env.example
+*.pyc
+.venv/
+~$*
+*.pid
+/output/portable-demo/
+/tools/z-axis-panel/dependencies/

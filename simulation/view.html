@@ -1,0 +1,16 @@
+<!doctype html><meta charset="utf-8"><title>SCARA 仿真</title>
+<style>body{font:16px sans-serif;background:#17212b;color:#e8eff5;margin:24px}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}img{width:100%;background:white}pre{white-space:pre-wrap}small{color:#aebfcf}</style>
+<h2>旧版 SCARA · OpenCV 5 + YOLOv5 仿真</h2>
+<small>虚拟CAN四节点；无真实电机动作。画面及噪声是仿真，不能替代实物标定。</small>
+<pre id="state">等待程序运行</pre><main>
+<section>SolidWorks三维整机记录<img id="scene"></section><section>YOLO识别记录<img id="vision"></section></main>
+<script>
+setInterval(async()=>{
+  let t=Date.now();for(let x of ['vision','scene'])document.getElementById(x).src='output/'+x+'.jpg?t='+t;
+  try{
+    let [s,r]=await Promise.all(['status','result'].map(x=>fetch('output/'+x+'.json?t='+t).then(r=>r.json())));
+    let result={playing:'演示步数已到',red_won:'红方获胜',black_won:'黑方获胜',draw:'和棋',review_required:'重复局面，待人工裁定',error:r.message,running:'运行中'};
+    document.getElementById('state').textContent=`机器人执${s.robot_side==='red'?'红':'黑'} · 第${s.ply}步 · ${s.move}\n机械臂移走${s.captured_by_arm}枚被吃子 · 仿真运动累计${s.virtual_motion_seconds.toFixed(2)}秒\n${result[r.result]}`;
+  }catch(e){document.getElementById('state').textContent='等待程序输出';}
+},800);
+</script>

@@ -1,0 +1,16 @@
+{
+  "illegal_rejected": true,
+  "wrong_colour_rejected": true,
+  "pause_holds_virtual_time": true,
+  "single_step_seconds": 0.02,
+  "human_and_robot_confirmed": {
+    "opencv": "5.0.0",
+    "robot_side": "black",
+    "ply": 2,
+    "move": "a9b9",
+    "fen": "1rbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/7C1/9/RNBAKABNR w - - 0 1",
+    "virtual_motion_seconds": 17.499999999999716,
+    "last_motion_seconds": 17.499999999999716,
+    "captured_by_arm": 1
+  }
+}

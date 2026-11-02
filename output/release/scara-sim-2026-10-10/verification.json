@@ -1,0 +1,73 @@
+{
+  "opencv": "5.0.0",
+  "debug_off_status_and_images_identical": true,
+  "full_replay_cases": {
+    "red": {
+      "result": {
+        "result": "red_won",
+        "stop_reason": "chess_rule",
+        "completed_plies": 161,
+        "history": "b2b9 h7h0 b9d9 e9d9 i0h0 h9g7 h2g2 i9h9 h0h9 g7h9 b0c2 c6c5 a0b0 b7c7 b0b6 c7c3 c0e2 h9g7 g3g4 c9e7 g2g6 d9e9 g4g5 a9d9 g5f5 f9e8 f5f6 c5c4 g6h6 c3d3 f6g6 d3d6 g6g7 d6h6 b6e6 h6h0 g7g8 d9d2 g8f8 d2e2 d0e1 e2g2 e6e7 e9d9 e7h7 d9d8 h7h0 g2c2 g0e2 c2a2 h0h6 a2a0 e1d0 a0d0 e0e1 d0d1 e1e0 d1d0 e0e1 c4d4 h6a6 e8d7 a6a8 d8d9 a8a4 d4d3 a4d4 d9d8 e1f1 d3d2 a3a4 d0a0 e2c0 d2c2 d4c4 c2d2 c4d4 d2c2 f0e1 a0a3 d4c4 c2c1 c4c1 a3a4 c1c8 d8d9 c8c5 d9d8 c0e2 a4f4 e1f2 g9i7 f1e1 f4d4 c5c8 d8d9 c8c6 d4f4 f8g8 f4d4 c6i6 i7g9 i6e6 d4d5 e3e4 d5g5 g8f8 g5f5 f8g8 f5f3 e4e5 f3f2 e6b6 d7e8 b6b9 d9d8 b9b8 d8d9 b8e8 f2i2 e8e6 i2i1 e1e0 i1i0 e0e1 i0i1 e1e0 i1i0 e0e1 i0d0 g8f8 d0d1 e1e0 d1d0 e0e1 d0d1 e1e0 d1d4 f8e8 d4d0 e0e1 d0d1 e1e0 d1d0 e0e1 d0d1 e1e0 d1d2 e6f6 d2d0 e0e1 d0d1 e1e0 d1d0 e0e1 d0d1 e1e0 d1e1 e0e1 g9e7 f6d6"
+      },
+      "motion": {
+        "samples": 40045,
+        "can_frames": 336110,
+        "raw_xy_rmse_mm": 0.504757,
+        "ekf_xy_rmse_mm": 0.255007,
+        "placements": 95,
+        "max_placement_error_mm": 1.58265
+      },
+      "status": {
+        "opencv": "5.0.0",
+        "robot_side": "red",
+        "ply": 161,
+        "move": "f6d6",
+        "fen": "3k5/4P4/4b4/3R5/4P4/9/8P/4B4/4K4/9 b - - 0 1",
+        "virtual_motion_seconds": 800.8999999995616,
+        "last_motion_seconds": 9.05999999999176,
+        "captured_by_arm": 14
+      }
+    },
+    "black": {
+      "result": {
+        "result": "red_won",
+        "stop_reason": "chess_rule",
+        "completed_plies": 161,
+        "history": "b2b9 h7h0 b9d9 e9d9 i0h0 h9g7 h2g2 i9h9 h0h9 g7h9 b0c2 c6c5 a0b0 b7c7 b0b6 c7c3 c0e2 h9g7 g3g4 c9e7 g2g6 d9e9 g4g5 a9d9 g5f5 f9e8 f5f6 c5c4 g6h6 c3d3 f6g6 d3d6 g6g7 d6h6 b6e6 h6h0 g7g8 d9d2 g8f8 d2e2 d0e1 e2g2 e6e7 e9d9 e7h7 d9d8 h7h0 g2c2 g0e2 c2a2 h0h6 a2a0 e1d0 a0d0 e0e1 d0d1 e1e0 d1d0 e0e1 c4d4 h6a6 e8d7 a6a8 d8d9 a8a4 d4d3 a4d4 d9d8 e1f1 d3d2 a3a4 d0a0 e2c0 d2c2 d4c4 c2d2 c4d4 d2c2 f0e1 a0a3 d4c4 c2c1 c4c1 a3a4 c1c8 d8d9 c8c5 d9d8 c0e2 a4f4 e1f2 g9i7 f1e1 f4d4 c5c8 d8d9 c8c6 d4f4 f8g8 f4d4 c6i6 i7g9 i6e6 d4d5 e3e4 d5g5 g8f8 g5f5 f8g8 f5f3 e4e5 f3f2 e6b6 d7e8 b6b9 d9d8 b9b8 d8d9 b8e8 f2i2 e8e6 i2i1 e1e0 i1i0 e0e1 i0i1 e1e0 i1i0 e0e1 i0d0 g8f8 d0d1 e1e0 d1d0 e0e1 d0d1 e1e0 d1d4 f8e8 d4d0 e0e1 d0d1 e1e0 d1d0 e0e1 d0d1 e1e0 d1d2 e6f6 d2d0 e0e1 d0d1 e1e0 d1d0 e0e1 d0d1 e1e0 d1e1 e0e1 g9e7 f6d6"
+      },
+      "motion": {
+        "samples": 37571,
+        "can_frames": 315526,
+        "raw_xy_rmse_mm": 0.488248,
+        "ekf_xy_rmse_mm": 0.2537,
+        "placements": 90,
+        "max_placement_error_mm": 1.46614
+      },
+      "status": {
+        "opencv": "5.0.0",
+        "robot_side": "black",
+        "ply": 161,
+        "move": "f6d6",
+        "fen": "3k5/4P4/4b4/3R5/4P4/9/8P/4B4/4K4/9 b - - 0 1",
+        "virtual_motion_seconds": 751.4199999996066,
+        "last_motion_seconds": 0.0,
+        "captured_by_arm": 10
+      }
+    }
+  },
+  "sha256": {
+    "sim.cpp": "8e38a81a99b2856f5c323cded641583791897965a1ffbba884f6eeb3b946aa57",
+    "yolo_cpu.cpp": "f590c2bb279e094ec14b09ba24ab432cf45a919b5b859d8f1d0bb3260186fdef",
+    "debug.cpp": "537fb53c81e344c72117047cc25f0a063f0924543475ca66ebcf232ffb26fd92",
+    "debug.hpp": "bf8f581c298d49c0a822d2834c7390a522a8e43e194d6b33750a5678c490c55f",
+    "detector.hpp": "0b9504008d898fe60b93d3fad85ed1899ee82c1dd661577f4e849ec1456e7bc2",
+    "CMakeLists.txt": "fe501579c418fd60b8a2f6a5f5f46a0f9c3f88183d72616c3edb9cdbf300be0f",
+    "config.json": "d92cb6fe3a1d7d26728edb632e8eaf7c7da3a7052be954e2145c05f499efadec",
+    "build/scara_sim": "d030f49179de981f2100c1e0c83e7cc0a34f8b5fef13497403f31485a4a420fb",
+    "models/xiangqi14-s.onnx": "c839276b8a8f3c7dcd77934ba57f8f88fcac8b72457ec32ce2a3572f187a6802",
+    "engine/pikafish": "9121e9c1747f0f6b62aa74c56a4751f6bcc25370c35f831d4d59de0304091c9b",
+    "engine/pikafish.nnue": "2e9280f355cd4f092fcb63c21477692100afaf9ba9868a10c9c8d5b8fc6d1d1f",
+    "assets/workspace.bin": "0911cbe48ce32dbb028e238ff245fb5ffd361963d83b897b3b82348322799a3a"
+  },
+  "scope": "指定合成贴图、机位、噪声和皮卡鱼棋谱重放；不是独立视觉测试或实机验收"
+}

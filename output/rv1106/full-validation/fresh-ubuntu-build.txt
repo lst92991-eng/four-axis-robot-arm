@@ -1,0 +1,178 @@
+Fresh teaching-source reproduction on Ubuntu VM
+Date: 2026-10-09 Asia/Shanghai
+Fresh directory: /home/st/.cache/scara-teaching-repro-20261009
+Source: release/scara-xiangqi-teaching-2026-10-09 runtime C++/tests/CMake (34 files)
+No RV1106 board process or camera was used.
+Input archive SHA256: b93a728b52ecbb6a597f761f8604ca84107585a3d8c9e0836e86e99959e22412
+All 34 runtime source SHA256 values matched the release snapshot.
+Pikafish source: frozen 4762ca3 archive, compiled natively on this VM; no WSL executable copied.
+Engine source archive SHA256: 686be90179a7cd7705595e1347b80f5a2e0483f0c8820950ee4fe9bfb59056f3
+
+$ uname -a
+Linux st-virtual-machine 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
+EXIT 0; seconds 0.0
+
+$ cmake --version
+cmake version 3.22.1
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+EXIT 0; seconds 0.02
+
+$ g++ --version
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EXIT 0; seconds 0.0
+
+$ cmake -S /home/st/.cache/scara-teaching-repro-20261009/source -B /home/st/.cache/scara-teaching-repro-20261009/build -DOpenCV_DIR=/home/st/.local/opencv-5.0.0/lib/cmake/opencv5 -DSCARA_WITH_RKNN=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenCV: /home/st/.local/opencv-5.0.0 (found suitable exact version "5.0.0") found components: core imgproc imgcodecs objdetect geometry 
+-- Looking for C++ include pthread.h
+-- Looking for C++ include pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/st/.cache/scara-teaching-repro-20261009/build
+EXIT 0; seconds 0.31
+
+$ cmake --build /home/st/.cache/scara-teaching-repro-20261009/build --parallel 2
+[  4%] Building CXX object CMakeFiles/scara_game.dir/chess/board.cpp.o
+[  9%] Building CXX object algorithm/CMakeFiles/scara_algorithm.dir/fk.cpp.o
+[ 13%] Building CXX object algorithm/CMakeFiles/scara_algorithm.dir/ik.cpp.o
+[ 18%] Building CXX object algorithm/CMakeFiles/scara_algorithm.dir/homography_ekf.cpp.o
+[ 22%] Building CXX object algorithm/CMakeFiles/scara_algorithm.dir/motion_plan.cpp.o
+[ 27%] Building CXX object CMakeFiles/scara_game.dir/chess/pikafish.cpp.o
+[ 31%] Linking CXX static library libscara_algorithm.a
+[ 31%] Built target scara_algorithm
+[ 36%] Linking CXX static library libscara_game.a
+[ 36%] Built target scara_game
+[ 40%] Building CXX object CMakeFiles/scara_simulator.dir/robot/simulator.cpp.o
+[ 45%] Linking CXX static library libscara_simulator.a
+[ 45%] Built target scara_simulator
+[ 50%] Building CXX object CMakeFiles/scara_tests.dir/tests/main.cpp.o
+[ 54%] Building CXX object CMakeFiles/scara_robot.dir/main.cpp.o
+[ 59%] Building CXX object CMakeFiles/scara_tests.dir/tests/algorithm_tests.cpp.o
+[ 63%] Building CXX object CMakeFiles/scara_tests.dir/tests/chess_tests.cpp.o
+[ 68%] Building CXX object CMakeFiles/scara_robot.dir/vision/board_vision.cpp.o
+[ 72%] Building CXX object CMakeFiles/scara_tests.dir/tests/simulator_tests.cpp.o
+[ 77%] Building CXX object CMakeFiles/scara_robot.dir/vision/camera.cpp.o
+[ 81%] Building CXX object CMakeFiles/scara_tests.dir/tests/commands_tests.cpp.o
+[ 86%] Building CXX object CMakeFiles/scara_tests.dir/tests/vision_tests.cpp.o
+[ 90%] Linking CXX executable scara_robot
+[ 90%] Built target scara_robot
+[ 95%] Building CXX object CMakeFiles/scara_tests.dir/vision/board_vision.cpp.o
+[100%] Linking CXX executable scara_tests
+[100%] Built target scara_tests
+EXIT 0; seconds 4.58
+
+$ ctest --test-dir /home/st/.cache/scara-teaching-repro-20261009/build --output-on-failure
+Internal ctest changing into directory: /home/st/.cache/scara-teaching-repro-20261009/build
+Test project /home/st/.cache/scara-teaching-repro-20261009/build
+    Start 1: scara_core
+1/1 Test #1: scara_core .......................   Passed    0.34 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.34 sec
+EXIT 0; seconds 0.37
+
+$ make -j2 build ARCH=x86-64 COMP=gcc
+cwd: /home/st/.cache/scara-teaching-repro-20261009/native2023/src
+
+Config:
+debug: 'no'
+sanitize: 'none'
+optimize: 'yes'
+arch: 'x86_64'
+bits: '64'
+kernel: 'Linux'
+os: 'GNU/Linux'
+prefetch: 'yes'
+popcnt: 'no'
+pext: 'no'
+sse: 'yes'
+mmx: 'no'
+sse2: 'yes'
+ssse3: 'no'
+sse41: 'no'
+avx2: 'no'
+avxvnni: 'no'
+avx512: 'no'
+vnni256: 'no'
+vnni512: 'no'
+neon: 'no'
+arm_version: '0'
+
+Flags:
+CXX: g++
+CXXFLAGS:  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one
+LDFLAGS:   -m64 -Wl,--no-as-needed -lpthread  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one -flto=jobserver
+
+Testing config sanity. If this fails, try 'make help' ...
+
+make ARCH=x86-64 COMP=gcc all
+make[1]: Entering directory '/home/st/.cache/scara-teaching-repro-20261009/native2023/src'
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o benchmark.o benchmark.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o bitboard.o bitboard.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o evaluate.o evaluate.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o main.o main.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o misc.o misc.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o movegen.o movegen.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o movepick.o movepick.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o position.o position.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o search.o search.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o thread.o thread.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o timeman.o timeman.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o tt.o tt.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o uci.o uci.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o ucioption.o ucioption.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o tune.o tune.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o evaluate_nnue.o nnue/evaluate_nnue.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o half_ka_v2_hm.o nnue/features/half_ka_v2_hm.cpp
+g++  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one   -c -o zip.o external/zip.cpp
+In file included from external/zip.cpp:39:
+external/miniz.h:4988:1: warning: multi-line comment [-Wcomment]
+ 4988 | // #pragma message(                                                               \
+      | ^
+g++ -o pikafish benchmark.o bitboard.o evaluate.o main.o misc.o movegen.o movepick.o position.o search.o thread.o timeman.o tt.o uci.o ucioption.o tune.o evaluate_nnue.o half_ka_v2_hm.o zip.o   -m64 -Wl,--no-as-needed -lpthread  -Wall -Wcast-qual -fno-exceptions -std=c++17  -pedantic -Wextra -Wshadow -Wmissing-declarations -m64 -DUSE_PTHREADS -DNDEBUG -O3 -DIS_64BIT -msse -DUSE_SSE2 -msse2 -flto -flto-partition=one -flto=jobserver
+make[1]: Leaving directory '/home/st/.cache/scara-teaching-repro-20261009/native2023/src'
+EXIT 0; seconds 9.19
+
+$ SCARA_TEST_PIKAFISH_DIR=/home/st/.cache/scara-teaching-repro-20261009/native2023/src ctest --test-dir /home/st/.cache/scara-teaching-repro-20261009/build -V
+Internal ctest changing into directory: /home/st/.cache/scara-teaching-repro-20261009/build
+UpdateCTestConfiguration  from :/home/st/.cache/scara-teaching-repro-20261009/build/DartConfiguration.tcl
+Parse Config file:/home/st/.cache/scara-teaching-repro-20261009/build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/st/.cache/scara-teaching-repro-20261009/build/DartConfiguration.tcl
+Parse Config file:/home/st/.cache/scara-teaching-repro-20261009/build/DartConfiguration.tcl
+Test project /home/st/.cache/scara-teaching-repro-20261009/build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: scara_core
+
+1: Test command: /home/st/.cache/scara-teaching-repro-20261009/build/scara_tests
+1: Test timeout computed to be: 1500
+1: SCARA tests passed
+1/1 Test #1: scara_core .......................   Passed    0.53 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.53 sec
+EXIT 0; seconds 0.57
+
+RESULT: PASS. Clean project build, full ctest, and full ctest with native2023 terminal queries all passed.
+Pikafish binary SHA256: 9121e9c1747f0f6b62aa74c56a4751f6bcc25370c35f831d4d59de0304091c9b
+NNUE SHA256: 2e9280f355cd4f092fcb63c21477692100afaf9ba9868a10c9c8d5b8fc6d1d1f

@@ -1,0 +1,1470 @@
+[
+  {
+    "folder": "dong-scarachess",
+    "sha": "7ed03bec4358474a340271a3184e80a7b7cd69bc",
+    "commit_date": "2022-01-26",
+    "files": [
+      {
+        "path": "Core/Inc/AccelStepper.h",
+        "physical": 81,
+        "nonblank": 67
+      },
+      {
+        "path": "Core/Inc/adc.h",
+        "physical": 52,
+        "nonblank": 39
+      },
+      {
+        "path": "Core/Inc/AS5600.h",
+        "physical": 37,
+        "nonblank": 30
+      },
+      {
+        "path": "Core/Inc/batteryVolt.h",
+        "physical": 17,
+        "nonblank": 12
+      },
+      {
+        "path": "Core/Inc/config.h",
+        "physical": 15,
+        "nonblank": 11
+      },
+      {
+        "path": "Core/Inc/dma.h",
+        "physical": 52,
+        "nonblank": 39
+      },
+      {
+        "path": "Core/Inc/eeprom.h",
+        "physical": 87,
+        "nonblank": 70
+      },
+      {
+        "path": "Core/Inc/FreeRTOSConfig.h",
+        "physical": 145,
+        "nonblank": 127
+      },
+      {
+        "path": "Core/Inc/gpio.h",
+        "physical": 49,
+        "nonblank": 38
+      },
+      {
+        "path": "Core/Inc/i2c.h",
+        "physical": 56,
+        "nonblank": 43
+      },
+      {
+        "path": "Core/Inc/main.h",
+        "physical": 111,
+        "nonblank": 92
+      },
+      {
+        "path": "Core/Inc/pickAndDrop.h",
+        "physical": 21,
+        "nonblank": 17
+      },
+      {
+        "path": "Core/Inc/stm32f4xx_hal_conf.h",
+        "physical": 492,
+        "nonblank": 407
+      },
+      {
+        "path": "Core/Inc/stm32f4xx_it.h",
+        "physical": 87,
+        "nonblank": 72
+      },
+      {
+        "path": "Core/Inc/tim.h",
+        "physical": 62,
+        "nonblank": 48
+      },
+      {
+        "path": "Core/Inc/usart.h",
+        "physical": 54,
+        "nonblank": 41
+      },
+      {
+        "path": "Core/Src/AccelStepper.c",
+        "physical": 260,
+        "nonblank": 244
+      },
+      {
+        "path": "Core/Src/adc.c",
+        "physical": 156,
+        "nonblank": 126
+      },
+      {
+        "path": "Core/Src/AS5600.c",
+        "physical": 65,
+        "nonblank": 56
+      },
+      {
+        "path": "Core/Src/batteryVolt.c",
+        "physical": 32,
+        "nonblank": 28
+      },
+      {
+        "path": "Core/Src/dma.c",
+        "physical": 74,
+        "nonblank": 61
+      },
+      {
+        "path": "Core/Src/eeprom.c",
+        "physical": 711,
+        "nonblank": 646
+      },
+      {
+        "path": "Core/Src/freertos.c",
+        "physical": 998,
+        "nonblank": 924
+      },
+      {
+        "path": "Core/Src/gpio.c",
+        "physical": 90,
+        "nonblank": 71
+      },
+      {
+        "path": "Core/Src/i2c.c",
+        "physical": 397,
+        "nonblank": 324
+      },
+      {
+        "path": "Core/Src/main.c",
+        "physical": 302,
+        "nonblank": 261
+      },
+      {
+        "path": "Core/Src/pickAndDrop.c",
+        "physical": 17,
+        "nonblank": 13
+      },
+      {
+        "path": "Core/Src/stm32f4xx_hal_msp.c",
+        "physical": 86,
+        "nonblank": 62
+      },
+      {
+        "path": "Core/Src/stm32f4xx_hal_timebase_tim.c",
+        "physical": 111,
+        "nonblank": 99
+      },
+      {
+        "path": "Core/Src/stm32f4xx_it.c",
+        "physical": 477,
+        "nonblank": 382
+      },
+      {
+        "path": "Core/Src/syscalls.c",
+        "physical": 156,
+        "nonblank": 128
+      },
+      {
+        "path": "Core/Src/sysmem.c",
+        "physical": 80,
+        "nonblank": 73
+      },
+      {
+        "path": "Core/Src/system_stm32f4xx.c",
+        "physical": 749,
+        "nonblank": 667
+      },
+      {
+        "path": "Core/Src/tim.c",
+        "physical": 517,
+        "nonblank": 426
+      },
+      {
+        "path": "Core/Src/usart.c",
+        "physical": 244,
+        "nonblank": 196
+      },
+      {
+        "path": "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h",
+        "physical": 8635,
+        "nonblank": 8052
+      },
+      {
+        "path": "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h",
+        "physical": 253,
+        "nonblank": 217
+      },
+      {
+        "path": "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h",
+        "physical": 122,
+        "nonblank": 102
+      },
+      {
+        "path": "Drivers/CMSIS/Include/cmsis_armcc.h",
+        "physical": 865,
+        "nonblank": 733
+      },
+      {
+        "path": "Drivers/CMSIS/Include/cmsis_armclang.h",
+        "physical": 1869,
+        "nonblank": 1517
+      },
+      {
+        "path": "Drivers/CMSIS/Include/cmsis_compiler.h",
+        "physical": 266,
+        "nonblank": 243
+      },
+      {
+        "path": "Drivers/CMSIS/Include/cmsis_gcc.h",
+        "physical": 2085,
+        "nonblank": 1712
+      },
+      {
+        "path": "Drivers/CMSIS/Include/cmsis_iccarm.h",
+        "physical": 935,
+        "nonblank": 790
+      },
+      {
+        "path": "Drivers/CMSIS/Include/cmsis_version.h",
+        "physical": 39,
+        "nonblank": 36
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_armv8mbl.h",
+        "physical": 1918,
+        "nonblank": 1551
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_armv8mml.h",
+        "physical": 2927,
+        "nonblank": 2331
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm0.h",
+        "physical": 949,
+        "nonblank": 764
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm0plus.h",
+        "physical": 1083,
+        "nonblank": 867
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm1.h",
+        "physical": 976,
+        "nonblank": 785
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm23.h",
+        "physical": 1993,
+        "nonblank": 1605
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm3.h",
+        "physical": 1941,
+        "nonblank": 1518
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm33.h",
+        "physical": 3002,
+        "nonblank": 2385
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm4.h",
+        "physical": 2129,
+        "nonblank": 1668
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_cm7.h",
+        "physical": 2671,
+        "nonblank": 2100
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_sc000.h",
+        "physical": 1022,
+        "nonblank": 816
+      },
+      {
+        "path": "Drivers/CMSIS/Include/core_sc300.h",
+        "physical": 1915,
+        "nonblank": 1499
+      },
+      {
+        "path": "Drivers/CMSIS/Include/mpu_armv7.h",
+        "physical": 270,
+        "nonblank": 245
+      },
+      {
+        "path": "Drivers/CMSIS/Include/mpu_armv8.h",
+        "physical": 333,
+        "nonblank": 293
+      },
+      {
+        "path": "Drivers/CMSIS/Include/tz_context.h",
+        "physical": 70,
+        "nonblank": 59
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h",
+        "physical": 298,
+        "nonblank": 268
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h",
+        "physical": 900,
+        "nonblank": 796
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h",
+        "physical": 409,
+        "nonblank": 369
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h",
+        "physical": 410,
+        "nonblank": 356
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h",
+        "physical": 211,
+        "nonblank": 183
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h",
+        "physical": 804,
+        "nonblank": 702
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h",
+        "physical": 104,
+        "nonblank": 86
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h",
+        "physical": 368,
+        "nonblank": 324
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h",
+        "physical": 428,
+        "nonblank": 373
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h",
+        "physical": 1066,
+        "nonblank": 933
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h",
+        "physical": 79,
+        "nonblank": 65
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h",
+        "physical": 325,
+        "nonblank": 278
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h",
+        "physical": 1592,
+        "nonblank": 1391
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h",
+        "physical": 743,
+        "nonblank": 635
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h",
+        "physical": 117,
+        "nonblank": 97
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h",
+        "physical": 431,
+        "nonblank": 367
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h",
+        "physical": 344,
+        "nonblank": 300
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h",
+        "physical": 1462,
+        "nonblank": 1312
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h",
+        "physical": 7114,
+        "nonblank": 6509
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h",
+        "physical": 2123,
+        "nonblank": 1889
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h",
+        "physical": 357,
+        "nonblank": 311
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h",
+        "physical": 881,
+        "nonblank": 774
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_adc.h",
+        "physical": 4781,
+        "nonblank": 4457
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h",
+        "physical": 3756,
+        "nonblank": 3383
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c",
+        "physical": 615,
+        "nonblank": 545
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c",
+        "physical": 2109,
+        "nonblank": 1817
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c",
+        "physical": 1114,
+        "nonblank": 959
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c",
+        "physical": 505,
+        "nonblank": 441
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c",
+        "physical": 1305,
+        "nonblank": 1095
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c",
+        "physical": 315,
+        "nonblank": 266
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c",
+        "physical": 559,
+        "nonblank": 468
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c",
+        "physical": 778,
+        "nonblank": 667
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c",
+        "physical": 1350,
+        "nonblank": 1174
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c",
+        "physical": 175,
+        "nonblank": 152
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c",
+        "physical": 532,
+        "nonblank": 458
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c",
+        "physical": 7498,
+        "nonblank": 6331
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c",
+        "physical": 184,
+        "nonblank": 148
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c",
+        "physical": 575,
+        "nonblank": 507
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c",
+        "physical": 604,
+        "nonblank": 521
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c",
+        "physical": 1125,
+        "nonblank": 1000
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c",
+        "physical": 3787,
+        "nonblank": 3414
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c",
+        "physical": 7428,
+        "nonblank": 6385
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c",
+        "physical": 2371,
+        "nonblank": 2011
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c",
+        "physical": 3725,
+        "nonblank": 3187
+      },
+      {
+        "path": "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c",
+        "physical": 919,
+        "nonblank": 827
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/croutine.c",
+        "physical": 353,
+        "nonblank": 296
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c",
+        "physical": 753,
+        "nonblank": 638
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/list.c",
+        "physical": 198,
+        "nonblank": 165
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/queue.c",
+        "physical": 2945,
+        "nonblank": 2555
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c",
+        "physical": 1263,
+        "nonblank": 1090
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/tasks.c",
+        "physical": 5310,
+        "nonblank": 4528
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/timers.c",
+        "physical": 1127,
+        "nonblank": 963
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c",
+        "physical": 1727,
+        "nonblank": 1499
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h",
+        "physical": 1026,
+        "nonblank": 841
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/atomic.h",
+        "physical": 414,
+        "nonblank": 362
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/croutine.h",
+        "physical": 720,
+        "nonblank": 656
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h",
+        "physical": 279,
+        "nonblank": 218
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h",
+        "physical": 757,
+        "nonblank": 696
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h",
+        "physical": 1295,
+        "nonblank": 1057
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/list.h",
+        "physical": 412,
+        "nonblank": 376
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/message_buffer.h",
+        "physical": 803,
+        "nonblank": 751
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/mpu_prototypes.h",
+        "physical": 160,
+        "nonblank": 148
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h",
+        "physical": 189,
+        "nonblank": 167
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/portable.h",
+        "physical": 199,
+        "nonblank": 171
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h",
+        "physical": 124,
+        "nonblank": 108
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h",
+        "physical": 1655,
+        "nonblank": 1495
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h",
+        "physical": 1140,
+        "nonblank": 1059
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/StackMacros.h",
+        "physical": 133,
+        "nonblank": 112
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/stack_macros.h",
+        "physical": 129,
+        "nonblank": 109
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/stream_buffer.h",
+        "physical": 859,
+        "nonblank": 807
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/task.h",
+        "physical": 2543,
+        "nonblank": 2344
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/include/timers.h",
+        "physical": 1309,
+        "nonblank": 1268
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c",
+        "physical": 775,
+        "nonblank": 664
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h",
+        "physical": 243,
+        "nonblank": 198
+      },
+      {
+        "path": "Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c",
+        "physical": 492,
+        "nonblank": 426
+      }
+    ]
+  },
+  {
+    "folder": "okasha-chessmate",
+    "sha": "aa4bc1d021e552daef21714f33f99daedd46b475",
+    "commit_date": "2019-08-25",
+    "files": [
+      {
+        "path": "board.py",
+        "physical": 107,
+        "nonblank": 76
+      },
+      {
+        "path": "calibrate_pixels.py",
+        "physical": 63,
+        "nonblank": 49
+      },
+      {
+        "path": "comms.py",
+        "physical": 115,
+        "nonblank": 88
+      },
+      {
+        "path": "constants.py",
+        "physical": 35,
+        "nonblank": 26
+      },
+      {
+        "path": "enums.py",
+        "physical": 7,
+        "nonblank": 5
+      },
+      {
+        "path": "frame.py",
+        "physical": 67,
+        "nonblank": 45
+      },
+      {
+        "path": "gcode.py",
+        "physical": 158,
+        "nonblank": 138
+      },
+      {
+        "path": "move.py",
+        "physical": 140,
+        "nonblank": 96
+      },
+      {
+        "path": "potato.py",
+        "physical": 29,
+        "nonblank": 20
+      },
+      {
+        "path": "square.py",
+        "physical": 89,
+        "nonblank": 64
+      },
+      {
+        "path": "lsh/ai.py",
+        "physical": 14,
+        "nonblank": 11
+      },
+      {
+        "path": "lsh/config.py",
+        "physical": 1,
+        "nonblank": 1
+      },
+      {
+        "path": "scrap_files/board.py",
+        "physical": 57,
+        "nonblank": 39
+      },
+      {
+        "path": "scrap_files/Capstone_IRS_Main.py",
+        "physical": 105,
+        "nonblank": 73
+      },
+      {
+        "path": "scrap_files/constants.py",
+        "physical": 14,
+        "nonblank": 10
+      },
+      {
+        "path": "scrap_files/demo.py",
+        "physical": 17,
+        "nonblank": 10
+      },
+      {
+        "path": "scrap_files/final.py",
+        "physical": 110,
+        "nonblank": 77
+      },
+      {
+        "path": "scrap_files/frame.py",
+        "physical": 33,
+        "nonblank": 25
+      },
+      {
+        "path": "scrap_files/get-pip.py",
+        "physical": 20890,
+        "nonblank": 20859
+      },
+      {
+        "path": "scrap_files/irs.py",
+        "physical": 214,
+        "nonblank": 193
+      },
+      {
+        "path": "scrap_files/newirs.py",
+        "physical": 87,
+        "nonblank": 74
+      },
+      {
+        "path": "scrap_files/openCVCodeTesting.py",
+        "physical": 51,
+        "nonblank": 40
+      },
+      {
+        "path": "scrap_files/opencvtutorialtest.py",
+        "physical": 41,
+        "nonblank": 33
+      },
+      {
+        "path": "scrap_files/potato.py",
+        "physical": 91,
+        "nonblank": 70
+      },
+      {
+        "path": "scrap_files/rpiturktest.py",
+        "physical": 65,
+        "nonblank": 50
+      },
+      {
+        "path": "scrap_files/square.py",
+        "physical": 65,
+        "nonblank": 41
+      },
+      {
+        "path": "scrap_files/test.py",
+        "physical": 53,
+        "nonblank": 40
+      }
+    ]
+  },
+  {
+    "folder": "rpd-chess",
+    "sha": "a825da104e38a01662fd944ea9ec19043232cec5",
+    "commit_date": "2025-10-22",
+    "files": [
+      {
+        "path": "version1-old/CBint.py",
+        "physical": 320,
+        "nonblank": 277
+      },
+      {
+        "path": "version1-old/CBstate.py",
+        "physical": 17,
+        "nonblank": 15
+      },
+      {
+        "path": "version1-old/ChessBoard.py",
+        "physical": 1353,
+        "nonblank": 1102
+      },
+      {
+        "path": "version1-old/playermove_rpd.py",
+        "physical": 617,
+        "nonblank": 556
+      },
+      {
+        "path": "version1-old/robotmove.py",
+        "physical": 311,
+        "nonblank": 268
+      },
+      {
+        "path": "version2/calibrate_fisheye.py",
+        "physical": 52,
+        "nonblank": 52
+      },
+      {
+        "path": "version2/CBint.py",
+        "physical": 339,
+        "nonblank": 292
+      },
+      {
+        "path": "version2/CBstate.py",
+        "physical": 53,
+        "nonblank": 44
+      },
+      {
+        "path": "version2/ChessBoard.py",
+        "physical": 1360,
+        "nonblank": 1109
+      },
+      {
+        "path": "version2/inversekinematics.py",
+        "physical": 60,
+        "nonblank": 46
+      },
+      {
+        "path": "version2/playermove_rpd.py",
+        "physical": 580,
+        "nonblank": 522
+      },
+      {
+        "path": "version2/robotmove-old.py",
+        "physical": 335,
+        "nonblank": 293
+      },
+      {
+        "path": "version2/robotmove.py",
+        "physical": 440,
+        "nonblank": 388
+      },
+      {
+        "path": "version2/takepics.py",
+        "physical": 51,
+        "nonblank": 44
+      },
+      {
+        "path": "version2/testport.py",
+        "physical": 13,
+        "nonblank": 12
+      },
+      {
+        "path": "versiongui/bluetrpd.py",
+        "physical": 45,
+        "nonblank": 37
+      },
+      {
+        "path": "versiongui/calibrate_fisheye.py",
+        "physical": 52,
+        "nonblank": 52
+      },
+      {
+        "path": "versiongui/CBint.py",
+        "physical": 407,
+        "nonblank": 361
+      },
+      {
+        "path": "versiongui/CBstate.py",
+        "physical": 91,
+        "nonblank": 81
+      },
+      {
+        "path": "versiongui/ChessBoard.py",
+        "physical": 1360,
+        "nonblank": 1109
+      },
+      {
+        "path": "versiongui/inversekinematics.py",
+        "physical": 60,
+        "nonblank": 46
+      },
+      {
+        "path": "versiongui/main.py",
+        "physical": 372,
+        "nonblank": 323
+      },
+      {
+        "path": "versiongui/Maxchessdemo.py",
+        "physical": 191,
+        "nonblank": 151
+      },
+      {
+        "path": "versiongui/models.py",
+        "physical": 760,
+        "nonblank": 660
+      },
+      {
+        "path": "versiongui/nudgebyj.py",
+        "physical": 50,
+        "nonblank": 43
+      },
+      {
+        "path": "versiongui/playermove_rpd.py",
+        "physical": 472,
+        "nonblank": 430
+      },
+      {
+        "path": "versiongui/robotmove.py",
+        "physical": 543,
+        "nonblank": 488
+      },
+      {
+        "path": "versiongui/sunfish.py",
+        "physical": 491,
+        "nonblank": 427
+      },
+      {
+        "path": "versiongui/sunfishnew.py",
+        "physical": 513,
+        "nonblank": 448
+      },
+      {
+        "path": "versiongui/uci-old.py",
+        "physical": 344,
+        "nonblank": 288
+      },
+      {
+        "path": "versiongui/old/bluerpd.py",
+        "physical": 74,
+        "nonblank": 70
+      },
+      {
+        "path": "versiongui/old/bluetest.py",
+        "physical": 64,
+        "nonblank": 54
+      },
+      {
+        "path": "versiongui/old/bluetoothrpd.py",
+        "physical": 57,
+        "nonblank": 48
+      },
+      {
+        "path": "versiongui/old/bluetoothtest.py",
+        "physical": 84,
+        "nonblank": 72
+      },
+      {
+        "path": "versiongui/old/camera.py",
+        "physical": 64,
+        "nonblank": 53
+      },
+      {
+        "path": "versiongui/old/collide.py",
+        "physical": 49,
+        "nonblank": 36
+      },
+      {
+        "path": "versiongui/old/ctest.py",
+        "physical": 53,
+        "nonblank": 39
+      },
+      {
+        "path": "versiongui/old/findcorners.py",
+        "physical": 182,
+        "nonblank": 147
+      },
+      {
+        "path": "versiongui/old/findcornersmodal.py",
+        "physical": 217,
+        "nonblank": 177
+      },
+      {
+        "path": "versiongui/old/kivyplat.py",
+        "physical": 35,
+        "nonblank": 32
+      },
+      {
+        "path": "versiongui/old/kivyplat2.py",
+        "physical": 47,
+        "nonblank": 40
+      },
+      {
+        "path": "versiongui/old/moseclick.py",
+        "physical": 15,
+        "nonblank": 15
+      },
+      {
+        "path": "versiongui/old/mouse.py",
+        "physical": 15,
+        "nonblank": 10
+      },
+      {
+        "path": "versiongui/old/multipage.py",
+        "physical": 62,
+        "nonblank": 45
+      },
+      {
+        "path": "versiongui/old/page3.py",
+        "physical": 62,
+        "nonblank": 45
+      },
+      {
+        "path": "versiongui/old/perms.py",
+        "physical": 15,
+        "nonblank": 11
+      },
+      {
+        "path": "versiongui/old/playermove_rpd_old.py",
+        "physical": 646,
+        "nonblank": 578
+      },
+      {
+        "path": "versiongui/old/ply.py",
+        "physical": 4,
+        "nonblank": 4
+      },
+      {
+        "path": "versiongui/old/serialtest.py",
+        "physical": 51,
+        "nonblank": 38
+      },
+      {
+        "path": "versiongui/old/simple.py",
+        "physical": 23,
+        "nonblank": 17
+      },
+      {
+        "path": "versiongui/old/sunfishtest.py",
+        "physical": 18,
+        "nonblank": 17
+      },
+      {
+        "path": "versiongui/old/sunfishtest2.py",
+        "physical": 29,
+        "nonblank": 23
+      },
+      {
+        "path": "versiongui/old/sunfishtest3.py",
+        "physical": 36,
+        "nonblank": 31
+      },
+      {
+        "path": "versiongui/old/takepics.py",
+        "physical": 51,
+        "nonblank": 44
+      },
+      {
+        "path": "versiongui/old/test.py",
+        "physical": 9,
+        "nonblank": 6
+      },
+      {
+        "path": "versiongui/old/testport.py",
+        "physical": 13,
+        "nonblank": 12
+      },
+      {
+        "path": "versiongui/old/textinput.py",
+        "physical": 74,
+        "nonblank": 61
+      },
+      {
+        "path": "versiongui/old/texttospeech.py",
+        "physical": 46,
+        "nonblank": 32
+      },
+      {
+        "path": "versiongui/old/touchim.py",
+        "physical": 205,
+        "nonblank": 162
+      },
+      {
+        "path": "versiongui/old/touchtracer.py",
+        "physical": 70,
+        "nonblank": 52
+      },
+      {
+        "path": "versiongui/tools/uci.py",
+        "physical": 340,
+        "nonblank": 284
+      },
+      {
+        "path": "versiongui/tools/__init__.py",
+        "physical": 0,
+        "nonblank": 0
+      },
+      {
+        "path": "versiongui-old/bluetrpd.py",
+        "physical": 45,
+        "nonblank": 37
+      },
+      {
+        "path": "versiongui-old/calibrate_fisheye.py",
+        "physical": 52,
+        "nonblank": 52
+      },
+      {
+        "path": "versiongui-old/CBint.py",
+        "physical": 367,
+        "nonblank": 325
+      },
+      {
+        "path": "versiongui-old/CBstate.py",
+        "physical": 77,
+        "nonblank": 69
+      },
+      {
+        "path": "versiongui-old/ChessBoard.py",
+        "physical": 1360,
+        "nonblank": 1109
+      },
+      {
+        "path": "versiongui-old/inversekinematics.py",
+        "physical": 60,
+        "nonblank": 46
+      },
+      {
+        "path": "versiongui-old/main.py",
+        "physical": 373,
+        "nonblank": 323
+      },
+      {
+        "path": "versiongui-old/Maxchessdemo.py",
+        "physical": 191,
+        "nonblank": 151
+      },
+      {
+        "path": "versiongui-old/nudgebyj.py",
+        "physical": 50,
+        "nonblank": 43
+      },
+      {
+        "path": "versiongui-old/playermove_rpd.py",
+        "physical": 472,
+        "nonblank": 430
+      },
+      {
+        "path": "versiongui-old/robotmove.py",
+        "physical": 543,
+        "nonblank": 488
+      },
+      {
+        "path": "versiongui-old/eSpeak/docs/speak_lib.h",
+        "physical": 672,
+        "nonblank": 521
+      },
+      {
+        "path": "versiongui-old/old/bluerpd.py",
+        "physical": 74,
+        "nonblank": 70
+      },
+      {
+        "path": "versiongui-old/old/bluetest.py",
+        "physical": 64,
+        "nonblank": 54
+      },
+      {
+        "path": "versiongui-old/old/bluetoothrpd.py",
+        "physical": 57,
+        "nonblank": 48
+      },
+      {
+        "path": "versiongui-old/old/bluetoothtest.py",
+        "physical": 84,
+        "nonblank": 72
+      },
+      {
+        "path": "versiongui-old/old/camera.py",
+        "physical": 64,
+        "nonblank": 53
+      },
+      {
+        "path": "versiongui-old/old/collide.py",
+        "physical": 49,
+        "nonblank": 36
+      },
+      {
+        "path": "versiongui-old/old/ctest.py",
+        "physical": 53,
+        "nonblank": 39
+      },
+      {
+        "path": "versiongui-old/old/findcorners.py",
+        "physical": 182,
+        "nonblank": 147
+      },
+      {
+        "path": "versiongui-old/old/findcornersmodal.py",
+        "physical": 217,
+        "nonblank": 177
+      },
+      {
+        "path": "versiongui-old/old/kivyplat.py",
+        "physical": 35,
+        "nonblank": 32
+      },
+      {
+        "path": "versiongui-old/old/kivyplat2.py",
+        "physical": 47,
+        "nonblank": 40
+      },
+      {
+        "path": "versiongui-old/old/moseclick.py",
+        "physical": 15,
+        "nonblank": 15
+      },
+      {
+        "path": "versiongui-old/old/mouse.py",
+        "physical": 15,
+        "nonblank": 10
+      },
+      {
+        "path": "versiongui-old/old/multipage.py",
+        "physical": 62,
+        "nonblank": 45
+      },
+      {
+        "path": "versiongui-old/old/page3.py",
+        "physical": 62,
+        "nonblank": 45
+      },
+      {
+        "path": "versiongui-old/old/playermove_rpd_old.py",
+        "physical": 646,
+        "nonblank": 578
+      },
+      {
+        "path": "versiongui-old/old/ply.py",
+        "physical": 4,
+        "nonblank": 4
+      },
+      {
+        "path": "versiongui-old/old/serialtest.py",
+        "physical": 51,
+        "nonblank": 38
+      },
+      {
+        "path": "versiongui-old/old/simple.py",
+        "physical": 23,
+        "nonblank": 17
+      },
+      {
+        "path": "versiongui-old/old/takepics.py",
+        "physical": 51,
+        "nonblank": 44
+      },
+      {
+        "path": "versiongui-old/old/test.py",
+        "physical": 9,
+        "nonblank": 6
+      },
+      {
+        "path": "versiongui-old/old/testport.py",
+        "physical": 13,
+        "nonblank": 12
+      },
+      {
+        "path": "versiongui-old/old/textinput.py",
+        "physical": 74,
+        "nonblank": 61
+      },
+      {
+        "path": "versiongui-old/old/texttospeech.py",
+        "physical": 46,
+        "nonblank": 32
+      },
+      {
+        "path": "versiongui-old/old/touchim.py",
+        "physical": 205,
+        "nonblank": 162
+      },
+      {
+        "path": "versiongui-old/old/touchtracer.py",
+        "physical": 70,
+        "nonblank": 52
+      }
+    ]
+  },
+  {
+    "folder": "rpd-firmware",
+    "sha": "17b176ce2fa3b05e2faf8ca5e265c5719b489a7e",
+    "commit_date": "2023-12-30",
+    "files": [
+      {
+        "path": "robotArm/byj_gripper.cpp",
+        "physical": 120,
+        "nonblank": 115
+      },
+      {
+        "path": "robotArm/byj_gripper.h",
+        "physical": 22,
+        "nonblank": 20
+      },
+      {
+        "path": "robotArm/command.cpp",
+        "physical": 142,
+        "nonblank": 122
+      },
+      {
+        "path": "robotArm/command.h",
+        "physical": 40,
+        "nonblank": 30
+      },
+      {
+        "path": "robotArm/config.h",
+        "physical": 132,
+        "nonblank": 111
+      },
+      {
+        "path": "robotArm/endstop.cpp",
+        "physical": 71,
+        "nonblank": 65
+      },
+      {
+        "path": "robotArm/endstop.h",
+        "physical": 24,
+        "nonblank": 20
+      },
+      {
+        "path": "robotArm/equipment.cpp",
+        "physical": 15,
+        "nonblank": 12
+      },
+      {
+        "path": "robotArm/equipment.h",
+        "physical": 13,
+        "nonblank": 11
+      },
+      {
+        "path": "robotArm/fanControl.cpp",
+        "physical": 35,
+        "nonblank": 30
+      },
+      {
+        "path": "robotArm/fanControl.h",
+        "physical": 17,
+        "nonblank": 15
+      },
+      {
+        "path": "robotArm/interpolation.cpp",
+        "physical": 152,
+        "nonblank": 125
+      },
+      {
+        "path": "robotArm/interpolation.h",
+        "physical": 55,
+        "nonblank": 46
+      },
+      {
+        "path": "robotArm/inverse_kinematics.cpp",
+        "physical": 39,
+        "nonblank": 33
+      },
+      {
+        "path": "robotArm/logger.cpp",
+        "physical": 28,
+        "nonblank": 27
+      },
+      {
+        "path": "robotArm/logger.h",
+        "physical": 17,
+        "nonblank": 14
+      },
+      {
+        "path": "robotArm/pinout.h",
+        "physical": 71,
+        "nonblank": 54
+      },
+      {
+        "path": "robotArm/pinout_uno.h",
+        "physical": 53,
+        "nonblank": 40
+      },
+      {
+        "path": "robotArm/queue.h",
+        "physical": 80,
+        "nonblank": 67
+      },
+      {
+        "path": "robotArm/RampsStepper.cpp",
+        "physical": 87,
+        "nonblank": 73
+      },
+      {
+        "path": "robotArm/RampsStepper.h",
+        "physical": 37,
+        "nonblank": 28
+      },
+      {
+        "path": "robotArm/robotArm.ino",
+        "physical": 375,
+        "nonblank": 335
+      },
+      {
+        "path": "robotArm/robotGeometry.cpp",
+        "physical": 119,
+        "nonblank": 100
+      },
+      {
+        "path": "robotArm/robotGeometry.h",
+        "physical": 25,
+        "nonblank": 23
+      },
+      {
+        "path": "robotArm/servo_gripper.cpp",
+        "physical": 27,
+        "nonblank": 22
+      },
+      {
+        "path": "robotArm/servo_gripper.h",
+        "physical": 17,
+        "nonblank": 15
+      },
+      {
+        "path": "test/stepper/stepper.ino",
+        "physical": 25,
+        "nonblank": 20
+      }
+    ]
+  }
+]

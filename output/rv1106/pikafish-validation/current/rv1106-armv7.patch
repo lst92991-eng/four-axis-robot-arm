@@ -1,0 +1,175 @@
+diff --git a/src/misc.h b/src/misc.h
+index c1a8258..02a4846 100644
+--- a/src/misc.h
++++ b/src/misc.h
+@@ -37,6 +37,10 @@
+ #include <type_traits>
+ #include <vector>
+ 
++#if defined(__GNUC__) && !defined(IS_64BIT)
++    #include "uint128.h"
++#endif
++
+ #if !defined(NO_PREFETCH) && (defined(_MSC_VER) || defined(__INTEL_COMPILER))
+     #include <immintrin.h>
+ #endif
+diff --git a/src/nnue/nnue_accumulator.cpp b/src/nnue/nnue_accumulator.cpp
+index 1d3b10b..4a499ab 100644
+--- a/src/nnue/nnue_accumulator.cpp
++++ b/src/nnue/nnue_accumulator.cpp
+@@ -532,7 +532,15 @@ Bitboard get_changed_pieces(const std::array<Piece, SQUARE_NB>& oldPieces,
+ 
+         uint8x16_t eq     = vceqq_u8(old_v, new_v);
+         uint8x16_t masked = vandq_u8(eq, mask_weights);
+-        u16        mask16 = vaddv_u8(vget_low_u8(masked)) | (vaddv_u8(vget_high_u8(masked)) << 8);
++    #if USE_NEON >= 8
++        u16 mask16 = vaddv_u8(vget_low_u8(masked)) | (vaddv_u8(vget_high_u8(masked)) << 8);
++    #else
++        // ARMv7 has pairwise widening adds, but lacks ARMv8's horizontal vaddv.
++        const auto sum_u8 = [](uint8x8_t bytes) {
++            return vget_lane_u64(vpaddl_u32(vpaddl_u16(vpaddl_u8(bytes))), 0);
++        };
++        u16 mask16 = sum_u8(vget_low_u8(masked)) | (sum_u8(vget_high_u8(masked)) << 8);
++    #endif
+ 
+         sameBB |= static_cast<Bitboard>(mask16) << i;
+     }
+diff --git a/src/uint128.h b/src/uint128.h
+new file mode 100644
+index 0000000..982fc72
+--- /dev/null
++++ b/src/uint128.h
+@@ -0,0 +1,133 @@
++/*
++  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
++  Copyright (C) 2004-2023 The Stockfish developers (see AUTHORS file)
++
++  Stockfish is free software: you can redistribute it and/or modify
++  it under the terms of the GNU General Public License as published by
++  the Free Software Foundation, either version 3 of the License, or
++  (at your option) any later version.
++
++  Stockfish is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++  GNU General Public License for more details.
++
++  You should have received a copy of the GNU General Public License
++  along with this program.  If not, see <http://www.gnu.org/licenses/>.
++*/
++
++// Software 128-bit bitboard arithmetic restored from Pikafish-2023-03-05
++// (commit 4762ca3), under the project's GPL-3.0-or-later license.
++// Used only on 32-bit GNU targets without native __int128.
++#ifndef UINT128_H_INCLUDED
++#define UINT128_H_INCLUDED
++#include <cstdint>
++namespace Stockfish {
++struct u128 {
++    uint64_t b64[2];
++
++    constexpr u128() : b64{ 0, 0 } {}
++    constexpr u128(uint64_t i) : b64{ 0, i } {}
++    constexpr u128(uint64_t hi, uint64_t lo) : b64{ hi, lo } {};
++
++    constexpr operator bool() const {
++        return b64[0] || b64[1];
++    }
++
++    constexpr operator long long unsigned() const {
++        return b64[1];
++    }
++
++    constexpr operator unsigned() const {
++        return b64[1];
++    }
++
++    constexpr u128 operator << (const unsigned int bits) const {
++        return u128(bits >= 64 ? b64[1] << (bits - 64)
++            : bits == 0 ? b64[0]
++            : ((b64[0] << bits) | (b64[1] >> (64 - bits))),
++            bits >= 64 ? 0 : b64[1] << bits);
++    }
++
++    constexpr u128 operator >> (const unsigned int bits) const {
++        return u128(bits >= 64 ? 0 : b64[0] >> bits,
++            bits >= 64 ? b64[0] >> (bits - 64)
++            : bits == 0 ? b64[1]
++            : ((b64[1] >> bits) | (b64[0] << (64 - bits))));
++    }
++
++    constexpr u128 operator << (const int bits) const {
++        return *this << unsigned(bits);
++    }
++
++    constexpr u128 operator >> (const int bits) const {
++        return *this >> unsigned(bits);
++    }
++
++    constexpr bool operator == (const u128 y) const {
++        return (b64[0] == y.b64[0]) && (b64[1] == y.b64[1]);
++    }
++
++    constexpr bool operator != (const u128 y) const {
++        return !(*this == y);
++    }
++
++    constexpr u128& operator |=(const u128 x) {
++        b64[0] |= x.b64[0];
++        b64[1] |= x.b64[1];
++        return *this;
++    }
++    constexpr u128& operator &=(const u128 x) {
++        b64[0] &= x.b64[0];
++        b64[1] &= x.b64[1];
++        return *this;
++    }
++    constexpr u128& operator ^=(const u128 x) {
++        b64[0] ^= x.b64[0];
++        b64[1] ^= x.b64[1];
++        return *this;
++    }
++
++    constexpr u128 operator ~ () const {
++        return u128(~b64[0], ~b64[1]);
++    }
++
++    constexpr u128 operator - () const {
++        return u128(-b64[0] - (b64[1] > 0), -b64[1]);
++    }
++
++    constexpr u128 operator | (const u128 x) const {
++        return u128(b64[0] | x.b64[0], b64[1] | x.b64[1]);
++    }
++
++    constexpr u128 operator & (const u128 x) const {
++        return u128(b64[0] & x.b64[0], b64[1] & x.b64[1]);
++    }
++
++    constexpr u128 operator ^ (const u128 x) const {
++        return u128(b64[0] ^ x.b64[0], b64[1] ^ x.b64[1]);
++    }
++
++    constexpr u128 operator - (const u128 x) const {
++        return u128(b64[0] - x.b64[0] - (b64[1] < x.b64[1]), b64[1] - x.b64[1]);
++    }
++
++    constexpr u128 operator - (const int x) const {
++        return *this - u128(x);
++    }
++
++    constexpr u128 operator * (const u128 x) const {
++        uint64_t a_lo = (uint32_t)b64[1];
++        uint64_t a_hi = b64[1] >> 32;
++        uint64_t b_lo = (uint32_t)x.b64[1];
++        uint64_t b_hi = x.b64[1] >> 32;
++
++        uint64_t t1 = (a_hi * b_lo) + ((a_lo * b_lo) >> 32);
++        uint64_t t2 = (a_lo * b_hi) + (t1 & 0xFFFFFFFF);
++
++        return u128(b64[0] * x.b64[1] + b64[1] * x.b64[0] + (a_hi * b_hi) + (t1 >> 32) + (t2 >> 32),
++            (t2 << 32) + (a_lo * b_lo & 0xFFFFFFFF));
++    }
++};
++}  // namespace Stockfish
++#endif

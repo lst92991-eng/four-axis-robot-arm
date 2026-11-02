@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "file": "main.cpp",
+      "physical": 99,
+      "nonblank": 95,
+      "code_without_standalone_comments": 91
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "physical": 35,
+      "nonblank": 30,
+      "code_without_standalone_comments": 29
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "physical": 185,
+      "nonblank": 174,
+      "code_without_standalone_comments": 170
+    },
+    {
+      "file": "CMakeLists.txt",
+      "physical": 6,
+      "nonblank": 6,
+      "code_without_standalone_comments": 6
+    }
+  ],
+  "cpp_nonblank": 299,
+  "cpp_code_without_standalone_comments": 290,
+  "planned_cpp_nonblank_budget": 300,
+  "new_cpp_files": 2,
+  "existing_cpp_entry_implemented": 1,
+  "scope": "C++ client only; excludes engine source, NNUE, visualization, validation scripts and build output"
+}

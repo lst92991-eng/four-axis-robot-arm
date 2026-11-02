@@ -1,0 +1,188 @@
+{
+  "_note": "仅为字段格式示例；参考旧195+275结构和33mm棋具。零值表示待测，节点0表示尚未核对，禁止直接改标志冒充标定。",
+  "can_interface": "can0",
+  "gpio_chip": "",
+  "gpio_line": 0,
+  "gpio_active_high": 1,
+  "hardware_verified": 0,
+  "fault_release_safe": 0,
+  "robot_color": "black",
+  "engine_directory": "../assets/engine",
+  "model": "../assets/xiangqi14.rknn",
+  "camera_script": "../scripts/camera-mis5001.sh",
+  "journal": "../state/session.yml",
+  "think_ms": 1000,
+  "camera_width": 1280,
+  "camera_height": 960,
+  "piece_contact_z": 0,
+  "piece_yaw": 0,
+  "require_tcp": 0,
+  "latency_calibrated": 0,
+  "capture_latency_bound_seconds": 0,
+  "motion": {
+    "l1": 195,
+    "l2": 275,
+    "calibrated": 0,
+    "x_min": 0,
+    "x_max": 0,
+    "y_min": 0,
+    "y_max": 0,
+    "link_radius": 0,
+    "tool_radius": 0,
+    "minimum_sin_elbow": 0.05,
+    "sample_angle": 0.02,
+    "timeout_seconds": 15,
+    "settle_seconds": 0.15,
+    "feedback_seconds": 0.03,
+    "estimate_error_limit": 0.05,
+    "acceleration_noise": 15,
+    "encoder_sigma": 0.004,
+    "tcp_sigma_mm": 0.5,
+    "maximum_observation_age": 0.1,
+    "acceleration": 1,
+    "axes": [
+      {
+        "node": 0,
+        "direction": 1,
+        "motor_deg_per_unit": 0,
+        "zero_motor_deg": 0,
+        "min": 0,
+        "max": 0,
+        "tolerance": 0,
+        "max_rpm": 0,
+        "pulses_per_rev": 0,
+        "current_limit_ma": 0
+      },
+      {
+        "node": 0,
+        "direction": 1,
+        "motor_deg_per_unit": 0,
+        "zero_motor_deg": 0,
+        "min": 0,
+        "max": 0,
+        "tolerance": 0,
+        "max_rpm": 0,
+        "pulses_per_rev": 0,
+        "current_limit_ma": 0
+      },
+      {
+        "node": 0,
+        "direction": 1,
+        "motor_deg_per_unit": 0,
+        "zero_motor_deg": 0,
+        "min": 0,
+        "max": 0,
+        "tolerance": 0,
+        "max_rpm": 0,
+        "pulses_per_rev": 0,
+        "current_limit_ma": 0
+      },
+      {
+        "node": 0,
+        "direction": 1,
+        "motor_deg_per_unit": 0,
+        "zero_motor_deg": 0,
+        "min": 0,
+        "max": 0,
+        "tolerance": 0,
+        "max_rpm": 0,
+        "pulses_per_rev": 0,
+        "current_limit_ma": 0
+      }
+    ],
+    "forbidden": []
+  },
+  "task": {
+    "travel_z": 0,
+    "pickup_wait": 0,
+    "release_wait": 0,
+    "maximum_hold_seconds": 0,
+    "park": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "red_capture_slots": [],
+    "black_capture_slots": []
+  },
+  "vision": {
+    "board_width_mm": 450,
+    "board_height_mm": 485,
+    "grid_x_mm": 85,
+    "grid_y_mm": 85,
+    "pitch_mm": 35,
+    "marker_side_mm": 48,
+    "pixels_per_mm": 2,
+    "stable_frames": 3,
+    "confidence": 0.5,
+    "marker_centers_mm": [
+      [
+        30,
+        30
+      ],
+      [
+        420,
+        30
+      ],
+      [
+        420,
+        455
+      ],
+      [
+        30,
+        455
+      ]
+    ],
+    "reference_marker_pixels": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "board_pose_tolerance_pixels": 5,
+    "board_to_base": [
+      1,
+      0,
+      -225,
+      0,
+      1,
+      37.5,
+      0,
+      0,
+      1
+    ],
+    "board_calibrated": 0,
+    "tcp_marker_id": 4,
+    "tcp_calibrated": 0,
+    "tcp_image_to_base": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "tcp_plane_z_mm": 0,
+    "tcp_plane_tolerance_mm": 0.5,
+    "tcp_marker_offset_mm": [
+      0,
+      0
+    ]
+  }
+}

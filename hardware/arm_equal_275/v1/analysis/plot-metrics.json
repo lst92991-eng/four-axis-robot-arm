@@ -1,0 +1,8 @@
+{
+  "minimum_sampled_radius_mm": 76.54520552803596,
+  "maximum_sampled_radius_mm": 550.0000000000001,
+  "filled_configuration_cells": 3808,
+  "scope": "当前装配Z高度与末端R相对姿态，含修正后的同步轮与皮带外形；4度离散构型连通性，不是连续碰撞或实机安全验收。",
+  "new_assembly_errors": [],
+  "source_inherited_mate_errors": 13
+}

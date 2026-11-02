@@ -1,0 +1,1 @@
+/usr/bin/c++ -Werror CMakeFiles/scara_motor_test.dir/mnt/c/Users/lst/Desktop/scara/app/motor_test.cpp.o -o scara_motor_test  libscara_motor.a 

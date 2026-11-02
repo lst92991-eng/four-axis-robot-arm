@@ -1,0 +1,4534 @@
+{
+  "tested_rejected_within_q1_component": 748,
+  "blocked_at_all_z_by_carriage": 742,
+  "unresolved": [
+    {
+      "q1": -96,
+      "q2": -128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": -92,
+      "q2": -128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": -84,
+      "q2": -132,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": 84,
+      "q2": 132,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": 92,
+      "q2": 128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": 96,
+      "q2": 128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    }
+  ],
+  "scope": "仅4度构型格点的XY投影存在性；不表示所有绿色点在所有Z均无碰撞。J1可达连通分量由随Z升降的M6螺钉接触屏障约±97.74度约束。",
+  "all_z_projection_same_on_sample_grid": false,
+  "evidence": [
+    {
+      "q1": -96,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -96,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -96,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -96,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -96,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": -96,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": -96,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -96,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "内径8mm法兰-1 / L型支架底座-1"
+    },
+    {
+      "q1": -96,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": -96,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -96,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -96,
+      "q2": -136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -96,
+      "q2": -132,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -96,
+      "q2": -128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": -96,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -96,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -96,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -96,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -96,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -96,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -92,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -92,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -92,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -92,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -92,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": -92,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -92,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -92,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -92,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": -92,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -92,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -92,
+      "q2": -136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -92,
+      "q2": -132,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -92,
+      "q2": -128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": -92,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -92,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -92,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -92,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -92,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -92,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -88,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -88,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -88,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -88,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -88,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": -88,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -88,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -88,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -88,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -88,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -88,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -88,
+      "q2": -136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -88,
+      "q2": -132,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -88,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -88,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -88,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -88,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -88,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -88,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -84,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -84,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -84,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -84,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -84,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "内径8mm法兰-1 / L型支架底座-1"
+    },
+    {
+      "q1": -84,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -84,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -84,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -84,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -84,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -84,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -84,
+      "q2": -136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -84,
+      "q2": -132,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": -84,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -84,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -84,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -84,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -84,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -84,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -80,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -80,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -80,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -80,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -80,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -80,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -80,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -80,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -80,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -80,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -80,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -80,
+      "q2": -136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -80,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -80,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -80,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -80,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -80,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -80,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -76,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -76,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -76,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": -76,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -76,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -76,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -76,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -76,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": -136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -76,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -76,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -76,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -76,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -72,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -72,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -72,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "内径8mm法兰-1 / L型支架底座-1"
+    },
+    {
+      "q1": -72,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -72,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -72,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -72,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -72,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -72,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -72,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -72,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -72,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -72,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -72,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -72,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -72,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -72,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -68,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -68,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -68,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -68,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -68,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -68,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -68,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -68,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -68,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -68,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -68,
+      "q2": -140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -68,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -68,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -68,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -68,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -68,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -68,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -64,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -64,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -64,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -64,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -64,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -64,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -64,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -64,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -64,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -64,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -64,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -64,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -64,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -64,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -64,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -64,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -60,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -60,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -60,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -60,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -60,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -60,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -60,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -60,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -60,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -60,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -60,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -60,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -60,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -60,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": -60,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -60,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -56,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -56,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -56,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -56,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -56,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": -144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -56,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -56,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -56,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -56,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -52,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -52,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -52,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -52,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -52,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -52,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -52,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -52,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": -48,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -48,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -48,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -48,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -48,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -48,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -48,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-20"
+    },
+    {
+      "q1": -44,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -44,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -44,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -44,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -44,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": -148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -44,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -44,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -44,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -44,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -40,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -40,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -40,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -40,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -40,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -40,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -40,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -40,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -36,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -36,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -36,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": -36,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": -152,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -36,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": -36,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -36,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": -36,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-20"
+    },
+    {
+      "q1": -32,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -32,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -32,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -32,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -32,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -32,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -28,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -28,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -28,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -28,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -28,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -24,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -24,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": -156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -24,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -24,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -24,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-20"
+    },
+    {
+      "q1": -20,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -20,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -20,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -20,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -20,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -20,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-20"
+    },
+    {
+      "q1": -16,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -16,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -16,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -16,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -16,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -16,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -12,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -12,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -12,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": -12,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -12,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -12,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -8,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -8,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -8,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -8,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -8,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -4,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -4,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": -4,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-5"
+    },
+    {
+      "q1": -4,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": -4,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-20"
+    },
+    {
+      "q1": -4,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 0,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": 0,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 0,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 0,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 0,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": 4,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 4,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 4,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 4,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 4,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 4,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 8,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 8,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 8,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 8,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 8,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 12,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 12,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 12,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 12,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-20"
+    },
+    {
+      "q1": 12,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 12,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 16,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 16,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 16,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 16,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 16,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 16,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 20,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 20,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 20,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 20,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 20,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 20,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 20,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 20,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 20,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 20,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 20,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 20,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 24,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 24,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 24,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 24,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 24,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 24,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 28,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 28,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 28,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 28,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 28,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 32,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 32,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 32,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 32,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 32,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 32,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 36,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 36,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 36,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 36,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 36,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 36,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 36,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 36,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 40,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 40,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 40,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 40,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 40,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 40,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 40,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 40,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 44,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 44,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 44,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 44,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 44,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 44,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / T型丝杆螺母-1"
+    },
+    {
+      "q1": 44,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 44,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 44,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 48,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 48,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 48,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 48,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 48,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": 48,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 48,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 52,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 52,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 52,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 52,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 52,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 52,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 52,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 52,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 56,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 56,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 56,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 56,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 56,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 56,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 56,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 56,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 60,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 60,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 60,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 60,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 60,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 60,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 60,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 60,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 60,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 60,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 64,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 64,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 64,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 64,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 64,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 64,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 64,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 64,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 64,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 64,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 64,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 64,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 64,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 64,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 64,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 64,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 68,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 68,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 68,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 68,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 68,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 68,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 68,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 68,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 68,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 68,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 68,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 68,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 68,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 68,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 68,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 68,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 68,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 72,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 72,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 72,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 72,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 72,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 72,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 72,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 72,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 72,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 72,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 72,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 72,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 72,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 72,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 72,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "内径8mm法兰-1 / L型支架底座-1"
+    },
+    {
+      "q1": 72,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 72,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 76,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 76,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 76,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 76,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 76,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": 136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 76,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 76,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 76,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 76,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 76,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 76,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 76,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 80,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 80,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 80,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 80,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 80,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 80,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 80,
+      "q2": 136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 80,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 80,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 80,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 80,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 80,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 80,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 80,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 80,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 80,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 80,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 80,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 84,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 84,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 84,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 84,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 84,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 84,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 84,
+      "q2": 132,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": 84,
+      "q2": 136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 84,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 84,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 84,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 84,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 84,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 84,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 84,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "内径8mm法兰-1 / L型支架底座-1"
+    },
+    {
+      "q1": 84,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 84,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 84,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 84,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 88,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 88,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 88,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 88,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 88,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 88,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 88,
+      "q2": 132,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 88,
+      "q2": 136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 88,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 88,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 88,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 88,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 88,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 88,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 88,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 88,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 88,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 88,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 88,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 92,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 92,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 92,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 92,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 92,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 92,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 92,
+      "q2": 128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": 92,
+      "q2": 132,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 92,
+      "q2": 136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 92,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 92,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 92,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": 92,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 92,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "42步进电机L40-1 / L型支架底座-1"
+    },
+    {
+      "q1": 92,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 92,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 92,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 92,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 92,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 92,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 96,
+      "q2": -180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 96,
+      "q2": -176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    },
+    {
+      "q1": 96,
+      "q2": -172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 96,
+      "q2": -168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-8"
+    },
+    {
+      "q1": 96,
+      "q2": -164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 96,
+      "q2": -160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 96,
+      "q2": 128,
+      "blocked_by_z_carriage": false,
+      "pair": null
+    },
+    {
+      "q1": 96,
+      "q2": 132,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / L型支架底座-1"
+    },
+    {
+      "q1": 96,
+      "q2": 136,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 96,
+      "q2": 140,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 96,
+      "q2": 144,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / MGW12H滑块-1"
+    },
+    {
+      "q1": 96,
+      "q2": 148,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": 96,
+      "q2": 152,
+      "blocked_by_z_carriage": true,
+      "pair": "内径8mm法兰-1 / L型支架底座-1"
+    },
+    {
+      "q1": 96,
+      "q2": 156,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 96,
+      "q2": 160,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-19"
+    },
+    {
+      "q1": 96,
+      "q2": 164,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-15"
+    },
+    {
+      "q1": 96,
+      "q2": 168,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 96,
+      "q2": 172,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M4内六角x16mm-21"
+    },
+    {
+      "q1": 96,
+      "q2": 176,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-7"
+    },
+    {
+      "q1": 96,
+      "q2": 180,
+      "blocked_by_z_carriage": true,
+      "pair": "第二机械臂-1 / M3内六角小头x16mm-6"
+    }
+  ]
+}

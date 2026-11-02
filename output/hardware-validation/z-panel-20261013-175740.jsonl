@@ -1,0 +1,26 @@
+{"time": 1791885460.333599, "startup_rx": true, "id": 2147483904, "data": [58, 107]}
+{"time": 1791885460.3345978, "startup_rx": true, "id": 536870916, "data": [0, 12, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.3345978, "event": "can_error", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.335599, "startup_rx": true, "id": 536870916, "data": [0, 12, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.336598, "event": "can_error", "value": "控制器状态；接收错误警告；发送错误警告；ID=0x20000004 DATA=00 0C 00 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.336598, "startup_rx": true, "id": 536870924, "data": [0, 48, 16, 0, 0, 0, 0, 0]}
+{"time": 1791885460.336598, "event": "can_error", "value": "控制器状态；协议错误；接收错误被动；发送错误被动；隐性位发送错误；ID=0x2000000C DATA=00 30 10 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.3375988, "startup_rx": true, "id": 2147483904, "data": [254, 2, 107]}
+{"time": 1791885460.3375988, "startup_rx": true, "id": 536870916, "data": [0, 48, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.3375988, "event": "can_error", "value": "控制器状态；接收错误被动；发送错误被动；ID=0x20000004 DATA=00 30 00 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.338599, "startup_rx": true, "id": 536870924, "data": [0, 48, 16, 0, 0, 0, 0, 0]}
+{"time": 1791885460.3391602, "event": "can_error", "value": "控制器状态；协议错误；接收错误被动；发送错误被动；隐性位发送错误；ID=0x2000000C DATA=00 30 10 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.3391602, "startup_rx": true, "id": 536870924, "data": [0, 48, 16, 0, 0, 0, 0, 0]}
+{"time": 1791885460.340165, "event": "can_error", "value": "控制器状态；协议错误；接收错误被动；发送错误被动；隐性位发送错误；ID=0x2000000C DATA=00 30 10 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.340165, "startup_rx": true, "id": 2147483904, "data": [31, 0, 203, 35, 20, 107]}
+{"time": 1791885460.340165, "startup_rx": true, "id": 536870916, "data": [0, 48, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.3411648, "event": "can_error", "value": "控制器状态；接收错误被动；发送错误被动；ID=0x20000004 DATA=00 30 00 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.3411648, "startup_rx": true, "id": 536870916, "data": [0, 48, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.342165, "event": "can_error", "value": "控制器状态；接收错误被动；发送错误被动；ID=0x20000004 DATA=00 30 00 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.342165, "startup_rx": true, "id": 536870916, "data": [0, 48, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.343166, "event": "can_error", "value": "控制器状态；接收错误被动；发送错误被动；ID=0x20000004 DATA=00 30 00 00 00 00 00 00", "phase": "startup_before_new_requests", "last_command": null, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}
+{"time": 1791885460.343166, "startup_rx": true, "id": 2147483904, "data": [36, 92, 122, 107]}
+{"time": 1791885460.343166, "startup_rx": true, "id": 2147483904, "data": [58, 3, 107]}
+{"time": 1791885460.5465071, "tx": true, "id": 256, "data": [254, 152, 0, 107]}
+{"time": 1791885460.547506, "rx": true, "id": 536870916, "data": [0, 48, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885460.547506, "event": "can_error", "value": "控制器状态；接收错误被动；发送错误被动；ID=0x20000004 DATA=00 30 00 00 00 00 00 00", "phase": "waiting_reply_FE", "last_command": {"id": "0x80000100", "data": [254, 152, 0, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-175740.jsonl"}

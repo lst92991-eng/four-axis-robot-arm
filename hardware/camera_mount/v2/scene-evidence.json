@@ -1,0 +1,117 @@
+{
+  "original_sha256_before": "42d75c8cc76da8c43b351f9c857fffed658a2c09febaa11f47c1b6cb3e27ec7b",
+  "original_sha256_after": "42d75c8cc76da8c43b351f9c857fffed658a2c09febaa11f47c1b6cb3e27ec7b",
+  "components": [
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\camera_bridge.SLDASM",
+      "label": "省料双梁桥架",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\尚硅谷嵌入式项目之四轴机械臂2026.0917\\资料\\SCARA四轴机械臂机械结构V1.1\\SCARA四轴机械臂总成.SLDASM",
+      "label": "原机械臂_引用",
+      "transform": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0005081230000000001,
+        -0.15521586600000004,
+        -0.986,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v1\\parts\\reference_board.SLDPRT",
+      "label": "参考棋盘_摆位待验收",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.25,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v1\\parts\\reference_camera_B.SLDPRT",
+      "label": "相机示意_非精确原厂模型",
+      "transform": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.25,
+        0.644,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\reference\\pcb_major_components.SLDPRT",
+      "label": "用户主板_省略小SMD参考",
+      "transform": [
+        0.0,
+        -1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        -0.0244811506223,
+        0.2040616573533,
+        0.665,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "scope": "静态参考场景；不是运动扫掠验收。主板保留原板框和主要器件，省略小SMD。"
+}

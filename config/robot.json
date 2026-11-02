@@ -1,0 +1,8 @@
+{
+  "engine_dir": "engine",
+  "model_path": "models/xiangqi-yolov5s-relu.rknn",
+  "camera_module_script": "camera-mis5001.sh",
+  "output_dir": "state",
+  "think_ms": 1000,
+  "simulation_speed": 8.0
+}

@@ -1,0 +1,68 @@
+{
+  "valid": {
+    "passed": true,
+    "exit": 0,
+    "size": [
+      1280,
+      960
+    ],
+    "black_rgb": [
+      20,
+      20,
+      20
+    ],
+    "white_rgb": [
+      240,
+      240,
+      240
+    ],
+    "background_rgb": [
+      199,
+      168,
+      104
+    ],
+    "jpg_sha256": "a49b60a4aaee0d3182991c274202c9dd1fbd7e2c1c7ad78af23e9f29c5e8ec72"
+  },
+  "short": {
+    "passed": true,
+    "exit": 1,
+    "output_absent": true
+  },
+  "missing": {
+    "passed": true,
+    "exit": 1,
+    "output_absent": true
+  },
+  "first-frame": {
+    "passed": true,
+    "exit": 0,
+    "size": [
+      1280,
+      960
+    ],
+    "black_rgb": [
+      20,
+      20,
+      20
+    ],
+    "white_rgb": [
+      240,
+      240,
+      240
+    ],
+    "background_rgb": [
+      199,
+      168,
+      104
+    ],
+    "jpg_sha256": "a49b60a4aaee0d3182991c274202c9dd1fbd7e2c1c7ad78af23e9f29c5e8ec72"
+  },
+  "real_camera": {
+    "passed": true,
+    "size": [
+      1280,
+      960
+    ],
+    "bytes": 241020
+  }
+}

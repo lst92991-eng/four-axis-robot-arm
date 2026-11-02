@@ -1,0 +1,26 @@
+软件/仿真版交付验收（2026-10-09）
+
+运行位置：RV1106 ARMv7/uClibc；MIS5001 MIPI；RKNN runtime 1.6.0；OpenCV头/运行库5.0.0。
+正式运行包：output/rv1106/scara-robot，42个文件，总计57,551,598字节（含测试与许可证）。
+板端部署：deploy-robot.ps1上传后sha256sum -c SHA256SUMS成功，收到SCARA_DEPLOY_OK。
+正式测试：LD_LIBRARY_PATH=/root/scara-robot/lib:/oem/usr/lib SCARA_TEST_PIKAFISH_DIR=/root/scara-robot/engine ./scara_tests
+输出：SCARA tests passed，TEST_EXIT=0。包含真实Pikafish将死/困毙验收。
+
+整机：check_live.py通过非法落子、思考中暂停、采集中暂停、带子暂停、认输、和棋与连续3回合。
+暂停耗时：思考0.234秒；采集0.250秒（本次单次测量，不作最坏时延保证）。
+连续历史：e3e4 b7e7 a0a1 e7e4 i0i1 h7e7 a1a0 e4a4。
+包含黑炮吃红兵；收纳槽P..............；执行后board==world、carried='.'、vacuum=0。
+带子暂停时history仍只有e3e4，carried='c'、vacuum=1，等待后TCP和世界盘面不改变。
+
+真相机：收到1280x960 NV12，OpenCV转换到BGR，当前画面无四个棋盘角标，正确拒绝并保留原棋局。
+NPU：独立22图277框，TP277/FP0/FN0，平均85.31ms；详见tools/model/validation.json。
+OpenCV角标/透视正例：单独的真实OpenCV5测试，以生成的正式几何+检测框夹具完成；不能代替实拍棋盘。
+
+未宣称完成：尚未购买的实际棋具适配、实拍整盘识别、真实电机/限位/急停/碰撞标定、完整竞赛长将长捉裁判。
+当前执行器完全为虚拟机械臂，实物棋局在机器应手后须人工同步；后续以真实取放和拍照复核替换。
+
+源码体量：自有生产C++共2442物理行、2267非空行、2170非空且非独立//注释行；主流程305物理行。
+范围：main.cpp、algorithm/app/chess/robot以及vision的相机/定位/检测；排除第一课vision/main.cpp、测试、网页、构建脚本、第三方库/模型/产物。
+每个源文件职责单一，最大文件main.cpp为305行。保留取消、超时、回收、未确认不提交等必要判断；没有为后续驱动制造空壳接口。
+
+Ubuntu干净复现：在新目录逐项核对34个源文件SHA，OpenCV5 EXACT构建通过；本地重编译固定2023引擎后，完整ctest 1/1通过，包含真实残局。详见fresh-ubuntu-build.txt。

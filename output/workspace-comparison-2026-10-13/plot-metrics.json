@@ -1,0 +1,140 @@
+{
+  "old_head6": {
+    "links_mm": [
+      195,
+      275
+    ],
+    "head_height_mm": 6,
+    "sampled_field_area_cm2": 5133.1190138449765,
+    "min_sampled_radius_mm": 125.18885600496178,
+    "max_sampled_radius_mm": 470.00000000000006,
+    "board_free_endpoints": 86,
+    "total_board_points": 90,
+    "first_axis_contact_boundary": [
+      {
+        "sign": -1,
+        "free_deg": -97.73779296875,
+        "collision_deg": -97.73828125,
+        "collision": [
+          "M6内六角x22-1",
+          "J1机械臂-2"
+        ]
+      },
+      {
+        "sign": 1,
+        "free_deg": 97.73779296875,
+        "collision_deg": 97.73828125,
+        "collision": [
+          "M6内六角x22-5",
+          "J1机械臂-2"
+        ]
+      }
+    ]
+  },
+  "old_head3p82": {
+    "links_mm": [
+      195,
+      275
+    ],
+    "head_height_mm": 3.82,
+    "sampled_field_area_cm2": 5589.373487293913,
+    "min_sampled_radius_mm": 125.18885600496178,
+    "max_sampled_radius_mm": 470.00000000000006,
+    "board_free_endpoints": 89,
+    "total_board_points": 90,
+    "first_axis_contact_boundary": [
+      {
+        "sign": -1,
+        "free_deg": -114.60986328125,
+        "collision_deg": -114.6103515625,
+        "collision": [
+          "铝型材挤压角座-1",
+          "J1机械臂-2"
+        ]
+      },
+      {
+        "sign": 1,
+        "free_deg": 114.60986328125,
+        "collision_deg": 114.6103515625,
+        "collision": [
+          "铝型材挤压角座-2",
+          "J1机械臂-2"
+        ]
+      }
+    ]
+  },
+  "new_head6": {
+    "links_mm": [
+      275,
+      275
+    ],
+    "head_height_mm": 6,
+    "sampled_field_area_cm2": 7060.937673647509,
+    "min_sampled_radius_mm": 76.54520552803596,
+    "max_sampled_radius_mm": 550.0000000000001,
+    "board_free_endpoints": 90,
+    "total_board_points": 90,
+    "first_axis_contact_boundary": [
+      {
+        "sign": -1,
+        "free_deg": -97.73779296875,
+        "collision_deg": -97.73828125,
+        "collision": [
+          "J1机械臂-2",
+          "M6内六角x22-1"
+        ]
+      },
+      {
+        "sign": 1,
+        "free_deg": 97.73779296875,
+        "collision_deg": 97.73828125,
+        "collision": [
+          "J1机械臂-2",
+          "M6内六角x22-5"
+        ]
+      }
+    ]
+  },
+  "new_head3p82": {
+    "links_mm": [
+      275,
+      275
+    ],
+    "head_height_mm": 3.82,
+    "sampled_field_area_cm2": 7775.950108194078,
+    "min_sampled_radius_mm": 76.54520552803596,
+    "max_sampled_radius_mm": 550.0000000000001,
+    "board_free_endpoints": 90,
+    "total_board_points": 90,
+    "first_axis_contact_boundary": [
+      {
+        "sign": -1,
+        "free_deg": -114.60986328125,
+        "collision_deg": -114.6103515625,
+        "collision": [
+          "J1机械臂-2",
+          "铝型材挤压角座-1"
+        ]
+      },
+      {
+        "sign": 1,
+        "free_deg": 114.60986328125,
+        "collision_deg": 114.6103515625,
+        "collision": [
+          "铝型材挤压角座-2",
+          "J1机械臂-2"
+        ]
+      }
+    ]
+  },
+  "lower_heads_old": {
+    "added_area_cm2": 456.25447344893445,
+    "lost_area_cm2": 1.6914713000354357e-14,
+    "net_area_change_cm2": 456.25447344893706
+  },
+  "long_arm_low_heads": {
+    "added_area_cm2": 2249.343178269773,
+    "lost_area_cm2": 62.766557369618475,
+    "net_area_change_cm2": 2186.576620900164
+  }
+}

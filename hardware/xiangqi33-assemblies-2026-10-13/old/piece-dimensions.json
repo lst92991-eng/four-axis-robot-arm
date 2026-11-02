@@ -1,0 +1,142 @@
+[
+  {
+    "file": "O33_piece_black_a.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_a.Part"
+  },
+  {
+    "file": "O33_piece_black_b.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_b.Part"
+  },
+  {
+    "file": "O33_piece_black_c.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_c.Part"
+  },
+  {
+    "file": "O33_piece_black_k.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_k.Part"
+  },
+  {
+    "file": "O33_piece_black_n.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_n.Part"
+  },
+  {
+    "file": "O33_piece_black_p.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_p.Part"
+  },
+  {
+    "file": "O33_piece_black_r.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_black_r.Part"
+  },
+  {
+    "file": "O33_piece_red_A.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_A.Part"
+  },
+  {
+    "file": "O33_piece_red_B.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_B.Part"
+  },
+  {
+    "file": "O33_piece_red_C.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_C.Part"
+  },
+  {
+    "file": "O33_piece_red_K.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_K.Part"
+  },
+  {
+    "file": "O33_piece_red_N.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_N.Part"
+  },
+  {
+    "file": "O33_piece_red_P.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_P.Part"
+  },
+  {
+    "file": "O33_piece_red_R.SLDPRT",
+    "diameter_mm": 33,
+    "bbox_size_mm": [
+      33.0,
+      33.0,
+      8.1
+    ],
+    "driving_dimension": "D1@草图1@O33_piece_red_R.Part"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "M3内六角x12mm-26",
+    "original": "M3内六角x12mm-12",
+    "group": 1,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-23",
+    "original": "M3内六角x12mm-9",
+    "group": 1,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-19",
+    "original": "M3内六角x12mm-5",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-20",
+    "original": "M3内六角x12mm-6",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-21",
+    "original": "M3内六角x12mm-7",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-24",
+    "original": "M3内六角x12mm-10",
+    "group": 1,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-25",
+    "original": "M3内六角x12mm-11",
+    "group": 1,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M3内六角x12mm-22",
+    "original": "M3内六角x12mm-8",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M4内六角x16mm-30",
+    "original": "M4内六角x16mm-21",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M4内六角x16mm-28",
+    "original": "M4内六角x16mm-19",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M4内六角x16mm-29",
+    "original": "M4内六角x16mm-20",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  },
+  {
+    "name": "M4内六角x16mm-27",
+    "original": "M4内六角x16mm-15",
+    "group": 0,
+    "bbox_error_mm": 0.0
+  }
+]

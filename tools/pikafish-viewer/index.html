@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>看皮卡鱼下棋 · RV1106</title>
+<style>
+  :root { color-scheme: light; --paper:#f5f0e7; --ink:#302e29; --muted:#817b70; --line:#dfd6c6; --red:#b33b32; --green:#426b58; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.6 "Segoe UI","Microsoft YaHei",sans-serif; }
+  button, select { font:inherit; }
+  button { cursor:pointer; transition:background .15s, border-color .15s; }
+  button:disabled { cursor:default; opacity:.42; }
+  button:focus-visible, select:focus-visible { outline:3px solid #bd9060; outline-offset:3px; }
+  .page { max-width:1080px; margin:auto; padding:32px 24px 24px; }
+  header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
+  .eyebrow { color:var(--muted); font-size:11px; letter-spacing:2px; margin:0 0 5px; }
+  h1 { font:600 32px/1.3 "STSong","SimSun",serif; letter-spacing:2px; margin:0; }
+  .connection { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; white-space:nowrap; }
+  .light { width:7px; height:7px; background:#b7aa93; border-radius:50%; }
+  .connection.online { color:var(--green); }
+  .online .light { background:var(--green); box-shadow:0 0 0 4px #426b5810; }
+  main { display:grid; grid-template-columns:minmax(0, 1fr) 300px; gap:28px; align-items:start; }
+  .board-card { min-width:0; border:1px solid #d8c7ab; border-radius:9px; background:#eddec0; box-shadow:0 12px 38px #64533410; overflow:hidden; }
+  .board-top, .board-bottom { display:flex; align-items:center; justify-content:space-between; padding:13px 21px; background:#f7edd98c; font-size:12px; }
+  .side-label { display:flex; gap:8px; align-items:center; }
+  .side-dot { width:8px; height:8px; border-radius:50%; background:#3d3d37; }
+  .side-dot.red { background:var(--red); }
+  .board-note { color:#8a7655; font-size:11px; }
+  svg { display:block; width:100%; height:auto; background:linear-gradient(110deg,#f1e3c8,#ead8b6 60%,#efdfc1); touch-action:manipulation; }
+  .grid { fill:none; stroke:#8b7150; stroke-width:1.15; }
+  .river { font:25px "STKaiti","KaiTi","SimSun",serif; fill:#9a805e; letter-spacing:9px; }
+  .coordinate { fill:#ad9471; font:11px Georgia,serif; text-anchor:middle; }
+  .piece { stroke:#b59668; stroke-width:1.2; filter:url(#piece-shadow); }
+  .piece-text { font:600 33px "STKaiti","KaiTi","SimSun",serif; text-anchor:middle; dominant-baseline:central; pointer-events:none; }
+  .square { cursor:default; outline:none; }
+  .interactive .square { cursor:pointer; }
+  .square:focus-visible .hit { stroke:#426b58; stroke-width:2; }
+  .hit { fill:transparent; }
+  .last-mark { fill:#b33b3211; stroke:#b33b3255; stroke-width:1.4; }
+  .selected { fill:none; stroke:var(--red); stroke-width:3; }
+  .target { fill:#426b58; opacity:.68; pointer-events:none; }
+  .capture-target { fill:none; stroke:#426b58; stroke-width:3; stroke-dasharray:5 4; pointer-events:none; }
+  aside { min-width:0; padding-top:2px; }
+  .section { border-bottom:1px solid var(--line); padding:0 0 21px; margin:0 0 21px; }
+  .section:last-child { border:0; margin-bottom:0; }
+  .section-label { font-size:11px; letter-spacing:1.5px; color:var(--muted); margin:0 0 9px; }
+  h2 { font:600 25px/1.4 "STSong","SimSun",serif; margin:0 0 5px; }
+  .subtitle { color:var(--muted); font-size:12px; margin:0; min-height:20px; }
+  .mode-switch { display:grid; grid-template-columns:1fr 1fr; background:#eae3d7; border-radius:6px; padding:4px; gap:3px; }
+  .mode-switch button { border:0; border-radius:4px; padding:9px 4px; background:transparent; color:#766c5c; }
+  .mode-switch button[aria-pressed="true"] { background:#fffcf6; color:var(--ink); box-shadow:0 1px 4px #66533110; }
+  .controls { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:15px; }
+  .controls button { padding:9px 10px; border:1px solid #d6cdbc; border-radius:5px; background:#faf7f0; color:var(--ink); }
+  .controls button:hover:enabled { background:#ebe4d7; }
+  .controls .primary { background:var(--ink); color:#fff9eb; border-color:var(--ink); }
+  .controls .primary:hover:enabled { background:#49453b; }
+  .time-row { display:flex; align-items:center; justify-content:space-between; margin-top:17px; color:#756d60; font-size:12px; }
+  select { border:1px solid #d6cdbc; border-radius:4px; background:#faf7f0; color:var(--ink); padding:5px 24px 5px 10px; font-size:12px; }
+  .help { color:var(--muted); font-size:11px; line-height:1.7; margin:13px 0 0; }
+  .history-heading { display:flex; align-items:baseline; justify-content:space-between; }
+  .history-heading span { font-size:11px; color:var(--muted); }
+  ol { list-style:none; margin:0; padding:0; }
+  li { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #e5ddcf; font-size:13px; }
+  li:last-child { border:0; }
+  .move-number { color:#a39580; font:11px Georgia,serif; width:20px; }
+  .move-red { color:var(--red); }
+  .move-time { margin-left:auto; font-size:10px; color:var(--muted); }
+  .empty { font-size:12px; color:#9c917f; padding:15px 0 3px; margin:0; }
+  .engine { display:flex; align-items:baseline; justify-content:space-between; font-size:11px; color:var(--muted); }
+  .engine strong { color:#615b50; font-size:12px; font-weight:500; }
+  .metrics { margin:6px 0 0; font-size:11px; color:#9a8f7d; min-height:18px; }
+  .error { margin:0 0 18px; padding:11px 14px; border:1px solid #d9a99d; border-radius:5px; color:#9b342b; background:#fff0e9; font-size:13px; overflow-wrap:anywhere; }
+  [hidden] { display:none !important; }
+  footer { color:#a39683; font-size:10px; letter-spacing:.4px; margin-top:20px; text-align:center; }
+  @media (min-width:900px) {
+    .page { max-width:1080px; padding-top:22px; padding-bottom:14px; }
+    header { margin-bottom:18px; }
+    main { grid-template-columns:minmax(0,min(660px,calc((100dvh - 222px) * .923))) 300px; justify-content:center; }
+    .board-top, .board-bottom { padding-top:10px; padding-bottom:10px; }
+    .section { padding-bottom:15px; margin-bottom:15px; }
+    #history { max-height:130px; overflow-y:auto; scrollbar-width:thin; }
+    footer { margin-top:14px; }
+  }
+  @media (max-width:760px) { .page { padding:20px 14px; } header { margin-bottom:19px; } h1 { font-size:27px; } main { grid-template-columns:1fr; gap:24px; } aside { padding:0 5px; } .section { padding-bottom:18px; margin-bottom:18px; } .board-top,.board-bottom { padding:10px 16px; } .connection { font-size:11px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div><p class="eyebrow">RV1106 · 中国象棋</p><h1>看皮卡鱼下棋</h1></div>
+    <div class="connection" id="connection" role="status"><span class="light"></span><span id="connection-text">实机连接中</span></div>
+  </header>
+  <div id="error" class="error" role="alert" hidden></div>
+  <main>
+    <section class="board-card" aria-label="中国象棋棋盘">
+      <div class="board-top"><span class="side-label"><i class="side-dot"></i>黑方 · 皮卡鱼</span><span id="ply-count" class="board-note">等待棋局</span></div>
+      <svg id="board" viewBox="0 0 600 650" aria-label="象棋棋盘，红方在下，黑方在上">
+        <defs>
+          <radialGradient id="wood" cx="35%" cy="25%" r="80%"><stop offset="0" stop-color="#fff9e8"/><stop offset=".8" stop-color="#eee0c1"/><stop offset="1" stop-color="#d7bf93"/></radialGradient>
+          <filter id="piece-shadow" x="-25%" y="-20%" width="150%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#6c502c" flood-opacity=".22"/></filter>
+        </defs>
+        <g id="grid" class="grid" aria-hidden="true"></g>
+        <g aria-hidden="true"><text x="157" y="333" class="river">楚河</text><text x="365" y="333" class="river">漢界</text></g>
+        <g id="coordinates" aria-hidden="true"></g><g id="squares"></g>
+      </svg>
+      <div class="board-bottom"><span class="side-label"><i class="side-dot red"></i><span id="red-label">红方 · 皮卡鱼</span></span><span class="board-note">淡红标记：上一步</span></div>
+    </section>
+    <aside aria-label="棋局控制与走法">
+      <section class="section" aria-live="polite"><p class="section-label">此刻的棋局</p><h2 id="status">连接棋盘中</h2><p id="message" class="subtitle">正在读取 RV1106 实机状态</p></section>
+      <section class="section">
+        <div class="mode-switch" aria-label="对局模式"><button id="auto" aria-label="观战自弈" aria-pressed="true">观战自弈</button><button id="human" aria-label="我执红子" aria-pressed="false">我执红子</button></div>
+        <div class="controls">
+          <button id="resume" class="primary" aria-label="开始观战">开始观战</button><button id="step" aria-label="AI走一步">AI 走一步</button>
+          <button id="new" aria-label="新一局">新一局</button><button id="undo" aria-label="悔棋">悔棋</button>
+        </div>
+        <label class="time-row" for="time">每步思考时间<select id="time" aria-label="思考时间"><option value="1000">1 秒</option><option value="3000">3 秒</option><option value="5000">5 秒</option></select></label>
+        <p id="help" class="help">开始观战后，红黑双方由板端引擎轮流计算。也可以逐步观看。</p>
+      </section>
+      <section class="section">
+        <div class="history-heading"><p class="section-label">最近走法</p><span>坐标对应棋盘</span></div>
+        <ol id="history" aria-label="最近走法列表"></ol><p id="empty" class="empty">棋局未开始，静候第一步。</p>
+      </section>
+      <section class="section"><div class="engine"><strong id="engine">Pikafish 2023-03-05</strong><span>RV1106</span></div><p id="metrics" class="metrics">等待引擎数据</p><p id="live-note" class="help">正在连接板端引擎</p></section>
+    </aside>
+  </main>
+  <footer>一块开发板，一盘真实计算的棋。</footer>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const names = { R:'车', N:'马', H:'马', B:'相', E:'相', A:'仕', K:'帅', C:'炮', P:'兵', r:'车', n:'马', h:'马', b:'象', e:'象', a:'士', k:'将', c:'砲', p:'卒' };
+  let state = null, selected = null, busy = false, networkError = '', actionError = '', boardKey = '';
+  const squareName = (row, col) => String.fromCharCode(97 + col) + (9 - row);
+  const isRed = piece => Boolean(piece) && piece === piece.toUpperCase();
+  const humanTurn = () => state?.connected && !networkError && !busy && state.mode === 'human' && state.turn === 'red' && ['ready', 'paused'].includes(state.status);
+  function svgElement(tag, attrs, parent, text) {
+    const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.entries(attrs).forEach(([key, value]) => element.setAttribute(key, value));
+    if (text !== undefined) element.textContent = text;
+    parent.appendChild(element);
+    return element;
+  }
+  const grid = $('grid');
+  svgElement('rect', { x:53, y:47, width:494, height:554, 'stroke-width':2 }, grid);
+  for (let row = 0; row < 10; row++) svgElement('path', { d:`M60 ${54 + row * 60}H540` }, grid);
+  for (let col = 0; col < 9; col++) {
+    const x = 60 + col * 60;
+    svgElement('path', { d:col === 0 || col === 8 ? `M${x} 54V594` : `M${x} 54V294M${x} 354V594` }, grid);
+    svgElement('text', { x, y:27, class:'coordinate' }, $('coordinates'), String.fromCharCode(97 + col));
+    svgElement('text', { x, y:631, class:'coordinate' }, $('coordinates'), String.fromCharCode(97 + col));
+  }
+  svgElement('path', { d:'M240 54L360 174M360 54L240 174M240 474L360 594M360 474L240 594' }, grid);
+  for (let row = 0; row < 10; row++) {
+    svgElement('text', { x:23, y:58 + row * 60, class:'coordinate' }, $('coordinates'), 9 - row);
+    svgElement('text', { x:577, y:58 + row * 60, class:'coordinate' }, $('coordinates'), 9 - row);
+  }
+  for (const [row, cols] of [[2,[1,7]], [3,[0,2,4,6,8]], [6,[0,2,4,6,8]], [7,[1,7]]]) {
+    for (const col of cols) for (const dx of [-1,1]) for (const dy of [-1,1]) {
+      if ((col === 0 && dx < 0) || (col === 8 && dx > 0)) continue;
+      const x = 60 + col * 60, y = 54 + row * 60;
+      svgElement('path', { d:`M${x+dx*13} ${y+dy*5}H${x+dx*5}V${y+dy*13}`, opacity:.65 }, grid);
+    }
+  }
+  function renderBoard() {
+    const key = JSON.stringify([state?.board, state?.last_move, state?.legal, selected, humanTurn()]);
+    if (key === boardKey) return;
+    boardKey = key;
+    $('squares').replaceChildren();
+    $('board').classList.toggle('interactive', Boolean(humanTurn()));
+    if (!state?.board) return;
+    const last = state.last_move || '';
+    const targets = new Set((state.legal || []).filter(move => selected && move.startsWith(selected)).map(move => move.slice(2,4)));
+    state.board.forEach((row, r) => row.forEach((piece, c) => {
+      const coordinate = squareName(r,c), x = 60 + c * 60, y = 54 + r * 60;
+      const label = `${piece ? (isRed(piece) ? '红' : '黑') + (names[piece] || piece) : '空位'} ${coordinate}`;
+      const group = svgElement('g', {
+        class:'square', transform:`translate(${x} ${y})`, 'data-square':coordinate,
+        role:'button', tabindex:humanTurn() ? 0 : -1,
+        'aria-label':label, 'aria-pressed':selected === coordinate
+      }, $('squares'));
+      svgElement('rect', { x:-28, y:-28, width:56, height:56, rx:6, class:'hit' }, group);
+      if ([last.slice(0,2),last.slice(2,4)].includes(coordinate)) svgElement('rect', { x:-28, y:-28, width:56, height:56, rx:7, class:'last-mark' }, group);
+      if (piece) {
+        svgElement('circle', { r:25, fill:'url(#wood)', class:'piece' }, group);
+        svgElement('circle', { r:21, fill:'none', stroke:isRed(piece) ? '#b33b3270' : '#62574570', 'stroke-width':.75 }, group);
+        svgElement('text', { y:0, fill:isRed(piece) ? '#aa312b' : '#343631', class:'piece-text' }, group, names[piece] || piece);
+      }
+      if (selected === coordinate) svgElement('circle', { r:28, class:'selected' }, group);
+      if (targets.has(coordinate)) svgElement('circle', { r:piece ? 28 : 7, class:piece ? 'capture-target' : 'target' }, group);
+    }));
+  }
+  function render() {
+    const connected = Boolean(state?.connected && !networkError), thinking = state?.status === 'thinking';
+    const auto = !state || state.mode === 'auto', paused = !state || state.status === 'paused';
+    const ended = state?.status === 'ended', enabled = connected && !busy;
+    $('connection').classList.toggle('online', connected);
+    $('connection-text').textContent = connected ? 'RV1106 实机在线' : networkError || state?.status === 'error' ? '实机连接中断' : '实机连接中';
+    const error = networkError || actionError || state?.error || '';
+    $('error').hidden = !error;
+    $('error').textContent = error;
+    let statusText = '棋局进行中';
+    if (!connected) statusText = error ? '连接暂不可用' : '连接棋盘中';
+    else if (ended) statusText = '棋局已结束';
+    else if (thinking) statusText = `${state.turn === 'red' ? '红' : '黑'}方思考中`;
+    else if (!auto && state.turn === 'red') statusText = '等你走棋';
+    else if (paused) statusText = '观战已暂停';
+    if ($('status').textContent !== statusText) $('status').textContent = statusText;
+    $('message').textContent = state?.message || '正在读取 RV1106 实机状态';
+    $('live-note').textContent = connected ? '棋局由 RV1106 实时计算' : '连接恢复后继续显示实机棋局';
+    $('auto').setAttribute('aria-pressed', auto);
+    $('human').setAttribute('aria-pressed', !auto);
+    $('red-label').textContent = auto ? '红方 · 皮卡鱼' : '红方 · 你';
+    ['auto','human','new','time'].forEach(id => $(id).disabled = !enabled);
+    $('resume').textContent = paused ? '开始观战' : '暂停';
+    $('resume').setAttribute('aria-label', paused ? '开始观战' : '暂停');
+    $('resume').disabled = !enabled || !auto || ended;
+    $('step').disabled = !enabled || !auto || thinking || ended || !paused;
+    $('undo').disabled = !enabled || !state?.history?.length;
+    $('time').value = String(state?.thinking_ms || 1000);
+    $('help').textContent = auto ? '开始观战后，红黑双方由板端引擎轮流计算。也可以逐步观看。' : '点击红子，再点击绿色落点。走棋由板端确认，黑方自动应战。';
+    const history = state?.history || [];
+    $('ply-count').textContent = state ? `已走 ${history.length} 步` : '等待棋局';
+    $('empty').hidden = history.length > 0;
+    $('history').replaceChildren();
+    history.slice(-6).forEach((item, index) => {
+      const number = history.length - Math.min(history.length,6) + index + 1;
+      const red = item.piece ? isRed(item.piece) : number % 2 === 1;
+      const li = document.createElement('li');
+      const labels = [
+        [String(number).padStart(2,'0'), 'move-number'],
+        [`${red ? '红' : '黑'}${names[item.piece] || '子'} ${item.move.slice(0,2)} → ${item.move.slice(2,4)}`, red ? 'move-red' : ''],
+        [item.elapsed_ms ? `${(item.elapsed_ms/1000).toFixed(1)}s` : '手动', 'move-time']
+      ];
+      labels.forEach(([value, className]) => { const span = document.createElement('span'); span.textContent = value; span.className = className; li.appendChild(span); });
+      $('history').appendChild(li);
+    });
+    $('engine').textContent = state?.engine || 'Pikafish 2023-03-05';
+    const analysis = state?.analysis || {}, last = history.at(-1);
+    $('metrics').textContent = analysis.depth ? `搜索深度 ${analysis.depth} · ${Number(analysis.nodes || 0).toLocaleString()} 节点` : last?.depth ? `上一步深度 ${last.depth} · 用时 ${(last.elapsed_ms/1000).toFixed(1)} 秒` : '等待引擎数据';
+    renderBoard();
+  }
+  function accept(next) {
+    // 操作与轮询可能交错返回；断线重连则允许服务重启后的版本号重新计数。
+    if (state && !networkError && next.revision < state.revision) return;
+    if (selected && JSON.stringify(state?.board) !== JSON.stringify(next.board)) selected = null;
+    state = next;
+  }
+  async function request(path, data) {
+    const response = await fetch(path, {
+      method:data ? 'POST' : 'GET', cache:'no-store',
+      headers:data ? {'Content-Type':'application/json'} : {},
+      body:data ? JSON.stringify(data) : undefined,
+      signal:AbortSignal.timeout(data ? 15000 : 5000)
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || `请求失败 (${response.status})`);
+    return result;
+  }
+  async function action(actionName, extra = {}) {
+    if (busy) return;
+    busy = true; actionError = ''; render();
+    try { accept(await request('/api/action', { action:actionName, ...extra })); selected = null; }
+    catch (error) { actionError = error.message; }
+    finally { busy = false; render(); }
+  }
+  async function poll() {
+    try { accept(await request('/api/state')); networkError = ''; }
+    catch (error) { networkError = `无法读取实机状态：${error.message}。正在尝试重新连接。`; }
+    render();
+    setTimeout(poll, 400);
+  }
+  function choose(coordinate) {
+    if (!humanTurn()) return;
+    const piece = state.board[9 - Number(coordinate[1])][coordinate.charCodeAt(0)-97];
+    if (selected && (state.legal || []).includes(selected + coordinate)) { action('move', { move:selected + coordinate }); return; }
+    selected = isRed(piece) && selected !== coordinate ? coordinate : null;
+    renderBoard();
+  }
+  $('board').addEventListener('click', event => {
+    const square = event.target.closest('[data-square]');
+    if (square) choose(square.dataset.square);
+  });
+  $('board').addEventListener('keydown', event => {
+    if (['Enter',' '].includes(event.key) && event.target.dataset.square) {
+      event.preventDefault();
+      choose(event.target.dataset.square);
+    }
+  });
+  ['auto','human'].forEach(mode => $(mode).addEventListener('click', () => action('mode', { mode })));
+  $('new').addEventListener('click', () => action('new', { mode:state?.mode || 'auto' }));
+  $('resume').addEventListener('click', () => action(state?.status === 'paused' ? 'resume' : 'pause'));
+  ['step','undo'].forEach(name => $(name).addEventListener('click', () => action(name)));
+  $('time').addEventListener('change', event => action('time', { ms:Number(event.target.value) }));
+  render();
+  poll();
+</script>
+</body>
+</html>

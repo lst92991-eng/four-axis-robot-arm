@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-09",
+  "host": "WSL Ubuntu-24.04-D (independent native process; no board engine used)",
+  "source_commit": "4762ca3c77c7f8ccbf204974cf23c5ca3e8c2783",
+  "source_archive": "/mnt/c/Users/lst/Desktop/scara/output/rv1106/pikafish-validation/2023-03-05/source-4762ca3.tar.gz",
+  "source_archive_sha256": "686be90179a7cd7705595e1347b80f5a2e0483f0c8820950ee4fe9bfb59056f3",
+  "build_command": "make -j2 build ARCH=x86-64 COMP=gcc",
+  "engine": "/home/lst/.cache/scara-pikafish-20230305-native/src/pikafish",
+  "engine_sha256": "838cc5b52fd2bd6eff0199d655b7d4743b23f06914d2a523b4f444e0beb95c5a",
+  "nnue_sha256": "2e9280f355cd4f092fcb63c21477692100afaf9ba9868a10c9c8d5b8fc6d1d1f",
+  "results": [
+    {
+      "case": "checkmate",
+      "fen": "3nkn3/R3R4/9/9/4P4/9/9/9/9/4K4 b - - 0 1",
+      "exit": 0,
+      "commands": "uci\nsetoption name Threads value 1\nsetoption name Hash value 4\nisready\nposition fen 3nkn3/R3R4/9/9/4P4/9/9/9/9/4K4 b - - 0 1\nd\ngo perft 1\nquit\n",
+      "evidence_lines": [
+        "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)",
+        "id name Pikafish dev 2026-10-09",
+        "id author the Pikafish developers (see AUTHORS file)",
+        "Fen: 3nkn3/R3R4/9/9/4P4/9/9/9/9/4K4 b - - 0 1",
+        "Checkers: e8 ",
+        "Nodes searched: 0"
+      ],
+      "stdout": "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)\nid name Pikafish dev 2026-10-09\nid author the Pikafish developers (see AUTHORS file)\n\noption name Debug Log File type string default \noption name Threads type spin default 1 min 1 max 1024\noption name Hash type spin default 16 min 1 max 33554432\noption name Clear Hash type button\noption name Ponder type check default false\noption name MultiPV type spin default 1 min 1 max 500\noption name Skill Level type spin default 20 min 0 max 20\noption name Move Overhead type spin default 10 min 0 max 5000\noption name Slow Mover type spin default 100 min 10 max 1000\noption name nodestime type spin default 0 min 0 max 10000\noption name Sixty Move Rule type check default true\noption name Mate Threat Depth type spin default 1 min 0 max 10\noption name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold\noption name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule\noption name UCI_LimitStrength type check default false\noption name UCI_Elo type spin default 1350 min 1350 max 2850\noption name UCI_WDLCentipawn type check default true\noption name UCI_ShowWDL type check default false\noption name EvalFile type string default pikafish.nnue\nuciok\nreadyok\n\n +---+---+---+---+---+---+---+---+---+\n |   |   |   | n | k | n |   |   |   | 9\n +---+---+---+---+---+---+---+---+---+\n | R |   |   |   | R |   |   |   |   | 8\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 7\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 6\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | P |   |   |   |   | 5\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 4\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 3\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 2\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 1\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | K |   |   |   |   | 0\n +---+---+---+---+---+---+---+---+---+\n   a   b   c   d   e   f   g   h   i\n\nFen: 3nkn3/R3R4/9/9/4P4/9/9/9/9/4K4 b - - 0 1\nKey: 05628642A6ADB4BD\nCheckers: e8 \n\nNodes searched: 0\n\n",
+      "stderr": ""
+    },
+    {
+      "case": "stalemate",
+      "fen": "4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1",
+      "exit": 0,
+      "commands": "uci\nsetoption name Threads value 1\nsetoption name Hash value 4\nisready\nposition fen 4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1\nd\ngo perft 1\nquit\n",
+      "evidence_lines": [
+        "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)",
+        "id name Pikafish dev 2026-10-09",
+        "id author the Pikafish developers (see AUTHORS file)",
+        "Fen: 4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1",
+        "Checkers: ",
+        "Nodes searched: 0"
+      ],
+      "stdout": "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)\nid name Pikafish dev 2026-10-09\nid author the Pikafish developers (see AUTHORS file)\n\noption name Debug Log File type string default \noption name Threads type spin default 1 min 1 max 1024\noption name Hash type spin default 16 min 1 max 33554432\noption name Clear Hash type button\noption name Ponder type check default false\noption name MultiPV type spin default 1 min 1 max 500\noption name Skill Level type spin default 20 min 0 max 20\noption name Move Overhead type spin default 10 min 0 max 5000\noption name Slow Mover type spin default 100 min 10 max 1000\noption name nodestime type spin default 0 min 0 max 10000\noption name Sixty Move Rule type check default true\noption name Mate Threat Depth type spin default 1 min 0 max 10\noption name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold\noption name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule\noption name UCI_LimitStrength type check default false\noption name UCI_Elo type spin default 1350 min 1350 max 2850\noption name UCI_WDLCentipawn type check default true\noption name UCI_ShowWDL type check default false\noption name EvalFile type string default pikafish.nnue\nuciok\nreadyok\n\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | k |   |   |   |   | 9\n +---+---+---+---+---+---+---+---+---+\n |   |   |   | R |   | R |   |   |   | 8\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 7\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 6\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | P |   |   |   |   | 5\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 4\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 3\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 2\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 1\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | K |   |   |   |   | 0\n +---+---+---+---+---+---+---+---+---+\n   a   b   c   d   e   f   g   h   i\n\nFen: 4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1\nKey: C9FAAA84486CDAE0\nCheckers: \n\nNodes searched: 0\n\n",
+      "stderr": ""
+    }
+  ],
+  "history_transition_checks": [
+    {
+      "case": "checkmate",
+      "base_fen": "3nkn3/R6R1/9/9/4P4/9/9/9/9/4K4 w - - 0 1",
+      "history": "h8e8",
+      "commands": "uci\nsetoption name Threads value 1\nsetoption name Hash value 4\nisready\nposition fen 3nkn3/R6R1/9/9/4P4/9/9/9/9/4K4 w - - 0 1\ngo perft 1\nposition fen 3nkn3/R6R1/9/9/4P4/9/9/9/9/4K4 w - - 0 1 moves h8e8\nd\ngo perft 1\nquit\n",
+      "evidence_lines": [
+        "h8e8: 1",
+        "Nodes searched: 35",
+        "Fen: 3nkn3/R3R4/9/9/4P4/9/9/9/9/4K4 b - - 1 1",
+        "Checkers: e8 ",
+        "Nodes searched: 0"
+      ],
+      "stdout": "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)\nid name Pikafish dev 2026-10-09\nid author the Pikafish developers (see AUTHORS file)\n\noption name Debug Log File type string default \noption name Threads type spin default 1 min 1 max 1024\noption name Hash type spin default 16 min 1 max 33554432\noption name Clear Hash type button\noption name Ponder type check default false\noption name MultiPV type spin default 1 min 1 max 500\noption name Skill Level type spin default 20 min 0 max 20\noption name Move Overhead type spin default 10 min 0 max 5000\noption name Slow Mover type spin default 100 min 10 max 1000\noption name nodestime type spin default 0 min 0 max 10000\noption name Sixty Move Rule type check default true\noption name Mate Threat Depth type spin default 1 min 0 max 10\noption name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold\noption name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule\noption name UCI_LimitStrength type check default false\noption name UCI_Elo type spin default 1350 min 1350 max 2850\noption name UCI_WDLCentipawn type check default true\noption name UCI_ShowWDL type check default false\noption name EvalFile type string default pikafish.nnue\nuciok\nreadyok\na8a0: 1\na8a1: 1\na8a2: 1\na8a3: 1\na8a4: 1\na8a5: 1\na8a6: 1\na8a7: 1\na8b8: 1\na8c8: 1\na8d8: 1\na8e8: 1\na8f8: 1\na8g8: 1\na8a9: 1\nh8h0: 1\nh8h1: 1\nh8h2: 1\nh8h3: 1\nh8h4: 1\nh8h5: 1\nh8h6: 1\nh8h7: 1\nh8b8: 1\nh8c8: 1\nh8d8: 1\nh8e8: 1\nh8f8: 1\nh8g8: 1\nh8i8: 1\nh8h9: 1\ne0e1: 1\ne0f0: 1\ne5e6: 1\ne0d0: 1\n\nNodes searched: 35\n\n\n +---+---+---+---+---+---+---+---+---+\n |   |   |   | n | k | n |   |   |   | 9\n +---+---+---+---+---+---+---+---+---+\n | R |   |   |   | R |   |   |   |   | 8\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 7\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 6\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | P |   |   |   |   | 5\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 4\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 3\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 2\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 1\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | K |   |   |   |   | 0\n +---+---+---+---+---+---+---+---+---+\n   a   b   c   d   e   f   g   h   i\n\nFen: 3nkn3/R3R4/9/9/4P4/9/9/9/9/4K4 b - - 1 1\nKey: 05628642A6ADB4BD\nCheckers: e8 \n\nNodes searched: 0\n\n",
+      "exit": 0
+    },
+    {
+      "case": "stalemate",
+      "base_fen": "4k4/3R1r3/5R3/9/4P4/9/9/9/9/4K4 w - - 0 1",
+      "history": "f7f8",
+      "commands": "uci\nsetoption name Threads value 1\nsetoption name Hash value 4\nisready\nposition fen 4k4/3R1r3/5R3/9/4P4/9/9/9/9/4K4 w - - 0 1\ngo perft 1\nposition fen 4k4/3R1r3/5R3/9/4P4/9/9/9/9/4K4 w - - 0 1 moves f7f8\nd\ngo perft 1\nquit\n",
+      "evidence_lines": [
+        "Fen: 4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1",
+        "Checkers: ",
+        "f7f8: 1",
+        "Nodes searched: 34",
+        "Nodes searched: 0"
+      ],
+      "stdout": "Pikafish dev 2026-10-09 by the Pikafish developers (see AUTHORS file)\nid name Pikafish dev 2026-10-09\nid author the Pikafish developers (see AUTHORS file)\n\noption name Debug Log File type string default \noption name Threads type spin default 1 min 1 max 1024\noption name Hash type spin default 16 min 1 max 33554432\noption name Clear Hash type button\noption name Ponder type check default false\noption name MultiPV type spin default 1 min 1 max 500\noption name Skill Level type spin default 20 min 0 max 20\noption name Move Overhead type spin default 10 min 0 max 5000\noption name Slow Mover type spin default 100 min 10 max 1000\noption name nodestime type spin default 0 min 0 max 10000\noption name Sixty Move Rule type check default true\noption name Mate Threat Depth type spin default 1 min 0 max 10\noption name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold\noption name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule\noption name UCI_LimitStrength type check default false\noption name UCI_Elo type spin default 1350 min 1350 max 2850\noption name UCI_WDLCentipawn type check default true\noption name UCI_ShowWDL type check default false\noption name EvalFile type string default pikafish.nnue\nuciok\nreadyok\n\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | k |   |   |   |   | 9\n +---+---+---+---+---+---+---+---+---+\n |   |   |   | R |   | R |   |   |   | 8\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 7\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 6\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | P |   |   |   |   | 5\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 4\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 3\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 2\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   |   |   |   |   |   | 1\n +---+---+---+---+---+---+---+---+---+\n |   |   |   |   | K |   |   |   |   | 0\n +---+---+---+---+---+---+---+---+---+\n   a   b   c   d   e   f   g   h   i\n\nFen: 4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1\nKey: C9FAAA84486CDAE0\nCheckers: \nf7f0: 1\nf7f1: 1\nf7f2: 1\nf7f3: 1\nf7f4: 1\nf7f5: 1\nf7f6: 1\nf7a7: 1\nf7b7: 1\nf7c7: 1\nf7d7: 1\nf7e7: 1\nf7g7: 1\nf7h7: 1\nf7i7: 1\nf7f8: 1\nd8d0: 1\nd8d1: 1\nd8d2: 1\nd8d3: 1\nd8d4: 1\nd8d5: 1\nd8d6: 1\nd8d7: 1\nd8a8: 1\nd8b8: 1\nd8c8: 1\nd8e8: 1\nd8f8: 1\nd8d9: 1\ne0e1: 1\ne0f0: 1\ne5e6: 1\ne0d0: 1\n\nNodes searched: 34\n\n\nNodes searched: 0\n\n",
+      "exit": 0
+    }
+  ],
+  "test_driver": {
+    "entry": "tests/chess_tests.cpp::testChess",
+    "engine_environment": "SCARA_TEST_PIKAFISH_DIR=/home/lst/.cache/scara-pikafish-20230305-native/src",
+    "result": "passed with native source-4762ca3 engine; both terminal states reached by legal moves and queried through baseline+history"
+  },
+  "banner_note": "The archived source lacks Git metadata, so the engine banner uses compilation date (Pikafish dev 2026-10-09). Version identity is the frozen 4762ca3 source archive SHA, not the build-date banner."
+}

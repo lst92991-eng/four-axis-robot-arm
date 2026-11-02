@@ -1,0 +1,4 @@
+{"time": 1791885961.2047005, "tx": true, "id": 256, "data": [26, 107]}
+{"time": 1791885961.205699, "rx": true, "id": 536870948, "data": [0, 0, 0, 0, 0, 0, 0, 0]}
+{"time": 1791885961.206698, "event": "can_error", "value": "控制器状态；未收到ACK；核对节点供电、CAN H/L、终端和速率；ID=0x20000024 DATA=00 00 00 00 00 00 00 00", "phase": "waiting_reply_1A", "last_command": {"id": "0x80000100", "data": [26, 107]}, "raw_log": "C:\\Users\\lst\\Desktop\\scara\\output\\hardware-validation\\z-panel-20261013-180600.jsonl"}
+{"time": 1791885961.206698, "event": "fault", "value": "控制器状态；未收到ACK；核对节点供电、CAN H/L、终端和速率；ID=0x20000024 DATA=00 00 00 00 00 00 00 00"}

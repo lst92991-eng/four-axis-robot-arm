@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-08",
+  "before": {
+    "physical_lines": 386,
+    "nonblank_noncomment_lines": 303,
+    "console_streams": 19,
+    "sha256": "2f46f4040c421ecabeddac279ab33e46a9af6e7cd976f2cd577c13c2ff817315"
+  },
+  "after": {
+    "physical_lines": 237,
+    "nonblank_noncomment_lines": 190,
+    "console_streams": 0,
+    "sha256": "5992db224d30a6421568835148bd6313234d058adfc5b15759d87020e4cb278f"
+  },
+  "format": "1280x960 tightly packed single-frame NV12",
+  "synthetic_board_cases_passed": 10,
+  "invalid_input_cases_passed": 3,
+  "capture_script_cases_passed": 6,
+  "real_capture": {
+    "frame_bytes": 1843200,
+    "source_jpeg_bytes": 267874,
+    "exit": 1,
+    "board_result_present": false,
+    "note": "Camera acquisition and color conversion succeeded. No board located in current scene; printed-board accuracy is not validated."
+  },
+  "source_backup": "C:\\Users\\lst\\AppData\\Local\\Temp\\scara-global-cleanup-d3aacb1eae2448278e135ba0cd0d219f"
+}

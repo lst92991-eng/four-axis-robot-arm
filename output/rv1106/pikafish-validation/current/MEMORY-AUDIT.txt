@@ -1,0 +1,43 @@
+Current Pikafish memory follow-up (2026-10-08)
+
+Board resources supplied by parent task:
+MemTotal 174240 KiB, MemAvailable 149708 KiB, no swap.
+No connection to the board was made by this subtask.
+
+Single UCI session: uci -> Hash=4 -> isready -> position startpos -> go depth 3.
+Original/current port, QEMU cortex-a7:
+  Startup VmHWM 182792 KiB; RSS 179416 KiB.
+  After Hash=4 RSS 167128 KiB; search RSS 167968 KiB.
+Unmodified upstream x86-64 reference:
+  Startup VmHWM approximately 174068 KiB; RSS 173968 KiB.
+  After Hash=4 RSS approximately 161680 KiB; search RSS 161836 KiB.
+Default Hash is 16 MiB, not 128 MiB. Setting Hash=1 would save only 3 MiB
+relative to these Hash=4 numbers, insufficient for the supplied RAM budget.
+These are HOST/QEMU measurements, not physical-board measurements.
+
+Native steady RSS breakdown (KiB):
+62640 network, one /memfd:replicated_data mapping
+38424 static attack tables and other BSS
+24576, 16384, 8192, 4096, 2048 anonymous history/worker/hash allocations
+plus executable and runtime pages.
+ARM ELF BSS is 39360656 bytes, consistent with the native table footprint.
+There is no second steady network copy to remove on the single NUMA node.
+
+Current network is ZSTD, unlike the older 2023 ZIP release:
+Compressed 49982985 bytes; decompressed 64137632 bytes (61.166 MiB).
+ZSTD window 2 MiB; decoder estimate 2586424 bytes.
+src/misc.cpp read_compressed_nnue materializes the complete decompressed
+network in a stringstream, then network.cpp fills the final in-line network.
+The stringstream is moved/elided, not copied again. Its buffer is transient.
+read_compressed_nnue has no raw-input branch: simply replacing this current
+model with an uncompressed file does not work.
+FeatureTransformer reading is in-place; permutation temporary is <=128 bytes.
+The full FeatureTransformer copy in write_parameters is export-only.
+
+A streaming decompression or raw-input patch would lower loading peak, but
+not the measured 161836 KiB steady state. Disabling cross-process sharing
+would similarly not remove a permanent duplicate; the 61 MiB network is
+still required. Such changes alone do not fit MemAvailable 149708 KiB.
+No further source changes were made for this memory audit. Prefer the older
+validated version plus raw weights for this board unless requirements allow
+broader storage-layout or search-history changes to the current version.

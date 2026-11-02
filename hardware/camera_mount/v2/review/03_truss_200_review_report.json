@@ -1,0 +1,1461 @@
+{
+  "model": {
+    "title": "03_truss_200.SLDPRT",
+    "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\03_truss_200.SLDPRT",
+    "type": 1,
+    "feature_count": 30,
+    "features": [
+      {
+        "name": "收藏",
+        "type": "FavoriteFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "历史记录",
+        "type": "HistoryFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "选择集",
+        "type": "SelectionSetFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "传感器",
+        "type": "SensorFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "设计活页夹",
+        "type": "DocsFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "注解",
+        "type": "DetailCabinet",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "标注",
+        "type": "InkMarkupFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "光源与相机",
+        "type": "EnvFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "实体",
+        "type": "SolidBodyFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "曲面实体",
+        "type": "SurfaceBodyFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "备注",
+        "type": "CommentsFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "方程式",
+        "type": "EqnFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "材质 <未指定>",
+        "type": "MaterialFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "前视基准面",
+        "type": "RefPlane",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "上视基准面",
+        "type": "RefPlane",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "右视基准面",
+        "type": "RefPlane",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "原点",
+        "type": "OriginProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "Tables",
+        "type": "ConfigTableFolder",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "草图1",
+        "type": "ProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "45高4厚桁架毛坯",
+        "type": "Extrusion",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "草图2",
+        "type": "ProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "六个三角减重窗",
+        "type": "ICE",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "草图3",
+        "type": "ProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "始末端半厚搭接",
+        "type": "ICE",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "草图4",
+        "type": "ProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "搭接与梁根3p4孔",
+        "type": "ICE",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "草图5",
+        "type": "ProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "顶面局部固定耳",
+        "type": "ICE",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "草图6",
+        "type": "ProfileFeature",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      },
+      {
+        "name": "顶面固定耳3p4孔",
+        "type": "ICE",
+        "error_code": 0,
+        "is_warning": false,
+        "health_status": "healthy"
+      }
+    ],
+    "faulty_features": [],
+    "warning_features": [],
+    "unknown_feature_health": []
+  },
+  "cad_spec": {
+    "units": "mm",
+    "measurement_source": "SolidWorks API GetPartBox(True) + B-Rep cylindrical faces",
+    "envelope_mm": {
+      "length": 200.0,
+      "width": 45.082677,
+      "height": 12.0,
+      "axis_order": "model_xyz"
+    },
+    "holes": [
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          10.0,
+          10.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "axial_length_mm": 1.900012,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          10.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "axial_length_mm": 1.900012,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          190.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "axial_length_mm": 1.9,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          190.0,
+          10.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "axial_length_mm": 1.9,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          30.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "axial_length_mm": 4.000012,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 6.000012,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 7.04588,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 7.04588,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 6.0,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 6.000012,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          65.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 6.0,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          175.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 10.161983,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          175.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 6.0,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 6.0,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face"
+      }
+    ],
+    "compound_holes": [],
+    "slot_arc_candidates": [
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          125.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 29.889998,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face",
+        "classification_reason": "internal cylinder has more than two boundary edges"
+      },
+      {
+        "diameter_mm": 3.4,
+        "position_mm": [
+          65.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "axial_length_mm": 12.655334,
+        "through_state": "unknown",
+        "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+        "measurement_source": "B-Rep internal cylindrical face",
+        "classification_reason": "internal cylinder has more than two boundary edges"
+      }
+    ],
+    "cylindrical_faces": [
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          10.0,
+          10.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "area_mm2": 20.294817,
+        "axial_length_mm": 1.900012,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 29
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          10.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "area_mm2": 20.294817,
+        "axial_length_mm": 1.900012,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 30
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          190.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "area_mm2": 20.294689,
+        "axial_length_mm": 1.9,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 31
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          190.0,
+          10.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "area_mm2": 20.294689,
+        "axial_length_mm": 1.9,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 32
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          30.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "area_mm2": 42.725788,
+        "axial_length_mm": 4.000012,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 33
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 64.088618,
+        "axial_length_mm": 6.000012,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 73
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 75.259972,
+        "axial_length_mm": 7.04588,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 74
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          125.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 319.267473,
+        "axial_length_mm": 29.889998,
+        "internal": true,
+        "loop_count": 3,
+        "edge_count": 6,
+        "body_index": 0,
+        "face_index": 75
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 75.259972,
+        "axial_length_mm": 7.04588,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 76
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 64.08849,
+        "axial_length_mm": 6.0,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 77
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 64.088618,
+        "axial_length_mm": 6.000012,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 78
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          65.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 135.176878,
+        "axial_length_mm": 12.655334,
+        "internal": true,
+        "loop_count": 3,
+        "edge_count": 4,
+        "body_index": 0,
+        "face_index": 79
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          65.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 64.08849,
+        "axial_length_mm": 6.0,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 80
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          175.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 108.544358,
+        "axial_length_mm": 10.161983,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 81
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          175.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 64.08849,
+        "axial_length_mm": 6.0,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 82
+      },
+      {
+        "diameter_mm": 3.4,
+        "origin_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "area_mm2": 64.08849,
+        "axial_length_mm": 6.0,
+        "internal": true,
+        "loop_count": 2,
+        "edge_count": 2,
+        "body_index": 0,
+        "face_index": 83
+      }
+    ],
+    "errors": [],
+    "hole_count": 14,
+    "hole_groups": [
+      {
+        "position_mm": [
+          10.0,
+          10.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "segment_count": 1,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              10.0,
+              10.0,
+              -1.2e-05
+            ],
+            "axis": [
+              -0.0,
+              -0.0,
+              1.0
+            ],
+            "axial_length_mm": 1.900012,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          10.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "segment_count": 1,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              10.0,
+              35.0,
+              -1.2e-05
+            ],
+            "axis": [
+              -0.0,
+              -0.0,
+              1.0
+            ],
+            "axial_length_mm": 1.900012,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          190.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "segment_count": 1,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              190.0,
+              35.0,
+              -1.2e-05
+            ],
+            "axis": [
+              -0.0,
+              -0.0,
+              1.0
+            ],
+            "axial_length_mm": 1.9,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          190.0,
+          10.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "segment_count": 1,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              190.0,
+              10.0,
+              -1.2e-05
+            ],
+            "axis": [
+              -0.0,
+              -0.0,
+              1.0
+            ],
+            "axial_length_mm": 1.9,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          30.0,
+          35.0,
+          -1.2e-05
+        ],
+        "axis": [
+          -0.0,
+          -0.0,
+          1.0
+        ],
+        "segment_count": 1,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              30.0,
+              35.0,
+              -1.2e-05
+            ],
+            "axis": [
+              -0.0,
+              -0.0,
+              1.0
+            ],
+            "axial_length_mm": 4.000012,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          155.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "segment_count": 3,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              155.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 6.000012,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          },
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              155.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 7.04588,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          },
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              155.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 6.0,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          95.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "segment_count": 3,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              95.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 7.04588,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          },
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              95.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 6.0,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          },
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              95.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 6.000012,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          65.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "segment_count": 1,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              65.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 6.0,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      },
+      {
+        "position_mm": [
+          175.0,
+          -1.2e-05,
+          2.0
+        ],
+        "axis": [
+          -0.0,
+          1.0,
+          -0.0
+        ],
+        "segment_count": 2,
+        "diameters_mm": [
+          3.4
+        ],
+        "feature_kind": "simple",
+        "segments": [
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              175.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 10.161983,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          },
+          {
+            "diameter_mm": 3.4,
+            "position_mm": [
+              175.0,
+              -1.2e-05,
+              2.0
+            ],
+            "axis": [
+              -0.0,
+              1.0,
+              -0.0
+            ],
+            "axial_length_mm": 6.0,
+            "through_state": "unknown",
+            "through_evidence": "B-Rep cylinder boundaries cannot distinguish blind from through",
+            "measurement_source": "B-Rep internal cylindrical face"
+          }
+        ]
+      }
+    ]
+  },
+  "sketch_quality": {
+    "status": "pass",
+    "sketches": [
+      {
+        "status": "pass",
+        "constrained_status": 3,
+        "dimension_count": 2,
+        "relation_count": 10,
+        "fix_count": 0,
+        "dimension_names": [
+          "D1@草图1",
+          "D2@草图1"
+        ],
+        "errors": [],
+        "name": "草图1",
+        "consumed_by": [
+          "45高4厚桁架毛坯"
+        ],
+        "dangling": false
+      },
+      {
+        "status": "pass",
+        "constrained_status": 3,
+        "dimension_count": 10,
+        "relation_count": 65,
+        "fix_count": 0,
+        "dimension_names": [
+          "D10@草图2",
+          "D1@草图2",
+          "D2@草图2",
+          "D3@草图2",
+          "D4@草图2",
+          "D5@草图2",
+          "D6@草图2",
+          "D7@草图2",
+          "D8@草图2",
+          "D9@草图2"
+        ],
+        "errors": [],
+        "name": "草图2",
+        "consumed_by": [
+          "六个三角减重窗"
+        ],
+        "dangling": false
+      },
+      {
+        "status": "pass",
+        "constrained_status": 3,
+        "dimension_count": 4,
+        "relation_count": 20,
+        "fix_count": 0,
+        "dimension_names": [
+          "D1@草图3",
+          "D2@草图3",
+          "D3@草图3",
+          "D4@草图3"
+        ],
+        "errors": [],
+        "name": "草图3",
+        "consumed_by": [
+          "始末端半厚搭接"
+        ],
+        "dangling": false
+      },
+      {
+        "status": "pass",
+        "constrained_status": 3,
+        "dimension_count": 6,
+        "relation_count": 18,
+        "fix_count": 0,
+        "dimension_names": [
+          "D1@草图4",
+          "D2@草图4",
+          "D3@草图4",
+          "D4@草图4",
+          "D5@草图4",
+          "D6@草图4"
+        ],
+        "errors": [],
+        "name": "草图4",
+        "consumed_by": [
+          "搭接与梁根3p4孔"
+        ],
+        "dangling": false
+      },
+      {
+        "status": "pass",
+        "constrained_status": 3,
+        "dimension_count": 8,
+        "relation_count": 134,
+        "fix_count": 0,
+        "dimension_names": [
+          "D1@草图5",
+          "D2@草图5",
+          "D3@草图5",
+          "D4@草图5",
+          "D5@草图5",
+          "D6@草图5",
+          "D7@草图5",
+          "D8@草图5"
+        ],
+        "errors": [],
+        "name": "草图5",
+        "consumed_by": [
+          "顶面局部固定耳"
+        ],
+        "dangling": false
+      },
+      {
+        "status": "pass",
+        "constrained_status": 3,
+        "dimension_count": 7,
+        "relation_count": 15,
+        "fix_count": 0,
+        "dimension_names": [
+          "D1@草图6",
+          "D2@草图6",
+          "D3@草图6",
+          "D4@草图6",
+          "D5@草图6",
+          "D6@草图6",
+          "D7@草图6"
+        ],
+        "errors": [],
+        "name": "草图6",
+        "consumed_by": [
+          "顶面固定耳3p4孔"
+        ],
+        "dangling": false
+      }
+    ]
+  },
+  "interference": null,
+  "drawing_structure": null,
+  "drawing_layout": null,
+  "previews": [
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\review\\03_truss_200_isometric.bmp",
+      "exists": true,
+      "size_bytes": 4800054,
+      "width": 1600,
+      "height": 1000,
+      "unique_sample_values": 144,
+      "dark_pixel_ratio": 0.974609375,
+      "likely_blank": false
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\review\\03_truss_200_front.bmp",
+      "exists": true,
+      "size_bytes": 4800054,
+      "width": 1600,
+      "height": 1000,
+      "unique_sample_values": 76,
+      "dark_pixel_ratio": 0.9557291666666666,
+      "likely_blank": false
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\review\\03_truss_200_top.bmp",
+      "exists": true,
+      "size_bytes": 4800054,
+      "width": 1600,
+      "height": 1000,
+      "unique_sample_values": 77,
+      "dark_pixel_ratio": 0.9536675347222222,
+      "likely_blank": false
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\review\\03_truss_200_right.bmp",
+      "exists": true,
+      "size_bytes": 4800054,
+      "width": 1600,
+      "height": 1000,
+      "unique_sample_values": 63,
+      "dark_pixel_ratio": 0.94921875,
+      "likely_blank": false
+    }
+  ],
+  "expected_outputs": [
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\parts\\03_truss_200.SLDPRT",
+      "exists": true,
+      "size_bytes": 220599
+    },
+    {
+      "path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\print\\03_truss_200.STL",
+      "exists": true,
+      "size_bytes": 166984
+    }
+  ],
+  "checks": {
+    "rebuild_succeeded": true,
+    "model_available": true,
+    "previews_created": true,
+    "previews_not_blank": true,
+    "expected_outputs_exist": true,
+    "feature_summary_available": true,
+    "geometry_measurements_available": true,
+    "geometry_measurements_error_free": true,
+    "feature_errors_absent": true
+  },
+  "review_notes": [
+    "人工或视觉模型仍需检查预览图中的主体、比例、方向、关键部件、重叠/悬空问题。",
+    "若 previews_not_blank 为 false，优先检查视图缩放、模型是否为空、SaveBMP 是否成功。",
+    "若 expected_outputs_exist 为 false，优先检查保存/导出路径和 COM 错误码。"
+  ],
+  "evaluation": {
+    "status": "pass",
+    "score": 100,
+    "issues": [],
+    "recommendations": [],
+    "manual_review_required": true,
+    "manual_review_reason": "规则评分只能发现明显失败，最终几何是否符合用户意图仍需查看预览图或截图。"
+  },
+  "summary_path": "C:\\Users\\lst\\Desktop\\scara\\hardware\\camera_mount\\v2\\review\\03_truss_200_review_summary.md"
+}

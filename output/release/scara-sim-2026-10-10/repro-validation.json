@@ -1,0 +1,13 @@
+{
+  "source_archive_sha256": "9edadba856b4d41bbf3f56c51b52841c0e3c3ef540159711fcbd6f68bd4eeb81",
+  "clean_extract_build_exit": 0,
+  "opencv_prefix": "/home/st/scara-sim/output/repro-check/scara-sim/deps-opencv-5.0.0",
+  "run_log": "OpenCV 5.0.0 | robot=red | wall=5.9436s | virtual=111s\n",
+  "result": {
+    "result": "playing",
+    "stop_reason": "ply_limit",
+    "completed_plies": 20,
+    "history": "b2b9 h7h0 b9d9 e9d9 i0h0 h9g7 h2i2 b7d7 h0h6 g6g5 a0a2 g9e7 a2b2 a9a8 i2e2 i9h9 h6g6 d9e9 e3e4 a8h8"
+  },
+  "scope": "新目录解压→仅使用包内OpenCV5依赖编译→实际YOLO/引擎/虚拟CAN走20步；未连接实机"
+}

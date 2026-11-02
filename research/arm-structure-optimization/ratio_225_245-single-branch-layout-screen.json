@@ -1,0 +1,177 @@
+{
+  "label": "ratio_225_245",
+  "branch": "q2 positive",
+  "checked_points_per_pose": 251,
+  "best_count": 251,
+  "best_any": {
+    "center_mm": [
+      -150,
+      220
+    ],
+    "angle_deg": 32
+  },
+  "full_layouts_count": 1028,
+  "top_layouts": [
+    {
+      "center_mm": [
+        -180,
+        185
+      ],
+      "angle_deg": 44,
+      "sampled_field_boundary_clearance_mm": 13.27992104169177
+    },
+    {
+      "center_mm": [
+        -175,
+        190
+      ],
+      "angle_deg": 42,
+      "sampled_field_boundary_clearance_mm": 12.70882249400569
+    },
+    {
+      "center_mm": [
+        -165,
+        200
+      ],
+      "angle_deg": 40,
+      "sampled_field_boundary_clearance_mm": 12.568810691834697
+    },
+    {
+      "center_mm": [
+        -195,
+        170
+      ],
+      "angle_deg": 48,
+      "sampled_field_boundary_clearance_mm": 12.456685976523096
+    },
+    {
+      "center_mm": [
+        -185,
+        180
+      ],
+      "angle_deg": 46,
+      "sampled_field_boundary_clearance_mm": 12.287234019458877
+    },
+    {
+      "center_mm": [
+        -200,
+        160
+      ],
+      "angle_deg": 50,
+      "sampled_field_boundary_clearance_mm": 12.259971058853008
+    },
+    {
+      "center_mm": [
+        -170,
+        195
+      ],
+      "angle_deg": 40,
+      "sampled_field_boundary_clearance_mm": 12.216339854397173
+    },
+    {
+      "center_mm": [
+        -160,
+        200
+      ],
+      "angle_deg": 40,
+      "sampled_field_boundary_clearance_mm": 12.172879445539962
+    },
+    {
+      "center_mm": [
+        -200,
+        165
+      ],
+      "angle_deg": 50,
+      "sampled_field_boundary_clearance_mm": 12.164991763072246
+    },
+    {
+      "center_mm": [
+        -205,
+        160
+      ],
+      "angle_deg": 52,
+      "sampled_field_boundary_clearance_mm": 11.85710746313106
+    },
+    {
+      "center_mm": [
+        -170,
+        195
+      ],
+      "angle_deg": 42,
+      "sampled_field_boundary_clearance_mm": 11.693014657951482
+    },
+    {
+      "center_mm": [
+        -195,
+        165
+      ],
+      "angle_deg": 50,
+      "sampled_field_boundary_clearance_mm": 11.643686891690818
+    },
+    {
+      "center_mm": [
+        -165,
+        195
+      ],
+      "angle_deg": 40,
+      "sampled_field_boundary_clearance_mm": 11.55659527837776
+    },
+    {
+      "center_mm": [
+        -165,
+        195
+      ],
+      "angle_deg": 42,
+      "sampled_field_boundary_clearance_mm": 11.524855902514606
+    },
+    {
+      "center_mm": [
+        -160,
+        205
+      ],
+      "angle_deg": 38,
+      "sampled_field_boundary_clearance_mm": 11.495421275079247
+    },
+    {
+      "center_mm": [
+        -195,
+        165
+      ],
+      "angle_deg": 48,
+      "sampled_field_boundary_clearance_mm": 11.43776428920154
+    },
+    {
+      "center_mm": [
+        -190,
+        175
+      ],
+      "angle_deg": 46,
+      "sampled_field_boundary_clearance_mm": 11.355413861093009
+    },
+    {
+      "center_mm": [
+        -190,
+        175
+      ],
+      "angle_deg": 48,
+      "sampled_field_boundary_clearance_mm": 11.17777246533717
+    },
+    {
+      "center_mm": [
+        -170,
+        190
+      ],
+      "angle_deg": 42,
+      "sampled_field_boundary_clearance_mm": 11.154784806921938
+    },
+    {
+      "center_mm": [
+        -175,
+        190
+      ],
+      "angle_deg": 44,
+      "sampled_field_boundary_clearance_mm": 11.080111614342599
+    }
+  ],
+  "scope": "基于8度构型小格插值图的摆位筛选；尚须原始SolidWorks实体回验，边界距离不是机械净空。"
+}

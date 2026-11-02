@@ -1,0 +1,33 @@
+{
+  "host": "WSL x86_64",
+  "host_compile": "g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror -pthread",
+  "vcan_result": "EmmCan protocol and stop checks passed on isolated vcan0",
+  "isolation": "unshare -Urn; newly created vcan0",
+  "arm_toolchain": "arm-rockchip830-linux-uclibcgnueabihf-g++",
+  "arm_result": "ELF32 ARM EABI5 shared library; build succeeded with -Werror",
+  "real_hardware_exercised_by_cpp": false,
+  "full_project_ctest_run": false,
+  "code_effective_lines": 192,
+  "files": [
+    {
+      "path": "robot/emm_can.hpp",
+      "sha256": "c91230e393c3ed242a2f96ac47cea42eb954a968acd5fe26571d671be55b2070",
+      "bytes": 1370
+    },
+    {
+      "path": "robot/emm_can.cpp",
+      "sha256": "50ee823d44295b5cfb7770665f2fa9dda009877094b3a253bc49b8b9bbde5af2",
+      "bytes": 7545
+    },
+    {
+      "path": "tests/emm_can_tests.cpp",
+      "sha256": "c0a72ab1f2d07c331e77bc224019969f9e6de33727475905e663f5fce09e95e2",
+      "bytes": 7119
+    },
+    {
+      "path": "output/emm-can-check/libscara_emm_can.so",
+      "sha256": "b8f785dfac7a74432dfda37d457a491f28d946ba98d99febe113068f3b9cc314",
+      "bytes": 18176
+    }
+  ]
+}

@@ -1,0 +1,1163 @@
+{
+  "independently_reopened": true,
+  "top_components": 38,
+  "all_components": 195,
+  "stored_dependencies": [
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_SCARA四轴机械臂总成.SLDASM",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40x40x500.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_底座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40型材M4T型螺母.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_MGW12H滑块.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_MGW12_500mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_42步进电机L60.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_DLE42-L2BJ-长款50.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_J1机械臂.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_FF固定铝板.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40型材角件.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_电机支撑铝板.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_单头六角螺柱M3x30+6.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_L型支架底座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_L型支架竖板.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_铝型材挤压角座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_方键条销.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_61mm光轴.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_第二机械臂.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_42步进电机L40.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_FF ______________[FF12].SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_FF丝杆支撑座[FF10].sldprt",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_轴承座8mm内径.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_SKF_608-2ZZ.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_内径8mm法兰.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_40T型螺母M8孔.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M8内六角x18mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M8内六角x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M4内六角x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M6内六角x22.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角x12mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M5内六角x16.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3x4mm紧固螺丝.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M4内六角x18mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角x10mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_8mm键槽法兰.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_光轴固定环.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_8x10x3mm轴套.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M3内六角小头x16mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_T型丝杆500mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_8-16联轴器.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_紧凑型轴承座.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_T型丝杆螺母.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_M6小头内六角x22.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_DRIVE_ASSEMBLY.SLDASM",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_EQ275_GT20同步轮.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_EQ275_GT60同步轮.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\EQ275_BELT.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_board_315x350_pitch35.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_r.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_n.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_b.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_a.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_k.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_c.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_black_p.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_P.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_C.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_R.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_N.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_B.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_A.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_piece_red_K.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_0_60mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_1_60mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_2_60mm.SLDPRT",
+    "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-long275275-2026-10-13\\SolidWorks\\LONG_aruco_id_3_60mm.SLDPRT"
+  ],
+  "outside_package_references": [],
+  "virtual_components": 0,
+  "links_mm": [
+    275.0000000000001,
+    275.00000000000006
+  ],
+  "joint_axes_cad_mm": {
+    "shoulder": [
+      0.5081230034509875,
+      -155.21586575797696
+    ],
+    "elbow": [
+      0.5081230033373559,
+      -430.21586575797704
+    ],
+    "wrist": [
+      0.5081230033381978,
+      -705.2158657579803
+    ]
+  },
+  "G1_volume_mm3": 136224.85113712325,
+  "chess_and_marker_transforms_unchanged": true,
+  "components": [
+    {
+      "name": "LONG_piece_black_r-1",
+      "file": "LONG_piece_black_r.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_n-1",
+      "file": "LONG_piece_black_n.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_a-2",
+      "file": "LONG_piece_black_a.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_n-2",
+      "file": "LONG_piece_black_n.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_c-1",
+      "file": "LONG_piece_black_c.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_k-1",
+      "file": "LONG_piece_black_k.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1",
+      "file": "EQ275_SCARA四轴机械臂总成.SLDASM",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_DRIVE_ASSEMBLY-1",
+      "file": "EQ275_DRIVE_ASSEMBLY.SLDASM",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_DRIVE_ASSEMBLY-1/LONG_EQ275_GT20同步轮-1",
+      "file": "LONG_EQ275_GT20同步轮.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_DRIVE_ASSEMBLY-1/EQ275_BELT-1",
+      "file": "EQ275_BELT.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_DRIVE_ASSEMBLY-1/LONG_EQ275_GT60同步轮-1",
+      "file": "LONG_EQ275_GT60同步轮.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-1",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-3",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-3",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-5",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-6",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-1",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-8",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-7",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-9",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-2",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40T型螺母M8孔-4",
+      "file": "EQ275_40T型螺母M8孔.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-2",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-4",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-2",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-8",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-6",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-1",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-7",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-7",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-3",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-1",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-5",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x18mm-9",
+      "file": "EQ275_M8内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-3",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-4",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-8",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-9",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-6",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M8内六角x16mm-5",
+      "file": "EQ275_M8内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-2",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-4",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-6",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-7",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-4",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-8",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-6",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-5",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-3",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-1",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-5",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-2",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-6",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-7",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M5内六角x16-4",
+      "file": "EQ275_M5内六角x16.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6内六角x22-8",
+      "file": "EQ275_M6内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-5",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M5内六角x16-1",
+      "file": "EQ275_M5内六角x16.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-19",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-24",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M5内六角x16-2",
+      "file": "EQ275_M5内六角x16.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M5内六角x16-3",
+      "file": "EQ275_M5内六角x16.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-7",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x16mm-8",
+      "file": "EQ275_M3内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-2",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-20",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-23",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-26",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-21",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-22",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-25",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-1",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-3",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-2",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-7",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_光轴固定环-1",
+      "file": "EQ275_光轴固定环.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-6",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x10mm-3",
+      "file": "EQ275_M3内六角x10mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-1",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x10mm-2",
+      "file": "EQ275_M3内六角x10mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-5",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-8",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3x4mm紧固螺丝-4",
+      "file": "EQ275_M3x4mm紧固螺丝.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x10mm-1",
+      "file": "EQ275_M3内六角x10mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x10mm-4",
+      "file": "EQ275_M3内六角x10mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_8mm键槽法兰-1",
+      "file": "EQ275_8mm键槽法兰.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-15",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-14",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-19",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_8x10x3mm轴套-1",
+      "file": "EQ275_8x10x3mm轴套.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-15",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-17",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-16",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x18mm-18",
+      "file": "EQ275_M4内六角x18mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-14",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_T型丝杆500mm-1",
+      "file": "EQ275_T型丝杆500mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6小头内六角x22-2",
+      "file": "EQ275_M6小头内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-18",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-29",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M6小头内六角x22-1",
+      "file": "EQ275_M6小头内六角x22.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_8-16联轴器-1",
+      "file": "EQ275_8-16联轴器.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-16",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-17",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-19",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-9",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_紧凑型轴承座-1",
+      "file": "EQ275_紧凑型轴承座.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_T型丝杆螺母-1",
+      "file": "EQ275_T型丝杆螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-27",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-28",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-9",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-8",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-12",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-17",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_FF丝杆支撑座[FF10]-2",
+      "file": "EQ275_FF丝杆支撑座[FF10].sldprt",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-5",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-18",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-6",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-7",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-30",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角x12mm-16",
+      "file": "EQ275_M3内六角x12mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-10",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M3内六角小头x16mm-11",
+      "file": "EQ275_M3内六角小头x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-22",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-23",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-25",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-26",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_61mm光轴-2",
+      "file": "EQ275_61mm光轴.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_M4内六角x16mm-24",
+      "file": "EQ275_M4内六角x16mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_MGW12H滑块-1",
+      "file": "EQ275_MGW12H滑块.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_底座-1",
+      "file": "EQ275_底座.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40x40x500-1",
+      "file": "EQ275_40x40x500.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材M4T型螺母-2",
+      "file": "EQ275_40型材M4T型螺母.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-4",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-6",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-7",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_FF固定铝板-1",
+      "file": "EQ275_FF固定铝板.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-1",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_DLE42-L2BJ-长款50-2",
+      "file": "EQ275_DLE42-L2BJ-长款50.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_MGW12_500mm-1",
+      "file": "EQ275_MGW12_500mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_42步进电机L60-1",
+      "file": "EQ275_42步进电机L60.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_42步进电机L60-2",
+      "file": "EQ275_42步进电机L60.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-2",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-3",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-5",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_电机支撑铝板-1",
+      "file": "EQ275_电机支撑铝板.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_L型支架底座-1",
+      "file": "EQ275_L型支架底座.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_铝型材挤压角座-2",
+      "file": "EQ275_铝型材挤压角座.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_第二机械臂-1",
+      "file": "EQ275_第二机械臂.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_L型支架竖板-1",
+      "file": "EQ275_L型支架竖板.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-8",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_40型材角件-9",
+      "file": "EQ275_40型材角件.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_单头六角螺柱M3x30+6-3",
+      "file": "EQ275_单头六角螺柱M3x30+6.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_42步进电机L60-3",
+      "file": "EQ275_42步进电机L60.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_单头六角螺柱M3x30+6-1",
+      "file": "EQ275_单头六角螺柱M3x30+6.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_单头六角螺柱M3x30+6-2",
+      "file": "EQ275_单头六角螺柱M3x30+6.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_单头六角螺柱M3x30+6-4",
+      "file": "EQ275_单头六角螺柱M3x30+6.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_铝型材挤压角座-1",
+      "file": "EQ275_铝型材挤压角座.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_方键条销-1",
+      "file": "EQ275_方键条销.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_FF ______________[FF12]-3",
+      "file": "EQ275_FF ______________[FF12].SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_轴承座8mm内径-1",
+      "file": "EQ275_轴承座8mm内径.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_SKF_608-2ZZ-1",
+      "file": "EQ275_SKF_608-2ZZ.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_内径8mm法兰-1",
+      "file": "EQ275_内径8mm法兰.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_J1机械臂-2",
+      "file": "EQ275_J1机械臂.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "EQ275_SCARA四轴机械臂总成-1/EQ275_42步进电机L40-1",
+      "file": "EQ275_42步进电机L40.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_board_315x350_pitch35-1",
+      "file": "LONG_board_315x350_pitch35.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_b-1",
+      "file": "LONG_piece_black_b.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_a-1",
+      "file": "LONG_piece_black_a.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_b-2",
+      "file": "LONG_piece_black_b.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_r-2",
+      "file": "LONG_piece_black_r.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_P-5",
+      "file": "LONG_piece_red_P.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_P-2",
+      "file": "LONG_piece_red_P.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_p-4",
+      "file": "LONG_piece_black_p.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_P-1",
+      "file": "LONG_piece_red_P.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_p-3",
+      "file": "LONG_piece_black_p.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_p-5",
+      "file": "LONG_piece_black_p.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_P-3",
+      "file": "LONG_piece_red_P.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_p-1",
+      "file": "LONG_piece_black_p.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_c-2",
+      "file": "LONG_piece_black_c.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_black_p-2",
+      "file": "LONG_piece_black_p.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_P-4",
+      "file": "LONG_piece_red_P.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_C-1",
+      "file": "LONG_piece_red_C.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_K-1",
+      "file": "LONG_piece_red_K.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_N-2",
+      "file": "LONG_piece_red_N.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_aruco_id_1_60mm-1",
+      "file": "LONG_aruco_id_1_60mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_C-2",
+      "file": "LONG_piece_red_C.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_N-1",
+      "file": "LONG_piece_red_N.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_B-1",
+      "file": "LONG_piece_red_B.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_A-1",
+      "file": "LONG_piece_red_A.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_A-2",
+      "file": "LONG_piece_red_A.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_R-2",
+      "file": "LONG_piece_red_R.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_aruco_id_0_60mm-1",
+      "file": "LONG_aruco_id_0_60mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_R-1",
+      "file": "LONG_piece_red_R.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_piece_red_B-2",
+      "file": "LONG_piece_red_B.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_aruco_id_3_60mm-1",
+      "file": "LONG_aruco_id_3_60mm.SLDPRT",
+      "suppressed": false
+    },
+    {
+      "name": "LONG_aruco_id_2_60mm-1",
+      "file": "LONG_aruco_id_2_60mm.SLDPRT",
+      "suppressed": false
+    }
+  ],
+  "reference_rewrites": [],
+  "native_screw_head_height_mm": 6,
+  "low_head_workspace_is_analysis_variant_only": true,
+  "source_archive_hash_checks": [
+    {
+      "manifest": "C:\\Users\\lst\\Desktop\\scara\\hardware\\xiangqi30-old195275-2026-10-12\\delivery-front-2026-10-13\\SHA256SUMS.json",
+      "native_files_checked": 71,
+      "changed": []
+    },
+    {
+      "manifest": "C:\\Users\\lst\\Desktop\\scara\\hardware\\arm_equal_275\\v1\\DELIVERY-SHA256.json",
+      "native_files_checked": 47,
+      "changed": []
+    }
+  ],
+  "inherited_mate_errors": "Original 13 mate errors retained; see source final-model-verification.json",
+  "arm_feature_errors": [
+    {
+      "feature": "配合",
+      "code": 1,
+      "warning": true
+    },
+    {
+      "feature": "同心247",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "重合381",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "同心248",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "同心249",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "同心250",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "同心251",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "重合385",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "重合386",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "重合387",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "同心252",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "重合389",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "同心253",
+      "code": 48,
+      "warning": false
+    },
+    {
+      "feature": "重合390",
+      "code": 48,
+      "warning": false
+    }
+  ],
+  "new_arm_feature_errors": []
+}

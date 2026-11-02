@@ -1,0 +1,2 @@
+/usr/bin/ar qc libscara_motor.a CMakeFiles/scara_motor.dir/can.cpp.o CMakeFiles/scara_motor.dir/motor.cpp.o
+/usr/bin/ranlib libscara_motor.a

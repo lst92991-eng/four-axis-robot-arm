@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-09",
+  "driver": {
+    "manufacturer": "张大头",
+    "hardware": "X42S_V1.0",
+    "interface": "CAN",
+    "source": "用户订单截图；仅保留商品区域，无订单号",
+    "active_firmware": null
+  },
+  "motors": [
+    {
+      "bom": "42步进电机L40",
+      "ordered_model_thumbnail": "42ZDT40A-2",
+      "product_page_model": "42ZDT40A",
+      "count": 1,
+      "body_length_mm": 40,
+      "shaft_diameter_mm": 8,
+      "magnetic_column": true,
+      "seller_page_fields": {
+        "voltage_V": 5,
+        "power_W": 24,
+        "torque_Nm": 0.42
+      },
+      "sku": "5764545574390"
+    },
+    {
+      "bom": "42步进电机L60",
+      "ordered_model_thumbnail": "42ZDT60A-2",
+      "count": 3,
+      "body_length_mm": 60,
+      "shaft_diameter_mm": 8,
+      "magnetic_column": true,
+      "sku": "5764545574392",
+      "electrical_parameters": "订单缩略图部分小字不清晰，未作为确认值录入"
+    }
+  ],
+  "manual": {
+    "file": "ZDT_X42S_manual_V1.0.5_260527.pdf",
+    "author_on_document": "张大头闭环伺服",
+    "version": "V1.0.5 / 2026-05-27",
+    "pages": 110,
+    "source": "https://github.com/xhfb/emm_stepper/blob/main/ZDT_X42S第二代闭环步进电机用户手册V1.0.5_260527.pdf",
+    "source_kind": "第三方GitHub托管的厂家署名PDF副本，非厂家下载站",
+    "sha256": "0afae3f30e1a679c0cd425c790b495dee504c352d2afe234cfa474868319ee92"
+  },
+  "timing_gaps": [
+    "Z丝杆导程",
+    "实际FWType及配置",
+    "负载下速度与加减速或转矩曲线",
+    "吸取释放等待时间"
+  ],
+  "note": "未改CAD、原BOM或运行配置；未操作实物；截图商品字段不是实测，不将商品标称功率除以转矩推算电机可用转速。",
+  "reducer": {
+    "ordered_variant": "二级DLE42 长款 圆法兰（12比-100比）",
+    "actual_ratio": 50,
+    "ratio_range_in_order": [
+      12,
+      100
+    ],
+    "cad_name": "DLE42-L2BJ-长款50",
+    "difference": "长款类别与CAD名称一致，减速比50已由用户确认。先前短款截图作废。",
+    "source": "用户更正订单截图 reducer-order-corrected-long.png",
+    "superseded_sources": [
+      "reducer-order-product-only.png",
+      "reducer-thumbnail-inspect.png"
+    ],
+    "ratio_definition": "abs(电机轴相对机壳转角/关节相对基座转角)=50",
+    "ratio_confirmation": {
+      "source": "User explicitly corrected and confirmed 50:1 (input:output).",
+      "date": "2026-10-09",
+      "status": "用户确认，非实测"
+    }
+  }
+}

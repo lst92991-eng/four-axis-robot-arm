@@ -1,0 +1,119 @@
+{
+  "plan_version": 2,
+  "source_brief": "省料优先，借用现有顶层铝板，C卡座加镂空双梁，以两根窄横条支撑用户主板，并固定相机。",
+  "part_family": "assembly",
+  "parameters": {
+    "plate_mm": [
+      120,
+      161,
+      10
+    ],
+    "clamp_slot_mm": 10.4,
+    "camera_lens_reference_mm": [
+      0,
+      250,
+      626.4
+    ],
+    "pcb_hole_array_mm": [
+      58.0001143,
+      49.0000965
+    ],
+    "pcb_mount_hole_diameter_mm": 2.70000508,
+    "pcb_source_sha256": "9257c54aeaabd7dcd8516fe5a2116082f5853761bc8a7e3a3fe0598bb94234c9",
+    "actual_ffc_mm": 160
+  },
+  "features": [
+    {
+      "name": "01_clamp_right",
+      "type": "printed_part",
+      "params": {
+        "quantity": 1,
+        "volume_mm3": 39175.94279081063
+      },
+      "required": true
+    },
+    {
+      "name": "02_clamp_left",
+      "type": "printed_part",
+      "params": {
+        "quantity": 1,
+        "volume_mm3": 39175.94279081063
+      },
+      "required": true
+    },
+    {
+      "name": "03_truss_200",
+      "type": "printed_part",
+      "params": {
+        "quantity": 4,
+        "volume_mm3": 16390.136572173466
+      },
+      "required": true
+    },
+    {
+      "name": "04_camera_B_crossbar",
+      "type": "printed_part",
+      "params": {
+        "quantity": 1,
+        "volume_mm3": 12656.120670613664
+      },
+      "required": true
+    },
+    {
+      "name": "05_pcb_support",
+      "type": "printed_part",
+      "params": {
+        "quantity": 2,
+        "volume_mm3": 4761.199893933995
+      },
+      "required": true
+    }
+  ],
+  "operation_sequence": [
+    "读取原机械结构与用户STEP",
+    "参数化零件建模与导出",
+    "只读参考装配",
+    "网格/接口/包络/视锥验证",
+    "生成审核包"
+  ],
+  "assumptions": [
+    "孔阵中心代替相机光轴参考，实拍校正偏置",
+    "棋盘位置仅供支架布局展示",
+    "主板参考省略小SMD，包络验证使用全部原组件"
+  ],
+  "risk_register": [
+    {
+      "risk": "机械臂振动传至相机",
+      "mitigation": "停车并稳定后取图，实测稳定时间"
+    },
+    {
+      "risk": "打印配合与蠕变未验收",
+      "mitigation": "先打印单侧卡座试配，再静态试装承载"
+    }
+  ],
+  "review_plan": {
+    "expected_outputs": [
+      "camera_bridge.SLDASM",
+      "camera_bridge.step",
+      "print/*.STL",
+      "layout_check.step",
+      "README.md",
+      "validation.json"
+    ],
+    "views": [
+      "isometric",
+      "front",
+      "top",
+      "right"
+    ],
+    "checks": [
+      "单实体、封闭网格与毫米尺度",
+      "草图完全定义、无Fix",
+      "打印件自身干涉",
+      "邻近结构与完整主板器件包络",
+      "参考视锥不遮挡",
+      "源文件原字节",
+      "实物试装仍待用户验证"
+    ]
+  }
+}

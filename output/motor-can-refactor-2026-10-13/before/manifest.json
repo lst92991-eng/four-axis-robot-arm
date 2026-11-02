@@ -1,0 +1,22 @@
+[
+  {
+    "path": "robot/emm_can.hpp",
+    "sha256": "c91230e393c3ed242a2f96ac47cea42eb954a968acd5fe26571d671be55b2070"
+  },
+  {
+    "path": "robot/emm_can.cpp",
+    "sha256": "50ee823d44295b5cfb7770665f2fa9dda009877094b3a253bc49b8b9bbde5af2"
+  },
+  {
+    "path": "tests/emm_can_tests.cpp",
+    "sha256": "c0a72ab1f2d07c331e77bc224019969f9e6de33727475905e663f5fce09e95e2"
+  },
+  {
+    "path": "tests/main.cpp",
+    "sha256": "109ed7157b70e7d490cca3e556c77d3ad656403050303ae93d203f302131ef67"
+  },
+  {
+    "path": "CMakeLists.txt",
+    "sha256": "6176fbbee7fd17ad2d59ebcfcf2f5e11e4b43569990ddd494b599701c88570e8"
+  }
+]

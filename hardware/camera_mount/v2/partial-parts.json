@@ -1,0 +1,18 @@
+[
+  {
+    "name": "05_pcb_support",
+    "quantity": 2,
+    "volume_mm3": 4763.708719411441,
+    "body_count": 1,
+    "sketch_status": "pass",
+    "review_evaluation": {
+      "status": "pass",
+      "score": 100,
+      "issues": [],
+      "recommendations": [],
+      "manual_review_required": true,
+      "manual_review_reason": "规则评分只能发现明显失败，最终几何是否符合用户意图仍需查看预览图或截图。"
+    },
+    "note": "146x10x15；主板孔径2.8、孔距49，两横条相隔58。梁端矩形槽3.4x5.4；底面留12mm间隔。"
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "files": [
+    {
+      "path": "robot/can.hpp",
+      "physical": 19,
+      "effective": 15,
+      "sha256": "d3aa8693039ead51f7ea845d0de64ba17d103516e6268497080a18471d6a0897"
+    },
+    {
+      "path": "robot/can.cpp",
+      "physical": 71,
+      "effective": 64,
+      "sha256": "97294a4230d94b219fddfbef569e66a200f0153d1847a75af32115771650c263"
+    },
+    {
+      "path": "robot/motor.hpp",
+      "physical": 38,
+      "effective": 31,
+      "sha256": "d074aa6fcac3e9d8a8038ca38900b1aa7860dfe2f85553634c023139ac63cdcc"
+    },
+    {
+      "path": "robot/motor.cpp",
+      "physical": 133,
+      "effective": 120,
+      "sha256": "3c277076e9975cc8f086e890be8505762739223f7f4b8347e36913677bbfc25a"
+    },
+    {
+      "path": "app/motor_test.cpp",
+      "physical": 62,
+      "effective": 59,
+      "sha256": "1fa16b0035d247f45b502c73a9ea1f6c270ee1b1294c31f9b1a431c966e97116"
+    },
+    {
+      "path": "robot/CMakeLists.txt",
+      "physical": 16,
+      "effective": 16,
+      "sha256": "1b46b59c3283d12a890c2b0fea59b22586e3652970a29fbb4b0480c8edf81653"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "physical": 51,
+      "effective": 46,
+      "sha256": "229a822fad25a6e3ca774cf35cd92549799d7ceed00be409cee39cc0a0f0e087"
+    },
+    {
+      "path": "tests/main.cpp",
+      "physical": 21,
+      "effective": 21,
+      "sha256": "b70126b4f3b2adff965c7dd413b457b73de1c1c019d21806f6373d0d035c0ef1"
+    },
+    {
+      "path": "tests/motor_tests.cpp",
+      "physical": 216,
+      "effective": 211,
+      "sha256": "78077650a67ff034b8b0434864a1392f31f63f220ca6360cfbf3365a09616848"
+    }
+  ],
+  "host_build": "WSL GCC13 CMake -Werror passed",
+  "vcan": "isolated unshare -Urn vcan0: protocol, generic CAN, node addressing, start/stop/fault passed",
+  "arm_build": "CMake rv1106.cmake GCC8.3 Cortex-A7 hardfloat uClibc static library and executable passed",
+  "no_arguments": "usage only, no CAN opened",
+  "hardware_run": false,
+  "full_project_ctest": false
+}

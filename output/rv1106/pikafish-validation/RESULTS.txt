@@ -1,0 +1,73 @@
+RV1106 / Pikafish 真板验证记录
+测试日期：2026-10-08，Asia/Shanghai
+
+结论
+官方 Pikafish-2023-03-05 已通过以太网 SSH 在用户 RV1106 上运行，正常加载 NNUE、计算着法、响应 stop 并退出。
+本次采用官方原始源码；仅将发布包中的压缩 NNUE 在电脑端预解压，未改动评价或搜索代码。
+
+版本与文件
+源码：https://github.com/official-pikafish/Pikafish/tree/4762ca3c77c7f8ccbf204974cf23c5ca3e8c2783
+发布：https://github.com/official-pikafish/Pikafish/releases/tag/Pikafish-2023-03-05
+构建工具链：arm-rockchip830-linux-uclibcgnueabihf GCC 8.3.0，C++17，ARMv7 NEON/hard-float。
+程序启动横幅显示编译日期 dev 2026-10-08；源码版本仍是上述 2023-03-05 tag。
+板端目录：/root/scara-pikafish-test/2023-03-05
+程序 SHA-256：d0491d5b1b76ffb1fdef0da25a49aaf52421533d4afd9585dcc0f11ac746045e
+原始发布压缩权重 SHA-256：9bed5ed4f2f356d361c859728c68b1f9103fa982e5d9fe658b38f71dcbcec0a9
+部署用预解压权重 SHA-256：2e9280f355cd4f092fcb63c21477692100afaf9ba9868a10c9c8d5b8fc6d1d1f
+原压缩文件 18,070,595 字节，预解压文件 36,085,723 字节。
+
+硬件与连接
+板端序列号：759dce9b268fd05e；型号：Atguigu BoomPi Borad。
+Linux 5.10.160 / Buildroot 2023.02.6 / Cortex-A7 / ARMv7 / NEON / uClibc。
+Linux MemTotal：174240 KiB；测试前 MemAvailable：约149708 KiB；未使用 swap。
+SSH：root@192.168.55.6，Windows 源地址192.168.55.1，自带 Intel RJ45 网口。
+DHCP eth0 MAC：e6:ad:54:47:81:fa。USB ADB用于网络引导、核对SSH公钥；程序传输及运行测试均走以太网SSH。
+已追加本机现有 rv1106_codex_auto 公钥到板端 /root/.ssh/authorized_keys；未修改SSH密码或全局SSH配置。
+电脑原先仅服务树莓派的DHCP进程已替换为本目录network/direct-dhcp.py临时后台进程，保留原树莓派MAC租约并加入本板MAC。
+原DHCP命令记录于network/previous-helper.json；未改Windows网卡地址、外网或自启动配置。当前租约24小时。
+
+真板结果（单独运行象棋引擎）
+设置：Threads=1，Hash=4 MiB；ulimit -v 140000 KiB。
+UCI启动握手：1.328秒。
+连续6个半回合均返回合法格式的bestmove，随后同局面继续搜索和stop成功。
+第1步 b2e2：设定1000ms，实测1.047s。
+第2步 b9c7：设定1000ms，实测1.031s。
+第3步 b0c2：设定3000ms，实测3.094s。
+第4步 a9b9：设定3000ms，实测3.047s。
+第5步 a0b0：设定3000ms，实测3.063s。
+第6步 h9g7：设定3000ms，实测3.031s。
+停止响应：0.016秒；退出码0。
+搜索速度：本组局面约18000～20000 nodes/s；不代表所有局面或棋力等级。
+进程VmRSS：91792～92128 KiB（约89.6～90.0 MiB）。
+进程VmHWM：104080 KiB（约101.6 MiB）。
+进程VmPeak：120652 KiB（约117.8 MiB虚拟地址空间，不等同物理内存）。
+引擎运行时系统MemAvailable约57436～57784 KiB（约56 MiB）。
+另运行官方bench 8 1 4 default depth：26/26局面，5536 nodes，与Cortex-A7仿真一致；真板254ms，21795 nodes/s。
+逐行输出：2023-03-05/board-uci.log、board-bench-depth4.log。
+结构化结果：2023-03-05/board-results.json。
+
+已解决的加载问题
+首次直接使用压缩权重启动出现OOM，内核记录pikafish anon-rss149728KiB并终止它。
+在电脑端预解压权重后，使用同一个程序和同一网络内容通过上述真板测试。
+不是通过增加swap、关闭NPU预留内存或修改搜索算法绕过。
+
+当前master版本的状态
+1c66b9b的ARMv7适配补丁、GCC13静态产物、构建方法与仿真记录在current目录。
+该版本的49局面仿真与原始x86版本一致，但内存评估偏高，未作为本次真板运行版本。
+current/MEMORY-AUDIT.txt中的内存数据来自构建电脑和QEMU，不能称为真板实测。
+
+尚未验收
+YOLO/RKNN与摄像头同时运行的内存和响应；长时间完整对局；机械臂联动；棋力等级。
+本次测试通过不能推断上述整机功能已通过，也不构成项目冻结版本。
+
+重跑
+Windows PowerShell：
+  & 'D:/hermes-agent/venv/Scripts/python.exe' 'C:/Users/lst/Desktop/scara/output/rv1106/pikafish-validation/test-board.py' 2023-03-05
+进入SSH交互控制台：运行本目录open-engine.ps1，然后按UCI协议输入命令。
+
+复现构建
+解压2023-03-05/source-4762ca3.tar.gz，在源码src目录执行：
+  make -j4 all ARCH=armv7-neon COMP=gcc COMPCXX=/path/to/arm-rockchip830-linux-uclibcgnueabihf-g++ EXTRACXXFLAGS='-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard'
+在电脑端将发布包中的压缩pikafish.nnue解压到另一目录：
+  unzip -p downloaded/pikafish.nnue pikafish.nnue > deploy/pikafish.nnue
+将编译产物和预解压权重放在同一板端目录，部署前核对SHA-256。
