@@ -9317,7 +9317,7 @@
     {
       "path": "tools/z-axis-panel/run.ps1",
       "bytes": 7774,
-      "sha256": "d351b4bc86fd4d7fb9657bbb342627e8e1708105b343c3a765b3d334293777f3"
+      "sha256": "106e1eb8688852218536386b0c952ab67ea3f1207718d73e5ff9065be57a5712"
     },
     {
       "path": "tools/z-axis-panel/test_panel.py",

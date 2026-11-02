@@ -120,7 +120,7 @@ public static class ScaraPanelWindow {
     New-Item -ItemType Directory -Path $panelOutput -Force | Out-Null
     $panelStdout = Join-Path $panelOutput 'z-panel-stdout.log'
     $panelStderr = Join-Path $panelOutput 'z-panel-stderr.log'
-    $panelProcess = Start-Process -FilePath $panelPythonw -WindowStyle Hidden -ArgumentList @(('"' + $panelMain + '"'), "--rpm=$Rpm") -WorkingDirectory $panelRoot -RedirectStandardOutput $panelStdout -RedirectStandardError $panelStderr -PassThru
+    $panelProcess = Start-Process -FilePath $panelPythonw -WindowStyle Normal -ArgumentList @(('"' + $panelMain + '"'), "--rpm=$Rpm") -WorkingDirectory $panelRoot -RedirectStandardOutput $panelStdout -RedirectStandardError $panelStderr -PassThru
     $panelProcess.Id | Set-Content -LiteralPath (Join-Path $panelOutput 'z-panel.pid')
     if ($panelProcess.WaitForExit(800)) {
         $panelDetails = Get-Content -LiteralPath $panelStderr -Raw
