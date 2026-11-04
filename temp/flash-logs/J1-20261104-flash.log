@@ -1,0 +1,69 @@
+Open On-Chip Debugger 0.11.0+dev-snapshot (2026-06-22-15:32)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : flash reg address: 0x40023c00, usd addr:  0x1ffff800
+Info : flash reg address: 0x40023c00, usd addr:  0x0
+Info : DEPRECATED target event trace-config; use TPIU events {pre,post}-{enable,disable}
+Info : Using CMSIS-DAPv2 interface with VID:PID=0x0d28:0x0204, serial=39A0ABCD
+Info : CMSIS-DAP: SWD supported
+Info : CMSIS-DAP: JTAG supported
+Info : CMSIS-DAP: Atomic commands supported
+Info : CMSIS-DAP: UART via USB COM port supported
+Info : CMSIS-DAP: FW Version = 2.1.1
+Info : CMSIS-DAP: Serial# = 39A0ABCD
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 500 kHz
+Info : SWD DPIDR 0x2ba01477
+Info : [at32f4xx.cpu] Cortex-M4 r0p1 processor detected
+Info : [at32f4xx.cpu] target has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0xfffffffe msp: 0xfffffffc
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+DEPRECATED! use 'read_memory' not 'mem2array'
+J1_PROGRAM_BEGIN
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : Flash write discontinued at 0x0800140c, next section at 0x08004000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : Earse first sector = 0x0, last sector = 0x5 
+Info : Write address = 0x8000000, count: 0x1800
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : Flash write discontinued at 0x08008f2c, next section at 0x0801e000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : Earse first sector = 0x10, last sector = 0x23 
+Info : Write address = 0x8004000, count: 0x5000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : This is target at32xx algorithm
+Info : main flash size: 0x20000, sector num:  0x80, sector size: 0x400,  bank size: 0x20000
+Info : Earse first sector = 0x78, last sector = 0x78 
+Info : Write address = 0x801e000, count: 0x400
+auto erase enabled
+wrote 27648 bytes from file J1-first-install.hex in 1.972590s (13.688 KiB/s)
+
+verified 25412 bytes in 0.506394s (49.006 KiB/s)
+
+DEPRECATED! use 'read_memory' not 'mem2array'
+CALIBRATION_REGION_UNCHANGED
+0x08000000: 20004000 0800092d 
+
+0x08004000: 20004000 08008099 
+
+0x0801e000: 3141544f 00004f2c 69d8f982 
+
+J1_PROGRAM_VERIFIED
+shutdown command invoked

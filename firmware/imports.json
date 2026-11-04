@@ -1,0 +1,89 @@
+{
+  "source_repository": "six_arm",
+  "source_commit": "68c72941e965d9062edd748042e498ac96823ebe",
+  "files": {
+    "firmware/drivers/current_sense.c": {
+      "source": "firmware/StepFOC/src/current_sense.c",
+      "sha256": "f4cccc1a201bb8d38e434b022cd252e6be679e19e6cd7806f28eb89b33cb51c0",
+      "patch": "PWM monitoring divisor independent of upstream cascade rate"
+    },
+    "firmware/drivers/mt6816.c": {
+      "source": "firmware/StepFOC/src/mt6816.c",
+      "sha256": "ec63a2940d8f05ade84091cb8df5e85f4daf6ab17493765a950cc2ac5397850e",
+      "patch": "5.625MHz SPI; TMR7 2MHz counter provides at least 0.5us CS delays and bounded 20us transfer waits"
+    },
+    "firmware/drivers/current_limits.h": {
+      "source": "firmware/StepFOC/inc/current_limits.h",
+      "sha256": "5240cf9088d0292bab0070d7ad182229a061ce6470c17c892d0a38ba2dd54780"
+    },
+    "firmware/drivers/control_timing.h": {
+      "source": "firmware/StepFOC/inc/control_timing.h",
+      "sha256": "8ff1e691b518d766f84b647e35992f023748859b49a413c553d6ae3e65e22621",
+      "patch": "25kHz PWM,6250Hz original STEPFOC cascade"
+    },
+    "firmware/drivers/at32m412_416_conf.h": {
+      "source": "firmware/StepFOC/inc/at32m412_416_conf.h",
+      "sha256": "5999e79a9eb9f7d0840a493c44dceec62d9e962c432a48353274533e1a621761"
+    },
+    "firmware/drivers/mt6816.h": {
+      "source": "firmware/StepFOC/inc/mt6816.h",
+      "sha256": "8c4c3cd00adcc904d5055814668f210d54f8a15d88c0b2936d11aaac2e86bbbd"
+    },
+    "firmware/drivers/current_sense.h": {
+      "source": "firmware/StepFOC/inc/current_sense.h",
+      "sha256": "2b80570297c4bc791d93e160f283d08a5976f055cfdbba2a0c81dedc4b00cb73"
+    },
+    "host/stepfoc_candlelight.py": {
+      "source": "firmware/StepFOC/tools/host/stepfoc_candlelight.py",
+      "sha256": "34088c3ec1e221978458bffd906115582348cbea8c6f8b7dbccf08d02015661a"
+    },
+    "host/usb_owner.py": {
+      "source": "firmware/StepFOC/tools/host/usb_owner.py",
+      "sha256": "2d3f79a3a90a2fe2419186505d4baffc38b36e2c404f53a75ae9014f24e4cdd8"
+    },
+    "firmware/drivers/pwm_output.c": {
+      "source": "firmware/StepFOC/src/foc_test.c",
+      "sha256": "aefa836ad9a9fde6721c904f273f0e3e64b7441a055b273fbb12b139d27a677c"
+    },
+    "firmware/drivers/pwm_output.h": {
+      "source": "firmware/StepFOC/inc/foc_test.h",
+      "sha256": "9435fcc87d9d4f2ae7c4f9bec914b7ea750db5b13817bba8d4f0bfe9543e4afe"
+    },
+    "firmware/src/Common_Control.h": {
+      "source": "Project declarations; algorithm provenance is recorded in upstream.lock.json."
+    },
+    "firmware/src/Common_Control.c": {
+      "source": "this project / preserved upstream notices"
+    },
+    "firmware/src/CAN.c": {
+      "source": "this project / preserved upstream notices"
+    },
+    "firmware/src/main.c": {
+      "source": "this project / preserved upstream notices"
+    },
+    "firmware/src/config.h": {
+      "source": "this project / preserved upstream notices"
+    }
+  },
+  "vendor_comment_repairs": {
+    "date": "2026-10-23",
+    "description": "修复两处SDK注释编码，保留代码及版权声明。",
+    "files": [
+      {
+        "path": "firmware/vendor/drivers/inc/at32m412_416_pwc.h",
+        "before_sha256": "bce0af3308424ceda94ea0ef40af1b03ef178ad191e949e1cae385a523857c83",
+        "after_sha256": "ac48973d0ca3292f04b9da1adc71482d310be3244a7ecd22fb2d954b5095c1ec"
+      },
+      {
+        "path": "firmware/vendor/drivers/src/at32m412_416_usart.c",
+        "before_sha256": "22eff55587879b072456ca00307ba9ed9d958bae159cb77e7e41803b8099feb1",
+        "after_sha256": "ce67d83fc2c65ddf9e0c6667a2a93dd9cb7d1e1c7d3b2ce0e8d1773619e81c27"
+      }
+    ]
+  },
+  "algorithm_provenance": "upstream.lock.json",
+  "history_archive": "../六轴机械臂-归档/2026-11-03_目录轮换/metadata-before-cleanup.zip",
+  "note": "Source hashes identify imported originals, not a frozen hash of current code. Stage histories and old patches are kept in the external archive.",
+  "language": "C11",
+  "language_migration": "2026-11-03：主线与原生测试改用C，原算法与参数保留，测试基准包原字节保留。"
+}

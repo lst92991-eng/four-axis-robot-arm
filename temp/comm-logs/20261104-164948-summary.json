@@ -1,0 +1,147 @@
+{
+  "passed": true,
+  "elapsed_s": 69.64296779991128,
+  "bitrate": 500000,
+  "data_bitrate": 2000000,
+  "commands_sent": [
+    "PING"
+  ],
+  "nodes": {
+    "1": {
+      "status": 1382,
+      "sent": 273,
+      "accepted": 273,
+      "rejected": 0,
+      "timeout": 0,
+      "duplicates": 0,
+      "resets": 0,
+      "max_status_gap_ms": 82.85960019566119,
+      "power_seen": false,
+      "configured_seen": false,
+      "builds": [
+        "0bffcca9"
+      ],
+      "faults": [
+        0
+      ],
+      "states": [
+        0
+      ],
+      "encoder_valid_values": [
+        true
+      ],
+      "status_without_brs": 0,
+      "last_board_ms": 173513,
+      "rtt_mean_ms": 14.942180581950334,
+      "rtt_max_ms": 40.165399899706244
+    },
+    "2": {
+      "status": 1382,
+      "sent": 273,
+      "accepted": 273,
+      "rejected": 0,
+      "timeout": 0,
+      "duplicates": 0,
+      "resets": 0,
+      "max_status_gap_ms": 82.72490021772683,
+      "power_seen": false,
+      "configured_seen": false,
+      "builds": [
+        "17a105f6"
+      ],
+      "faults": [
+        0
+      ],
+      "states": [
+        0
+      ],
+      "encoder_valid_values": [
+        true
+      ],
+      "status_without_brs": 0,
+      "last_board_ms": 173509,
+      "rtt_mean_ms": 12.756401831591194,
+      "rtt_max_ms": 35.659699933603406
+    },
+    "3": {
+      "status": 1382,
+      "sent": 273,
+      "accepted": 273,
+      "rejected": 0,
+      "timeout": 0,
+      "duplicates": 0,
+      "resets": 0,
+      "max_status_gap_ms": 83.50179996341467,
+      "power_seen": false,
+      "configured_seen": false,
+      "builds": [
+        "e72bb310"
+      ],
+      "faults": [
+        0
+      ],
+      "states": [
+        0
+      ],
+      "encoder_valid_values": [
+        true
+      ],
+      "status_without_brs": 0,
+      "last_board_ms": 173516,
+      "rtt_mean_ms": 10.472249812804735,
+      "rtt_max_ms": 35.563800018280745
+    },
+    "4": {
+      "status": 1382,
+      "sent": 273,
+      "accepted": 273,
+      "rejected": 0,
+      "timeout": 0,
+      "duplicates": 0,
+      "resets": 0,
+      "max_status_gap_ms": 85.93999990262091,
+      "power_seen": false,
+      "configured_seen": false,
+      "builds": [
+        "cca804d2"
+      ],
+      "faults": [
+        0
+      ],
+      "states": [
+        0
+      ],
+      "encoder_valid_values": [
+        true
+      ],
+      "status_without_brs": 0,
+      "last_board_ms": 173511,
+      "rtt_mean_ms": 8.238470693538478,
+      "rtt_max_ms": 33.427700167521834
+    }
+  },
+  "counts": {
+    "0x301": 3457,
+    "0x202": 1382,
+    "0x201": 1382,
+    "0x203": 1382,
+    "0x204": 1382,
+    "echo": 1092,
+    "0x481": 273,
+    "0x482": 273,
+    "0x483": 273,
+    "0x484": 273
+  },
+  "errors": [],
+  "invalid": [],
+  "exception": null,
+  "io_stats": {
+    "reads": 23599,
+    "writes": 1092,
+    "timeouts": 1261,
+    "errors": 0
+  },
+  "raw_path": "C:\\Users\\shuto\\Desktop\\四轴机械臂-CANFD升级交接-2026-11-04\\temp\\comm-logs\\20261104-164948-frames.jsonl",
+  "build_ids_match_local_images": true,
+  "operator_correction": "User reported enabling the previously disabled termination resistor before this successful run."
+}

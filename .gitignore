@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+# Adapter request sequence is local runtime state, not test evidence.
+temp/comm-logs/ping-sequence.json

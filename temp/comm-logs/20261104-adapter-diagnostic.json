@@ -1,0 +1,101 @@
+[
+  {
+    "internal_loopback": false,
+    "frames": [
+      {
+        "identifier": 1025,
+        "data": "07010003010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "fd": true,
+        "extended": false,
+        "brs": true,
+        "error": false,
+        "echo": true
+      },
+      {
+        "identifier": 8,
+        "data": "0000040000000009",
+        "fd": false,
+        "extended": false,
+        "brs": false,
+        "error": true,
+        "echo": false,
+        "description": "协议错误、位填充错误（ID=0x8，原始=0000040000000009）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+      },
+      {
+        "identifier": 12,
+        "data": "001004000000007f",
+        "fd": false,
+        "extended": false,
+        "brs": false,
+        "error": true,
+        "echo": false,
+        "description": "控制器状态、协议错误、位填充错误、接收错误被动（ID=0xC，原始=001004000000007f）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+      },
+      {
+        "identifier": 13,
+        "data": "001004000010007f",
+        "fd": false,
+        "extended": false,
+        "brs": false,
+        "error": true,
+        "echo": false,
+        "description": "发送超时、控制器状态、协议错误、位填充错误、接收错误被动（ID=0xD，原始=001004000010007f）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+      },
+      {
+        "identifier": 4,
+        "data": "001000000000007f",
+        "fd": false,
+        "extended": false,
+        "brs": false,
+        "error": true,
+        "echo": false,
+        "description": "控制器状态、接收错误被动（ID=0x4，原始=001000000000007f）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+      },
+      {
+        "identifier": 4,
+        "data": "001000000000007f",
+        "fd": false,
+        "extended": false,
+        "brs": false,
+        "error": true,
+        "echo": false,
+        "description": "控制器状态、接收错误被动（ID=0x4，原始=001000000000007f）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+      }
+    ],
+    "io_stats": {
+      "reads": 41,
+      "writes": 1,
+      "timeouts": 34,
+      "errors": 0
+    }
+  },
+  {
+    "internal_loopback": true,
+    "frames": [
+      {
+        "identifier": 1025,
+        "data": "07010003010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "fd": true,
+        "extended": false,
+        "brs": true,
+        "error": false,
+        "echo": true
+      },
+      {
+        "identifier": 1025,
+        "data": "07010003010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "fd": true,
+        "extended": false,
+        "brs": true,
+        "error": false,
+        "echo": false
+      }
+    ],
+    "io_stats": {
+      "reads": 41,
+      "writes": 1,
+      "timeouts": 37,
+      "errors": 0
+    }
+  }
+]

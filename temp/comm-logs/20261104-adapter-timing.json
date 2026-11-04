@@ -1,0 +1,21 @@
+[
+  {
+    "label": "Candlelight 2.5 - WeActStudioV1 / 37813482333551062",
+    "clock_hz": 60000000,
+    "features": "0xc53b",
+    "nominal_timing": [
+      0,
+      89,
+      30,
+      30,
+      1
+    ],
+    "data_timing": [
+      0,
+      21,
+      8,
+      8,
+      1
+    ]
+  }
+]
