@@ -1,0 +1,91 @@
+{
+  "artifact_kind": "hardware_record_not_an_active_gpio_configuration",
+  "updated": "2026-11-06",
+  "electromagnet": {
+    "model": "LSD-P25/20",
+    "variant_voltage_v": 24,
+    "rated_current_a": 0.08,
+    "advertised_power_w": 2,
+    "source": "user-confirmed 24V variant and supplied product specification image",
+    "measured_current_a": null,
+    "release_verified": true,
+    "attraction_observed_with_replacement_module": true,
+    "release_verification_scope": "operator-confirmed bench release after replacement module OFF command; not robotic pick-place validation"
+  },
+  "switch_module": {
+    "type": "dual_parallel_N_MOS_high_active_switch",
+    "supply_range_v": [
+      5,
+      36
+    ],
+    "advertised_trigger_range_v": [
+      3.3,
+      20
+    ],
+    "control_terminal": "TRIG/PWM",
+    "signal_ground_terminal": "GND",
+    "initial_control_mode": "on_off_only_no_pwm",
+    "onboard_flyback_protection_verified": false,
+    "current_hardware": "replacement module reported by user",
+    "bench_on_off_verified_by_user": true,
+    "old_module_assessment": "suspected defective based on replacement resolving symptoms; not independently electrically analyzed"
+  },
+  "gpio": {
+    "controller": "RV1106_BoomPi",
+    "physical_header_pin": 11,
+    "gpio_line": "GPIO1_B0",
+    "io_voltage_verified": false,
+    "enabled": false,
+    "evidence_status": "netlist_and_runtime_occupancy_checked_output_voltage_not_measured",
+    "audit_record": "temp/gpio-audit-20261106/selected-pin.json",
+    "physical_header": "U7",
+    "ground_header_pin": 9,
+    "board_net_label": "GPIO17",
+    "character_device": "/dev/gpiochip1",
+    "line_offset": 8,
+    "sysfs_number": 40,
+    "nominal_io_voltage_from_netlist_v": 3.3,
+    "current_output_state": "OFF",
+    "output_high_readback_verified": true
+  },
+  "protection": {
+    "suggested_flyback_diode_for_24V_80mA_slow_switching": "1N4007",
+    "cathode_connection": "electromagnet positive / VOUT+",
+    "anode_connection": "electromagnet negative / VOUT-",
+    "installed_or_integrated_confirmed": false
+  },
+  "netlist_sha256": "30d7abe5f4c56d4105c5d5f340296d80235dbdeaf5a7326def8b5f99d7e37988",
+  "last_operator_test": {
+    "host_time": "2026-11-06T19:35:33.306394+08:00",
+    "module": "replacement MOS module",
+    "user_observation": "正常了，详细记录信息，然后提交本地和远程",
+    "context": "User confirmed normal result immediately after OFF_HOLD test and question about release/current decrease",
+    "physical_release_confirmed_by_user": true,
+    "exact_off_current_a": null,
+    "exact_off_current_not_provided": true,
+    "gpio": {
+      "direction": "out",
+      "value": "0",
+      "active_low": "0",
+      "action": "read_only"
+    },
+    "motor_commands": false
+  },
+  "last_gpio_command": {
+    "action": "OFF_HOLD",
+    "gpio": "GPIO1_B0",
+    "physical_pin": "U7.11",
+    "before": "1",
+    "readback_samples": [
+      "0",
+      "0",
+      "0"
+    ],
+    "automatic_reenable": false,
+    "motor_commands": false,
+    "host_time": "2026-11-06T19:31:12.979075+08:00",
+    "module": "replacement MOS module",
+    "physical_release_confirmed": true,
+    "operator_confirmation_record": "temp/gpio-audit-20261106/new-module-off-confirmed.json"
+  }
+}

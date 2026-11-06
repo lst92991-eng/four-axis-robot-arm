@@ -1,0 +1,22 @@
+Loading firmware...
+
+Support Type:1106	FW Ver:0.0.00	FW Time:2026-09-20 04:00:53
+
+Loader ver:1.01	Loader Time:2026-09-19 08:40:01
+
+Start to upgrade firmware...
+
+Download Boot Start
+
+Download Boot Success
+
+Wait For Maskrom Start
+
+Wait For Maskrom Success
+
+Test Device Start
+
+Test Device Fail
+
+Note:Communication issues,Certainly please check usb,Completely please check device
+

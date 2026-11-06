@@ -1,0 +1,195 @@
+{
+  "model": "xiangqi14-local-v3",
+  "scope": "最新本机实拍数据的定向微调；黑将等易混类别强化",
+  "repository": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04",
+  "repository_commit": "f2a22937ac4d9737edb451f358131428b1293b22",
+  "release_tag": "v2026.11.05-local-data",
+  "release_sha256": "6a0f9db66603397142285f36339df6e75ca59fc8425d2bdc5c8dff09cad58f1b",
+  "annotation_correction": "26张图中各有一枚黑将与一枚黑象标签对调，共52处，按放大/旋转后的真实字形纠正；原始发布包保持不变。助手视觉核对，未经过独立人工复核。",
+  "architecture": "airockchip YOLOv5s/ReLU",
+  "framework_commit": "23a20ef3e5fa648e765e4a70b30edbfd3aaf8c8c",
+  "training_phases": {
+    "initial_epochs": 80,
+    "hard_case_epochs": 60,
+    "selected_hard_case_epoch": 51
+  },
+  "classes": [
+    "k",
+    "a",
+    "b",
+    "n",
+    "r",
+    "c",
+    "p",
+    "K",
+    "A",
+    "B",
+    "N",
+    "R",
+    "C",
+    "P"
+  ],
+  "class_names": [
+    "黑将",
+    "黑士",
+    "黑象",
+    "黑马",
+    "黑车",
+    "黑炮",
+    "黑卒",
+    "红帅",
+    "红仕",
+    "红相",
+    "红马",
+    "红车",
+    "红炮",
+    "红兵"
+  ],
+  "input_size": [
+    640,
+    640
+  ],
+  "input_color": "RGB",
+  "letterbox_fill": 114,
+  "score_threshold": 0.5,
+  "class_agnostic_nms_iou": 0.45,
+  "rknn_target": "rv1106",
+  "rknn_toolkit": "1.6.0",
+  "anchors": [
+    [
+      10,
+      13,
+      16,
+      30,
+      33,
+      23
+    ],
+    [
+      30,
+      61,
+      62,
+      45,
+      59,
+      119
+    ],
+    [
+      116,
+      90,
+      156,
+      198,
+      373,
+      326
+    ]
+  ],
+  "strides": [
+    8,
+    16,
+    32
+  ],
+  "onnx_output": "3 sigmoid probability heads, 57 channels; decode coordinates and apply NMS",
+  "rknn_output": "INT8 native NHWC; use queried scale/zero-point and native tensor strides",
+  "data": "s02训练19张；s04验证3张；s03测试4张，整段录像不跨集合。训练额外使用128张由真实训练棋子裁片生成的布局增强图，不是独立实拍；未审核草稿未参与训练。",
+  "evaluation": {
+    "train": {
+      "split": "train",
+      "images": 147,
+      "targets": 2144,
+      "correct": 2144,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0,
+      "all_correct_images": 147,
+      "min_correct_confidence": 0.7616123557090759,
+      "min_correct_class_margin": 0.6049342751502991,
+      "mean_correct_confidence": 0.9322306665856002
+    },
+    "train_real": {
+      "images": 19,
+      "targets": 608,
+      "correct": 608,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0
+    },
+    "val": {
+      "split": "val",
+      "images": 3,
+      "targets": 96,
+      "correct": 96,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0,
+      "all_correct_images": 3,
+      "min_correct_confidence": 0.9161834716796875,
+      "min_correct_class_margin": 0.9159476161003113,
+      "mean_correct_confidence": 0.9360906289269527
+    },
+    "test": {
+      "split": "test",
+      "images": 4,
+      "targets": 128,
+      "correct": 128,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0,
+      "all_correct_images": 4,
+      "min_correct_confidence": 0.9190733432769775,
+      "min_correct_class_margin": 0.917189359664917,
+      "mean_correct_confidence": 0.9360393909737468
+    },
+    "stress": {
+      "split": "stress",
+      "images": 48,
+      "targets": 1536,
+      "correct": 1536,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0,
+      "all_correct_images": 48,
+      "min_correct_confidence": 0.9103580713272095,
+      "min_correct_class_margin": 0.8615672588348389,
+      "mean_correct_confidence": 0.9360405500046909,
+      "scope": "48 derived views from 4 original test photos, not independent samples; never used for checkpoint selection"
+    }
+  },
+  "quantized_simulator": {
+    "val": {
+      "targets": 96,
+      "correct": 96,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0
+    },
+    "test": {
+      "targets": 128,
+      "correct": 128,
+      "wrong": 0,
+      "missed": 0,
+      "extra": 0
+    }
+  },
+  "limitations": [
+    "仅在本次有限照片及派生扰动范围内零错误，不保证未来任何场景绝对零错误。",
+    "首轮测试发现黑将问题后，追加训练段裁片增强并重新测试；最终测试是重复诊断，不是一次全新的盲测。测试照片没有加入训练或量化校准。",
+    "旋转/亮度检查由4张测试图派生48个视图，不是48张独立实拍。",
+    "量化结果来自PC模拟器；未进行新模型RV1106实板验证。"
+  ],
+  "physical_board_tested": false,
+  "files": [
+    {
+      "name": "xiangqi14-local-v3.pt",
+      "bytes": 28879811,
+      "sha256": "d6155e0d4048809a69b73860262e574ab22a25859a2a01f5b4265b5f7fd7fc2a"
+    },
+    {
+      "name": "xiangqi14-local-v3.onnx",
+      "bytes": 28221283,
+      "sha256": "fdf31b53da7bc2350936bb51fb6e53ddf0d5958aa36830a6493a187332458047"
+    },
+    {
+      "name": "xiangqi14-local-v3-rv1106.rknn",
+      "bytes": 7395907,
+      "sha256": "ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2"
+    }
+  ]
+}

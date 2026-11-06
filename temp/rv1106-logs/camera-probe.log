@@ -1,0 +1,120 @@
+LOAD rk_dvbm
+
+LOAD sc3336
+
+LOAD mis5001
+
+LOAD video_rkcif
+
+LOAD video_rkisp
+
+LOAD phy-rockchip-csi2-dphy-hw
+
+LOAD phy-rockchip-csi2-dphy
+
+LOAD rga3
+
+LOAD mpp_vcodec
+
+[    0.107094] rockchip-spi ff500000.spi: probed, poll=0, rsd=0
+
+[   84.071115] rk_dvbm ffa70000.rkdvbm: probe start
+
+[   84.071428] rk_dvbm ffa70000.rkdvbm: probe success
+
+[   84.099821] sc3336 4-0030: driver version: 00.01.01
+
+[   84.099941] sc3336 4-0030: Failed to get pwdn-gpios
+
+[   84.099956] sc3336 4-0030: could not get default pinstate
+
+[   84.099963] sc3336 4-0030: could not get sleep pinstate
+
+[   84.099985] sc3336 4-0030: supply avdd not found, using dummy regulator
+
+[   84.100195] sc3336 4-0030: supply dovdd not found, using dummy regulator
+
+[   84.100253] sc3336 4-0030: supply dvdd not found, using dummy regulator
+
+[   84.112390] sc3336 4-0030: Detected OV00cc41 sensor
+
+[   84.136392] mis5001 4-0031: Error applying setting, reverse things back
+
+[   84.136416] mis5001: probe of 4-0031 failed with error -22
+
+[   84.168440] : get_remote_sensor: video pad[0] is null
+
+[   84.168450] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+
+[   84.168467] : get_remote_sensor: video pad[0] is null
+
+[   84.168474] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+
+[   84.168489] : get_remote_sensor: video pad[0] is null
+
+[   84.168495] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+
+[   84.168511] : get_remote_sensor: video pad[0] is null
+
+[   84.168517] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+
+[   84.201653] rockchip-mipi-csi2-hw ffa20000.mipi-csi2-hw: enter mipi csi2 hw probe!
+
+[   84.201844] rockchip-mipi-csi2-hw ffa20000.mipi-csi2-hw: probe success, v4l2_dev:mipi-csi2-hw!
+
+[   84.201977] rockchip-mipi-csi2-hw ffa30000.mipi-csi2-hw: enter mipi csi2 hw probe!
+
+[   84.202093] rockchip-mipi-csi2-hw ffa30000.mipi-csi2-hw: probe success, v4l2_dev:mipi-csi2-hw!
+
+[   84.202595] rockchip-mipi-csi2: probe success, v4l2_dev:rkcif-mipi-lvds!
+
+[   84.351207] rockchip-csi2-dphy-hw ff3e8000.csi2-dphy-hw: csi2 dphy hw probe successfully!
+
+[   84.375647] rockchip-csi2-dphy csi2-dphy0: dphy0 matches m00_b_sc3336 4-0030:bus type 5
+
+[   84.375674] rockchip-csi2-dphy csi2-dphy0: csi2 dphy0 probe successfully!
+
+[   84.407166] rga: rga2 probe successfully
+
+[   84.457935] mpp_service mpp-srv: probe start
+
+[   84.460527] mpp_vepu_pp ffa60000.rkvenc-pp: probe device
+
+[   84.465712] mpp_service mpp-srv: probe success
+
+ls: /sys/bus/i2c/devices/4-0031/driver: No such file or directory
+
+lrwxrwxrwx    1 root     root             0 Nov  4 09:21 [1;36m/sys/bus/i2c/devices/4-0030/driver[m -> [1;34m../../../../../bus/i2c/drivers/sc3336[m
+
+Module                  Size  Used by    Tainted: G  
+
+mpp_vcodec            414257  0 
+
+rga3                   90762  0 
+
+phy_rockchip_csi2_dphy     9338  0 
+
+phy_rockchip_csi2_dphy_hw    10066  0 
+
+video_rkisp           171902  0 
+
+video_rkcif           162117  0 
+
+mis5001                 9153  0 
+
+sc3336                  9940  1 
+
+rk_dvbm                 5941  2 mpp_vcodec,video_rkisp
+
+pwm_bl                  4629  0 
+
+[1;35m/dev/media0[m   [1;35m/dev/video11[m  [1;35m/dev/video16[m  [1;35m/dev/video20[m  [1;35m/dev/video7[m
+
+[1;35m/dev/media1[m   [1;35m/dev/video12[m  [1;35m/dev/video17[m  [1;35m/dev/video3[m   [1;35m/dev/video8[m
+
+[1;35m/dev/video0[m   [1;35m/dev/video13[m  [1;35m/dev/video18[m  [1;35m/dev/video4[m   [1;35m/dev/video9[m
+
+[1;35m/dev/video1[m   [1;35m/dev/video14[m  [1;35m/dev/video19[m  [1;35m/dev/video5[m
+
+[1;35m/dev/video10[m  [1;35m/dev/video15[m  [1;35m/dev/video2[m   [1;35m/dev/video6[m
+

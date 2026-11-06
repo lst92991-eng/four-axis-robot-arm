@@ -1,0 +1,10 @@
+{
+  "gpio": "GPIO1_B0",
+  "physical_pin": "U7.11",
+  "direction": "out",
+  "value": "1",
+  "active_low": "0",
+  "action": "read_only",
+  "host_time": "2026-11-06T19:04:53.518515+08:00",
+  "user_observation": "MOS module indicator did not light"
+}

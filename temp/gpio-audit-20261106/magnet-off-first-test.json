@@ -1,0 +1,20 @@
+{
+  "action": "OFF",
+  "gpio": "GPIO1_B0",
+  "physical_header": "U7 pin 11",
+  "sysfs_gpio": 40,
+  "before": {
+    "flags": 0,
+    "consumer": "",
+    "exported": false
+  },
+  "after": {
+    "direction": "out",
+    "value": "0",
+    "active_low": "0"
+  },
+  "automatic_reenable": false,
+  "motor_commands": false,
+  "host_time": "2026-11-06T18:38:08.767698+08:00",
+  "physical_release_confirmed": false
+}

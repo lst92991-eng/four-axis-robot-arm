@@ -1,0 +1,66 @@
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
+
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq qlen 1000
+
+    link/ether fe:9b:5c:bf:21:9f brd ff:ff:ff:ff:ff:ff
+
+3: ip6_vti0@NONE: <NOARP> mtu 1364 qdisc noop qlen 1000
+
+    link/tunnel6 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 brd 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
+
+4: ip6tnl0@NONE: <NOARP> mtu 1452 qdisc noop qlen 1000
+
+    link/tunnel6 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 brd 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
+
+5: usb0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast qlen 1000
+
+    link/ether 1e:e9:97:06:d5:03 brd ff:ff:ff:ff:ff:ff
+
+Module                  Size  Used by    Tainted: G  
+
+rockit                225880 15 
+
+mpp_vcodec            414257  2 rockit
+
+rga3                   90762  1 rockit
+
+phy_rockchip_csi2_dphy     9338  0 
+
+phy_rockchip_csi2_dphy_hw    10066  0 
+
+video_rkisp           171902  3 rockit
+
+video_rkcif           162117  4 rockit
+
+sc3336                  9940  2 
+
+rk_dvbm                 5941  2 mpp_vcodec,video_rkisp
+
+pwm_bl                  4629  0 
+
+-rwxr-xr-x    1 1000     1000         32608 Sep 19 13:15 [1;32m/lib/ld-uClibc-1.0.31.so[m
+
+lrwxrwxrwx    1 1000     1000            14 Sep 19 12:44 [1;36m/lib/ld-uClibc.so.0[m -> [1;32mld-uClibc.so.1[m
+
+lrwxrwxrwx    1 1000     1000            19 Sep 19 12:44 [1;36m/lib/ld-uClibc.so.1[m -> [1;32mld-uClibc-1.0.31.so[m
+
+lrwxrwxrwx    1 1000     1000            19 Sep 19 12:44 [1;36m/lib/libc.so.0[m -> [1;32mlibuClibc-1.0.31.so[m
+
+lrwxrwxrwx    1 1000     1000            19 Sep 19 12:44 [1;36m/lib/libc.so.1[m -> [1;32mlibuClibc-1.0.31.so[m
+
+-rw-r--r--    1 1000     1000        190368 Sep 19 13:18 [0;0m/oem/usr/lib/librknnmrt.so[m
+
+d6259f5f8537acc15b0c3686010109bf4182e654281aad180a44bfd73ce929cc  /oem/usr/lib/librknnmrt.so
+
+2be8ce87165190fb06168923ed1a76426f7d3c095cde68e4b3053f65ad857a03  /oem/usr/ko/rknpu.ko
+
+# CONFIG_CAN is not set
+
+# CONFIG_USB_NET_DRIVERS is not set
+
+# CONFIG_USB_NET_RNDIS_WLAN is not set
+
+# CONFIG_USB_NET2272 is not set
+

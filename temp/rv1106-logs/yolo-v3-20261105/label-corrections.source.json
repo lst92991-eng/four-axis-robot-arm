@@ -1,0 +1,473 @@
+{
+  "reviewer": "Codex direct glyph review, not independently human audited",
+  "changes": [
+    {
+      "image": "images/train/s02_t0009.0.jpg",
+      "original_label_sha256": "c7373b57f0287a8d0220c9c85f19654794e2eb919d17752cadffd55250d09c7a",
+      "corrected_label_sha256": "1c02230c1a5f5c97bccf029ed9874f80ee2f80b7cf8ecb398f221a8de8477a67",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0020.0.jpg",
+      "original_label_sha256": "90574ad931000057be2ac6e19237a8ff5b7e23e4dd041281f1576a97e076e172",
+      "corrected_label_sha256": "451bdee411b259df806b0d688bb44d0976c314a3b5138626d6f1a99fde9a309f",
+      "rows": [
+        {
+          "row_zero_based": 6,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 13,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0022.0.jpg",
+      "original_label_sha256": "517976eedbe9c3c62ee334be94f6725c2eae2d443879938fd66e8c85b57e6007",
+      "corrected_label_sha256": "f7486cf22dd382dc3886be0c281715cd6bb6698be46e7b3af821ec1a7084498a",
+      "rows": [
+        {
+          "row_zero_based": 5,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0026.0.jpg",
+      "original_label_sha256": "7bce8a3b117b352b1f0790a88397a6fb2a00d91b27182dbda86578637e4a842a",
+      "corrected_label_sha256": "aac42cb70fdb099a6e3efbf0463e5854ef91804487e9eedc44ea89208ce4fbb5",
+      "rows": [
+        {
+          "row_zero_based": 5,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0034.0.jpg",
+      "original_label_sha256": "2714858d3e5bd644d99a1fb060820b92c809b1a73830ac68662764d4bb36ef60",
+      "corrected_label_sha256": "3f21e53f3f8da930a5cf9f9e9eadfcfec4f5d0a95b438a5bed513a9ab369afa0",
+      "rows": [
+        {
+          "row_zero_based": 5,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0042.0.jpg",
+      "original_label_sha256": "1be625228e17bb41dbfd3c5897e0b8fdd36fc7af4b71d039680abb2911eade36",
+      "corrected_label_sha256": "7eb559d4f2eea96707b4778ec1f265690951a08b8e309ca9ce6ce8207387c6ec",
+      "rows": [
+        {
+          "row_zero_based": 5,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0050.0.jpg",
+      "original_label_sha256": "acba53718bce7a29346a369ce9dd46e56108117b0dd4b590d3a52aa0afe90a3c",
+      "corrected_label_sha256": "d30926a2ae89f089ebf46485626b6e6954e1a0030cb8e0280855aacb0c7b1267",
+      "rows": [
+        {
+          "row_zero_based": 5,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 11,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0111.0.jpg",
+      "original_label_sha256": "e411f8a716a793707289d95f4f08b9cf7eeae96267625cf3f3d4886838d57b61",
+      "corrected_label_sha256": "bf5ff56f9198b81794c60fca00c894a577d8b6e82d99faf5fbc5616b3172b47b",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 13,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0124.0.jpg",
+      "original_label_sha256": "0084c4900275cae262183117af37d17173b1f59a9fe2482dc6c55bf86b855bd1",
+      "corrected_label_sha256": "4b99a257c9fea84c1d0a8e1a7525e8ed3ac49d9b96f72aa8b7b33cf6d90e6990",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 19,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0140.0.jpg",
+      "original_label_sha256": "113dcaf30f2dc287342932180da3985f48574473b99e0063d8eb6dc8b939e8af",
+      "corrected_label_sha256": "f5aff7240983030c257ac9d0cf13c47df0aeb236996c836af4d3cdf313cc24eb",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 19,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0151.0.jpg",
+      "original_label_sha256": "44bf0c4ca758b6e0ded5098656c5835a9ea809b2ecb85b6e0ab2cc3bf2508add",
+      "corrected_label_sha256": "685c83f03db3fc2dea4a148bab023dd0e28feaeb5b77ef75f9fe2760d439381c",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0157.0.jpg",
+      "original_label_sha256": "aabfb3e29cb9f474c90c9d88d1e949371faa5a42fbd83a97202c3cbaa470e9a7",
+      "corrected_label_sha256": "e829226491cb225b4121f75f2edbf2cdf287434782770973369b81a893b5ac65",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0163.0.jpg",
+      "original_label_sha256": "74747fa111469622818f832a53102ac1ca296f5dbe11d1978c5ce07229b35b61",
+      "corrected_label_sha256": "76ffce595f02d97e3243f567d3e330e07fe5058a38a246a6b15de9813c2aebc0",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0169.0.jpg",
+      "original_label_sha256": "1020473f7327e571ba14beac9d8208ba56f98400ca60a0d0e760fccc755f760b",
+      "corrected_label_sha256": "065fec7c30d012f7395c1f884f890ad063a29dd7898e35f9d1cbea91b17ab219",
+      "rows": [
+        {
+          "row_zero_based": 14,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0180.0.jpg",
+      "original_label_sha256": "a38a8ee23e71b93eed6dff60e1b5d18e5c33d6e5c01df437fa9cd0d2be38da53",
+      "corrected_label_sha256": "7ee1f7ccc47f6a29e6587bb5a23ef04e7509985b59e63493252045dc731509d2",
+      "rows": [
+        {
+          "row_zero_based": 7,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0196.0.jpg",
+      "original_label_sha256": "d76c902d00cd4e5a51e216ef6ed045a463491057fd857b8773682ddc115c4f64",
+      "corrected_label_sha256": "9d06f8174c33988866ea69d687a43ba1f16b311b6cb5e53cb7d477cc0178ef93",
+      "rows": [
+        {
+          "row_zero_based": 7,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0202.0.jpg",
+      "original_label_sha256": "b8114b2a84351037e60494fa8efd41c45b6cb985d5b761d3a1a04b837f692d63",
+      "corrected_label_sha256": "020201ed019b58080c13b2bb182cd202874e89281aee141bd5e5819672616b25",
+      "rows": [
+        {
+          "row_zero_based": 7,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 20,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0214.0.jpg",
+      "original_label_sha256": "2fd663c39a8000b0a26188b02400f59f4e7534d171f3db2cd0402738691b206b",
+      "corrected_label_sha256": "becda90aa576c64943728cfda9e11d27abbd444cc1e1d294d4e1ec1dba674849",
+      "rows": [
+        {
+          "row_zero_based": 7,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 21,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/train/s02_t0235.0.jpg",
+      "original_label_sha256": "fa9ccfab1799d2060171a5af1a4c0673f711b630a66e8c9961fc06197db5902b",
+      "corrected_label_sha256": "93a8e65f15303cf7d8116b3caff60a586f2aa2439abef3cd573b55049106d12b",
+      "rows": [
+        {
+          "row_zero_based": 7,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 21,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/test/s03_t0032.0.jpg",
+      "original_label_sha256": "09f31fa724f17aecbc305dca740ef7be07191e9a342e27563593909b1d90c59b",
+      "corrected_label_sha256": "46cfe8a5ac3818e47bde7ea944a0f0cd791f537b2c69c0a9e34fa6122ce2bd99",
+      "rows": [
+        {
+          "row_zero_based": 6,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 19,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/test/s03_t0042.0.jpg",
+      "original_label_sha256": "7ae5e849db836a82b2be5a6f6a4a7001237914f4e58ef54a07573faf687563de",
+      "corrected_label_sha256": "f7c19ea917f4a1881717e6af841445efda1339057daf4d42ace639b3651fa0b5",
+      "rows": [
+        {
+          "row_zero_based": 6,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 18,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/test/s03_t0050.0.jpg",
+      "original_label_sha256": "c07ec7c862549db6a673d1e92875c00bcd4d6bd9df744d2afb41884233bee03a",
+      "corrected_label_sha256": "35bcd9bb139f890a096ee8e718e509f5f3c6c918719ddd1479747f7d4f48de64",
+      "rows": [
+        {
+          "row_zero_based": 6,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 18,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/test/s03_t0056.0.jpg",
+      "original_label_sha256": "f895cdb746c9e63a876b69dc40427e53630aad986f044116e607e143a8d73b8e",
+      "corrected_label_sha256": "21c851e8a68ef3821423649076ffbee265b60b927711d25a7a82c98e03ba7fc8",
+      "rows": [
+        {
+          "row_zero_based": 6,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 18,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/val/s04_t0035.0.jpg",
+      "original_label_sha256": "fead44e508bd2ac1946766bc1180899ffa4a6ad6f9d593a5ae832561f1b54682",
+      "corrected_label_sha256": "517ee9802531fdd0aa749376bb71993a984ac71f0de32fa38585cda186923004",
+      "rows": [
+        {
+          "row_zero_based": 6,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/val/s04_t0043.0.jpg",
+      "original_label_sha256": "06eb566b9034ad6fd2986dd7b5bba8b4544924220b8efade361529433e44e19e",
+      "corrected_label_sha256": "2cd20377420ed12f339a2449194ea46eab72c05065d7a2865f776cc19d6e45aa",
+      "rows": [
+        {
+          "row_zero_based": 0,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 12,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    },
+    {
+      "image": "images/val/s04_t0149.0.jpg",
+      "original_label_sha256": "529d39b06066669fe01e8354e234bef73b6929ed9ffd6a6b59d5480098e97714",
+      "corrected_label_sha256": "c4f13fc0413a02c8997032ab9abd8e134a1214561ab2456f923f3929cb6ca9bc",
+      "rows": [
+        {
+          "row_zero_based": 0,
+          "from": 0,
+          "to": 2
+        },
+        {
+          "row_zero_based": 11,
+          "from": 2,
+          "to": 0
+        }
+      ],
+      "reason": "Direct visual review of actual glyphs, including rotated magnified crops: one 将 labeled 象 and one 象 labeled 将. Not inferred from YOLO or starting-position priors."
+    }
+  ]
+}

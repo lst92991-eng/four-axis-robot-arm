@@ -1,0 +1,212 @@
+{
+
+  "method": "read-only GPIO_GET_CHIPINFO_IOCTL/GPIO_GET_LINEINFO_IOCTL; no line request or GPIO write",
+
+  "chips": [
+
+    {
+
+      "device": "/dev/gpiochip0",
+
+      "label": "gpio0",
+
+      "lines": 32
+
+    },
+
+    {
+
+      "device": "/dev/gpiochip1",
+
+      "label": "gpio1",
+
+      "lines": 32
+
+    },
+
+    {
+
+      "device": "/dev/gpiochip2",
+
+      "label": "gpio2",
+
+      "lines": 32
+
+    },
+
+    {
+
+      "device": "/dev/gpiochip3",
+
+      "label": "gpio3",
+
+      "lines": 32
+
+    },
+
+    {
+
+      "device": "/dev/gpiochip4",
+
+      "label": "gpio4",
+
+      "lines": 24
+
+    }
+
+  ],
+
+  "candidate": {
+
+    "device": "/dev/gpiochip1",
+
+    "bank": "gpio1",
+
+    "offset": 8,
+
+    "flags": 0,
+
+    "kernel_used": false,
+
+    "is_output": false,
+
+    "name": "",
+
+    "consumer": ""
+
+  },
+
+  "device_tree_references": [
+
+    {
+
+      "node": "/serial@ff4e0000",
+
+      "property": "pinctrl-0",
+
+      "group": "/pinctrl/uart4/uart4m0-xfer",
+
+      "enabled_with_ancestors": false
+
+    },
+
+    {
+
+      "node": "/pwm@ff350030",
+
+      "property": "pinctrl-0",
+
+      "group": "/pinctrl/pwm3/pwm3m1-pins",
+
+      "enabled_with_ancestors": false
+
+    }
+
+  ],
+
+  "sysfs": [
+
+    {
+
+      "path": "/sys/class/gpio/gpiochip32",
+
+      "label": "gpio1\n",
+
+      "base": "32\n",
+
+      "ngpio": "32\n"
+
+    },
+
+    {
+
+      "path": "/sys/class/gpio/gpiochip128",
+
+      "label": "gpio4\n",
+
+      "base": "128\n",
+
+      "ngpio": "24\n"
+
+    },
+
+    {
+
+      "path": "/sys/class/gpio/gpiochip0",
+
+      "label": "gpio0\n",
+
+      "base": "0\n",
+
+      "ngpio": "32\n"
+
+    },
+
+    {
+
+      "path": "/sys/class/gpio/gpiochip96",
+
+      "label": "gpio3\n",
+
+      "base": "96\n",
+
+      "ngpio": "32\n"
+
+    },
+
+    {
+
+      "path": "/sys/class/gpio/gpiochip64",
+
+      "label": "gpio2\n",
+
+      "base": "64\n",
+
+      "ngpio": "32\n"
+
+    }
+
+  ],
+
+  "pin_groups": [
+
+    {
+
+      "node": "/pinctrl/pwm3/pwm3m1-pins",
+
+      "tuple": [
+
+        1,
+
+        8,
+
+        2,
+
+        109
+
+      ]
+
+    },
+
+    {
+
+      "node": "/pinctrl/uart4/uart4m0-xfer",
+
+      "tuple": [
+
+        1,
+
+        8,
+
+        1,
+
+        111
+
+      ]
+
+    }
+
+  ]
+
+}
+

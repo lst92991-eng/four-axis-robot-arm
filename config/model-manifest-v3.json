@@ -1,0 +1,20 @@
+{
+  "active_model": "xiangqi14-local-v3",
+  "release": "v2026.11.05-model-v3",
+  "release_commit": "1174aad6617a5e39666a35536a90231626abe94d",
+  "board_path": "/userdata/scara-yolo-v3/xiangqi14-local-v3-rv1106.rknn",
+  "sha256": "ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2",
+  "preview": "http://192.168.31.187:8088/",
+  "physical_npu_tested": true,
+  "reference_replay_totals": {
+    "targets": 128,
+    "correct": 128,
+    "wrong": 0,
+    "missed": 0,
+    "extra": 0
+  },
+  "npu_mean_ms": 83.91211967500567,
+  "evidence": "C:\\Users\\shuto\\Desktop\\四轴机械臂-CANFD升级交接-2026-11-04\\temp\\rv1106-logs\\yolo-v3-20261105\\hardware-test-summary.json",
+  "motor_commands": false,
+  "training_performed": false
+}

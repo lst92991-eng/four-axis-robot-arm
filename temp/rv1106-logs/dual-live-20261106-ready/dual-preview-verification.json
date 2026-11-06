@@ -1,0 +1,15 @@
+{
+  "url": "http://192.168.31.35:8088/dual",
+  "live_updates": "PASS",
+  "status": {
+    "frame_id": "20261106-154825-2714-138",
+    "age_s": 0.4361333550004929,
+    "geometry_valid": true,
+    "orientation_valid": true
+  },
+  "recent_frames": 20,
+  "frames_with_90_points": 20,
+  "geometry_backend": "native C++17 OpenCV 5.0.0",
+  "yolo_backend": "RV1106 NPU, local-v3",
+  "motor_commands": false
+}

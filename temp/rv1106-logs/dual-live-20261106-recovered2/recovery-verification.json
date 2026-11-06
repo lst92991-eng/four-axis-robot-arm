@@ -1,0 +1,12 @@
+{
+  "SampleCount": 6,
+  "UniqueFrames": 6,
+  "MaxFrameAgeSeconds": 0.7479550850002852,
+  "TotalFrames": 86,
+  "FirstFrame": "20261106-173204-1-0",
+  "LatestFrame": "20261106-173204-1754-85",
+  "LatestFps": 1.5262796664504448,
+  "GeometryFailures": 1,
+  "ProcessAlive": true,
+  "ErrorLogBytes": 0
+}

@@ -1,0 +1,17 @@
+{
+  "requested": "ON",
+  "gpio": "GPIO1_B0",
+  "physical_pin": "U7.11",
+  "motor_commands": false,
+  "before": "0",
+  "high_readback_samples": [
+    "1",
+    "1",
+    "1"
+  ],
+  "result": "ON_CONFIRMED",
+  "final_value": "1",
+  "auto_off": false,
+  "host_time": "2026-11-06T19:02:45.466593+08:00",
+  "physical_attraction_verified": false
+}

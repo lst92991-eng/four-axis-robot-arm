@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-04",
+  "timezone": "Asia/Shanghai",
+  "adb_serial": "abc8f01242c327ec",
+  "board_model": "Atguigu BoomPi Borad",
+  "kernel": "5.10.160 #2 Sun Sep 20 03:37:50 EDT 2026",
+  "image_sha256": "bab699164e84db9cbaec85d982a6491c512fdaf50a407cda9231ba474a2e0109",
+  "flash": "First attempt stopped at Test Device after boot download; second UF succeeded",
+  "windows_eth_ipv4": "192.168.31.164/24",
+  "board_eth0_ipv4": "192.168.31.233/24",
+  "ping": "3/3 each direction",
+  "sensor": "SC3336 at I2C 4-0030, chip ID OV00cc41, bound and streaming",
+  "mis5001": "4-0031 probe failed -22, no driver binding; unused module unloaded",
+  "rtsp_url": "rtsp://192.168.31.233/live/0",
+  "stream": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "fps": 30
+  },
+  "camera_stream_host_exec_session": 92433,
+  "vm_ipv4": "192.168.189.129",
+  "vm_network_mode": "NAT",
+  "vm_display": "User screenshot confirms Ubuntu ffplay displaying live H.264 1280x720/30fps preview on 2026-11-04; user reports focus adjusted.",
+  "calibration": "not performed; sample frame captured; no robot movements",
+  "user_preview_evidence": "vm-preview-user-confirmed.png",
+  "focused_board_frame": "board-focused.png",
+  "kernel_can_enabled": false,
+  "runtime_inventory": {
+    "system_visible_memory_mib": 170,
+    "libc": "uClibc 1.0.31",
+    "rknn_runtime": "/oem/usr/lib/librknnmrt.so",
+    "rknn_runtime_sha256": "d6259f5f8537acc15b0c3686010109bf4182e654281aad180a44bfd73ce929cc",
+    "rknpu_module_present": true,
+    "rknpu_module_loaded": false,
+    "opencv": "not found in /usr/lib or /oem/usr/lib globs; full SDK availability not established"
+  }
+}

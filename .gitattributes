@@ -1,0 +1,15 @@
+# Authored text uses LF; captured evidence and upstream model records retain their bytes.
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.png binary
+*.jpg binary
+*.rknn binary
+temp/gpio-audit-20261106/** -text -whitespace
+temp/rv1106-logs/** -text -whitespace
+temp/grid-fix/** -text -whitespace
+models/** -text -whitespace

@@ -1,0 +1,29 @@
+{
+  "source": "new-board.png",
+  "manually_read_pixel_anchors": [
+    [
+      414,
+      368
+    ],
+    [
+      821,
+      374
+    ]
+  ],
+  "predicted_palace_centers": [
+    [
+      414.1029495109653,
+      367.5804000805377
+    ],
+    [
+      819.6508713980014,
+      373.3960425557926
+    ]
+  ],
+  "errors_px": [
+    0.43204478265658125,
+    1.4781449790680967
+  ],
+  "tolerance_px": 4,
+  "physical_calibration": false
+}

@@ -1,0 +1,16 @@
+{
+  "host_time": "2026-11-06T19:35:33.306394+08:00",
+  "module": "replacement MOS module",
+  "user_observation": "正常了，详细记录信息，然后提交本地和远程",
+  "context": "User confirmed normal result immediately after OFF_HOLD test and question about release/current decrease",
+  "physical_release_confirmed_by_user": true,
+  "exact_off_current_a": null,
+  "exact_off_current_not_provided": true,
+  "gpio": {
+    "direction": "out",
+    "value": "0",
+    "active_low": "0",
+    "action": "read_only"
+  },
+  "motor_commands": false
+}

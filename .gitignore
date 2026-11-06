@@ -4,3 +4,22 @@ __pycache__/
 venv/
 # Adapter request sequence is local runtime state, not test evidence.
 temp/comm-logs/ping-sequence.json
+# Local C++ geometry builds and generated offline output.
+build/
+build-geometry/
+build-geometry-fixed/
+output/geometry-check/
+# Re-downloadable model export bundles and machine-local run selection.
+temp/model-v3-release/
+temp/current-preview-run.txt
+temp/grid-fix/*.exe
+# Continuous runtime data; selected immutable summaries/snapshots are archived explicitly.
+temp/rv1106-logs/**/frames.jsonl
+temp/rv1106-logs/**/detections.jsonl
+temp/rv1106-logs/**/current-source.png
+temp/rv1106-logs/**/latest-dual.jpg
+temp/rv1106-logs/**/latest-preview.jpg
+temp/rv1106-logs/**/geometry.json*
+temp/rv1106-logs/**/inspect.json
+temp/rv1106-logs/preview-*.out.log
+temp/rv1106-logs/preview-*.err.log

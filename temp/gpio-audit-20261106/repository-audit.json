@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-06",
+  "repository": "https://github.com/lst92991-eng/boomPI",
+  "local_clone": "C:\\Users\\shuto\\Desktop\\boomPI",
+  "main_commit": "0292e5d7836059c4daee724865e100766ea5ecb1",
+  "other_branch_checked": "codex/minimal-non-audio",
+  "release_checked": "v1.0.0",
+  "raw_mainboard_netlist_found": false,
+  "dts_source_in_repository_found": false,
+  "expected_mainboard_netlist": {
+    "name": "netlist.json",
+    "bytes": 694291,
+    "sha256": "f668a52ac19debdeb1eb257e8c4601fec14a57e1662424d8969db060e8da5bcc"
+  },
+  "live_device_tree_read": true,
+  "live_model": "Atguigu BoomPi Borad",
+  "live_gpio_header_line_names_present": false,
+  "live_io_voltage_domain_supplies_present": false,
+  "gpio_outputs_changed": false,
+  "physical_pin_selected": null,
+  "reason": "Repository retains derived hardware records but explicitly excludes raw netlists. Neither these records nor live DT supplies the complete physical header mapping and IO supply evidence needed to choose a 3.3V output."
+}

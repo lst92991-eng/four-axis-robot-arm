@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "planning_template_not_loaded_by_firmware",
+  "motion_enabled": false,
+  "camera": {
+    "sensor": "SC3336",
+    "adb_serial": "abc8f01242c327ec",
+    "rtsp_url": "rtsp://192.168.31.233/live/0",
+    "address_is_dynamic": true,
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "sensor_native_size": [
+      2304,
+      1296
+    ],
+    "isp_pixel_format": "NV12",
+    "focus_confirmed_by_user": "2026-11-04",
+    "camera_config_id": null,
+    "intrinsics_K": null,
+    "distortion_coefficients": null,
+    "intrinsics_valid": false,
+    "capture_clock_domain": null
+  },
+  "board": {
+    "files": 9,
+    "ranks": 10,
+    "convention_status": "proposed",
+    "origin": "red_player_left_bottom_intersection",
+    "x_direction": "right_from_red_view",
+    "y_direction": "toward_black",
+    "array_index_order": [
+      "rank",
+      "file"
+    ],
+    "spacing_x_mm": null,
+    "spacing_y_mm": null,
+    "board_surface_z_mm": 0,
+    "marker_layout": null,
+    "H_undistorted_image_to_board_mm": null,
+    "calibration_id": null,
+    "calibration_valid": false,
+    "independent_validation_max_error_mm": null,
+    "allowed_max_error_mm": null
+  },
+  "model": {
+    "manifest": "config/model-manifest.json",
+    "training_allowed": false,
+    "fine_tuning_allowed": false,
+    "inference_verified": false
+  },
+  "board_observation": {
+    "unknown_is_distinct_from_empty": true,
+    "stability_window_ms": null,
+    "max_frame_age_ms": null,
+    "max_grid_assignment_error_mm": null,
+    "confidence_threshold": null,
+    "runtime_valid": false
+  },
+  "control_transport": {
+    "protocol": "v3_standard_id_64byte_CAN_FD_BRS",
+    "nominal_bitrate": 500000,
+    "data_bitrate": 2000000,
+    "adapter_serial": "37813482333551062",
+    "windows_ping_verified": true,
+    "rv1106_verified": false,
+    "rv1106_kernel_CONFIG_CAN": false,
+    "rv1106_transport_candidate": "userspace_usb_libusb_evaluation_pending",
+    "firmware_command_watchdog_ms": 500,
+    "host_heartbeat_period_ms": null
+  },
+  "robot": {
+    "distance_unit": "mm",
+    "joint_angle_unit": "rad",
+    "T_robot_from_board": null,
+    "base_alignment_valid": false,
+    "link_lengths_mm": null,
+    "tool_tcp": null,
+    "workspace_limits": null,
+    "parking_pose": null,
+    "capture_storage_poses": null,
+    "safe_travel_z_mm": null,
+    "axes": [
+      {
+        "node": 1,
+        "mechanical_role": "z_lift",
+        "gear_ratio": 1.0,
+        "ratio_evidence": "current_build_profile_not_independent_mechanical_measurement",
+        "electrical_zero_counts": -1,
+        "pole_pairs_verified": null,
+        "encoder_direction_verified": null,
+        "mechanical_positive_direction": null,
+        "zero_reference_method": null,
+        "travel_limits": null,
+        "lead_mm_per_motor_rev": null,
+        "calibration_valid": false
+      },
+      {
+        "node": 2,
+        "mechanical_role": null,
+        "gear_ratio": 25.0,
+        "ratio_evidence": "user_confirmed_2026-11-04",
+        "electrical_zero_counts": -1,
+        "pole_pairs_verified": null,
+        "encoder_direction_verified": null,
+        "mechanical_positive_direction": null,
+        "zero_reference_method": null,
+        "travel_limits": null,
+        "lead_mm_per_motor_rev": null,
+        "calibration_valid": false
+      },
+      {
+        "node": 3,
+        "mechanical_role": null,
+        "gear_ratio": 1.0,
+        "ratio_evidence": "current_build_profile_not_independent_mechanical_measurement",
+        "electrical_zero_counts": -1,
+        "pole_pairs_verified": null,
+        "encoder_direction_verified": null,
+        "mechanical_positive_direction": null,
+        "zero_reference_method": null,
+        "travel_limits": null,
+        "lead_mm_per_motor_rev": null,
+        "calibration_valid": false
+      },
+      {
+        "node": 4,
+        "mechanical_role": null,
+        "gear_ratio": 1.0,
+        "ratio_evidence": "current_build_profile_not_independent_mechanical_measurement",
+        "electrical_zero_counts": -1,
+        "pole_pairs_verified": null,
+        "encoder_direction_verified": null,
+        "mechanical_positive_direction": null,
+        "zero_reference_method": null,
+        "travel_limits": null,
+        "lead_mm_per_motor_rev": null,
+        "calibration_valid": false
+      }
+    ]
+  },
+  "gripper": {
+    "type": "electromagnet_candidate_from_historical_context",
+    "confirmed_current_hardware": false,
+    "control_interface": null,
+    "rated_voltage_v": null,
+    "rated_current_a": null,
+    "max_on_time_s": null,
+    "pickup_wait_ms": null,
+    "release_wait_ms": null,
+    "piece_diameter_mm": null,
+    "piece_height_mm": null,
+    "tested_pickup_and_release": false
+  },
+  "game": {
+    "engine_candidate": "reuse_existing_Pikafish",
+    "engine_path": null,
+    "engine_sha256": null,
+    "nnue_path": null,
+    "nnue_sha256": null,
+    "human_side": null,
+    "fen_adapter_verified": false,
+    "committed_board": null,
+    "pending_move": null
+  },
+  "execution": {
+    "auto_move_enabled": false,
+    "require_valid_geometry": true,
+    "require_valid_observation": true,
+    "require_axis_calibration": true,
+    "require_post_move_visual_confirmation": true
+  }
+}

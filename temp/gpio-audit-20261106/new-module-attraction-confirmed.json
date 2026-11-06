@@ -1,0 +1,15 @@
+{
+  "host_time": "2026-11-06T19:29:41.567626+08:00",
+  "module": "replacement MOS module",
+  "user_observation": "现在正常了，现在是吸住的状态",
+  "gpio": {
+    "direction": "out",
+    "value": "1",
+    "active_low": "0",
+    "action": "read_only"
+  },
+  "attraction_observed_by_user": true,
+  "off_release_verified": false,
+  "motor_commands": false,
+  "automatic_shutoff": false
+}

@@ -1,0 +1,81 @@
+{
+  "target": "rv1106",
+  "toolkit": "1.6.0",
+  "input": [
+    1,
+    3,
+    640,
+    640
+  ],
+  "training_profile": "pinned Rockchip YOLOv5 ReLU, autoanchor disabled",
+  "input_order": "RGB",
+  "class_order": "kabnrcpKABNRCP",
+  "original_names": [
+    "k",
+    "a",
+    "b",
+    "n",
+    "r",
+    "c",
+    "p",
+    "K",
+    "A",
+    "B",
+    "N",
+    "R",
+    "C",
+    "P"
+  ],
+  "class_permutation": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "anchors": [
+    [
+      10,
+      13,
+      16,
+      30,
+      33,
+      23
+    ],
+    [
+      30,
+      61,
+      62,
+      45,
+      59,
+      119
+    ],
+    [
+      116,
+      90,
+      156,
+      198,
+      373,
+      326
+    ]
+  ],
+  "head_strides": [
+    8,
+    16,
+    32
+  ],
+  "output_values": "sigmoid probabilities, INT8 native NHWC",
+  "source_checkpoint_sha256": "b18cabfe0202b05ad4b127cbe52632aa7d20026af2f5b9d5c9186ab476050a61",
+  "rknn_sha256": "c843fac9714d97ca3b478193fb98557fef3146ca4c216a98380295a87c693943",
+  "calibration_images": 174,
+  "accuracy_status": "Conversion only. Real validation and board inference remain separate."
+}

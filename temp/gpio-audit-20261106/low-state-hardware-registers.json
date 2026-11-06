@@ -1,0 +1,39 @@
+{
+  "method": "read-only MMIO; no register writes",
+  "registers": {
+    "GPIO1B_IOMUX_L": {
+      "address": "0xff538008",
+      "value": "0x2200",
+      "integer": 8704
+    },
+    "GPIO1_VERSION": {
+      "address": "0xff530078",
+      "value": "0x101157c",
+      "integer": 16848252
+    },
+    "GPIO1_DR_L": {
+      "address": "0xff530000",
+      "value": "0x0",
+      "integer": 0
+    },
+    "GPIO1_DDR_L": {
+      "address": "0xff530008",
+      "value": "0x100",
+      "integer": 256
+    },
+    "GPIO1_EXT_PORT": {
+      "address": "0xff530070",
+      "value": "0x100c03",
+      "integer": 1051651
+    }
+  },
+  "iomux_gpio1_b0": 0,
+  "v2_output_latch_bit8": 0,
+  "v2_direction_bit8": 1,
+  "pad_input_bit8": 0,
+  "host_time": "2026-11-06T19:14:10.657566+08:00",
+  "user_supply_at_low": {
+    "voltage_v": 24,
+    "current_a": 0.074
+  }
+}

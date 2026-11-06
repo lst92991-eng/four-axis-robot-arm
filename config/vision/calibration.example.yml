@@ -1,0 +1,17 @@
+%YAML:1.0
+---
+# TEMPLATE ONLY. Fill measured data; NaN and empty point lists are rejected.
+calibration_id: "replace-with-real-calibration-id"
+camera:
+  id: "sc3336-1280x720-fixed-focus-v1"
+  width: 1280
+  height: 720
+# Optional camera.K and camera.distortion are OpenCV matrices.
+# If omitted, raw pixels are used; independent millimetre validation must still pass.
+plane_z_mm: .Nan
+allowed_error_mm: .Nan
+# Each sample: { pixel: [u, v], base_xy: [X_mm, Y_mm] }
+# Recommend 6 well-spread fit points, plus >=3 DIFFERENT check points.
+# Observe the physical point on the board plane, not a raised marker on top of the tool.
+fit_points: []
+check_points: []

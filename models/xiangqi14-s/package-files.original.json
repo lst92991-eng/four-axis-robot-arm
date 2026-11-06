@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-04",
+  "scope": "全部交付文件，不包含两份清单自身",
+  "files": [
+    {
+      "path": "README_先读我.txt",
+      "bytes": 3675,
+      "sha256": "40063eb8759a71811e618fad617952ef7cb55b9f898fbd17bcb934cef9427239",
+      "source": "本次交付说明，依据随包原始资料整理"
+    },
+    {
+      "path": "dataset/yolo14-v1.zip",
+      "bytes": 10853637,
+      "sha256": "b573f76bd8f6aff8718108080fc3372795a2ba8255744eeb4c14725be4e2494e",
+      "source": "output/release/scara-xiangqi-teaching-2026-10-09/model-training/yolo14-v1.zip"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 14721,
+      "sha256": "157359eb4f292891a6d976887d41874065dc3aaf4944f4b1a25b432e36537377",
+      "source": "tools/model/SOURCES.md"
+    },
+    {
+      "path": "docs/classes.csv",
+      "bytes": 197,
+      "sha256": "b6d24e331df40438ddfd2e02aec788a2e401d1c6ea28ee926389b7b11510dc83",
+      "source": "本次交付说明，依据随包原始资料整理"
+    },
+    {
+      "path": "docs/模型接入要点.txt",
+      "bytes": 1886,
+      "sha256": "be090797f22b4b96903d36beb8ae37368826a60d12cd60c42671d1757723f716",
+      "source": "本次交付说明，依据随包原始资料整理"
+    },
+    {
+      "path": "evidence/SOURCES-original-2026-10-09.md",
+      "bytes": 14175,
+      "sha256": "ba9aff388e49858ebd0fa295ed3e5314d20fcbe3f27c4f8dd6c390ca0f73aca0",
+      "source": "output/release/scara-xiangqi-teaching-2026-10-09/model-training/SOURCES.md"
+    },
+    {
+      "path": "evidence/original-source-hashes.json",
+      "bytes": 2684,
+      "sha256": "132cb5623f6b0931ba2763b0352eabcf417431b776edfed8eef052b38c358578",
+      "source": "output/release/scara-xiangqi-teaching-2026-10-09/model-training/original-source-hashes.json"
+    },
+    {
+      "path": "evidence/validation.json",
+      "bytes": 25027,
+      "sha256": "38b99dfd5a7e586292e9d52547cb7b0023080cd4a646d952654c2233256b1216",
+      "source": "tools/model/validation.json"
+    },
+    {
+      "path": "licenses/DATASET-LICENSE-NOTICE.txt",
+      "bytes": 938,
+      "sha256": "7a99d9883ff352a8cc7d8a2df876e34e021fd28275fbf3db035d3ad824889318",
+      "source": "tools/model/DATASET-LICENSE-NOTICE.txt"
+    },
+    {
+      "path": "licenses/Rockchip-Apache-2.0.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "tools/model/Rockchip-Apache-2.0.txt"
+    },
+    {
+      "path": "licenses/YOLOv5-GPL-3.0.txt",
+      "bytes": 35127,
+      "sha256": "7fa7e56c0db71105f4b59a6a0ac40225eb059876f85cd380383f7d7a066e68be",
+      "source": "tools/model/YOLOv5-GPL-3.0.txt"
+    },
+    {
+      "path": "model-tools/export_rknn.py",
+      "bytes": 5632,
+      "sha256": "185bed96c9287842637ff9b78176cfa25f2b6e565f5e173f12171dba128eb8ef",
+      "source": "tools/model/export_rknn.py"
+    },
+    {
+      "path": "model-tools/prepare_calibration.py",
+      "bytes": 2281,
+      "sha256": "c042a7c32a2bc2be44f57f41cb87b37b4c52388c0a965dd410ddf2b6e47a76a8",
+      "source": "tools/model/prepare_calibration.py"
+    },
+    {
+      "path": "model-tools/train-hyp.yaml",
+      "bytes": 373,
+      "sha256": "412b7de06498815d5bd9cf61442e5a9250389037697866c6a1f300c8ccbabdfe",
+      "source": "tools/model/train-hyp.yaml"
+    },
+    {
+      "path": "model-tools/vendor-compat.patch",
+      "bytes": 4953,
+      "sha256": "663d0fd689f56e3797c273db7e1b8abb94d64820e05c281cb7b01918ef8e97f2",
+      "source": "tools/model/vendor-compat.patch"
+    },
+    {
+      "path": "models/xiangqi14-s-best-portable.pt",
+      "bytes": 28817483,
+      "sha256": "b18cabfe0202b05ad4b127cbe52632aa7d20026af2f5b9d5c9186ab476050a61",
+      "source": "output/release/scara-xiangqi-teaching-2026-10-09/model-training/xiangqi14-s-best-portable.pt"
+    },
+    {
+      "path": "models/xiangqi14-s.json",
+      "bytes": 1167,
+      "sha256": "777030ab485e0f323091bcf05a173419ab3320d7d384c3747d2ee0b368b045b1",
+      "source": "output/release/scara-xiangqi-teaching-2026-10-09/model-training/xiangqi14-s.json"
+    },
+    {
+      "path": "models/xiangqi14-s.rknn",
+      "bytes": 7395875,
+      "sha256": "c843fac9714d97ca3b478193fb98557fef3146ca4c216a98380295a87c693943",
+      "source": "output/rv1106/scara-robot/models/xiangqi-yolov5s-relu.rknn"
+    }
+  ]
+}

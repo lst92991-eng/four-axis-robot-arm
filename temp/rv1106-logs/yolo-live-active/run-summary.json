@@ -1,0 +1,21 @@
+{
+  "frames": 26520,
+  "elapsed_s": 8411.148068200098,
+  "error": "ConnectionResetError(10054, '\u8fdc\u7a0b\u4e3b\u673a\u5f3a\u8feb\u5173\u95ed\u4e86\u4e00\u4e2a\u73b0\u6709\u7684\u8fde\u63a5\u3002', None, 10054, None)",
+  "effective_fps": 3.1529582837144887,
+  "npu_mean_ms": 83.86524386579987,
+  "npu_max_ms": 91.50120300000708,
+  "detections_min": 0,
+  "detections_max": 32,
+  "opencv_version": "4.13.0",
+  "pipeline": "PC preprocessing/postprocessing, real RV1106 NPU",
+  "training": false,
+  "motor_commands": false,
+  "roi": [
+    300,
+    100,
+    620,
+    600
+  ],
+  "rotate_clockwise": 0
+}

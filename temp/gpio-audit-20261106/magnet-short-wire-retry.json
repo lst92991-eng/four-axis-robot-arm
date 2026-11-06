@@ -1,0 +1,18 @@
+{
+  "requested": "ON",
+  "gpio": "GPIO1_B0",
+  "header": "U7 pin 11",
+  "motor_commands": false,
+  "before": "0",
+  "high_readback_samples": [
+    "0",
+    "0",
+    "0"
+  ],
+  "result": "HIGH_FAILED_RESTORED_LOW",
+  "final_value": "0",
+  "auto_reenable": false,
+  "host_time": "2026-11-06T18:50:47.826463+08:00",
+  "context": "User shortened wiring and explicitly requested retry",
+  "physical_attraction_verified": false
+}

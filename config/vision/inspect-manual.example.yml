@@ -1,0 +1,19 @@
+%YAML:1.0
+---
+camera:
+  id: "sc3336-1280x720-fixed-focus-v1"
+  width: 1280
+  height: 720
+image: "../../temp/rv1106-logs/board-focused.png"
+frame_id: "offline-board-focused"
+mode: "manual"
+# ORIGINAL image pixels, ordered (0,0),(8,0),(8,9),(0,9).
+# These are the four outermost GRID INTERSECTIONS, not the wooden/plastic outer frame.
+corners: []
+canonical_order_confirmed: 0
+plane_file: ""
+detections_file: ""
+scene_clear: 0
+# For reference command only: asymmetric printed feature in the 432x480 rectified board.
+# Rectified crossing (c,r) = (24+48*c, 456-48*r); red at image bottom.
+reference_patch: []
