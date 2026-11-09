@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "selected_cad_variant": "long_275_275",
+  "variant_confirmed_by_user": true,
+  "arm_lengths_mm": [275.0, 275.0],
+  "dimensions_source": "docs/cad/SCARA33-intake-20261109.json",
+  "base_origin": "J2 rotational axis center; XY directions and zero pose still require on-robot confirmation",
+  "joint_angle_unit": "rad",
+  "cartesian_unit": "mm",
+  "j1_lead_mm_per_rev": null,
+  "j1_contact_reference_mm": null,
+  "j2_reduction_ratio": 25.0,
+  "j2_mechanical_zero_motor_deg": null,
+  "j3_total_transmission_ratio": null,
+  "j3_mechanical_zero_motor_deg": null,
+  "tcp_offset_mm": null,
+  "safe_lift_mm": null,
+  "capture_zone_base_xy_mm": null,
+  "automatic_motion_ready": false,
+  "note": "CAD link lengths are selected; this file is an integration record, not a loaded motion configuration. Do not infer physical lead, joint offsets, TCP, or actual board pitch from the reference CAD scene."
+}

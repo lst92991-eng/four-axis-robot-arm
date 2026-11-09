@@ -1,0 +1,129 @@
+{
+  "version": "2023-03-05",
+  "transport": "Ethernet SSH",
+  "hash_mib": 4,
+  "threads": 1,
+  "virtual_memory_limit_kib": 140000,
+  "searches": [
+    {
+      "ply": 1,
+      "requested_ms": 1000,
+      "elapsed_seconds": 1.047,
+      "bestmove": "b2e2",
+      "last_info": "info depth 11 seldepth 11 multipv 1 score cp 22 upperbound nodes 19559 nps 18770 hashfull 31 tbhits 0 time 1042 pv b2e2 b7e7"
+    },
+    {
+      "ply": 2,
+      "requested_ms": 1000,
+      "elapsed_seconds": 1.031,
+      "bestmove": "b9c7",
+      "last_info": "info depth 11 seldepth 15 multipv 1 score cp -11 lowerbound nodes 18683 nps 18534 hashfull 33 tbhits 0 time 1008 pv b9c7"
+    },
+    {
+      "ply": 3,
+      "requested_ms": 3000,
+      "elapsed_seconds": 3.094,
+      "bestmove": "b0c2",
+      "last_info": "info depth 13 seldepth 16 multipv 1 score cp 20 upperbound nodes 55102 nps 17971 hashfull 97 tbhits 0 time 3066 pv b0c2 h9g7"
+    },
+    {
+      "ply": 4,
+      "requested_ms": 3000,
+      "elapsed_seconds": 3.047,
+      "bestmove": "a9b9",
+      "last_info": "info depth 13 seldepth 18 multipv 1 score cp -21 nodes 60160 nps 19946 hashfull 96 tbhits 0 time 3016 pv a9b9 a0b0 g6g5 b0b4 h9g7 g3g4 g5g4 b4g4 h7h8 h2g2 h8g8 g4f4 i9i8 c3c4 g9e7 i0i1"
+    },
+    {
+      "ply": 5,
+      "requested_ms": 3000,
+      "elapsed_seconds": 3.063,
+      "bestmove": "a0b0",
+      "last_info": "info depth 14 seldepth 20 multipv 1 score cp 27 lowerbound nodes 58959 nps 19318 hashfull 113 tbhits 0 time 3052 pv a0b0"
+    },
+    {
+      "ply": 6,
+      "requested_ms": 3000,
+      "elapsed_seconds": 3.031,
+      "bestmove": "h9g7",
+      "last_info": "info depth 14 seldepth 18 multipv 1 score cp -14 nodes 59234 nps 19600 hashfull 117 tbhits 0 time 3022 pv h9g7 g3g4 c6c5 h0g2 i9i8 b0b6 b7a7 b6c6 a7a8 e3e4 a8c8 c6d6 c7b5 e4e5 c5c4 e5e6 c8e8"
+    }
+  ],
+  "startup_seconds": 1.328,
+  "stop_response_seconds": 0.016,
+  "passed": true,
+  "memory": [
+    {
+      "phase": "ready",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108364,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 91792,
+      "MemAvailable_kib": 57784,
+      "MemFree_kib": 15468
+    },
+    {
+      "phase": "after_ply_1",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108376,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 91984,
+      "MemAvailable_kib": 57600,
+      "MemFree_kib": 15280
+    },
+    {
+      "phase": "after_ply_2",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108388,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 92028,
+      "MemAvailable_kib": 57564,
+      "MemFree_kib": 15244
+    },
+    {
+      "phase": "after_ply_3",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108392,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 92048,
+      "MemAvailable_kib": 57548,
+      "MemFree_kib": 15076
+    },
+    {
+      "phase": "after_ply_4",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108408,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 92072,
+      "MemAvailable_kib": 57472,
+      "MemFree_kib": 14992
+    },
+    {
+      "phase": "after_ply_5",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108412,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 92108,
+      "MemAvailable_kib": 57460,
+      "MemFree_kib": 14972
+    },
+    {
+      "phase": "after_ply_6",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108420,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 92120,
+      "MemAvailable_kib": 57436,
+      "MemFree_kib": 14944
+    },
+    {
+      "phase": "after_stop",
+      "VmPeak_kib": 120652,
+      "VmSize_kib": 108428,
+      "VmHWM_kib": 104080,
+      "VmRSS_kib": 92128,
+      "MemAvailable_kib": 57456,
+      "MemFree_kib": 14964
+    }
+  ],
+  "exit_code": 0
+}

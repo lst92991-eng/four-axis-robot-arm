@@ -1,0 +1,39 @@
+{
+  "source_repository": "https://github.com/lst92991-eng/four-axis-robot-arm",
+  "files": [
+    {
+      "path": "chess/board.cpp",
+      "source_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+      "source_path": "chess/board.cpp",
+      "sha256": "045ab5706b45c3f36d8d8055667bb2b1fda36b0da827a5ccd71c801af7437191"
+    },
+    {
+      "path": "chess/board.hpp",
+      "source_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+      "source_path": "chess/board.hpp",
+      "sha256": "098a318660a9a7d5112763baeff42f80f2fd70344864d79f562df6db0a9b99cd"
+    },
+    {
+      "path": "chess/pikafish.cpp",
+      "source_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+      "source_path": "chess/pikafish.cpp",
+      "sha256": "a762611be9b723775fb41d30d0feeec3ee55dbc6b66e1b9f7f380c896ef5003a"
+    },
+    {
+      "path": "chess/pikafish.hpp",
+      "source_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+      "source_path": "chess/pikafish.hpp",
+      "sha256": "85be7dd9d47460a8ea726f747f6a1b4d482e851d8a5c6defe037e8f26f0c3e9b"
+    },
+    {
+      "path": "cmake/rv1106.cmake",
+      "source_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+      "source_path": "cmake/rv1106.cmake",
+      "sha256": "824217a8b570f3b0a29002ec56f9b8359707ad5c1818e8e2b01e8538bec5bfdf"
+    }
+  ],
+  "notes": [
+    "Only game/UCI files imported; old motor protocol, ArUco and hardcoded geometry not imported.",
+    "Vision row0=red base; imported chess row0=black base; requires explicit adapter."
+  ]
+}

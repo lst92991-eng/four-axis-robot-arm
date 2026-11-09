@@ -20,3 +20,7 @@ firmware/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eo
 tests/*.c text eol=lf
 tests/**/*.h text eol=lf
 manual_control/*.html text eol=lf
+engine/pikafish-2023-03-05/pikafish -text
+engine/pikafish-2023-03-05/** -text -whitespace
+*.nnue binary
+*.tar.gz binary

@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-09",
+  "language": "C++17",
+  "opencv": "5.0.0",
+  "host": "Windows MSVC",
+  "ctest_suites_passed": 2,
+  "recorded_test_output": [
+    "PASS 44 geometry checks; no hardware linked.",
+    "Test Passed.",
+    "PASS 22 game/geometry checks; legal lists are test fixtures, no engine or motor executed.",
+    "Test Passed."
+  ],
+  "engine_assets_hashes_verified": [
+    "pikafish",
+    "pikafish.nnue",
+    "Copying.txt",
+    "source-4762ca3.tar.gz",
+    "board-results.json"
+  ],
+  "engine_elf": "ELF32 little-endian ARM",
+  "engine_executed_on_current_board": false,
+  "linux_uci_transport_built_on_this_windows_host": false,
+  "hardware_commands_sent": false,
+  "cad_manifest_verified_files": 211,
+  "cad_variant_user_confirmed": "275+275 mm"
+}

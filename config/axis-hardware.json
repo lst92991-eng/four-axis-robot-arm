@@ -27,5 +27,14 @@
     "acceleration_deg_s2": 60,
     "current_trial_status": "d3b08bf8 frozen working baseline: Kp1.6 Ki200, 1.4A, acceleration60; 480down passed; 480up voltage fault3 unresolved",
     "supply_user_report": "User states it is a safe numerical-control bench power supply; exact model unknown; no independent transient voltage measurement"
+  },
+  "geometry": {
+    "selected_variant": "long_275_275",
+    "arm_lengths_mm": [
+      275,
+      275
+    ],
+    "source": "docs/cad/SCARA33-intake-20261109.json",
+    "tcp_and_joint_reference_validated": false
   }
 }
