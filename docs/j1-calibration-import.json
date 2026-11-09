@@ -1,0 +1,17 @@
+[
+  {
+    "source": "C:\\Users\\shuto\\Desktop\\六轴机械臂项目交接\\firmware\\StepFOC\\inc\\motor_calibration.h",
+    "destination": "firmware/src/motor_calibration.h",
+    "source_sha256": "37dcaa344636cbcc5712c4820f1eed28ac3edbe1a4b4eacc4a5142b7abcd6d8f",
+    "destination_sha256": "282c5316f2b056fce0325f04aa461f0f058e0d82b7af9ccfea6324ce49277b6a"
+  },
+  {
+    "source": "C:\\Users\\shuto\\Desktop\\六轴机械臂项目交接\\firmware\\StepFOC\\src\\motor_calibration.c",
+    "destination": "firmware/src/motor_calibration.c",
+    "source_sha256": "5f01c6c0e1964d0161b3bc86272bb447c6115843b5313a559a638f2eab147845",
+    "destination_sha256": "8c7a24ec1b9f74b60d29802c1a9b0d6752c6362825a0bb218b30be760efa5308"
+  },
+  {
+    "note": "算法保持上游字节内容（仅文本编码/换行归一）；本项目适配器使用基本模式、J1、100..1000mA，初次请求300mA；上游入口测试电流从297counts改为本项目默认74counts，保留对齐断言。"
+  }
+]

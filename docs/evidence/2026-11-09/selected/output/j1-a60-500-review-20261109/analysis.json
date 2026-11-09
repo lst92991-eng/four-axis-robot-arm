@@ -1,0 +1,253 @@
+{
+  "source": "output\\manual-control\\20261109-194004-324812-real.jsonl",
+  "command": {
+    "t": 1794224489.833979,
+    "time": "2026-11-09T19:41:29.833979+08:00",
+    "kind": 12,
+    "value": -500000
+  },
+  "acceleration_reference_fit_deg_s2": -59.997617682285004,
+  "acceleration": {
+    "n": 416,
+    "seconds": 8.299999999999997,
+    "encoder_mean_speed": -249.96146696159647,
+    "reference_mean_speed": -250.01289156626504,
+    "error_min": -0.8189999999995052,
+    "error_max": 0.6610000000000582,
+    "error_mean": -0.017038461538463095,
+    "error_std": 0.26450646796933847,
+    "lag_first": 0.007999999999810825,
+    "lag_last": 0.4349999999994907,
+    "lag_mean": 0.017038461538463095,
+    "lag_linear_trend_deg_s": -0.014819210433303602,
+    "lag_positive_fraction": 0.5432692307692307,
+    "iq_ref_min": -732,
+    "iq_ref_max": -3,
+    "iq_abs_peak": 633,
+    "iq_tracking_rms": 24.617701964237035,
+    "near_current_limit_fraction": 0.0,
+    "vq_abs_peak": 4204,
+    "bus_range": [
+      24059,
+      24240
+    ]
+  },
+  "cruise": {
+    "n": 869,
+    "seconds": 17.36,
+    "encoder_mean_speed": -499.8804610995104,
+    "reference_mean_speed": -499.9999423963134,
+    "error_min": -2.5200000000004366,
+    "error_max": 0.261000000000422,
+    "error_mean": -0.779697353279101,
+    "error_std": 0.42564774898799146,
+    "lag_first": 0.4470000000001164,
+    "lag_last": 2.5200000000004366,
+    "lag_mean": 0.779697353279101,
+    "lag_linear_trend_deg_s": 0.04244228751072527,
+    "lag_positive_fraction": 0.9873417721518988,
+    "iq_ref_min": -890,
+    "iq_ref_max": -77,
+    "iq_abs_peak": 889,
+    "iq_tracking_rms": 29.03487843452612,
+    "near_current_limit_fraction": 0.0,
+    "vq_abs_peak": 4975,
+    "bus_range": [
+      24046,
+      24188
+    ]
+  },
+  "last2s": {
+    "n": 100,
+    "seconds": 1.980000000000004,
+    "encoder_mean_speed": -499.09002130681716,
+    "reference_mean_speed": -499.99949494949385,
+    "error_min": -2.5200000000004366,
+    "error_max": -0.3029999999998836,
+    "error_mean": -1.0820999999995002,
+    "error_std": 0.4606021167992544,
+    "lag_first": 0.7209999999995489,
+    "lag_last": 2.5200000000004366,
+    "lag_mean": 1.0820999999995002,
+    "lag_linear_trend_deg_s": 0.20825262526264268,
+    "lag_positive_fraction": 1.0,
+    "iq_ref_min": -890,
+    "iq_ref_max": -142,
+    "iq_abs_peak": 889,
+    "iq_tracking_rms": 37.30227875076803,
+    "near_current_limit_fraction": 0.0,
+    "vq_abs_peak": 4975,
+    "bus_range": [
+      24046,
+      24175
+    ]
+  },
+  "blocks": [
+    {
+      "start_seconds_after_command": 9,
+      "stats": {
+        "n": 200,
+        "seconds": 3.980000000000004,
+        "encoder_mean_speed": -500.05459426036384,
+        "reference_mean_speed": -499.9999999999995,
+        "error_min": -1.2989999999990687,
+        "error_max": 0.261000000000422,
+        "error_mean": -0.5249649999994017,
+        "error_std": 0.3094113504300961,
+        "lag_first": 0.4219999999986612,
+        "lag_last": 0.20499999999992724,
+        "lag_mean": 0.5249649999994017,
+        "lag_linear_trend_deg_s": 0.048175841896041696,
+        "lag_positive_fraction": 0.95,
+        "iq_ref_min": -557,
+        "iq_ref_max": -89,
+        "iq_abs_peak": 544,
+        "iq_tracking_rms": 26.1663906567184,
+        "near_current_limit_fraction": 0.0,
+        "vq_abs_peak": 4151,
+        "bus_range": [
+          24072,
+          24188
+        ]
+      }
+    },
+    {
+      "start_seconds_after_command": 14,
+      "stats": {
+        "n": 200,
+        "seconds": 3.980000000000004,
+        "encoder_mean_speed": -500.1926134579141,
+        "reference_mean_speed": -499.9999999999995,
+        "error_min": -1.8400000000001455,
+        "error_max": 0.17400000000088767,
+        "error_mean": -0.6642849999994723,
+        "error_std": 0.3537408144037579,
+        "lag_first": 0.8130000000001019,
+        "lag_last": 0.046000000000276486,
+        "lag_mean": 0.6642849999994723,
+        "lag_linear_trend_deg_s": 0.07646572414310138,
+        "lag_positive_fraction": 0.995,
+        "iq_ref_min": -667,
+        "iq_ref_max": -88,
+        "iq_abs_peak": 627,
+        "iq_tracking_rms": 25.200496026864233,
+        "near_current_limit_fraction": 0.0,
+        "vq_abs_peak": 4172,
+        "bus_range": [
+          24046,
+          24175
+        ]
+      }
+    },
+    {
+      "start_seconds_after_command": 19,
+      "stats": {
+        "n": 200,
+        "seconds": 3.980000000000004,
+        "encoder_mean_speed": -500.1539680826,
+        "reference_mean_speed": -499.9999999999995,
+        "error_min": -1.9419999999990978,
+        "error_max": -0.14499999999861757,
+        "error_mean": -0.9792749999995248,
+        "error_std": 0.383787518524218,
+        "lag_first": 0.8299999999999272,
+        "lag_last": 0.21699999999873398,
+        "lag_mean": 0.9792749999995248,
+        "lag_linear_trend_deg_s": 0.048586327158182056,
+        "lag_positive_fraction": 1.0,
+        "iq_ref_min": -708,
+        "iq_ref_max": -101,
+        "iq_abs_peak": 674,
+        "iq_tracking_rms": 31.454331975103205,
+        "near_current_limit_fraction": 0.0,
+        "vq_abs_peak": 4340,
+        "bus_range": [
+          24059,
+          24188
+        ]
+      }
+    },
+    {
+      "start_seconds_after_command": 24,
+      "stats": {
+        "n": 111,
+        "seconds": 2.200000000000003,
+        "encoder_mean_speed": -499.4984019886357,
+        "reference_mean_speed": -499.9995454545447,
+        "error_min": -2.5200000000004366,
+        "error_max": -0.3029999999998836,
+        "error_mean": -1.120018018017511,
+        "error_std": 0.46129777727074,
+        "lag_first": 1.4179999999996653,
+        "lag_last": 2.5200000000004366,
+        "lag_mean": 1.120018018017511,
+        "lag_linear_trend_deg_s": 0.059508599508702215,
+        "lag_positive_fraction": 1.0,
+        "iq_ref_min": -890,
+        "iq_ref_max": -142,
+        "iq_abs_peak": 889,
+        "iq_tracking_rms": 37.170171127150084,
+        "near_current_limit_fraction": 0.0,
+        "vq_abs_peak": 4975,
+        "bus_range": [
+          24046,
+          24175
+        ]
+      }
+    }
+  ],
+  "fault": {
+    "build": "d3b08bf8",
+    "uptime": 113100,
+    "state": 4,
+    "fault": 5,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -17213.6,
+    "velocity": -0.753,
+    "target": -17215.55,
+    "stationary": false,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 4,
+    "counts": -495468,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 27670,
+    "t": 1794224516.055506,
+    "time": "2026-11-09T19:41:56.055506+08:00"
+  },
+  "events": [
+    {
+      "wall_time": "2026-11-09T19:41:56.055687+08:00",
+      "simulated": false,
+      "time": "19:41:56",
+      "message": "J1 故障 5：运动跟随或行程保护",
+      "node": 1,
+      "fault": 5,
+      "position": -17213.6,
+      "target": -17215.55,
+      "velocity": -0.753,
+      "power": false
+    },
+    {
+      "wall_time": "2026-11-09T19:41:56.055941+08:00",
+      "simulated": false,
+      "time": "19:41:56",
+      "message": "J1 驱动已故障关断出力，不重复发 STOP"
+    },
+    {
+      "wall_time": "2026-11-09T19:41:56.056087+08:00",
+      "simulated": false,
+      "time": "19:41:56",
+      "message": "J1: 驱动故障 5：位置跟随误差超限"
+    }
+  ]
+}

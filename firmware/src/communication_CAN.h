@@ -17,6 +17,11 @@ enum
   CMD_PING,
   //相对当前反馈位置的角度增量
   CMD_MOVE_REL = 8,
+  CMD_CALIBRATE = 9,
+  CMD_TUNE_SPEED = 10,
+  CMD_REBOOT = 11,
+  CMD_VELOCITY = 12,
+  CMD_BRAKE_RATE = 13,
   MSG_STATUS = 0x40
 };
 

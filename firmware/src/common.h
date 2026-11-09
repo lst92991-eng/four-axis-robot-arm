@@ -19,7 +19,9 @@ typedef enum
   //制动
   MOTION_BRAKE,
   //故障锁定
-  MOTION_FAULT
+  MOTION_FAULT,
+  //手动持续速度运行，不设置机械角度终点。
+  MOTION_VELOCITY
 } motion_state_t;
 
 //---------故障分类区---------
@@ -44,6 +46,9 @@ typedef struct
 {
   //编码器多圈计数
   int64_t encoder_counts;
+  // 标定监督量：相电流使用 ADC counts，d 轴反馈换回同一单位。
+  int32_t phase_a_counts, phase_b_counts, phase_a_mean, phase_b_mean, id_counts;
+  uint32_t bus_mv;
   //编码器速度，计数/秒
   float velocity_counts_s;
   //反馈是否有效

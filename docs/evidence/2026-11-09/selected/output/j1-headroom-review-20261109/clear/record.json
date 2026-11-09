@@ -1,0 +1,93 @@
+{
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1073741825
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483649
+    },
+    {
+      "kind": 6,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483650
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483651
+    },
+    {
+      "kind": 2,
+      "a": -8551010,
+      "b": 0,
+      "seq": 2147483652
+    }
+  ],
+  "before": {
+    "build": "e4dd2ead",
+    "uptime": 2987950,
+    "state": 4,
+    "fault": 5,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -8551.01,
+    "velocity": 0.0,
+    "target": -8577.237,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 4,
+    "counts": -2920,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24240
+  },
+  "after": {
+    "build": "e4dd2ead",
+    "uptime": 2988050,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -8551.01,
+    "velocity": 0.0,
+    "target": -8551.01,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 13464,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24266
+  },
+  "completed": true
+}

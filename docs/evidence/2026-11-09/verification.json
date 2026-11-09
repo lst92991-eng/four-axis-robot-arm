@@ -1,0 +1,284 @@
+{
+  "date": "2026-11-09",
+  "python_unittest": {
+    "command": "python -m unittest discover -s tests -p test_*.py",
+    "tests": 37,
+    "passed": true
+  },
+  "geometry_ctest": {
+    "command": "ctest --test-dir build/commit-verify -C Release --output-on-failure",
+    "tests": 1,
+    "passed": true
+  },
+  "native_tests": [
+    {
+      "test": "calibration_adapter_test",
+      "exit_code": 0,
+      "output": "calibration_adapter: PASS (gates, units, ramp, save/reload, abort)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Itests/calibration_stubs",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\calibration_adapter_test.c",
+        "firmware/src/motor_calibration.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\calibration_adapter_test.exe"
+      ]
+    },
+    {
+      "test": "calibration_alignment_entry_test",
+      "exit_code": 0,
+      "output": "PASS: precheck unpowered, hinted entry continuous, shortest slew, final phase zero, fallback and range",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\calibration_alignment_entry_test.c",
+        "firmware/src/motor_calibration.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\calibration_alignment_entry_test.exe"
+      ]
+    },
+    {
+      "test": "j1_20_15_turn_motion_test",
+      "exit_code": 0,
+      "output": "20/15 turns: PASS (90/180 deg/s, target, speed, bounds, final +5 turns)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_20_15_turn_motion_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_20_15_turn_motion_test.exe"
+      ]
+    },
+    {
+      "test": "j1_endpoint_test",
+      "exit_code": 0,
+      "output": "endpoint: PASS (settling margin, unchanged 2.5-degree following protection)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_endpoint_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_endpoint_test.exe"
+      ]
+    },
+    {
+      "test": "j1_following_error_test",
+      "exit_code": 0,
+      "output": "j1_following_error: PASS (unchanged 2.5-degree protection through 500 deg/s)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_following_error_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_following_error_test.exe"
+      ]
+    },
+    {
+      "test": "j1_position_headroom_test",
+      "exit_code": 0,
+      "output": "headroom: PASS (positive/negative catch-up, slowdown, low speed, 500 cap, motor cap)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_position_headroom_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_position_headroom_test.exe"
+      ]
+    },
+    {
+      "test": "j1_protocol_test",
+      "exit_code": 0,
+      "output": "j1_protocol: PASS (ACK queue, no duplicate motion, stopped tuning/reboot gates)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Itests/protocol_stubs",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_protocol_test.c",
+        "firmware/src/communication_CAN.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_protocol_test.exe"
+      ]
+    },
+    {
+      "test": "j1_speed_interval_test",
+      "exit_code": 0,
+      "output": "j1_speed_interval: PASS (1/5/10/30 deg/s, reverse, stop, one-count and gap)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_speed_interval_test.c",
+        "firmware/src/speed_estimator.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_speed_interval_test.exe"
+      ]
+    },
+    {
+      "test": "j1_ten_turn_motion_test",
+      "exit_code": 0,
+      "output": "j1_ten_turn_motion: PASS (10 turns and return, speed/range/arrival)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_ten_turn_motion_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_ten_turn_motion_test.exe"
+      ]
+    },
+    {
+      "test": "j1_trajectory_drift_test",
+      "exit_code": 0,
+      "output": "trajectory max numerical drift = 0.000038458 deg",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_trajectory_drift_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_trajectory_drift_test.exe"
+      ]
+    },
+    {
+      "test": "j1_velocity_mode_test",
+      "exit_code": 0,
+      "output": "velocity: PASS (no position endpoint, accel/cruise/brake, watchdog interlock, following protection)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\j1_velocity_mode_test.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\j1_velocity_mode_test.exe"
+      ]
+    },
+    {
+      "test": "motor_calibration_test",
+      "exit_code": 0,
+      "output": "motor_calibration: PASS (8 profiles, faults, CRC, periodic mapping)",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\motor_calibration_test.c",
+        "firmware/src/motor_calibration.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\motor_calibration_test.exe"
+      ]
+    },
+    {
+      "test": "speed_estimator_test",
+      "exit_code": 0,
+      "output": "speed_estimator_test: PASS",
+      "stderr": "",
+      "command": [
+        "C:\\Users\\shuto\\.cache\\stepfoc-portable-tools-20261020\\mingw64\\bin\\gcc.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Ifirmware/src",
+        "-Ifirmware/drivers",
+        "tests\\speed_estimator_test.c",
+        "firmware/src/speed_estimator.c",
+        "-lm",
+        "-o",
+        "output\\commit-verify-20261109\\speed_estimator_test.exe"
+      ]
+    }
+  ],
+  "hardware_actions": "No motion or firmware update during archive verification"
+}

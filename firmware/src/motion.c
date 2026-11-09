@@ -14,8 +14,8 @@ int Motion_setZero(int64_t counts, float degrees)
   //失能后才能建立新的机械零点
   if (Joint.status.state != MOTION_OFF)
     return 0;
-  //有限行程区间同时排除NaN和无穷值
-  if (!(degrees >= CONFIG_MINIMUM && degrees <= CONFIG_MAXIMUM))
+  // 仅限制协议数值可表示范围；手动设参考不依赖未测量的机械行程。
+  if (!isfinite(degrees) || fabsf(degrees)>2000000.0f)
     return 0;
   Joint.zero_counts = counts;
   Joint.zero_degrees = degrees;
@@ -29,6 +29,7 @@ int Motion_setZero(int64_t counts, float degrees)
   Joint.status.referenced = 1;
   Joint.status.arrived = 0;
   Joint.status.interlocked = 0;
+  Joint.manual_velocity=0;
   return 1;
 }
 
@@ -51,7 +52,7 @@ int Motion_moveTo(float degrees, float speed)
 
   //检查目标角度和速度
   int target_valid = degrees >= CONFIG_MINIMUM && degrees <= CONFIG_MAXIMUM;
-  int speed_valid = speed > 0 && speed <= 30;
+  int speed_valid = speed > 0 && speed <= CONFIG_MAX_VELOCITY;
   int motor_speed_valid = speed * CONFIG_RATIO <= 1440;
   if (!target_valid || !speed_valid)
     return 0;
@@ -61,15 +62,16 @@ int Motion_moveTo(float degrees, float speed)
   //确认实际起点与轨迹起点一致
   if (Joint.status.position < CONFIG_MINIMUM || Joint.status.position > CONFIG_MAXIMUM)
     return 0;
-  float start = Joint.status.state == MOTION_OFF ? Joint.status.position : Joint.ref_pos;
-  if (fabsf(start - Joint.status.position) > 0.1f)
+  double start = Joint.status.state == MOTION_OFF ? Joint.status.position : Joint.ref_pos;
+  if (fabs(start - Joint.status.position) > 0.1)
     return 0;
-  float duration = fabsf(degrees - start) / speed + 2 * speed / CONFIG_ACCELERATION + 10;
+  double duration = fabs((double)degrees - start) / speed + 2 * speed / CONFIG_ACCELERATION + 10;
   if (duration > 3600)
     return 0;
 
   //记录本段运动的目标和时限
   Joint.ref_pos = start;
+  Joint.manual_velocity=0;
   Joint.ref_vel = 0;
   Joint.speed_limit = speed;
   Joint.status.requested = degrees;
@@ -81,6 +83,32 @@ int Motion_moveTo(float degrees, float speed)
   return 1;
 }
 
+int Motion_runVelocity(float velocity)
+{
+  float speed=fabsf(velocity);
+  if(CONFIG_NODE!=1 || !isfinite(velocity) || speed<=0 || speed>CONFIG_MAX_VELOCITY ||
+     speed*CONFIG_RATIO>1440 || Joint.status.interlocked || !Joint.status.referenced ||
+     !Joint.status.stationary || (Joint.status.state!=MOTION_OFF && Joint.status.state!=MOTION_HOLD))
+    return 0;
+  double start=Joint.status.state==MOTION_OFF?Joint.status.position:Joint.ref_pos;
+  if(fabs(start-Joint.status.position)>.1)return 0;
+  Joint.ref_pos=start;Joint.ref_vel=0;Joint.speed_limit=speed;
+  Joint.manual_speed=velocity;Joint.manual_velocity=1;
+  Joint.status.requested=(float)start;Joint.status.arrived=0;
+  Joint.status.state=MOTION_VELOCITY;Joint.elapsed_s=0;Joint.timeout_s=0;Joint.settle_ms=0;
+  return 1;
+}
+
+float Motion_brakeAcceleration(void)
+{return Joint.brake_acceleration>0?Joint.brake_acceleration:CONFIG_BRAKE_ACCELERATION;}
+int Motion_setBrakeAcceleration(float acceleration)
+{
+  if(CONFIG_NODE!=1 || !(acceleration>=10 && acceleration<=720) ||
+     (Joint.status.state!=MOTION_OFF && Joint.status.state!=MOTION_HOLD) ||
+     (Joint.status.state==MOTION_HOLD && !Joint.status.stationary))return 0;
+  Joint.brake_acceleration=acceleration;return 1;
+}
+
 int Motion_stop(int link_lost)
 {
   if (!active())
@@ -90,15 +118,16 @@ int Motion_stop(int link_lost)
   if (Joint.status.state == MOTION_BRAKE)
     return 1;
   float v = Joint.ref_vel;
-  float distance = v * fabsf(v) / (2 * CONFIG_ACCELERATION);
-  float end = Joint.ref_pos + distance;
-  if (!(end >= CONFIG_MINIMUM && end <= CONFIG_MAXIMUM))
+  float distance = v * fabsf(v) / (2 * Motion_brakeAcceleration());
+  double end = Joint.ref_pos + distance;
+  if (!Joint.manual_velocity && !(end >= CONFIG_MINIMUM && end <= CONFIG_MAXIMUM))
   {
+    Joint.status.fault_detail=5;
     Motion_trip(FAULT_MOTION);
     return 0;
   }
   Joint.elapsed_s = 0;
-  Joint.timeout_s = fabsf(v) / CONFIG_ACCELERATION + 2;
+  Joint.timeout_s = fabsf(v) / Motion_brakeAcceleration() + 2;
   Joint.settle_ms = 0;
   Joint.status.arrived = 0;
   Joint.status.state = MOTION_BRAKE;
@@ -138,15 +167,18 @@ void Motion_update(int64_t counts, uint32_t elapsed_ms, float measured_velocity)
     return;
 
   //检查实际位置的机械行程
-  if (Joint.status.position < CONFIG_MINIMUM - quantum ||
-      Joint.status.position > CONFIG_MAXIMUM + quantum)
+  if (!isfinite(Joint.status.position) || fabsf(Joint.status.position)>2000000.0f ||
+      (!Joint.manual_velocity && (Joint.status.position < CONFIG_MINIMUM - quantum ||
+                                 Joint.status.position > CONFIG_MAXIMUM + quantum)))
   {
+    Joint.status.fault_detail=1;
     Motion_trip(FAULT_MOTION);
     return;
   }
   //按本轮状态选择参考速度，制动的目标速度为零
   motion_state_t state = Joint.status.state;
   float target_speed = 0;
+  if(state==MOTION_VELOCITY)target_speed=Joint.manual_speed;
   if (state == MOTION_MOVE)
   {
     //按剩余距离减速，留出编码器量化和一个控制周期的余量
@@ -162,35 +194,41 @@ void Motion_update(int64_t counts, uint32_t elapsed_ms, float measured_velocity)
   {
     //按加速度限制更新参考速度和位置
     float old_speed = Joint.ref_vel;
-    float step = CONFIG_ACCELERATION * dt;
+    float step = (state==MOTION_BRAKE?Motion_brakeAcceleration():CONFIG_ACCELERATION) * dt;
     float change = fmaxf(-step, fminf(step, target_speed - old_speed));
     Joint.ref_vel += change;
-    Joint.ref_pos += (old_speed + Joint.ref_vel) * 0.5f * dt;
+    Joint.ref_pos += ((double)old_speed + Joint.ref_vel) * 0.5 * elapsed_ms * 0.001;
     //低速末段在四个编码器量化步内对齐目标
     if (state == MOTION_MOVE &&
-        fabsf(Joint.status.requested - Joint.ref_pos) <= 4 * quantum && fabsf(old_speed) <= step)
+        fabs(Joint.status.requested - Joint.ref_pos) <= 4 * quantum && fabsf(old_speed) <= step)
     {
       Joint.ref_pos = Joint.status.requested;
       Joint.ref_vel = 0;
     }
-    Joint.elapsed_s += dt;
-    if (Joint.ref_pos < CONFIG_MINIMUM - quantum || Joint.ref_pos > CONFIG_MAXIMUM + quantum ||
-        Joint.elapsed_s > Joint.timeout_s)
+    Joint.elapsed_s += elapsed_ms * 0.001;
+    if (!isfinite(Joint.ref_pos) || fabs(Joint.ref_pos)>2000000.0 ||
+        (!Joint.manual_velocity && (Joint.ref_pos < CONFIG_MINIMUM - quantum || Joint.ref_pos > CONFIG_MAXIMUM + quantum)) ||
+        (state!=MOTION_VELOCITY && Joint.elapsed_s > Joint.timeout_s))
     {
+      Joint.status.fault_detail=Joint.elapsed_s>Joint.timeout_s?3:2;
       Motion_trip(FAULT_MOTION);
       return;
     }
   }
+  if(Joint.manual_velocity)Joint.status.requested=(float)Joint.ref_pos;
 
   //检查实际反馈是否跟上参考位置
-  if (fabsf(Joint.ref_pos - Joint.status.position) > fmaxf(2.5f, Joint.speed_limit * 2.5f))
+  float following_limit = CONFIG_FOLLOWING_ERROR > 0 ? CONFIG_FOLLOWING_ERROR :
+                          fmaxf(2.5f, Joint.speed_limit * 2.5f);
+  if (fabs(Joint.ref_pos - Joint.status.position) > following_limit)
   {
+    Joint.status.fault_detail=4;
     Motion_trip(FAULT_MOTION);
     return;
   }
   //累计连续满足位置、反馈速度和参考速度条件的时间
-  float goal = state == MOTION_BRAKE ? Joint.ref_pos : Joint.status.requested;
-  if (fabsf(goal - Joint.status.position) <= 0.1f && Joint.status.stationary && Joint.ref_vel == 0)
+  double goal = state == MOTION_BRAKE ? Joint.ref_pos : Joint.status.requested;
+  if (fabs(goal - Joint.status.position) <= 0.1 && Joint.status.stationary && Joint.ref_vel == 0)
     Joint.settle_ms += elapsed_ms;
   else
     Joint.settle_ms = 0;
@@ -213,6 +251,7 @@ void Motion_clearFault(void)
 {
   Joint.status.state = MOTION_OFF;
   Joint.status.fault = FAULT_NONE;
+  Joint.status.fault_detail=0;
   Joint.status.referenced = 0;
 }
 
@@ -230,5 +269,6 @@ void Motion_trip(motor_fault_t reason)
 
 static int active(void)
 {
-  return Joint.status.state >= MOTION_HOLD && Joint.status.state <= MOTION_BRAKE;
+  return (Joint.status.state >= MOTION_HOLD && Joint.status.state <= MOTION_BRAKE) ||
+         Joint.status.state==MOTION_VELOCITY;
 }

@@ -1,0 +1,31 @@
+{
+  "updated": "2026-11-09",
+  "j1": {
+    "role": "lead_screw_z",
+    "motor_frame_mm": 42,
+    "motor_model": "42ZDT40A",
+    "motor_model_status": "用户提供商品型号截图及参数表，并称J1应该是40mm长；实物型号和长度尚未量测核实",
+    "motor_body_length_mm": 40,
+    "motor_rated_current_a": 2,
+    "motor_current_basis": "用户提供参数表中的电流(A)，未注明峰值/RMS定义；不可用商品页24W/5V推算相电流",
+    "motor_phase_resistance_ohm": 2,
+    "motor_phase_inductance_mh": 3.6,
+    "motor_step_angle_deg": 1.8,
+    "motor_datasheet_torque_nm": 0.43,
+    "motor_datasheet_source": "docs/hardware/j1-42zdt40a-parameters-user-20261109.png",
+    "ratio": 1,
+    "lead_mm_per_rev": null,
+    "raw_positive": "down",
+    "raw_negative": "up",
+    "manual_direction": -1,
+    "electrical_direction": 1,
+    "source": "用户最终方向更正；不反转电角标定",
+    "latest_authorized_test": "User-led manual velocity tests through 500deg/s; switch to calibration/game workflow per 2026-11-09 request",
+    "speed_ceiling_deg_s": 500,
+    "speed500_physical_validation": "Tested upward at acceleration60; reached cruise, then following fault. Not accepted.",
+    "current_command_limit_ma": 1400,
+    "acceleration_deg_s2": 60,
+    "current_trial_status": "d3b08bf8 frozen working baseline: Kp1.6 Ki200, 1.4A, acceleration60; 480down passed; 480up voltage fault3 unresolved",
+    "supply_user_report": "User states it is a safe numerical-control bench power supply; exact model unknown; no independent transient voltage measurement"
+  }
+}

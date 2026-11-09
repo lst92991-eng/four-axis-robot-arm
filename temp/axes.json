@@ -1,6 +1,27 @@
 {
-  "1": {"RATIO": "1.0f", "ENCODER_ZERO": "(-1)"},
-  "2": {"RATIO": "25.0f", "ENCODER_ZERO": "(-1)"},
-  "3": {"RATIO": "1.0f", "ENCODER_ZERO": "(-1)"},
-  "4": {"RATIO": "1.0f", "ENCODER_ZERO": "(-1)"}
+  "1": {
+    "RATIO": "1.0f",
+    "ENCODER_ZERO": "(-1)",
+    "SPEED_KP": "1.6f",
+    "SPEED_KI": "200.0f",
+    "CURRENT_MA": "1400.0f",
+    "FOLLOWING_ERROR": "2.5f",
+    "ACCELERATION": "60.0f",
+    "MINIMUM": "(-3610.0f)",
+    "MAXIMUM": "7210.0f",
+    "MAX_VELOCITY": "500.0f",
+    "BRAKE_ACCELERATION": "360.0f"
+  },
+  "2": {
+    "RATIO": "25.0f",
+    "ENCODER_ZERO": "(-1)"
+  },
+  "3": {
+    "RATIO": "1.0f",
+    "ENCODER_ZERO": "(-1)"
+  },
+  "4": {
+    "RATIO": "1.0f",
+    "ENCODER_ZERO": "(-1)"
+  }
 }

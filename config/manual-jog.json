@@ -1,0 +1,58 @@
+{
+  "serial": "37813482333551062",
+  "default_speed_deg_s": 90,
+  "max_speed_deg_s": 500,
+  "axes": {
+    "1": {
+      "label": "J1 · 丝杆升降",
+      "ratio": 1,
+      "minimum": -3600,
+      "maximum": 7200,
+      "builds": [
+        "d3b08bf8"
+      ],
+      "firmware_minimum": -3610,
+      "firmware_maximum": 7210,
+      "frame_size_mm": 42,
+      "max_speed_deg_s": 500,
+      "manual_direction": -1,
+      "positive_label": "↑ 上升",
+      "negative_label": "↓ 下降",
+      "direction_reference": "2026-11-09用户最终更正：原固件正向下降、反向上升；电角方向不变",
+      "acceleration_deg_s2": 60,
+      "manual_mode": "velocity",
+      "brake_deceleration_deg_s2": 360,
+      "speed_kp": 1.6,
+      "speed_ki": 200,
+      "current_limit_ma": 1400,
+      "speed_gain_scope": "Firmware defaults; Kp=1.6 Ki=200"
+    },
+    "2": {
+      "label": "J2 · 近端转轴",
+      "ratio": 25,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "17a105f6"
+      ]
+    },
+    "3": {
+      "label": "J3 · 中间转轴",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "e72bb310"
+      ]
+    },
+    "4": {
+      "label": "J4 · 末端旋转",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "cca804d2"
+      ]
+    }
+  }
+}

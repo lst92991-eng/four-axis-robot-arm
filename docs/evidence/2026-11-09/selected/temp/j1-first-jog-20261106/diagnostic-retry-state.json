@@ -1,0 +1,238 @@
+{
+  "connected": true,
+  "armed": false,
+  "active": null,
+  "stopping": [],
+  "message": "已请求停止并保持位置",
+  "axes": [
+    {
+      "node": 1,
+      "label": "J1 · 丝杆升降",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "0bffcca9",
+        "d26b98f4"
+      ],
+      "diagnostic_step_deg": 0.3,
+      "received": 116422.6588354,
+      "uptime": 826600,
+      "position": -2.483,
+      "target": -0.3,
+      "velocity": 0.0,
+      "state": 4,
+      "fault": 5,
+      "build": "d26b98f4",
+      "calibration_extension": true,
+      "cal_state": 0,
+      "cal_error": 0,
+      "electrical_zero": 10088,
+      "encoder_direction": 1,
+      "calibration_saved": true,
+      "calibration_progress": 0,
+      "bus_mv": 24240,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true,
+      "age_ms": 8,
+      "state_text": "故障",
+      "reason": "驱动故障 5：运动跟随或行程保护",
+      "ready": false
+    },
+    {
+      "node": 2,
+      "label": "J2 · 近端转轴",
+      "ratio": 25,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "17a105f6"
+      ],
+      "received": 116422.6212505,
+      "uptime": 826600,
+      "position": 0.0,
+      "target": 0.0,
+      "velocity": 0.0,
+      "state": 0,
+      "fault": 0,
+      "build": "17a105f6",
+      "referenced": false,
+      "interlocked": false,
+      "configured": false,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": false,
+      "age_ms": 46,
+      "state_text": "未出力",
+      "reason": "电角配置未就绪（已烧录版本的电角零点为 -1）",
+      "ready": false
+    },
+    {
+      "node": 3,
+      "label": "J3 · 中间转轴",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "e72bb310"
+      ],
+      "received": 116422.6668627,
+      "uptime": 826650,
+      "position": 0.0,
+      "target": 0.0,
+      "velocity": 0.0,
+      "state": 0,
+      "fault": 0,
+      "build": "e72bb310",
+      "referenced": false,
+      "interlocked": false,
+      "configured": false,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": false,
+      "age_ms": 0,
+      "state_text": "未出力",
+      "reason": "电角配置未就绪（已烧录版本的电角零点为 -1）",
+      "ready": false
+    },
+    {
+      "node": 4,
+      "label": "J4 · 末端旋转",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "cca804d2"
+      ],
+      "received": 116422.6198652,
+      "uptime": 826600,
+      "position": 0.0,
+      "target": 0.0,
+      "velocity": 0.0,
+      "state": 0,
+      "fault": 0,
+      "build": "cca804d2",
+      "referenced": false,
+      "interlocked": false,
+      "configured": false,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": false,
+      "age_ms": 47,
+      "state_text": "未出力",
+      "reason": "电角配置未就绪（已烧录版本的电角零点为 -1）",
+      "ready": false
+    }
+  ],
+  "tx_count": 24,
+  "events": [
+    {
+      "time": "22:24:05",
+      "message": "USB-CAN 已打开，只接收节点状态"
+    },
+    {
+      "time": "22:25:51",
+      "message": "手动控制已开启；按住按钮运动，松开减速保持"
+    },
+    {
+      "time": "22:25:51",
+      "message": "J1 序号同步完成（仅 PING）"
+    },
+    {
+      "time": "22:25:52",
+      "message": "J1 发送 MOVE",
+      "node": 1,
+      "kind": 3,
+      "sequence": 1073741842,
+      "target_mdeg": -300,
+      "speed_mdeg_s": 1000
+    },
+    {
+      "time": "22:25:52",
+      "message": "J1 MOVE 已接受"
+    },
+    {
+      "time": "22:25:53",
+      "message": "已松开，减速并保持位置"
+    },
+    {
+      "time": "22:25:53",
+      "message": "J1 发送 STOP",
+      "node": 1,
+      "kind": 4,
+      "sequence": 1073741847,
+      "target_mdeg": 0,
+      "speed_mdeg_s": 0
+    },
+    {
+      "time": "22:25:53",
+      "message": "J1 STOP 被拒绝，必须看停稳反馈；不再续发心跳"
+    },
+    {
+      "time": "22:25:53",
+      "message": "J1 故障 5：运动跟随或行程保护",
+      "node": 1,
+      "fault": 5,
+      "position": -2.483,
+      "target": -0.3,
+      "velocity": -0.01,
+      "power": false
+    },
+    {
+      "time": "22:25:53",
+      "message": "J1 故障已关断出力；未据此判定机械停稳"
+    },
+    {
+      "time": "22:25:53",
+      "message": "操作未完成：请先点击「允许手动点动」"
+    },
+    {
+      "time": "22:25:53",
+      "message": "已请求停止并保持位置"
+    }
+  ],
+  "default_speed": 1.0,
+  "max_speed": 30.0,
+  "simulated": false,
+  "log_path": "C:\\Users\\shuto\\Desktop\\四轴机械臂-CANFD升级交接-2026-11-04\\output\\manual-control\\20261106-222405-397062-real.jsonl",
+  "diagnostics": {
+    "1": {
+      "trace": {
+        "board_ms": 826600,
+        "encoder_counts": 9877,
+        "speed_counts_s": -5.605193857299268e-45,
+        "position_deg": -2.482,
+        "target_deg": -0.3,
+        "iq_ref_ma": 0,
+        "iq_ma": -1,
+        "vq_request_mv": 3315,
+        "bus_mv": 24240,
+        "power": false,
+        "fault": 0,
+        "encoder_valid": true,
+        "received": 116422.6594432,
+        "age_ms": 7
+      },
+      "current_fault": {
+        "cause": 0,
+        "board_ms": 0,
+        "phase_a_counts": 0,
+        "phase_b_counts": 0,
+        "calibrating": 0,
+        "reference_ma": 0,
+        "previous_id_ma": 0,
+        "previous_iq_ma": 0,
+        "previous_ua_mv": 0,
+        "previous_ub_mv": 0,
+        "encoder_counts": 0,
+        "sample_window_valid": 0,
+        "received": 116422.6599993,
+        "age_ms": 7
+      }
+    }
+  }
+}

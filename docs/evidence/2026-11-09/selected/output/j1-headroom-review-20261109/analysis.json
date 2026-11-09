@@ -1,0 +1,315 @@
+{
+  "source": "output\\manual-control\\20261109-173801-057394-real.jsonl",
+  "runs": [
+    {
+      "command": {
+        "time": "2026-11-09T18:13:54.017499+08:00",
+        "kind": 12,
+        "value": 90000,
+        "seq": 1073741855
+      },
+      "physical_direction": "下降",
+      "duration_s": 14.68,
+      "steady": {
+        "seconds": 9.68,
+        "encoder_speed": 89.99936442729856,
+        "ref_speed": 89.99999999999999,
+        "error_first": 0.1,
+        "error_last": 0.107,
+        "error_min": -0.255,
+        "error_max": 0.339,
+        "error_rms": 0.12568071967875213,
+        "estimated_speed_min": 28.29900026321411,
+        "estimated_speed_max": 144.24799919128418,
+        "estimated_speed_mean": 94.27883416967293,
+        "iq_peak": 854,
+        "iq_set_peak": 865,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 2409,
+        "bus_min": 24098,
+        "bus_max": 24175
+      },
+      "last2s": {
+        "seconds": 2.0,
+        "encoder_speed": 90.0439453125,
+        "ref_speed": 90.0,
+        "error_first": 0.194,
+        "error_last": 0.107,
+        "error_min": -0.153,
+        "error_max": 0.333,
+        "error_rms": 0.1369735104838064,
+        "estimated_speed_min": 31.503000855445862,
+        "estimated_speed_max": 129.71200346946716,
+        "estimated_speed_mean": 90.26071414203928,
+        "iq_peak": 854,
+        "iq_set_peak": 865,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 2409,
+        "bus_min": 24098,
+        "bus_max": 24162
+      },
+      "overall": {
+        "seconds": 14.68,
+        "encoder_speed": 76.29660624574251,
+        "ref_speed": 76.30367847411443,
+        "error_first": 0.003,
+        "error_last": 0.107,
+        "error_min": -0.453,
+        "error_max": 1.02,
+        "error_rms": 0.16240721055672475,
+        "estimated_speed_min": 0.0,
+        "estimated_speed_max": 169.3400001525879,
+        "estimated_speed_mean": 78.81917245878793,
+        "iq_peak": 854,
+        "iq_set_peak": 865,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 2409,
+        "bus_min": 24098,
+        "bus_max": 24240
+      },
+      "first_fault": []
+    },
+    {
+      "command": {
+        "time": "2026-11-09T18:14:15.258396+08:00",
+        "kind": 12,
+        "value": 180000,
+        "seq": 1073742061
+      },
+      "physical_direction": "下降",
+      "duration_s": 21.44,
+      "steady": {
+        "seconds": 11.94,
+        "encoder_speed": 180.01383872487438,
+        "ref_speed": 180.00008375209381,
+        "error_first": 0.306,
+        "error_last": 0.142,
+        "error_min": -0.656,
+        "error_max": 0.541,
+        "error_rms": 0.30230298318985366,
+        "estimated_speed_min": 54.21000301837921,
+        "estimated_speed_max": 342.31900691986084,
+        "estimated_speed_mean": 184.31628956244543,
+        "iq_peak": 938,
+        "iq_set_peak": 944,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 3187,
+        "bus_min": 24072,
+        "bus_max": 24188
+      },
+      "last2s": {
+        "seconds": 2.0,
+        "encoder_speed": 180.098876953125,
+        "ref_speed": 180.0005000000001,
+        "error_first": 0.338,
+        "error_last": 0.142,
+        "error_min": -0.582,
+        "error_max": 0.48,
+        "error_rms": 0.30244626394494845,
+        "estimated_speed_min": 54.21000301837921,
+        "estimated_speed_max": 340.0450086593628,
+        "estimated_speed_mean": 185.3872005538185,
+        "iq_peak": 880,
+        "iq_set_peak": 897,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 3035,
+        "bus_min": 24085,
+        "bus_max": 24175
+      },
+      "overall": {
+        "seconds": 21.44,
+        "encoder_speed": 142.33034048507463,
+        "ref_speed": 142.33661380597016,
+        "error_first": 0.007,
+        "error_last": 0.142,
+        "error_min": -0.656,
+        "error_max": 0.541,
+        "error_rms": 0.2607387007789158,
+        "estimated_speed_min": 0.0,
+        "estimated_speed_max": 342.31900691986084,
+        "estimated_speed_mean": 145.01546564012878,
+        "iq_peak": 938,
+        "iq_set_peak": 944,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 3344,
+        "bus_min": 24072,
+        "bus_max": 24188
+      },
+      "first_fault": []
+    },
+    {
+      "command": {
+        "time": "2026-11-09T18:14:42.260848+08:00",
+        "kind": 12,
+        "value": -230000,
+        "seq": 1073742323
+      },
+      "physical_direction": "上升",
+      "duration_s": 35.74,
+      "steady": {
+        "seconds": 23.74,
+        "encoder_speed": -229.9650428469882,
+        "ref_speed": -230.00000000000006,
+        "error_first": 0.3,
+        "error_last": -0.529,
+        "error_min": -0.984,
+        "error_max": 0.896,
+        "error_rms": 0.4322022213050392,
+        "estimated_speed_min": -441.07502460479736,
+        "estimated_speed_max": -36.89700096845627,
+        "estimated_speed_mean": -231.86004887701887,
+        "iq_peak": 813,
+        "iq_set_peak": 849,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 3566,
+        "bus_min": 24072,
+        "bus_max": 24266
+      },
+      "last2s": {
+        "seconds": 2.0,
+        "encoder_speed": -229.94384765625,
+        "ref_speed": -230.0,
+        "error_first": -0.418,
+        "error_last": -0.529,
+        "error_min": -0.858,
+        "error_max": 0.787,
+        "error_rms": 0.445731726801254,
+        "estimated_speed_min": -420.08100986480713,
+        "estimated_speed_max": -38.5040009021759,
+        "estimated_speed_mean": -230.70395398257983,
+        "iq_peak": 813,
+        "iq_set_peak": 834,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 3317,
+        "bus_min": 24085,
+        "bus_max": 24240
+      },
+      "overall": {
+        "seconds": 35.74,
+        "encoder_speed": -193.06550455547006,
+        "ref_speed": -193.08016228315614,
+        "error_first": -0.006,
+        "error_last": -0.529,
+        "error_min": -1.243,
+        "error_max": 0.896,
+        "error_rms": 0.39171079836094985,
+        "estimated_speed_min": -441.07502460479736,
+        "estimated_speed_max": 0.0,
+        "estimated_speed_mean": -194.57789202849187,
+        "iq_peak": 813,
+        "iq_set_peak": 849,
+        "iq_set_sat_fraction": 0.0,
+        "vq_peak": 3566,
+        "bus_min": 24072,
+        "bus_max": 24266
+      },
+      "first_fault": []
+    },
+    {
+      "command": {
+        "time": "2026-11-09T18:15:23.934858+08:00",
+        "kind": 12,
+        "value": 360000,
+        "seq": 1073742726
+      },
+      "physical_direction": "下降",
+      "duration_s": 15.66,
+      "steady": null,
+      "last2s": {
+        "seconds": 2.0,
+        "encoder_speed": 292.115478515625,
+        "ref_speed": 293.1174999999994,
+        "error_first": -0.486,
+        "error_last": 1.517,
+        "error_min": -0.564,
+        "error_max": 2.334,
+        "error_rms": 1.186377033386324,
+        "estimated_speed_min": 92.83999800682068,
+        "estimated_speed_max": 488.83001804351807,
+        "estimated_speed_mean": 295.9073110264127,
+        "iq_peak": 968,
+        "iq_set_peak": 1000,
+        "iq_set_sat_fraction": 0.13861386138613863,
+        "vq_peak": 4237,
+        "bus_min": 24059,
+        "bus_max": 24201
+      },
+      "overall": {
+        "seconds": 15.66,
+        "encoder_speed": 156.42398527298852,
+        "ref_speed": 156.5213920817369,
+        "error_first": -0.008,
+        "error_last": 1.517,
+        "error_min": -0.741,
+        "error_max": 2.334,
+        "error_rms": 0.5583235132144833,
+        "estimated_speed_min": 0.0,
+        "estimated_speed_max": 488.83001804351807,
+        "estimated_speed_mean": 157.13835134825962,
+        "iq_peak": 968,
+        "iq_set_peak": 1000,
+        "iq_set_sat_fraction": 0.02806122448979592,
+        "vq_peak": 4237,
+        "bus_min": 24059,
+        "bus_max": 24253
+      },
+      "first_fault": [
+        {
+          "time": "2026-11-09T18:15:39.636902+08:00",
+          "ms": 2259400,
+          "state": 4,
+          "fault": 5,
+          "detail": 4,
+          "interlocked": false,
+          "pos": -8580.167,
+          "ref": -8577.237
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "time": "2026-11-09T18:13:54.017499+08:00",
+      "kind": 12,
+      "value": 90000,
+      "seq": 1073741855
+    },
+    {
+      "time": "2026-11-09T18:14:08.717961+08:00",
+      "kind": 4,
+      "value": 0,
+      "seq": 1073741997
+    },
+    {
+      "time": "2026-11-09T18:14:15.258396+08:00",
+      "kind": 12,
+      "value": 180000,
+      "seq": 1073742061
+    },
+    {
+      "time": "2026-11-09T18:14:36.741678+08:00",
+      "kind": 4,
+      "value": 0,
+      "seq": 1073742269
+    },
+    {
+      "time": "2026-11-09T18:14:42.260848+08:00",
+      "kind": 12,
+      "value": -230000,
+      "seq": 1073742323
+    },
+    {
+      "time": "2026-11-09T18:15:18.027258+08:00",
+      "kind": 4,
+      "value": 0,
+      "seq": 1073742668
+    },
+    {
+      "time": "2026-11-09T18:15:23.934858+08:00",
+      "kind": 12,
+      "value": 360000,
+      "seq": 1073742726
+    }
+  ],
+  "can_errors": []
+}

@@ -19,6 +19,11 @@ int Motor_canRun(void);
 uint32_t Motor_readFeedback(motor_status_t *out);
 //关中断交付位置目标和速度上限，供采样中断使用
 int Motor_applyReference(void);
+// 基本标定专用固定电角电流模式；不开放给正常运动命令。
+int Motor_calibrationDrive(int enabled, int32_t angle_mdeg, int32_t current_ma);
+void Motor_readCurrentFault(int32_t values[12]);
+int Motor_setSpeedGains(int32_t kp_milli, int32_t ki_milli);
+void Motor_readSpeedGains(int32_t values[3]);
 
 //---------采样回调区---------
 //电流采样驱动调用此入口

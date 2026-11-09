@@ -1,0 +1,1602 @@
+[
+  {
+    "time": "2026-11-06T22:12:10.013881+08:00",
+    "board_ms": 368500,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.062814+08:00",
+    "board_ms": 368550,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.113764+08:00",
+    "board_ms": 368600,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.163443+08:00",
+    "board_ms": 368650,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.308313+08:00",
+    "board_ms": 368700,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.365785+08:00",
+    "board_ms": 368750,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.379154+08:00",
+    "board_ms": 368800,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.386004+08:00",
+    "board_ms": 368850,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.414256+08:00",
+    "board_ms": 368900,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.462818+08:00",
+    "board_ms": 368950,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.522327+08:00",
+    "board_ms": 369000,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.563044+08:00",
+    "board_ms": 369050,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.612909+08:00",
+    "board_ms": 369100,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.663315+08:00",
+    "board_ms": 369150,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.713741+08:00",
+    "board_ms": 369200,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.765396+08:00",
+    "board_ms": 369250,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.812590+08:00",
+    "board_ms": 369300,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.862493+08:00",
+    "board_ms": 369350,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.912876+08:00",
+    "board_ms": 369400,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:10.962541+08:00",
+    "board_ms": 369450,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.012491+08:00",
+    "board_ms": 369500,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.062570+08:00",
+    "board_ms": 369550,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.112423+08:00",
+    "board_ms": 369600,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.162364+08:00",
+    "board_ms": 369650,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.212598+08:00",
+    "board_ms": 369700,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.262442+08:00",
+    "board_ms": 369750,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.313662+08:00",
+    "board_ms": 369800,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.363758+08:00",
+    "board_ms": 369850,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.412533+08:00",
+    "board_ms": 369900,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.465707+08:00",
+    "board_ms": 369950,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.512461+08:00",
+    "board_ms": 370000,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.567346+08:00",
+    "board_ms": 370050,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.612733+08:00",
+    "board_ms": 370100,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.662425+08:00",
+    "board_ms": 370150,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.713408+08:00",
+    "board_ms": 370200,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.762703+08:00",
+    "board_ms": 370250,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.812517+08:00",
+    "board_ms": 370300,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.862745+08:00",
+    "board_ms": 370350,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.912526+08:00",
+    "board_ms": 370400,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:11.963531+08:00",
+    "board_ms": 370450,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.012569+08:00",
+    "board_ms": 370500,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.062496+08:00",
+    "board_ms": 370550,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.116466+08:00",
+    "board_ms": 370600,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.162433+08:00",
+    "board_ms": 370650,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.212718+08:00",
+    "board_ms": 370700,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.262555+08:00",
+    "board_ms": 370750,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.315473+08:00",
+    "board_ms": 370800,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.363457+08:00",
+    "board_ms": 370850,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.412537+08:00",
+    "board_ms": 370900,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.462600+08:00",
+    "board_ms": 370950,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.517629+08:00",
+    "board_ms": 371000,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.562821+08:00",
+    "board_ms": 371050,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.612400+08:00",
+    "board_ms": 371100,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.662535+08:00",
+    "board_ms": 371150,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.712488+08:00",
+    "board_ms": 371200,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.763767+08:00",
+    "board_ms": 371250,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.812999+08:00",
+    "board_ms": 371300,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.862517+08:00",
+    "board_ms": 371350,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.912749+08:00",
+    "board_ms": 371400,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:12.962404+08:00",
+    "board_ms": 371450,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.012814+08:00",
+    "board_ms": 371500,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.062619+08:00",
+    "board_ms": 371550,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.113818+08:00",
+    "board_ms": 371600,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.164177+08:00",
+    "board_ms": 371650,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.212441+08:00",
+    "board_ms": 371700,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.262411+08:00",
+    "board_ms": 371750,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.312642+08:00",
+    "board_ms": 371800,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.362505+08:00",
+    "board_ms": 371850,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.413428+08:00",
+    "board_ms": 371900,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.462728+08:00",
+    "board_ms": 371950,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.512476+08:00",
+    "board_ms": 372000,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.562479+08:00",
+    "board_ms": 372050,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.612524+08:00",
+    "board_ms": 372100,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.662363+08:00",
+    "board_ms": 372150,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.712771+08:00",
+    "board_ms": 372200,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.765402+08:00",
+    "board_ms": 372250,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.812918+08:00",
+    "board_ms": 372300,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.865386+08:00",
+    "board_ms": 372350,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.912642+08:00",
+    "board_ms": 372400,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:13.967551+08:00",
+    "board_ms": 372450,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.012513+08:00",
+    "board_ms": 372500,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.062549+08:00",
+    "board_ms": 372550,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.113571+08:00",
+    "board_ms": 372600,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.162430+08:00",
+    "board_ms": 372650,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.212527+08:00",
+    "board_ms": 372700,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.262538+08:00",
+    "board_ms": 372750,
+    "position_deg": 0.0,
+    "target_deg": 0.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 0,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.312641+08:00",
+    "board_ms": 372800,
+    "position_deg": 0.0,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 2,
+    "power": true
+  },
+  {
+    "time": "2026-11-06T22:12:14.362951+08:00",
+    "board_ms": 372850,
+    "position_deg": 0.0,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 2,
+    "power": true
+  },
+  {
+    "time": "2026-11-06T22:12:14.412466+08:00",
+    "board_ms": 372900,
+    "position_deg": 0.0,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 0,
+    "state": 2,
+    "power": true
+  },
+  {
+    "time": "2026-11-06T22:12:14.462618+08:00",
+    "board_ms": 372950,
+    "position_deg": -0.593,
+    "target_deg": 180.0,
+    "velocity_deg_s": 53.886,
+    "fault": 0,
+    "state": 2,
+    "power": true
+  },
+  {
+    "time": "2026-11-06T22:12:14.513692+08:00",
+    "board_ms": 373000,
+    "position_deg": -1.714,
+    "target_deg": 180.0,
+    "velocity_deg_s": -52.201,
+    "fault": 0,
+    "state": 2,
+    "power": true
+  },
+  {
+    "time": "2026-11-06T22:12:14.562560+08:00",
+    "board_ms": 373050,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": -4.53,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.612712+08:00",
+    "board_ms": 373100,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.662571+08:00",
+    "board_ms": 373150,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.712394+08:00",
+    "board_ms": 373200,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.763372+08:00",
+    "board_ms": 373250,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.812612+08:00",
+    "board_ms": 373300,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.862473+08:00",
+    "board_ms": 373350,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.912398+08:00",
+    "board_ms": 373400,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:14.962472+08:00",
+    "board_ms": 373450,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.012616+08:00",
+    "board_ms": 373500,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.062648+08:00",
+    "board_ms": 373550,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.112463+08:00",
+    "board_ms": 373600,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.162600+08:00",
+    "board_ms": 373650,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.212648+08:00",
+    "board_ms": 373700,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.262500+08:00",
+    "board_ms": 373750,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.312550+08:00",
+    "board_ms": 373800,
+    "position_deg": -2.241,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.002,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.362650+08:00",
+    "board_ms": 373850,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.414246+08:00",
+    "board_ms": 373900,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.462524+08:00",
+    "board_ms": 373950,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.512622+08:00",
+    "board_ms": 374000,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.563671+08:00",
+    "board_ms": 374050,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.612470+08:00",
+    "board_ms": 374100,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.662630+08:00",
+    "board_ms": 374150,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.714772+08:00",
+    "board_ms": 374200,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.762872+08:00",
+    "board_ms": 374250,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.812537+08:00",
+    "board_ms": 374300,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.863033+08:00",
+    "board_ms": 374350,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.912495+08:00",
+    "board_ms": 374400,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:15.962761+08:00",
+    "board_ms": 374450,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.012466+08:00",
+    "board_ms": 374500,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.062537+08:00",
+    "board_ms": 374550,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.112894+08:00",
+    "board_ms": 374600,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.162403+08:00",
+    "board_ms": 374650,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.213348+08:00",
+    "board_ms": 374700,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.262571+08:00",
+    "board_ms": 374750,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.312414+08:00",
+    "board_ms": 374800,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.363054+08:00",
+    "board_ms": 374850,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": -0.086,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.412353+08:00",
+    "board_ms": 374900,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.462783+08:00",
+    "board_ms": 374950,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.512568+08:00",
+    "board_ms": 375000,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.562658+08:00",
+    "board_ms": 375050,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.613541+08:00",
+    "board_ms": 375100,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.662956+08:00",
+    "board_ms": 375150,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.712509+08:00",
+    "board_ms": 375200,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.762579+08:00",
+    "board_ms": 375250,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.812433+08:00",
+    "board_ms": 375300,
+    "position_deg": -2.241,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.009,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.862372+08:00",
+    "board_ms": 375350,
+    "position_deg": -2.241,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.019,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.912992+08:00",
+    "board_ms": 375400,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:16.963438+08:00",
+    "board_ms": 375450,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.012871+08:00",
+    "board_ms": 375500,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.063403+08:00",
+    "board_ms": 375550,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.201499+08:00",
+    "board_ms": 375600,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.222009+08:00",
+    "board_ms": 375650,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.233313+08:00",
+    "board_ms": 375700,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.262646+08:00",
+    "board_ms": 375750,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.312571+08:00",
+    "board_ms": 375800,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.363077+08:00",
+    "board_ms": 375850,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.414530+08:00",
+    "board_ms": 375900,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.462607+08:00",
+    "board_ms": 375950,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.513099+08:00",
+    "board_ms": 376000,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.563856+08:00",
+    "board_ms": 376050,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.612610+08:00",
+    "board_ms": 376100,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.664080+08:00",
+    "board_ms": 376150,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.713036+08:00",
+    "board_ms": 376200,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.762408+08:00",
+    "board_ms": 376250,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.812431+08:00",
+    "board_ms": 376300,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.862441+08:00",
+    "board_ms": 376350,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.913220+08:00",
+    "board_ms": 376400,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  },
+  {
+    "time": "2026-11-06T22:12:17.962961+08:00",
+    "board_ms": 376450,
+    "position_deg": -2.263,
+    "target_deg": 180.0,
+    "velocity_deg_s": 0.0,
+    "fault": 5,
+    "state": 4,
+    "power": false
+  }
+]

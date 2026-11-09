@@ -1,0 +1,84 @@
+{
+  "purpose": "prepare_5deg_s_2deg_user_triggered_comparison",
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1073741825
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483649
+    },
+    {
+      "kind": 6,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483650
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483651
+    },
+    {
+      "kind": 2,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483652
+    }
+  ],
+  "raw_log": "output\\manual-control\\20261106-223008-j1-calibration.jsonl",
+  "initial": {
+    "build": "d26b98f4",
+    "uptime": 1048000,
+    "state": 4,
+    "fault": 5,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -2.461,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 9878,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "final": {
+    "build": "d26b98f4",
+    "uptime": 1048100,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 9878,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24227
+  }
+}

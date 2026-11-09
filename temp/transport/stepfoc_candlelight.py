@@ -165,7 +165,7 @@ class Candlelight:
             endpoints = [e for e in interface if usb.util.endpoint_type(e.bmAttributes) == 2]
             self.ep_in = next(e.bEndpointAddress for e in endpoints if e.bEndpointAddress & 0x80)
             self.ep_out = next(e.bEndpointAddress for e in endpoints if not e.bEndpointAddress & 0x80)
-            self.read_size = next(e.wMaxPacketSize for e in endpoints if e.bEndpointAddress == self.ep_in)
+            self.read_size = 512  # Bulk buffer; parser retains split/coalesced CAN frames.
             self.write_size = next(e.wMaxPacketSize for e in endpoints if e.bEndpointAddress == self.ep_out)
             self._out(2, struct.pack('<II', 0, 0))
             self.drain_startup()
@@ -272,9 +272,8 @@ class Candlelight:
                 return None
             try:
                 if hasattr(self, 'io_stats'):self.io_stats['reads'] += 1
-                # Read one USB packet, then assemble CAN frames above. A full
-                # 64-byte packet completes immediately, without waiting for the
-                # tail of a 76-byte FD frame in the same timed USB request.
+                # Use a packet-aligned bulk buffer. PyUSB/libusb returns partial
+                # data even on timeout; rx_buffer retains split CAN frames.
                 raw = self.dev.read(self.ep_in, getattr(self, 'read_size', 64), timeout=max(1, int(remaining*1000)))
             except usb.core.USBTimeoutError:
                 if hasattr(self, 'io_stats'):self.io_stats['timeouts'] += 1

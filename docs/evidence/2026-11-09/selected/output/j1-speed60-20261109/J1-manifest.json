@@ -1,0 +1,24 @@
+{
+  "node": 1,
+  "build_id": "95c523c1",
+  "profile": {
+    "NODE": 1,
+    "RATIO": "1.0f",
+    "ENCODER_ZERO": "(-1)",
+    "SPEED_KP": "2.0f",
+    "SPEED_KI": "300.0f",
+    "FOLLOWING_ERROR": "2.5f",
+    "ACCELERATION": "10.0f",
+    "MINIMUM": "(-3610.0f)",
+    "MAXIMUM": "3610.0f",
+    "MAX_VELOCITY": "60.0f"
+  },
+  "app_bytes": 28100,
+  "app_crc32": "c410ec95",
+  "files": {
+    "J1-app.elf": "a73eba7f1aeaed1df510752e1f304cf4297024ecfc15258d27184cafcf964579",
+    "J1-boot.elf": "d6d830c5950e05d0353be5d84b416044a704d6a6144f815cb895d1dbc774a598",
+    "J1-first-install.hex": "e4e7ff62d82604aa188c874f13bea254d37c49c2b57a944d4db91127fdb5d818",
+    "J1.ota": "6f3692c7e976990d144c2b3bdb76285885da109cce4129a762a9d4a2d69738ef"
+  }
+}

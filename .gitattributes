@@ -13,3 +13,10 @@ temp/gpio-audit-20261106/** -text -whitespace
 temp/rv1106-logs/** -text -whitespace
 temp/grid-fix/** -text -whitespace
 models/** -text -whitespace
+docs/evidence/** -text -whitespace
+images/J1-20261109-d3b08bf8/** -text -whitespace
+# Firmware build IDs hash source bytes; retain recorded line endings.
+firmware/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/*.c text eol=lf
+tests/**/*.h text eol=lf
+manual_control/*.html text eol=lf

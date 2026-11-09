@@ -1,0 +1,233 @@
+{
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 10,
+      "a": 1600,
+      "b": 110000,
+      "seq": 2
+    },
+    {
+      "kind": 2,
+      "a": -19867611,
+      "b": 0,
+      "seq": 3
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 4
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 5
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 6
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 7
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 8
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 9
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 10
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 11
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 12
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 13
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 14
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 15
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 16
+    }
+  ],
+  "scope": "Restore last runtime Kp=1.6 Ki=110 and logical reference after user power cycle; no movement",
+  "last_stopped_axis": {
+    "node": 1,
+    "label": "J1 · 丝杆升降",
+    "ratio": 1,
+    "minimum": -3600,
+    "maximum": 7200,
+    "builds": [
+      "b06df529"
+    ],
+    "firmware_minimum": -3610,
+    "firmware_maximum": 7210,
+    "frame_size_mm": 42,
+    "max_speed_deg_s": 500,
+    "manual_direction": -1,
+    "positive_label": "↑ 上升",
+    "negative_label": "↓ 下降",
+    "direction_reference": "2026-11-09用户最终更正：原固件正向下降、反向上升；电角方向不变",
+    "acceleration_deg_s2": 30,
+    "manual_mode": "velocity",
+    "brake_deceleration_deg_s2": 360,
+    "speed_kp": 1.6,
+    "speed_ki": 110,
+    "current_limit_ma": 1400,
+    "speed_gain_scope": "RAM trial; firmware b06df529 reboots to Kp=1.8 Ki=300",
+    "received": 364888.4143317,
+    "uptime": 3015179,
+    "position": -19870.336,
+    "target": -19867.392,
+    "velocity": 0.0,
+    "state": 4,
+    "fault": 5,
+    "build": "b06df529",
+    "calibration_extension": true,
+    "cal_state": 0,
+    "motion_fault_detail": 4,
+    "cal_error": 0,
+    "electrical_zero": 10088,
+    "encoder_direction": 1,
+    "calibration_saved": true,
+    "calibration_progress": 0,
+    "bus_mv": 18773,
+    "referenced": true,
+    "interlocked": false,
+    "configured": true,
+    "encoder_valid": true,
+    "power": false,
+    "stationary": true,
+    "age_ms": 56931,
+    "display_position": 19870.336,
+    "display_velocity": -0.0,
+    "state_text": "故障",
+    "reason": "未收到实时状态，请检查驱动板供电和 CAN",
+    "ready": false
+  },
+  "last_stopped_encoder": {
+    "board_ms": 3015200,
+    "encoder_counts": 6213,
+    "speed_counts_s": 0.0,
+    "position_deg": -19870.336,
+    "target_deg": -19867.392,
+    "iq_ref_ma": 0,
+    "iq_ma": 16,
+    "vq_request_mv": 0,
+    "bus_mv": 17367,
+    "power": false,
+    "fault": 5,
+    "encoder_valid": true,
+    "received": 364888.4353383,
+    "age_ms": 56910
+  },
+  "reference_method": "Last stopped logical position plus shortest single-turn encoder delta; assumes no unobserved whole turns, not an absolute homing operation",
+  "before": {
+    "build": "b06df529",
+    "uptime": 84700,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": true,
+    "position": 0.0,
+    "velocity": 0.0,
+    "target": 0.0,
+    "stationary": false,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 6337,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24266
+  },
+  "raw_delta_counts": 124,
+  "logical_reference": -19867.611390625,
+  "readback": [
+    1600,
+    110000,
+    1400
+  ],
+  "after": {
+    "build": "b06df529",
+    "uptime": 86050,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -19867.612,
+    "velocity": 0.0,
+    "target": -19867.612,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 6337,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24240
+  },
+  "ping_ack_checks": 12,
+  "completed": true
+}

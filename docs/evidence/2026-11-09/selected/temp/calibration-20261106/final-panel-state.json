@@ -1,0 +1,19 @@
+{
+  "build": "d26b98f4",
+  "position_deg": 0.0,
+  "configured": true,
+  "referenced": true,
+  "calibration_saved": true,
+  "raw_zero": 10088,
+  "direction": 1,
+  "fault": 0,
+  "power": false,
+  "panel_armed": false,
+  "panel_tx_count": 0,
+  "max_j1_age_ms": 48,
+  "other_axis_builds": {
+    "2": "17a105f6",
+    "3": "e72bb310",
+    "4": "cca804d2"
+  }
+}

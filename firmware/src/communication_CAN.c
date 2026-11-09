@@ -2,6 +2,9 @@
 #include "communication_CAN.h"
 #include "CAN.h"
 #include "motor_control.h"
+#include "calibration.h"
+#include "current_limits.h"
+#include "at32m412_416_conf.h"
 #include "build_id.h"
 #include <math.h>
 #include <string.h>
@@ -17,6 +20,10 @@ static struct
   uint32_t last_status_ms;
   //CAN硬件是否初始化成功
   uint8_t initialized;
+  uint8_t reset_pending;
+  uint32_t reset_at;
+  uint8_t reply_pending;
+  uint8_t reply[64];
 } Protocol;
 
 //---------内部声明区---------
@@ -32,6 +39,8 @@ void CAN_protocol_setup(void)
   Protocol.last_command_ms = 0;
   Protocol.last_status_ms = 0;
   Protocol.initialized = 0;
+  Protocol.reset_pending = 0;
+  Protocol.reply_pending = 0;
   if (CONFIG_NODE < 1 || CONFIG_NODE > 127)
     return;
   Protocol.initialized = CAN_init();
@@ -43,15 +52,21 @@ void CAN_protocol_process(const motor_status_t *motor, uint32_t now)
 {
   if (!Protocol.initialized)
     return;
+  if(Protocol.reset_pending && (int32_t)(now-Protocol.reset_at)>=0)
+    NVIC_SystemReset();
+  if(Protocol.reply_pending && CAN_send((uint16_t)(0x480+CONFIG_NODE),Protocol.reply))
+    Protocol.reply_pending=0;
   //完整帧才会写入有效ID，0表示本次没有可处理的命令
   uint16_t id = 0;
   uint8_t data[64];
-  CAN_receive(&id, data);
+  if(!Protocol.reply_pending)CAN_receive(&id, data);
   if (id == 0x400 + CONFIG_NODE)
   {
-    uint8_t response[64];
-    if (processFrame(motor, now, data, response))
-      CAN_send((uint16_t)(0x480 + CONFIG_NODE), response);
+    if (processFrame(motor, now, data, Protocol.reply))
+    {
+      Protocol.reply_pending=1;
+      if(CAN_send((uint16_t)(0x480+CONFIG_NODE),Protocol.reply))Protocol.reply_pending=0;
+    }
   }
   //状态发送到期后组帧，成功写入发送队列后更新时刻
   if (now - Protocol.last_status_ms < 50)
@@ -67,6 +82,7 @@ void CAN_protocol_watchdog(uint32_t now)
   const motion_t *s = &Joint.status;
   if (now - Protocol.last_command_ms <= 500)
     return;
+  if (Calibration_active()) Calibration_abort(MOTOR_CAL_LINK);
   if (s->interlocked)
     return;
   //停止入口统一检查当前是否处于闭环状态
@@ -77,6 +93,7 @@ void CAN_protocol_watchdog(uint32_t now)
 //命令回调返回1表示接受，返回0表示拒绝
 static int handleZero(const CanPacket *command, const motor_status_t *feedback)
 {
+  if (Calibration_active()) return 0;
   if (feedback->power || !feedback->encoder_valid)
     return 0;
   if (!motor_configured)
@@ -101,6 +118,7 @@ static int handleStop(const CanPacket *command, const motor_status_t *feedback)
 {
   (void)command;
   (void)feedback;
+  if (Calibration_active()){Calibration_abort(MOTOR_CAL_USER);return 1;}
   return Motion_stop(0);
 }
 
@@ -108,12 +126,14 @@ static int handleOff(const CanPacket *command, const motor_status_t *feedback)
 {
   (void)command;
   (void)feedback;
+  Calibration_abort(MOTOR_CAL_USER);
   Motion_release();
   return 1;
 }
 
 static int handleClear(const CanPacket *command, const motor_status_t *feedback)
 {
+  if (Calibration_active()) return 0;
   (void)command;
   (void)feedback;
   int accepted = Motor_clearFault();
@@ -129,6 +149,34 @@ static int handlePing(const CanPacket *command, const motor_status_t *feedback)
   return 1;
 }
 
+static int handleCalibrate(const CanPacket *command,const motor_status_t *feedback)
+{
+  return Calibration_command(command->values[0],command->values[1],feedback,system_ms);
+}
+
+static int handleTune(const CanPacket *command,const motor_status_t *feedback)
+{
+  if(feedback->power || feedback->fault || !feedback->encoder_valid)return 0;
+  return Motor_setSpeedGains(command->values[0],command->values[1]);
+}
+static int handleReboot(const CanPacket *command,const motor_status_t *feedback)
+{
+  if(CONFIG_NODE!=1 || command->values[0]!=0x52454254 || feedback->power ||
+     Joint.status.state!=MOTION_OFF || Calibration_active())return 0;
+  Protocol.reset_pending=1;Protocol.reset_at=system_ms+100;
+  return 1;
+}
+static int handleVelocity(const CanPacket *command,const motor_status_t *feedback)
+{
+  (void)feedback;
+  return Motor_canRun()?Motion_runVelocity(command->values[0]/1000.0f):0;
+}
+static int handleBrakeRate(const CanPacket *command,const motor_status_t *feedback)
+{
+  if(feedback->fault || !feedback->encoder_valid || Calibration_active())return 0;
+  return Motion_setBrakeAcceleration(command->values[0]/1000.0f);
+}
+
 //---------命令映射区---------
 //按命令编号选择处理任务，绝对和相对运动共用回调
 typedef int (*command_handler_t)(const CanPacket *, const motor_status_t *);
@@ -140,7 +188,12 @@ static const command_handler_t command_handlers[] =
   [CMD_STOP] = handleStop,
   [CMD_OFF] = handleOff,
   [CMD_CLEAR] = handleClear,
-  [CMD_PING] = handlePing
+  [CMD_PING] = handlePing,
+  [CMD_CALIBRATE] = handleCalibrate,
+  [CMD_TUNE_SPEED] = handleTune,
+  [CMD_REBOOT] = handleReboot,
+  [CMD_VELOCITY] = handleVelocity,
+  [CMD_BRAKE_RATE] = handleBrakeRate
 };
 
 //---------报文解析区---------
@@ -192,6 +245,8 @@ static int processFrame(const motor_status_t *feedback, uint32_t now, const uint
   reply.version = 3;
   reply.sequence = command.sequence;
   reply.result = !accepted;
+  if(accepted && command.kind==CMD_TUNE_SPEED)Motor_readSpeedGains(reply.values);
+  if(accepted && command.kind==CMD_BRAKE_RATE)reply.values[0]=(int32_t)lroundf(Motion_brakeAcceleration()*1000);
   memcpy(response, &reply, sizeof(reply));
   return 1;
 }
@@ -213,5 +268,17 @@ static void packStatus(const motor_status_t *b, uint32_t now, uint8_t response[6
                    motor_configured << 4 | b->encoder_valid << 5 | b->power << 6 | s->stationary << 8;
   r.values[9] = (int32_t)((uint32_t)s->state | ((uint32_t)s->fault << 8) | (flags << 16));
   r.values[10] = (int32_t)JOINT_BUILD_ID;
+  const motor_cal_t *cal=Calibration_status();
+  const motor_cal_record_t *record=Calibration_record();
+  r.values[3]=(int32_t)cal->state | ((int32_t)cal->error<<8) |
+              (Calibration_ready()<<16) | (Calibration_stored()<<17) |
+              ((int32_t)s->fault_detail<<24);
+  r.values[5]=(int32_t)b->encoder_counts;
+  r.values[6]=record?record->raw_zero:-1;
+  r.values[7]=record?record->direction:0;
+  r.values[8]=current_counts_to_ma(cal->current);
+  r.values[11]=cal->progress;
+  r.values[12]=(int32_t)b->bus_mv;
+  r.values[13]=0x43414c31;
   memcpy(response, &r, sizeof(r));
 }

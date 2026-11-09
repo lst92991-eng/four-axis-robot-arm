@@ -139,6 +139,11 @@ def build(work, gcc, output, node, profile):
     ihex(output / f"J{node}-first-install.hex",
          [(0x08000000, bootstrap), (APP, padded),
           (META, struct.pack("<3I", MAGIC, len(padded), crc))])
+    manifest = dict(node=node, build_id=tag.hexdigest()[:8], profile=profile,
+                    app_bytes=len(application), app_crc32=f"{crc:08x}",
+                    files={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                           for p in sorted(output.glob(f"J{node}*")) if p.suffix in ('.elf','.hex','.ota')})
+    (output / f"J{node}-manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding='utf-8')
     print(f"J{node}：boot {len(bootstrap)} B，app {len(application)} B，CRC {crc:08x}", flush=True)
 
 

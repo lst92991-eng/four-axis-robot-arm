@@ -9,6 +9,15 @@ build/
 build-geometry/
 build-geometry-fixed/
 output/geometry-check/
+output/manual-control/
+# Local builds and continuously growing experiments. Selected evidence is in docs/evidence.
+/output/
+/temp/calibration-20261106/
+/temp/j1-first-jog-20261106/
+/temp/j1-acceptance-20261109/
+/temp/legacy-main-2604457/
+# Previously tracked static vision evidence remains versioned.
+/temp/rv1106-logs/
 # Re-downloadable model export bundles and machine-local run selection.
 temp/model-v3-release/
 temp/current-preview-run.txt

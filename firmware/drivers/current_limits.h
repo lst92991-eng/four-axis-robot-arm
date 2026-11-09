@@ -22,6 +22,12 @@
 #define CURRENT_RUNTIME_REFERENCE_MAX ((STEPFOC_MOTOR_CURRENT_MA * 819L) / 3300L)
 #define CURRENT_RUNTIME_PHASE_TRIP CURRENT_RUNTIME_REFERENCE_MAX
 
+// 六轴短程电角标定器使用 ADC counts；上限不超过本项目 1 A。
+#define CURRENT_CAL_REFERENCE_MIN 20L
+#define CURRENT_CAL_REFERENCE_DEFAULT 74L
+#define CURRENT_CAL_REFERENCE_MAX 248L
+#define CURRENT_CAL_PHASE_TRIP 248L
+
 //---------单位换算区---------
 /* 使用64位中间值换算mA；整数除法向零截断，结果钳位到int32范围。 */
 static inline int32_t current_counts_to_ma(int32_t counts)

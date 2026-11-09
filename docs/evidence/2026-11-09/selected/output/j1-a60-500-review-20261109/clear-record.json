@@ -1,0 +1,99 @@
+{
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 6,
+      "a": 0,
+      "b": 0,
+      "seq": 2
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 3
+    },
+    {
+      "kind": 10,
+      "a": 1600,
+      "b": 200000,
+      "seq": 4
+    },
+    {
+      "kind": 2,
+      "a": -17213600,
+      "b": 0,
+      "seq": 5
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 6
+    }
+  ],
+  "scope": "Clear following fault, preserve d3b08bf8 parameters and logical reference; no motion",
+  "before": {
+    "build": "d3b08bf8",
+    "uptime": 331050,
+    "state": 4,
+    "fault": 5,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -17213.6,
+    "velocity": 0.0,
+    "target": -17215.55,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 4,
+    "counts": -495468,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "readback": [
+    1600,
+    200000,
+    1400
+  ],
+  "after": {
+    "build": "d3b08bf8",
+    "uptime": 331250,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -17213.6,
+    "velocity": 0.0,
+    "target": -17213.6,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 12436,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "completed": true
+}

@@ -1,0 +1,48 @@
+{
+  "source": "output\\manual-control\\20261109-190833-503785-real.jsonl",
+  "kp": 1.6,
+  "ki": 160,
+  "runs": [
+    {
+      "command": {
+        "t": 1794222676.443769,
+        "time": "2026-11-09T19:11:16.443769+08:00",
+        "kind": 12,
+        "value": 400000
+      },
+      "steady_s": 24.18,
+      "mean_speed": 399.99866722239454,
+      "error_range": [
+        -0.5390000000006694,
+        0.7189999999991414
+      ],
+      "error_std": 0.2326637194007457,
+      "iq_peak": 834,
+      "iq_std": 79.97830504614846,
+      "near_limit_fraction": 0.0,
+      "position_start": -14024.09,
+      "position_end": -4352.122,
+      "phase_fit": {
+        "position_error": {
+          "one_rev_amplitude": 0.23898462441385018,
+          "two_per_rev_amplitude": 0.08442077659388206,
+          "variance_explained": 0.593820802949327
+        },
+        "iq_reference": {
+          "one_rev_amplitude": 60.08814909522117,
+          "two_per_rev_amplitude": 16.164337277635624,
+          "variance_explained": 0.30213511403143756
+        }
+      }
+    }
+  ],
+  "error_events": [
+    {
+      "wall_time": "2026-11-09T19:11:54.534318+08:00",
+      "simulated": false,
+      "time": "19:11:54",
+      "message": "控制器状态、协议错误、无法发送显性位、发送错误被动（ID=0xC，原始=0020080000008800）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+    }
+  ],
+  "phase_caution": "Only a descriptive 1/rev and 2/rev fit to 50Hz data; does not identify mechanical, encoder, or control-loop causes and does not resolve high-frequency aliasing."
+}

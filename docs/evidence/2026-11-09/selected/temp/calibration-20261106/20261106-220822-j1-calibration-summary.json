@@ -1,0 +1,495 @@
+{
+  "completed": true,
+  "run": true,
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1073741825
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483649
+    },
+    {
+      "kind": 9,
+      "a": 1,
+      "b": 900,
+      "seq": 2147483650
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483651
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483652
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483653
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483654
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483655
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483656
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483657
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483658
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483659
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483660
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483661
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483662
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483663
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483664
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483665
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483666
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483667
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483668
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483669
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483670
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483671
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483672
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483673
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483674
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483675
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483676
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483677
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483678
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483679
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483680
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483681
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483682
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483683
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483684
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483685
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483686
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483687
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483688
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483689
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483690
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483691
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483692
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483693
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483694
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483695
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483696
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483697
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483698
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483699
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483700
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483701
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483702
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483703
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483704
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483705
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483706
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483707
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483708
+    },
+    {
+      "kind": 9,
+      "a": 3,
+      "b": 0,
+      "seq": 2147483709
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483710
+    },
+    {
+      "kind": 2,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483711
+    }
+  ],
+  "raw_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261106-220822-j1-calibration.jsonl",
+  "initial": {
+    "build": "d26b98f4",
+    "uptime": 141500,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": false,
+    "position": 0.0,
+    "cal_state": 8,
+    "cal_error": 7,
+    "ready": false,
+    "stored": false,
+    "counts": 10098,
+    "raw_zero": -1,
+    "direction": 0,
+    "current_ma": 596,
+    "progress": 36,
+    "bus_mv": 24266
+  },
+  "calibrated": {
+    "build": "d26b98f4",
+    "uptime": 148000,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 7,
+    "cal_error": 0,
+    "ready": true,
+    "stored": false,
+    "counts": 10093,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 898,
+    "progress": 1000,
+    "bus_mv": 24253
+  },
+  "final": {
+    "build": "d26b98f4",
+    "uptime": 148100,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 7,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 10093,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 898,
+    "progress": 1000,
+    "bus_mv": 24240
+  },
+  "last_status": {
+    "build": "d26b98f4",
+    "uptime": 148100,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 7,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 10093,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 898,
+    "progress": 1000,
+    "bus_mv": 24240
+  },
+  "fault_evidence": {
+    "cause": 0,
+    "board_ms": 0,
+    "phase_a_counts": 0,
+    "phase_b_counts": 0,
+    "calibrating": 0,
+    "reference_ma": 0,
+    "previous_id_ma": 0,
+    "previous_iq_ma": 0,
+    "previous_ua_mv": 0,
+    "previous_ub_mv": 0,
+    "encoder_counts": 0,
+    "sample_window_valid": 0
+  }
+}

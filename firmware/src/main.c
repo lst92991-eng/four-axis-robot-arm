@@ -7,6 +7,7 @@
 #include "current_sense.h"
 #include "pwm_output.h"
 #include "mt6816.h"
+#include "calibration.h"
 
 volatile uint32_t system_ms;
 //上一次运动更新时刻，毫秒
@@ -69,6 +70,7 @@ int main(void)
     if (elapsed_ms)
     {
       last_control_ms = now;
+      Calibration_process(&motor, now);
       //机械参考已建立时检查反馈是否有效
       if (Joint.status.referenced && !motor.encoder_valid)
         Motion_trip(FAULT_SENSOR);

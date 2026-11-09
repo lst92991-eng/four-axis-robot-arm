@@ -32,7 +32,7 @@ def unpack(path):
     return node, crc, image
 
 
-def send_image(bus, can, node, crc, image):
+def send_image(bus, can, node, crc, image, wait_reset_seconds=25):
     nonce = secrets.randbelow(0xffffffff) + 1
 
     def request(op, arg, payload=b"", seconds=3):
@@ -51,7 +51,7 @@ def send_image(bus, can, node, crc, image):
         return False
 
     print(f"等待节点 {node} 的引导程序，请复位该板。", flush=True)
-    end = time.monotonic() + 25
+    end = time.monotonic() + wait_reset_seconds
     while not request(1, node, seconds=0.2):
         if time.monotonic() >= end:
             raise TimeoutError("引导无应答，未发擦除命令")
@@ -97,12 +97,15 @@ def main():
     update.add_argument("node", type=int, choices=range(1, 5))
     update.add_argument("file", type=Path)
     update.add_argument("--write", action="store_true")
+    update.add_argument("--wait-reset-seconds", type=int, default=25)
     record = sub.add_parser("capture")
     record.add_argument("node", type=int, choices=range(1, 5))
     record.add_argument("csv", type=Path)
     record.add_argument("--seconds", type=int, default=60)
     args = parser.parse_args()
     if args.action == "update":
+        if not 1 <= args.wait_reset_seconds <= 600:
+            parser.error("等待复位时间必须为 1～600 秒")
         node, crc, image = unpack(args.file.read_bytes())
         if node != args.node:
             parser.error("镜像节点与目标节点不一致")
@@ -118,7 +121,7 @@ def main():
         connection = can.Bus(interface="socketcan", channel=args.channel, fd=True)
     with connection as bus:
         if args.action == "update":
-            send_image(bus, can, node, crc, image)
+            send_image(bus, can, node, crc, image, args.wait_reset_seconds)
         else:
             capture(bus, args.node, args.csv, args.seconds)
 

@@ -22,9 +22,13 @@
 //---------运动限制区---------
 //速度和加速度
 #define CONFIG_VELOCITY 10.0f
+#define CONFIG_MAX_VELOCITY 30.0f
 #define CONFIG_ACCELERATION 30.0f
+#define CONFIG_BRAKE_ACCELERATION 30.0f
 //允许速度环请求的最大电流
 #define CONFIG_CURRENT_MA 1000.0f
+// 正数为固定跟随误差限制；0保持旧轴策略。J1构建明确使用2.5度。
+#define CONFIG_FOLLOWING_ERROR 0.0f
 //---------控制参数区---------
 //速度环的PID参数
 #define CONFIG_SPEED_KP 20.0f

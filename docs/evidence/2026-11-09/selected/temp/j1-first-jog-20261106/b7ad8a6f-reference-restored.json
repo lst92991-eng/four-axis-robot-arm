@@ -1,0 +1,103 @@
+{
+  "completed": true,
+  "run": false,
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 2,
+      "a": 0,
+      "b": 0,
+      "seq": 2
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 3
+    }
+  ],
+  "raw_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261106-224714-j1-calibration.jsonl",
+  "initial": {
+    "build": "b7ad8a6f",
+    "uptime": 80600,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 9413,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "zero_only": true,
+  "final": {
+    "build": "b7ad8a6f",
+    "uptime": 80650,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 9413,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "last_status": {
+    "build": "b7ad8a6f",
+    "uptime": 80650,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": 0.0,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "counts": 9413,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "fault_evidence": {
+    "cause": 0,
+    "board_ms": 0,
+    "phase_a_counts": 0,
+    "phase_b_counts": 0,
+    "calibrating": 0,
+    "reference_ma": 0,
+    "previous_id_ma": 0,
+    "previous_iq_ma": 0,
+    "previous_ua_mv": 0,
+    "previous_ub_mv": 0,
+    "encoder_counts": 0,
+    "sample_window_valid": 0
+  }
+}

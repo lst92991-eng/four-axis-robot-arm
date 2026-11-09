@@ -1,0 +1,98 @@
+{
+  "completed": false,
+  "run": true,
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 9,
+      "a": 1,
+      "b": 300,
+      "seq": 2
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 3
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 4
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 5
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 6
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 7
+    },
+    {
+      "kind": 9,
+      "a": 2,
+      "b": 0,
+      "seq": 8
+    }
+  ],
+  "raw_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261106-220021-j1-calibration.jsonl",
+  "initial": {
+    "build": "1155a963",
+    "uptime": 39350,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": false,
+    "position": 0.0,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": false,
+    "stored": false,
+    "counts": 10070,
+    "raw_zero": -1,
+    "direction": 0,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24266
+  },
+  "error": "Drive fault 2",
+  "last_status": {
+    "build": "1155a963",
+    "uptime": 39900,
+    "state": 4,
+    "fault": 2,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": false,
+    "position": 0.0,
+    "cal_state": 8,
+    "cal_error": 2,
+    "ready": false,
+    "stored": false,
+    "counts": 10070,
+    "raw_zero": -1,
+    "direction": 0,
+    "current_ma": 298,
+    "progress": 0,
+    "bus_mv": 24240
+  }
+}

@@ -216,7 +216,10 @@ static void build_frame(int32_t phase_a_command, int32_t phase_b_command, pwm_fr
   if (frame->phase_b_leg_2_duty > sampled_leg_peak)
     sampled_leg_peak = frame->phase_b_leg_2_duty;
   trigger = (uint32_t)sampled_leg_peak + CONTROL_ADC_BLANKING_TICKS;
-  frame->adc_trigger_ticks = (uint16_t)trigger;
+  // 六轴已验证的运行/标定入口使用固定的周期后段采样。
+  // 最大占空比已按该时刻反推限幅，因此不早于任一低侧消隐边界。
+  frame->adc_trigger_ticks = (uint16_t)(trigger > CONTROL_RUNTIME_ADC_TRIGGER_TICKS ?
+                                      trigger : CONTROL_RUNTIME_ADC_TRIGGER_TICKS);
 }
 
 /* 关闭桥臂后准备零输出帧，供失能和仅采样状态共用。 */

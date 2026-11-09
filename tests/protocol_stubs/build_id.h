@@ -1,0 +1,1 @@
+#define JOINT_BUILD_ID 0x12345678u

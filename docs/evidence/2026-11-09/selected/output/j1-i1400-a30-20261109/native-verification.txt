@@ -1,0 +1,3 @@
+headroom: PASS (positive/negative catch-up, slowdown, low speed, 500 cap, motor cap)
+j1_following_error: PASS (unchanged 2.5-degree protection through 500 deg/s)
+velocity: PASS (no position endpoint, accel/cruise/brake, watchdog interlock, following protection)

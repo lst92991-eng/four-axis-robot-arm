@@ -9,6 +9,8 @@ typedef struct
   //当前运动状态和故障
   motion_state_t state;
   motor_fault_t fault;
+  // 运动故障细分：1实际越界，2参考越界，3轨迹超时，4跟随，5停车终点越界。
+  uint8_t fault_detail;
   //机械零点是否建立
   uint8_t referenced;
   //是否到达命令位置
@@ -31,15 +33,19 @@ typedef struct
   //本次运动的输出轴速度上限，单位度/秒
   float speed_limit;
   //轨迹参考位置和速度，输出轴单位
-  float ref_pos;
+  // 多圈长行程不能用float逐毫秒累加：误差会累计成跟随故障。
+  double ref_pos;
   float ref_vel;
+  float manual_speed;
+  float brake_acceleration;
+  uint8_t manual_velocity;
   //机械零点对应的电机计数和输出轴角度
   int64_t zero_counts;
   float zero_degrees;
   //本段运动已经运行的时间，单位秒
-  float elapsed_s;
+  double elapsed_s;
   //本段运动允许的最长时间，单位秒
-  float timeout_s;
+  double timeout_s;
   //连续满足到位条件的时间，单位毫秒
   uint32_t settle_ms;
 } motion_control_t;
@@ -53,6 +59,9 @@ double Motion_calculateMotorTarget(void);
 //---------运动命令区---------
 //固定配置初始化有效后受理目标角度和速度
 int Motion_moveTo(float degrees, float speed);
+int Motion_runVelocity(float degrees_per_second);
+int Motion_setBrakeAcceleration(float degrees_per_second_squared);
+float Motion_brakeAcceleration(void);
 int Motion_stop(int link_lost);
 void Motion_release(void);
 

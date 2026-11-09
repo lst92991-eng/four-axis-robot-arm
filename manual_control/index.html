@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>四轴手动调试</title>
+<style>
+:root{font:16px/1.5 system-ui,"Microsoft YaHei",sans-serif;color:#17283c;background:#edf2f7;color-scheme:light}
+*{box-sizing:border-box}body{margin:0 auto;max-width:1220px;padding:26px}h1{margin:0;font-size:28px}p{margin:6px 0 16px;color:#536478}
+header,.toolbar,.readings,.jog,.card-head{display:flex;align-items:center;justify-content:space-between;gap:14px}.toolbar{flex-wrap:wrap;margin:20px 0}
+button,input{font:inherit}button{cursor:pointer;border:1px solid #aebdcd;border-radius:9px;padding:11px 18px;background:white;color:#22374d;font-weight:650}button:hover:enabled{background:#e8f0fc}button:disabled{cursor:not-allowed;opacity:.45}.primary{background:#1769d5;color:white;border-color:#1769d5}.primary:hover:enabled{background:#1259b7}
+#stop{background:#b62930;color:white;border:0;padding:15px 30px;font-size:20px}#mode{font-weight:750;border-radius:20px;padding:7px 16px;background:#e1eaf5}#mode.sim{background:#ffdf8a;color:#624600}
+#message{border-left:4px solid #1774d6;padding:12px 16px;background:#fff;border-radius:6px;min-height:48px}#error{color:#a51b29;min-height:26px;margin:8px 0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{background:white;border-radius:14px;padding:22px;border:1px solid #d3dce7}.card.active{border:2px solid #1769d5;padding:21px;background:#f7fbff}h2{margin:0;font-size:22px}.pill{font-size:13px;border-radius:20px;padding:4px 10px;background:#edf1f5}.readings{margin:20px 0}.value{font-size:30px;font-variant-numeric:tabular-nums}.caption{font-size:13px;color:#5a6a7b}.speed{display:flex;align-items:center;gap:9px;margin:12px 0}input{width:94px;border:1px solid #adbdce;border-radius:6px;padding:7px}.jog button{width:50%;height:72px;font-size:22px;touch-action:none;user-select:none}.jog button.held{background:#1769d5;color:white}.reason{min-height:44px;font-size:14px;color:#8d4931;margin:10px 0 0}.small{font-size:13px;color:#5c6c80}.foot{margin-top:18px}details{margin-top:20px;background:white;border-radius:10px;padding:12px 18px}#events{white-space:pre-wrap;font:13px/1.7 ui-monospace,monospace;max-height:210px;overflow:auto}a{color:#1769d5}@media(max-width:760px){body{padding:15px}.grid{grid-template-columns:1fr}header{align-items:flex-start}h1{font-size:24px}}
+</style>
+<header><div><h1>四轴手动调试</h1><p>按住加速至设定速度并匀速 · 松开减速保持</p></div><span id="mode">连接中</span></header>
+<div class="toolbar"><div><button id="connect">重新连接 USB-CAN</button> <button id="arm" class="primary">开启手动控制</button></div><button id="stop">■ 全轴停止</button></div>
+<div id="message" role="status">等待状态…</div><div id="error" role="alert"></div>
+<main class="grid" id="axes"></main>
+<p class="foot small">J1“上升 / 下降”已按实物方向配置；显示角度以上升为正。J1 的 °/s 是电机转速，尚未换算成升降 mm/s。停止会保持位置，不切断电机出力。</p>
+<p class="small">松手、移出按钮、切换窗口或页面失联都会请求停止。此按钮是软件停止；USB/CAN 完全断开时依赖驱动的 500 ms 通信看门狗减速，停止距离不为零。</p>
+<details><summary>调试记录 · 命令、回包与状态</summary><div id="telemetry" class="small"></div><div id="events"></div><div id="logpath" class="small"></div></details>
+<script>
+const key='__CONTROL_KEY__', client=crypto.randomUUID();
+let order=0, current=null, state=null, heartbeatBusy=false, polling=false, lastState=0;
+const el=id=>document.getElementById(id), err=text=>el('error').textContent=text;
+async function api(action,extra={}){
+ const body={key,client,order:++order,action,...extra};
+ const r=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(700)});
+ const j=await r.json();if(!r.ok)throw Error(j.error||'操作失败');return j;
+}
+function stop(reason='',beacon=false,disarm=false){
+ current=null;document.querySelectorAll('.held').forEach(b=>b.classList.remove('held'));
+ if(beacon){navigator.sendBeacon('/api/action',new Blob([JSON.stringify({key,client,order:++order,action:'stop',disarm})],{type:'application/json'}));}
+ else api('stop',{disarm}).catch(e=>err(e.message));
+ if(reason)err(reason);
+}
+function release(press){
+ if(!current||current.press!==press)return;
+ current=null;document.querySelectorAll('.held').forEach(b=>b.classList.remove('held'));
+ api('release',{press}).catch(e=>{err(e.message);stop();});
+}
+function build(s){
+ for(const a of s.axes){
+  const card=document.createElement('section');card.className='card';card.id='axis'+a.node;
+  card.innerHTML=`<div class="card-head"><h2></h2><span class="pill"></span></div><div class="readings"><div><div class="value pos">—</div><div class="caption">关节角度 °</div></div><div><div class="value vel">—</div><div class="caption">反馈速度 °/s</div></div></div><label class="speed">运行速度 <input aria-label="J${a.node} 运行速度" type="number" min="0.1" max="${a.max_speed_deg_s||Math.min(s.max_speed,30)}" step="0.1" value="${Math.min(s.default_speed,a.max_speed_deg_s||30)}"> °/s</label><div class="jog"><button data-dir="-1">− 反转</button><button data-dir="1">＋ 正转</button></div><div class="reason"></div><div class="small meta"></div>`;
+  card.querySelector('h2').textContent=a.label;
+  const note=document.createElement('div');note.className='small brake-note';card.insertBefore(note,card.querySelector('.jog'));
+  card.querySelector('[data-dir="1"]').textContent=a.positive_label||'＋ 正转';
+  card.querySelector('[data-dir="-1"]').textContent=a.negative_label||'− 反转';
+  if(a.node===1)card.querySelector('.caption').textContent='Z轴角度 °（上升为正）';el('axes').appendChild(card);
+  for(const b of card.querySelectorAll('.jog button')){
+   b.addEventListener('contextmenu',e=>e.preventDefault());
+   b.addEventListener('pointerdown',async e=>{
+    if(e.button!==0||current||!state?.armed)return;e.preventDefault();
+    const speed=Number(card.querySelector('input').value),press=crypto.randomUUID();
+    if(!Number.isFinite(speed)||speed<.1||speed>Number(card.querySelector('input').max)){err('速度超出允许范围');return;}
+    current={press,node:a.node,pointer:e.pointerId};b.setPointerCapture(e.pointerId);b.classList.add('held');err('');
+    try{await api('jog',{node:a.node,direction:Number(b.dataset.dir),speed,press});}catch(ex){if(current?.press===press)current=null;b.classList.remove('held');err(ex.message);}
+   });
+   b.addEventListener('pointerup',()=>current&&release(current.press));
+   b.addEventListener('pointercancel',()=>stop('触控取消，停止'));
+   b.addEventListener('lostpointercapture',()=>current&&release(current.press));
+   b.addEventListener('pointermove',e=>{if(current?.pointer===e.pointerId){const r=b.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)release(current.press);}});
+  }
+ }
+}
+function render(s){
+ if(!s.axes)return;state=s;lastState=performance.now();if(!el('axes').children.length)build(s);
+ const owned=s.owner===client;
+ el('mode').textContent=s.simulated?'模拟测试 · 不连接电机':'真实硬件';el('mode').className=s.simulated?'sim':'';
+ el('message').textContent=s.message;
+ el('arm').disabled=(s.armed&&!owned)||(!s.armed&&(s.stopping.length>0||!s.axes.some(a=>!a.reason)));
+ el('arm').textContent=s.armed?(owned?'结束手动控制':'其他页面正在控制'):'开启手动控制';
+ el('connect').disabled=s.armed;
+ for(const a of s.axes){
+  const c=el('axis'+a.node),fresh=a.age_ms!==null&&a.age_ms<=250;
+  c.classList.toggle('active',s.active?.node===a.node);
+  c.querySelector('.pos').textContent=fresh&&a.referenced?a.display_position.toFixed(3):'—';
+  c.querySelector('.vel').textContent=fresh?a.display_velocity.toFixed(3):'—';
+  c.querySelector('.pill').textContent=fresh?a.state_text:'离线';
+  c.querySelector('.reason').textContent=a.reason||(s.armed?'可连续运行；松开减速停止':'状态就绪，请先开启手动控制');
+  if(a.diagnostic_step_deg)c.querySelector('.reason').textContent+=` · 诊断模式：每次最多 ${a.diagnostic_step_deg}°，按住也不连续走`;
+  c.querySelector('.meta').textContent=`${a.manual_mode==='velocity'?'手动速度模式 · 无固定角度终点':'定位模式'} · 构建 ${a.build||'—'} · 更新 ${a.age_ms===null?'—':a.age_ms+' ms'}`;
+  c.querySelector('.brake-note').textContent=`理论制动 ${(Number(c.querySelector('input').value)/(a.brake_deceleration_deg_s2||a.acceleration_deg_s2||30)).toFixed(2)} 秒；以反馈停稳为准`;
+  if(a.calibration_extension&&a.configured)c.querySelector('.meta').textContent+=` · 电角零点 ${a.electrical_zero} / 电角方向 ${a.encoder_direction}${a.calibration_saved?'（已保存）':'（RAM）'}`;
+  for(const b of c.querySelectorAll('.jog button'))b.disabled=current?.node===a.node?false:!owned||!a.ready||!!s.active||s.stopping.length>0;
+  c.querySelector('input').disabled=!!current||!!s.active;
+ }
+ el('events').textContent=s.events.map(e=>e.time+'  '+e.message).join('\n');el('logpath').textContent='日志：'+s.log_path;
+ const trace=s.diagnostics?.['1']?.trace;
+ el('telemetry').textContent=trace&&trace.age_ms<=250?`J1 丝杆电机 · Iq给定 ${trace.iq_ref_ma} mA / 反馈 ${trace.iq_ma} mA · 母线 ${(trace.bus_mv/1000).toFixed(2)} V · 电流诊断 ${trace.age_ms} ms`:'J1 电流诊断暂未更新';
+ if(current&&(!s.armed||!owned)){current=null;document.querySelectorAll('.held').forEach(b=>b.classList.remove('held'));}
+}
+el('connect').onclick=()=>api('connect').catch(e=>err(e.message));
+el('arm').onclick=()=>{err('');if(state?.armed)stop('',false,true);else api('arm').catch(e=>err(e.message));};
+el('stop').onclick=()=>stop();
+window.addEventListener('blur',()=>{if(current||state?.owner===client)stop('窗口失焦，停止',true);});
+window.addEventListener('pagehide',()=>{if(current||state?.owner===client)stop('',true,true);});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&(current||state?.owner===client))stop('页面隐藏，停止',true);});
+document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Escape'){e.preventDefault();stop();}});
+setInterval(async()=>{
+ if(!state?.armed||state.owner!==client||document.hidden||heartbeatBusy)return;heartbeatBusy=true;
+ try{await api('heartbeat',{press:current?.press||null});}catch(e){err(e.message);stop();}finally{heartbeatBusy=false;}
+},80);
+setInterval(async()=>{
+ if(polling)return;polling=true;
+ try{const r=await fetch('/api/state',{signal:AbortSignal.timeout(600)});if(!r.ok)throw Error('状态读取失败');render(await r.json());}
+ catch(e){err('连接中断：'+e.message);if(current||(state?.armed&&state.owner===client))stop();document.querySelectorAll('.jog button').forEach(b=>b.disabled=true);}
+ finally{polling=false;}
+},80);
+setInterval(()=>{if(lastState&&performance.now()-lastState>350&&(current||(state?.armed&&state.owner===client)))stop('反馈过期，停止');},80);
+</script>
+</html>
