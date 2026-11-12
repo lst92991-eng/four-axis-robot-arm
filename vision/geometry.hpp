@@ -1,4 +1,5 @@
 #pragma once
+#include "yolo.hpp"
 #include <opencv2/core.hpp>
 #include <array>
 #include <optional>
@@ -89,7 +90,6 @@ struct ImageTransform {
     cv::Point2d padding;
     cv::Point2d toOriginal(cv::Point2d, DetectionSpace) const;
 };
-struct Detection { int classId = -1; double confidence = 0; cv::Rect2d bbox; };
 struct Observation {
     std::string cameraId, frameId;
     std::array<int,Cells> pieces{};

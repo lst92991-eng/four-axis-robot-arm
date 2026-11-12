@@ -1,6 +1,7 @@
 // 模拟 RKNN C ABI，验证本项目适配层的步幅、失败清理和退出。
 #include "vision/yolo.hpp"
 #include <rknn_api.h>
+#include <array>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>

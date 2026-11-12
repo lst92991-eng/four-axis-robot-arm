@@ -1,6 +1,9 @@
 #pragma once
-#include "geometry.hpp"
+#include <opencv2/core.hpp>
+#include <cstddef>
 #include <cstdint>
+#include <string>
+#include <vector>
 
 namespace scara {
 // 固定模型：每个候选框有 4 个位置数、1 个目标分数和 14 个类别分数。
@@ -8,6 +11,14 @@ constexpr int YoloSize = 640, YoloClasses = 14, YoloAnchors = 3, YoloHeads = 3;
 constexpr int YoloBoxValues = 5 + YoloClasses;
 constexpr int YoloChannels = YoloAnchors * YoloBoxValues;
 constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
+
+// 识别结果交给棋盘模块使用，框的位置和尺寸均为原始图像像素。
+struct Detection
+{
+  int classId = -1;
+  double confidence = 0;
+  cv::Rect2d bbox;
+};
 
 //---------图像与模型参数区---------
 struct VisionConfig
