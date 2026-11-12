@@ -27,14 +27,17 @@ void Yolo_open(std::string path)
   Yolo_close();
   try
   {
-    check(rknn_init(&Model.context, path.data(), 0, 0, nullptr), "rknn_init");
+    int status = rknn_init(&Model.context, path.data(), 0, 0, nullptr);
+    check(status, "rknn_init");
     rknn_input_output_num count{};
-    check(rknn_query(Model.context, RKNN_QUERY_IN_OUT_NUM, &count, sizeof(count)), "rknn_query(count)");
+    status = rknn_query(Model.context, RKNN_QUERY_IN_OUT_NUM, &count, sizeof(count));
+    check(status, "rknn_query(count)");
     if (count.n_input!=1 || count.n_output!=YoloHeads)
       throw std::runtime_error("Expected one input and three outputs");
 
     // 输入为 640×640 RGB 图像，归一化由模型完成。
-    check(rknn_query(Model.context, RKNN_QUERY_NATIVE_INPUT_ATTR, &Model.input, sizeof(Model.input)), "rknn_query(input)");
+    status = rknn_query(Model.context, RKNN_QUERY_NATIVE_INPUT_ATTR, &Model.input, sizeof(Model.input));
+    check(status, "rknn_query(input)");
     if (!validLayout(Model.input,YoloSize,3)) throw std::runtime_error("Input layout mismatch");
     Model.input.type = RKNN_TENSOR_UINT8;
     Model.input.pass_through = 0;
@@ -46,7 +49,8 @@ void Yolo_open(std::string path)
     {
       auto& attr = Model.output[i];
       attr.index = i;
-      check(rknn_query(Model.context, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, &attr, sizeof(attr)), "rknn_query(output)");
+      status = rknn_query(Model.context, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, &attr, sizeof(attr));
+      check(status, "rknn_query(output)");
       if (!validLayout(attr,YoloGrid[i],YoloChannels) || attr.type!=RKNN_TENSOR_INT8 ||
           attr.qnt_type!=RKNN_TENSOR_QNT_AFFINE_ASYMMETRIC || !std::isfinite(attr.scale) || attr.scale<=0)
         throw std::runtime_error("Output layout mismatch");
@@ -73,7 +77,8 @@ const YoloHead *Yolo_run(const cv::Mat& rgb)
   size_t rowBytes = (Model.input.w_stride ? Model.input.w_stride : YoloSize)*3;
   for (int row=0; row<YoloSize; ++row)
     std::memcpy(input+row*rowBytes, rgb.ptr(row), YoloSize*3);
-  check(rknn_run(Model.context, nullptr), "rknn_run");
+  int status = rknn_run(Model.context, nullptr);
+  check(status, "rknn_run");
   return Model.heads;
 }
 
@@ -102,7 +107,8 @@ static void bindBuffer(rknn_tensor_mem *memory, rknn_tensor_attr& attr)
   if (!memory || !memory->virt_addr || memory->size<attr.size_with_stride)
     throw std::runtime_error("Cannot allocate tensor memory");
   std::memset(memory->virt_addr, 0, memory->size);
-  check(rknn_set_io_mem(Model.context, memory, &attr), "rknn_set_io_mem");
+  int status = rknn_set_io_mem(Model.context, memory, &attr);
+  check(status, "rknn_set_io_mem");
 }
 
 static void check(int status, const char *operation)
