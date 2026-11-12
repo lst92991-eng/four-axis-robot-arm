@@ -70,14 +70,23 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
   }
   // 3. 去掉留白、还原缩放，最后加回裁剪区域在原图中的偏移。
   std::vector<Detection> detections;
-  for (const auto& box : kept)
+  for (const Candidate& box : kept)
   {
     double x1 = std::clamp((box.x1-mapping.left)/mapping.scale, 0.0, double(mapping.roi.width));
     double y1 = std::clamp((box.y1-mapping.top)/mapping.scale, 0.0, double(mapping.roi.height));
     double x2 = std::clamp((box.x2-mapping.left)/mapping.scale, 0.0, double(mapping.roi.width));
     double y2 = std::clamp((box.y2-mapping.top)/mapping.scale, 0.0, double(mapping.roi.height));
     if (x2>x1 && y2>y1)
-      detections.push_back({box.classId, box.score, {x1+mapping.roi.x, y1+mapping.roi.y, x2-x1, y2-y1}});
+    {
+      Detection piece;
+      piece.classId = box.classId;
+      piece.confidence = box.score;
+      piece.bbox.x = x1+mapping.roi.x;
+      piece.bbox.y = y1+mapping.roi.y;
+      piece.bbox.width = x2-x1;
+      piece.bbox.height = y2-y1;
+      detections.push_back(piece);
+    }
   }
   return detections;
 }
