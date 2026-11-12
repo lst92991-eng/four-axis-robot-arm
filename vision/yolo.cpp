@@ -144,14 +144,23 @@ static void readCandidates(const YoloHead& head, int index, float scoreThreshold
         int classId = bestClass(prediction+5);
         float score = objectScore*dequantize(head,prediction[5+classId]);
         if (score<scoreThreshold) continue;
-        double centerX = (double(dequantize(head,prediction[0])*2-.5f)+x)*stride;
-        double centerY = (double(dequantize(head,prediction[1])*2-.5f)+y)*stride;
-        float width = dequantize(head,prediction[2])*2;
-        float height = dequantize(head,prediction[3])*2;
-        width = width*width*Anchors[index][anchor*2];
-        height = height*height*Anchors[index][anchor*2+1];
-        candidates.push_back({classId, score, centerX-width/2, centerY-height/2,
-                             centerX+width/2, centerY+height/2});
+        // 先得到格内偏移，再加网格位置；与原实现保持相同的 float/double 顺序。
+        float offsetX = dequantize(head,prediction[0])*2-.5f;
+        float offsetY = dequantize(head,prediction[1])*2-.5f;
+        double centerX = (double(offsetX)+x)*stride;
+        double centerY = (double(offsetY)+y)*stride;
+        float widthFactor = dequantize(head,prediction[2])*2;
+        float heightFactor = dequantize(head,prediction[3])*2;
+        float width = widthFactor*widthFactor*Anchors[index][anchor*2];
+        float height = heightFactor*heightFactor*Anchors[index][anchor*2+1];
+        Candidate box;
+        box.classId = classId;
+        box.score = score;
+        box.x1 = centerX-width/2;
+        box.y1 = centerY-height/2;
+        box.x2 = centerX+width/2;
+        box.y2 = centerY+height/2;
+        candidates.push_back(box);
       }
     }
   }
