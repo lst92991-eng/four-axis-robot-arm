@@ -7,6 +7,9 @@
 #include <thread>
 
 namespace scara {
+// 网络取流等待时间，单位：毫秒。打开、读取和等候新帧使用同一时限。
+constexpr int CameraTimeoutMs = 5000;
+
 //---------摄像头数据区---------
 static struct CameraState
 {
@@ -27,9 +30,13 @@ static bool frameReady();
 void Camera_open(const std::string& source)
 {
   Camera_close();
-  if (!Capture.video.open(source, cv::CAP_FFMPEG,
-       {cv::CAP_PROP_OPEN_TIMEOUT_MSEC,5000,cv::CAP_PROP_READ_TIMEOUT_MSEC,5000}))
-    throw std::runtime_error("Cannot open camera stream");
+  const std::vector<int> options =
+  {
+    cv::CAP_PROP_OPEN_TIMEOUT_MSEC, CameraTimeoutMs,
+    cv::CAP_PROP_READ_TIMEOUT_MSEC, CameraTimeoutMs
+  };
+  bool opened = Capture.video.open(source, cv::CAP_FFMPEG, options);
+  if (!opened) throw std::runtime_error("Cannot open camera stream");
   Capture.error.clear();
   Capture.stopping = false;
   Capture.task = std::thread(receiveFrames);
@@ -41,7 +48,7 @@ cv::Mat Camera_read()
   std::unique_lock<std::mutex> lock(Capture.mutex);
   // 丢弃上次留下的图像，等待后台再次接收后唤醒。
   Capture.frame.release();
-  if (!Capture.ready.wait_for(lock, std::chrono::seconds(5), frameReady))
+  if (!Capture.ready.wait_for(lock, std::chrono::milliseconds(CameraTimeoutMs), frameReady))
     throw std::runtime_error("Camera frame timeout");
   if (Capture.stopping || Capture.frame.empty())
     throw std::runtime_error(Capture.stopping ? "Camera stopped" : Capture.error);
