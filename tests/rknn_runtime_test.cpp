@@ -90,6 +90,8 @@ int rknn_run(rknn_context, rknn_run_extend *)
       check(bytes[offset]==11 && bytes[offset+1]==22 && bytes[offset+2]==33,
             "Input rows were copied with the wrong stride");
     }
+    for (int padding=640*3; padding<642*3; ++padding)
+      check(bytes[row*642*3+padding]==0, "Image copy overwrote the NPU input row padding");
   }
 #endif
   for (auto *output : outputs) std::memset(output->virt_addr, 128, output->size);
@@ -155,7 +157,10 @@ int main()
     scara::Yolo_open("mock.rknn");
     scara::Yolo_open("mock.rknn");
     check(contextOpen && alive==4, "Reopening the fixed model leaked its previous buffers");
-    cv::Mat rgb(640,640,CV_8UC3,cv::Scalar(11,22,33));
+    cv::Mat storage(648,656,CV_8UC3,cv::Scalar(99,88,77));
+    cv::Mat rgb = storage(cv::Rect(3,4,640,640));
+    rgb.setTo(cv::Scalar(11,22,33));
+    check(!rgb.isContinuous(), "Stride test unexpectedly used tightly packed source rows");
     auto heads = scara::Yolo_run(rgb);
     auto pieces = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
     check(pieces.size()==1 && pieces[0].classId==12, "Native padded output was decoded incorrectly");

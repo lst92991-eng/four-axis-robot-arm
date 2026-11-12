@@ -77,10 +77,14 @@ const YoloHead *Yolo_run(const cv::Mat& rgb)
 {
   if (!Model.context || rgb.type()!=CV_8UC3 || rgb.size()!=cv::Size(YoloSize,YoloSize))
     throw std::runtime_error("Expected an open model and 640x640 RGB input");
-  auto *input = static_cast<uint8_t *>(Model.inputMemory->virt_addr);
+  uint8_t *input = static_cast<uint8_t *>(Model.inputMemory->virt_addr);
   size_t rowBytes = (Model.input.w_stride ? Model.input.w_stride : YoloSize)*3;
   for (int row=0; row<YoloSize; ++row)
-    std::memcpy(input+row*rowBytes, rgb.ptr(row), YoloSize*3);
+  {
+    uint8_t *targetRow = input+row*rowBytes;
+    const uint8_t *sourceRow = rgb.ptr<uint8_t>(row);
+    std::memcpy(targetRow, sourceRow, YoloSize*3);
+  }
   int status = rknn_run(Model.context, nullptr);
   check(status, "rknn_run");
   return Model.heads;
