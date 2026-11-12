@@ -24,6 +24,7 @@ static int bestClass(const int8_t *classScores);
 static float dequantize(const YoloHead& head, int8_t value);
 static bool higherScore(const Candidate& a, const Candidate& b);
 static double intersectionOverUnion(const Candidate& a, const Candidate& b);
+static bool overlapsKept(const Candidate& box, const std::vector<Candidate>& kept, float threshold);
 
 //---------模型输入区---------
 cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapping& mapping)
@@ -63,18 +64,9 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
     readCandidates(heads[index], index, config.scoreThreshold, candidates);
   // 2. 按分数去重；同分保留遍历顺序，不因类别不同重复保留同一枚棋子。
   std::stable_sort(candidates.begin(), candidates.end(), higherScore);
-  for (const auto& candidate : candidates)
+  for (const Candidate& candidate : candidates)
   {
-    bool duplicate = false;
-    for (const auto& old : kept)
-    {
-      if (intersectionOverUnion(candidate, old)>config.nmsThreshold)
-      {
-        duplicate = true;
-        break;
-      }
-    }
-    if (!duplicate) kept.push_back(candidate);
+    if (!overlapsKept(candidate, kept, config.nmsThreshold)) kept.push_back(candidate);
   }
   // 3. 去掉留白、还原缩放，最后加回裁剪区域在原图中的偏移。
   std::vector<Detection> detections;
@@ -183,6 +175,13 @@ static float dequantize(const YoloHead& head, int8_t value)
 static bool higherScore(const Candidate& a, const Candidate& b)
 {
   return a.score>b.score;
+}
+
+static bool overlapsKept(const Candidate& box, const std::vector<Candidate>& kept, float threshold)
+{
+  for (const Candidate& old : kept)
+    if (intersectionOverUnion(box, old)>threshold) return true;
+  return false;
 }
 
 static double intersectionOverUnion(const Candidate& a, const Candidate& b)
