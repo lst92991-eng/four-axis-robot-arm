@@ -8,6 +8,7 @@
 
 namespace {
 int allocations = 0, alive = 0, failAt = 0;
+int failQuery = -1, failBind = 0, bindings = 0;
 bool contextOpen = false, badOutput = false, failRun = false;
 rknn_tensor_mem *input = nullptr;
 std::array<rknn_tensor_mem *, 3> outputs{};
@@ -27,11 +28,13 @@ int rknn_init(rknn_context *context, void *, uint32_t, uint32_t, rknn_init_exten
   *context = 1;
   contextOpen = true;
   allocations = 0;
+  bindings = 0;
   return 0;
 }
 
 int rknn_query(rknn_context, rknn_query_cmd command, void *data, uint32_t)
 {
+  if (command==failQuery) return -21;
   if (command==RKNN_QUERY_IN_OUT_NUM)
   {
     *static_cast<rknn_input_output_num *>(data) = {1,3};
@@ -67,6 +70,7 @@ rknn_tensor_mem *rknn_create_mem(rknn_context, uint32_t size)
 
 int rknn_set_io_mem(rknn_context, rknn_tensor_mem *memory, rknn_tensor_attr *attr)
 {
+  if (++bindings==failBind) return -22;
   if (attr->type==RKNN_TENSOR_UINT8) input = memory;
   else outputs[attr->index] = memory;
   return 0;
@@ -74,7 +78,7 @@ int rknn_set_io_mem(rknn_context, rknn_tensor_mem *memory, rknn_tensor_attr *att
 
 int rknn_run(rknn_context, rknn_run_extend *)
 {
-  if (failRun) return -1;
+  if (failRun) return -7;
 #ifndef RKNN_MOCK_ENTRY
   const auto *bytes = static_cast<const uint8_t *>(input->virt_addr);
   for (int row=0; row<640; ++row)
@@ -124,6 +128,23 @@ int main()
       check(rejected && !contextOpen && !alive, "Partial allocation leaked resources");
     }
     failAt = 0;
+    for (int command : {RKNN_QUERY_IN_OUT_NUM, RKNN_QUERY_NATIVE_INPUT_ATTR, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR})
+    {
+      failQuery = command;
+      bool reported = false;
+      try { scara::Yolo_open("mock.rknn"); }
+      catch (const std::exception& e) { reported = std::string(e.what()).find("-21")!=std::string::npos; }
+      check(reported && !contextOpen && !alive, "Query failure lost status or leaked resources");
+    }
+    failQuery = -1;
+    for (failBind=1; failBind<=4; ++failBind)
+    {
+      bool reported = false;
+      try { scara::Yolo_open("mock.rknn"); }
+      catch (const std::exception& e) { reported = std::string(e.what()).find("-22")!=std::string::npos; }
+      check(reported && !contextOpen && !alive, "Binding failure lost status or leaked resources");
+    }
+    failBind = 0;
     badOutput = true;
     bool rejected = false;
     try { scara::Yolo_open("mock.rknn"); scara::Yolo_close(); }
@@ -140,7 +161,7 @@ int main()
     failRun = true;
     rejected = false;
     try { scara::Yolo_run(rgb); }
-    catch (const std::exception&) { rejected = true; }
+    catch (const std::exception& e) { rejected = std::string(e.what()).find("rknn_run failed: -7")!=std::string::npos; }
     scara::Yolo_close();
     check(rejected && !contextOpen && !alive, "Inference failure cleanup failed");
     std::cout << "PASS RKNN adapter input/output strides and failure cleanup; simulated ABI\n";

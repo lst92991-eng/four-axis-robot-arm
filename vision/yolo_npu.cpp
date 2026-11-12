@@ -17,7 +17,7 @@ static struct
   YoloHead heads[YoloHeads];
 } Model;
 
-static void require(bool valid, const char *message);
+static void check(int status, const char *operation);
 static bool validLayout(const rknn_tensor_attr& attr, int width, int channels);
 static void bindBuffer(rknn_tensor_mem *memory, rknn_tensor_attr& attr);
 
@@ -27,16 +27,15 @@ void Yolo_open(std::string path)
   Yolo_close();
   try
   {
-    require(rknn_init(&Model.context, path.data(), 0, 0, nullptr)==0, "Open model failed");
+    check(rknn_init(&Model.context, path.data(), 0, 0, nullptr), "rknn_init");
     rknn_input_output_num count{};
-    require(rknn_query(Model.context, RKNN_QUERY_IN_OUT_NUM, &count, sizeof(count))==0,
-            "Read tensor count failed");
-    require(count.n_input==1 && count.n_output==YoloHeads, "Expected one input and three outputs");
+    check(rknn_query(Model.context, RKNN_QUERY_IN_OUT_NUM, &count, sizeof(count)), "rknn_query(count)");
+    if (count.n_input!=1 || count.n_output!=YoloHeads)
+      throw std::runtime_error("Expected one input and three outputs");
 
     // 输入为 640×640 RGB 图像，归一化由模型完成。
-    require(rknn_query(Model.context, RKNN_QUERY_NATIVE_INPUT_ATTR, &Model.input, sizeof(Model.input))==0,
-            "Read input failed");
-    require(validLayout(Model.input,YoloSize,3), "Input layout mismatch");
+    check(rknn_query(Model.context, RKNN_QUERY_NATIVE_INPUT_ATTR, &Model.input, sizeof(Model.input)), "rknn_query(input)");
+    if (!validLayout(Model.input,YoloSize,3)) throw std::runtime_error("Input layout mismatch");
     Model.input.type = RKNN_TENSOR_UINT8;
     Model.input.pass_through = 0;
     Model.inputMemory = rknn_create_mem(Model.context, Model.input.size_with_stride);
@@ -47,11 +46,10 @@ void Yolo_open(std::string path)
     {
       auto& attr = Model.output[i];
       attr.index = i;
-      require(rknn_query(Model.context, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, &attr, sizeof(attr))==0,
-              "Read output failed");
-      require(validLayout(attr,YoloGrid[i],YoloChannels) && attr.type==RKNN_TENSOR_INT8 &&
-              attr.qnt_type==RKNN_TENSOR_QNT_AFFINE_ASYMMETRIC && std::isfinite(attr.scale) && attr.scale>0,
-              "Output layout mismatch");
+      check(rknn_query(Model.context, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, &attr, sizeof(attr)), "rknn_query(output)");
+      if (!validLayout(attr,YoloGrid[i],YoloChannels) || attr.type!=RKNN_TENSOR_INT8 ||
+          attr.qnt_type!=RKNN_TENSOR_QNT_AFFINE_ASYMMETRIC || !std::isfinite(attr.scale) || attr.scale<=0)
+        throw std::runtime_error("Output layout mismatch");
       Model.outputMemory[i] = rknn_create_mem(Model.context, attr.size_with_stride);
       bindBuffer(Model.outputMemory[i], attr);
       auto *memory = Model.outputMemory[i];
@@ -69,12 +67,13 @@ void Yolo_open(std::string path)
 //---------送入图像并执行推理---------
 const YoloHead *Yolo_run(const cv::Mat& rgb)
 {
-  require(Model.context && rgb.type()==CV_8UC3 && rgb.size()==cv::Size(YoloSize,YoloSize), "Expected 640x640 RGB input");
+  if (!Model.context || rgb.type()!=CV_8UC3 || rgb.size()!=cv::Size(YoloSize,YoloSize))
+    throw std::runtime_error("Expected an open model and 640x640 RGB input");
   auto *input = static_cast<uint8_t *>(Model.inputMemory->virt_addr);
   size_t rowBytes = (Model.input.w_stride ? Model.input.w_stride : YoloSize)*3;
   for (int row=0; row<YoloSize; ++row)
     std::memcpy(input+row*rowBytes, rgb.ptr(row), YoloSize*3);
-  require(rknn_run(Model.context, nullptr)==0, "Inference failed");
+  check(rknn_run(Model.context, nullptr), "rknn_run");
   return Model.heads;
 }
 
@@ -100,13 +99,14 @@ static bool validLayout(const rknn_tensor_attr& attr, int width, int channels)
 
 static void bindBuffer(rknn_tensor_mem *memory, rknn_tensor_attr& attr)
 {
-  require(memory && memory->virt_addr && memory->size>=attr.size_with_stride, "Cannot allocate tensor memory");
+  if (!memory || !memory->virt_addr || memory->size<attr.size_with_stride)
+    throw std::runtime_error("Cannot allocate tensor memory");
   std::memset(memory->virt_addr, 0, memory->size);
-  require(rknn_set_io_mem(Model.context, memory, &attr)==0, "Bind tensor failed");
+  check(rknn_set_io_mem(Model.context, memory, &attr), "rknn_set_io_mem");
 }
 
-static void require(bool valid, const char *message)
+static void check(int status, const char *operation)
 {
-  if (!valid) throw std::runtime_error(message);
+  if (status!=0) throw std::runtime_error(std::string(operation)+" failed: "+std::to_string(status));
 }
 }
