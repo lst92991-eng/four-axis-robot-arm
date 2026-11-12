@@ -136,16 +136,19 @@ cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>& detections
   if (labels.type()!=CV_8UC1 || labels.rows!=YoloClasses*24 || labels.cols!=64)
     throw std::runtime_error("Expected the 14-class Chinese label atlas");
   cv::Mat result = bgr.clone();
+  cv::Rect bounds({}, result.size());
   for (const auto& detection : detections)
   {
     if (detection.classId<0 || detection.classId>=YoloClasses) continue;
-    cv::Rect box = cv::Rect(detection.bbox) & cv::Rect({}, result.size());
+    cv::Rect box = cv::Rect(detection.bbox) & bounds;
+    if (box.empty()) continue;
     cv::Scalar color = detection.classId<7 ? cv::Scalar(255,180,65) : cv::Scalar(65,85,245);
     cv::rectangle(result, box, color, 2);
     int x = std::clamp(box.x, 0, std::max(0, result.cols-44));
     int y = std::clamp(box.y-25, 0, std::max(0, result.rows-24));
-    cv::rectangle(result, {x,y,44,24}, color, cv::FILLED);
-    result(cv::Rect(x,y,44,24)).setTo(cv::Scalar::all(255), labels(cv::Rect(0,detection.classId*24,44,24)));
+    cv::Rect label = cv::Rect(x,y,44,24) & bounds;
+    cv::rectangle(result, label, color, cv::FILLED);
+    result(label).setTo(cv::Scalar::all(255), labels(cv::Rect(0,detection.classId*24,label.width,label.height)));
     int scoreY = std::clamp(box.y+box.height-16, 0, std::max(0, result.rows-16));
     cv::rectangle(result, {x,scoreY,44,16}, color, cv::FILLED);
     cv::putText(result, cv::format("%.2f", detection.confidence), {x+3,scoreY+12},

@@ -101,6 +101,11 @@ int main(int argc, char **argv)
     auto preview = scara::Vision_draw(source, pieces, labels);
     check(preview.size()==source.size(), "Drawing changed the display field of view");
     check(cv::norm(scara::Vision_draw(source, {}, labels), source, cv::NORM_INF)==0, "Empty detection altered frame");
+    check(cv::norm(scara::Vision_draw(source, {{0,.9,{-100,-100,10,10}}}, labels),source,cv::NORM_INF)==0,
+          "Off-image detection drew a false label at the image origin");
+    cv::Mat tiny(12,20,CV_8UC3,cv::Scalar::all(0));
+    check(scara::Vision_draw(tiny, {{12,.9,{0,0,5,5}}}, labels).size()==tiny.size(),
+          "Clipped Chinese label changed the image size");
     std::filesystem::create_directories("output/vision-stage-verify");
     std::vector<uint8_t> encoded;
     cv::imencode(".png", preview, encoded);
