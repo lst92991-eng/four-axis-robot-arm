@@ -7,8 +7,13 @@
 
 namespace scara {
 namespace {
-constexpr float Anchors[YoloHeads][YoloAnchors*2] = {{10,13,16,30,33,23}, {30,61,62,45,59,119},
-                                {116,90,156,198,373,326}};
+// 每一对分别是锚框的宽、高，单位：640 输入图像素。
+const cv::Size2f Anchors[YoloHeads][YoloAnchors] =
+{
+  {{10,13}, {16,30}, {33,23}},
+  {{30,61}, {62,45}, {59,119}},
+  {{116,90}, {156,198}, {373,326}}
+};
 
 struct Candidate
 {
@@ -152,8 +157,9 @@ static void readCandidates(const YoloHead& head, int index, float scoreThreshold
         double centerY = (double(offsetY)+y)*stride;
         float widthFactor = dequantize(head,prediction[2])*2;
         float heightFactor = dequantize(head,prediction[3])*2;
-        float width = widthFactor*widthFactor*Anchors[index][anchor*2];
-        float height = heightFactor*heightFactor*Anchors[index][anchor*2+1];
+        cv::Size2f anchorSize = Anchors[index][anchor];
+        float width = widthFactor*widthFactor*anchorSize.width;
+        float height = heightFactor*heightFactor*anchorSize.height;
         Candidate box;
         box.classId = classId;
         box.score = score;
