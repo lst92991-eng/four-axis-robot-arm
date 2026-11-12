@@ -14,6 +14,8 @@ int main(int argc, char **argv)
     auto manifest = scara::readStorage(argv[1]);
     std::filesystem::create_directories(std::filesystem::u8path(argv[2]));
     cv::setNumThreads(1);
+    auto labelBytes = scara::readBytes("config/vision/chinese-labels.png");
+    auto labels = cv::imdecode(std::vector<uint8_t>(labelBytes.begin(),labelBytes.end()), cv::IMREAD_GRAYSCALE);
     for (auto item : manifest["cases"])
     {
       std::string id = item["id"], imagePath = item["image"], packetPath = item["packet"];
@@ -63,6 +65,10 @@ int main(int argc, char **argv)
                << d.bbox.x << d.bbox.y << d.bbox.x+d.bbox.width << d.bbox.y+d.bbox.height << "]" << "}";
       result << "]";
       scara::writeBytes(prefix+".json", result.releaseAndGetString());
+      auto preview = scara::Vision_draw(source, detections, labels);
+      std::vector<uint8_t> png;
+      cv::imencode(".png", preview, png);
+      scara::writeBytes(prefix+".png", {png.begin(),png.end()});
       std::cout << id << ": " << detections.size() << " detections\n";
     }
     return 0;

@@ -7,7 +7,10 @@
 
 namespace scara {
 // 固定模型：每个候选框有 4 个位置数、1 个目标分数和 14 个类别分数。
-constexpr int YoloSize = 640, YoloClasses = 14, YoloAnchors = 3, YoloHeads = 3;
+constexpr int YoloSize = 640;
+constexpr int YoloClasses = 14;
+constexpr int YoloAnchors = 3;
+constexpr int YoloHeads = 3;
 constexpr int YoloBoxValues = 5 + YoloClasses;
 constexpr int YoloChannels = YoloAnchors * YoloBoxValues;
 constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
@@ -15,8 +18,8 @@ constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
 // 识别结果交给棋盘模块使用，框的位置和尺寸均为原始图像像素。
 struct Detection
 {
-  int classId = -1;
-  double confidence = 0;
+  int classId = -1;        // 0～6 为黑方，7～13 为红方，顺序与模型一致。
+  double confidence = 0;  // 目标分数 × 类别分数。
   cv::Rect2d bbox;
 };
 
@@ -31,26 +34,29 @@ struct VisionConfig
 
 struct ImageMapping
 {
-  cv::Rect roi;
-  double scale = 1;
-  int left = 0, top = 0;
+  cv::Rect roi;       // 原图中的裁剪区域，单位：原图像素。
+  double scale = 1;   // 输入图像素 / 原图像素，X、Y 共用此缩放比。
+  int left = 0;      // 640 输入图左侧的留白像素。
+  int top = 0;       // 640 输入图顶部的留白像素。
 };
 
 // NPU 原生输出为 NHWC INT8。跨度和容量均以字节计。
 struct YoloHead
 {
   const int8_t *data = nullptr;
-  size_t bytes = 0;
-  size_t rowBytes = 0;
+  size_t bytes = 0;     // 输出缓冲容量，单位：字节。
+  size_t rowBytes = 0;  // 相邻两行的实际间距，包含硬件对齐字节。
   int zeroPoint = 0;
   float scale = 0;
 };
 
 //---------图像处理接口区---------
-cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig&, ImageMapping&);
+// 输入原图 BGR；返回 640×640 RGB，同时填写后处理要用的缩放和留白。
+cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapping& mapping);
 std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
-                                    const ImageMapping&, const VisionConfig&);
-cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>&,
+                                    const ImageMapping& mapping, const VisionConfig& config);
+// 复制原图后绘制，不改动输入图像或检测结果。
+cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>& detections,
                     const cv::Mat& chineseLabels);
 
 //---------NPU接口区---------
