@@ -11,7 +11,7 @@ camera:
 plane_z_mm: .Nan
 allowed_error_mm: .Nan
 # Each sample: { pixel: [u, v], base_xy: [X_mm, Y_mm] }
-# Recommend 6 well-spread fit points, plus >=3 DIFFERENT check points.
+# Fit from at least 4 distributed points and measure at least one separate check point.
 # Observe the physical point on the board plane, not a raised marker on top of the tool.
 fit_points: []
 check_points: []

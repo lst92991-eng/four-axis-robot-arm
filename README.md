@@ -40,8 +40,8 @@
 
 ## 从这里开始
 
-- 此包是四轴驱动移植实验，包含 C11 固件源码、厂商库、四套预编译镜像、CAN FD 工具和相机脚本。正式下棋程序仍由 SCARA 工作区维护。
-- 编译配置见 `temp/axes.json`。暂按 J1～J4 对应 CAN 节点 1～4，烧录前按实物确认。J1 是 Z 升降，J1/J3/J4 按直连，J2 减速比已于 2026-11-04 确认为 25:1，已更新 axes.json；J2 镜像已按 25:1 重新生成并于 2026-11-04 经 SWD 烧录、读回校验通过；使用本机 GCC 13.3.1，详见 temp/flash-logs/J2-20261104-manifest.json。四轴电角零点为 -1，预编译镜像用于通信和升级验收，禁止使能。运动前还需逐台确认电角零点、极对数、编码器方向、机械正向、额定电流和实际行程。
+- 此包包含 C11 固件源码、厂商库、历史镜像、CAN FD 工具和相机脚本。
+- [固件参数](firmware/src/config.c)集中维护 `four_axis_config[4]` 和 `six_axis_config[6]`。四轴数组按 J1～J4 存 CAN 节点、角度换算、方向、行程、速度、加减速、三环增益、电流与电压限制等。J2 为 20:1，J3 的 CAD 带轮齿数也在表中。电角标定继续从各板 Flash 读取。六轴数组保存旧项目的电机型号尺寸、标称减速比及已有实测记录，六轴控制仍使用它原来的 StepFOC 应用和协议。
 - 旧 Emm 主机与新 v3 CAN FD 要分开验证。首次验证用单块板、支持 FD/BRS 的适配器和 500k/2M。优先选已固定、无垂直负载的板；完成升级和断电恢复验证后再扩到多板。
 
 ## CAN FD 按节点更新
@@ -60,10 +60,12 @@ py -3.11 temp/ota.py --candlelight update 1 images/J1.ota --write
 
 引导区起始 `0x08000000`，应用起始 `0x08004000`，应用校验记录 `0x0801E000`，末尾 4 KiB 从 `0x0801F000` 起保留。引导期间关闭功率桥。擦写前先撤销应用启动许可，完整 CRC32 和向量检查通过后最后写入有效标记。断电或写入失败时，引导保留并可按同一命令完整重传。单槽没有旧应用回滚，CRC32 用于完整性校验，实验总线限定为可信设备。
 
-修改配置后重新生成镜像。原交接包注明使用 ARM GNU 14.2.Rel1；本次 J2 已使用本机 GCC 13.3.1 重编译并验证，具体版本见构建记录。
+四轴应用编译一次，输出 `joint-app.ota` 和共用构建清单。更新工具按指定节点为这份应用附加目标轴记录。首装 HEX 另带节点对应的引导程序；现有板可沿用原引导执行 OTA。以下命令构建并离线校验，不发送更新。
 
 ```powershell
-py -3.11 temp/build.py --gcc "C:/你的工具链/bin/arm-none-eabi-gcc.exe" --node all --output images
+py -3.11 temp/build.py --gcc "C:/你的工具链/bin/arm-none-eabi-gcc.exe" --output output/joint-app
+py -3.11 temp/ota.py update 3 output/joint-app/joint-app.ota
+py -3.11 temp/ota.py update-group output/joint-app/joint-app.ota --nodes 2 3 4
 ```
 
 ## Z 轴回零取证

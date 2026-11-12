@@ -8,7 +8,9 @@
 #include "pwm_output.h"
 #include "mt6816.h"
 #include "calibration.h"
+#include "z_trace.h"
 
+const JointConfig *joint_config;
 volatile uint32_t system_ms;
 //上一次运动更新时刻，毫秒
 static uint32_t last_control_ms;
@@ -53,6 +55,13 @@ static void Init_hardware(void)
 //---------主循环区---------
 int main(void)
 {
+  joint_config = JointConfig_fromImage((const uint32_t *)JOINT_APP_METADATA,
+                                      (const uint32_t *)JOINT_APP_ADDRESS);
+  if (!joint_config)
+  {
+    // 引导已关闭功率桥。目标记录无效时不启动控制和 CAN。
+    while (1) {}
+  }
   //初始化硬件和通信协议
   Init_hardware();
   CAN_protocol_setup();
@@ -75,8 +84,8 @@ int main(void)
       if (Joint.status.referenced && !motor.encoder_valid)
         Motion_trip(FAULT_SENSOR);
       //将编码器速度换算为输出轴速度
-      float velocity = CONFIG_RATIO > 0 ? motor.velocity_counts_s * 360 * CONFIG_DIRECTION /
-                                             (16384 * CONFIG_RATIO) : 0;
+      float velocity = joint_config->ratio > 0 ? motor.velocity_counts_s * 360 * joint_config->joint_direction /
+                                             (16384 * joint_config->ratio) : 0;
       //更新轨迹并检查通信时限
       Motion_update(motor.encoder_counts, elapsed_ms, velocity);
       CAN_protocol_watchdog(now);
@@ -86,6 +95,8 @@ int main(void)
     }
     //接收命令并回复，命令从下一轮运动更新开始生效
     CAN_protocol_process(&motor, now);
+    if (joint_config->can_node == 1)
+      z_trace(&motor, now);
   }
 }
 

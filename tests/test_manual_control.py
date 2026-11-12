@@ -7,7 +7,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'manual_control'))
-from core import Controller, MOVE, STOP, PING, PACKET
+from core import Controller, CLEAR, MOVE, STOP, PING, PACKET, VELOCITY
 
 
 class JogTests(unittest.TestCase):
@@ -62,6 +62,34 @@ class JogTests(unittest.TestCase):
         self.status(flags=1 | 16 | 32 | 256)
         self.assertIn('机械参考', self.c.reason(1))
 
+    def test_j3_outside_legacy_window_does_not_stop_j2(self):
+        self.status(node=2)
+        self.status(node=3)
+        self.action('arm')
+        for i in range(len(self.sent)):
+            self.ack(i)
+        self.action('jog', node=2, direction=1, speed=3, press='j2')
+        self.ack()
+        self.status(node=3, position=-207)
+        self.c.tick()
+        self.assertEqual(self.c.active['node'], 2)
+        self.assertTrue(self.c.armed)
+
+    def test_commissioning_recover_and_jog_past_old_window(self):
+        build = int(self.c.config['commissioning_build'], 16)
+        flags = 1 | 2 | 16 | 32 | 256
+        self.status(node=3, state=4, fault=5, position=-207, build=build, flags=flags)
+        self.action('recover', node=3)
+        self.ack()
+        self.assertEqual([p[0] for _,p in self.sent], [PING, CLEAR])
+        self.ack()
+        self.status(node=3, position=-207, build=build, flags=flags)
+        self.action('arm')
+        self.ack(-2)
+        self.ack()
+        self.action('jog', node=3, direction=-1, speed=3, press='j3')
+        self.assertEqual(self.sent[-1][1][0], VELOCITY)
+
     def test_jog_only_one_move_then_ping(self):
         self.arm(); self.jog(); self.ack()
         self.status(state=2, flags=1 | 2 | 16 | 32 | 64)
@@ -89,6 +117,21 @@ class JogTests(unittest.TestCase):
         count = len(self.sent)
         self.now += .1; self.c.tick()
         self.assertEqual(len(self.sent), count)
+
+    def test_parked_hold_keeps_can_link_when_page_loses_lease(self):
+        self.arm()
+        flags=1 | 2 | 16 | 32 | 64 | 256
+        self.now += .31
+        self.status(state=1,flags=flags)
+        self.c.tick()
+        self.assertFalse(self.c.armed)
+        self.assertEqual(self.sent[-1][1][0],PING)
+        count=len(self.sent)
+        self.now += .11
+        self.status(state=1,flags=flags)
+        self.c.tick()
+        self.assertEqual(len(self.sent),count+1)
+        self.assertEqual(self.sent[-1][1][0],PING)
 
     def test_stale_status_stops_even_if_browser_healthy(self):
         self.arm(); self.jog(); self.ack()

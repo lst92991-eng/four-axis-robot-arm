@@ -40,8 +40,13 @@ function release(press){
 function build(s){
  for(const a of s.axes){
   const card=document.createElement('section');card.className='card';card.id='axis'+a.node;
-  card.innerHTML=`<div class="card-head"><h2></h2><span class="pill"></span></div><div class="readings"><div><div class="value pos">—</div><div class="caption">关节角度 °</div></div><div><div class="value vel">—</div><div class="caption">反馈速度 °/s</div></div></div><label class="speed">运行速度 <input aria-label="J${a.node} 运行速度" type="number" min="0.1" max="${a.max_speed_deg_s||Math.min(s.max_speed,30)}" step="0.1" value="${Math.min(s.default_speed,a.max_speed_deg_s||30)}"> °/s</label><div class="jog"><button data-dir="-1">− 反转</button><button data-dir="1">＋ 正转</button></div><div class="reason"></div><div class="small meta"></div>`;
+  const maxSpeed = Math.min(s.max_speed, a.max_speed_deg_s ?? 30);
+  const initialSpeed = Math.min(a.default_speed_deg_s ?? s.default_speed, maxSpeed);
+  card.innerHTML=`<div class="card-head"><h2></h2><span class="pill"></span></div><div class="readings"><div><div class="value pos">—</div><div class="caption">关节角度 °</div></div><div><div class="value vel">—</div><div class="caption">反馈速度 °/s</div></div></div><label class="speed">运行速度 <input aria-label="J${a.node} 运行速度" type="number" min="0.1" max="${maxSpeed}" step="0.1" value="${initialSpeed}"> °/s</label><div class="jog"><button data-dir="-1">− 反转</button><button data-dir="1">＋ 正转</button></div><div class="reason"></div><div class="small meta"></div>`;
   card.querySelector('h2').textContent=a.label;
+  const recover=document.createElement('button');recover.className='recover';recover.textContent='恢复驱动';recover.hidden=true;
+  recover.onclick=()=>{err('');api('recover',{node:a.node}).catch(e=>err(e.message));};
+  card.appendChild(recover);
   const note=document.createElement('div');note.className='small brake-note';card.insertBefore(note,card.querySelector('.jog'));
   card.querySelector('[data-dir="1"]').textContent=a.positive_label||'＋ 正转';
   card.querySelector('[data-dir="-1"]').textContent=a.negative_label||'− 反转';
@@ -67,9 +72,9 @@ function render(s){
  const owned=s.owner===client;
  el('mode').textContent=s.simulated?'模拟测试 · 不连接电机':'真实硬件';el('mode').className=s.simulated?'sim':'';
  el('message').textContent=s.message;
- el('arm').disabled=(s.armed&&!owned)||(!s.armed&&(s.stopping.length>0||!s.axes.some(a=>!a.reason)));
+ el('arm').disabled=!!s.recovering||(s.armed&&!owned)||(!s.armed&&(s.stopping.length>0||!s.axes.some(a=>!a.reason)));
  el('arm').textContent=s.armed?(owned?'结束手动控制':'其他页面正在控制'):'开启手动控制';
- el('connect').disabled=s.armed;
+ el('connect').disabled=s.armed||!!s.recovering;
  for(const a of s.axes){
   const c=el('axis'+a.node),fresh=a.age_ms!==null&&a.age_ms<=250;
   c.classList.toggle('active',s.active?.node===a.node);
@@ -77,6 +82,10 @@ function render(s){
   c.querySelector('.vel').textContent=fresh?a.display_velocity.toFixed(3):'—';
   c.querySelector('.pill').textContent=fresh?a.state_text:'离线';
   c.querySelector('.reason').textContent=a.reason||(s.armed?'可连续运行；松开减速停止':'状态就绪，请先开启手动控制');
+  const recover=c.querySelector('.recover');
+  recover.hidden=!a.recoverable&&s.recovering!==a.node;
+  recover.disabled=!a.recoverable;
+  recover.textContent=s.recovering===a.node?'恢复中…':'恢复驱动';
   if(a.diagnostic_step_deg)c.querySelector('.reason').textContent+=` · 诊断模式：每次最多 ${a.diagnostic_step_deg}°，按住也不连续走`;
   c.querySelector('.meta').textContent=`${a.manual_mode==='velocity'?'手动速度模式 · 无固定角度终点':'定位模式'} · 构建 ${a.build||'—'} · 更新 ${a.age_ms===null?'—':a.age_ms+' ms'}`;
   c.querySelector('.brake-note').textContent=`理论制动 ${(Number(c.querySelector('input').value)/(a.brake_deceleration_deg_s2||a.acceleration_deg_s2||30)).toFixed(2)} 秒；以反馈停稳为准`;
@@ -91,11 +100,11 @@ function render(s){
 }
 el('connect').onclick=()=>api('connect').catch(e=>err(e.message));
 el('arm').onclick=()=>{err('');if(state?.armed)stop('',false,true);else api('arm').catch(e=>err(e.message));};
-el('stop').onclick=()=>stop();
+el('stop').onclick=()=>stop('',false,true);
 window.addEventListener('blur',()=>{if(current||state?.owner===client)stop('窗口失焦，停止',true);});
 window.addEventListener('pagehide',()=>{if(current||state?.owner===client)stop('',true,true);});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&(current||state?.owner===client))stop('页面隐藏，停止',true);});
-document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Escape'){e.preventDefault();stop();}});
+document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Escape'){e.preventDefault();stop('',false,true);}});
 setInterval(async()=>{
  if(!state?.armed||state.owner!==client||document.hidden||heartbeatBusy)return;heartbeatBusy=true;
  try{await api('heartbeat',{press:current?.press||null});}catch(e){err(e.message);stop();}finally{heartbeatBusy=false;}

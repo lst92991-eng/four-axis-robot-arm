@@ -18,11 +18,11 @@ static void z_trace(const motor_status_t *motor, uint32_t now)
   frame[7] = (uint32_t)motor->trace_iq_ref;
   frame[8] = (uint32_t)motor->trace_iq;
   frame[9] = (uint32_t)motor->trace_vq;
-  frame[10] = motor->trace_bus;
+  frame[10] = motor->bus_mv;
   frame[11] = motor->power;
   frame[12] = motor->fault ? motor->fault : Joint.status.fault;
   frame[13] = motor->encoder_valid;
-  CAN_send(0x300u + CONFIG_NODE, (const uint8_t *)frame);
+  CAN_send(0x300u + joint_config->can_node, (const uint8_t *)frame);
   int32_t evidence[12];
   Motor_readCurrentFault(evidence);
   static uint32_t last_evidence_ms;
@@ -31,6 +31,6 @@ static void z_trace(const motor_status_t *motor, uint32_t now)
   memset(frame,0,sizeof(frame));
   frame[0]=0x31464349u;
   memcpy(&frame[1],evidence,sizeof(evidence));
-  CAN_send(0x380u + CONFIG_NODE,(const uint8_t *)frame);
+  CAN_send(0x380u + joint_config->can_node,(const uint8_t *)frame);
 }
 

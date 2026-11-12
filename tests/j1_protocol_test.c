@@ -6,6 +6,8 @@
 #include <string.h>
 
 motion_control_t Joint;
+static const JointConfig profile = {.can_node = 1, .default_speed_deg_s = 10};
+const JointConfig *joint_config = &profile;
 uint8_t motor_configured=1;
 volatile uint32_t system_ms;
 static CanPacket request,reply;

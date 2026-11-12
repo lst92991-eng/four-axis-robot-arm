@@ -2,20 +2,53 @@
   "schema": 1,
   "selected_cad_variant": "long_275_275",
   "variant_confirmed_by_user": true,
-  "arm_lengths_mm": [275.0, 275.0],
+  "arm_lengths_mm": [
+    275.0,
+    275.0
+  ],
   "dimensions_source": "docs/cad/SCARA33-intake-20261109.json",
-  "base_origin": "J2 rotational axis center; XY directions and zero pose still require on-robot confirmation",
+  "base_origin": "J2 axis on the chessboard plane. X runs from a0 to i0 in the initial survey, Y from red to black.",
   "joint_angle_unit": "rad",
   "cartesian_unit": "mm",
   "j1_lead_mm_per_rev": null,
   "j1_contact_reference_mm": null,
-  "j2_reduction_ratio": 25.0,
+  "j2_reduction_ratio": 20.0,
   "j2_mechanical_zero_motor_deg": null,
+  "j3_belt_drive": {
+    "drive_pulley_teeth": 20,
+    "driven_pulley_teeth": 60,
+    "nominal_reduction_ratio": 3.0,
+    "source": "docs/cad/SCARA33接收与当前选型.md",
+    "on_robot_direction_and_zero_verified": false
+  },
   "j3_total_transmission_ratio": null,
   "j3_mechanical_zero_motor_deg": null,
   "tcp_offset_mm": null,
   "safe_lift_mm": null,
   "capture_zone_base_xy_mm": null,
+  "xy_calibration": {
+    "id": "scara-xy-20261111-first",
+    "plane_file": "output/xy-registration-20261111/plane-map.yml",
+    "arm_reference_file": "output/xy-registration-20261111/arm-registration.json",
+    "fit_grid": ["e1", "c4", "g4"],
+    "check_grid": ["e2"],
+    "check_error_mm": 0.874806,
+    "j2_feedback_to_joint_angle_scale": 0.8
+  },
   "automatic_motion_ready": false,
-  "note": "CAD link lengths are selected; this file is an integration record, not a loaded motion configuration. Do not infer physical lead, joint offsets, TCP, or actual board pitch from the reference CAD scene."
+  "note": "CAD link lengths are selected; this file is an integration record, not a loaded motion configuration. Do not infer physical lead, joint offsets, TCP, or actual board pitch from the reference CAD scene.",
+  "z_strategy": {
+    "mode": "manual_two_height_teaching",
+    "requested_lift_mm": 20,
+    "contact_motor_deg": -20286.410,
+    "travel_motor_deg": -19353.340,
+    "observed_lift_mm": 20,
+    "lift_measurement": "operator estimate",
+    "reference_session": "2026-11-11 first c3-c4 pick test",
+    "verified": true,
+    "automatic_limit_search": "deferred by user; no hard-stop collision performed",
+    "contact_gap_mm_estimate": null,
+    "contact_record": "output/first-pick-c3-c4-20261111/contact-state.json",
+    "travel_record": "output/first-pick-c3-c4-20261111/travel-state.json"
+  }
 }

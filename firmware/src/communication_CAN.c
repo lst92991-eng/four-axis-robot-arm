@@ -41,7 +41,7 @@ void CAN_protocol_setup(void)
   Protocol.initialized = 0;
   Protocol.reset_pending = 0;
   Protocol.reply_pending = 0;
-  if (CONFIG_NODE < 1 || CONFIG_NODE > 127)
+  if (joint_config->can_node < 1 || joint_config->can_node > 127)
     return;
   Protocol.initialized = CAN_init();
 }
@@ -54,25 +54,25 @@ void CAN_protocol_process(const motor_status_t *motor, uint32_t now)
     return;
   if(Protocol.reset_pending && (int32_t)(now-Protocol.reset_at)>=0)
     NVIC_SystemReset();
-  if(Protocol.reply_pending && CAN_send((uint16_t)(0x480+CONFIG_NODE),Protocol.reply))
+  if(Protocol.reply_pending && CAN_send((uint16_t)(0x480+joint_config->can_node),Protocol.reply))
     Protocol.reply_pending=0;
   //完整帧才会写入有效ID，0表示本次没有可处理的命令
   uint16_t id = 0;
   uint8_t data[64];
   if(!Protocol.reply_pending)CAN_receive(&id, data);
-  if (id == 0x400 + CONFIG_NODE)
+  if (id == 0x400 + joint_config->can_node)
   {
     if (processFrame(motor, now, data, Protocol.reply))
     {
       Protocol.reply_pending=1;
-      if(CAN_send((uint16_t)(0x480+CONFIG_NODE),Protocol.reply))Protocol.reply_pending=0;
+      if(CAN_send((uint16_t)(0x480+joint_config->can_node),Protocol.reply))Protocol.reply_pending=0;
     }
   }
   //状态发送到期后组帧，成功写入发送队列后更新时刻
   if (now - Protocol.last_status_ms < 50)
     return;
   packStatus(motor, now, data);
-  if (CAN_send((uint16_t)(0x200 + CONFIG_NODE), data))
+  if (CAN_send((uint16_t)(0x200 + joint_config->can_node), data))
     Protocol.last_status_ms = now;
 }
 
@@ -110,7 +110,7 @@ static int handleMove(const CanPacket *command, const motor_status_t *feedback)
   //相对增量只换算一次，随后统一处理绝对目标
   if (command->kind == CMD_MOVE_REL)
     target += Joint.status.position;
-  float speed = command->values[1] ? command->values[1] / 1000.0f : CONFIG_VELOCITY;
+  float speed = command->values[1] ? command->values[1] / 1000.0f : joint_config->default_speed_deg_s;
   return Motion_moveTo(target, speed);
 }
 
@@ -135,7 +135,13 @@ static int handleClear(const CanPacket *command, const motor_status_t *feedback)
 {
   if (Calibration_active()) return 0;
   (void)command;
-  (void)feedback;
+  if (Joint.status.interlocked && Joint.status.state == MOTION_HOLD &&
+      Joint.status.stationary && Joint.status.referenced && feedback->encoder_valid && !feedback->fault)
+  {
+    Joint.status.interlocked = 0;
+    return 1;
+  }
+  if (Joint.status.state != MOTION_FAULT) return 0;
   int accepted = Motor_clearFault();
   if (accepted)
     Motion_clearFault();
@@ -161,7 +167,7 @@ static int handleTune(const CanPacket *command,const motor_status_t *feedback)
 }
 static int handleReboot(const CanPacket *command,const motor_status_t *feedback)
 {
-  if(CONFIG_NODE!=1 || command->values[0]!=0x52454254 || feedback->power ||
+  if(joint_config->can_node!=1 || command->values[0]!=0x52454254 || feedback->power ||
      Joint.status.state!=MOTION_OFF || Calibration_active())return 0;
   Protocol.reset_pending=1;Protocol.reset_at=system_ms+100;
   return 1;
@@ -206,7 +212,7 @@ static int processFrame(const motor_status_t *feedback, uint32_t now, const uint
   memcpy(&command, request, sizeof(command));
   if (command.version != 3)
     return 0;
-  if (command.node != CONFIG_NODE)
+  if (command.node != joint_config->can_node)
     return 0;
   if (command.result)
     return 0;
@@ -241,7 +247,7 @@ static int processFrame(const motor_status_t *feedback, uint32_t now, const uint
   //统一应答：0接受，1拒绝
   CanPacket reply = {0};
   reply.kind = command.kind | 0x80;
-  reply.node = CONFIG_NODE;
+  reply.node = joint_config->can_node;
   reply.version = 3;
   reply.sequence = command.sequence;
   reply.result = !accepted;
@@ -258,7 +264,7 @@ static void packStatus(const motor_status_t *b, uint32_t now, uint8_t response[6
   const motion_t *s = &Joint.status;
   CanPacket r = {0};
   r.kind = MSG_STATUS;
-  r.node = CONFIG_NODE;
+  r.node = joint_config->can_node;
   r.version = 3;
   r.values[0] = (int32_t)now;
   r.values[1] = (int32_t)lroundf(s->position * 1000);

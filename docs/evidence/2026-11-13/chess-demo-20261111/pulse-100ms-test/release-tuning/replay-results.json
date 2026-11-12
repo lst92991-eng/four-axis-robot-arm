@@ -1,0 +1,53 @@
+[
+  {
+    "source_image": "pulse-test-resume/last-check-failed.jpg",
+    "actual_pixel": [
+      398.5,
+      370.5
+    ],
+    "planned_pick": {
+      "grid_id": "cannon",
+      "base_xy_mm": [
+        -6.370063457285008,
+        -429.9056833991105
+      ],
+      "j2_deg": -60.368744454501424,
+      "j3_motor_deg": -105.6857585381889
+    },
+    "motion_sent": false
+  },
+  {
+    "source_image": "pulse-100ms-test/pulse-20ms-before.jpg",
+    "actual_pixel": [
+      475.5,
+      369.5
+    ],
+    "planned_pick": {
+      "grid_id": "cannon",
+      "base_xy_mm": [
+        -5.478663738470454,
+        -392.5603093647158
+      ],
+      "j2_deg": -52.96550272179808,
+      "j3_motor_deg": -70.44616702475267
+    },
+    "motion_sent": false
+  },
+  {
+    "source_image": "pulse-100ms-reset.png",
+    "actual_pixel": [
+      461.5,
+      591.5
+    ],
+    "planned_pick": {
+      "grid_id": "cannon",
+      "base_xy_mm": [
+        103.4227947756942,
+        -403.8347495064213
+      ],
+      "j2_deg": -38.68107467175858,
+      "j3_motor_deg": -92.86725403957197
+    },
+    "motion_sent": false
+  }
+]

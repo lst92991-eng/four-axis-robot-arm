@@ -13,6 +13,7 @@ import sys
 import threading
 import time
 from types import SimpleNamespace
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -114,7 +115,8 @@ class Worker:
         self.rx_error = None
         self.next_snapshot = 0.
         self.last_flush = 0.
-        self.core = Controller(config, self.send, audit=self.audit)
+        self.reference_path = log_dir / ('pending-j1-reference-sim.json' if simulate else 'pending-j1-reference.json')
+        self.core = Controller(config, self.send, audit=self.audit, reference_path=self.reference_path)
         self.thread = threading.Thread(target=self.run, name='can-owner')
 
     def audit(self, event):
@@ -169,11 +171,11 @@ class Worker:
             self.adapter.send(Frame(0x400+node, data, fd=True, brs=True))
 
     def connect(self):
-        if self.core.armed or self.core.active:
+        if self.core.armed or self.core.active or self.core.recovering is not None:
             raise ValueError('先停止并取消手动控制，再重新连接')
         self.close_adapter()
         previous_events = self.core.events
-        self.core = Controller(self.config, self.send, audit=self.audit)
+        self.core = Controller(self.config, self.send, audit=self.audit, reference_path=self.reference_path)
         self.core.events = previous_events
         self.diagnostics = {}
         if self.simulate:
@@ -324,13 +326,19 @@ def main():
         def do_GET(self):
             if self.headers.get('Host') != address:
                 return self.reply(403, {'error': '请使用本机 127.0.0.1 地址'})
-            if self.path == '/':
+            path = urlsplit(self.path).path
+            if path == '/':
                 return self.reply(200, page, 'text/html; charset=utf-8')
-            if self.path == '/api/state':
+            if path == '/api/state':
                 with worker.lock:
                     view = worker.view
                 return self.reply(200, view)
-            self.reply(404, {'error': '不存在'})
+            if path.startswith('/api/'):
+                return self.reply(404, {'error': '不存在'})
+            self.send_response(302)
+            self.send_header('Location', '/')
+            self.send_header('Content-Length', '0')
+            self.end_headers()
 
         def do_POST(self):
             if self.path != '/api/action' or self.headers.get('Host') != address:

@@ -45,25 +45,25 @@ void Motor_initialize(void)
   Calibration_init();
   speed_estimator_init(&Drive.speed_estimator,4096,64);
   //固定配置在启动时确认，后续设零和运动共用结果
-  int zero_valid = CONFIG_ENCODER_ZERO >= 0 && CONFIG_ENCODER_ZERO < 16384;
-  int poles_valid = CONFIG_ENCODER_POLES > 0 && CONFIG_ENCODER_POLES <= 100;
-  int direction_valid = CONFIG_ENCODER_DIR == 1 || CONFIG_ENCODER_DIR == -1;
-  int acceleration_valid = isfinite(CONFIG_ACCELERATION) && CONFIG_ACCELERATION > 0;
+  int zero_valid = joint_config->encoder_zero >= 0 && joint_config->encoder_zero < 16384;
+  int poles_valid = joint_config->pole_pairs > 0 && joint_config->pole_pairs <= 100;
+  int direction_valid = joint_config->encoder_direction == 1 || joint_config->encoder_direction == -1;
+  int acceleration_valid = isfinite(joint_config->acceleration_deg_s2) && joint_config->acceleration_deg_s2 > 0;
   motor_configured = ((zero_valid && poles_valid && direction_valid) || Calibration_ready()) && acceleration_valid;
   //位置环比例增益
-  Drive.control.position.KP = CONFIG_POSITION_KP;
+  Drive.control.position.KP = joint_config->position_kp;
   //把输出轴速度增益换算到电机编码器计数单位
-  float scale = 16384 * CONFIG_RATIO / 360;
-  Drive.speed_kp=CONFIG_SPEED_KP;Drive.speed_ki=CONFIG_SPEED_KI;
-  Drive.control.speed.KP = CONFIG_SPEED_KP / scale;
-  Drive.control.speed.KI = CONFIG_SPEED_KI / scale * 0.001f;
-  Drive.control.speed.limit = CONFIG_CURRENT_MA;
+  float scale = 16384 * joint_config->ratio / 360;
+  Drive.speed_kp=joint_config->speed_kp;Drive.speed_ki=joint_config->speed_ki;
+  Drive.control.speed.KP = joint_config->speed_kp / scale;
+  Drive.control.speed.KI = joint_config->speed_ki / scale * 0.001f;
+  Drive.control.speed.limit = joint_config->current_limit_ma;
   //d轴和q轴使用同一组电流环参数
-  Drive.control.current.d.KP = CONFIG_CURRENT_KP;
-  Drive.control.current.q.KP = CONFIG_CURRENT_KP;
-  Drive.control.current.d.KI = CONFIG_CURRENT_KI;
-  Drive.control.current.q.KI = CONFIG_CURRENT_KI;
-  Drive.control.current.voltageLimit = CONFIG_VOLTAGE_MV;
+  Drive.control.current.d.KP = joint_config->current_kp;
+  Drive.control.current.q.KP = joint_config->current_kp;
+  Drive.control.current.d.KI = joint_config->current_ki;
+  Drive.control.current.q.KI = joint_config->current_ki;
+  Drive.control.current.voltageLimit = joint_config->voltage_limit_mv;
 }
 
 //---------前台交接区---------
@@ -102,6 +102,12 @@ uint32_t Motor_readFeedback(motor_status_t *out)
   TMR6->cval = 0;
   tmr_flag_clear(TMR6, TMR_OVF_FLAG);
   *out = Drive.state;
+  if (joint_config->can_node == 1)
+  {
+    out->trace_iq_ref = (int32_t)Drive.control.current.q.targetValue;
+    out->trace_iq = (int32_t)Drive.control.current.q.currentValue;
+    out->trace_vq = (int32_t)Drive.control.current.q.out;
+  }
   out->bus_mv = current_sense_get_bus_mv();
   out->id_counts = (int32_t)(Drive.control.current.d.currentValue * 819.0f / 3300.0f);
   out->encoder_valid = feedbackFresh();
@@ -147,20 +153,23 @@ int Motor_applyReference(void)
     __set_PRIMASK(irq);
     return 0;
   }
-  float scale = 16384 * CONFIG_RATIO / 360;
+  float scale = 16384 * joint_config->ratio / 360;
   Drive.control.position.targetValue = (int32_t)llround(tick) * Calibration_direction();
   Drive.control.position.limit = Joint.speed_limit * scale;
   float speed_reference_limit=Drive.control.position.limit;
-#if CONFIG_NODE == 1
-  position_speed_limits_t limits=position_speed_limits(Joint.speed_limit,CONFIG_MAX_VELOCITY,
-    CONFIG_RATIO,Drive.control.position.KP,CONFIG_FOLLOWING_ERROR>0?CONFIG_FOLLOWING_ERROR:2.5f);
-  Drive.control.position.limit=limits.correction*scale;
-  speed_reference_limit=limits.total*scale;
-#endif
+  if (joint_config->can_node == 1)
+  {
+    float following = joint_config->following_error_deg;
+    position_speed_limits_t limits = position_speed_limits(Joint.speed_limit,
+      joint_config->max_speed_deg_s, joint_config->ratio, Drive.control.position.KP,
+      following > 0 ? following : 2.5f);
+    Drive.control.position.limit = limits.correction * scale;
+    speed_reference_limit = limits.total * scale;
+  }
   Drive.control.position.currentValue=(int32_t)Drive.state.encoder_counts*Calibration_direction();
   Drive.control.speed.currentValue=Drive.speed;
   Common_Position_Compute(&Drive.control.position);
-  float feedforward=Joint.ref_vel*scale*Calibration_direction()/CONFIG_DIRECTION;
+  float feedforward=Joint.ref_vel*scale*Calibration_direction()/joint_config->joint_direction;
   Drive.control.speed.targetValue=position_speed_reference(
     feedforward,Drive.control.position.out,speed_reference_limit);
   // 普通位置/速度环以主循环1kHz更新，电流环保持原6250Hz。
@@ -185,7 +194,7 @@ int Motor_calibrationDrive(int enabled, int32_t angle_mdeg, int32_t current_ma)
   uint32_t bus=current_sense_get_bus_mv();
   int ok=Calibration_active() && Joint.status.state==MOTION_OFF && !Drive.state.fault &&
          feedbackFresh() && bus>=10000 && bus<=30000 &&
-         current_ma>=0 && current_ma<=1000 && current_ma<=CONFIG_CURRENT_MA &&
+         current_ma>=0 && current_ma<=1000 && current_ma<=joint_config->current_limit_ma &&
          angle_mdeg>=0 && angle_mdeg<360000;
   if (ok)
   {
@@ -209,14 +218,15 @@ void Motor_readCurrentFault(int32_t values[12])
 
 int Motor_setSpeedGains(int32_t kp_milli,int32_t ki_milli)
 {
-  if(CONFIG_NODE!=1 || kp_milli<100 || kp_milli>20000 || ki_milli<0 || ki_milli>300000)
+  if (joint_config->can_node < 1 || joint_config->can_node > 4 || kp_milli < 100 || kp_milli > 20000 ||
+      ki_milli < 0 || ki_milli > 300000)
     return 0;
   uint32_t irq=__get_PRIMASK();__disable_irq();
   int ok=Joint.status.state==MOTION_OFF && !Drive.state.power && !Drive.state.fault &&
          !Calibration_active() && feedbackFresh();
   if(ok)
   {
-    float scale=16384*CONFIG_RATIO/360;
+    float scale=16384*joint_config->ratio/360;
     Drive.speed_kp=kp_milli*0.001f;Drive.speed_ki=ki_milli*0.001f;
     Drive.control.speed.KP=Drive.speed_kp/scale;
     Drive.control.speed.KI=Drive.speed_ki/scale*0.001f;
@@ -228,7 +238,7 @@ void Motor_readSpeedGains(int32_t values[3])
 {
   values[0]=(int32_t)lroundf(Drive.speed_kp*1000);
   values[1]=(int32_t)lroundf(Drive.speed_ki*1000);
-  values[2]=(int32_t)CONFIG_CURRENT_MA;
+  values[2]=(int32_t)joint_config->current_limit_ma;
 }
 
 //---------采样中断区---------
@@ -405,7 +415,8 @@ int Motor_clearFault(void)
   {
     Drive.state.fault = FAULT_NONE;
     for(unsigned i=0;i<12;i++)Drive.current_fault[i]=0;
-    Drive.state.encoder_valid = 0;
+    if (!Joint.status.referenced)
+      Drive.state.encoder_valid = 0;
     Drive.speed = 0;
     speed_estimator_reset(&Drive.speed_estimator);
     Motor_shutdown(FAULT_NONE);

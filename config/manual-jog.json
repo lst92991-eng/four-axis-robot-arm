@@ -1,11 +1,13 @@
 {
   "serial": "37813482333551062",
+  "commissioning_build": "41f870bf",
   "default_speed_deg_s": 90,
   "max_speed_deg_s": 500,
   "axes": {
     "1": {
       "label": "J1 · 丝杆升降",
       "ratio": 1,
+      "restore_reference_after_clear": true,
       "minimum": -3600,
       "maximum": 7200,
       "builds": [
@@ -29,29 +31,31 @@
     },
     "2": {
       "label": "J2 · 近端转轴",
-      "ratio": 25,
+      "ratio": 20,
       "minimum": -180,
       "maximum": 180,
       "builds": [
-        "17a105f6"
+        "bde508fb"
       ]
     },
     "3": {
       "label": "J3 · 中间转轴",
       "ratio": 1,
+      "default_speed_deg_s": 3,
       "minimum": -180,
       "maximum": 180,
       "builds": [
-        "e72bb310"
+        "00e2d414"
       ]
     },
     "4": {
       "label": "J4 · 末端旋转",
       "ratio": 1,
+      "default_speed_deg_s": 3,
       "minimum": -180,
       "maximum": 180,
       "builds": [
-        "cca804d2"
+        "9c7a196e"
       ]
     }
   }

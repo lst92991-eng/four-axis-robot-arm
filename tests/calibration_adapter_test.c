@@ -13,6 +13,11 @@ static uint32_t slots[2][256];
 #include "../firmware/src/calibration.c"
 
 motion_control_t Joint;
+static const JointConfig profile = {
+  .can_node = 1, .pole_pairs = 50, .encoder_direction = 1,
+  .encoder_zero = -1, .current_limit_ma = 1000,
+};
+const JointConfig *joint_config = &profile;
 uint8_t motor_configured;
 static int driven,drive_calls,erase_calls;
 static int32_t field_angle,field_ma;

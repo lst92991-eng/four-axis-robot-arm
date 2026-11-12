@@ -1,17 +1,15 @@
 import argparse
 import hashlib
 import json
-import re
 import shutil
 import struct
 import subprocess
 import tempfile
 from pathlib import Path
 
-from ota import APP, MAGIC, META, package, unpack
+from ota import APP, FOUR_AXIS_COUNT, MAGIC, META, TARGET, image_for_node, package, unpack
 
 ROOT = Path(__file__).resolve().parent.parent
-PROFILES = Path(__file__).with_name("axes.json")
 
 
 def replace_once(text, before, after):
@@ -38,7 +36,7 @@ def ihex(path, segments):
     path.write_text("\n".join(lines) + "\n", encoding="ascii")
 
 
-def build(work, gcc, output, node, profile):
+def build(work, gcc, output, nodes):
     fw = work / "firmware"
     shutil.copytree(ROOT / "firmware", fw)
     src, drivers = fw / "src", fw / "drivers"
@@ -49,36 +47,6 @@ def build(work, gcc, output, node, profile):
     original_ld = next(ds.rglob("AT32M416xB_FLASH.ld")).read_text()
     original_system = (ds / "system_at32m412_416.c").read_text()
     startup = next(ds.rglob("startup_at32m412_416.s"))
-    profile = {"NODE": node, **profile}
-    if profile["NODE"] != node:
-        raise ValueError("节点号由 axes.json 的键指定")
-    conf = src / "config.h"
-    cfg = conf.read_text(encoding="utf-8")
-    for key, value in profile.items():
-        if not re.fullmatch(r"[A-Z_]+", key) or not re.fullmatch(r"\(?-?\d+(\.\d+f?)?\)?", str(value)):
-            raise ValueError(f"配置值格式不合法：{key}={value}")
-        cfg, n = re.subn(rf"(?m)^#define CONFIG_{key} .+$", f"#define CONFIG_{key} {value}", cfg)
-        if n != 1:
-            raise ValueError(f"未知配置项：{key}")
-    conf.write_text(cfg, encoding="utf-8")
-
-    if node == 1:
-        shutil.copyfile(ROOT / "temp/z_trace.h", src / "z_trace.h")
-        for name, before, after in (
-            ("common.h", "  int64_t encoder_counts;", "  int64_t encoder_counts;\n"
-             "  int32_t trace_iq_ref, trace_iq, trace_vq;\n  uint32_t trace_bus;"),
-            ("motor_control.c", "  *out = Drive.state;", "  *out = Drive.state;\n"
-             "  out->trace_iq_ref = (int32_t)Drive.control.current.q.targetValue;\n"
-             "  out->trace_iq = (int32_t)Drive.control.current.q.currentValue;\n"
-             "  out->trace_vq = (int32_t)Drive.control.current.q.out;\n"
-             "  out->trace_bus = current_sense_get_bus_mv();"),
-            ("main.c", "#include \"mt6816.h\"", "#include \"mt6816.h\"\n#include \"z_trace.h\""),
-            ("main.c", "    CAN_protocol_process(&motor, now);",
-             "    CAN_protocol_process(&motor, now);\n    z_trace(&motor, now);"),
-        ):
-            path = src / name
-            path.write_text(replace_once(path.read_text(encoding="utf-8"), before, after), encoding="utf-8")
-
     boot = src / "boot.c"
     shutil.copyfile(ROOT / "temp/boot.c", boot)
     tag = hashlib.sha256()
@@ -99,15 +67,19 @@ def build(work, gcc, output, node, profile):
     def run(args):
         subprocess.run([str(item) for item in args], check=True, cwd=work)
 
-    def link(name, files, base, length):
+    def link(name, files, base, length, defines=()):
         ld = work / f"{name}.ld"
-        ld.write_text(replace_once(original_ld, "0x08000000, LENGTH = 124K",
-                                   f"0x{base:08x}, LENGTH = {length}"), encoding="ascii")
+        script = replace_once(original_ld, "0x08000000, LENGTH = 124K",
+                              f"0x{base:08x}, LENGTH = {length}")
+        if base == APP:
+            script = replace_once(script, "    *(.rodata*)",
+                                  "    KEEP(*(.rodata.six_axis_config))\n    *(.rodata*)")
+        ld.write_text(script, encoding="ascii")
         objects = []
         for index, file in enumerate(files):
             obj = work / f"{name}-{index}.o"
             flags = ["-x", "assembler-with-cpp"] if file.suffix.lower() == ".s" else ["-std=c11"]
-            run([gcc, *cpu, *opts, *flags, "-c", file, "-o", obj])
+            run([gcc, *cpu, *opts, *defines, *flags, "-c", file, "-o", obj])
             objects.append(obj)
         elf = work / f"{name}.elf"
         run([gcc, *cpu, *objects, "-T", ld, "-Wl,--gc-sections",
@@ -117,7 +89,6 @@ def build(work, gcc, output, node, profile):
         bin_path = work / f"{name}.bin"
         objcopy = gcc.with_name(gcc.name.replace("gcc", "objcopy"))
         run([objcopy, "-O", "binary", elf, bin_path])
-        shutil.copyfile(elf, output / elf.name)
         return bin_path.read_bytes()
 
     peripheral = sorted((vendor / "drivers/src").glob("*.c"))
@@ -125,32 +96,54 @@ def build(work, gcc, output, node, profile):
     system = ds / "system_at32m412_416.c"
     boot_files = [boot, src / "CAN.c", system, startup]
     boot_files += [p for p in peripheral if p.stem.endswith(("_can", "_gpio", "_crm", "_flash"))]
-    bootstrap = link(f"J{node}-boot", boot_files, 0x08000000, APP - 0x08000000)
+    bootstraps = {
+        node: link(f"J{node}-boot", boot_files, 0x08000000, APP - 0x08000000,
+                   defines=(f"-DBOOT_NODE={node}",))
+        for node in nodes
+    }
     system.write_text(replace_once(original_system, "0x0 /*!< vector table",
                                    "0x4000 /*!< vector table"), encoding="ascii")
     dsp_sources = [next(dsp.rglob(file)) for file in
                    ("arm_sin_f32.c", "arm_cos_f32.c", "arm_common_tables.c")]
-    application = link(f"J{node}-app", [p for p in sorted(src.glob("*.c")) if p != boot] +
+    application = link("joint-app", [p for p in sorted(src.glob("*.c")) if p != boot] +
                        sorted(drivers.glob("*.c")) + dsp_sources + app_peripheral + [system, startup],
-                       APP, META - APP)
-    ota = package(node, application)
-    _, crc, padded = unpack(ota)
-    (output / f"J{node}.ota").write_bytes(ota)
-    ihex(output / f"J{node}-first-install.hex",
-         [(0x08000000, bootstrap), (APP, padded),
-          (META, struct.pack("<3I", MAGIC, len(padded), crc))])
-    manifest = dict(node=node, build_id=tag.hexdigest()[:8], profile=profile,
-                    app_bytes=len(application), app_crc32=f"{crc:08x}",
-                    files={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                           for p in sorted(output.glob(f"J{node}*")) if p.suffix in ('.elf','.hex','.ota')})
-    (output / f"J{node}-manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding='utf-8')
-    print(f"J{node}：boot {len(bootstrap)} B，app {len(application)} B，CRC {crc:08x}", flush=True)
+                       APP, META - APP - TARGET.size)
+    shared_ota = package(0, application)
+    _, shared_crc, shared_image = unpack(shared_ota)
+    artifacts = [output / "joint-app.elf", output / "joint-app.ota"]
+    shutil.copyfile(work / "joint-app.elf", artifacts[0])
+    artifacts[1].write_bytes(shared_ota)
+    targets = {}
+    for node, bootstrap in bootstraps.items():
+        _, crc, installed = image_for_node(shared_ota, node)
+        initial = output / f"J{node}-first-install.hex"
+        ihex(initial, [(0x08000000, bootstrap), (APP, installed),
+                       (META, struct.pack("<3I", MAGIC, len(installed), crc))])
+        artifacts.append(initial)
+        targets[node] = dict(installed_bytes=len(installed), installed_crc32=f"{crc:08x}")
+        if len(nodes) == 1:
+            # 保留单节点构建的 OTA 和清单入口，供现有 J1 更新工具使用。
+            node_ota = output / f"J{node}.ota"
+            node_ota.write_bytes(package(node, installed))
+            (output / f"J{node}-manifest.json").write_text(json.dumps(
+                dict(node=node, build_id=tag.hexdigest()[:8], app_bytes=len(installed),
+                     app_crc32=f"{crc:08x}",
+                     files={node_ota.name: hashlib.sha256(node_ota.read_bytes()).hexdigest()}),
+                indent=2) + "\n", encoding="utf-8")
+            artifacts.append(node_ota)
+
+    manifest = dict(build_id=tag.hexdigest()[:8], app_bytes=len(shared_image),
+                    app_crc32=f"{shared_crc:08x}", targets=targets,
+                    parameter_source="firmware/src/config.c",
+                    files={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in artifacts})
+    (output / "joint-app-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    print(f"共用应用 {manifest['build_id']}，{len(shared_image)} B，节点 {list(nodes)}", flush=True)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--gcc", required=True, type=Path)
-    parser.add_argument("--node", required=True, choices=("1", "2", "3", "4", "all"))
+    parser.add_argument("--node", default="all", choices=("1", "2", "3", "4", "all"))
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--work-root", type=Path, default=Path(tempfile.gettempdir()))
     args = parser.parse_args()
@@ -159,10 +152,9 @@ def main():
         parser.error("--work-root 需要 ASCII 路径，例如 C:/Temp")
     output.mkdir(parents=True, exist_ok=True)
     work_root.mkdir(parents=True, exist_ok=True)
-    profiles = json.loads(PROFILES.read_text(encoding="utf-8"))
-    for node in profiles if args.node == "all" else (args.node,):
-        with tempfile.TemporaryDirectory(prefix="arm4-", dir=work_root) as directory:
-            build(Path(directory), gcc, output, int(node), profiles[node])
+    nodes = range(1, FOUR_AXIS_COUNT + 1) if args.node == "all" else (int(args.node),)
+    with tempfile.TemporaryDirectory(prefix="arm4-", dir=work_root) as directory:
+        build(Path(directory), gcc, output, nodes)
 
 
 if __name__ == "__main__":

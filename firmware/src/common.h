@@ -46,6 +46,8 @@ typedef struct
 {
   //编码器多圈计数
   int64_t encoder_counts;
+  // J1 调试帧使用 mA 和 mV。
+  int32_t trace_iq_ref, trace_iq, trace_vq;
   // 标定监督量：相电流使用 ADC counts，d 轴反馈换回同一单位。
   int32_t phase_a_counts, phase_b_counts, phase_a_mean, phase_b_mean, id_counts;
   uint32_t bus_mv;

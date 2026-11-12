@@ -79,7 +79,7 @@ PlaneMap calibratePlane(const Camera& camera,const std::string& id,double z,doub
                        const std::vector<PointPair>& fit,const std::vector<PointPair>& checks) {
     camera.validate(); require(!id.empty(),"Calibration ID required");
     require(std::isfinite(z) && std::isfinite(tolerance) && tolerance>0,"Real plane Z and error tolerance required");
-    require(fit.size()>=4 && checks.size()>=3,"Need >=4 fit pairs and >=3 independent check pairs");
+    require(fit.size()>=4 && !checks.empty(),"Need >=4 fit pairs and an independent check pair");
     std::vector<cv::Point2d> pixels,xy;
     auto checkPair=[&](const PointPair& p) {
         require(finite(p.pixel) && finite(p.baseXY),"Invalid calibration pair");

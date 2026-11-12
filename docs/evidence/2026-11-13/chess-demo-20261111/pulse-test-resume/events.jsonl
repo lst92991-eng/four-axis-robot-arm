@@ -1,0 +1,22 @@
+{"step": "gpio", "time": "2026-11-11T17:35:18.893859+08:00", "value": 0}
+{"step": "demo_travel_height", "time": "2026-11-11T17:35:18.896668+08:00", "angle": -18653.5375, "rise_mm": 35.0}
+{"step": "demo_resume_held", "time": "2026-11-11T17:35:18.898056+08:00", "source": "h2", "destination": "e2", "piece": "red"}
+{"step": "rotation", "time": "2026-11-11T17:35:20.313684+08:00", "axis": 2, "goal": -52.435981461523895, "position": -52.4}
+{"step": "xy", "time": "2026-11-11T17:35:22.106550+08:00", "grid": "c4", "angles": [-52.406, -26.411], "tip_error_mm": 0.17470667154850744}
+{"step": "demo_pick_verified", "time": "2026-11-11T17:35:22.527131+08:00", "source": "h2", "piece": "red"}
+{"step": "demo_stopped", "time": "2026-11-11T17:35:22.718090+08:00", "reason": "试走已停止", "cycles": 0, "move_index": 1}
+{"step": "gpio", "time": "2026-11-11T17:36:20.926586+08:00", "value": 0}
+{"step": "demo_travel_height", "time": "2026-11-11T17:36:20.927775+08:00", "angle": -18653.5375, "rise_mm": 35.0}
+{"step": "demo_resume_held", "time": "2026-11-11T17:36:20.928472+08:00", "source": "h2", "destination": "e2", "piece": "red"}
+{"step": "xy", "time": "2026-11-11T17:36:21.086480+08:00", "grid": "c4", "angles": [-52.436, -26.433], "tip_error_mm": 0.08124372740059638}
+{"step": "demo_pick_verified", "time": "2026-11-11T17:36:21.383541+08:00", "source": "h2", "piece": "red"}
+{"step": "rotation", "time": "2026-11-11T17:36:22.670056+08:00", "axis": 2, "goal": -50.46612392199069, "position": -50.425}
+{"step": "j3_approach", "time": "2026-11-11T17:36:26.122698+08:00", "goal": -74.67559628444022, "position": -75.696}
+{"step": "xy", "time": "2026-11-11T17:36:26.152753+08:00", "grid": "e2", "angles": [-50.458, -75.696], "tip_error_mm": 1.6654657026588722}
+{"step": "z", "time": "2026-11-11T17:36:37.705556+08:00", "goal": -20286.41, "position": -20287.508}
+{"step": "release_pulse", "time": "2026-11-11T17:36:38.885717+08:00", "grid": "e2", "duration_ms": 1000, "levels": [1, 0]}
+{"step": "z", "time": "2026-11-11T17:36:48.956126+08:00", "goal": -18653.5375, "position": -18639.294}
+{"step": "rotation", "time": "2026-11-11T17:36:50.188344+08:00", "axis": 2, "goal": -52.435981461523895, "position": -52.415}
+{"step": "j3_approach", "time": "2026-11-11T17:36:53.280927+08:00", "goal": -26.382185003355765, "position": -25.95}
+{"step": "xy", "time": "2026-11-11T17:36:53.321552+08:00", "grid": "c4", "angles": [-52.569, -25.95], "tip_error_mm": 1.1899489487113495}
+{"step": "demo_stopped", "time": "2026-11-11T17:36:56.342135+08:00", "reason": "相机核对未通过，预期 {'h2': None, 'e2': 'red', 'b9': 'black', 'c7': None, 'h9': 'black'}，实拍 {'h2': None, 'e2': None, 'b9': 'black', 'c7': None, 'h9': 'black'}", "cycles": 0, "move_index": 1}

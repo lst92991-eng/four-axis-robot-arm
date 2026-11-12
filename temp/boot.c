@@ -3,12 +3,15 @@
 #include "config.h"
 #include <string.h>
 
-#define APP 0x08004000u
-#define META 0x0801E000u
+#define APP JOINT_APP_ADDRESS
+#define META JOINT_APP_METADATA
 #define SECTOR 1024u
-#define MAGIC 0x3141544fu
-#define REQUEST (0x600u + CONFIG_NODE)
-#define REPLY (0x680u + CONFIG_NODE)
+#define MAGIC JOINT_APP_MAGIC
+#if BOOT_NODE < 1 || BOOT_NODE > 4
+#error "BOOT_NODE must be 1 through 4"
+#endif
+#define REQUEST (0x600u + BOOT_NODE)
+#define REPLY (0x680u + BOOT_NODE)
 
 enum { INFO = 1, BEGIN, DATA, FINISH };
 static volatile uint32_t milliseconds;
@@ -126,14 +129,14 @@ int main(void)
 
     uint32_t command = frame[2], argument = frame[3];
     uint32_t result = 1;
-    if (command == INFO && argument == CONFIG_NODE)
+    if (command == INFO && argument == BOOT_NODE)
     {
       result = 0;
       if (ready)
         deadline = milliseconds + 2500;
     }
     else if (command == BEGIN && argument >= 512 && argument <= META - APP &&
-             !(argument & 3u) && frame[5] == CONFIG_NODE)
+             !(argument & 3u) && frame[5] == BOOT_NODE)
     {
       ready = 0;
       owner = 0;

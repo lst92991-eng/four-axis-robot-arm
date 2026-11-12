@@ -1,0 +1,132 @@
+{
+  "evidence": [
+    {
+      "source": "output/code-audit-20261113/summary.json",
+      "archived_path": "docs/evidence/2026-11-13/code-audit-20261113/summary.json",
+      "bytes": 3241,
+      "sha256": "7733d44f2194f1e0681814c6712360c2d43b0dda37f9adfb98eabfe66acbf421"
+    },
+    {
+      "source": "output/code-audit-20261113/metrics.json",
+      "archived_path": "docs/evidence/2026-11-13/code-audit-20261113/metrics.json",
+      "bytes": 177076,
+      "sha256": "66256050da2ffbf23234e7c9985bc03b792ded0f1b2e6803c0bcaff31ac9fd2d"
+    },
+    {
+      "source": "output/archive-check-20261113/native-tests.json",
+      "archived_path": "docs/evidence/2026-11-13/archive-check-20261113/native-tests.json",
+      "bytes": 9550,
+      "sha256": "a02029fb53943b4385394397ebd4f16e35b3d0370d4564eaf75afe79e84811c9"
+    },
+    {
+      "source": "output/xy-registration-20261111/arm-registration.json",
+      "archived_path": "docs/evidence/2026-11-13/xy-registration-20261111/arm-registration.json",
+      "bytes": 768,
+      "sha256": "7dbd60fdd4c138447530b1ce77ae2e0bab5fb75474c9364148a733b7be93455f"
+    },
+    {
+      "source": "output/xy-registration-20261111/plane-map.yml",
+      "archived_path": "docs/evidence/2026-11-13/xy-registration-20261111/plane-map.yml",
+      "bytes": 2438,
+      "sha256": "de19a6cc5719c42b1afcbd0b1bedde4cff319d92a59fb2b3a99366528a5517bc"
+    },
+    {
+      "source": "output/xy-registration-20261111/orientation.yml",
+      "archived_path": "docs/evidence/2026-11-13/xy-registration-20261111/orientation.yml",
+      "bytes": 27558,
+      "sha256": "9455f20fba918b85d9c10e2836bf76e51f57a63a4139a241c3b15ff66d804cd1"
+    },
+    {
+      "source": "output/xy-registration-20261111/measured-pairs.json",
+      "archived_path": "docs/evidence/2026-11-13/xy-registration-20261111/measured-pairs.json",
+      "bytes": 1921,
+      "sha256": "714fa5707288101f6c46e81348894fe7256fbb1bc8320a0054c084309a3c8dcb"
+    },
+    {
+      "source": "output/xy-registration-20261111/grid-base-xy.csv",
+      "archived_path": "docs/evidence/2026-11-13/xy-registration-20261111/grid-base-xy.csv",
+      "bytes": 3339,
+      "sha256": "a15149abd0dec38632b92abbcb735575457f9fcacdd38206bd0557b7a49e8ae7"
+    },
+    {
+      "source": "output/first-pick-c3-c4-20261111/trial-plan.json",
+      "archived_path": "docs/evidence/2026-11-13/first-pick-c3-c4-20261111/trial-plan.json",
+      "bytes": 1077,
+      "sha256": "26af92aa63e31b472bc2572dce33761c9083da12840ef97fdba32db2fce55ade"
+    },
+    {
+      "source": "output/first-pick-c3-c4-20261111/result.json",
+      "archived_path": "docs/evidence/2026-11-13/first-pick-c3-c4-20261111/result.json",
+      "bytes": 1176,
+      "sha256": "04365f89281a1766d09008136cca30531e2bd7bf939a26003229e416564b7aa5"
+    },
+    {
+      "source": "output/first-pick-c3-c4-20261111/powered-release-test.json",
+      "archived_path": "docs/evidence/2026-11-13/first-pick-c3-c4-20261111/powered-release-test.json",
+      "bytes": 266,
+      "sha256": "417b94194265c443aac0906f2ef97e98d996697125ef386a4f552359ecc596c2"
+    },
+    {
+      "source": "output/chess-demo-20261111/events.jsonl",
+      "archived_path": "docs/evidence/2026-11-13/chess-demo-20261111/events.jsonl",
+      "bytes": 27653,
+      "sha256": "f7f256a8bfd09e35cbf15443ebdd878b7dab4e628719ac5f238a20c9ea345132"
+    },
+    {
+      "source": "output/chess-demo-20261111/pulse-test-resume/events.jsonl",
+      "archived_path": "docs/evidence/2026-11-13/chess-demo-20261111/pulse-test-resume/events.jsonl",
+      "bytes": 2770,
+      "sha256": "33853598af03d26a351b1ccaba387b1ebe3b7edce628e796584ae99687c24b7e"
+    },
+    {
+      "source": "output/chess-demo-20261111/pulse-100ms-test/events.jsonl",
+      "archived_path": "docs/evidence/2026-11-13/chess-demo-20261111/pulse-100ms-test/events.jsonl",
+      "bytes": 6143,
+      "sha256": "28b5af378fd4f8842f40fd9aff7a0adc09826623d32a210c7bbd5191fa55cfe0"
+    },
+    {
+      "source": "output/chess-demo-20261111/pulse-100ms-test/pulse-100ms-reset.png",
+      "archived_path": "docs/evidence/2026-11-13/chess-demo-20261111/pulse-100ms-test/pulse-100ms-reset.png",
+      "bytes": 1329836,
+      "sha256": "d2e400ffc018299ab1276443d75a1f2b625877c4315cd7afdc2920598e33629f"
+    },
+    {
+      "source": "output/chess-demo-20261111/pulse-100ms-test/pulse-100ms-reset-grid.json",
+      "archived_path": "docs/evidence/2026-11-13/chess-demo-20261111/pulse-100ms-test/pulse-100ms-reset-grid.json",
+      "bytes": 31749,
+      "sha256": "b47ecfb33a577b772735d25220b330eda33da9f978690f17af5691fb2ae8004f"
+    },
+    {
+      "source": "output/chess-demo-20261111/pulse-100ms-test/release-tuning/replay-results.json",
+      "archived_path": "docs/evidence/2026-11-13/chess-demo-20261111/pulse-100ms-test/release-tuning/replay-results.json",
+      "bytes": 1145,
+      "sha256": "5f8a98f46b2ce1e72374df2a4e22295f355b4356a8b815c6fcd4b4f10c361d45"
+    },
+    {
+      "source": "output/joint-app-calibration-20261111/readback/axes.json",
+      "archived_path": "docs/evidence/2026-11-13/joint-app-calibration-20261111/readback/axes.json",
+      "bytes": 4982,
+      "sha256": "b3f37216ce52614b368291880a76291e8903d06349ea620963bc250219791250"
+    },
+    {
+      "source": "output/j234-calibration-20261111/post-calibration-readback.json",
+      "archived_path": "docs/evidence/2026-11-13/j234-calibration-20261111/post-calibration-readback.json",
+      "bytes": 1687,
+      "sha256": "d34d906bc678119d6a3d77b942443206494b135116fd7f34ea1af6a70cb8950e"
+    }
+  ],
+  "source_build_id": "41f870bf",
+  "archived_firmware_build_id": "41f870bf",
+  "hardware_execution_this_archive": false,
+  "python_tests": {
+    "passed": 55,
+    "failed": 0
+  },
+  "native_tests": {
+    "passed": 15,
+    "failed": 0
+  },
+  "user_direction": "Board and robot base will be fixed together; H-bridge gripper is pending. Analyze driver code style and wait for user approval before upper-layer refactoring.",
+  "live_release_status": "100 ms at approximately +5 mm landed about 18 mm off target; 20 ms still lacks a completed hardware release test. J1 recovery and deployment were blocked by automatic approval review during the prior session.",
+  "source_hash_method": "temp/build.py order: sorted Windows paths, POSIX relative names, NUL separator and file bytes, with temp/boot.c copied to src/boot.c"
+}

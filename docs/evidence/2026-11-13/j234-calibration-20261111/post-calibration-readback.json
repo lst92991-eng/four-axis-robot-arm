@@ -1,0 +1,60 @@
+{
+  "time": "2026-11-11T13:54:13.182319+08:00",
+  "panel": "http://127.0.0.1:8090/",
+  "axes": [
+    {
+      "node": 2,
+      "build": "bde508fb",
+      "ratio": 20,
+      "electrical_zero": 5889,
+      "encoder_direction": 1,
+      "calibration_saved": true,
+      "configured": true,
+      "power": false,
+      "fault": 0,
+      "referenced": false,
+      "bus_mv": 24111,
+      "requested_calibration_current_ma": 600,
+      "calibration_log": "output/j234-calibration-20261111/J2/600mA/20261111-135129-336522-j2-calibration-summary.json"
+    },
+    {
+      "node": 3,
+      "build": "2782dd50",
+      "ratio": 1,
+      "electrical_zero": 15792,
+      "encoder_direction": 1,
+      "calibration_saved": true,
+      "configured": true,
+      "power": false,
+      "fault": 0,
+      "referenced": false,
+      "bus_mv": 24072,
+      "requested_calibration_current_ma": 600,
+      "calibration_log": "output/j234-calibration-20261111/J3/600mA/20261111-135233-037245-j3-calibration-summary.json"
+    },
+    {
+      "node": 4,
+      "build": "8aa78f82",
+      "ratio": 1,
+      "electrical_zero": 9514,
+      "encoder_direction": 1,
+      "calibration_saved": true,
+      "configured": true,
+      "power": false,
+      "fault": 0,
+      "referenced": false,
+      "bus_mv": 24188,
+      "requested_calibration_current_ma": 300,
+      "calibration_log": "output/j234-calibration-20261111/J4/300mA/20261111-135240-312687-j4-calibration-summary.json"
+    }
+  ],
+  "j1": {
+    "position": -18635.122,
+    "stationary": true,
+    "power": true,
+    "fault": 0,
+    "interlocked": true,
+    "referenced": true,
+    "age_ms": 0
+  }
+}

@@ -1,14 +1,11 @@
 #include "../firmware/src/config.h"
-#undef CONFIG_RATIO
-#undef CONFIG_ACCELERATION
-#undef CONFIG_MAX_VELOCITY
-#undef CONFIG_FOLLOWING_ERROR
-#undef CONFIG_BRAKE_ACCELERATION
-#define CONFIG_RATIO 1.0f
-#define CONFIG_ACCELERATION 60.0f
-#define CONFIG_MAX_VELOCITY 500.0f
-#define CONFIG_FOLLOWING_ERROR 2.5f
-#define CONFIG_BRAKE_ACCELERATION 360.0f
+static const JointConfig profile = {
+  .can_node = 1, .joint_direction = 1, .ratio = 1,
+  .minimum_deg = -180, .maximum_deg = 180,
+  .max_speed_deg_s = 500.0f, .following_error_deg = 2.5f,
+  .acceleration_deg_s2 = 60.0f, .brake_deg_s2 = 360.0f,
+};
+const JointConfig *joint_config = &profile;
 #include "../firmware/src/motion.c"
 #include <assert.h>
 #include <stdio.h>

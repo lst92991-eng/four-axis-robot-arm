@@ -1,18 +1,15 @@
-"""v3 point-to-point jog supervisor. No USB, HTTP or GPIO dependencies.
-
-MOVE is sent once, toward the reviewed firmware limit. PING sustains the
-firmware's 500 ms watchdog only while the browser lease remains alive.
-STOP brakes and holds; OFF/ZERO/CLEAR are intentionally not exposed.
-"""
+"""Manual v3 jog and fault recovery. Transport is supplied by the caller."""
 from collections import deque
+import json
 import math
+from pathlib import Path
 import struct
 import time
 
 PACKET = struct.Struct('<4BI14i')
-MOVE, STOP, PING = 3, 4, 7
+ZERO, MOVE, STOP, OFF, CLEAR, PING = 2, 3, 4, 5, 6, 7
 VELOCITY=12
-COMMAND_NAMES={MOVE:'MOVE',STOP:'STOP',PING:'PING',VELOCITY:'VELOCITY'}
+COMMAND_NAMES={ZERO:'ZERO',MOVE:'MOVE',STOP:'STOP',OFF:'OFF',CLEAR:'CLEAR',PING:'PING',VELOCITY:'VELOCITY'}
 LEASE_S, STATUS_S, ACK_S = .30, .25, .25
 STATES = ['未出力', '保持位置', '运动中', '减速中', '故障', '速度运行']
 FAULTS = {1:'编码器反馈异常', 2:'电流或采样保护', 3:'母线电压异常',
@@ -24,7 +21,7 @@ def packet(kind, node, seq, a=0, b=0):
 
 
 class Controller:
-    def __init__(self, config, send, clock=time.monotonic, audit=None):
+    def __init__(self, config, send, clock=time.monotonic, audit=None, reference_path=None):
         self.config, self.send, self.clock = config, send, clock
         self.audit = audit or (lambda event: None)
         self.axes = {int(n): dict(c) for n, c in config['axes'].items()}
@@ -38,11 +35,22 @@ class Controller:
                 raise ValueError('缺少减速比或已核对的固件构建 ID')
             if 'diagnostic_step_deg' in c and not .1 <= c['diagnostic_step_deg'] <= 5:
                 raise ValueError('诊断步长必须为0.1～5度')
+            if 'default_speed_deg_s' in c:
+                axis_limit = min(config['max_speed_deg_s'], c.get('max_speed_deg_s', 30))
+                if not .1 <= c['default_speed_deg_s'] <= axis_limit:
+                    raise ValueError('轴默认速度超出可用范围')
         if not (.1 <= config['default_speed_deg_s'] <= config['max_speed_deg_s'] <= 500):
             raise ValueError('速度配置无效')
         self.status, self.pending, self.synced = {}, {}, set()
         self.seq = {n: 0 for n in self.axes}
         self.sync_tries = {}
+        self.recovering = None
+        self.reference_path = Path(reference_path) if reference_path else None
+        self.reference_restore = None
+        if self.reference_path and self.reference_path.exists():
+            self.reference_restore = json.loads(self.reference_path.read_text(encoding='utf-8'))
+            self.reference_restore['phase'] = 'paused'
+        self.reference_deadline = 0.
         self.owner, self.armed, self.active = None, False, None
         self.lease = 0
         self.last_ping = 0
@@ -62,12 +70,81 @@ class Controller:
         self.events.append(event)
         self.audit(event)
 
+    def commissioning_firmware(self, status):
+        build = self.config.get('commissioning_build')
+        return bool(build and status.get('build') == build)
+
+    def velocity_mode(self, n):
+        return self.axes[n].get('manual_mode') == 'velocity' or self.commissioning_firmware(self.status.get(n, {}))
+
+    def can_recover(self, n):
+        s = self.status.get(n, {})
+        legacy_reference = (n == 1 and self.axes[n].get('restore_reference_after_clear') and
+                            s.get('build') in self.axes[n]['builds'] and s.get('calibration_extension') and
+                            s.get('stationary') and not s.get('power') and
+                            (s.get('referenced') or self.reference_restore is not None))
+        return (self.connected and self.recovering is None and not self.armed and
+                not self.active and not self.stopping and (self.commissioning_firmware(s) or legacy_reference) and
+                self.clock() - s['received'] <= STATUS_S and s['encoder_valid'] and
+                ((legacy_reference and self.reference_restore is not None and s['state'] in (0,4)) or
+                 (s['fault'] and not s['power']) or
+                 (s['interlocked'] and s['state'] == 1 and s['stationary'])))
+
+    def save_reference_restore(self):
+        if self.reference_path:
+            if self.reference_restore is None:
+                self.reference_path.unlink(missing_ok=True)
+            else:
+                temporary = self.reference_path.with_suffix('.tmp')
+                temporary.write_text(json.dumps(self.reference_restore, indent=2), encoding='utf-8')
+                temporary.replace(self.reference_path)
+
+    def restore_legacy_reference(self, status):
+        restore = self.reference_restore
+        before = restore['before']
+        if (status['build'] != before['build'] or status['electrical_zero'] != before['electrical_zero'] or
+            status['encoder_direction'] != before['encoder_direction'] or
+            ((status['uptime']-before['uptime']) & 0xffffffff) >= 0x80000000):
+            self.recovering = None
+            self.fail('J1 重启或电角参考发生变化，需重新确认机械参考')
+            return
+        delta = (status['encoder_counts']-before['encoder_counts']+8192) % 16384-8192
+        if abs(delta)>46 or status['power'] or not status['stationary'] or not status['encoder_valid']:
+            self.recovering = None
+            self.fail('J1 恢复期间位置发生变化，需重新确认机械参考')
+            return
+        restore['target_mdeg'] = round((before['position']+delta*360/16384)*1000)
+        restore['phase'] = 'zero_ack'
+        self.save_reference_restore()
+        self.transmit(1, ZERO, restore['target_mdeg'])
+
+    def recovery_feedback(self, status):
+        restore = self.reference_restore
+        if self.recovering != 1 or restore is None:
+            return
+        if status['uptime'] == restore.get('feedback_after'):
+            return
+        if status['state'] != 0 or status['fault'] or status['power'] or not status['stationary']:
+            return
+        if restore['phase'] == 'clear_feedback':
+            self.restore_legacy_reference(status)
+        elif (restore['phase'] == 'zero_feedback' and status['referenced'] and
+              abs(status['position']-restore['target_mdeg']/1000)<=.05):
+            self.reference_restore = None
+            self.save_reference_restore()
+            self.recovering = None
+            self.synced.add(1)
+            self.message = 'J1 故障已清除，原 Z 参考已接续'
+            self.log(self.message, position=status['position'])
+
     def reason(self, n, require_still=True):
         s = self.status.get(n)
         if not self.connected or not s or self.clock() - s['received'] > STATUS_S:
             return '未收到实时状态，请检查驱动板供电和 CAN'
-        if s['build'] not in self.axes[n]['builds']:
+        if s['build'] not in self.axes[n]['builds'] and not self.commissioning_firmware(s):
             return '固件版本未核对，需先确认该版本行程与协议'
+        if n == 1 and self.reference_restore is not None:
+            return 'J1 原高度参考恢复尚未确认，可继续清故障恢复'
         if s['fault'] or s['state'] == 4:
             detail={1:'实际位置越界',2:'轨迹参考越界',3:'轨迹超时',4:'位置跟随误差超限',5:'停车终点越界'}
             label=detail.get(s.get('motion_fault_detail')) if s['fault']==5 else None
@@ -83,7 +160,7 @@ class Controller:
         if s['interlocked']:
             return '驱动已通信失联锁定，需要另行处理'
         c = self.axes[n]
-        if c.get('manual_mode')!='velocity' and not c['minimum'] <= s['position'] <= c['maximum']:
+        if require_still and not self.velocity_mode(n) and not c['minimum'] <= s['position'] <= c['maximum']:
             return '当前位置超出主机行程'
         if require_still and (s['state'] not in (0, 1) or not s['stationary']):
             return '等待轴停稳'
@@ -127,7 +204,7 @@ class Controller:
                 s.update(calibration_extension=True, cal_state=v[3]&255,
                          motion_fault_detail=(v[3]>>24)&255,
                          cal_error=(v[3]>>8)&255, electrical_zero=v[6],
-                         encoder_direction=v[7], calibration_saved=bool(v[3]&(1<<17)),
+                         encoder_direction=v[7], encoder_counts=v[5], calibration_saved=bool(v[3]&(1<<17)),
                          calibration_progress=v[11], bus_mv=v[12])
             for name, bit in [('referenced', 2), ('interlocked', 8), ('configured', 16),
                               ('encoder_valid', 32), ('power', 64), ('stationary', 256)]:
@@ -143,6 +220,8 @@ class Controller:
             elif old and s['build'] != old['build']:
                 self.synced.discard(n)
                 self.fail(f'J{n} 固件发生变化')
+            if n == 1:
+                self.recovery_feedback(s)
             if n in self.stopping and s['state'] == 4 and not s['power']:
                 self.stopping.remove(n)
                 self.stop_ack.discard(n)
@@ -157,23 +236,50 @@ class Controller:
         if pending is None:
             return
         if kind != pending['kind'] | 0x80 or result not in (0, 1):
+            if self.recovering == node:
+                self.recovering = None
             self.fail('命令应答格式不正确')
             return
         if pending['syncing']:
-            if not self.armed:
+            recovering = self.recovering == node
+            if not self.armed and not recovering:
                 return
             if result:
                 # STATUS has no last sequence. Probe with PING only, advancing
                 # by a quarter of the uint32 serial space, at most four times.
                 self.sync_tries[node] += 1
                 if self.sync_tries[node] >= 4:
+                    if recovering:
+                        self.recovering = None
                     self.fail(f'J{node} PING 序号同步失败')
                     return
                 self.seq[node] = (self.seq[node] + 0x3fffffff) & 0xffffffff
                 self.transmit(node, PING, syncing=True)
+            elif recovering:
+                if node == 1 and self.reference_restore is not None and not self.status[node]['fault']:
+                    self.restore_legacy_reference(self.status[node])
+                else:
+                    self.transmit(node, CLEAR)
             else:
                 self.synced.add(node)
                 self.log(f'J{node} 序号同步完成（仅 PING）')
+            return
+        if pending['kind'] == CLEAR:
+            if node == 1 and self.reference_restore is not None and not result and self.recovering == 1:
+                self.reference_restore.update(phase='clear_feedback', feedback_after=self.status[node]['uptime'])
+                return
+            self.recovering = None
+            if not result:
+                self.synced.add(node)
+            self.message = f'J{node} ' + ('恢复被驱动拒绝，请看当前状态' if result else '恢复命令已接受')
+            self.log(self.message)
+            return
+        if pending['kind'] == ZERO and node == 1 and self.reference_restore is not None:
+            if result or self.recovering != 1:
+                self.recovering = None
+                self.fail('J1 原高度参考写入未确认，可继续恢复')
+            else:
+                self.reference_restore.update(phase='zero_feedback', feedback_after=self.status[node]['uptime'])
             return
         if result:
             if pending['kind'] == STOP:
@@ -191,18 +297,36 @@ class Controller:
         if action == 'stop':
             # STOP is never suppressed by out-of-order browser requests.
             self.last_order[client] = max(order, self.last_order.get(client, 0))
+            self.recovering = None
             self.stop('已请求停止并保持位置', disarm=bool(args.get('disarm', False)))
             return
         if not isinstance(order, int) or order <= self.last_order.get(client, 0):
             raise ValueError('过期的操作已丢弃')
         self.last_order[client] = order
         now = self.clock()
+        if action == 'recover':
+            n = args.get('node')
+            if type(n) is not int or n not in self.axes or not self.can_recover(n):
+                raise ValueError('当前轴无法恢复，请查看状态')
+            if n == 1 and self.axes[n].get('restore_reference_after_clear'):
+                if self.reference_restore is None:
+                    self.reference_restore = dict(before=dict(self.status[n]), phase='sync')
+                    self.save_reference_restore()
+                self.reference_deadline = now+3
+            self.recovering = n
+            self.sync_tries[n] = 0
+            self.transmit(n, PING, syncing=True)
+            self.message = f'正在恢复 J{n}'
+            return
         if action == 'arm':
-            if self.active or self.stopping:
+            if self.active or self.stopping or self.recovering is not None:
                 raise ValueError('请先等待停稳')
             if self.owner and self.owner != client and self.armed:
                 raise ValueError('另一个页面正在控制')
-            ready = [n for n in self.axes if not self.reason(n)]
+            # Sequence sync is passive. The drive is checked for rest again
+            # immediately before each movement command.
+            ready = [n for n in self.axes if self.status.get(n, {}).get('state') in (0,1)
+                     and not self.reason(n, require_still=False)]
             if not ready:
                 raise ValueError('当前没有满足运动条件的轴，详情见各轴卡片')
             self.owner, self.armed, self.lease = client, True, now
@@ -226,13 +350,19 @@ class Controller:
             if self.active and args.get('press') == self.active['press']:
                 self.stop('已松开，减速并保持位置')
             return
-        if action != 'jog':
+        if action == 'idle_z':
+            if self.active or self.stopping or self.reason(1):
+                raise ValueError('Z 轴需要先停稳')
+            if self.status[1]['state'] == 1:
+                self.transmit(1,OFF)
+            return
+        if action not in ('jog', 'position'):
             raise ValueError('不支持的操作')
         if self.active or self.stopping:
             raise ValueError('一次只能操作一个轴，请先松开并等它停稳')
         n, direction, speed = args.get('node'), args.get('direction'), args.get('speed')
-        if type(n) is not int or n not in self.axes or direction not in (-1, 1):
-            raise ValueError('轴号或方向无效')
+        if type(n) is not int or n not in self.axes:
+            raise ValueError('轴号无效')
         axis_max=min(self.config['max_speed_deg_s'],self.axes[n].get('max_speed_deg_s',30))
         if type(speed) not in (int, float) or not math.isfinite(speed) or not .1 <= speed <= axis_max:
             raise ValueError('速度超出允许范围')
@@ -248,8 +378,18 @@ class Controller:
         press = args.get('press')
         if not isinstance(press, str) or not 1 <= len(press) <= 80:
             raise ValueError('缺少本次按压标识')
+        if action == 'position':
+            target = args.get('target')
+            if n == 1 or not self.commissioning_firmware(self.status[n]) or type(target) not in (int, float) or not -2000000 <= target <= 2000000:
+                raise ValueError('旋转轴位置无效')
+            self.active = dict(node=n, press=press, speed=speed, target=target)
+            self.transmit(n, MOVE, round(target*1000), round(speed*1000))
+            self.message = f'J{n} 移至 {target:.3f}°'
+            return
+        if direction not in (-1, 1):
+            raise ValueError('方向无效')
         motor_direction=direction*self.axes[n].get('manual_direction',1)
-        if self.axes[n].get('manual_mode')=='velocity':
+        if self.velocity_mode(n):
             self.active=dict(node=n,press=press,speed=speed,direction=direction,motor_direction=motor_direction)
             self.transmit(n,VELOCITY,round(motor_direction*speed*1000))
             self.message=f'J{n} 手动速度运行 {speed:g}°/s；松开快速制动'
@@ -270,7 +410,7 @@ class Controller:
         active_node = self.active['node'] if self.active else None
         active_speed = self.active['speed'] if self.active else 0
         self.active = None
-        nodes = {n for n in self.synced if n in self.status and self.status[n]['state'] in (1, 2, 3, 5)}
+        nodes = {n for n in self.synced if n in self.status and self.status[n]['state'] in (2, 3, 5)}
         if active_node is not None:
             s = self.status.get(active_node, {})
             fault_off = (s.get('state') == 4 and not s.get('power') and
@@ -297,7 +437,9 @@ class Controller:
                                active_speed if n==active_node else 0)/
                            self.axes[n].get('brake_deceleration_deg_s2',self.axes[n].get('acceleration_deg_s2',30))
                            for n in self.stopping)
-            self.stop_deadline=max(self.stop_deadline or 0,self.stop_started+brake_time+2)
+            # The drive can finish at the end of its brake window. Allow a
+            # fresh STATUS to arrive before withdrawing host heartbeats.
+            self.stop_deadline=max(self.stop_deadline or 0,self.stop_started+brake_time+2+STATUS_S)
             self.stop_timeout_reported = False
 
     def fail(self, reason):
@@ -308,6 +450,9 @@ class Controller:
 
     def tick(self):
         now = self.clock()
+        if self.recovering == 1 and self.reference_restore is not None and now>self.reference_deadline:
+            self.recovering = None
+            self.fail('J1 高度参考恢复超时，可继续恢复')
         if self.armed and now - self.lease > LEASE_S:
             self.stop('页面失联，已请求停止；需重新允许点动', disarm=True)
         if self.armed:
@@ -320,11 +465,25 @@ class Controller:
         for key in expired:
             p = self.pending.pop(key, None)
             if p is not None:
+                status=self.status.get(key[0], {})
+                if (p['kind']==PING and not p['syncing'] and
+                    now-status.get('received', 0)<=STATUS_S and not status.get('interlocked')):
+                    continue
+                if key[0] == self.recovering:
+                    self.recovering = None
+                    self.log(f'J{key[0]} 恢复应答超时，请看当前状态')
                 self.fail(f'J{key[0]} 应答超时；不重发运动命令')
-        if self.armed and now - self.last_ping >= .10:
+        if now - self.last_ping >= .10:
             self.last_ping = now
-            for n in sorted(self.synced):
-                if not any(key[0] == n for key in self.pending):
+            # A stopped hold needs the CAN link even when the browser releases
+            # its lease. Moving axes still stop when the lease is lost.
+            keepalive = self.synced if self.armed else {
+                n for n in self.synced if n not in self.stopping and
+                self.status.get(n, {}).get('state') == 1 and not self.reason(n, require_still=False)
+            }
+            for n in sorted(keepalive):
+                if not any(key[0] == n and (p['kind']!=PING or p['syncing'])
+                           for key,p in self.pending.items()):
                     self.transmit(n, PING)
         if self.stopping and self.stop_deadline is not None and now > self.stop_deadline and not self.stop_timeout_reported:
             self.armed = False
@@ -337,12 +496,14 @@ class Controller:
         for n, c in self.axes.items():
             s = self.status.get(n, {})
             age = self.clock() - s['received'] if s else None
-            rows.append(dict(node=n, **c, **s, age_ms=round(age * 1000) if age is not None else None,
+            rows.append(dict(node=n, **{**c, **s, 'manual_mode':'velocity' if self.velocity_mode(n) else 'position'},
+                             age_ms=round(age * 1000) if age is not None else None,
                              display_position=s.get('position',0)*c.get('manual_direction',1),
                              display_velocity=s.get('velocity',0)*c.get('manual_direction',1),
                              state_text=STATES[s['state']] if s.get('state', 99) < len(STATES) else '未知',
-                             reason=self.reason(n), ready=self.armed and n in self.synced and not self.reason(n)))
-        return dict(connected=self.connected, armed=self.armed, active=self.active,
+                             reason=self.reason(n), recoverable=self.can_recover(n),
+                             ready=self.armed and n in self.synced and not self.reason(n)))
+        return dict(connected=self.connected, armed=self.armed, active=self.active, recovering=self.recovering,
                     owner=self.owner,
                     stopping=sorted(self.stopping), message=self.message, axes=rows,
                     tx_count=self.tx_count, events=list(self.events),

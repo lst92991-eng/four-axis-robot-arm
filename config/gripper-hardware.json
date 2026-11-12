@@ -87,5 +87,19 @@
     "module": "replacement MOS module",
     "physical_release_confirmed": true,
     "operator_confirmation_record": "temp/gpio-audit-20261106/new-module-off-confirmed.json"
+  },
+  "proposed_release_mode": {
+    "mode": "passive_hold_active_release",
+    "status": "single_piece_release_verified_2026-11-11",
+    "user_report": "Chess pieces contain permanent magnets and attract the unpowered iron core",
+    "coil_leads_reversed_confirmed": true,
+    "all_piece_polarities_checked": false,
+    "flyback_diode_polarity_checked": false,
+    "release_and_retraction_test_passed": false,
+    "single_piece_release_verified": true,
+    "pulse_duration_ms": 1000,
+    "release_test_record": "output/first-pick-c3-c4-20261111/result.json",
+    "retract_clearance_mm": null,
+    "automatic_control_enabled": false
   }
 }

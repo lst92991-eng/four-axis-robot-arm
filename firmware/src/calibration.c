@@ -18,8 +18,8 @@ static const motor_cal_record_t *load(void)
 {
   const motor_cal_record_t *a=(const motor_cal_record_t *)SLOT_A;
   const motor_cal_record_t *b=(const motor_cal_record_t *)SLOT_B;
-  int av=motor_cal_record_valid(a) && a->pole_pairs==CONFIG_ENCODER_POLES;
-  int bv=motor_cal_record_valid(b) && b->pole_pairs==CONFIG_ENCODER_POLES;
+  int av=motor_cal_record_valid(a) && a->pole_pairs==joint_config->pole_pairs;
+  int bv=motor_cal_record_valid(b) && b->pole_pairs==joint_config->pole_pairs;
   if(!av)return bv?b:0;
   return bv && (int32_t)(b->sequence-a->sequence)>0?b:a;
 }
@@ -31,13 +31,13 @@ void Calibration_init(void)
 int Calibration_active(void){return motor_cal_active(&cal);}
 int Calibration_ready(void){return runtime!=0;}
 int Calibration_stored(void){return saved!=0;}
-int Calibration_direction(void){return runtime?runtime->direction:CONFIG_ENCODER_DIR;}
+int Calibration_direction(void){return runtime?runtime->direction:joint_config->encoder_direction;}
 const motor_cal_t *Calibration_status(void){return &cal;}
 const motor_cal_record_t *Calibration_record(void){return runtime;}
 float Calibration_angle(uint16_t raw)
 {
   if(runtime)return motor_cal_angle(runtime,raw)*(6.28318530718f/360000.0f);
-  int32_t phase=((int32_t)raw-CONFIG_ENCODER_ZERO)*CONFIG_ENCODER_DIR*CONFIG_ENCODER_POLES%16384;
+  int32_t phase=((int32_t)raw-joint_config->encoder_zero)*joint_config->encoder_direction*joint_config->pole_pairs%16384;
   return phase*(6.28318530718f/16384);
 }
 void Calibration_abort(motor_cal_error_t reason)
@@ -64,11 +64,11 @@ int Calibration_command(int op,int current_ma,const motor_status_t *b,uint32_t n
 {
   if(op==0)return 1;
   if(op==2){Calibration_abort(MOTOR_CAL_USER);return 1;}
-  if(CONFIG_NODE!=1)return 0; // 本次只允许 J1 基本标定，不意外扩到其他轴。
+  if (joint_config->can_node < 1 || joint_config->can_node > 4) return 0;
   if(Joint.status.state!=MOTION_OFF || b->power || b->fault || Calibration_active())return 0;
   if(op==1)
   {
-    if(current_ma<100 || current_ma>1000 || current_ma>CONFIG_CURRENT_MA)return 0;
+    if(current_ma<100 || current_ma>1000 || current_ma>joint_config->current_limit_ma)return 0;
     int32_t counts=(int32_t)((int64_t)current_ma*4095*10*20/(3300*1000));
     motor_cal_input_t in=input(b,now);
     in.phase_a=b->phase_a_mean;in.phase_b=b->phase_b_mean;
@@ -76,8 +76,8 @@ int Calibration_command(int op,int current_ma,const motor_status_t *b,uint32_t n
     // ISR 即使未出力也读取电角映射；先撤走 RAM 候选指针，再清空候选。
     const motor_cal_record_t *prior=runtime;
     runtime=saved;
-    if(!motor_cal_start(&cal,CONFIG_ENCODER_POLES,(uint16_t)counts,0,&in)){runtime=prior;return 0;}
-    motor_configured=(uint8_t)(runtime!=0 || (CONFIG_ENCODER_ZERO>=0 && CONFIG_ENCODER_ZERO<16384));
+    if(!motor_cal_start(&cal,joint_config->pole_pairs,(uint16_t)counts,0,&in)){runtime=prior;return 0;}
+    motor_configured=(uint8_t)(runtime!=0 || (joint_config->encoder_zero>=0 && joint_config->encoder_zero<16384));
     Joint.status.referenced=0;
     return 1;
   }
