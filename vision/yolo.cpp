@@ -18,6 +18,8 @@ struct Candidate
 };
 }
 
+static void readCandidates(const YoloHead& head, int index, float scoreThreshold,
+                           std::vector<Candidate>& candidates);
 static float dequantize(const YoloHead& head, int8_t value);
 static bool higherScore(const Candidate& a, const Candidate& b);
 static double intersectionOverUnion(const Candidate& a, const Candidate& b);
@@ -57,43 +59,7 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
   std::vector<Candidate> candidates, kept;
   // 1. 逐路、逐格读取候选框及其最高分类分数。
   for (int index=0; index<YoloHeads; ++index)
-  {
-    const auto& head = heads[index];
-    int size = YoloGrid[index];
-    int stride = YoloSize / size;
-    if (!head.data || head.rowBytes<size_t(size)*YoloChannels ||
-        head.bytes<size_t(size-1)*head.rowBytes+size*YoloChannels ||
-        !std::isfinite(head.scale) || head.scale<=0)
-      throw std::runtime_error("Invalid native YOLO output layout");
-    // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
-    float maximumClassScore = dequantize(head, 127);
-    // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
-    for (int y=0; y<size; ++y)
-    {
-      for (int x=0; x<size; ++x)
-      {
-        for (int anchor=0; anchor<YoloAnchors; ++anchor)
-        {
-          const int8_t *prediction = head.data+y*head.rowBytes+x*YoloChannels+anchor*YoloBoxValues;
-          float objectScore = dequantize(head, prediction[4]);
-          if (objectScore>=0 && objectScore*maximumClassScore<config.scoreThreshold) continue;
-          int classId = 0;
-          for (int candidateId=1; candidateId<YoloClasses; ++candidateId)
-            if (prediction[5+candidateId]>prediction[5+classId]) classId = candidateId;
-          float score = objectScore*dequantize(head,prediction[5+classId]);
-          if (score<config.scoreThreshold) continue;
-          double centerX = (double(dequantize(head,prediction[0])*2-.5f)+x)*stride;
-          double centerY = (double(dequantize(head,prediction[1])*2-.5f)+y)*stride;
-          float width = dequantize(head,prediction[2])*2;
-          float height = dequantize(head,prediction[3])*2;
-          width = width*width*Anchors[index][anchor*2];
-          height = height*height*Anchors[index][anchor*2+1];
-          candidates.push_back({classId, score, centerX-width/2, centerY-height/2,
-                               centerX+width/2, centerY+height/2});
-        }
-      }
-    }
-  }
+    readCandidates(heads[index], index, config.scoreThreshold, candidates);
   // 2. 按分数去重；同分保留遍历顺序，不因类别不同重复保留同一枚棋子。
   std::stable_sort(candidates.begin(), candidates.end(), higherScore);
   for (const auto& candidate : candidates)
@@ -152,6 +118,46 @@ cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>& detections
 }
 
 //---------内部计算区---------
+// 一次处理一路输出；候选框保持原来的行、列、锚框遍历顺序。
+static void readCandidates(const YoloHead& head, int index, float scoreThreshold,
+                           std::vector<Candidate>& candidates)
+{
+  int size = YoloGrid[index];
+  int stride = YoloSize / size;
+  if (!head.data || head.rowBytes<size_t(size)*YoloChannels ||
+      head.bytes<size_t(size-1)*head.rowBytes+size*YoloChannels ||
+      !std::isfinite(head.scale) || head.scale<=0)
+    throw std::runtime_error("Invalid native YOLO output layout");
+  // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
+  float maximumClassScore = dequantize(head, 127);
+  // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
+  for (int y=0; y<size; ++y)
+  {
+    for (int x=0; x<size; ++x)
+    {
+      for (int anchor=0; anchor<YoloAnchors; ++anchor)
+      {
+        const int8_t *prediction = head.data+y*head.rowBytes+x*YoloChannels+anchor*YoloBoxValues;
+        float objectScore = dequantize(head, prediction[4]);
+        if (objectScore>=0 && objectScore*maximumClassScore<scoreThreshold) continue;
+        int classId = 0;
+        for (int candidateId=1; candidateId<YoloClasses; ++candidateId)
+          if (prediction[5+candidateId]>prediction[5+classId]) classId = candidateId;
+        float score = objectScore*dequantize(head,prediction[5+classId]);
+        if (score<scoreThreshold) continue;
+        double centerX = (double(dequantize(head,prediction[0])*2-.5f)+x)*stride;
+        double centerY = (double(dequantize(head,prediction[1])*2-.5f)+y)*stride;
+        float width = dequantize(head,prediction[2])*2;
+        float height = dequantize(head,prediction[3])*2;
+        width = width*width*Anchors[index][anchor*2];
+        height = height*height*Anchors[index][anchor*2+1];
+        candidates.push_back({classId, score, centerX-width/2, centerY-height/2,
+                             centerX+width/2, centerY+height/2});
+      }
+    }
+  }
+}
+
 static float dequantize(const YoloHead& head, int8_t value)
 {
   return (int(value)-head.zeroPoint)*head.scale;
