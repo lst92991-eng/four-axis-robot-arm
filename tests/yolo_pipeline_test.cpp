@@ -30,12 +30,32 @@ void sameInput(const cv::Mat& source, const scara::VisionConfig& config, const s
   cv::cvtColor(image(expected), rgb, cv::COLOR_BGR2RGB);
   check(cv::norm(input, rgb, cv::NORM_INF)==0, "Preprocessing differs from the verified Python path");
 }
+
+void scoreUpperBound()
+{
+  std::vector<int8_t> data[3];
+  scara::YoloHead heads[3];
+  for (int i=0; i<3; ++i)
+  {
+    int size = 80 >> i;
+    data[i].resize(size*size*57, 0);
+    heads[i] = {data[i].data(), data[i].size(), size_t(size)*57, 0, .01f};
+  }
+  auto *p = data[0].data()+(20*80+20)*57;
+  p[0] = p[1] = p[2] = p[3] = 50;
+  p[4] = 40; p[5+8] = 126; // 0.40 * 1.26 = 0.504, above the 0.50 threshold.
+  auto found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  check(found.size()==1 && found[0].classId==8, "Early rejection assumed class scores cannot exceed one");
+  p[4] = 39;
+  check(scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {}).empty(), "Below-threshold candidate survived");
+}
 }
 
 int main(int argc, char **argv)
 {
   try
   {
+    scoreUpperBound();
     const std::string fixture = "tests/fixtures/vision/";
     auto source = image(fixture+"source.png");
     auto expected = scara::readStorage(fixture+"expected.json");

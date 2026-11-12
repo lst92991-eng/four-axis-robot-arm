@@ -72,6 +72,8 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
         head.bytes<size_t(size-1)*head.rowBytes+size*YoloChannels ||
         !std::isfinite(head.scale) || head.scale<=0)
       throw std::runtime_error("Invalid native YOLO output layout");
+    // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
+    float maximumClassScore = dequantize(head, 127);
     // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
     for (int y=0; y<size; ++y)
     {
@@ -80,10 +82,12 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
         for (int anchor=0; anchor<YoloAnchors; ++anchor)
         {
           const int8_t *prediction = head.data+y*head.rowBytes+x*YoloChannels+anchor*YoloBoxValues;
+          float objectScore = dequantize(head, prediction[4]);
+          if (objectScore>=0 && objectScore*maximumClassScore<config.scoreThreshold) continue;
           int classId = 0;
           for (int candidateId=1; candidateId<YoloClasses; ++candidateId)
             if (prediction[5+candidateId]>prediction[5+classId]) classId = candidateId;
-          float score = dequantize(head,prediction[4])*dequantize(head,prediction[5+classId]);
+          float score = objectScore*dequantize(head,prediction[5+classId]);
           if (score<config.scoreThreshold) continue;
           double centerX = (double(dequantize(head,prediction[0])*2-.5f)+x)*stride;
           double centerY = (double(dequantize(head,prediction[1])*2-.5f)+y)*stride;
