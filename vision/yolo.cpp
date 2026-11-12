@@ -25,19 +25,27 @@ static double intersectionOverUnion(const Candidate& a, const Candidate& b);
 //---------模型输入区---------
 cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapping& mapping)
 {
-  const auto roi = config.inferenceRoi;
+  cv::Rect roi = config.inferenceRoi;
+  cv::Rect frameBounds(0, 0, bgr.cols, bgr.rows);
   if (bgr.type()!=CV_8UC3 || bgr.size()!=config.frameSize || roi.width<=0 || roi.height<=0 ||
-      (roi & cv::Rect({}, bgr.size()))!=roi)
+      (roi & frameBounds)!=roi)
     throw std::runtime_error("Camera size or inference ROI differs from configuration");
 
   // Python 参考实现使用同一个缩放比恢复 X、Y，边缘留白按整数尺寸计算。
-  double scale = std::min(double(YoloSize)/roi.width, double(YoloSize)/roi.height);
+  double scaleX = double(YoloSize) / roi.width;
+  double scaleY = double(YoloSize) / roi.height;
+  double scale = std::min(scaleX, scaleY);
   cv::Size resized{cvRound(roi.width*scale), cvRound(roi.height*scale)};
-  mapping = {roi, scale, (YoloSize-resized.width)/2, (YoloSize-resized.height)/2};
+  mapping.roi = roi;
+  mapping.scale = scale;
+  mapping.left = (YoloSize-resized.width)/2;
+  mapping.top = (YoloSize-resized.height)/2;
+  cv::Mat cropped = bgr(roi);
   cv::Mat rgb;
-  cv::cvtColor(bgr(roi), rgb, cv::COLOR_BGR2RGB);
+  cv::cvtColor(cropped, rgb, cv::COLOR_BGR2RGB);
   cv::Mat input(YoloSize, YoloSize, CV_8UC3, cv::Scalar(114,114,114));
-  cv::Mat picture = input(cv::Rect(mapping.left, mapping.top, resized.width, resized.height));
+  cv::Rect inputArea(mapping.left, mapping.top, resized.width, resized.height);
+  cv::Mat picture = input(inputArea);
   cv::resize(rgb, picture, resized, 0, 0, cv::INTER_LINEAR);
   return input;
 }
