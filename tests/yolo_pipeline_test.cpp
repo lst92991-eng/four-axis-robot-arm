@@ -112,11 +112,13 @@ int main(int argc, char **argv)
       scara::Camera_open(argv[1]);
       std::this_thread::sleep_for(std::chrono::milliseconds(300));
       auto first = scara::Camera_read();
+      auto saved = first.clone();
       auto next = scara::Camera_read();
       check(first.size()==source.size() && next.size()==source.size(), "Camera frame size changed");
       check(cv::norm(first,next,cv::NORM_INF)>10, "Camera returned a cached frame again");
       std::this_thread::sleep_for(std::chrono::milliseconds(1200));
       check(scara::Camera_read().size()==source.size(), "Camera did not resume with a new frame");
+      check(cv::norm(first,saved,cv::NORM_INF)==0, "Background capture modified a frame still held by the caller");
       scara::Camera_close();
     }
     bool rejected = false;

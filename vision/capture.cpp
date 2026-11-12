@@ -46,7 +46,10 @@ cv::Mat Camera_read()
     throw std::runtime_error("Camera frame timeout");
   if (Capture.frame.empty())
     throw std::runtime_error(Capture.error.empty() ? "Camera stopped" : Capture.error);
-  return Capture.frame.clone();
+  // Mat 引用计数接管这一帧；后台下一次接收使用另一张图，不修改已交出的像素。
+  cv::Mat frame = Capture.frame;
+  Capture.frame.release();
+  return frame;
 }
 
 //---------关闭摄像头---------
