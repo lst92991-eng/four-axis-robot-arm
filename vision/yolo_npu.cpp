@@ -47,7 +47,7 @@ void Yolo_open(std::string path)
     // 三路输出大小为 80×80、40×40、20×20，每格包含 57 个数。
     for (int i=0; i<YoloHeads; ++i)
     {
-      auto& attr = Model.output[i];
+      rknn_tensor_attr& attr = Model.output[i];
       attr.index = i;
       status = rknn_query(Model.context, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, &attr, sizeof(attr));
       check(status, "rknn_query(output)");
@@ -56,9 +56,13 @@ void Yolo_open(std::string path)
         throw std::runtime_error("Output layout mismatch");
       Model.outputMemory[i] = rknn_create_mem(Model.context, attr.size_with_stride);
       bindBuffer(Model.outputMemory[i], attr);
-      auto *memory = Model.outputMemory[i];
-      size_t rowBytes = (attr.w_stride ? attr.w_stride : attr.dims[2])*YoloChannels;
-      Model.heads[i] = {static_cast<const int8_t *>(memory->virt_addr), memory->size, rowBytes, attr.zp, attr.scale};
+      rknn_tensor_mem *memory = Model.outputMemory[i];
+      YoloHead& head = Model.heads[i];
+      head.data = static_cast<const int8_t *>(memory->virt_addr);
+      head.bytes = memory->size;
+      head.rowBytes = (attr.w_stride ? attr.w_stride : attr.dims[2])*YoloChannels;
+      head.zeroPoint = attr.zp;
+      head.scale = attr.scale;
     }
   }
   catch (...)
