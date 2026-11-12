@@ -121,6 +121,18 @@ int main(int argc, char **argv)
       check(cv::norm(first,saved,cv::NORM_INF)==0, "Background capture modified a frame still held by the caller");
       scara::Camera_close();
     }
+    scara::Camera_open(std::string(argv[1])+"/finite");
+    bool ended = false;
+    for (int i=0; i<20 && !ended; ++i)
+    {
+      try { scara::Camera_read(); }
+      catch (const std::exception& e) { ended = std::string(e.what())=="Camera stream ended"; }
+    }
+    scara::Camera_close();
+    check(ended, "End of stream did not stop fresh-frame reads");
+    scara::Camera_open(argv[1]);
+    check(scara::Camera_read().size()==source.size(), "Camera retained an old failure after reopening");
+    scara::Camera_close();
     bool rejected = false;
     try { scara::Vision_prepare(source(cv::Rect(0,0,320,240)), historical, mapping); }
     catch (const std::exception&) { rejected = true; }

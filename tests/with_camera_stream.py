@@ -26,6 +26,8 @@ class Handler(BaseHTTPRequestHandler):
                                  str(len(data)).encode()+b'\r\n\r\n'+data+b'\r\n')
                 self.wfile.flush()
                 index += 1
+                if self.path.endswith('/finite') and index==12:
+                    return
                 time.sleep(.1)
         except (ConnectionError, OSError):
             pass

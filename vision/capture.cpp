@@ -1,6 +1,5 @@
 #include "capture.hpp"
 #include <opencv2/videoio.hpp>
-#include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
@@ -16,7 +15,7 @@ static struct CameraState
   std::thread task;
   std::mutex mutex;
   std::condition_variable ready;
-  std::atomic<bool> stopping{true};
+  bool stopping = true;
   std::string error;
   ~CameraState() { Camera_close(); }
 } Capture;
@@ -44,8 +43,8 @@ cv::Mat Camera_read()
   Capture.frame.release();
   if (!Capture.ready.wait_for(lock, std::chrono::seconds(5), frameReady))
     throw std::runtime_error("Camera frame timeout");
-  if (Capture.frame.empty())
-    throw std::runtime_error(Capture.error.empty() ? "Camera stopped" : Capture.error);
+  if (Capture.stopping || Capture.frame.empty())
+    throw std::runtime_error(Capture.stopping ? "Camera stopped" : Capture.error);
   // Mat 引用计数接管这一帧；后台下一次接收使用另一张图，不修改已交出的像素。
   cv::Mat frame = Capture.frame;
   Capture.frame.release();
@@ -55,11 +54,14 @@ cv::Mat Camera_read()
 //---------关闭摄像头---------
 void Camera_close()
 {
-  Capture.stopping = true;
+  {
+    std::lock_guard<std::mutex> lock(Capture.mutex);
+    Capture.stopping = true;
+    Capture.frame.release();
+  }
   Capture.ready.notify_all();
   if (Capture.task.joinable()) Capture.task.join();
   Capture.video.release();
-  Capture.frame.release();
 }
 
 //---------后台取流---------
@@ -68,11 +70,12 @@ static void receiveFrames()
 {
   try
   {
-    while (!Capture.stopping)
+    for (;;)
     {
       cv::Mat frame;
       if (!Capture.video.read(frame)) throw std::runtime_error("Camera stream ended");
       std::lock_guard<std::mutex> lock(Capture.mutex);
+      if (Capture.stopping) break;
       Capture.frame = frame;
       Capture.ready.notify_one();
     }
