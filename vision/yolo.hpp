@@ -3,6 +3,12 @@
 #include <cstdint>
 
 namespace scara {
+// 固定模型：每个候选框有 4 个位置数、1 个目标分数和 14 个类别分数。
+constexpr int YoloSize = 640, YoloClasses = 14, YoloAnchors = 3, YoloHeads = 3;
+constexpr int YoloBoxValues = 5 + YoloClasses;
+constexpr int YoloChannels = YoloAnchors * YoloBoxValues;
+constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
+
 //---------图像与模型参数区---------
 struct VisionConfig
 {
@@ -31,7 +37,7 @@ struct YoloHead
 
 //---------图像处理接口区---------
 cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig&, ImageMapping&);
-std::vector<Detection> Vision_decode(const YoloHead heads[3],
+std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
                                     const ImageMapping&, const VisionConfig&);
 cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>&,
                     const cv::Mat& chineseLabels);

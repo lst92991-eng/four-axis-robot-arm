@@ -7,7 +7,7 @@
 
 namespace scara {
 namespace {
-constexpr float Anchors[3][6] = {{10,13,16,30,33,23}, {30,61,62,45,59,119},
+constexpr float Anchors[YoloHeads][YoloAnchors*2] = {{10,13,16,30,33,23}, {30,61,62,45,59,119},
                                 {116,90,156,198,373,326}};
 
 struct Candidate
@@ -47,10 +47,10 @@ cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapp
     throw std::runtime_error("Camera size or inference ROI differs from configuration");
 
   // Python 参考实现使用同一个缩放比恢复 X、Y，边缘留白按整数尺寸计算。
-  double scale = std::min(640.0/roi.width, 640.0/roi.height);
+  double scale = std::min(double(YoloSize)/roi.width, double(YoloSize)/roi.height);
   cv::Size resized{cvRound(roi.width*scale), cvRound(roi.height*scale)};
-  mapping = {roi, scale, (640-resized.width)/2, (640-resized.height)/2};
-  cv::Mat rgb, scaled, input(640, 640, CV_8UC3, cv::Scalar(114,114,114));
+  mapping = {roi, scale, (YoloSize-resized.width)/2, (YoloSize-resized.height)/2};
+  cv::Mat rgb, scaled, input(YoloSize, YoloSize, CV_8UC3, cv::Scalar(114,114,114));
   cv::cvtColor(bgr(roi), rgb, cv::COLOR_BGR2RGB);
   cv::resize(rgb, scaled, resized, 0, 0, cv::INTER_LINEAR);
   scaled.copyTo(input(cv::Rect(mapping.left, mapping.top, resized.width, resized.height)));
@@ -58,16 +58,17 @@ cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapp
 }
 
 //---------检测输出区---------
-std::vector<Detection> Vision_decode(const YoloHead heads[3],
+std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
                                     const ImageMapping& mapping, const VisionConfig& config)
 {
   std::vector<Candidate> candidates, kept;
-  for (int index=0; index<3; ++index)
+  for (int index=0; index<YoloHeads; ++index)
   {
     const auto& head = heads[index];
-    int size = 80 >> index;
-    int stride = 8 << index;
-    if (!head.data || head.rowBytes<size_t(size)*57 || head.bytes<size_t(size-1)*head.rowBytes+size*57 ||
+    int size = YoloGrid[index];
+    int stride = YoloSize / size;
+    if (!head.data || head.rowBytes<size_t(size)*YoloChannels ||
+        head.bytes<size_t(size-1)*head.rowBytes+size*YoloChannels ||
         !std::isfinite(head.scale) || head.scale<=0)
       throw std::runtime_error("Invalid native YOLO output layout");
     // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
@@ -75,11 +76,11 @@ std::vector<Detection> Vision_decode(const YoloHead heads[3],
     {
       for (int x=0; x<size; ++x)
       {
-        for (int anchor=0; anchor<3; ++anchor)
+        for (int anchor=0; anchor<YoloAnchors; ++anchor)
         {
-          const int8_t *prediction = head.data+y*head.rowBytes+x*57+anchor*19;
+          const int8_t *prediction = head.data+y*head.rowBytes+x*YoloChannels+anchor*YoloBoxValues;
           int classId = 0;
-          for (int candidateId=1; candidateId<14; ++candidateId)
+          for (int candidateId=1; candidateId<YoloClasses; ++candidateId)
             if (prediction[5+candidateId]>prediction[5+classId]) classId = candidateId;
           float score = dequantize(head,prediction[4])*dequantize(head,prediction[5+classId]);
           if (score<config.scoreThreshold) continue;
@@ -127,12 +128,12 @@ std::vector<Detection> Vision_decode(const YoloHead heads[3],
 cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>& detections,
                     const cv::Mat& labels)
 {
-  if (labels.type()!=CV_8UC1 || labels.rows!=14*24 || labels.cols!=64)
+  if (labels.type()!=CV_8UC1 || labels.rows!=YoloClasses*24 || labels.cols!=64)
     throw std::runtime_error("Expected the 14-class Chinese label atlas");
   cv::Mat result = bgr.clone();
   for (const auto& detection : detections)
   {
-    if (detection.classId<0 || detection.classId>=14) continue;
+    if (detection.classId<0 || detection.classId>=YoloClasses) continue;
     cv::Rect box = cv::Rect(detection.bbox) & cv::Rect({}, result.size());
     cv::Scalar color = detection.classId<7 ? cv::Scalar(255,180,65) : cv::Scalar(65,85,245);
     cv::rectangle(result, box, color, 2);
