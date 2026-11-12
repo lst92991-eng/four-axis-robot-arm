@@ -7,6 +7,12 @@
 
 namespace scara {
 namespace {
+// 中文字图每行占 64×24；其中 44 像素用于显示两个字。
+constexpr int AtlasWidth = 64;
+constexpr int LabelWidth = 44;
+constexpr int LabelHeight = 24;
+constexpr int ScoreHeight = 16;
+
 // 每一对分别是锚框的宽、高，单位：640 输入图像素。
 const cv::Size2f Anchors[YoloHeads][YoloAnchors] =
 {
@@ -100,25 +106,29 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
 cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>& detections,
                     const cv::Mat& labels)
 {
-  if (labels.type()!=CV_8UC1 || labels.rows!=YoloClasses*24 || labels.cols!=64)
+  if (labels.type()!=CV_8UC1 || labels.rows!=YoloClasses*LabelHeight || labels.cols!=AtlasWidth)
     throw std::runtime_error("Expected the 14-class Chinese label atlas");
   cv::Mat result = bgr.clone();
-  cv::Rect bounds({}, result.size());
-  for (const auto& detection : detections)
+  cv::Rect bounds(0, 0, result.cols, result.rows);
+  for (const Detection& detection : detections)
   {
     if (detection.classId<0 || detection.classId>=YoloClasses) continue;
     cv::Rect box = cv::Rect(detection.bbox) & bounds;
     if (box.empty()) continue;
     cv::Scalar color = detection.classId<7 ? cv::Scalar(255,180,65) : cv::Scalar(65,85,245);
     cv::rectangle(result, box, color, 2);
-    int x = std::clamp(box.x, 0, std::max(0, result.cols-44));
-    int y = std::clamp(box.y-25, 0, std::max(0, result.rows-24));
-    cv::Rect label = cv::Rect(x,y,44,24) & bounds;
-    cv::rectangle(result, label, color, cv::FILLED);
-    result(label).setTo(cv::Scalar::all(255), labels(cv::Rect(0,detection.classId*24,label.width,label.height)));
-    int scoreY = std::clamp(box.y+box.height-16, 0, std::max(0, result.rows-16));
-    cv::rectangle(result, {x,scoreY,44,16}, color, cv::FILLED);
-    cv::putText(result, cv::format("%.2f", detection.confidence), {x+3,scoreY+12},
+    int x = std::clamp(box.x, 0, std::max(0, result.cols-LabelWidth));
+    int y = std::clamp(box.y-LabelHeight-1, 0, std::max(0, result.rows-LabelHeight));
+    cv::Rect label = cv::Rect(x,y,LabelWidth,LabelHeight) & bounds;
+    cv::Rect symbolArea(0, detection.classId*LabelHeight, label.width, label.height);
+    cv::Mat textMask = labels(symbolArea);
+    cv::Mat caption = result(label);
+    caption.setTo(color);
+    caption.setTo(cv::Scalar::all(255), textMask);
+    int scoreY = std::clamp(box.y+box.height-ScoreHeight, 0, std::max(0, result.rows-ScoreHeight));
+    cv::rectangle(result, {x,scoreY,LabelWidth,ScoreHeight}, color, cv::FILLED);
+    std::string score = cv::format("%.2f", detection.confidence);
+    cv::putText(result, score, {x+3,scoreY+12},
                 cv::FONT_HERSHEY_SIMPLEX, .4, cv::Scalar::all(255), 1, cv::LINE_AA);
   }
   return result;
