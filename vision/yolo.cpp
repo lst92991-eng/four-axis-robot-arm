@@ -50,10 +50,11 @@ cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapp
   double scale = std::min(double(YoloSize)/roi.width, double(YoloSize)/roi.height);
   cv::Size resized{cvRound(roi.width*scale), cvRound(roi.height*scale)};
   mapping = {roi, scale, (YoloSize-resized.width)/2, (YoloSize-resized.height)/2};
-  cv::Mat rgb, scaled, input(YoloSize, YoloSize, CV_8UC3, cv::Scalar(114,114,114));
+  cv::Mat rgb;
   cv::cvtColor(bgr(roi), rgb, cv::COLOR_BGR2RGB);
-  cv::resize(rgb, scaled, resized, 0, 0, cv::INTER_LINEAR);
-  scaled.copyTo(input(cv::Rect(mapping.left, mapping.top, resized.width, resized.height)));
+  cv::Mat input(YoloSize, YoloSize, CV_8UC3, cv::Scalar(114,114,114));
+  cv::Mat picture = input(cv::Rect(mapping.left, mapping.top, resized.width, resized.height));
+  cv::resize(rgb, picture, resized, 0, 0, cv::INTER_LINEAR);
   return input;
 }
 
