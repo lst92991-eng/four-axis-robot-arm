@@ -20,6 +20,7 @@ struct Candidate
 
 static void readCandidates(const YoloHead& head, int index, float scoreThreshold,
                            std::vector<Candidate>& candidates);
+static int bestClass(const int8_t *classScores);
 static float dequantize(const YoloHead& head, int8_t value);
 static bool higherScore(const Candidate& a, const Candidate& b);
 static double intersectionOverUnion(const Candidate& a, const Candidate& b);
@@ -140,9 +141,7 @@ static void readCandidates(const YoloHead& head, int index, float scoreThreshold
         const int8_t *prediction = head.data+y*head.rowBytes+x*YoloChannels+anchor*YoloBoxValues;
         float objectScore = dequantize(head, prediction[4]);
         if (objectScore>=0 && objectScore*maximumClassScore<scoreThreshold) continue;
-        int classId = 0;
-        for (int candidateId=1; candidateId<YoloClasses; ++candidateId)
-          if (prediction[5+candidateId]>prediction[5+classId]) classId = candidateId;
+        int classId = bestClass(prediction+5);
         float score = objectScore*dequantize(head,prediction[5+classId]);
         if (score<scoreThreshold) continue;
         double centerX = (double(dequantize(head,prediction[0])*2-.5f)+x)*stride;
@@ -156,6 +155,15 @@ static void readCandidates(const YoloHead& head, int index, float scoreThreshold
       }
     }
   }
+}
+
+// 同一路输出的量化比例为正，直接比较整数即可；同分保留编号较小者。
+static int bestClass(const int8_t *classScores)
+{
+  int best = 0;
+  for (int index=1; index<YoloClasses; ++index)
+    if (classScores[index]>classScores[best]) best = index;
+  return best;
 }
 
 static float dequantize(const YoloHead& head, int8_t value)

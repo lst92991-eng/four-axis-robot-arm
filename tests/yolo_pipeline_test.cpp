@@ -46,6 +46,10 @@ void decodeEdges()
   p[4] = 40; p[5+8] = 126; // 0.40 * 1.26 = 0.504, above the 0.50 threshold.
   auto found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
   check(found.size()==1 && found[0].classId==8, "Early rejection assumed class scores cannot exceed one");
+  p[5+2] = 126;
+  found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  check(found.size()==1 && found[0].classId==2, "Equal class scores did not keep the first class");
+  p[5+2] = 0;
   p[4] = 39;
   check(scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {}).empty(), "Below-threshold candidate survived");
   p[2] = p[3] = p[4] = 100; p[5+8] = 0; p[5+2] = 90;
