@@ -14,29 +14,13 @@ struct Candidate
 {
   int classId;
   float score;
-  double x1, y1, x2, y2;
+  double x1, y1, x2, y2; // 640 输入图中的左上角、右下角，尚未裁切。
 };
-
-// 把模型输出的 INT8 数值还原成概率或位置系数。
-float dequantize(const YoloHead& head, int8_t value)
-{
-  return (int(value)-head.zeroPoint)*head.scale;
 }
 
-bool higherScore(const Candidate& a, const Candidate& b)
-{
-  return a.score>b.score;
-}
-
-double overlap(const Candidate& a, const Candidate& b)
-{
-  double width = std::max(0.0, std::min(a.x2,b.x2)-std::max(a.x1,b.x1));
-  double height = std::max(0.0, std::min(a.y2,b.y2)-std::max(a.y1,b.y1));
-  double intersection = width * height;
-  double area = (a.x2-a.x1)*(a.y2-a.y1) + (b.x2-b.x1)*(b.y2-b.y1);
-  return intersection / std::max(area-intersection, 1e-9);
-}
-}
+static float dequantize(const YoloHead& head, int8_t value);
+static bool higherScore(const Candidate& a, const Candidate& b);
+static double intersectionOverUnion(const Candidate& a, const Candidate& b);
 
 //---------模型输入区---------
 cv::Mat Vision_prepare(const cv::Mat& bgr, const VisionConfig& config, ImageMapping& mapping)
@@ -63,6 +47,7 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
                                     const ImageMapping& mapping, const VisionConfig& config)
 {
   std::vector<Candidate> candidates, kept;
+  // 1. 逐路、逐格读取候选框及其最高分类分数。
   for (int index=0; index<YoloHeads; ++index)
   {
     const auto& head = heads[index];
@@ -101,14 +86,14 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
       }
     }
   }
-  // 同分框保留原来的遍历次序，NMS 在网络坐标中执行，再还原到原始帧。
+  // 2. 按分数去重；同分保留遍历顺序，不因类别不同重复保留同一枚棋子。
   std::stable_sort(candidates.begin(), candidates.end(), higherScore);
   for (const auto& candidate : candidates)
   {
     bool duplicate = false;
     for (const auto& old : kept)
     {
-      if (overlap(candidate, old)>config.nmsThreshold)
+      if (intersectionOverUnion(candidate, old)>config.nmsThreshold)
       {
         duplicate = true;
         break;
@@ -116,6 +101,7 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads],
     }
     if (!duplicate) kept.push_back(candidate);
   }
+  // 3. 去掉留白、还原缩放，最后加回裁剪区域在原图中的偏移。
   std::vector<Detection> detections;
   for (const auto& box : kept)
   {
@@ -155,5 +141,25 @@ cv::Mat Vision_draw(const cv::Mat& bgr, const std::vector<Detection>& detections
                 cv::FONT_HERSHEY_SIMPLEX, .4, cv::Scalar::all(255), 1, cv::LINE_AA);
   }
   return result;
+}
+
+//---------内部计算区---------
+static float dequantize(const YoloHead& head, int8_t value)
+{
+  return (int(value)-head.zeroPoint)*head.scale;
+}
+
+static bool higherScore(const Candidate& a, const Candidate& b)
+{
+  return a.score>b.score;
+}
+
+static double intersectionOverUnion(const Candidate& a, const Candidate& b)
+{
+  double width = std::max(0.0, std::min(a.x2,b.x2)-std::max(a.x1,b.x1));
+  double height = std::max(0.0, std::min(a.y2,b.y2)-std::max(a.y1,b.y1));
+  double intersection = width * height;
+  double area = (a.x2-a.x1)*(a.y2-a.y1) + (b.x2-b.x1)*(b.y2-b.y1);
+  return intersection / std::max(area-intersection, 1e-9);
 }
 }

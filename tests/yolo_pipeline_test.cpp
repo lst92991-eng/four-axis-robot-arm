@@ -31,7 +31,7 @@ void sameInput(const cv::Mat& source, const scara::VisionConfig& config, const s
   check(cv::norm(input, rgb, cv::NORM_INF)==0, "Preprocessing differs from the verified Python path");
 }
 
-void scoreUpperBound()
+void decodeEdges()
 {
   std::vector<int8_t> data[3];
   scara::YoloHead heads[3];
@@ -48,6 +48,16 @@ void scoreUpperBound()
   check(found.size()==1 && found[0].classId==8, "Early rejection assumed class scores cannot exceed one");
   p[4] = 39;
   check(scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {}).empty(), "Below-threshold candidate survived");
+  p[2] = p[3] = p[4] = 100; p[5+8] = 0; p[5+2] = 90;
+  auto *q = p+19;
+  q[0] = q[1] = 50; q[2] = 80; q[3] = 66; q[4] = 100; q[5+5] = 90;
+  found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  check(found.size()==1 && found[0].classId==2, "Cross-class NMS or equal-score traversal order changed");
+  q[5+5] = 91;
+  found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  check(found.size()==1 && found[0].classId==5, "NMS did not keep the highest scoring overlapping box");
+  q[4] = 0; p[5+2] = 50;
+  check(scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {}).size()==1, "Score exactly 0.50 was rejected");
 }
 }
 
@@ -55,7 +65,7 @@ int main(int argc, char **argv)
 {
   try
   {
-    scoreUpperBound();
+    decodeEdges();
     const std::string fixture = "tests/fixtures/vision/";
     auto source = image(fixture+"source.png");
     auto expected = scara::readStorage(fixture+"expected.json");
