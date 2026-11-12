@@ -47,6 +47,13 @@ def main():
         command = [args.executable, 'mock.rknn', url, 'config/vision/chinese-labels.png',
                    'output/vision-stage-verify/entry.jpg', '3']
     try:
+        if args.entry:
+            for index,value,message in ((5,'3junk','Frame count'),(3,'missing-labels.png','Cannot read label image')):
+                invalid = command.copy()
+                invalid[index] = value
+                result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
+                if result.returncode!=1 or message not in result.stderr or 'TEST ONLY' in result.stderr:
+                    raise RuntimeError('Invalid startup input opened the NPU or lost its error: '+result.stderr)
         return subprocess.run(command, cwd=ROOT, timeout=30).returncode
     finally:
         server.shutdown()

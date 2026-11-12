@@ -22,9 +22,13 @@ int main(int argc, char **argv)
   try
   {
     scara::VisionConfig config;
+    std::string limitText = argc==6 ? argv[5] : "0";
+    size_t parsed = 0;
+    int count = 0, limit = std::stoi(limitText, &parsed);
+    if (limit<0 || parsed!=limitText.size()) throw std::runtime_error("Frame count must be a nonnegative integer");
     cv::Mat labels = cv::imread(argv[3], cv::IMREAD_GRAYSCALE);
-    int count = 0, limit = argc==6 ? std::stoi(argv[5]) : 0;
-    if (limit<0) throw std::runtime_error("Frame count must be nonnegative");
+    if (labels.empty()) throw std::runtime_error("Cannot read label image");
+    std::string temporary = std::string(argv[4])+".tmp.jpg";
     std::signal(SIGINT, stop);
     std::signal(SIGTERM, stop);
     cv::setNumThreads(1);
@@ -40,10 +44,10 @@ int main(int argc, char **argv)
       auto heads = scara::Yolo_run(input);
       auto pieces = scara::Vision_decode(heads, mapping, config);
       cv::Mat preview = scara::Vision_draw(source, pieces, labels);
-      std::string temporary = std::string(argv[4])+".tmp.jpg";
       if (!cv::imwrite(temporary, preview)) throw std::runtime_error("Cannot write preview");
       std::filesystem::rename(std::filesystem::u8path(temporary), std::filesystem::u8path(argv[4]));
-      std::cout << "frame=" << ++count << " pieces=" << pieces.size() << '\n';
+      ++count;
+      std::cout << "frame=" << count << " pieces=" << pieces.size() << '\n';
     }
   }
   catch (const std::exception& e)
