@@ -10,23 +10,25 @@
 
 相机后台持续读取 RTSP 流，只保存一张图。`Camera_read` 清空已有图像，等待调用后接收到的一帧；因此恢复调用时不会直接返回上次缓存，正常情况下最多多等一个帧间隔。后台任务负责持续接收，避免推理期间视频流在接收端积压。模块已经删去独立的帧编号、时间戳和定时轮询。直接使用板端取帧接口能否进一步简化，留待核对当前镜像的接口与颜色输出后决定。
 
-当前从主流程继续阅读 `vision/capture.hpp` 和 `vision/capture.cpp`：接口负责打开、取图、请求停止、关闭回收。内部 `receiveFrames` 只在 `while (capturing)` 判断停止，交帧分支只判断 received，没有 `for (;;)`、break 或 continue。单次 read 失败时解锁等 10 毫秒后重试，停止请求允许当前读取收尾，后台结束时清空缓存。Camera_read 已删除新增的 5 秒无图截止，持续没有图就持续等待；每次短暂等待后检查新图或停止请求。原视频后端 5000 毫秒的单次打开/读取设置保留，超时返回失败可进入下一轮重试。相机 CPP 72 行、头文件 9 行。
+当前从主流程继续阅读 `vision/capture.hpp` 和 `vision/capture.cpp`：接口负责打开、取图、请求停止、关闭回收。内部 `receiveFrames` 只在 `while (capturing)` 判断停止，交帧分支只判断 received，没有 `for (;;)`、break 或 continue。单次 read 失败时解锁等 10 毫秒后重试，停止请求允许当前读取收尾，后台结束时清空缓存。Camera_read 已删除新增的 5 秒无图截止，持续没有图就持续等待；每次短暂等待后检查新图或停止请求。原视频后端 5000 毫秒的单次打开/读取设置保留，超时返回失败可进入下一轮重试。相机 CPP 74 行、头文件 9 行。
+
+Camera_open 现在按三步直接写：Camera_close，capturing = video.open(cameraUrl, cv::CAP_FFMPEG, cameraOptions)，启动接收线程。这里没有 if、取反或单独抛出 runtime_error。打开结果直接决定已有的接收开关；打开失败时后台 while 不执行，Camera_read 沿既有无帧出口结束，main 回收相机和模型。两个已有超时参数单独列在同一文件的 cameraOptions 中，并标明毫秒单位，全部计入源码规模。
 
 Camera_stop 只设置原子接收开关，main 的停止回调同时调用它，避免断流期间无法响应停止。回调不加互斥锁、不等待线程、不调用条件变量通知或视频操作；资源回收仍由 Camera_close 完成。main 对主动取消返回成功，实际异常仍返回失败；用户认可的主循环和五步调用原样保留。持续等待期间不自动重新连接视频源。
 
-按用户最新“一个运行标志、输入输出参数、循环中直接调用、短暂取帧失败重试、取消重复判断和无图截止”要求整理后，本段 C++ 源文件按去掉空行、注释的 Lizard NLOC 口径合计 **376 行**：四个 CPP 共 329 行，两个头文件共 47 行。按以下顺序展开阅读：
+按用户最新“一个运行标志、输入输出参数、直接顺序调用、短暂取帧失败重试、取消重复判断和无图截止”要求整理后，本段 C++ 源文件按去掉空行、注释的 Lizard NLOC 口径合计 **378 行**：四个 CPP 共 331 行，两个头文件共 47 行。按以下顺序展开阅读：
 
 | 文件 | 讲解内容 | 有效行数 |
 | --- | --- | ---: |
 | [app/vision_main.cpp](app/vision_main.cpp) | 看清取图到输出画面的完整调用顺序 | 61 |
-| [vision/capture.hpp](vision/capture.hpp)、[vision/capture.cpp](vision/capture.cpp) | 打开视频流、接收一帧、停止和回收 | 81 |
+| [vision/capture.hpp](vision/capture.hpp)、[vision/capture.cpp](vision/capture.cpp) | 打开视频流、接收一帧、停止和回收 | 83 |
 | [vision/yolo.hpp](vision/yolo.hpp) | 固定模型参数、识别结果、三路输出数据与接口 | 38 |
 | [vision/yolo_npu.cpp](vision/yolo_npu.cpp) | 打开模型、准备缓冲、运行 NPU、释放资源 | 65 |
 | [vision/yolo.cpp](vision/yolo.cpp) | 一次设置几何、预处理、解码、去重与绘框 | 131 |
 
-376 行只统计表内六个文件。主程序直接使用 OpenCV 读取标签图、保存预览图，`Detection` 的定义放在识别头文件中，供棋盘几何模块继续使用。启动脚本、构建配置、测试代码及 OpenCV/RKNN 库另列；其他上层模块仍是此前的实现。这一段输出 JPEG 文件，尚未接入旧版浏览器预览服务。
+378 行只统计表内六个文件。主程序直接使用 OpenCV 读取标签图、保存预览图，`Detection` 的定义放在识别头文件中，供棋盘几何模块继续使用。启动脚本、构建配置、测试代码及 OpenCV/RKNN 库另列；其他上层模块仍是此前的实现。这一段输出 JPEG 文件，尚未接入旧版浏览器预览服务。
 
-**整理任务刚下发时的基线是 618 行**：主机取流及识别处理 `host_preview.py` 257 行，板端 NPU 和网页服务 `board_npu.py` 240 行，双画面协调 `dual_preview.py` 121 行。此前所说的 402 行是后来生成的 C++ 初稿，不是该任务起点。原 618 行含网页、传输和双画面，当前 376 行是 C++ 识别核心，不能用两者相减宣称等功能缩减。
+**整理任务刚下发时的基线是 618 行**：主机取流及识别处理 `host_preview.py` 257 行，板端 NPU 和网页服务 `board_npu.py` 240 行，双画面协调 `dual_preview.py` 121 行。此前所说的 402 行是后来生成的 C++ 初稿，不是该任务起点。原 618 行含网页、传输和双画面，当前 378 行是 C++ 识别核心，不能用两者相减宣称等功能缩减。
 
 上一阶段在同一套六文件上从 506 行减至 450 行。删除了运行 N 帧的调试分支、逐帧计数打印、固定张量和字图的逐帧重复检查、重复的候选框结构及转换赋值。模型布局在打开时检查，字图在载入时检查，离线张量在读取入口检查。`Yolo_open` 的失败也由主入口统一调用 `Yolo_close`；查询、分配、绑定、推理失败均通过资源释放测试。动态取帧、输入尺寸、SDK 失败、原生行步幅和后台取流仍保留。
 
@@ -44,11 +46,11 @@ Camera_stop 只设置原子接收开关，main 的停止回调同时调用它，
 
 `savePreview` 只负责输出：先完整写入临时 JPEG，再用 `std::filesystem::rename` 替换正式预览文件。它在同一个 main.cpp 中，全部计入行数。这样预览读取端不会读到本程序写到一半的 JPEG。主循环阶段的 366 行比此前 353 行多 13 行，主要是具名命令参数、分别声明变量及保存函数；主循环结构变直，未宣称代码总量下降。
 
-最新六文件文本/压缩包在 `output/vision-camera-simple-20261113/round-01/code.txt`、`code.zip`，记录在 `docs/evidence/2026-11-13/vision-camera-simple-20261113/`。相机 CPP 从 76 行减至 72 行，新增停止接口声明和主入口停止接续，六文件从 377 行减至 376 行。7 组检查通过，包括超过 5 秒无帧仍等待、停止请求唤醒、读取中关闭允许当前帧收尾并清空，以及异常退出和重开。16 张图的输入/完整标注图逐字节一致，152 个保存 NPU 结果及 501 个 CPU 检测结果前后一致，既有 64 枚棋子读图核对保持一致。前版保留在 `output/vision-camera-retry-20261113/`。
+最新六文件文本/压缩包在 `output/vision-camera-open-20261113/round-01/code.txt`、`code.zip`，记录在 `docs/evidence/2026-11-13/vision-camera-open-20261113/`。Camera_open 函数从9行减至6行；独立列出参数和显式包含 vector 后，相机 CPP 从72行变为74行，总六文件378行。7组检查通过，包含可控打开失败及真实本地404失败：没有进入读帧/NPU运行、没有等待挂住、资源正常释放。原有重试、持续等图、停止和收尾检查仍通过。16张图的输入/完整标注图逐字节一致，152个保存NPU结果及501个CPU结果一致，既有64枚棋子核对保持一致。main 和三个YOLO文件未修改。
 
 前十轮从 395 行增加到 428 行，并减少了两次图像拷贝及低分候选框的类别遍历；记录见[十轮自审](docs/项目收敛与下棋闭环_2026-11-09.md#2026-11-13-视觉代码十轮自审)。追加十五轮以原始《电机驱动板_最终完整代码_20260911.zip》为风格基准，从 428 行展开为 506 行。解码主函数从 66 行变为 32 行，最长函数从 66 行变为 48 行；新增的三个内部计算函数完整保留在同一 `yolo.cpp` 中。中间量、结构体字段和 SDK 返回码逐项写明，参数表按逻辑分组，采用四空格排版。格式配置是 `config/vision/handwrite.clang-format`。
 
-十五轮阶段的代码哈希、自查理由、函数规模及验证结果见 `docs/evidence/2026-11-13/vision-review-15/`，历史快照位于本机 `output/vision-review-15/round-NN/`。450 行阶段的记录见 `docs/evidence/2026-11-13/vision-minimal-20261113/`，最新记录见 `docs/evidence/2026-11-13/vision-camera-simple-20261113/`。课堂仍须讲清 Camera 的后台交帧和 RKNN 的内存、步幅规则；这些部分保留真实实现。
+十五轮阶段的代码哈希、自查理由、函数规模及验证结果见 `docs/evidence/2026-11-13/vision-review-15/`，历史快照位于本机 `output/vision-review-15/round-NN/`。450 行阶段的记录见 `docs/evidence/2026-11-13/vision-minimal-20261113/`，最新记录见 `docs/evidence/2026-11-13/vision-camera-open-20261113/`。课堂仍须讲清 Camera 的后台交帧和 RKNN 的内存、步幅规则；这些部分保留真实实现。
 
 常规 CMake 构建可验证图像处理与采集。配置 `RKNN_INCLUDE_DIR` 后可增加使用实际 SDK 头文件的模拟 ABI 检查。板端构建使用 `-DSCARA_WITH_RKNN=ON`，提供 `RKNN_SDK_DIR` 或 `RKNN_INCLUDE_DIR`、`RKNN_LIBRARY`，并使用含 FFmpeg 视频解码支持的 OpenCV 5.0.0。安装入口为 `bin/run-vision.sh`，先核对 v3 模型 SHA256，再启动程序。
 

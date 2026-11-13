@@ -57,3 +57,5 @@
 用户随后明确纠正：无限接收循环必须用 while，不再用 for(;;)；单次读帧失败应回到循环重试，不能 if 失败就 break。receiveFrames 现为 while(capturing)，没有 break/continue，成功且仍接收才交帧，失败解锁等10毫秒后再试；停止通过循环条件生效。跨线程循环状态使用 atomic<bool>。消费者新增5秒无图截止，沿用已有视频读取超时数值，避免重试后永久等待；异常仍沿原出口结束。当前 capture.cpp 76行、六文件377行，源码/证据 `vision-camera-retry-20261113`。后续必须实际核对接收函数体，不得仅改注释、命名就声称满足循环写法和失败重试要求。
 
 用户进一步要求简化：receiveFrames 内层 if 不再重复判断 capturing，只判断 received；允许正在读取的这一帧收尾，由下一轮 while 停止，后台结束时清空缓存。删除新增的 Camera_read 5秒截止与超时异常，没图继续等待；保留10毫秒短等待检查停止，不能把它解释为超时退出。原 FFmpeg 单次打开/读取的5000毫秒设置仍保留。Camera_stop 只设置原子开关，接入 main 停止回调，使无图等待也能响应停止；主循环及五步调用保持原样，主动取消按成功退出。当前 capture.cpp 72行、头9行、main61行，六文件376行，源码/证据 `vision-camera-simple-20261113`。该要求覆盖前段新增5秒应用截止及停止前再次判断的做法。
+
+用户随后再次指出 Camera_open 的 if(!video.open(...)) 加 runtime_error 不符合课堂手写要求。现已直接写 capturing = video.open(cameraUrl, cv::CAP_FFMPEG, cameraOptions)，前后仅关闭旧连接和启动接收线程；没有把原判断藏进辅助函数或新增异常模式。两个原有视频参数独立列在同一CPP的数据区并注明单位。打开失败使 capturing=false，后台 while 不进入，Camera_read 经既有无帧出口结束，由 main 清理。当前 capture.cpp74行，六文件378行；源码/证据 `vision-camera-open-20261113`。后续优先按明确状态赋值和顺序调用表达，不要反复解释已被用户否定的 if/取反/抛错写法而不改代码。

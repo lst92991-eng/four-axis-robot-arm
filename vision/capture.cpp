@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <atomic>
 #include <chrono>
+#include <vector>
 
 namespace scara
 {
@@ -16,6 +17,10 @@ static std::thread captureThread;           // 持续取流的后台线程。
 static std::mutex frameMutex;               // 交帧时使用的锁，保护缓存和接收状态。
 static std::condition_variable frameReady;  // 新帧到达或接收结束时，唤醒等候者。
 static std::atomic<bool> capturing = false; // 接收开关，允许两个线程直接读取和设置。
+static const std::vector<int> cameraOptions = {
+    cv::CAP_PROP_OPEN_TIMEOUT_MSEC, 5000, // 打开连接的等待上限，毫秒。
+    cv::CAP_PROP_READ_TIMEOUT_MSEC, 5000  // 单次读帧的等待上限，毫秒。
+};
 
 //---------后台接收区---------
 // 推理期间也持续读流，新帧覆盖缓存，避免视频在接收端积压。
@@ -50,11 +55,7 @@ static void receiveFrames()
 void Camera_open(const std::string &cameraUrl)
 {
     Camera_close(); // 允许再次打开：先结束上一次接收。
-    // 由 FFmpeg 解码；打开和读取的等待上限均为 5000 毫秒。
-    if (!video.open(cameraUrl, cv::CAP_FFMPEG,
-                    {cv::CAP_PROP_OPEN_TIMEOUT_MSEC, 5000, cv::CAP_PROP_READ_TIMEOUT_MSEC, 5000}))
-        throw std::runtime_error("Cannot open camera stream");
-    capturing = true;
+    capturing = video.open(cameraUrl, cv::CAP_FFMPEG, cameraOptions);
     captureThread = std::thread(receiveFrames);
 }
 

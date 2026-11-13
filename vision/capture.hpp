@@ -4,7 +4,7 @@
 
 namespace scara
 {
-// 打开 RTSP 地址，并启动后台接收。一个模块管理一台相机。
+// 打开 RTSP 地址，结果直接决定接收开关；打开失败时 Camera_read 按无帧出口结束。
 void Camera_open(const std::string &cameraUrl);
 // 等待并写出下一帧 BGR 原图；没有图就继续等，停止后按原出口结束。
 void Camera_read(cv::Mat &frame);

@@ -15,6 +15,7 @@ std::atomic<int> activeReads = 0;
 std::atomic<bool> alwaysFail = false;
 std::atomic<bool> throwOnRead = false;
 std::atomic<bool> pauseRead = false;
+bool failOpen = false;
 bool releasedWhileReading = false;
 }
 
@@ -22,7 +23,7 @@ namespace cv {
 class ScriptedCapture
 {
 public:
-  bool open(const std::string&, int, const std::vector<int>&) { return true; }
+  bool open(const std::string&, int, const std::vector<int>&) { return !mock::failOpen; }
   bool read(Mat& frame)
   {
     int index = ++mock::attempts;
@@ -59,9 +60,18 @@ int main()
 {
   try
   {
+    mock::failOpen = true;
+    scara::Camera_open("unavailable");
+    cv::Mat frame(2,2,CV_8UC3,cv::Scalar::all(1));
+    bool unavailable = false;
+    try { scara::Camera_read(frame); }
+    catch (const std::runtime_error&) { unavailable = frame.empty(); }
+    scara::Camera_close();
+    check(unavailable && mock::attempts==0,
+          "Failed open did not leave reception off and end through the reader");
+    mock::failOpen = false;
     mock::remainingFailures = 3;
     scara::Camera_open("scripted");
-    cv::Mat frame;
     scara::Camera_read(frame);
     check(mock::failedReads==3 && mock::attempts>=4 && frame.size()==cv::Size(1280,720),
           "Read failure ended reception instead of retrying");
@@ -117,7 +127,7 @@ int main()
     scara::Camera_read(frame);
     scara::Camera_close();
     check(!frame.empty() && !mock::releasedWhileReading, "Reopen failed or video closed while reading");
-    std::cout << "PASS retry, wait beyond five seconds, explicit stop, final-frame cleanup, decoder exception\n";
+    std::cout << "PASS failed open, retry, wait beyond five seconds, explicit stop, final-frame cleanup, decoder exception\n";
     return 0;
   }
   catch (const std::exception& error)
