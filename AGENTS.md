@@ -37,6 +37,8 @@
 
 ## 上层代码的手写风格与自审交付
 
+2026-11-14后续用户要求再仔细精简重构。当前完成保持文件执行协议兼容的手写复核版，共2465行自有C++（原2472行），不能把净减7行说成大幅压缩。Operator_read使用输出参数，共用Command_parse；Runtime_open/stop/close、Vision_observe、Engine_query、Robot_execute、Match_report按职责命名。删除仅转发的Session_acceptHuman和FixedBoard_assign，直接调用Game_acceptHuman与assignPieces。Session_plan先完成局部步骤准备，再调用Game_prepareRobot锁定棋局，并移动步骤结果，不再复制包含完整历史的Game来试做。预览与消息共用Runtime_publish。17组CTest、60项Python及15场景旧/新完整状态/动作请求对照通过，六视觉文件字节保持不变。源码/证据为game-lesson-20261114/round-05。关于直接C++执行接口还是保留文件请求/回执，已发偏好问题但尚未收到答复；当前保持文件协议，不得声称用户已同意删除它。后续若确认直接接口，再撤掉这层，不通过挪文件漏计实现。
+
 2026-11-14 用户明确只要求补齐第一个目标“完整主程序”，SPI-CAN/H桥硬件执行器及实机验收由用户后续推进。已新增app/game_main.cpp及Match/IO实现，同一main链接实机或显式仿真后端；当前自有C++总2472行，原1800行核心之外增加672行，包含实机IO、文件执行接口和可运行仿真后端，不能再称全部程序只有1800行。实机模式相机/NPU与Pikafish分时使用；玩家用回车确认手已移开，执行后回示教观察位，再以新三帧核对expected才提交历史。动作请求ticket唯一，settled=1且success=0/1才算有效回执；仅发送成功不等于动作完成。失败只观察或明确accept/restored，不盲重发；复位保持完整历史。重复局面使用review_required出口，不宣称自动判和。进程重启自动续局尚未实现。相关源码/证据为game-main-20261114，检查使用tools/game_review.py；旧视觉六文件保持原哈希。当前有15种程序级仿真、17组CTest与60项原Python检查，通过不等于真实NPU/引擎/整机验收；本轮不连接硬件。执行器契约见docs/棋局与视觉接口_2026-11-09.md顶部，真实执行器必须拒绝simulated=1，负责动作到位、取消、通信监督及H桥语义实现。
 
 2026-11-13 后续精简的当前结果：自有C++从2975降到1800有效行，含所有CPP、头文件和内部函数，证据/源码为 `fixed-minimal-20261113/round-08`。六个视觉文件保持本轮起点字节不变。当前几何固定为已验证的1280×720原始像素；相机标识在geometry.hpp集中定义，配置入口检查，帧循环不再携带多相机对象。固定XY不携带帧号，识别帧仍有编号并由Stabilizer核对不同有效帧；重新设置布局后必须reset稳定器。格点和棋局观测各只用一个valid标志，重复的格点置信度/错误列表已删；YOLO分数仍完整保留。视觉转棋局已并入session.cpp，旧vision_bridge文件已删除。Pikafish接收Game并发送其起始FEN/完整历史，外部FEN导入已退役；fen只格式化已经验证的盘面，合法走法来自成功的引擎查询，实际UCI格式检查在接收入口。Game_finish统一和棋/认输。预览使用--layout，状态文字是“固定90点已加载”，不能说成正在自动找棋盘。本轮仍未上板或发运动命令，旧硬件参数和底层保护不改。

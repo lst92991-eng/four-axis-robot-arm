@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--review', choices=('upper-review-20261113', 'fixed-minimal-20261113', 'game-main-20261114'),
+    parser.add_argument('--review', choices=('upper-review-20261113', 'fixed-minimal-20261113', 'game-main-20261114',
+                                            'game-lesson-20261114'),
                         default='fixed-minimal-20261113')
     parser.add_argument('--round', type=int, required=True)
     args = parser.parse_args()

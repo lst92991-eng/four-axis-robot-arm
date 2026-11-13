@@ -1,3 +1,21 @@
+# 完整主程序的手写复核版（2026-11-14）
+
+本轮重新对照原电机代码的参数出入、集中声明和顺序初始化写法，当前全部自有C++为**2465有效行**，比上一版2472行净减7行。主要改善数据流和重复处理，不把这个数字说成大幅压缩，也不替用户断言已经完全符合课堂手写体验。
+
+- [当前主程序](app/game_main.cpp) · [回合流程](app/game.cpp) · [全部C++完整阅读稿](output/game-lesson-20261114/round-05/cpp-code.txt) · [源码与验证包](output/game-lesson-20261114/game-application-source.zip)。
+- 命令变为 `Operator_read(phase, prompt, command)`，通过输出参数写回；两种IO共用Command_parse，退出集中处理。
+- 主流程能直接读到 Runtime_open、Vision_observe、Engine_query、Robot_execute 和 Match_report，各自职责不再全部叫IO。
+- 删除仅转发参数的 Session_acceptHuman、FixedBoard_assign。直接调用Game_acceptHuman与assignPieces，没有挪到别处的替代包装。
+- 示教数值直接写到j2Deg、j3MotorDeg和capturePlaceMm；预览与消息共用原子发布实现。
+- Session_plan先把步骤计算/合并完毕，再锁定走法；不再复制整份棋局和历史。原pending、合法走法、视觉确认和恢复行为保留。
+
+本轮17组CTest、60项Python检查通过；还分别运行了改前和改后的可执行程序，在同样15种场景中比较完整棋局状态和全部动作内容，结果一致（时间戳和每次运行的票据编号除外）。原视觉六文件、ROI、模型与几何输出不变。见[前后程序对照](docs/evidence/2026-11-14/game-lesson-20261114/program-equivalence.json)和[行数/变更记录](docs/evidence/2026-11-14/game-lesson-20261114/final-metrics.json)。
+
+执行接口的偏好问题尚未答复，本轮维持原文件请求/回执兼容。真正更明显的结构删减是改成直接C++硬件函数接口；没有把未获答复当作同意删除已交付协议。真实SPI-CAN/H桥与实机验收仍未进行。
+
+以下为此前完整主程序与固定核心的说明，旧函数名和行数以本节为准。
+
+---
 # 完整对弈主程序（2026-11-14）
 
 **第一目标已经补齐：可执行的C++主程序贯通整个对弈循环。** 当前自有C++总2472有效行，包含所有实现和头文件；相对之前1800行核心新增672行。新的硬件执行器和实机验收仍待你后续推进，主程序不会伪造真实执行成功。

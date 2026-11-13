@@ -3,7 +3,7 @@
   "started_utc": "2026-11-14T03:39:33.109333+08:00",
   "baseline_commit": "45777cd",
   "baseline_cpp_nloc": 2472,
-  "status": "active",
+  "status": "compatible_refactor_complete",
   "standards": [
     "输入输出参数明确、变量先声明并标单位",
     "顺序初始化与明确业务分支",
@@ -58,5 +58,15 @@
       "cpp_nloc": 2465,
       "note": "全部回归通过；旧/新程序15场景的完整状态与动作内容一致"
     }
-  ]
+  ],
+  "finished_utc": "2026-11-13T20:07:58.131206+00:00",
+  "result": {
+    "cpp_nloc": 2465,
+    "cpp_removed": 7,
+    "source_snapshot": "round-05",
+    "hardware_actions": false,
+    "interface_preference_pending": true,
+    "existing_file_protocol_preserved": true,
+    "clean_package_verified": true
+  }
 }
