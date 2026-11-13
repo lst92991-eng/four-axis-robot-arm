@@ -224,11 +224,11 @@ class Controller:
             return
         now = self.clock() if received_at is None else received_at
         if n in self.axes:
-            self.receive_status(n, kind, result, v, now)
+            self._receive_status(n, kind, result, v, now)
         else:
-            self.receive_ack(node, kind, result, seq)
+            self._receive_ack(node, kind, result, seq)
 
-    def receive_status(self, n, kind, result, v, now):
+    def _receive_status(self, n, kind, result, v, now):
         # 状态字段转换完，再处理重启、参考接续和停稳确认。
         if kind != 0x40 or result != 0:
             self.fail('状态帧格式不正确')
@@ -300,7 +300,7 @@ class Controller:
             self.stop_ack.discard(n)
             self.log(f'J{n} 反馈确认停止', position=s['position'], power=s['power'])
 
-    def receive_ack(self, node, kind, result, seq):
+    def _receive_ack(self, node, kind, result, seq):
         # 应答只完成对应序号的操作，不把ACK当作已经到位。
         pending = self.pending.pop((node, seq), None)
         if pending is None:
@@ -375,42 +375,9 @@ class Controller:
         self.last_order[client] = order
         now = self.clock()
         if action == 'recover':
-            n = args.get('node')
-            if type(n) is not int or n not in self.axes or not self.can_recover(n):
-                raise ValueError('当前轴无法恢复，请查看状态')
-            if n == 1 and self.axes[n].get('restore_reference_after_clear'):
-                if self.reference_restore is None:
-                    self.reference_restore = dict(before=dict(self.status[n]), phase='sync')
-                    self.save_reference_restore()
-                self.reference_deadline = now + 3
-            self.recovering = n
-            self.sync_tries[n] = 0
-            self.transmit(n, PING, syncing=True)
-            self.message = f'正在恢复 J{n}'
-            return
+            return self._request_recover(args.get('node'), now)
         if action == 'arm':
-            if self.active or self.stopping or self.recovering is not None:
-                raise ValueError('请先等待停稳')
-            if self.owner and self.owner != client and self.armed:
-                raise ValueError('另一个页面正在控制')
-            # Sequence sync is passive. The drive is checked for rest again
-            # immediately before each movement command.
-            ready = [
-                n
-                for n in self.axes
-                if self.status.get(n, {}).get('state') in (0, 1) and not self.reason(n, require_still=False)
-            ]
-            if not ready:
-                raise ValueError('当前没有满足运动条件的轴，详情见各轴卡片')
-            self.owner, self.armed, self.lease = client, True, now
-            self.synced.clear()
-            self.pending.clear()
-            self.sync_tries = {n: 0 for n in ready}
-            for n in ready:
-                self.transmit(n, PING, syncing=True)
-            self.message = '手动控制已开启；按住按钮运动，松开减速保持'
-            self.log(self.message)
-            return
+            return self._request_arm(client, now)
         if not self.armed or client != self.owner:
             raise ValueError('请先点击「开启手动控制」')
         self.lease = now
@@ -431,6 +398,45 @@ class Controller:
             return
         if action not in ('jog', 'position'):
             raise ValueError('不支持的操作')
+        self._request_motion(action, args)
+
+    def _request_recover(self, n, now):
+        if type(n) is not int or n not in self.axes or not self.can_recover(n):
+            raise ValueError('当前轴无法恢复，请查看状态')
+        if n == 1 and self.axes[n].get('restore_reference_after_clear'):
+            if self.reference_restore is None:
+                self.reference_restore = dict(before=dict(self.status[n]), phase='sync')
+                self.save_reference_restore()
+            self.reference_deadline = now + 3
+        self.recovering = n
+        self.sync_tries[n] = 0
+        self.transmit(n, PING, syncing=True)
+        self.message = f'正在恢复 J{n}'
+
+    def _request_arm(self, client, now):
+        if self.active or self.stopping or self.recovering is not None:
+            raise ValueError('请先等待停稳')
+        if self.owner and self.owner != client and self.armed:
+            raise ValueError('另一个页面正在控制')
+        # Sequence sync is passive. The drive is checked for rest again
+        # immediately before each movement command.
+        ready = [
+            n
+            for n in self.axes
+            if self.status.get(n, {}).get('state') in (0, 1) and not self.reason(n, require_still=False)
+        ]
+        if not ready:
+            raise ValueError('当前没有满足运动条件的轴，详情见各轴卡片')
+        self.owner, self.armed, self.lease = client, True, now
+        self.synced.clear()
+        self.pending.clear()
+        self.sync_tries = {n: 0 for n in ready}
+        for n in ready:
+            self.transmit(n, PING, syncing=True)
+        self.message = '手动控制已开启；按住按钮运动，松开减速保持'
+        self.log(self.message)
+
+    def _request_motion(self, action, args):
         if self.active or self.stopping:
             raise ValueError('一次只能操作一个轴，请先松开并等它停稳')
         n, direction, speed = args.get('node'), args.get('direction'), args.get('speed')

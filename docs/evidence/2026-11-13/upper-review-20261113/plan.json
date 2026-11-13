@@ -5,7 +5,7 @@
   "timezone": "Asia/Shanghai",
   "baseline_commit": "2ce033d",
   "status": "active",
-  "current_stage": "host",
+  "current_stage": "integration",
   "scope": [
     "app",
     "vision",
@@ -58,7 +58,7 @@
     {
       "id": "host",
       "task": "现有上位机/实时服务及诊断代码按职责整理",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "id": "integration",
@@ -144,6 +144,11 @@
       "round": 14,
       "title": "标定求解与协议接收按职责展开",
       "record": "round-14.json"
+    },
+    {
+      "round": 15,
+      "title": "控制分发与双画面处理步骤",
+      "record": "round-15.json"
     }
   ],
   "known_limits": [

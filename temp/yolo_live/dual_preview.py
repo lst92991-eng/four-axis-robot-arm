@@ -82,6 +82,57 @@ def display_detections(detections, inference_roi, display_roi):
     ]
 
 
+def fixed_regions(source, requested_roi, requested_inference):
+    roi = list(requested_roi) if requested_roi is not None else [0, 0, source.shape[1], source.shape[0]]
+    x, y, w, h = roi
+    if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > source.shape[1] or y + h > source.shape[0]:
+        raise ValueError('Fixed ROI must be inside the camera frame')
+    inference_roi = list(requested_inference) if requested_inference is not None else list(roi)
+    ix, iy, iw, ih = inference_roi
+    if ix < x or iy < y or iw <= 0 or ih <= 0 or ix + iw > x + w or iy + ih > y + h:
+        raise ValueError('Inference ROI must be inside the fixed display ROI')
+    return roi, inference_roi
+
+
+def grid_view(overlay, roi, geometry, geometry_ms, processed):
+    x, y, w, h = roi
+    right_view = overlay[y : y + h, x : x + w].copy()
+    right_view = cv2.copyMakeBorder(right_view, 70, 35, 0, 0, cv2.BORDER_CONSTANT, value=(24, 32, 45))
+    label = '90 grid points' if geometry.get('geometry_valid') else 'Board not found'
+    direction = 'direction OK' if geometry.get('orientation_valid') else 'direction unconfirmed'
+    cv2.putText(
+        right_view,
+        f'OpenCV 5 | {label} | {geometry_ms:.0f} ms',
+        (12, 26),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.52,
+        (240, 240, 240),
+        1,
+        cv2.LINE_AA,
+    )
+    cv2.putText(
+        right_view,
+        f'frame {processed} | {direction}',
+        (12, 54),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.47,
+        (160, 210, 255),
+        1,
+        cv2.LINE_AA,
+    )
+    cv2.putText(
+        right_view,
+        'Grid preview only - robot XY calibration not applied',
+        (12, right_view.shape[0] - 12),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.43,
+        (180, 200, 215),
+        1,
+        cv2.LINE_AA,
+    )
+    return right_view
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--board', required=True)
@@ -137,14 +188,7 @@ def main():
                 if time.monotonic() - received > 1:
                     raise RuntimeError('Camera frame stale')
                 if roi is None:
-                    roi = list(args.roi) if args.roi is not None else [0, 0, source.shape[1], source.shape[0]]
-                    x, y, w, h = roi
-                    if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > source.shape[1] or y + h > source.shape[0]:
-                        raise ValueError('Fixed ROI must be inside the camera frame')
-                    inference_roi = list(args.inference_roi) if args.inference_roi is not None else list(roi)
-                    ix, iy, iw, ih = inference_roi
-                    if ix < x or iy < y or iw <= 0 or ih <= 0 or ix + iw > x + w or iy + ih > y + h:
-                        raise ValueError('Inference ROI must be inside the fixed display ROI')
+                    roi, inference_roi = fixed_regions(source, args.roi, args.inference_roi)
                 last_number = number
                 begin = time.monotonic()
                 frame_id = f'{session}-{number}-{processed}'
@@ -165,41 +209,7 @@ def main():
                 fps = 1 / (sum(periods[-20:]) / len(periods[-20:])) if periods else 0
                 age = (time.monotonic() - received) * 1000
                 left_view = hp.render(frame, detections, meta, fps, frame_id, roi, 0, age)
-                x, y, w, h = roi
-                right_view = overlay[y : y + h, x : x + w].copy()
-                right_view = cv2.copyMakeBorder(right_view, 70, 35, 0, 0, cv2.BORDER_CONSTANT, value=(24, 32, 45))
-                label = '90 grid points' if geometry.get('geometry_valid') else 'Board not found'
-                direction = 'direction OK' if geometry.get('orientation_valid') else 'direction unconfirmed'
-                cv2.putText(
-                    right_view,
-                    f'OpenCV 5 | {label} | {geometry_ms:.0f} ms',
-                    (12, 26),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.52,
-                    (240, 240, 240),
-                    1,
-                    cv2.LINE_AA,
-                )
-                cv2.putText(
-                    right_view,
-                    f'frame {processed} | {direction}',
-                    (12, 54),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.47,
-                    (160, 210, 255),
-                    1,
-                    cv2.LINE_AA,
-                )
-                cv2.putText(
-                    right_view,
-                    'Grid preview only - robot XY calibration not applied',
-                    (12, right_view.shape[0] - 12),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.43,
-                    (180, 200, 215),
-                    1,
-                    cv2.LINE_AA,
-                )
+                right_view = grid_view(overlay, roi, geometry, geometry_ms, processed)
                 combined = np.hstack((left_view, np.full((left_view.shape[0], 8, 3), 48, np.uint8), right_view))
                 ok, jpg = cv2.imencode('.jpg', combined, [cv2.IMWRITE_JPEG_QUALITY, 90])
                 assert ok
