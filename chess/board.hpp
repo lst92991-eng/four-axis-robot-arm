@@ -26,7 +26,6 @@ bool parseMove(const std::string &text, Move &move);
 bool uci(const Move &move, std::string &text);
 bool validBoard(const Board &board, std::string &error);
 bool fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
-bool parseFen(const std::string &text, Board &board, bool &redToMove, std::string &error);
 // 只检查搬子数据，不重复实现象棋规则；调用者必须先查引擎合法走法表。
 bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error);
 bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
@@ -66,7 +65,7 @@ bool Game_prepareRobot(Game &game, const Observation &before, const std::string 
 bool Game_confirmRobot(Game &game, const Observation &after, bool armSucceeded);
 // 无合法走法即负；复杂重复局面仍交人工裁定。
 bool Game_judge(Game &game, const std::vector<std::string> &legal);
-bool Game_agreeDraw(Game &game);
-bool Game_resign(Game &game, bool red);
+// 同意和棋或认输时，提交明确结果；正在搬子时不能结束对局。
+bool Game_finish(Game &game, Result outcome);
 
 } // namespace chess

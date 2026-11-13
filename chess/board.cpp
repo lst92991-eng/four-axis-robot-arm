@@ -1,8 +1,6 @@
 #include "board.hpp"
 
 #include <algorithm>
-#include <charconv>
-#include <sstream>
 
 namespace chess
 {
@@ -69,12 +67,6 @@ bool legalList(const Board &board, bool redToMove, const std::vector<std::string
     return true;
 }
 
-bool number(const std::string &text, int minimum, int &value)
-{
-    if (text.empty()) return false;
-    auto parsed = std::from_chars(text.data(), text.data() + text.size(), value);
-    return parsed.ec == std::errc() && parsed.ptr == text.data() + text.size() && value >= minimum;
-}
 } // namespace
 
 void initialBoard(Board &board)
@@ -154,45 +146,6 @@ bool fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::s
         if (row != 9) result += '/';
     }
     result += (redToMove ? " w - - " : " b - - ") + std::to_string(halfmoves) + " " + std::to_string(fullmove);
-    return true;
-}
-
-bool parseFen(const std::string &text, Board &board, bool &redToMove, std::string &error)
-{
-    std::istringstream input(text);
-    std::string placement, side, castling, enPassant, half, full, extra;
-    int halfmoves = 0, fullmove = 0;
-    if (!(input >> placement >> side >> castling >> enPassant >> half >> full) || input >> extra ||
-        (side != "w" && side != "b") || castling != "-" || enPassant != "-" || !number(half, 0, halfmoves) ||
-        !number(full, 1, fullmove))
-        return reject(error, "象棋FEN字段不合法");
-    Board parsed;
-    for (auto &row : parsed)
-        row.fill('.');
-    int row = 0, col = 0;
-    for (char piece : placement)
-    {
-        if (piece == '/')
-        {
-            if (col != 9 || row == 9) return reject(error, "象棋FEN行列数不合法");
-            ++row;
-            col = 0;
-        }
-        else if (piece >= '1' && piece <= '9')
-        {
-            col += piece - '0';
-            if (col > 9) return reject(error, "象棋FEN行列数不合法");
-        }
-        else
-        {
-            if (col >= 9) return reject(error, "象棋FEN行列数不合法");
-            parsed[row][col++] = piece;
-        }
-    }
-    if (row != 9 || col != 9) return reject(error, "象棋FEN必须是9列10行");
-    if (!validBoard(parsed, error)) return false;
-    board = parsed;
-    redToMove = side == "w";
     return true;
 }
 
@@ -333,21 +286,15 @@ bool Game_judge(Game &game, const std::vector<std::string> &legal)
     return true;
 }
 
-bool Game_agreeDraw(Game &game)
+bool Game_finish(Game &game, Result outcome)
 {
     game.error.clear();
     if (game.pending || (game.result != Result::Playing && game.result != Result::ReviewRequired))
         return reject(game.error, "机械动作未确认或棋局已经结束");
-    game.result = Result::Draw;
+    if (outcome != Result::RedWon && outcome != Result::BlackWon && outcome != Result::Draw)
+        return reject(game.error, "需要明确的胜负或和棋结果");
+    game.result = outcome;
     return true;
 }
 
-bool Game_resign(Game &game, bool red)
-{
-    game.error.clear();
-    if (game.pending || (game.result != Result::Playing && game.result != Result::ReviewRequired))
-        return reject(game.error, "机械动作未确认或棋局已经结束");
-    game.result = red ? Result::BlackWon : Result::RedWon;
-    return true;
-}
 } // namespace chess

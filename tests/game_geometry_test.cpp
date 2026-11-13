@@ -115,9 +115,6 @@ int main()
         check(!chess::Game_confirmRobot(game, beforeRobot, true) && game.pending, "Wrong resulting board accepted");
         check(chess::Game_confirmRobot(game, expected, true) && !game.pending && game.history == "a3a4 a6a5",
               "Confirmed result not committed");
-        chess::Board parsed;
-        bool red = false;
-        check(chess::parseFen(base, parsed, red, error) && red && parsed == initial, "Base FEN roundtrip failed");
         std::cout << "PASS " << checks
                   << " game/geometry checks; legal lists are test fixtures, no engine or motor executed.\n";
         return 0;

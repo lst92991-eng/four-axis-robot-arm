@@ -182,30 +182,40 @@ int main()
         chess::initialBoard(board);
         std::string fen, best;
         chess::fen(board, true, 0, 1, fen);
+        chess::Game game;
         std::vector<std::string> legal;
         Pikafish engine;
         mock::reset();
         mock::interruptSend = true;
         mock::interruptRead = true;
         check(engine.start("fixture"), "Handshake with split/interrupted I/O failed");
-        check(engine.legalMoves(fen, "", legal) && legal == std::vector<std::string>{"a3a4", "c3c4"},
+        check(engine.legalMoves(game, legal) && legal == std::vector<std::string>{"a3a4", "c3c4"},
               "Perft decode failed");
-        check(engine.think(fen, "a3a4", 120, best) && best == "a6a5", "Best move decode failed");
+        chess::Move human;
+        chess::Observation observed;
+        std::string detail;
+        chess::parseMove("a3a4", human);
+        chess::applyMove(game.board, true, human, observed.board, detail);
+        observed.complete = observed.stable = true;
+        check(chess::Game_acceptHuman(game, observed, {"a3a4"}, human), "Fixture move confirmation failed");
+        check(engine.think(game, 120, best) && best == "a6a5", "Best move decode failed");
         check(mock::position == "position fen " + fen + " moves a3a4", "Full FEN/history was not sent");
         check(engine.close() && mock::openFds == 0, "Normal close leaked descriptors");
 
         mock::reset();
         mock::perft = "a3a4: 1\nNodes searched: 2\n";
-        check(engine.start("fixture") && !engine.legalMoves(fen, "", legal) && mock::openFds == 0,
+        check(engine.start("fixture") && !engine.legalMoves(game, legal) && mock::openFds == 0,
               "Count mismatch accepted");
         mock::reset();
         mock::perft = "a3a4: 1\na3a4: 1\nNodes searched: 2\n";
-        check(engine.start("fixture") && !engine.legalMoves(fen, "", legal), "Duplicate move accepted");
+        check(engine.start("fixture") && !engine.legalMoves(game, legal), "Duplicate move accepted");
         mock::reset();
         mock::search = "bestmove invalid\n";
-        check(engine.start("fixture") && !engine.think(fen, "", 20, best), "Invalid bestmove accepted");
+        check(engine.start("fixture") && !engine.think(game, 20, best), "Invalid bestmove accepted");
         mock::reset();
-        check(engine.start("fixture") && !engine.think(fen + "\nquit", "", 20, best) && mock::openFds == 0,
+        auto corrupt = game;
+        corrupt.baseFen += "\nquit";
+        check(engine.start("fixture") && !engine.think(corrupt, 20, best) && mock::openFds == 0,
               "Multiline FEN was sent to the engine");
         mock::reset();
         mock::forkFails = true;
@@ -219,7 +229,7 @@ int main()
         check(engine.start("fixture"), "Restart after cancellation failed");
         mock::eof = true;
         mock::silent = true;
-        check(!engine.think(fen, "", 20, best) && mock::openFds == 0, "EOF did not stop the query");
+        check(!engine.think(game, 20, best) && mock::openFds == 0, "EOF did not stop the query");
         std::cout
             << "PASS UCI handshake, partial I/O, full history, perft, bestmove, cancellation and cleanup; simulated POSIX\n";
         return 0;

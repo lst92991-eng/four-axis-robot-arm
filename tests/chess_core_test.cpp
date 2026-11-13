@@ -11,15 +11,13 @@ int main()
 {
     try
     {
-        chess::Board initial, parsed, after;
+        chess::Board initial, after;
         chess::initialBoard(initial);
         chess::Move move;
         std::string text, error;
-        bool red = false;
         check(chess::fen(initial, true, 7, 15, text), "Initial FEN failed");
         check(text == "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 7 15",
               "FEN order or counters changed");
-        check(chess::parseFen(text, parsed, red, error) && red && parsed == initial, "FEN round trip failed");
         check(!chess::uci(move, text) && text.empty(), "Invalid move retained output text");
         check(chess::parseMove("a3a4", move) && chess::uci(move, text) && text == "a3a4", "Move conversion failed");
         check(chess::applyMove(initial, true, move, after, error) && after[6][0] == '.' && after[5][0] == 'P',
@@ -36,9 +34,10 @@ int main()
               "Game default initialization changed");
         check(chess::Game_judge(game, {}) && game.result == chess::Result::BlackWon,
               "No legal move did not end the current side's game");
-        check(chess::Game_reset(game, initial) && chess::Game_agreeDraw(game) && game.result == chess::Result::Draw,
+        check(chess::Game_reset(game, initial) && chess::Game_finish(game, chess::Result::Draw) &&
+                  game.result == chess::Result::Draw,
               "Reset/draw state failed");
-        check(chess::Game_reset(game, initial) && chess::Game_resign(game, false) &&
+        check(chess::Game_reset(game, initial) && chess::Game_finish(game, chess::Result::RedWon) &&
                   game.result == chess::Result::RedWon,
               "Resignation assigned the wrong winner");
         chess::Game_reset(game, initial);

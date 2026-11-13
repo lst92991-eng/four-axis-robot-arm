@@ -1,4 +1,5 @@
 #pragma once
+#include "board.hpp"
 
 #include <chrono>
 #include <functional>
@@ -18,9 +19,9 @@ class Pikafish
     Pikafish &operator=(const Pikafish &) = delete;
 
     bool start(const char *engineDir);
-    // 从已确认的任意棋局开始，完整历史让引擎保留回合与重复局面上下文。
-    bool legalMoves(const std::string &baseFen, const std::string &moves, std::vector<std::string> &out);
-    bool think(const std::string &baseFen, const std::string &moves, int timeMs, std::string &best);
+    // Game由构造/重置和走法确认函数维护；发送它的起始FEN与完整已完成历史。
+    bool legalMoves(const chess::Game &game, std::vector<std::string> &out);
+    bool think(const chess::Game &game, int timeMs, std::string &best);
     // false表示仍持有未回收子进程，调用者不得开始相机/NPU阶段。
     bool close();
     std::string error;
@@ -37,5 +38,5 @@ class Pikafish
     bool wait(short events);
     bool send(const std::string &text);
     bool readLine(std::string &line);
-    bool position(const std::string &baseFen, const std::string &moves);
+    bool position(const chess::Game &game);
 };

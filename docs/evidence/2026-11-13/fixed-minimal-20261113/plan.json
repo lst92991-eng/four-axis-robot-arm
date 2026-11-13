@@ -77,6 +77,12 @@
       "title": "固定相机配置与三帧稳定确认",
       "cpp_nloc": 1930,
       "checks": "14 CTest, 60 Python; 14400-case digest and all saved outputs identical"
+    },
+    {
+      "round": 5,
+      "title": "引擎直接读取已确认棋局",
+      "cpp_nloc": 1861,
+      "checks": "14 CTest, 60 Python; UCI command/history and all retained outputs unchanged"
     }
   ]
 }

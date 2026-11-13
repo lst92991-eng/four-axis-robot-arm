@@ -1,5 +1,4 @@
 #include "pikafish.hpp"
-#include "board.hpp"
 
 #include <algorithm>
 #include <cerrno>
@@ -132,37 +131,22 @@ bool Pikafish::start(const char *engineDir)
     return ready;
 }
 
-bool Pikafish::position(const std::string &baseFen, const std::string &moves)
+bool Pikafish::position(const chess::Game &game)
 {
-    if (!baseFen.empty())
-    {
-        chess::Board board;
-        bool redToMove;
-        std::string detail;
-        if (baseFen.find_first_of("\r\n") != std::string::npos) return fail("基准FEN不能包含换行");
-        if (!chess::parseFen(baseFen, board, redToMove, detail)) return fail("基准FEN不合法：" + detail);
-    }
-    // 历史只能包含已经确认合法的四字符走法，最多1024个半回合。
-    if (!moves.empty())
-    {
-        if (moves.size() > 5119 || (moves.size() + 1) % 5 != 0) return fail("走棋历史长度不合法");
-        for (size_t i = 0; i < moves.size(); i += 5)
-        {
-            if (!isMove(moves.substr(i, 4)) || (i + 4 < moves.size() && moves[i + 4] != ' '))
-                return fail("走棋历史格式不合法");
-        }
-    }
-    std::string command = baseFen.empty() ? "position startpos" : "position fen " + baseFen;
-    if (!moves.empty()) command += " moves " + moves;
-    command += '\n';
-    return send(command);
+    // FEN与历史已经由Game生成；此处只防止破坏UCI的单行命令。
+    if (game.baseFen.empty() || game.baseFen.find_first_of("\r\n") != std::string::npos ||
+        game.history.find_first_of("\r\n") != std::string::npos)
+        return fail("棋局命令为空或包含换行");
+    std::string command = "position fen " + game.baseFen;
+    if (!game.history.empty()) command += " moves " + game.history;
+    return send(command + '\n');
 }
 
-bool Pikafish::legalMoves(const std::string &baseFen, const std::string &moves, std::vector<std::string> &out)
+bool Pikafish::legalMoves(const chess::Game &game, std::vector<std::string> &out)
 {
     out.clear();
     deadline_ = Clock::now() + std::chrono::seconds(3);
-    if (!position(baseFen, moves) || !send("go perft 1\n")) return false;
+    if (!position(game) || !send("go perft 1\n")) return false;
     std::string line;
     while (readLine(line))
     {
@@ -184,12 +168,12 @@ bool Pikafish::legalMoves(const std::string &baseFen, const std::string &moves, 
     return false;
 }
 
-bool Pikafish::think(const std::string &baseFen, const std::string &moves, int timeMs, std::string &best)
+bool Pikafish::think(const chess::Game &game, int timeMs, std::string &best)
 {
     best.clear();
     if (timeMs < 1 || timeMs > 60000) return fail("思考时间应为1到60000毫秒");
     deadline_ = Clock::now() + std::chrono::milliseconds(timeMs + 2000);
-    if (!position(baseFen, moves) || !send("go movetime " + std::to_string(timeMs) + "\n")) return false;
+    if (!position(game) || !send("go movetime " + std::to_string(timeMs) + "\n")) return false;
     std::string line;
     while (readLine(line))
     {
