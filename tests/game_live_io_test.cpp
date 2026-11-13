@@ -172,7 +172,9 @@ int main()
         IO_close();
         fake::check(failed && !fake::camera && !fake::npu, "Partially opened model was not released");
         fake::keyboard = "unknown\nready\n";
-        fake::check(IO_command("human", "fixture") == Command::Ready, "Console command parsing failed");
+        Command command;
+        IO_command("human", "fixture", command);
+        fake::check(command == Command::Ready, "Console command parsing failed");
         IO_stop();
         fake::check(IO_close(), "Live wrapper cleanup failed");
         std::cout

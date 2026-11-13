@@ -90,8 +90,9 @@ void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::st
     // 下次观察才重开相机/NPU；失败时不会拿空合法列表宣布胜负。
 }
 
-Command IO_command(const std::string &, const std::string &prompt)
+void IO_command(const std::string &, const std::string &prompt, Command &command)
 {
+    command = Command::Quit; // EOF或停止时，向调用方报告退出。
     std::cout << prompt << '\n' << std::flush;
     std::string line;
     while (gameRunning)
@@ -99,24 +100,17 @@ Command IO_command(const std::string &, const std::string &prompt)
         pollfd input{STDIN_FILENO, POLLIN, 0};
         if (poll(&input, 1, 100) <= 0) continue;
         char character;
-        if (read(STDIN_FILENO, &character, 1) <= 0) return Command::Quit;
+        if (read(STDIN_FILENO, &character, 1) <= 0) return;
         if (character == '\r') continue;
         if (character != '\n')
         {
             line += character;
             continue;
         }
-        if (line.empty() || line == "ready") return Command::Ready;
-        if (line == "retry") return Command::Retry;
-        if (line == "accept") return Command::Accept;
-        if (line == "restored") return Command::Restored;
-        if (line == "resign") return Command::Resign;
-        if (line == "draw") return Command::Draw;
-        if (line == "quit") return Command::Quit;
+        if (Command_parse(line, command)) return;
         std::cout << "请输入提示中的命令。\n" << std::flush;
         line.clear();
     }
-    return Command::Quit;
 }
 
 void IO_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps, bool &success)

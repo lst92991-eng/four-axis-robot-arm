@@ -66,22 +66,16 @@ void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::st
     throw std::runtime_error("仿真没有当前完整历史的引擎回复：" + game.history);
 }
 
-Command IO_command(const std::string &phase, const std::string &)
+void IO_command(const std::string &phase, const std::string &, Command &result)
 {
+    result = Command::Quit;
     auto commands = script["commands"];
-    if (commandIndex >= commands.size()) return Command::Quit;
+    if (commandIndex >= commands.size()) return;
     auto command = commands[int(commandIndex++)];
     if ((std::string)command["phase"] != phase) throw std::runtime_error("仿真进入了意外的交互阶段：" + phase);
     if (!command["board"].empty()) readBoard(command["board"]);
     std::string name = (std::string)command["command"];
-    if (name == "ready") return Command::Ready;
-    if (name == "retry") return Command::Retry;
-    if (name == "accept") return Command::Accept;
-    if (name == "restored") return Command::Restored;
-    if (name == "resign") return Command::Resign;
-    if (name == "draw") return Command::Draw;
-    if (name == "quit") return Command::Quit;
-    throw std::runtime_error("未知仿真命令");
+    if (!Command_parse(name, result)) throw std::runtime_error("未知仿真命令");
 }
 
 void IO_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps, bool &success)

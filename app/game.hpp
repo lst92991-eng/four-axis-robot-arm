@@ -35,7 +35,8 @@ void IO_stop(); // 信号回调只设置停止状态，不等待、不写文件�
 bool IO_close();
 void IO_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces);
 void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::string &choice);
-Command IO_command(const std::string &phase, const std::string &prompt);
+bool Command_parse(const std::string &text, Command &command);
+void IO_command(const std::string &phase, const std::string &prompt, Command &command);
 void IO_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps, bool &success);
 void IO_report(const std::string &phase, const Session &session);
 } // namespace scara
