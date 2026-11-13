@@ -134,6 +134,11 @@
       "round": 12,
       "title": "视觉棋局与取放规划的事务连接",
       "record": "round-12.json"
+    },
+    {
+      "round": 13,
+      "title": "界面脚本与旧预览循环整理",
+      "record": "round-13.json"
     }
   ],
   "known_limits": [

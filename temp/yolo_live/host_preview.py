@@ -76,8 +76,6 @@ def nms(boxes, scores, iou_limit=0.45):
         i = int(order[0])
         keep.append(i)
         rest = order[1:]
-        if not rest.size:
-            break
         lo = np.maximum(boxes[i, :2], boxes[rest, :2])
         hi = np.minimum(boxes[i, 2:], boxes[rest, 2:])
         intersection = np.maximum(hi - lo, 0).prod(axis=1)
@@ -260,9 +258,9 @@ def main():
         else:
             capture = Capture(args.rtsp)
         with (args.out / 'detections.jsonl').open('w', encoding='utf-8') as log:
-            while True:
-                if args.seconds and time.monotonic() - started >= args.seconds:
-                    break
+            while (not args.seconds or time.monotonic() - started < args.seconds) and (
+                not args.image or processed == 0
+            ):
                 if capture:
                     if capture.error:
                         raise RuntimeError(capture.error)
@@ -332,8 +330,6 @@ def main():
                     )
                     write_image(args.out / 'latest-preview.jpg', annotated)
                     last_report = time.monotonic()
-                if args.image:
-                    break
     except KeyboardInterrupt:
         pass
     except Exception as exc:

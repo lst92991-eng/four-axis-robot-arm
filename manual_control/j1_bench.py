@@ -356,9 +356,7 @@ def main():
     try:
         b = Bench('37813482333551062', args.out, args.build, args.acceleration, args.travel_budget, args.max_speed)
         b.control_queue = commands
-        while True:
-            if b.quit_requested:
-                break
+        while not b.quit_requested:
             b.pump()
             try:
                 q = commands.get_nowait()
@@ -388,7 +386,7 @@ def main():
                     b.command(4, rejection_ok=True)
                 b.report('stopped', status=b.status)
             elif q['op'] == 'exit':
-                break
+                b.quit_requested = True
     except BaseException as exc:
         if b:
             b.report('error', error=str(exc), status=b.status)

@@ -1,0 +1,8 @@
+{
+  "formatter": "prettier 3.6.2",
+  "parser": "acorn 8.15.0",
+  "ast_identical": true,
+  "outside_script_unchanged": true,
+  "before_sha256": "f755faaa3eaee8baf8d393c7d6665da121e0bab9936c5e9f06139b9b674a2ac6",
+  "after_sha256": "696cbb7f4375a4fd9853c221d7e0b07ecd214b97c6f282ab6f687621509e2a61"
+}

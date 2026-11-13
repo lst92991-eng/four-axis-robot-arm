@@ -27,7 +27,7 @@ class Trial:
             raise ValueError('release_pulse_ms 必须为正整数')
         self.opener = build_opener(ProxyHandler({}))
         with self.opener.open(URL + '/', timeout=2) as response:
-            self.key = re.search(r"const key='([^']+)'", response.read().decode())[1]
+            self.key = re.search(r"const\s+key\s*=\s*['\"]([^'\"]+)['\"]", response.read().decode())[1]
         self.client = str(uuid.uuid4())
         self.order = 0
         self.press = None

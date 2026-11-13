@@ -10,6 +10,16 @@ from first_pick import GPIO, Trial
 
 
 class ReleaseTests(unittest.TestCase):
+    @patch('first_pick.Path.read_text', return_value='{}')
+    @patch('first_pick.build_opener')
+    def test_control_key_accepts_readable_script_spacing(self, opener, _read):
+        plan = {'z':{'pickup_deg':-100,'travel_deg':-50}}
+        response = opener.return_value.open.return_value.__enter__.return_value
+        for script in ("const key='abc123', client=0;", "const key = 'abc123',\n    client = 0;", 'const key = "abc123";'):
+            response.read.return_value = script.encode()
+            trial = Trial(plan,'unused-adb',Path('unused-log'))
+            self.assertEqual(trial.key,'abc123')
+
     @patch('first_pick.time.monotonic', return_value=1.)
     @patch('first_pick.time.sleep')
     def test_begin_retries_stationary_wait_then_leaves_loop(self, sleep, _clock):
