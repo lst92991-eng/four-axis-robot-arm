@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cerrno>
 #include <cstring>
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -96,7 +97,7 @@ extern "C"
     }
     [[noreturn]] void scara_test_exit(int)
     {
-        throw std::runtime_error("Unexpected child path in protocol fixture");
+        std::abort();
     }
     int fcntl(int, int, ...)
     {

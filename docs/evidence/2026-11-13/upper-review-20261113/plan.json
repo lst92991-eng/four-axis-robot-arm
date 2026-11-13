@@ -5,7 +5,7 @@
   "timezone": "Asia/Shanghai",
   "baseline_commit": "2ce033d",
   "status": "active",
-  "current_stage": "chess",
+  "current_stage": "motion",
   "scope": [
     "app",
     "vision",
@@ -48,12 +48,12 @@
     {
       "id": "chess",
       "task": "棋局/FEN/走法/结果确认和UCI调用",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "id": "motion",
       "task": "已验证FK/IK、两层Z、取放、磁铁和演示流程",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "host",
@@ -109,6 +109,11 @@
       "round": 7,
       "title": "棋局重复校验合并与48600组等价对照",
       "record": "round-07.json"
+    },
+    {
+      "round": 8,
+      "title": "UCI完整上下文与顺序握手",
+      "record": "round-08.json"
     }
   ],
   "known_limits": [
