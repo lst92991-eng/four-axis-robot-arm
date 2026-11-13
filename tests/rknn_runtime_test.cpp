@@ -46,6 +46,9 @@ int rknn_init(rknn_context *context, void *, uint32_t, uint32_t, rknn_init_exten
   allocations = 0;
   bindings = 0;
   runs = 0;
+#ifdef RKNN_MOCK_ENTRY
+  if (std::getenv("SCARA_MOCK_CANCEL_INIT")) std::raise(SIGINT);
+#endif
   return 0;
 }
 

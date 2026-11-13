@@ -38,7 +38,7 @@ int main(int argc, char **argv)
         std::signal(SIGINT, requestStop);
         std::signal(SIGTERM, requestStop);
         result = Yolo_open(modelPath) ? 0 : 1;
-        running = running && result == 0;
+        if (result != 0) running = 0; // 初始化失败只关掉运行开关，不能覆盖已收到的停止请求。
         Camera_open(cameraUrl);
 
         //---------取帧、识别与绘制区---------

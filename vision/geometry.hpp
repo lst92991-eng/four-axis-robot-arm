@@ -5,28 +5,28 @@
 #include <string>
 #include <vector>
 
-// Geometry only. No CAN, motor, homing, or gripper calls.
+// 几何计算模块，输出坐标和识别状态，不发送运动命令。
 namespace scara
 {
 constexpr int Columns = 9, Rows = 10, Cells = Columns * Rows;
-constexpr int Unknown = -2, Empty = -1;
+constexpr int Unknown = -2, Empty = -1; // 未确认的格子与已确认的空格分开。
 constexpr char PieceSymbols[] = "kabnrcpKABNRCP";
 
 struct Camera
 {
-    std::string id;
-    cv::Size imageSize;
-    cv::Mat K, distortion; // Both empty = raw pixels, subject to independent error validation.
+    std::string id;        // 相机配置名称，随标定文件保存。
+    cv::Size imageSize;    // 原始图像尺寸，单位像素。
+    cv::Mat K, distortion; // 内参和畸变系数；都为空时沿用经过独立验误的原始像素。
     void validate() const;
     bool sameGeometry(const Camera &) const;
-    cv::Point2d geometricPixel(cv::Point2d raw) const; // 使用已验证的相机配置，输入输出单位均为像素。
-    void geometricImage(const cv::Mat &raw, cv::Mat &image) const;
+    cv::Point2d geometricPixel(cv::Point2d raw) const;             // 使用已验证的相机配置，输入输出单位均为像素。
+    void geometricImage(const cv::Mat &raw, cv::Mat &image) const; // 保持原尺寸，只按配置校正畸变。
 };
 
 struct PointPair
 {
     cv::Point2d pixel, baseXY;
-}; // Pixel is in ORIGINAL camera image; XY is mm.
+}; // pixel为原始图像像素，baseXY为基座毫米坐标。
 struct ErrorReport
 {
     double rmsMm = 0, maxMm = 0;
@@ -36,9 +36,9 @@ struct PlaneMap
 {
     Camera camera;
     std::string id;
-    double planeZmm = 0, allowedErrorMm = 0;
+    double planeZmm = 0, allowedErrorMm = 0; // 标定平面说明与验误要求，不是J1驱动角度。
     cv::Matx33d pixelToBase = cv::Matx33d::eye();
-    std::vector<cv::Point2d> validPixelHull; // In geometric pixels, conservative fit-point hull.
+    std::vector<cv::Point2d> validPixelHull; // 拟合点覆盖的几何像素范围。
     std::vector<PointPair> fitPoints, checkPoints;
     ErrorReport fitError, checkError;
     bool accepted = false;
@@ -55,15 +55,15 @@ void readCamera(const cv::FileNode &node, Camera &camera);
 struct Board
 {
     std::string cameraId, frameId;
-    Camera geometryCamera;                        // Numeric profile checked as well as the human-readable ID.
-    cv::Matx33d gridToPixel = cv::Matx33d::eye(); // (column,row) -> geometric pixels
-    std::array<cv::Point2d, Cells> intersections{};
+    Camera geometryCamera;                          // 建系时使用的相机参数。
+    cv::Matx33d gridToPixel = cv::Matx33d::eye();   // (列,行)到几何像素；第0行在红方底线。
+    std::array<cv::Point2d, Cells> intersections{}; // 按 行*9+列 保存90个交点。
     bool geometryValid = false, orientationValid = false;
     double gridScore = 0;
     std::string orientationSource;
 };
 
-// Corner order MUST be logical (0,0),(8,0),(8,9),(0,9), NOT screen top-left order.
+// 四角按逻辑格点(0,0)、(8,0)、(8,9)、(0,9)给出，需对应红黑方向。
 void boardFromCorners(const Camera &camera, const std::string &frameId, const std::array<cv::Point2d, 4> &rawCorners,
                       bool canonicalOrderConfirmed, Board &board);
 struct LocateOptions
@@ -72,15 +72,15 @@ struct LocateOptions
     double minLineSupport = 0.65;
     double minGridScore = 0.50;
 };
-// Searches natural border/grid features. A successful geometry result is deliberately UNORIENTED.
+// 从边框、格线、河界和九宫找网格；找到90点后仍须确认红黑方向。
 void locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &frameId, const LocateOptions &options,
                  Board &board);
-// A screen confirmation of which end is canonical, after inspecting the 90-point overlay.
+// 看过90点叠加后，保留当前方向或转180度。
 void confirmOrientation(const Board &input, bool rotate180, Board &board);
 
 struct OrientationReference
 {
-    cv::Mat patch; // An asymmetric printed-board feature, e.g. river text; never piece positions.
+    cv::Mat patch; // 棋盘印刷图案中的不对称部分，例如河界文字。
     cv::Rect patchRect;
     std::string cameraId;
     double minCorrelation = 0.70, minMargin = 0.12;
@@ -104,7 +104,7 @@ struct ImageTransform
     cv::Size sourceSize;
     cv::Rect roi;
     int clockwiseDegrees = 0;
-    cv::Size resizedSize; // Actual integer resize BEFORE letterbox padding (network-space input only).
+    cv::Size resizedSize; // 补边前实际缩放尺寸，仅用于还原网络输入坐标。
     cv::Point2d padding;
     cv::Point2d toOriginal(cv::Point2d, DetectionSpace) const;
 };
@@ -113,7 +113,7 @@ struct Observation
     std::string cameraId, frameId;
     std::array<int, Cells> pieces{};
     std::array<double, Cells> confidence{};
-    bool valid = false; // Single-frame result; use Stabilizer before committing a board state.
+    bool valid = false; // 本帧结果；提交棋局前再经过连续帧稳定确认。
     std::vector<std::string> issues;
 };
 struct AssignmentOptions
@@ -145,8 +145,8 @@ struct TargetXY
     double planeZmm = 0;
     std::string calibrationId, frameId;
 };
-// Pure calculation: validates orientation, camera identity and calibrated coverage.
-// IK reachability / Z approach / TCP compensation are responsibilities of the motion caller.
+// 交点转换成基座XY；方向、帧号和覆盖范围满足条件才返回true。
+// 关节逆解和Z层次由运动模块处理。
 bool gridTarget(const PlaneMap &map, const Board &board, int column, int row, const std::string &currentFrameId,
                 TargetXY &target);
 cv::Point2d project(const cv::Matx33d &, cv::Point2d);

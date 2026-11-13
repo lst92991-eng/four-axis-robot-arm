@@ -45,15 +45,15 @@ enum class Result
 struct Game
 {
     Game();
-    Board board{};
-    Board expected{};
-    bool redToMove = true;
-    bool humanRed = true;
-    bool pending = false;
+    Board board{};         // 已确认的权威盘面。
+    Board expected{};      // 待执行走法完成后应看到的盘面。
+    bool redToMove = true; // 当前轮到红方。
+    bool humanRed = true;  // 人类使用红方。
+    bool pending = false;  // 正在等待机器动作及新盘面确认。
     Move pendingMove;
     Result result = Result::Playing;
-    std::string baseFen;
-    std::string history;
+    std::string baseFen; // 起始局面，不能每回合用新盘面覆盖。
+    std::string history; // 已完成走法，按UCI格式保留完整顺序。
     std::string error;
     std::vector<std::string> positions;
     int moveCount = 0;

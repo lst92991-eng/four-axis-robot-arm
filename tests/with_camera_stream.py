@@ -77,6 +77,10 @@ def main():
             result = subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=30)
             if result.returncode!=0 or 'TEST cleanup: allocations=0 runs=3' not in result.stdout:
                 raise RuntimeError('Continuous entry did not stop cleanly: '+result.stderr+result.stdout)
+            env = dict(os.environ, SCARA_MOCK_CANCEL_INIT='1')
+            result = subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)
+            if result.returncode!=0 or 'TEST cleanup: allocations=0 runs=0' not in result.stdout:
+                raise RuntimeError('Initialization overwrote stop request: '+result.stderr+result.stdout)
             return 0
         return subprocess.run(command, cwd=ROOT, timeout=30).returncode
     finally:

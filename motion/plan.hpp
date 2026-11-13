@@ -12,8 +12,8 @@ struct ArmGeometry
     double forearmMm = 0;
     double j2ReferenceDeg = 0;
     double j3ReferenceMotorDeg = 0;
-    double j2Scale = 1;
-    double j3Ratio = 1;
+    double j2Scale = 1; // 示教得到的J2反馈角到关节角比例。
+    double j3Ratio = 1; // J3电机角到肘轴角的传动比。
     double j2Sign = 1;
     double j3Sign = 1;
     double shoulderReferenceRad = 0;
@@ -26,10 +26,10 @@ struct JointTarget
 };
 struct WorkHeights
 {
-    double pickupDeg = 0;
-    double travelDeg = 0;
-    double releaseDeg = 0;
-    double speedDegS = 180;
+    double pickupDeg = 0;   // J1吸取层的已示教角度。
+    double travelDeg = 0;   // J1搬运层的已示教角度。
+    double releaseDeg = 0;  // J1释放层角度。
+    double speedDegS = 180; // J1电机度/秒。
     int releasePulseMs = 1000;
 };
 enum class PickAction

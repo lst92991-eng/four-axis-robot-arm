@@ -159,6 +159,11 @@
       "round": 17,
       "title": "模拟上位机完整HTTP操作验证",
       "record": "round-17.json"
+    },
+    {
+      "round": 18,
+      "title": "接口单位与初始化停止请求自审",
+      "record": "round-18.json"
     }
   ],
   "known_limits": [
