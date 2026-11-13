@@ -95,6 +95,12 @@
       "title": "预览状态明确为固定布局",
       "cpp_nloc": 1799,
       "checks": "14 CTest, 60 Python; fixed XY, NPU replay and ONNX results unchanged"
+    },
+    {
+      "round": 8,
+      "title": "内部几何点集也用输出参数",
+      "cpp_nloc": 1800,
+      "checks": "14 CTest, 60 Python, all retained outputs identical"
     }
   ]
 }

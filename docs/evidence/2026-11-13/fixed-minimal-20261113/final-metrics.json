@@ -8,7 +8,7 @@
     "legacy_live_vision": 841
   },
   "current_group_nloc": {
-    "application_cpp": 1799,
+    "application_cpp": 1800,
     "commissioning_tools": 740,
     "manual_and_demo": 2138,
     "usb_can_adapter_excluded": 302,
@@ -27,7 +27,7 @@
       ]
     },
     "calibration_and_grid": {
-      "nloc": 546,
+      "nloc": 547,
       "files": [
         "app/geometry_tool.cpp",
         "vision/geometry.cpp",
@@ -67,7 +67,7 @@
       ]
     }
   },
-  "cpp_removed": 1176,
+  "cpp_removed": 1175,
   "source_inventory": [
     {
       "file": "app/geometry_tool.cpp",
@@ -320,10 +320,10 @@
     {
       "file": "vision/geometry.cpp",
       "group": "application_cpp",
-      "nloc": 261,
+      "nloc": 262,
       "encoding": "utf-8-sig",
       "markup_nonblank_lines": 0,
-      "sha256": "e6d61c6b8e092ad51f9d10b82662bb8d999b84377e7644907ba03e889bb88fab"
+      "sha256": "26d5b52d5f9a082e155c13e262cb4e3938bf31e3ce2e43d1043088dace21179c"
     },
     {
       "file": "vision/geometry.hpp",

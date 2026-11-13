@@ -29,12 +29,12 @@ cv::Matx33d matrix33(const cv::Mat &input)
     require(std::abs(cv::determinant(h)) > 1e-14, "Singular matrix");
     return h;
 }
-std::vector<cv::Point2f> hull(const std::vector<cv::Point2d> &points)
+void hull(const std::vector<cv::Point2d> &points, std::vector<cv::Point2f> &boundary)
 {
-    std::vector<cv::Point2f> p(points.begin(), points.end()), h;
-    cv::convexHull(p, h);
-    require(h.size() >= 3 && std::abs(cv::contourArea(h)) > 1.0, "Points are collinear or too concentrated");
-    return h;
+    std::vector<cv::Point2f> input(points.begin(), points.end());
+    cv::convexHull(input, boundary);
+    require(boundary.size() >= 3 && std::abs(cv::contourArea(boundary)) > 1.0,
+            "Points are collinear or too concentrated");
 }
 void errorReport(const cv::Matx33d &matrix, const std::vector<PointPair> &pairs, ErrorReport &report)
 {
@@ -105,8 +105,9 @@ void calibratePlane(const std::string &id, double z, double tolerance, const std
         pixels.push_back(point.pixel);
         xy.push_back(point.baseXY);
     }
-    auto coverage = hull(pixels);
-    hull(xy);
+    std::vector<cv::Point2f> coverage, baseCoverage;
+    hull(pixels, coverage);
+    hull(xy, baseCoverage);
     PlaneMap m;
     m.id = id;
     m.planeZmm = z;
