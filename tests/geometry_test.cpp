@@ -34,10 +34,17 @@ const cv::Matx33d BaseH(0.4, 0.02, 100, -0.01, 0.5, -80, 0.0001, -0.00005, 1);
 PlaneMap plane()
 {
     std::vector<PointPair> fit, validation;
+    cv::Point2d base;
     for (auto p : std::vector<cv::Point2d>{{20, 20}, {620, 20}, {620, 460}, {20, 460}, {320, 70}, {180, 330}})
-        fit.push_back({p, project(BaseH, p)});
+    {
+        project(BaseH, p, base);
+        fit.push_back({p, base});
+    }
     for (auto p : std::vector<cv::Point2d>{{150, 180}, {320, 260}, {450, 300}})
-        validation.push_back({p, project(BaseH, p)});
+    {
+        project(BaseH, p, base);
+        validation.push_back({p, base});
+    }
     PlaneMap result;
     calibratePlane("synthetic-map-do-not-use-on-robot", 12, 0.001, fit, validation, result);
     return result;
@@ -100,9 +107,10 @@ void targetTests()
 {
     auto p = plane();
     auto b = board();
-    cv::Point2d t, rejected;
+    cv::Point2d t, rejected, projected, movedPixel;
     check(gridTarget(p, b, 3, 4, t), "Target missing");
-    check(cv::norm(t - project(BaseH, b.intersections[39])) < .001, "Wrong target XY");
+    project(BaseH, b.intersections[39], projected);
+    check(cv::norm(t - projected) < .001, "Wrong target XY");
     check(!gridTarget(p, b, 9, 0, rejected), "Out-of-range column accepted");
     auto unknown = b;
     unknown.orientationValid = false;
@@ -117,12 +125,14 @@ void targetTests()
     std::array<cv::Point2d, 4> corners;
     int j = 0;
     for (int i : {0, 8, 89, 81})
-        corners[j++] = project(move, b.intersections[i]);
+        project(move, b.intersections[i], corners[j++]);
     Board moved;
     cv::Point2d mt;
     boardFromCorners(corners, true, moved);
     bool movedValid = gridTarget(p, moved, 3, 4, mt);
-    check(movedValid && cv::norm(mt - project(BaseH, project(move, b.intersections[39]))) < .001,
+    project(move, b.intersections[39], movedPixel);
+    project(BaseH, movedPixel, projected);
+    check(movedValid && cv::norm(mt - projected) < .001,
           "Moved board incorrectly requires/reuses old robot calibration");
     check(cv::norm(mt - t) > 1, "Moved board target did not change");
     rejects([&] { boardFromCorners({{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
@@ -141,7 +151,8 @@ void assignmentTests()
     check(!collision.valid && collision.pieces[39] == Unknown, "Collision silently resolved");
     assignPieces(b, "", {d}, true, stale);
     check(!stale.valid, "Missing observation frame identity accepted");
-    auto p = project(b.gridToPixel, {3.48, 4});
+    cv::Point2d p;
+    project(b.gridToPixel, {3.48, 4}, p);
     d.bbox = {p.x - 12, p.y - 12, 24, 24};
     assignPieces(b, "1", {d}, true, offGrid);
     check(!offGrid.valid, "Off-grid piece accepted");

@@ -11,7 +11,10 @@ namespace chess
 using Board = std::array<std::array<char, 9>, 10>;
 struct Move
 {
-    int fromRow = -1, fromCol = -1, toRow = -1, toCol = -1;
+    int fromRow = -1; // 起点行，从黑方底线起算。
+    int fromCol = -1; // 起点列，从红方视角左侧起算。
+    int toRow = -1;
+    int toCol = -1;
 };
 struct Observation
 {

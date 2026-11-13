@@ -78,6 +78,6 @@ class Stabilizer
 // 固定交点转换成基座XY，与帧号无关；方向和覆盖范围满足条件才返回true。
 // 关节逆解和Z层次由运动模块处理。
 bool gridTarget(const PlaneMap &map, const Board &board, int column, int row, cv::Point2d &baseMm);
-cv::Point2d project(const cv::Matx33d &, cv::Point2d);
+void project(const cv::Matx33d &matrix, cv::Point2d point, cv::Point2d &result);
 void drawBoard(const cv::Mat &source, const Board &board, cv::Mat &image);
 } // namespace scara

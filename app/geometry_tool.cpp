@@ -18,9 +18,12 @@ double number(const cv::FileNode &n)
 }
 std::string relativePath(const std::string &config, const std::string &value)
 {
+    std::filesystem::path path;
+
     require(!value.empty(), "Missing file path");
-    auto p = std::filesystem::u8path(value);
-    return (p.is_absolute() ? p : std::filesystem::u8path(config).parent_path() / p).lexically_normal().u8string();
+    path = std::filesystem::u8path(config).parent_path();
+    path /= std::filesystem::u8path(value);
+    return path.lexically_normal().u8string();
 }
 void imageFile(const std::string &path, cv::Mat &image)
 {
@@ -32,59 +35,86 @@ void imageFile(const std::string &path, cv::Mat &image)
 }
 void saveImage(const std::string &path, const cv::Mat &image)
 {
-    std::vector<unsigned char> b;
-    require(cv::imencode(".png", image, b), "Cannot encode overlay");
-    writeBytes(path, {b.begin(), b.end()});
+    std::vector<unsigned char> png;
+    std::string bytes;
+    bool encoded;
+
+    encoded = cv::imencode(".png", image, png);
+    require(encoded, "Cannot encode overlay");
+    bytes.assign(png.begin(), png.end());
+    writeBytes(path, bytes);
 }
 // 四角依次为红方左下、右下、黑方右上、左上；方向由首次示教确认。
 void getBoard(const cv::FileStorage &file, Board &board)
 {
-    require((std::string)file["mode"] == "manual", "Fixed board requires saved manual corners");
-    auto points = file["corners"];
-    require(points.isSeq() && points.size() == 4, "Four original-image corners required");
+    cv::FileNode points = file["corners"];
     std::array<cv::Point2d, 4> corners;
+    bool confirmed;
+
+    require((std::string)file["mode"] == "manual", "Fixed board requires saved manual corners");
+    require(points.isSeq() && points.size() == 4, "Four original-image corners required");
     for (int i = 0; i < 4; ++i)
     {
         require(points[i].size() == 2, "Corner must have two coordinates");
-        corners[i] = {number(points[i][0]), number(points[i][1])};
+        corners[i].x = number(points[i][0]);
+        corners[i].y = number(points[i][1]);
     }
-    boardFromCorners(corners, (int)file["canonical_order_confirmed"] == 1, board);
+    confirmed = int(file["canonical_order_confirmed"]) == 1;
+    boardFromCorners(corners, confirmed, board);
 }
 void inspect(const std::string &config, const std::string &output)
 {
-    cv::FileStorage fs;
-    readStorage(config, fs);
-    checkCamera(fs["camera"]);
-    std::string frame = (std::string)fs["frame_id"];
-    cv::Mat image;
-    imageFile(relativePath(config, (std::string)fs["image"]), image);
-    require(image.size() == cv::Size(ImageWidth, ImageHeight), "Image size differs from camera profile");
+    cv::FileStorage fs, result;
+    std::string frame, path, planeFile, message;
+    cv::Mat image, overlay, rectified;
     Board board;
     PlaneMap plane;
+
+    readStorage(config, fs);
+    checkCamera(fs["camera"]);
+    fs["frame_id"] >> frame;
+    path = relativePath(config, (std::string)fs["image"]);
+    imageFile(path, image);
+    require(image.size() == cv::Size(ImageWidth, ImageHeight), "Image size differs from camera profile");
     getBoard(fs, board);
-    if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
-        loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
-    cv::FileStorage result;
+    fs["plane_file"] >> planeFile;
+    if (!planeFile.empty())
+    {
+        path = relativePath(config, planeFile);
+        loadPlane(path, plane);
+    }
     memoryStorage(true, result);
-    result << "motion_enabled" << 0 << "single_frame_only" << 1 << "camera_id" << CameraId << "frame_id" << frame
-           << "geometry_valid" << (int)board.geometryValid << "orientation_valid" << (int)board.orientationValid
-           << "orientation_source" << board.orientationSource << "grid_score" << board.gridScore << "points" << "[";
+    result << "motion_enabled" << 0;
+    result << "single_frame_only" << 1;
+    result << "camera_id" << CameraId;
+    result << "frame_id" << frame;
+    result << "geometry_valid" << int(board.geometryValid);
+    result << "orientation_valid" << int(board.orientationValid);
+    result << "orientation_source" << board.orientationSource;
+    result << "grid_score" << board.gridScore;
+    result << "points" << "[";
     if (board.geometryValid)
         for (int r = 0; r < Rows; ++r)
             for (int c = 0; c < Columns; ++c)
             {
-                auto p = board.intersections[r * Columns + c];
-                result << "{" << "column" << c << "row" << r << "pixel_geometric" << "[" << p.x << p.y << "]";
+                cv::Point2d pixel = board.intersections[r * Columns + c];
                 cv::Point2d baseMm;
                 bool targetValid = gridTarget(plane, board, c, r, baseMm);
-                result << "base_xy_valid" << (int)targetValid;
+                result << "{";
+                result << "column" << c;
+                result << "row" << r;
+                result << "pixel_geometric" << "[" << pixel.x << pixel.y << "]";
+                result << "base_xy_valid" << int(targetValid);
                 if (targetValid)
-                    result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]" << "plane_z_mm" << plane.planeZmm;
+                {
+                    result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]";
+                    result << "plane_z_mm" << plane.planeZmm;
+                }
                 result << "}";
             }
     result << "]";
-    writeBytes(output, result.releaseAndGetString());
-    cv::Mat overlay, rectified;
+    message = result.releaseAndGetString();
+    writeBytes(output, message);
     drawBoard(image, board, overlay);
     saveImage(output + ".png", overlay);
     if (board.geometryValid)

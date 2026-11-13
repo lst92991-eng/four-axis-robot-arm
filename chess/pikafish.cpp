@@ -26,19 +26,27 @@ bool Pikafish::fail(const std::string &message)
 
 bool Pikafish::wait(short events)
 {
+    std::chrono::milliseconds remaining; // 查询截止之前剩余的毫秒数。
+    int waitMs, result;
+    pollfd pipe;
+
     while (true)
     {
         if (cancelled && cancelled()) return fail("用户取消");
         if (fd_ < 0) return fail("引擎尚未启动");
-        auto left = std::chrono::duration_cast<std::chrono::milliseconds>(deadline_ - Clock::now()).count();
-        if (left <= 0) return fail("等待引擎超时");
+        remaining = std::chrono::duration_cast<std::chrono::milliseconds>(deadline_ - Clock::now());
+        if (remaining.count() <= 0) return fail("等待引擎超时");
         if (events == POLLIN && pending_.find('\n') != std::string::npos) return true;
-        pollfd p{fd_, events, 0};
-        int result = poll(&p, 1, static_cast<int>(std::min<decltype(left)>(left, 100)));
+        waitMs = 100; // 分段等待，让取消请求也有机会被处理。
+        if (remaining.count() < waitMs) waitMs = int(remaining.count());
+        pipe.fd = fd_;
+        pipe.events = events;
+        pipe.revents = 0;
+        result = poll(&pipe, 1, waitMs);
         if (result < 0 && errno != EINTR) return fail("引擎管道轮询失败");
         if (result > 0)
         {
-            if (p.revents & events) return true;
+            if (pipe.revents & events) return true;
             return fail("引擎已退出，请检查程序目录、NNUE和可用内存");
         }
     }
@@ -47,13 +55,14 @@ bool Pikafish::wait(short events)
 bool Pikafish::send(const std::string &text)
 {
     size_t sent = 0;
+    ssize_t written; // 本次实际写出的字节数；小于请求量时继续写剩余部分。
     while (sent < text.size())
     {
         if (!wait(POLLOUT)) return false;
-        ssize_t n = ::send(fd_, text.data() + sent, text.size() - sent, MSG_NOSIGNAL);
-        if (n > 0)
-            sent += static_cast<size_t>(n);
-        else if (n == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
+        written = ::send(fd_, text.data() + sent, text.size() - sent, MSG_NOSIGNAL);
+        if (written > 0)
+            sent += size_t(written);
+        else if (written == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
             return fail("无法向引擎写入命令");
     }
     return true;
@@ -61,10 +70,14 @@ bool Pikafish::send(const std::string &text)
 
 bool Pikafish::readLine(std::string &line)
 {
+    size_t end;
+    char buffer[2048];
+    ssize_t received; // 这次读取到的字节数，不一定刚好是一行。
+
     while (true)
     {
         if (!wait(POLLIN)) return false;
-        size_t end = pending_.find('\n');
+        end = pending_.find('\n');
         if (end != std::string::npos)
         {
             line = pending_.substr(0, end);
@@ -72,14 +85,13 @@ bool Pikafish::readLine(std::string &line)
             if (!line.empty() && line.back() == '\r') line.pop_back();
             return true;
         }
-        char buffer[2048];
-        ssize_t n = recv(fd_, buffer, sizeof(buffer), 0);
-        if (n > 0)
+        received = recv(fd_, buffer, sizeof(buffer), 0);
+        if (received > 0)
         {
-            if (pending_.size() + static_cast<size_t>(n) > 16384) return fail("引擎输出行过长");
-            pending_.append(buffer, static_cast<size_t>(n));
+            if (pending_.size() + size_t(received) > 16384) return fail("引擎输出行过长");
+            pending_.append(buffer, size_t(received));
         }
-        else if (n == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
+        else if (received == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
         {
             return fail("引擎输出已中断，请检查NNUE和可用内存");
         }
@@ -88,6 +100,12 @@ bool Pikafish::readLine(std::string &line)
 
 bool Pikafish::start(const char *engineDir)
 {
+    int pair[2]; // 主程序和引擎各持有一端的双向管道。
+    int flags, nullfd;
+    rlimit memory;
+    std::string line;
+    bool ready;
+
     if (!close()) return false;
     error.clear();
     if (cancelled && cancelled())
@@ -96,19 +114,20 @@ bool Pikafish::start(const char *engineDir)
         return false;
     }
     if (!engineDir || !*engineDir) return fail("引擎目录为空");
-    int pair[2];
     if (socketpair(AF_UNIX, SOCK_STREAM, 0, pair) < 0) return fail("无法创建引擎管道");
     pid_ = fork();
     if (pid_ == 0)
     {
         ::close(pair[0]);
         // 只限制引擎地址空间，防止板上剩余内存不足时拖垮客户端。
-        rlimit memory{140000UL * 1024, 140000UL * 1024};
-        if (setrlimit(RLIMIT_AS, &memory) < 0 || chdir(engineDir) < 0 || dup2(pair[1], STDIN_FILENO) < 0 ||
-            dup2(pair[1], STDOUT_FILENO) < 0)
-            _exit(126);
+        memory.rlim_cur = 140000UL * 1024;
+        memory.rlim_max = 140000UL * 1024;
+        if (setrlimit(RLIMIT_AS, &memory) < 0) _exit(126);
+        if (chdir(engineDir) < 0) _exit(126);
+        if (dup2(pair[1], STDIN_FILENO) < 0) _exit(126);
+        if (dup2(pair[1], STDOUT_FILENO) < 0) _exit(126);
         if (pair[1] > STDERR_FILENO) ::close(pair[1]);
-        int nullfd = open("/dev/null", O_WRONLY);
+        nullfd = open("/dev/null", O_WRONLY);
         if (nullfd < 0 || dup2(nullfd, STDERR_FILENO) < 0) _exit(126);
         if (nullfd > STDERR_FILENO) ::close(nullfd);
         execl("./pikafish", "pikafish", static_cast<char *>(nullptr));
@@ -117,11 +136,10 @@ bool Pikafish::start(const char *engineDir)
     ::close(pair[1]);
     fd_ = pair[0];
     if (pid_ < 0) return fail("无法创建引擎子进程");
-    int flags = fcntl(fd_, F_GETFL);
+    flags = fcntl(fd_, F_GETFL);
     if (flags < 0 || fcntl(fd_, F_SETFL, flags | O_NONBLOCK) < 0) return fail("无法设置非阻塞管道");
     deadline_ = Clock::now() + std::chrono::seconds(5);
-    std::string line;
-    bool ready = send("uci\n");
+    ready = send("uci\n");
     while (ready && line != "uciok")
         ready = readLine(line);
     if (ready) ready = send("setoption name Threads value 1\nsetoption name Hash value 4\nisready\n");
@@ -154,8 +172,11 @@ bool Pikafish::legalMoves(const chess::Game &game, std::vector<std::string> &out
         if (line.compare(0, 16, "Nodes searched: ") == 0)
         {
             unsigned count = 0;
-            auto result = std::from_chars(line.data() + 16, line.data() + line.size(), count);
-            if (result.ec != std::errc() || result.ptr != line.data() + line.size() || count != out.size())
+            const char *first = line.data() + 16;
+            const char *last = line.data() + line.size();
+            std::from_chars_result result;
+            result = std::from_chars(first, last, count);
+            if (result.ec != std::errc() || result.ptr != last || count != out.size())
                 return fail("引擎合法走法计数不一致");
             return true;
         }
@@ -180,7 +201,8 @@ bool Pikafish::think(const chess::Game &game, int timeMs, std::string &best)
         if (line.compare(0, 9, "bestmove ") == 0)
         {
             best = line.substr(9, line.find(' ', 9) - 9);
-            return isMove(best) ? true : fail("引擎未返回有效走法");
+            if (!isMove(best)) return fail("引擎未返回有效走法");
+            return true;
         }
         if (!line.empty() && line.compare(0, 5, "info ") != 0) return fail("引擎搜索输出格式不合法");
     }

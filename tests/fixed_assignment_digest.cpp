@@ -30,7 +30,8 @@ int main()
             {
                 auto board = original;
                 double rowOffset = variation % 2 == 0 ? offset / 3 : 0;
-                auto center = scara::project(board.gridToPixel, {cell % 9 + offset, cell / 9 + rowOffset});
+                cv::Point2d center;
+                scara::project(board.gridToPixel, {cell % 9 + offset, cell / 9 + rowOffset}, center);
                 scara::Detection piece;
                 piece.classId = variation == 14 ? -1 : variation % 14;
                 piece.confidence = variation % 3 == 0 ? .499999 : variation % 3 == 1 ? .5 : .9;

@@ -65,11 +65,19 @@ void initialBoard(Board &board)
 
 bool parseMove(const std::string &text, Move &move)
 {
+    bool filesValid, ranksValid;
+
     move = {};
-    if (text.size() != 4 || text[0] < 'a' || text[0] > 'i' || text[2] < 'a' || text[2] > 'i' || text[1] < '0' ||
-        text[1] > '9' || text[3] < '0' || text[3] > '9' || text.substr(0, 2) == text.substr(2, 2))
-        return false;
-    move = {9 - (text[1] - '0'), text[0] - 'a', 9 - (text[3] - '0'), text[2] - 'a'};
+    if (text.size() != 4) return false;
+    filesValid = text[0] >= 'a' && text[0] <= 'i' && text[2] >= 'a' && text[2] <= 'i';
+    ranksValid = text[1] >= '0' && text[1] <= '9' && text[3] >= '0' && text[3] <= '9';
+    if (!filesValid || !ranksValid || text.substr(0, 2) == text.substr(2, 2)) return false;
+
+    // UCI从红方底线记作0；棋局数组从黑方底线记作第0行。
+    move.fromRow = 9 - (text[1] - '0');
+    move.fromCol = text[0] - 'a';
+    move.toRow = 9 - (text[3] - '0');
+    move.toCol = text[2] - 'a';
     return true;
 }
 
@@ -79,7 +87,10 @@ bool uci(const Move &move, std::string &text)
     if (!inside(move.fromRow, move.fromCol) || !inside(move.toRow, move.toCol) ||
         (move.fromRow == move.toRow && move.fromCol == move.toCol))
         return false;
-    text = {char('a' + move.fromCol), char('0' + 9 - move.fromRow), char('a' + move.toCol), char('0' + 9 - move.toRow)};
+    text += char('a' + move.fromCol);
+    text += char('0' + 9 - move.fromRow);
+    text += char('a' + move.toCol);
+    text += char('0' + 9 - move.toRow);
     return true;
 }
 
@@ -96,7 +107,8 @@ bool validBoard(const Board &board, std::string &error)
             if (piece == '.') continue;
             size_t index = pieces.find(piece);
             if (index == std::string::npos) return reject(error, "棋盘存在未知或无效棋子，不能当作空位");
-            if (++counts[index] > maximum[index]) return reject(error, "同类棋子数量超过初始数量");
+            ++counts[index];
+            if (counts[index] > maximum[index]) return reject(error, "同类棋子数量超过初始数量");
             if (kingInPalace(piece, row, col) == false) return reject(error, "将帅不在九宫内，请核对识别和棋盘方向");
         }
     if (counts[0] != 1 || counts[7] != 1) return reject(error, "将帅缺失属于待核对盘面，不能据此宣布胜负");
@@ -126,7 +138,10 @@ void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::s
         if (empty) result += char('0' + empty);
         if (row != 9) result += '/';
     }
-    result += (redToMove ? " w - - " : " b - - ") + std::to_string(halfmoves) + " " + std::to_string(fullmove);
+    result += redToMove ? " w - - " : " b - - ";
+    result += std::to_string(halfmoves);
+    result += ' ';
+    result += std::to_string(fullmove);
 }
 
 bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error)
@@ -138,16 +153,19 @@ bool applyMove(const Board &before, bool redToMove, const Move &move, Board &aft
 bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
                Move &move, std::string &error)
 {
-    move = {};
-    if (!observed(after, error) || !validBoard(before, error)) return false;
     int matches = 0;
     Move candidate;
+
+    move = {};
+    if (!observed(after, error) || !validBoard(before, error)) return false;
     for (size_t index = 0; index < legal.size(); ++index)
     {
         Move current;
         Board predicted;
         bool parsed = parseMove(legal[index], current);
-        bool duplicate = std::find(legal.begin(), legal.begin() + index, legal[index]) != legal.begin() + index;
+        // 只查当前走法之前的部分，防止同一走法被重复计数。
+        auto currentEntry = legal.begin() + index;
+        bool duplicate = std::find(legal.begin(), currentEntry, legal[index]) != currentEntry;
         if (parsed == false || duplicate) return reject(error, "合法走法列表格式错误或重复");
         if (!applyKnownBoard(before, redToMove, current, predicted, error)) return false;
         if (predicted == after.board)
@@ -197,13 +215,14 @@ static bool canMove(Game &game)
 
 static void commit(Game &game, const Board &after, const Move &move)
 {
+    std::string moveText, position;
+
     game.board = after;
-    std::string moveText;
     uci(move, moveText);
-    game.history += (game.history.empty() ? "" : " ") + moveText;
+    if (!game.history.empty()) game.history += ' ';
+    game.history += moveText;
     game.redToMove = !game.redToMove;
     ++game.moveCount;
-    std::string position;
     fen(game.board, game.redToMove, 0, 1, position);
     game.positions.push_back(position);
     game.pending = false;
