@@ -364,6 +364,10 @@ class Worker:
             self.log_file.close()
 
 
+def request_stop(*_):
+    raise KeyboardInterrupt
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--config', type=Path, default=ROOT / 'config/manual-jog.json')
@@ -439,7 +443,7 @@ def main():
     server.daemon_threads = True
     worker.thread.start()
     for sig in (signal.SIGINT, signal.SIGTERM):
-        signal.signal(sig, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
+        signal.signal(sig, request_stop)
     print(f'http://{address}/  mode={"SIMULATED" if args.simulate else "REAL / passive until armed"}', flush=True)
     try:
         server.serve_forever(poll_interval=0.1)
