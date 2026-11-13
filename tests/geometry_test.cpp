@@ -92,14 +92,6 @@ void calibrationTests()
     savePlane(path, corrupt);
     rejects([&] { loadPlane(path, attempted); });
     savePlane(path, p);
-    auto c = camera();
-    c.K = (cv::Mat_<double>(3, 3) << 500, 0, 320, 0, 500, 240, 0, 0, 1);
-    c.distortion = (cv::Mat_<double>(1, 5) << -.1, .02, 0, 0, 0);
-    std::vector<cv::Point3d> objects{{-.3, .2, 1}};
-    std::vector<cv::Point2d> raw;
-    cv::projectPoints(objects, cv::Vec3d(), cv::Vec3d(), c.K, c.distortion, raw);
-    check(cv::norm(c.geometricPixel(raw[0]) - cv::Point2d(170, 340)) < .001,
-          "Undistorted pixels are not in K pixel coordinates");
 }
 void targetTests()
 {
@@ -141,40 +133,21 @@ void targetTests()
 }
 void assignmentTests()
 {
-    ImageTransform transform;
-    transform.sourceSize = {640, 480};
-    transform.roi = {100, 40, 300, 200};
-    const cv::Point2d point(30, 40);
-    const std::array<cv::Point2d, 4> rotated{{point, {159, 30}, {269, 159}, {40, 269}}};
-    int i = 0;
-    for (int rotation : {0, 90, 180, 270})
-    {
-        transform.clockwiseDegrees = rotation;
-        auto p = rotated[i++];
-        check(cv::norm(transform.toOriginal(p, DetectionSpace::RotatedRoi) - cv::Point2d(130, 80)) < 1e-9,
-              "ROI inverse rotation failed");
-        cv::Size size = (rotation == 90 || rotation == 270) ? cv::Size(200, 300) : cv::Size(300, 200);
-        transform.resizedSize = {size.width * 2, size.height * 2};
-        transform.padding = {11, 17};
-        check(cv::norm(transform.toOriginal(p * 2 + transform.padding, DetectionSpace::Network) -
-                       cv::Point2d(130, 80)) < 1e-9,
-              "Letterbox inverse failed");
-    }
     auto b = board();
     auto center = b.intersections[39];
     Detection d{12, .9, {center.x - 12, center.y - 12, 24, 24}};
     Observation o, hidden, collision, stale, offGrid, stableResult;
-    assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, true, {}, o);
+    assignPieces(camera(), b, "1", {d}, true, o);
     check(o.valid && o.pieces[39] == 12 && o.pieces[0] == Empty, "Grid assignment failed");
-    assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, false, {}, hidden);
+    assignPieces(camera(), b, "1", {d}, false, hidden);
     check(!hidden.valid && hidden.pieces[0] == Unknown, "Occluded cell treated as empty");
-    assignPieces(camera(), b, "1", {d, d}, transform, DetectionSpace::Original, true, {}, collision);
+    assignPieces(camera(), b, "1", {d, d}, true, collision);
     check(!collision.valid && collision.pieces[39] == Unknown, "Collision silently resolved");
-    assignPieces(camera(), b, "wrong", {d}, transform, DetectionSpace::Original, true, {}, stale);
+    assignPieces(camera(), b, "wrong", {d}, true, stale);
     check(!stale.valid, "Mixed frames accepted");
     auto p = project(b.gridToPixel, {3.48, 4});
     d.bbox = {p.x - 12, p.y - 12, 24, 24};
-    assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, true, {}, offGrid);
+    assignPieces(camera(), b, "1", {d}, true, offGrid);
     check(!offGrid.valid, "Off-grid piece accepted");
     Stabilizer stable(3);
     stable.update(b, o, stableResult);

@@ -8,7 +8,6 @@ struct FixedBoard
 {
     Camera camera;
     Board grid;
-    AssignmentOptions assignment;
     std::array<TargetXY, Cells> targets{};
     std::array<bool, Cells> mapped{}; // 对应格点是否在已验证的标定范围内。
 };

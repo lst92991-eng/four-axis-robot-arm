@@ -59,6 +59,12 @@
       "title": "删除动态棋盘与机械参考搜索分支",
       "cpp_nloc": 2257,
       "checks": "13 CTest, 60 Python, fixed geometry and vision unchanged"
+    },
+    {
+      "round": 2,
+      "title": "统一原图坐标与采点输入",
+      "cpp_nloc": 2091,
+      "checks": "14 CTest, 60 Python, 14400 assignment cases and fixed outputs identical"
     }
   ]
 }

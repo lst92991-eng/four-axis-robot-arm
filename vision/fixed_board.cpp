@@ -22,12 +22,8 @@ bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixe
 void FixedBoard_assign(FixedBoard &fixed, const std::string &frameId, const std::vector<Detection> &pieces,
                        bool sceneClear, Observation &observation)
 {
-    ImageTransform transform;
-    transform.sourceSize = fixed.camera.imageSize;
-    transform.roi = {0, 0, transform.sourceSize.width, transform.sourceSize.height};
     fixed.grid.frameId = frameId;
-    assignPieces(fixed.camera, fixed.grid, frameId, pieces, transform, DetectionSpace::Original, sceneClear,
-                 fixed.assignment, observation);
+    assignPieces(fixed.camera, fixed.grid, frameId, pieces, sceneClear, observation);
 }
 
 bool FixedBoard_target(const FixedBoard &fixed, int column, int row, const std::string &frameId, TargetXY &target)

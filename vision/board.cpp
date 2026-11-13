@@ -53,7 +53,7 @@ void boardFromCorners(const Camera &camera, const std::string &frame, const std:
         require(std::isfinite(v.x) && std::isfinite(v.y) && v.x >= 0 && v.y >= 0 && v.x < camera.imageSize.width &&
                     v.y < camera.imageSize.height,
                 "Invalid raw corner");
-        p.push_back(camera.geometricPixel(v));
+        p.push_back(v);
     }
     require(cv::isContourConvex(p) && std::abs(cv::contourArea(p)) > 100,
             "Corners must form a nondegenerate ordered convex quad");

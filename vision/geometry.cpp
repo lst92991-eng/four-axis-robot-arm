@@ -5,7 +5,6 @@
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <stdexcept>
 
 namespace scara
@@ -43,18 +42,17 @@ bool contains(const std::vector<cv::Point2d> &h, cv::Point2d p)
     std::vector<cv::Point2f> f(h.begin(), h.end());
     return f.size() >= 3 && cv::pointPolygonTest(f, p, true) >= -1e-4;
 }
-ErrorReport errorReport(const Camera &camera, const cv::Matx33d &h, const std::vector<PointPair> &pairs)
+void errorReport(const cv::Matx33d &matrix, const std::vector<PointPair> &pairs, ErrorReport &report)
 {
-    ErrorReport r;
-    for (const auto &p : pairs)
+    report = {};
+    for (const auto &pair : pairs)
     {
-        double e = cv::norm(project(h, camera.geometricPixel(p.pixel)) - p.baseXY);
-        r.errorsMm.push_back(e);
-        r.maxMm = std::max(r.maxMm, e);
-        r.rmsMm += e * e;
+        double errorMm = cv::norm(project(matrix, pair.pixel) - pair.baseXY);
+        report.errorsMm.push_back(errorMm);
+        report.maxMm = std::max(report.maxMm, errorMm);
+        report.rmsMm += errorMm * errorMm;
     }
-    r.rmsMm = std::sqrt(r.rmsMm / pairs.size());
-    return r;
+    report.rmsMm = std::sqrt(report.rmsMm / pairs.size());
 }
 void writePairs(cv::FileStorage &fs, const char *key, const std::vector<PointPair> &pairs)
 {
@@ -64,76 +62,37 @@ void writePairs(cv::FileStorage &fs, const char *key, const std::vector<PointPai
            << "base_xy" << "[" << p.baseXY.x << p.baseXY.y << "]" << "}";
     fs << "]";
 }
-std::vector<PointPair> readPairs(const cv::FileNode &node)
-{
-    require(node.isSeq(), "Missing point pair sequence");
-    std::vector<PointPair> pairs;
-    for (const auto &n : node)
-    {
-        auto a = n["pixel"], b = n["base_xy"];
-        require(a.isSeq() && b.isSeq() && a.size() == 2 && b.size() == 2, "Invalid point pair");
-        for (auto v : {a[0], a[1], b[0], b[1]})
-            require(v.isReal() || v.isInt(), "Point coordinates must be numeric, not null/placeholders");
-        pairs.push_back({{(double)a[0], (double)a[1]}, {(double)b[0], (double)b[1]}});
-    }
-    return pairs;
-}
 } // namespace
 
+void readPairs(const cv::FileNode &node, std::vector<PointPair> &pairs)
+{
+    pairs.clear();
+    require(node.isSeq(), "Missing point pair sequence");
+    for (const auto &point : node)
+    {
+        auto pixel = point["pixel"], base = point["base_xy"];
+        require(pixel.size() == 2 && base.size() == 2, "Each sample needs pixel and base_xy");
+        for (auto value : {pixel[0], pixel[1], base[0], base[1]})
+            require(value.isReal() || value.isInt(), "Sample coordinates must be measured numbers");
+        PointPair pair;
+        pair.pixel = {double(pixel[0]), double(pixel[1])};
+        pair.baseXY = {double(base[0]), double(base[1])};
+        pairs.push_back(pair);
+    }
+}
 cv::Point2d project(const cv::Matx33d &h, cv::Point2d p)
 {
-    require(finite(p), "Nonfinite point");
     const auto q = h * cv::Vec3d(p.x, p.y, 1);
     require(std::isfinite(q[2]) && std::abs(q[2]) > 1e-10, "Projection at infinity");
-    cv::Point2d result(q[0] / q[2], q[1] / q[2]);
-    require(finite(result), "Invalid projection");
-    return result;
+    return {q[0] / q[2], q[1] / q[2]};
 }
 void Camera::validate() const
 {
     require(!id.empty() && imageSize.width > 0 && imageSize.height > 0, "Camera ID/size required");
-    require(K.empty() == distortion.empty(), "Supply both intrinsics and distortion, or neither");
-    if (!K.empty())
-    {
-        auto k = matrix33(K);
-        require(k(0, 0) > 0 && k(1, 1) > 0, "Invalid focal length");
-        require(cv::checkRange(distortion), "Nonfinite distortion");
-        const auto n = distortion.total();
-        require(n == 4 || n == 5 || n == 8 || n == 12 || n == 14, "Unsupported distortion vector");
-    }
 }
 bool Camera::sameGeometry(const Camera &other) const
 {
-    if (id != other.id || imageSize != other.imageSize || K.empty() != other.K.empty() ||
-        distortion.total() != other.distortion.total())
-        return false;
-    if (K.empty()) return true;
-    cv::Mat a, b, da, db;
-    K.convertTo(a, CV_64F);
-    other.K.convertTo(b, CV_64F);
-    distortion.reshape(1, 1).convertTo(da, CV_64F);
-    other.distortion.reshape(1, 1).convertTo(db, CV_64F);
-    return cv::norm(a, b, cv::NORM_INF) < 1e-12 && cv::norm(da, db, cv::NORM_INF) < 1e-12;
-}
-cv::Point2d Camera::geometricPixel(cv::Point2d raw) const
-{
-    // 相机配置由载入/标定入口验证一次，这里只做单点换算。
-    require(finite(raw), "Nonfinite pixel");
-    if (K.empty()) return raw;
-    std::vector<cv::Point2d> in{raw}, out;
-    cv::undistortPoints(in, out, K, distortion, cv::noArray(), K);
-    return out[0];
-}
-void Camera::geometricImage(const cv::Mat &raw, cv::Mat &image) const
-{
-    validate();
-    require(!raw.empty() && raw.size() == imageSize, "Camera image size changed");
-    require(raw.depth() == CV_8U && (raw.channels() == 1 || raw.channels() == 3),
-            "Expected 8-bit gray or BGR source image");
-    if (K.empty())
-        image = raw.clone();
-    else
-        cv::undistort(raw, image, K, distortion, K);
+    return id == other.id && imageSize == other.imageSize;
 }
 void calibratePlane(const Camera &camera, const std::string &id, double z, double tolerance,
                     const std::vector<PointPair> &fit, const std::vector<PointPair> &checks, PlaneMap &map)
@@ -142,35 +101,27 @@ void calibratePlane(const Camera &camera, const std::string &id, double z, doubl
     require(!id.empty(), "Calibration ID required");
     require(std::isfinite(z) && std::isfinite(tolerance) && tolerance > 0, "Real plane Z and error tolerance required");
     require(fit.size() >= 4 && !checks.empty(), "Need >=4 fit pairs and an independent check pair");
+    // 拟合点和检查点必须分别实测；先统一检查，后面只做计算。
+    std::vector<PointPair> samples = fit;
+    samples.insert(samples.end(), checks.begin(), checks.end());
+    for (size_t i = 0; i < samples.size(); ++i)
+    {
+        const auto &point = samples[i];
+        require(finite(point.pixel) && finite(point.baseXY) && point.pixel.x >= 0 && point.pixel.y >= 0 &&
+                    point.pixel.x < camera.imageSize.width && point.pixel.y < camera.imageSize.height,
+                "Invalid measured point");
+        for (size_t j = 0; j < i; ++j)
+            require(cv::norm(point.pixel - samples[j].pixel) > 1 && cv::norm(point.baseXY - samples[j].baseXY) > 1e-6,
+                    "Calibration samples must be independent");
+    }
     std::vector<cv::Point2d> pixels, xy;
-    auto checkPair = [&](const PointPair &p)
+    for (const auto &point : fit)
     {
-        require(finite(p.pixel) && finite(p.baseXY), "Invalid calibration pair");
-        require(p.pixel.x >= 0 && p.pixel.y >= 0 && p.pixel.x < camera.imageSize.width &&
-                    p.pixel.y < camera.imageSize.height,
-                "Calibration pixel outside original frame");
-    };
-    for (const auto &p : fit)
-    {
-        checkPair(p);
-        pixels.push_back(camera.geometricPixel(p.pixel));
-        xy.push_back(p.baseXY);
+        pixels.push_back(point.pixel);
+        xy.push_back(point.baseXY);
     }
     auto coverage = hull(pixels);
     hull(xy);
-    for (size_t i = 0; i < fit.size(); ++i)
-        for (size_t j = 0; j < i; ++j)
-            require(cv::norm(fit[i].pixel - fit[j].pixel) > 1 && cv::norm(fit[i].baseXY - fit[j].baseXY) > 1e-6,
-                    "Duplicate fit points");
-    for (size_t i = 0; i < checks.size(); ++i)
-    {
-        checkPair(checks[i]);
-        for (const auto &p : fit)
-            require(cv::norm(p.pixel - checks[i].pixel) > 1 && cv::norm(p.baseXY - checks[i].baseXY) > 1e-6,
-                    "Check point reused from fit set");
-        for (size_t j = 0; j < i; ++j)
-            require(cv::norm(checks[i].pixel - checks[j].pixel) > 1, "Duplicate check points");
-    }
     PlaneMap m;
     m.camera = camera;
     m.id = id;
@@ -180,15 +131,16 @@ void calibratePlane(const Camera &camera, const std::string &id, double z, doubl
     m.validPixelHull = coverage;
     m.fitPoints = fit;
     m.checkPoints = checks;
-    m.fitError = errorReport(camera, m.pixelToBase, fit);
-    m.checkError = errorReport(camera, m.pixelToBase, checks);
-    m.accepted = m.fitError.maxMm <= tolerance && m.checkError.maxMm <= tolerance;
+    errorReport(m.pixelToBase, fit, m.fitError);
+    errorReport(m.pixelToBase, checks, m.checkError);
+    m.accepted = std::isfinite(m.fitError.rmsMm) && std::isfinite(m.checkError.rmsMm) &&
+                 m.fitError.maxMm <= tolerance && m.checkError.maxMm <= tolerance;
     map = m;
 }
 void saveCamera(cv::FileStorage &fs, const Camera &c)
 {
     fs << "camera" << "{" << "id" << c.id << "width" << c.imageSize.width << "height" << c.imageSize.height << "K"
-       << c.K << "distortion" << c.distortion << "}";
+       << cv::Mat() << "distortion" << cv::Mat() << "}";
 }
 void readCamera(const cv::FileNode &n, Camera &camera)
 {
@@ -196,8 +148,10 @@ void readCamera(const cv::FileNode &n, Camera &camera)
     n["id"] >> c.id;
     n["width"] >> c.imageSize.width;
     n["height"] >> c.imageSize.height;
-    if (!n["K"].empty()) n["K"] >> c.K;
-    if (!n["distortion"].empty()) n["distortion"] >> c.distortion;
+    cv::Mat intrinsic, distortion;
+    if (!n["K"].empty()) n["K"] >> intrinsic;
+    if (!n["distortion"].empty()) n["distortion"] >> distortion;
+    require(intrinsic.empty() && distortion.empty(), "Fixed layout uses validated raw camera pixels");
     c.validate();
     camera = c;
 }
@@ -223,8 +177,9 @@ void loadPlane(const std::string &path, PlaneMap &map)
     require(fs["allowed_error_mm"].isReal() || fs["allowed_error_mm"].isInt(), "Validation tolerance is missing");
     Camera camera;
     PlaneMap m;
-    std::vector<PointPair> fit = readPairs(fs["fit_points"]);
-    std::vector<PointPair> checks = readPairs(fs["check_points"]);
+    std::vector<PointPair> fit, checks;
+    readPairs(fs["fit_points"], fit);
+    readPairs(fs["check_points"], checks);
     readCamera(fs["camera"], camera);
     calibratePlane(camera, (std::string)fs["calibration_id"], (double)fs["plane_z_mm"], (double)fs["allowed_error_mm"],
                    fit, checks, m);
@@ -232,116 +187,57 @@ void loadPlane(const std::string &path, PlaneMap &map)
     fs["pixel_to_base"] >> saved;
     auto h = matrix33(saved);
     for (const auto &p : m.fitPoints)
-        require(cv::norm(project(h, m.camera.geometricPixel(p.pixel)) -
-                         project(m.pixelToBase, m.camera.geometricPixel(p.pixel))) < 1e-5,
+        require(cv::norm(project(h, p.pixel) - project(m.pixelToBase, p.pixel)) < 1e-5,
                 "Stored map differs from calibration samples");
     require(m.accepted, "Independent validation failed");
     map = m;
 }
 
-cv::Point2d ImageTransform::toOriginal(cv::Point2d p, DetectionSpace space) const
-{
-    require(sourceSize.width > 0 && sourceSize.height > 0 && finite(p), "Invalid source geometry");
-    if (space != DetectionSpace::Original)
-    {
-        require(roi.width > 0 && roi.height > 0 && roi.x >= 0 && roi.y >= 0 && roi.x + roi.width <= sourceSize.width &&
-                    roi.y + roi.height <= sourceSize.height,
-                "Invalid ROI");
-        require(clockwiseDegrees == 0 || clockwiseDegrees == 90 || clockwiseDegrees == 180 || clockwiseDegrees == 270,
-                "Unsupported ROI rotation");
-        const bool swap = clockwiseDegrees == 90 || clockwiseDegrees == 270;
-        const cv::Size rotated = swap ? cv::Size(roi.height, roi.width) : roi.size();
-        if (space == DetectionSpace::Network)
-        {
-            require(resizedSize.width > 0 && resizedSize.height > 0 && finite(padding),
-                    "Actual resized size and letterbox padding required");
-            p.x = (p.x - padding.x) * rotated.width / resizedSize.width;
-            p.y = (p.y - padding.y) * rotated.height / resizedSize.height;
-        }
-        require(p.x >= 0 && p.y >= 0 && p.x < rotated.width && p.y < rotated.height, "Detection outside unpadded ROI");
-        switch (clockwiseDegrees)
-        {
-        case 90:
-            p = {p.y, roi.height - 1 - p.x};
-            break;
-        case 180:
-            p = {roi.width - 1 - p.x, roi.height - 1 - p.y};
-            break;
-        case 270:
-            p = {roi.width - 1 - p.y, p.x};
-            break;
-        default:
-            break;
-        }
-        p += cv::Point2d(roi.x, roi.y);
-    }
-    require(p.x >= 0 && p.y >= 0 && p.x < sourceSize.width && p.y < sourceSize.height,
-            "Detection outside source frame");
-    return p;
-}
 void assignPieces(const Camera &camera, const Board &board, const std::string &frameId,
-                  const std::vector<Detection> &detections, const ImageTransform &transform, DetectionSpace space,
-                  bool clear, const AssignmentOptions &options, Observation &o)
+                  const std::vector<Detection> &detections, bool clear, Observation &observation)
 {
-    double minScore = options.minConfidence;
-    double maxDistance = options.maxGridDistance;
-    o = {};
-    o.cameraId = camera.id;
-    o.frameId = frameId;
-    o.pieces.fill(Unknown);
-    o.confidence.fill(0);
-    require(minScore >= 0 && minScore <= 1 && maxDistance > 0 && maxDistance < 0.5, "Invalid assignment thresholds");
+    observation = {};
+    observation.cameraId = camera.id;
+    observation.frameId = frameId;
+    observation.pieces.fill(Unknown);
     if (!board.geometryValid || !board.orientationValid || board.cameraId != camera.id ||
-        !camera.sameGeometry(board.geometryCamera) || frameId.empty() || frameId != board.frameId ||
-        transform.sourceSize != camera.imageSize)
-    {
-        o.issues.push_back("geometry/orientation/camera/frame mismatch");
-        return;
-    }
+        !camera.sameGeometry(board.geometryCamera) || frameId.empty() || frameId != board.frameId)
+        observation.issues.push_back("geometry/orientation/frame unavailable");
+    if (!observation.issues.empty()) return;
     if (clear)
-        o.pieces.fill(Empty);
+        observation.pieces.fill(Empty);
     else
-        o.issues.push_back("scene not declared clear");
+        observation.issues.push_back("scene not declared clear");
+    constexpr double MinScore = .50, MaxGridDistance = .35; // 分数与格距阈值保持原值。
     std::array<bool, Cells> occupied{};
     auto inverse = board.gridToPixel.inv();
-    for (const auto &d : detections)
+    for (const auto &piece : detections)
     {
-        if (d.classId < 0 || d.classId >= 14 || !std::isfinite(d.confidence) || d.confidence < minScore ||
-            d.confidence > 1 || d.bbox.width <= 0 || d.bbox.height <= 0)
+        cv::Point2d center(piece.bbox.x + piece.bbox.width / 2, piece.bbox.y + piece.bbox.height / 2);
+        bool valid = piece.classId >= 0 && piece.classId < YoloClasses && std::isfinite(piece.confidence) &&
+                     piece.confidence >= MinScore && piece.confidence <= 1 && piece.bbox.width > 0 &&
+                     piece.bbox.height > 0 && finite(center) && center.x >= 0 && center.y >= 0 &&
+                     center.x < camera.imageSize.width && center.y < camera.imageSize.height;
+        if (!valid)
         {
-            o.issues.push_back("invalid or uncertain detection");
+            observation.issues.push_back("invalid or uncertain detection");
             continue;
         }
-        try
+        auto homogeneous = inverse * cv::Vec3d(center.x, center.y, 1);
+        cv::Point2d grid(homogeneous[0] / homogeneous[2], homogeneous[1] / homogeneous[2]);
+        bool inside = finite(grid) && grid.x > -.5 && grid.y > -.5 && grid.x < Columns - .5 && grid.y < Rows - .5;
+        if (!inside || cv::norm(grid - cv::Point2d(std::round(grid.x), std::round(grid.y))) > MaxGridDistance)
         {
-            auto raw = transform.toOriginal({d.bbox.x + d.bbox.width / 2, d.bbox.y + d.bbox.height / 2}, space);
-            auto grid = project(inverse, camera.geometricPixel(raw));
-            int c = (int)std::lround(grid.x), r = (int)std::lround(grid.y);
-            if (c < 0 || c >= Columns || r < 0 || r >= Rows || cv::norm(grid - cv::Point2d(c, r)) > maxDistance)
-            {
-                o.issues.push_back("piece outside grid gate");
-                continue;
-            }
-            int i = r * Columns + c;
-            if (occupied[i])
-            {
-                o.pieces[i] = Unknown;
-                o.confidence[i] = 0;
-                o.issues.push_back("multiple pieces assigned to one intersection");
-            }
-            else
-            {
-                o.pieces[i] = d.classId;
-                o.confidence[i] = d.confidence;
-                occupied[i] = true;
-            }
+            observation.issues.push_back("piece outside grid gate");
+            continue;
         }
-        catch (const std::exception &e)
-        {
-            o.issues.push_back(e.what());
-        }
+        int index = int(std::lround(grid.y)) * Columns + int(std::lround(grid.x));
+        observation.pieces[index] = occupied[index] ? Unknown : piece.classId;
+        observation.confidence[index] = occupied[index] ? 0 : piece.confidence;
+        if (occupied[index]) observation.issues.push_back("multiple pieces assigned to one intersection");
+        occupied[index] = true;
     }
-    o.valid = o.issues.empty();
+    observation.valid = observation.issues.empty();
 }
 Stabilizer::Stabilizer(int frames, double tolerance) : needed_(frames), tolerance_(tolerance)
 {

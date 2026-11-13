@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-// 几何计算模块，输出坐标和识别状态，不发送运动命令。
+// 固定机位使用已独立验误的原始图像像素；本模块不发送运动命令。
 namespace scara
 {
 constexpr int Columns = 9, Rows = 10, Cells = Columns * Rows;
@@ -14,13 +14,10 @@ constexpr char PieceSymbols[] = "kabnrcpKABNRCP";
 
 struct Camera
 {
-    std::string id;        // 相机配置名称，随标定文件保存。
-    cv::Size imageSize;    // 原始图像尺寸，单位像素。
-    cv::Mat K, distortion; // 内参和畸变系数；都为空时沿用经过独立验误的原始像素。
+    std::string id;     // 相机配置名称，随标定文件保存。
+    cv::Size imageSize; // 原始图像尺寸，单位像素。
     void validate() const;
     bool sameGeometry(const Camera &) const;
-    cv::Point2d geometricPixel(cv::Point2d raw) const;             // 使用已验证的相机配置，输入输出单位均为像素。
-    void geometricImage(const cv::Mat &raw, cv::Mat &image) const; // 保持原尺寸，只按配置校正畸变。
 };
 
 struct PointPair
@@ -51,6 +48,7 @@ void savePlane(const std::string &path, const PlaneMap &);
 void loadPlane(const std::string &path, PlaneMap &map); // 从保存的采点复算映射和误差。
 void saveCamera(cv::FileStorage &, const Camera &);
 void readCamera(const cv::FileNode &node, Camera &camera);
+void readPairs(const cv::FileNode &node, std::vector<PointPair> &pairs);
 
 struct Board
 {
@@ -69,21 +67,6 @@ void boardFromCorners(const Camera &camera, const std::string &frameId, const st
 // 固定棋盘的俯视展示。
 void rectifiedBoard(const cv::Mat &geometricImage, const Board &board, cv::Mat &image);
 
-enum class DetectionSpace
-{
-    Original,
-    RotatedRoi,
-    Network
-};
-struct ImageTransform
-{
-    cv::Size sourceSize;
-    cv::Rect roi;
-    int clockwiseDegrees = 0;
-    cv::Size resizedSize; // 补边前实际缩放尺寸，仅用于还原网络输入坐标。
-    cv::Point2d padding;
-    cv::Point2d toOriginal(cv::Point2d, DetectionSpace) const;
-};
 struct Observation
 {
     std::string cameraId, frameId;
@@ -92,14 +75,8 @@ struct Observation
     bool valid = false; // 本帧结果；提交棋局前再经过连续帧稳定确认。
     std::vector<std::string> issues;
 };
-struct AssignmentOptions
-{
-    double minConfidence = 0.50;   // 接受的最小识别分数。
-    double maxGridDistance = 0.35; // 棋子中心距最近交点，单位为格距。
-};
 void assignPieces(const Camera &camera, const Board &board, const std::string &detectionFrameId,
-                  const std::vector<Detection> &detections, const ImageTransform &transform, DetectionSpace space,
-                  bool sceneClear, const AssignmentOptions &options, Observation &observation);
+                  const std::vector<Detection> &detections, bool sceneClear, Observation &observation);
 class Stabilizer
 {
   public:

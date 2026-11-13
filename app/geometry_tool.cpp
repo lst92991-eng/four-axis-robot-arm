@@ -1,7 +1,6 @@
 #include "vision/geometry.hpp"
 #include "vision/io.hpp"
 #include <opencv2/imgcodecs.hpp>
-#include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <sstream>
@@ -26,18 +25,6 @@ std::string relativePath(const std::string &config, const std::string &value)
     require(!value.empty(), "Missing file path");
     auto p = std::filesystem::u8path(value);
     return (p.is_absolute() ? p : std::filesystem::u8path(config).parent_path() / p).lexically_normal().u8string();
-}
-std::vector<PointPair> pairs(const cv::FileNode &node)
-{
-    require(node.isSeq(), "fit_points/check_points must be sequences");
-    std::vector<PointPair> out;
-    for (const auto &n : node)
-    {
-        auto p = n["pixel"], q = n["base_xy"];
-        require(p.size() == 2 && q.size() == 2, "Each pair needs pixel and base_xy");
-        out.push_back({{number(p[0]), number(p[1])}, {number(q[0]), number(q[1])}});
-    }
-    return out;
 }
 void imageFile(const std::string &path, cv::Mat &image)
 {
@@ -82,27 +69,7 @@ void detectionsFile(const std::string &path, const Camera &camera, const Board &
     }
     cv::FileStorage fs(bytes, cv::FileStorage::READ | cv::FileStorage::MEMORY);
     std::string frame = (std::string)fs["frame_id"], space = (std::string)fs["coordinates"];
-    ImageTransform t;
-    t.sourceSize = camera.imageSize;
-    t.roi = {0, 0, camera.imageSize.width, camera.imageSize.height};
-    auto source = fs["source_size"];
-    if (source.isSeq() && source.size() == 2) t.sourceSize = {(int)source[0], (int)source[1]};
-    auto roi = fs["roi"];
-    if (roi.isSeq() && roi.size() == 4) t.roi = {(int)roi[0], (int)roi[1], (int)roi[2], (int)roi[3]};
-    t.clockwiseDegrees = (int)fs["rotate_clockwise"];
-    DetectionSpace kind = DetectionSpace::Original;
-    if (space == "network")
-    {
-        kind = DetectionSpace::Network;
-        auto s = fs["resized_size"], p = fs["padding"];
-        require(s.size() == 2 && p.size() == 2, "Network detections need resized_size/padding");
-        t.resizedSize = {(int)s[0], (int)s[1]};
-        t.padding = {number(p[0]), number(p[1])};
-    }
-    else if (space == "roi" || (space.empty() && roi.isSeq()))
-        kind = DetectionSpace::RotatedRoi;
-    else
-        require(space == "original" || space.empty(), "Unknown detection coordinate system");
+    require(space == "original", "Detection boxes must use original camera pixels");
     std::vector<Detection> ds;
     auto input = fs["detections"];
     require(input.isSeq(), "detections must be an array");
@@ -113,8 +80,7 @@ void detectionsFile(const std::string &path, const Camera &camera, const Board &
         double x = number(b[0]), y = number(b[1]);
         ds.push_back({(int)d["class_id"], number(d["score"]), {x, y, number(b[2]) - x, number(b[3]) - y}});
     }
-    AssignmentOptions options;
-    assignPieces(camera, board, frame, ds, t, kind, clear, options, observation);
+    assignPieces(camera, board, frame, ds, clear, observation);
 }
 void inspect(const std::string &config, const std::string &output)
 {
@@ -157,13 +123,12 @@ void inspect(const std::string &config, const std::string &output)
     result << "]";
     if (hasObservation) result << "observation_valid" << (int)observation.valid << "issues" << observation.issues;
     writeBytes(output, result.releaseAndGetString());
-    cv::Mat geometric, overlay, rectified;
-    camera.geometricImage(image, geometric);
-    drawBoard(geometric, board, hasObservation ? &observation : nullptr, overlay);
+    cv::Mat overlay, rectified;
+    drawBoard(image, board, hasObservation ? &observation : nullptr, overlay);
     saveImage(output + ".png", overlay);
     if (board.geometryValid)
     {
-        rectifiedBoard(geometric, board, rectified);
+        rectifiedBoard(image, board, rectified);
         saveImage(output + ".rectified.png", rectified);
     }
     std::cout << "geometry=" << board.geometryValid << " orientation=" << board.orientationValid
@@ -190,8 +155,9 @@ int runGeometryTool(int argc, char **argv)
             std::string id = (std::string)fs["calibration_id"];
             double planeZmm = number(fs["plane_z_mm"]);
             double allowedErrorMm = number(fs["allowed_error_mm"]);
-            std::vector<scara::PointPair> fit = pairs(fs["fit_points"]);
-            std::vector<scara::PointPair> checks = pairs(fs["check_points"]);
+            std::vector<scara::PointPair> fit, checks;
+            scara::readPairs(fs["fit_points"], fit);
+            scara::readPairs(fs["check_points"], checks);
             scara::readCamera(fs["camera"], camera);
             scara::calibratePlane(camera, id, planeZmm, allowedErrorMm, fit, checks, map);
             std::cout << "fit RMS/max mm: " << map.fitError.rmsMm << "/" << map.fitError.maxMm
