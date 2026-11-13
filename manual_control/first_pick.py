@@ -14,6 +14,9 @@ import uuid
 
 URL = 'http://127.0.0.1:8090'
 GPIO = '/sys/class/gpio/gpio40/value'
+ROOT = Path(__file__).resolve().parents[1]
+CALIBRATION = ROOT / 'output/xy-registration-20261111'
+PICK_PLAN = ROOT / 'output/first-pick-c3-c4-20261111/trial-plan.json'
 
 
 class Trial:
@@ -43,7 +46,7 @@ class Trial:
         self.release_height = self.pick + self.up * self.degrees_per_mm * release_offset
         if not math.isfinite(self.release_height) or (self.release_height - self.high) * self.up > 0:
             raise ValueError('放棋高度必须有效且不高于搬运高度')
-        arm_file = Path(__file__).resolve().parents[1] / 'output/xy-registration-20261111/arm-registration.json'
+        arm_file = CALIBRATION / 'arm-registration.json'
         self.arm = json.loads(arm_file.read_text(encoding='utf-8'))
         if not self.span > 0 or not all(math.isfinite(x) for x in (self.pick, self.high)):
             raise ValueError('需要两个实测的 Z 高度')
@@ -107,10 +110,11 @@ class Trial:
     def begin(self, action, node, **args):
         self.press = str(uuid.uuid4())
         deadline = time.monotonic() + 1.5
-        while True:
+        waiting = True
+        while waiting:
             try:
                 self.action(action, node=node, press=self.press, **args)
-                break
+                waiting = False
             except RuntimeError as exc:
                 if str(exc) != '等待轴停稳' or time.monotonic() >= deadline:
                     raise

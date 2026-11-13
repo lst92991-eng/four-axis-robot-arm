@@ -269,6 +269,68 @@ class Worker:
         finally:
             req['done'].set()
 
+    def process_requests(self):
+        # 后到的停止请求优先处理，旧的启动请求不能越过停止。
+        while not self.stop_requests.empty():
+            self.process(self.stop_requests.get_nowait())
+        self.core.tick()
+        try:
+            request = self.requests.get_nowait()
+        except queue.Empty:
+            request = None
+        if request:
+            self.process(request)
+
+    def process_frame(self, frame, received_at):
+        if frame is None or frame.echo:
+            return
+        if time.monotonic() - received_at > 0.25:
+            self.core.fail('接收处理延迟，旧帧不能当作实时反馈')
+            return
+        if frame.error:
+            self.audit(dict(event='can_error', id=frame.identifier, data=frame.data.hex()))
+            from stepfoc_candlelight import is_candlelight_status_report, describe_bus_error
+
+            if not is_candlelight_status_report(frame):
+                self.core.fail(describe_bus_error(frame))
+            return
+        status = frame.identifier - 0x200 in self.core.axes or frame.identifier - 0x480 in self.core.axes
+        trace = frame.identifier - 0x300 in self.core.axes or frame.identifier - 0x380 in self.core.axes
+        if not (status or trace):
+            return
+        self.audit(dict(event='rx', id=frame.identifier, data=frame.data.hex()))
+        if not frame.fd or not frame.brs or frame.extended:
+            message = '节点帧不是预期的标准 CAN FD/BRS 格式' if status else '诊断帧不是标准 CAN FD/BRS 格式'
+            self.core.fail(message)
+        elif status:
+            self.core.receive(frame.identifier, frame.data, received_at)
+        else:
+            node, kind, values = diagnostic(frame.identifier, frame.data)
+            self.diagnostics.setdefault(node, {})[kind] = dict(values, received=received_at)
+
+    def receive_once(self):
+        if self.adapter:
+            frame, received_at = self.read_frame()
+            self.process_frame(frame, received_at)
+        else:
+            time.sleep(0.01)
+
+    def publish_state(self):
+        now = time.monotonic()
+        if now >= self.next_snapshot:
+            self.next_snapshot = now + 0.02
+            diagnostics = {
+                node: {kind: dict(value, age_ms=round((now - value['received']) * 1000)) for kind, value in row.items()}
+                for node, row in self.diagnostics.items()
+            }
+            with self.lock:
+                self.view = dict(
+                    self.core.snapshot(), simulated=self.simulate, log_path=str(self.log_path), diagnostics=diagnostics
+                )
+        if now - self.last_flush >= 0.1:
+            self.log_file.flush()
+            self.last_flush = now
+
     def run(self):
         try:
             try:
@@ -278,43 +340,8 @@ class Worker:
                 self.core.log('连接失败：' + str(exc))
             while not self.shutdown.is_set():
                 try:
-                    # A delayed start can never overtake a later stop.
-                    while not self.stop_requests.empty():
-                        self.process(self.stop_requests.get_nowait())
-                    self.core.tick()
-                    try:
-                        req = self.requests.get_nowait()
-                    except queue.Empty:
-                        req = None
-                    if req:
-                        self.process(req)
-                    if self.adapter:
-                        f, received_at = self.read_frame()
-                        if f and not f.echo:
-                            if time.monotonic() - received_at > 0.25:
-                                self.core.fail('接收处理延迟，旧帧不能当作实时反馈')
-                                continue
-                            if f.error:
-                                self.audit(dict(event='can_error', id=f.identifier, data=f.data.hex()))
-                                from stepfoc_candlelight import is_candlelight_status_report, describe_bus_error
-
-                                if not is_candlelight_status_report(f):
-                                    self.core.fail(describe_bus_error(f))
-                            elif f.identifier - 0x200 in self.core.axes or f.identifier - 0x480 in self.core.axes:
-                                self.audit(dict(event='rx', id=f.identifier, data=f.data.hex()))
-                                if not f.fd or not f.brs or f.extended:
-                                    self.core.fail('节点帧不是预期的标准 CAN FD/BRS 格式')
-                                else:
-                                    self.core.receive(f.identifier, f.data, received_at)
-                            elif f.identifier - 0x300 in self.core.axes or f.identifier - 0x380 in self.core.axes:
-                                self.audit(dict(event='rx', id=f.identifier, data=f.data.hex()))
-                                if not f.fd or not f.brs or f.extended:
-                                    self.core.fail('诊断帧不是标准 CAN FD/BRS 格式')
-                                else:
-                                    node, kind, values = diagnostic(f.identifier, f.data)
-                                    self.diagnostics.setdefault(node, {})[kind] = dict(values, received=received_at)
-                    else:
-                        time.sleep(0.01)
+                    self.process_requests()
+                    self.receive_once()
                 except Exception as exc:
                     self.core.fail('USB/CAN 异常：' + str(exc))
                     self.core.connected = False
@@ -324,20 +351,7 @@ class Worker:
                         except Exception:
                             pass
                         self.adapter = None
-                now = time.monotonic()
-                if now >= self.next_snapshot:
-                    self.next_snapshot = now + 0.02
-                    diag = {
-                        n: {kind: dict(v, age_ms=round((now - v['received']) * 1000)) for kind, v in row.items()}
-                        for n, row in self.diagnostics.items()
-                    }
-                    with self.lock:
-                        self.view = dict(
-                            self.core.snapshot(), simulated=self.simulate, log_path=str(self.log_path), diagnostics=diag
-                        )
-                if now - self.last_flush >= 0.1:
-                    self.log_file.flush()
-                    self.last_flush = now
+                self.publish_state()
         finally:
             self.core.stop('上位机退出，停止并保持位置', disarm=True)
             # Do not send OFF: releasing the Z axis could drop the mechanism.

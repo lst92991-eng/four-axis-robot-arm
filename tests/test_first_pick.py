@@ -10,6 +10,19 @@ from first_pick import GPIO, Trial
 
 
 class ReleaseTests(unittest.TestCase):
+    @patch('first_pick.time.monotonic', return_value=1.)
+    @patch('first_pick.time.sleep')
+    def test_begin_retries_stationary_wait_then_leaves_loop(self, sleep, _clock):
+        trial = Trial.__new__(Trial)
+        trial.action = Mock(side_effect=[RuntimeError('等待轴停稳'), {}])
+        trial.sample = Mock()
+        trial.wait = Mock()
+        trial.begin('position',2,target=10,speed=8)
+        self.assertEqual(trial.action.call_count,2)
+        trial.sample.assert_called_once()
+        sleep.assert_called_once_with(.022)
+        trial.wait.assert_called_once()
+
     def setUp(self):
         self.trial = Trial.__new__(Trial)
         self.trial.adb = ['adb', 'shell']

@@ -6,6 +6,7 @@ import tempfile
 import time
 from types import SimpleNamespace
 import unittest
+from unittest.mock import Mock
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'manual_control'))
 from telemetry import diagnostic
@@ -22,6 +23,27 @@ def fault():
 
 
 class TelemetryTests(unittest.TestCase):
+    def test_frame_dispatch_rejects_stale_and_wrong_format(self):
+        worker = Worker.__new__(Worker)
+        worker.core = SimpleNamespace(axes={1:{}}, fail=Mock(), receive=Mock())
+        worker.audit = Mock()
+        worker.diagnostics = {}
+        frame = SimpleNamespace(identifier=0x201, data=bytes(64), echo=False, error=False,
+                                fd=True, brs=True, extended=False)
+        worker.process_frame(frame, time.monotonic()-1)
+        worker.core.fail.assert_called_once_with('接收处理延迟，旧帧不能当作实时反馈')
+        worker.core.receive.assert_not_called()
+        worker.audit.assert_not_called()
+        worker.core.fail.reset_mock()
+        frame.brs = False
+        worker.process_frame(frame, time.monotonic())
+        worker.core.fail.assert_called_once_with('节点帧不是预期的标准 CAN FD/BRS 格式')
+        worker.core.receive.assert_not_called()
+        frame.brs = True
+        stamp = time.monotonic()
+        worker.process_frame(frame, stamp)
+        worker.core.receive.assert_called_once_with(0x201, bytes(64), stamp)
+
     def test_signed_current_counts_and_units(self):
         n,kind,v=diagnostic(0x301,trace())
         self.assertEqual((n,kind,v['encoder_counts']),(1,'trace',-42))

@@ -11,7 +11,7 @@ import time
 import cv2
 import numpy as np
 
-from first_pick import Trial
+from first_pick import Trial, CALIBRATION, PICK_PLAN
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'temp/yolo_live'))
@@ -69,14 +69,14 @@ class Demo:
         self.reference = cv2.imdecode(
             np.frombuffer((work / f'{reference}.png').read_bytes(), np.uint8), cv2.IMREAD_COLOR
         )
-        calibration = ROOT / 'output/xy-registration-20261111'
+        calibration = CALIBRATION
         # Use the same calibrated plane that produced the native grid report.
         plane = cv2.FileStorage(
             (calibration / 'plane-map.yml').read_text(encoding='utf-8'), cv2.FILE_STORAGE_READ | cv2.FILE_STORAGE_MEMORY
         )
         self.h = plane.getNode('pixel_to_base').mat()
         plane.release()
-        plan = read(ROOT / 'output/first-pick-c3-c4-20261111/trial-plan.json')
+        plan = read(PICK_PLAN)
         z = plan['z']
         rise = z['operator_estimated_rise_mm']
         z['travel_deg'] += (z['travel_deg'] - z['pickup_deg']) * lift_extra_mm / rise

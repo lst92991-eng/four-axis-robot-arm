@@ -124,6 +124,11 @@
       "round": 10,
       "title": "Python上层语法树等价排版",
       "record": "round-10.json"
+    },
+    {
+      "round": 11,
+      "title": "上位机每轮流程与取放重试",
+      "record": "round-11.json"
     }
   ],
   "known_limits": [
