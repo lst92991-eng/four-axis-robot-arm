@@ -224,76 +224,84 @@ class Controller:
             return
         now = self.clock() if received_at is None else received_at
         if n in self.axes:
-            if kind != 0x40 or result != 0:
-                self.fail('状态帧格式不正确')
-                return
-            flags = (v[9] & 0xFFFFFFFF) >> 16
-            old = self.status.get(n)
-            uptime = v[0] & 0xFFFFFFFF
-            s = dict(
-                received=now,
-                uptime=uptime,
-                position=v[1] / 1000,
-                target=v[2] / 1000,
-                velocity=v[4] / 1000,
-                state=v[9] & 255,
-                fault=(v[9] >> 8) & 255,
-                build=f'{v[10] & 0xffffffff:08x}',
-            )
-            if v[13] == 0x43414C31:
-                s.update(
-                    calibration_extension=True,
-                    cal_state=v[3] & 255,
-                    motion_fault_detail=(v[3] >> 24) & 255,
-                    cal_error=(v[3] >> 8) & 255,
-                    electrical_zero=v[6],
-                    encoder_direction=v[7],
-                    encoder_counts=v[5],
-                    calibration_saved=bool(v[3] & (1 << 17)),
-                    calibration_progress=v[11],
-                    bus_mv=v[12],
-                )
-            for name, bit in [
-                ('referenced', 2),
-                ('interlocked', 8),
-                ('configured', 16),
-                ('encoder_valid', 32),
-                ('power', 64),
-                ('stationary', 256),
-            ]:
-                s[name] = bool(flags & bit)
-            self.status[n] = s
-            if s['fault'] and (not old or old['fault'] != s['fault']):
-                self.log(
-                    f"J{n} 故障 {s['fault']}：{FAULTS.get(s['fault'], '未知故障')}",
-                    node=n,
-                    fault=s['fault'],
-                    position=s['position'],
-                    target=s['target'],
-                    velocity=s['velocity'],
-                    power=s['power'],
-                )
-            if old and ((uptime - old['uptime']) & 0xFFFFFFFF) >= 0x80000000:
-                self.synced.discard(n)
-                self.fail(f'J{n} 重启，禁止自动恢复运动')
-            elif old and s['build'] != old['build']:
-                self.synced.discard(n)
-                self.fail(f'J{n} 固件发生变化')
-            if n == 1:
-                self.recovery_feedback(s)
-            if n in self.stopping and s['state'] == 4 and not s['power']:
-                self.stopping.remove(n)
-                self.stop_ack.discard(n)
-                self.log(f'J{n} 故障已关断出力；未据此判定机械停稳')
-            elif (
-                n in self.stopping
-                and n in self.stop_ack
-                and (s['state'] == 0 and not s['power'] or s['state'] == 1 and s['stationary'])
-            ):
-                self.stopping.remove(n)
-                self.stop_ack.discard(n)
-                self.log(f'J{n} 反馈确认停止', position=s['position'], power=s['power'])
+            self.receive_status(n, kind, result, v, now)
+        else:
+            self.receive_ack(node, kind, result, seq)
+
+    def receive_status(self, n, kind, result, v, now):
+        # 状态字段转换完，再处理重启、参考接续和停稳确认。
+        if kind != 0x40 or result != 0:
+            self.fail('状态帧格式不正确')
             return
+        flags = (v[9] & 0xFFFFFFFF) >> 16
+        old = self.status.get(n)
+        uptime = v[0] & 0xFFFFFFFF
+        s = dict(
+            received=now,
+            uptime=uptime,
+            position=v[1] / 1000,
+            target=v[2] / 1000,
+            velocity=v[4] / 1000,
+            state=v[9] & 255,
+            fault=(v[9] >> 8) & 255,
+            build=f'{v[10] & 0xffffffff:08x}',
+        )
+        if v[13] == 0x43414C31:
+            s.update(
+                calibration_extension=True,
+                cal_state=v[3] & 255,
+                motion_fault_detail=(v[3] >> 24) & 255,
+                cal_error=(v[3] >> 8) & 255,
+                electrical_zero=v[6],
+                encoder_direction=v[7],
+                encoder_counts=v[5],
+                calibration_saved=bool(v[3] & (1 << 17)),
+                calibration_progress=v[11],
+                bus_mv=v[12],
+            )
+        for name, bit in [
+            ('referenced', 2),
+            ('interlocked', 8),
+            ('configured', 16),
+            ('encoder_valid', 32),
+            ('power', 64),
+            ('stationary', 256),
+        ]:
+            s[name] = bool(flags & bit)
+        self.status[n] = s
+        if s['fault'] and (not old or old['fault'] != s['fault']):
+            self.log(
+                f"J{n} 故障 {s['fault']}：{FAULTS.get(s['fault'], '未知故障')}",
+                node=n,
+                fault=s['fault'],
+                position=s['position'],
+                target=s['target'],
+                velocity=s['velocity'],
+                power=s['power'],
+            )
+        if old and ((uptime - old['uptime']) & 0xFFFFFFFF) >= 0x80000000:
+            self.synced.discard(n)
+            self.fail(f'J{n} 重启，禁止自动恢复运动')
+        elif old and s['build'] != old['build']:
+            self.synced.discard(n)
+            self.fail(f'J{n} 固件发生变化')
+        if n == 1:
+            self.recovery_feedback(s)
+        if n in self.stopping and s['state'] == 4 and not s['power']:
+            self.stopping.remove(n)
+            self.stop_ack.discard(n)
+            self.log(f'J{n} 故障已关断出力；未据此判定机械停稳')
+        elif (
+            n in self.stopping
+            and n in self.stop_ack
+            and (s['state'] == 0 and not s['power'] or s['state'] == 1 and s['stationary'])
+        ):
+            self.stopping.remove(n)
+            self.stop_ack.discard(n)
+            self.log(f'J{n} 反馈确认停止', position=s['position'], power=s['power'])
+
+    def receive_ack(self, node, kind, result, seq):
+        # 应答只完成对应序号的操作，不把ACK当作已经到位。
         pending = self.pending.pop((node, seq), None)
         if pending is None:
             return

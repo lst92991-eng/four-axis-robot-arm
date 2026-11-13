@@ -59,108 +59,165 @@ std::vector<ArmTouch> armTouches(const cv::FileNode &node)
     return out;
 }
 
+// 标定输入：位置用毫米，读回角用度；待求参数是原点XY和两段臂的参考弧度。
+struct ArmSurvey
+{
+    std::vector<ArmTouch> fit, checks;
+    ArmTouch reference;
+    double upperMm = 0, forearmMm = 0, j3Ratio = 1, j2Scale = 1;
+    int j2Sign = 1, j3Sign = 1;
+};
+
+void readArmSurvey(const std::string &path, ArmSurvey &data)
+{
+    auto file = readStorage(path);
+    data.fit = armTouches(file["fit_touches"]);
+    data.checks = armTouches(file["check_touches"]);
+    require(data.fit.size() >= 3, "Record at least three distributed arm touches");
+    auto lengths = file["arm_lengths_mm"];
+    require(lengths.isSeq() && lengths.size() == 2, "Two arm lengths are required");
+    data.upperMm = number(lengths[0]);
+    data.forearmMm = number(lengths[1]);
+    data.j3Ratio = number(file["j3_ratio"]);
+    data.j2Scale = file["j2_scale"].empty() ? 1 : number(file["j2_scale"]);
+    require(data.upperMm > 0 && data.forearmMm > 0 && data.j3Ratio > 0 && data.j2Scale > 0,
+            "Arm lengths and transmission ratios must be positive");
+    data.reference = data.fit.front();
+}
+
+cv::Vec2d armPhase(const ArmSurvey &data, const ArmTouch &point)
+{
+    double shoulder = data.j2Sign * data.j2Scale * (point.j2Deg - data.reference.j2Deg) * CV_PI / 180;
+    double forearm =
+        shoulder + data.j3Sign * (point.j3MotorDeg - data.reference.j3MotorDeg) * CV_PI / (180 * data.j3Ratio);
+    return {shoulder, forearm};
+}
+
+cv::Point2d armPoint(const ArmSurvey &data, const ArmTouch &point, const cv::Vec4d &parameters)
+{
+    auto phase = armPhase(data, point);
+    double shoulder = phase[0] + parameters[2];
+    double forearm = phase[1] + parameters[3];
+    return {parameters[0] + data.upperMm * std::cos(shoulder) + data.forearmMm * std::cos(forearm),
+            parameters[1] + data.upperMm * std::sin(shoulder) + data.forearmMm * std::sin(forearm)};
+}
+
+double armCost(const ArmSurvey &data, const cv::Vec4d &parameters)
+{
+    double squaredMm = 0;
+    for (const auto &point : data.fit)
+    {
+        auto error = armPoint(data, point, parameters) - point.board;
+        squaredMm += error.dot(error);
+    }
+    return squaredMm;
+}
+
+bool linearArm(const ArmSurvey &data, cv::Vec4d &parameters)
+{
+    int rows = 2 * static_cast<int>(data.fit.size());
+    cv::Mat design(rows, 6, CV_64F), observation(rows, 1, CV_64F);
+    for (int row = 0; row < rows; row += 2)
+    {
+        const auto &point = data.fit[row / 2];
+        auto phase = armPhase(data, point);
+        double c1 = std::cos(phase[0]), s1 = std::sin(phase[0]);
+        double c2 = std::cos(phase[1]), s2 = std::sin(phase[1]);
+        const std::array<double, 6> x{1, 0, c1, -s1, c2, -s2}, y{0, 1, s1, c1, s2, c2};
+        std::copy(x.begin(), x.end(), design.ptr<double>(row));
+        std::copy(y.begin(), y.end(), design.ptr<double>(row + 1));
+        observation.at<double>(row) = point.board.x;
+        observation.at<double>(row + 1) = point.board.y;
+    }
+    cv::Mat singular, linear;
+    cv::SVD::compute(design, singular);
+    bool independent = singular.at<double>(5) > singular.at<double>(0) * 1e-9;
+    bool solved = independent && cv::solve(design, observation, linear, cv::DECOMP_SVD);
+    if (solved)
+        parameters = {linear.at<double>(0), linear.at<double>(1),
+                      std::atan2(linear.at<double>(3), linear.at<double>(2)),
+                      std::atan2(linear.at<double>(5), linear.at<double>(4))};
+    return solved;
+}
+
+void refineArm(const ArmSurvey &data, cv::Vec4d &parameters)
+{
+    int rows = 2 * static_cast<int>(data.fit.size());
+    cv::Mat jacobian(rows, 4, CV_64F), residual(rows, 1, CV_64F);
+    int iteration = 0;
+    bool refining = true;
+    while (refining && iteration < 20)
+    {
+        for (int row = 0; row < rows; row += 2)
+        {
+            const auto &point = data.fit[row / 2];
+            auto phase = armPhase(data, point);
+            double shoulder = phase[0] + parameters[2], forearm = phase[1] + parameters[3];
+            const std::array<double, 4> x{1, 0, -data.upperMm * std::sin(shoulder),
+                                          -data.forearmMm * std::sin(forearm)};
+            const std::array<double, 4> y{0, 1, data.upperMm * std::cos(shoulder), data.forearmMm * std::cos(forearm)};
+            std::copy(x.begin(), x.end(), jacobian.ptr<double>(row));
+            std::copy(y.begin(), y.end(), jacobian.ptr<double>(row + 1));
+            auto error = point.board - armPoint(data, point, parameters);
+            residual.at<double>(row) = error.x;
+            residual.at<double>(row + 1) = error.y;
+        }
+        cv::Mat delta;
+        refining = cv::solve(jacobian, residual, delta, cv::DECOMP_SVD);
+        if (refining)
+        {
+            cv::Vec4d step(delta.at<double>(0), delta.at<double>(1), delta.at<double>(2), delta.at<double>(3));
+            auto next = parameters + step;
+            double previousCost = armCost(data, parameters);
+            for (int attempt = 0; attempt < 6 && armCost(data, next) > previousCost; ++attempt)
+            {
+                step *= .5;
+                next = parameters + step;
+            }
+            bool noImprovement = armCost(data, next) >= previousCost;
+            refining = noImprovement == false;
+            if (refining) parameters = next;
+        }
+        ++iteration;
+    }
+}
+
+void writeArmSolution(cv::FileStorage &out, const ArmSurvey &data, const cv::Vec4d &parameters)
+{
+    out << "{" << "j2_sign" << data.j2Sign << "j3_sign" << data.j3Sign << "j2_origin_board_mm" << "[" << parameters[0]
+        << parameters[1] << "]" << "shoulder_ref_rad" << parameters[2] << "elbow_ref_rad"
+        << std::remainder(parameters[3] - parameters[2], 2 * CV_PI) << "fit_rms_mm"
+        << std::sqrt(armCost(data, parameters) / data.fit.size()) << "fit_errors_mm" << "[";
+    for (const auto &point : data.fit)
+        out << cv::norm(armPoint(data, point, parameters) - point.board);
+    out << "]" << "check_errors_mm" << "[";
+    for (const auto &point : data.checks)
+        out << cv::norm(armPoint(data, point, parameters) - point.board);
+    out << "]" << "}";
+}
+
 void registerArm(const std::string &config, const std::string &output)
 {
-    auto fs = readStorage(config);
-    const auto fit = armTouches(fs["fit_touches"]), checks = armTouches(fs["check_touches"]);
-    require(fit.size() >= 3, "Record at least three distributed arm touches");
-    const auto length = fs["arm_lengths_mm"];
-    require(length.isSeq() && length.size() == 2, "Two arm lengths are required");
-    const double l1 = number(length[0]), l2 = number(length[1]), ratio = number(fs["j3_ratio"]);
-    const double j2Scale = fs["j2_scale"].empty() ? 1 : number(fs["j2_scale"]);
-    require(l1 > 0 && l2 > 0 && ratio > 0 && j2Scale > 0, "Arm lengths and transmission ratios must be positive");
-    const auto ref = fit.front();
+    ArmSurvey data;
+    readArmSurvey(config, data);
     auto out = memoryStorage(true);
-    out << "j2_reference_deg" << ref.j2Deg << "j3_reference_motor_deg" << ref.j3MotorDeg << "arm_lengths_mm" << "["
-        << l1 << l2 << "]" << "j2_scale" << j2Scale << "j3_ratio" << ratio << "solutions" << "[";
+    out << "j2_reference_deg" << data.reference.j2Deg << "j3_reference_motor_deg" << data.reference.j3MotorDeg
+        << "arm_lengths_mm" << "[" << data.upperMm << data.forearmMm << "]" << "j2_scale" << data.j2Scale << "j3_ratio"
+        << data.j3Ratio << "solutions" << "[";
     int solutions = 0;
-    for (int s2 : {-1, 1})
-        for (int s3 : {-1, 1})
+    for (int shoulderSign : {-1, 1})
+        for (int elbowSign : {-1, 1})
         {
-            auto phase = [&](const ArmTouch &p)
+            data.j2Sign = shoulderSign;
+            data.j3Sign = elbowSign;
+            cv::Vec4d parameters;
+            bool solved = linearArm(data, parameters);
+            if (solved)
             {
-                double q2 = s2 * j2Scale * (p.j2Deg - ref.j2Deg) * CV_PI / 180;
-                return cv::Vec2d(q2, q2 + s3 * (p.j3MotorDeg - ref.j3MotorDeg) * CV_PI / (180 * ratio));
-            };
-            const int rows = 2 * static_cast<int>(fit.size());
-            cv::Mat design(rows, 6, CV_64F), observation(rows, 1, CV_64F);
-            for (int i = 0; i < rows; i += 2)
-            {
-                const auto &p = fit[i / 2];
-                auto a = phase(p);
-                double c1 = std::cos(a[0]), s1 = std::sin(a[0]), c2 = std::cos(a[1]), s2a = std::sin(a[1]);
-                const std::array<double, 6> x{1, 0, c1, -s1, c2, -s2a}, y{0, 1, s1, c1, s2a, c2};
-                std::copy(x.begin(), x.end(), design.ptr<double>(i));
-                std::copy(y.begin(), y.end(), design.ptr<double>(i + 1));
-                observation.at<double>(i) = p.board.x;
-                observation.at<double>(i + 1) = p.board.y;
+                refineArm(data, parameters);
+                writeArmSolution(out, data, parameters);
+                ++solutions;
             }
-            cv::Mat singular;
-            cv::SVD::compute(design, singular);
-            if (singular.at<double>(5) <= singular.at<double>(0) * 1e-9) continue;
-            cv::Mat linear;
-            if (!cv::solve(design, observation, linear, cv::DECOMP_SVD)) continue;
-            cv::Vec4d params(linear.at<double>(0), linear.at<double>(1),
-                             std::atan2(linear.at<double>(3), linear.at<double>(2)),
-                             std::atan2(linear.at<double>(5), linear.at<double>(4)));
-            auto xy = [&](const ArmTouch &p, const cv::Vec4d &v)
-            {
-                const auto q = phase(p);
-                double a = q[0] + v[2], b = q[1] + v[3];
-                return cv::Point2d(v[0] + l1 * std::cos(a) + l2 * std::cos(b),
-                                   v[1] + l1 * std::sin(a) + l2 * std::sin(b));
-            };
-            auto cost = [&](const cv::Vec4d &v)
-            {
-                double sum = 0;
-                for (const auto &p : fit)
-                {
-                    auto e = xy(p, v) - p.board;
-                    sum += e.dot(e);
-                }
-                return sum;
-            };
-            cv::Mat jac(rows, 4, CV_64F), residual(rows, 1, CV_64F);
-            for (int iteration = 0; iteration < 20; ++iteration)
-            {
-                for (int i = 0; i < rows; i += 2)
-                {
-                    const auto &p = fit[i / 2];
-                    const auto q = phase(p);
-                    double a = q[0] + params[2], b = q[1] + params[3];
-                    const std::array<double, 4> x{1, 0, -l1 * std::sin(a), -l2 * std::sin(b)};
-                    const std::array<double, 4> y{0, 1, l1 * std::cos(a), l2 * std::cos(b)};
-                    std::copy(x.begin(), x.end(), jac.ptr<double>(i));
-                    std::copy(y.begin(), y.end(), jac.ptr<double>(i + 1));
-                    const auto e = p.board - xy(p, params);
-                    residual.at<double>(i) = e.x;
-                    residual.at<double>(i + 1) = e.y;
-                }
-                cv::Mat delta;
-                if (!cv::solve(jac, residual, delta, cv::DECOMP_SVD)) break;
-                cv::Vec4d step(delta.at<double>(0), delta.at<double>(1), delta.at<double>(2), delta.at<double>(3));
-                auto next = params + step;
-                const double old = cost(params);
-                for (int i = 0; i < 6 && cost(next) > old; ++i)
-                {
-                    step *= .5;
-                    next = params + step;
-                }
-                if (cost(next) >= old) break;
-                params = next;
-            }
-            ++solutions;
-            out << "{" << "j2_sign" << s2 << "j3_sign" << s3 << "j2_origin_board_mm" << "[" << params[0] << params[1]
-                << "]"
-                << "shoulder_ref_rad" << params[2] << "elbow_ref_rad"
-                << std::remainder(params[3] - params[2], 2 * CV_PI) << "fit_rms_mm"
-                << std::sqrt(cost(params) / fit.size()) << "fit_errors_mm" << "[";
-            for (const auto &p : fit)
-                out << cv::norm(xy(p, params) - p.board);
-            out << "]" << "check_errors_mm" << "[";
-            for (const auto &p : checks)
-                out << cv::norm(xy(p, params) - p.board);
-            out << "]" << "}";
         }
     require(solutions > 0, "Arm touches do not span enough different poses");
     out << "]";
