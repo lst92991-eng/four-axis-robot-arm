@@ -37,7 +37,8 @@ int main(int argc, char **argv)
         std::string temporary = std::string(previewPath) + ".tmp.jpg";
         std::signal(SIGINT, requestStop);
         std::signal(SIGTERM, requestStop);
-        Yolo_open(modelPath);
+        result = Yolo_open(modelPath) ? 0 : 1;
+        running = running && result == 0;
         Camera_open(cameraUrl);
 
         //---------取帧、识别与绘制区---------
@@ -56,12 +57,14 @@ int main(int argc, char **argv)
             Vision_draw(source, pieces, labels, preview);
             savePreview(preview, temporary, previewPath);
         }
-        result = 0;
     }
     catch (const std::exception &e)
     {
-        result = running ? 1 : 0;
-        if (running) std::cerr << e.what() << '\n';
+        if (running)
+        {
+            result = 1;
+            std::cerr << e.what() << '\n';
+        }
     }
     Camera_close();
     Yolo_close();

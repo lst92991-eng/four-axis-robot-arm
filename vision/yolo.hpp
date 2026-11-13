@@ -48,7 +48,7 @@ void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces, const
 
 //---------NPU接口区---------
 // 模块内只保存一个模型。主流程统一调用 Yolo_close，包括打开或运行失败时。
-void Yolo_open(std::string modelPath);
+bool Yolo_open(std::string modelPath); // 返回初始化结果，失败时仍由主流程关闭已分配资源。
 // 先成功打开模型，输入来自 Vision_prepare；成功时填写三路输出描述。
 // 正常返回后方可读取 heads，描述中的数据在下一次推理或关闭前有效。
 void Yolo_run(const cv::Mat &rgb640, YoloHead heads[YoloHeads]);

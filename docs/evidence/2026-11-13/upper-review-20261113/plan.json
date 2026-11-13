@@ -5,7 +5,7 @@
   "timezone": "Asia/Shanghai",
   "baseline_commit": "2ce033d",
   "status": "active",
-  "current_stage": "vision",
+  "current_stage": "chess",
   "scope": [
     "app",
     "vision",
@@ -38,7 +38,7 @@
     {
       "id": "vision",
       "task": "视觉/NPU命名、参数及顺序接口审查",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "id": "geometry",
@@ -48,7 +48,7 @@
     {
       "id": "chess",
       "task": "棋局/FEN/走法/结果确认和UCI调用",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "motion",
@@ -94,6 +94,11 @@
       "round": 4,
       "title": "固定棋盘的90点缓存与识别接口",
       "record": "round-04.json"
+    },
+    {
+      "round": 5,
+      "title": "NPU配置表与初始化状态流",
+      "record": "round-05.json"
     }
   ],
   "known_limits": [

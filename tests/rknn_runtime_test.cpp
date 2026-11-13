@@ -23,9 +23,7 @@ void check(bool value, const char *message)
 
 bool openFailed()
 {
-  try { scara::Yolo_open("mock.rknn"); }
-  catch (const std::runtime_error&) { return true; }
-  return false;
+  return scara::Yolo_open("mock.rknn")==false;
 }
 }
 
@@ -174,8 +172,8 @@ int main()
     scara::Yolo_close();
     check(failed && !contextOpen && !alive, "Unsupported output was accepted or leaked resources");
     badOutput = false;
-    scara::Yolo_open("mock.rknn");
-    scara::Yolo_open("mock.rknn");
+    check(scara::Yolo_open("mock.rknn"), "Cannot open test model");
+    check(scara::Yolo_open("mock.rknn"), "Cannot reopen test model");
     check(contextOpen && alive==4, "Reopening the fixed model leaked its previous buffers");
     cv::Mat storage(648,656,CV_8UC3,cv::Scalar(99,88,77));
     cv::Mat rgb = storage(cv::Rect(3,4,640,640));
