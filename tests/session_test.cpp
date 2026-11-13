@@ -29,18 +29,15 @@ int main()
     try
     {
         scara::Session session;
-        scara::Camera camera;
-        camera.id = "session-test-only";
-        camera.imageSize = {1280, 720};
         std::vector<scara::PointPair> fit, checks;
         auto base = [](cv::Point2d p) { return cv::Point2d(p.x * .25 - 150, -p.y * .3 - 150); };
         for (cv::Point2d p : std::vector<cv::Point2d>{{20, 20}, {1220, 20}, {1220, 690}, {20, 690}})
             fit.push_back({p, base(p)});
         checks.push_back({{600, 350}, base({600, 350})});
         scara::PlaneMap plane;
-        scara::calibratePlane(camera, "session-plane", 0, .001, fit, checks, plane);
+        scara::calibratePlane("session-plane", 0, .001, fit, checks, plane);
         scara::Board grid;
-        scara::boardFromCorners(camera, "grid", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
+        scara::boardFromCorners("grid", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
         check(scara::FixedBoard_setup(plane, grid, session.layout), "Layout setup failed");
         check(scara::Arm_load("tests/fixtures/upper-app/arm-registration.json", session.arm), "Arm load failed");
         check(scara::WorkHeights_load("tests/fixtures/upper-app/pick-plan.json", session.heights),

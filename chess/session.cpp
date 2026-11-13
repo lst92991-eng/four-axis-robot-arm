@@ -8,7 +8,7 @@ void Session_observe(Session &session, const std::string &frameId, const std::ve
 {
     Observation current, stable;
     FixedBoard_assign(session.layout, frameId, pieces, sceneClear, current);
-    session.stable.update(session.layout.grid, current, stable);
+    session.stable.update(current, stable);
     chessObservation(session.layout.grid, stable, stable.valid, session.observed);
 }
 

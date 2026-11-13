@@ -71,6 +71,12 @@
       "title": "合并标定入口和XY输出",
       "cpp_nloc": 1979,
       "checks": "14 CTest, 60 Python; retained outputs identical"
+    },
+    {
+      "round": 4,
+      "title": "固定相机配置与三帧稳定确认",
+      "cpp_nloc": 1930,
+      "checks": "14 CTest, 60 Python; 14400-case digest and all saved outputs identical"
     }
   ]
 }

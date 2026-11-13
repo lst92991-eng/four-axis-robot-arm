@@ -22,7 +22,7 @@ void FixedBoard_assign(FixedBoard &fixed, const std::string &frameId, const std:
                        bool sceneClear, Observation &observation)
 {
     fixed.grid.frameId = frameId;
-    assignPieces(fixed.grid.geometryCamera, fixed.grid, frameId, pieces, sceneClear, observation);
+    assignPieces(fixed.grid, frameId, pieces, sceneClear, observation);
 }
 
 bool FixedBoard_target(const FixedBoard &fixed, int column, int row, const std::string &frameId, cv::Point2d &baseMm)

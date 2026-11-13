@@ -6,11 +6,15 @@
 
 int main()
 {
+    scara::Board original;
+#ifdef SCARA_OLD_GEOMETRY_API
     scara::Camera camera;
     camera.id = "assignment-equivalence-only";
     camera.imageSize = {1280, 720};
-    scara::Board original;
     scara::boardFromCorners(camera, "frame", {{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
+#else
+    scara::boardFromCorners("frame", {{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
+#endif
     uint64_t digest = 1469598103934665603ULL;
     int cases = 0;
     auto add = [&](uint64_t value)
@@ -48,7 +52,7 @@ int main()
                 scara::assignPieces(camera, board, frame, pieces, transform, scara::DetectionSpace::Original,
                                     sceneClear, {}, result);
 #else
-                scara::assignPieces(camera, board, frame, pieces, sceneClear, result);
+                scara::assignPieces(board, frame, pieces, sceneClear, result);
 #endif
                 add(result.valid);
                 for (int i = 0; i < scara::Cells; ++i)

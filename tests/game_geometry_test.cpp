@@ -12,23 +12,16 @@ void check(bool value, const char *message)
     ++checks;
     if (!value) throw std::runtime_error(message);
 }
-scara::Camera camera()
-{
-    scara::Camera c;
-    c.id = "synthetic-game-test-only";
-    c.imageSize = {1280, 720};
-    return c;
-}
+
 scara::Board grid()
 {
     scara::Board result;
-    scara::boardFromCorners(camera(), "frame-1", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, result);
+    scara::boardFromCorners("frame-1", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, result);
     return result;
 }
 scara::Observation observed(const chess::Board &board)
 {
     scara::Observation o;
-    o.cameraId = camera().id;
     o.frameId = "frame-1";
     o.valid = true;
     const std::string symbols = scara::PieceSymbols;
@@ -48,7 +41,7 @@ scara::PlaneMap plane()
     for (auto p : std::vector<cv::Point2d>{{200, 200}, {500, 350}, {800, 500}})
         verify.push_back({p, p * .1});
     scara::PlaneMap result;
-    scara::calibratePlane(camera(), "synthetic-only", 0, .001, fit, verify, result);
+    scara::calibratePlane("synthetic-only", 0, .001, fit, verify, result);
     return result;
 }
 } // namespace

@@ -40,7 +40,7 @@ void saveImage(const std::string &path, const cv::Mat &image)
     writeBytes(path, {b.begin(), b.end()});
 }
 // 四角依次为红方左下、右下、黑方右上、左上；方向由首次示教确认。
-void getBoard(const cv::FileStorage &file, const Camera &camera, const std::string &frame, Board &board)
+void getBoard(const cv::FileStorage &file, const std::string &frame, Board &board)
 {
     require((std::string)file["mode"] == "manual", "Fixed board requires saved manual corners");
     auto points = file["corners"];
@@ -51,24 +51,23 @@ void getBoard(const cv::FileStorage &file, const Camera &camera, const std::stri
         require(points[i].size() == 2, "Corner must have two coordinates");
         corners[i] = {number(points[i][0]), number(points[i][1])};
     }
-    boardFromCorners(camera, frame, corners, (int)file["canonical_order_confirmed"] == 1, board);
+    boardFromCorners(frame, corners, (int)file["canonical_order_confirmed"] == 1, board);
 }
 void inspect(const std::string &config, const std::string &output)
 {
     auto fs = readStorage(config);
-    Camera camera;
-    readCamera(fs["camera"], camera);
+    checkCamera(fs["camera"]);
     std::string frame = (std::string)fs["frame_id"];
     cv::Mat image;
     imageFile(relativePath(config, (std::string)fs["image"]), image);
-    require(image.size() == camera.imageSize, "Image size differs from camera profile");
+    require(image.size() == cv::Size(ImageWidth, ImageHeight), "Image size differs from camera profile");
     Board board;
     PlaneMap plane;
-    getBoard(fs, camera, frame, board);
+    getBoard(fs, frame, board);
     if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
         loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
     auto result = memoryStorage(true);
-    result << "motion_enabled" << 0 << "single_frame_only" << 1 << "camera_id" << camera.id << "frame_id" << frame
+    result << "motion_enabled" << 0 << "single_frame_only" << 1 << "camera_id" << CameraId << "frame_id" << frame
            << "geometry_valid" << (int)board.geometryValid << "orientation_valid" << (int)board.orientationValid
            << "orientation_source" << board.orientationSource << "grid_score" << board.gridScore << "points" << "[";
     if (board.geometryValid)

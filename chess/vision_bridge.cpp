@@ -8,8 +8,7 @@ void chessObservation(const Board &grid, const Observation &source, bool stable,
     for (auto &row : result.board)
         row.fill('?');
     result.complete = grid.geometryValid && grid.orientationValid && source.valid && source.issues.empty() &&
-                      !grid.frameId.empty() && grid.frameId == source.frameId && !grid.cameraId.empty() &&
-                      grid.cameraId == source.cameraId;
+                      !grid.frameId.empty() && grid.frameId == source.frameId;
     for (int rank = 0; rank < Rows; ++rank)
     {
         for (int col = 0; col < Columns; ++col)

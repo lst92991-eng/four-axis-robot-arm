@@ -12,17 +12,14 @@ int main()
 {
     try
     {
-        scara::Camera camera;
-        camera.id = "fixed-board-test-only";
-        camera.imageSize = {1280, 720};
         std::vector<scara::PointPair> fit, checks;
         for (cv::Point2d pixel : std::vector<cv::Point2d>{{20, 20}, {1220, 20}, {1220, 690}, {20, 690}})
             fit.push_back({pixel, pixel * .1});
         checks.push_back({{600, 350}, {60, 35}});
         scara::PlaneMap plane;
-        scara::calibratePlane(camera, "fixed-plane", 0, .001, fit, checks, plane);
+        scara::calibratePlane("fixed-plane", 0, .001, fit, checks, plane);
         scara::Board grid;
-        scara::boardFromCorners(camera, "grid-0", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
+        scara::boardFromCorners("grid-0", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
         scara::FixedBoard fixed;
         check(scara::FixedBoard_setup(plane, grid, fixed), "Cannot prepare fixed board");
         for (int row = 0; row < 10; ++row)

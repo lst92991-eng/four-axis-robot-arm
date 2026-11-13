@@ -81,18 +81,9 @@ cv::Point2d project(const cv::Matx33d &h, cv::Point2d p)
     require(std::isfinite(q[2]) && std::abs(q[2]) > 1e-10, "Projection at infinity");
     return {q[0] / q[2], q[1] / q[2]};
 }
-void Camera::validate() const
+void calibratePlane(const std::string &id, double z, double tolerance, const std::vector<PointPair> &fit,
+                    const std::vector<PointPair> &checks, PlaneMap &map)
 {
-    require(!id.empty() && imageSize.width > 0 && imageSize.height > 0, "Camera ID/size required");
-}
-bool Camera::sameGeometry(const Camera &other) const
-{
-    return id == other.id && imageSize == other.imageSize;
-}
-void calibratePlane(const Camera &camera, const std::string &id, double z, double tolerance,
-                    const std::vector<PointPair> &fit, const std::vector<PointPair> &checks, PlaneMap &map)
-{
-    camera.validate();
     require(!id.empty(), "Calibration ID required");
     require(std::isfinite(z) && std::isfinite(tolerance) && tolerance > 0, "Real plane Z and error tolerance required");
     require(fit.size() >= 4 && !checks.empty(), "Need >=4 fit pairs and an independent check pair");
@@ -103,7 +94,7 @@ void calibratePlane(const Camera &camera, const std::string &id, double z, doubl
     {
         const auto &point = samples[i];
         require(finite(point.pixel) && finite(point.baseXY) && point.pixel.x >= 0 && point.pixel.y >= 0 &&
-                    point.pixel.x < camera.imageSize.width && point.pixel.y < camera.imageSize.height,
+                    point.pixel.x < ImageWidth && point.pixel.y < ImageHeight,
                 "Invalid measured point");
         for (size_t j = 0; j < i; ++j)
             require(cv::norm(point.pixel - samples[j].pixel) > 1 && cv::norm(point.baseXY - samples[j].baseXY) > 1e-6,
@@ -118,7 +109,6 @@ void calibratePlane(const Camera &camera, const std::string &id, double z, doubl
     auto coverage = hull(pixels);
     hull(xy);
     PlaneMap m;
-    m.camera = camera;
     m.id = id;
     m.planeZmm = z;
     m.allowedErrorMm = tolerance;
@@ -132,23 +122,16 @@ void calibratePlane(const Camera &camera, const std::string &id, double z, doubl
                  m.fitError.maxMm <= tolerance && m.checkError.maxMm <= tolerance;
     map = m;
 }
-void saveCamera(cv::FileStorage &fs, const Camera &c)
+// 只在配置入口核对固定机位；帧循环不重复比较多套相机参数。
+void checkCamera(const cv::FileNode &node)
 {
-    fs << "camera" << "{" << "id" << c.id << "width" << c.imageSize.width << "height" << c.imageSize.height << "K"
-       << cv::Mat() << "distortion" << cv::Mat() << "}";
-}
-void readCamera(const cv::FileNode &n, Camera &camera)
-{
-    Camera c;
-    n["id"] >> c.id;
-    n["width"] >> c.imageSize.width;
-    n["height"] >> c.imageSize.height;
+    require((std::string)node["id"] == CameraId && (int)node["width"] == ImageWidth &&
+                (int)node["height"] == ImageHeight,
+            "Layout must match the fixed 1280x720 camera");
     cv::Mat intrinsic, distortion;
-    if (!n["K"].empty()) n["K"] >> intrinsic;
-    if (!n["distortion"].empty()) n["distortion"] >> distortion;
+    if (!node["K"].empty()) node["K"] >> intrinsic;
+    if (!node["distortion"].empty()) node["distortion"] >> distortion;
     require(intrinsic.empty() && distortion.empty(), "Fixed layout uses validated raw camera pixels");
-    c.validate();
-    camera = c;
 }
 void savePlane(const std::string &path, const PlaneMap &m)
 {
@@ -156,7 +139,8 @@ void savePlane(const std::string &path, const PlaneMap &m)
     auto fs = memoryStorage();
     fs << "schema_version" << 1 << "calibration_id" << m.id << "plane_z_mm" << m.planeZmm << "allowed_error_mm"
        << m.allowedErrorMm;
-    saveCamera(fs, m.camera);
+    fs << "camera" << "{" << "id" << CameraId << "width" << ImageWidth << "height" << ImageHeight << "K" << cv::Mat()
+       << "distortion" << cv::Mat() << "}";
     fs << "pixel_to_base" << cv::Mat(m.pixelToBase) << "fit_rms_mm" << m.fitError.rmsMm << "fit_max_mm"
        << m.fitError.maxMm << "check_rms_mm" << m.checkError.rmsMm << "check_max_mm" << m.checkError.maxMm;
     fs << "fit_errors_mm" << m.fitError.errorsMm << "check_errors_mm" << m.checkError.errorsMm;
@@ -170,14 +154,13 @@ void loadPlane(const std::string &path, PlaneMap &map)
     require(fs["schema_version"].empty() || (int)fs["schema_version"] == 1, "Unsupported calibration schema");
     require(fs["plane_z_mm"].isReal() || fs["plane_z_mm"].isInt(), "Plane height is missing");
     require(fs["allowed_error_mm"].isReal() || fs["allowed_error_mm"].isInt(), "Validation tolerance is missing");
-    Camera camera;
     PlaneMap m;
     std::vector<PointPair> fit, checks;
     readPairs(fs["fit_points"], fit);
     readPairs(fs["check_points"], checks);
-    readCamera(fs["camera"], camera);
-    calibratePlane(camera, (std::string)fs["calibration_id"], (double)fs["plane_z_mm"], (double)fs["allowed_error_mm"],
-                   fit, checks, m);
+    checkCamera(fs["camera"]);
+    calibratePlane((std::string)fs["calibration_id"], (double)fs["plane_z_mm"], (double)fs["allowed_error_mm"], fit,
+                   checks, m);
     if (!fs["pixel_to_base"].empty())
     {
         cv::Mat saved;
@@ -191,15 +174,13 @@ void loadPlane(const std::string &path, PlaneMap &map)
     map = m;
 }
 
-void assignPieces(const Camera &camera, const Board &board, const std::string &frameId,
-                  const std::vector<Detection> &detections, bool clear, Observation &observation)
+void assignPieces(const Board &board, const std::string &frameId, const std::vector<Detection> &detections, bool clear,
+                  Observation &observation)
 {
     observation = {};
-    observation.cameraId = camera.id;
     observation.frameId = frameId;
     observation.pieces.fill(Unknown);
-    if (!board.geometryValid || !board.orientationValid || board.cameraId != camera.id ||
-        !camera.sameGeometry(board.geometryCamera) || frameId.empty() || frameId != board.frameId)
+    if (!board.geometryValid || !board.orientationValid || frameId.empty() || frameId != board.frameId)
         observation.issues.push_back("geometry/orientation/frame unavailable");
     if (!observation.issues.empty()) return;
     if (clear)
@@ -215,7 +196,7 @@ void assignPieces(const Camera &camera, const Board &board, const std::string &f
         bool valid = piece.classId >= 0 && piece.classId < YoloClasses && std::isfinite(piece.confidence) &&
                      piece.confidence >= MinScore && piece.confidence <= 1 && piece.bbox.width > 0 &&
                      piece.bbox.height > 0 && finite(center) && center.x >= 0 && center.y >= 0 &&
-                     center.x < camera.imageSize.width && center.y < camera.imageSize.height;
+                     center.x < ImageWidth && center.y < ImageHeight;
         if (!valid)
         {
             observation.issues.push_back("invalid or uncertain detection");
@@ -237,25 +218,17 @@ void assignPieces(const Camera &camera, const Board &board, const std::string &f
     }
     observation.valid = observation.issues.empty();
 }
-Stabilizer::Stabilizer(int frames, double tolerance) : needed_(frames), tolerance_(tolerance)
-{
-    require(frames >= 2 && tolerance >= 0, "Invalid stabilizer parameters");
-    previous_.pieces.fill(Unknown);
-}
 void Stabilizer::reset()
 {
     count_ = 0;
     previous_ = Observation{};
-    previousBoard_ = Board{};
 }
-void Stabilizer::update(const Board &board, const Observation &input, Observation &result)
+void Stabilizer::update(const Observation &input, Observation &result)
 {
     result = input;
-    if (!input.valid || !board.geometryValid || !board.orientationValid || input.cameraId != board.cameraId ||
-        input.frameId != board.frameId)
+    if (!input.valid)
     {
         reset();
-        result.valid = false;
         return;
     }
     if (input.frameId == previous_.frameId)
@@ -264,22 +237,18 @@ void Stabilizer::update(const Board &board, const Observation &input, Observatio
         result.issues.push_back("repeated frame is not new evidence");
         return;
     }
-    bool same = count_ > 0 && input.cameraId == previous_.cameraId && input.pieces == previous_.pieces;
-    for (int i : {0, 8, 81, 89})
-        if (cv::norm(board.intersections[i] - previousBoard_.intersections[i]) > tolerance_) same = false;
-    count_ = same ? count_ + 1 : 1;
+    bool same = count_ > 0 && input.pieces == previous_.pieces;
+    count_ = same ? std::min(count_ + 1, 3) : 1;
     previous_ = input;
-    previousBoard_ = board;
-    result.valid = count_ >= needed_;
+    result.valid = count_ >= 3;
     if (!result.valid) result.issues.push_back("waiting for stable distinct frames");
 }
 bool gridTarget(const PlaneMap &map, const Board &board, int c, int r, const std::string &currentFrameId,
                 cv::Point2d &baseMm)
 {
     baseMm = {};
-    if (!map.accepted || !board.geometryValid || !board.orientationValid || map.camera.id != board.cameraId ||
-        !map.camera.sameGeometry(board.geometryCamera) || currentFrameId.empty() || currentFrameId != board.frameId ||
-        c < 0 || c >= Columns || r < 0 || r >= Rows)
+    if (!map.accepted || !board.geometryValid || !board.orientationValid || currentFrameId.empty() ||
+        currentFrameId != board.frameId || c < 0 || c >= Columns || r < 0 || r >= Rows)
         return false;
     auto pixel = board.intersections[r * Columns + c];
     if (map.validPixelHull.size() < 3 || cv::pointPolygonTest(map.validPixelHull, pixel, true) < -1e-4) return false;

@@ -16,16 +16,14 @@ void require(bool value, const char *message)
 }
 } // namespace
 
-void boardFromCorners(const Camera &camera, const std::string &frame, const std::array<cv::Point2d, 4> &raw,
-                      bool confirmed, Board &board)
+void boardFromCorners(const std::string &frame, const std::array<cv::Point2d, 4> &raw, bool confirmed, Board &board)
 {
-    camera.validate();
     require(!frame.empty(), "Frame ID required");
     std::vector<cv::Point2f> p;
     for (auto v : raw)
     {
-        require(std::isfinite(v.x) && std::isfinite(v.y) && v.x >= 0 && v.y >= 0 && v.x < camera.imageSize.width &&
-                    v.y < camera.imageSize.height,
+        require(std::isfinite(v.x) && std::isfinite(v.y) && v.x >= 0 && v.y >= 0 && v.x < ImageWidth &&
+                    v.y < ImageHeight,
                 "Invalid raw corner");
         p.push_back(v);
     }
@@ -35,8 +33,6 @@ void boardFromCorners(const Camera &camera, const std::string &frame, const std:
     Board b;
     std::copy(matrix.ptr<double>(), matrix.ptr<double>() + 9, b.gridToPixel.val);
     require(std::abs(cv::determinant(matrix)) > 1e-14, "Degenerate board quadrilateral");
-    b.cameraId = camera.id;
-    b.geometryCamera = camera;
     b.frameId = frame;
     for (int row = 0; row < Rows; ++row)
         for (int col = 0; col < Columns; ++col)

@@ -29,13 +29,7 @@ void rejects(const std::function<void()> &f)
     }
     check(thrown, "Invalid input was accepted");
 }
-Camera camera()
-{
-    Camera c;
-    c.id = "synthetic-test-only";
-    c.imageSize = {640, 480};
-    return c;
-}
+
 const cv::Matx33d BaseH(0.4, 0.02, 100, -0.01, 0.5, -80, 0.0001, -0.00005, 1);
 PlaneMap plane()
 {
@@ -45,13 +39,13 @@ PlaneMap plane()
     for (auto p : std::vector<cv::Point2d>{{150, 180}, {320, 260}, {450, 300}})
         validation.push_back({p, project(BaseH, p)});
     PlaneMap result;
-    calibratePlane(camera(), "synthetic-map-do-not-use-on-robot", 12, 0.001, fit, validation, result);
+    calibratePlane("synthetic-map-do-not-use-on-robot", 12, 0.001, fit, validation, result);
     return result;
 }
 Board board(const std::string &frame = "1")
 {
     Board result;
-    boardFromCorners(camera(), frame, {{{150, 80}, {500, 100}, {480, 400}, {130, 380}}}, true, result);
+    boardFromCorners(frame, {{{150, 80}, {500, 100}, {480, 400}, {130, 380}}}, true, result);
     return result;
 }
 void calibrationTests()
@@ -66,14 +60,14 @@ void calibrationTests()
     auto bad = p.checkPoints;
     bad[0].baseXY.x += 10;
     PlaneMap attempted;
-    calibratePlane(p.camera, p.id, p.planeZmm, p.allowedErrorMm, p.fitPoints, bad, attempted);
+    calibratePlane(p.id, p.planeZmm, p.allowedErrorMm, p.fitPoints, bad, attempted);
     check(!attempted.accepted, "Validation error not rejected");
     rejects(
         [&]
         {
             auto v = p.checkPoints;
             v[0] = p.fitPoints[0];
-            calibratePlane(p.camera, p.id, 0, 1, p.fitPoints, v, attempted);
+            calibratePlane(p.id, 0, 1, p.fitPoints, v, attempted);
         });
     rejects(
         [&]
@@ -81,7 +75,7 @@ void calibrationTests()
             std::vector<PointPair> line;
             for (int i = 0; i < 4; ++i)
                 line.push_back({{50. + i * 50, 100}, {double(i), 0}});
-            calibratePlane(p.camera, p.id, 0, 1, line, p.checkPoints, attempted);
+            calibratePlane(p.id, 0, 1, line, p.checkPoints, attempted);
         });
     auto altered = readBytes(path);
     auto at = altered.find("pixel_to_base:");
@@ -90,6 +84,13 @@ void calibrationTests()
     auto corrupt = p;
     corrupt.pixelToBase(0, 2) += 30;
     savePlane(path, corrupt);
+    rejects([&] { loadPlane(path, attempted); });
+    savePlane(path, p);
+    auto wrongCamera = readBytes(path);
+    auto cameraAt = wrongCamera.find(CameraId);
+    check(cameraAt != std::string::npos, "Saved camera identity missing");
+    wrongCamera.replace(cameraAt, sizeof(CameraId) - 1, "different-camera");
+    writeBytes(path, wrongCamera);
     rejects([&] { loadPlane(path, attempted); });
     savePlane(path, p);
 }
@@ -105,12 +106,6 @@ void targetTests()
     auto unknown = b;
     unknown.orientationValid = false;
     check(!gridTarget(p, unknown, 3, 4, "1", rejected), "Unoriented board generated target");
-    auto wrong = b;
-    wrong.cameraId = "different-camera";
-    check(!gridTarget(p, wrong, 3, 4, "1", rejected), "Different camera accepted");
-    wrong = b;
-    wrong.geometryCamera.imageSize.width += 1;
-    check(!gridTarget(p, wrong, 3, 4, "1", rejected), "Changed numeric camera profile accepted under same ID");
     auto limited = p;
     limited.validPixelHull = {{20, 20}, {80, 20}, {80, 80}, {20, 80}};
     rejected = t;
@@ -124,12 +119,12 @@ void targetTests()
         corners[j++] = project(move, b.intersections[i]);
     Board moved;
     cv::Point2d mt;
-    boardFromCorners(camera(), "2", corners, true, moved);
+    boardFromCorners("2", corners, true, moved);
     bool movedValid = gridTarget(p, moved, 3, 4, "2", mt);
     check(movedValid && cv::norm(mt - project(BaseH, project(move, b.intersections[39]))) < .001,
           "Moved board incorrectly requires/reuses old robot calibration");
     check(cv::norm(mt - t) > 1, "Moved board target did not change");
-    rejects([&] { boardFromCorners(camera(), "x", {{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
+    rejects([&] { boardFromCorners("x", {{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
 }
 void assignmentTests()
 {
@@ -137,33 +132,33 @@ void assignmentTests()
     auto center = b.intersections[39];
     Detection d{12, .9, {center.x - 12, center.y - 12, 24, 24}};
     Observation o, hidden, collision, stale, offGrid, stableResult;
-    assignPieces(camera(), b, "1", {d}, true, o);
+    assignPieces(b, "1", {d}, true, o);
     check(o.valid && o.pieces[39] == 12 && o.pieces[0] == Empty, "Grid assignment failed");
-    assignPieces(camera(), b, "1", {d}, false, hidden);
+    assignPieces(b, "1", {d}, false, hidden);
     check(!hidden.valid && hidden.pieces[0] == Unknown, "Occluded cell treated as empty");
-    assignPieces(camera(), b, "1", {d, d}, true, collision);
+    assignPieces(b, "1", {d, d}, true, collision);
     check(!collision.valid && collision.pieces[39] == Unknown, "Collision silently resolved");
-    assignPieces(camera(), b, "wrong", {d}, true, stale);
+    assignPieces(b, "wrong", {d}, true, stale);
     check(!stale.valid, "Mixed frames accepted");
     auto p = project(b.gridToPixel, {3.48, 4});
     d.bbox = {p.x - 12, p.y - 12, 24, 24};
-    assignPieces(camera(), b, "1", {d}, true, offGrid);
+    assignPieces(b, "1", {d}, true, offGrid);
     check(!offGrid.valid, "Off-grid piece accepted");
-    Stabilizer stable(3);
-    stable.update(b, o, stableResult);
+    Stabilizer stable;
+    stable.update(o, stableResult);
     check(!stableResult.valid, "Single frame stable");
-    stable.update(b, o, stableResult);
+    stable.update(o, stableResult);
     check(!stableResult.valid, "Repeated frame counted");
     b.frameId = o.frameId = "2";
-    stable.update(b, o, stableResult);
+    stable.update(o, stableResult);
     check(!stableResult.valid, "Two frames stable");
     b.frameId = o.frameId = "3";
-    stable.update(b, o, stableResult);
+    stable.update(o, stableResult);
     check(stableResult.valid, "Three frames did not stabilize");
     b.frameId = o.frameId = "4";
-    b.intersections[0].x += 10;
-    stable.update(b, o, stableResult);
-    check(!stableResult.valid, "Board motion failed to reset stability");
+    stable.reset(); // 重新示教固定棋盘后，重新累计稳定帧。
+    stable.update(o, stableResult);
+    check(!stableResult.valid, "New fixed layout failed to restart stability");
 }
 } // namespace
 int main()
