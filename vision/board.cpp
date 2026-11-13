@@ -5,8 +5,6 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
-#include <cstdlib>
-#include <iostream>
 #include <optional>
 
 namespace scara
@@ -18,12 +16,12 @@ void require(bool value, const char *message)
 {
     if (!value) throw std::runtime_error(message);
 }
-cv::Mat gray(const cv::Mat &image)
+void gray(const cv::Mat &image, cv::Mat &grayscale)
 {
-    if (image.channels() == 1) return image;
-    cv::Mat g;
-    cv::cvtColor(image, g, cv::COLOR_BGR2GRAY);
-    return g;
+    if (image.channels() == 1)
+        grayscale = image;
+    else
+        cv::cvtColor(image, grayscale, cv::COLOR_BGR2GRAY);
 }
 cv::Matx33d homography(const std::vector<cv::Point2f> &a, const std::vector<cv::Point2f> &b)
 {
@@ -223,6 +221,212 @@ double structureScore(const cv::Mat &binary, const cv::Mat &vertical, const cv::
         }
     return .55 * support / n + .15 * edges / ne + .20 * palace / np + .10 * (1 - river / nr);
 }
+// 格线的主方向，角度用弧度；余弦/正弦用于投影边界点。
+struct LineDirection
+{
+    double radians = 0;
+    double cosine = 1;
+    double sine = 0;
+    bool found = false;
+};
+
+void addQuad(std::vector<cv::Point2f> q, std::vector<std::vector<cv::Point2f>> &quads)
+{
+    cv::Point2f center;
+    for (auto v : q)
+        center += v;
+    center *= .25f;
+    std::sort(q.begin(), q.end(), [&](auto a, auto b)
+              { return std::atan2(a.y - center.y, a.x - center.x) < std::atan2(b.y - center.y, b.x - center.x); });
+    auto first = std::min_element(q.begin(), q.end(), [](auto a, auto b) { return a.x + a.y < b.x + b.y; });
+    std::rotate(q.begin(), first, q.end());
+    std::reverse(q.begin() + 1, q.end());
+    quads.push_back(q);
+}
+
+void lineDirection(const std::vector<cv::Vec4i> &lines, LineDirection &axis)
+{
+    // 按线段长度投票；方向按90度折叠，横竖格线落在同一组。
+    std::array<double, 90> votes{};
+    std::vector<std::pair<double, double>> angles;
+    for (auto l : lines)
+    {
+        double dx = l[2] - l[0], dy = l[3] - l[1], a = std::fmod(std::atan2(dy, dx) * 180 / CV_PI + 180, 90),
+               weight = std::hypot(dx, dy);
+        angles.emplace_back(a, weight);
+        int bin = (int)std::lround(a) % 90;
+        for (int d = -2; d <= 2; ++d)
+            votes[(bin + d + 90) % 90] += weight;
+    }
+    int peak = (int)std::distance(votes.begin(), std::max_element(votes.begin(), votes.end()));
+    double sum = 0, weight = 0;
+    for (auto a : angles)
+    {
+        double delta = std::remainder(a.first - peak, 90);
+        if (std::abs(delta) <= 4)
+        {
+            sum += (peak + delta) * a.second;
+            weight += a.second;
+        }
+    }
+    axis.radians = weight ? sum / weight * CV_PI / 180 : 0;
+    axis.cosine = std::cos(axis.radians);
+    axis.sine = std::sin(axis.radians);
+    axis.found = weight > 0;
+}
+
+void lineQuads(const std::vector<cv::Vec4i> &lines, const LineDirection &axis,
+               std::vector<std::vector<cv::Point2f>> &quads)
+{
+    if (!axis.found) return;
+    double theta = axis.radians, co = axis.cosine, si = axis.sine;
+    // 把长线投到主方向上，用两端位置组成候选四边形。
+    std::vector<double> u, v;
+    for (auto l : lines)
+    {
+        double a = std::fmod(std::atan2(double(l[3] - l[1]), double(l[2] - l[0])) * 180 / CV_PI + 180, 90);
+        if (std::abs(std::remainder(a - theta * 180 / CV_PI, 90)) > 5) continue;
+        for (int k : {0, 2})
+        {
+            u.push_back(co * l[k] + si * l[k + 1]);
+            v.push_back(-si * l[k] + co * l[k + 1]);
+        }
+    }
+    std::sort(u.begin(), u.end());
+    std::sort(v.begin(), v.end());
+    if (u.size() >= 16)
+        for (double trim : {.05, .10, .15})
+        {
+            size_t lo = (size_t)(trim * (u.size() - 1)), hi = (size_t)((1 - trim) * (u.size() - 1));
+            double padU = (u[hi] - u[lo]) * .04, padV = (v[hi] - v[lo]) * .04;
+            auto point = [&](double x, double y)
+            { return cv::Point2f((float)(co * x - si * y), (float)(si * x + co * y)); };
+            addQuad({point(u[lo] - padU, v[lo] - padV), point(u[hi] + padU, v[lo] - padV),
+                     point(u[hi] + padU, v[hi] + padV), point(u[lo] - padU, v[hi] + padV)},
+                    quads);
+        }
+}
+
+void contourQuads(const std::vector<std::vector<cv::Point>> &contours, size_t pixelCount, const LocateOptions &options,
+                  const LineDirection &axis, std::vector<std::vector<cv::Point2f>> &quads)
+{
+    // 闭合轮廓直接提供四角；不规则轮廓用外接框提出候选。
+    double co = axis.cosine, si = axis.sine;
+    for (const auto &c : contours)
+    {
+        double area = std::abs(cv::contourArea(c));
+        if (area < pixelCount * options.minAreaFraction || area > pixelCount * 0.99) continue;
+        std::vector<cv::Point> p;
+        cv::approxPolyDP(c, p, 0.02 * cv::arcLength(c, true), true);
+        std::vector<cv::Point2f> q;
+        if (p.size() == 4 && cv::isContourConvex(p))
+            q.assign(p.begin(), p.end());
+        else
+        {
+            // Cables/occlusions can join or break the outer contour. This is only a proposal;
+            // acceptance still requires the internal 9-by-10 lattice and line refinement.
+            auto box = cv::minAreaRect(c);
+            if (std::min(box.size.width, box.size.height) < 80) continue;
+            cv::Point2f corners[4];
+            box.points(corners);
+            q.assign(corners, corners + 4);
+        }
+        // Red-view column-right / rank-away is counterclockwise in a normal image's down-positive Y.
+        // This fixes chirality before resolving the remaining 180-degree end ambiguity.
+        addQuad(q, quads);
+        if (axis.found && p.size() != 4)
+        {
+            double u0 = 1e9, u1 = -1e9, v0 = 1e9, v1 = -1e9;
+            for (auto point : c)
+            {
+                double u = co * point.x + si * point.y, v = -si * point.x + co * point.y;
+                u0 = std::min(u0, u);
+                u1 = std::max(u1, u);
+                v0 = std::min(v0, v);
+                v1 = std::max(v1, v);
+            }
+            auto point = [&](double u, double v)
+            { return cv::Point2f((float)(co * u - si * v), (float)(si * u + co * v)); };
+            addQuad({point(u0, v0), point(u1, v0), point(u1, v1), point(u0, v1)}, quads);
+        }
+    }
+}
+
+void boardEdges(const cv::Mat &grayscale, cv::Mat &edges)
+{
+    cv::Mat blur;
+    cv::GaussianBlur(grayscale, blur, {5, 5}, 1);
+    cv::Canny(blur, edges, 40, 120);
+    cv::morphologyEx(edges, edges, cv::MORPH_CLOSE, cv::getStructuringElement(cv::MORPH_RECT, {3, 3}));
+}
+
+void borderCandidates(const cv::Mat &edges, const LocateOptions &options, std::vector<std::vector<cv::Point2f>> &quads)
+{
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> lines;
+    LineDirection axis;
+    quads.clear();
+    cv::findContours(edges, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
+    cv::HoughLinesP(edges, lines, 1, CV_PI / 180, 80, std::min(edges.cols, edges.rows) * .28, 35);
+    lineDirection(lines, axis);
+    lineQuads(lines, axis, quads);
+    contourQuads(contours, edges.total(), options, axis, quads);
+    std::sort(quads.begin(), quads.end(),
+              [](const auto &a, const auto &b) { return cv::contourArea(a) > cv::contourArea(b); });
+    if (quads.size() > 24) quads.resize(24);
+}
+
+void chooseGrid(const cv::Mat &g, const Camera &camera, const std::string &frame,
+                const std::vector<std::vector<cv::Point2f>> &quads, const LocateOptions &options, Board &board)
+{
+    // 每个候选旋到四种方向，依据格线、河界和九宫选择得分最高的网格。
+    Board best;
+    best.cameraId = camera.id;
+    best.frameId = frame;
+    best.orientationSource = "natural_grid_unoriented";
+    const cv::Size size(480, 528);
+    const std::vector<cv::Point2f> rect{{0, 0}, {479, 0}, {479, 527}, {0, 527}};
+    for (const auto &quad : quads)
+        for (int rotation = 0; rotation < 4; ++rotation)
+        {
+            std::vector<cv::Point2f> q;
+            for (int i = 0; i < 4; ++i)
+                q.push_back(quad[(i + rotation) % 4]);
+            const auto pixelToRect = homography(q, rect);
+            cv::Mat warped, binary, vertical, horizontal, px, py;
+            cv::warpPerspective(g, warped, pixelToRect, size);
+            cv::adaptiveThreshold(warped, binary, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY_INV, 31, 8);
+            cv::morphologyEx(binary, vertical, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, {1, 25}));
+            cv::morphologyEx(binary, horizontal, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, {25, 1}));
+            cv::reduce(vertical, px, 0, cv::REDUCE_SUM, CV_32F);
+            cv::reduce(horizontal, py, 1, cv::REDUCE_SUM, CV_32F);
+            const auto x = fitAxis(px, Columns), y = fitAxis(py, Rows);
+            const double score = (x.score + y.score) * 0.5;
+            if (x.support < options.minLineSupport || y.support < options.minLineSupport ||
+                score < options.minGridScore)
+                continue;
+            for (int dx : {-1, 0, 1})
+                for (int dy : {-1, 0, 1})
+                    try
+                    {
+                        auto sx = x, sy = y;
+                        sx.start += dx * x.step;
+                        sy.start += dy * y.step;
+                        auto gridToRect = refineGrid(vertical, horizontal, sx, sy);
+                        const double structural = structureScore(binary, vertical, horizontal, gridToRect);
+                        if (structural < options.minGridScore || structural <= best.gridScore) continue;
+                        auto candidate = boardWithMatrix(camera, frame, pixelToRect.inv() * gridToRect);
+                        candidate.gridScore = structural;
+                        candidate.orientationSource = "natural_grid_unoriented";
+                        best = candidate;
+                    }
+                    catch (const std::exception &)
+                    { /* Reject bad extrapolation; try next natural-border candidate. */
+                    }
+        }
+    board = best;
+}
+
 } // namespace
 
 void boardFromCorners(const Camera &camera, const std::string &frame, const std::array<cv::Point2d, 4> &raw,
@@ -250,172 +454,16 @@ void locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &fr
     require(options.minAreaFraction > 0 && options.minAreaFraction < 1 && options.minLineSupport > 0 &&
                 options.minLineSupport <= 1,
             "Invalid localization options");
-    cv::Mat image;
-    camera.geometricImage(raw, image);
-    auto g = gray(image);
-    cv::Mat blur, edges;
-    cv::GaussianBlur(g, blur, {5, 5}, 1);
-    cv::Canny(blur, edges, 40, 120);
-    cv::morphologyEx(edges, edges, cv::MORPH_CLOSE, cv::getStructuringElement(cv::MORPH_RECT, {3, 3}));
-    std::vector<std::vector<cv::Point>> contours;
-    cv::findContours(edges, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
+    cv::Mat image;     // 相机几何校正后的原尺寸图。
+    cv::Mat grayscale; // 灰度图，用来寻找边框和格线。
+    cv::Mat edges;     // 边缘图，用来产生棋盘四边形候选。
     std::vector<std::vector<cv::Point2f>> quads;
-    auto addQuad = [&](std::vector<cv::Point2f> q)
-    {
-        cv::Point2f center;
-        for (auto v : q)
-            center += v;
-        center *= .25f;
-        std::sort(q.begin(), q.end(), [&](auto a, auto b)
-                  { return std::atan2(a.y - center.y, a.x - center.x) < std::atan2(b.y - center.y, b.x - center.x); });
-        auto first = std::min_element(q.begin(), q.end(), [](auto a, auto b) { return a.x + a.y < b.x + b.y; });
-        std::rotate(q.begin(), first, q.end());
-        std::reverse(q.begin() + 1, q.end());
-        quads.push_back(q);
-    };
-    // Long natural grid/border segments provide an axis even when cables deform a contour.
-    std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(edges, lines, 1, CV_PI / 180, 80, std::min(image.cols, image.rows) * .28, 35);
-    std::array<double, 90> votes{};
-    std::vector<std::pair<double, double>> angles;
-    for (auto l : lines)
-    {
-        double dx = l[2] - l[0], dy = l[3] - l[1], a = std::fmod(std::atan2(dy, dx) * 180 / CV_PI + 180, 90),
-               weight = std::hypot(dx, dy);
-        angles.emplace_back(a, weight);
-        int bin = (int)std::lround(a) % 90;
-        for (int d = -2; d <= 2; ++d)
-            votes[(bin + d + 90) % 90] += weight;
-    }
-    int peak = (int)std::distance(votes.begin(), std::max_element(votes.begin(), votes.end()));
-    double sum = 0, weight = 0;
-    for (auto a : angles)
-    {
-        double delta = std::remainder(a.first - peak, 90);
-        if (std::abs(delta) <= 4)
-        {
-            sum += (peak + delta) * a.second;
-            weight += a.second;
-        }
-    }
-    const double theta = weight ? sum / weight * CV_PI / 180 : 0, co = std::cos(theta), si = std::sin(theta);
-    if (weight > 0)
-    {
-        // Also propose a robust extent from the long-line family itself. No closed contour needed.
-        std::vector<double> u, v;
-        for (auto l : lines)
-        {
-            double a = std::fmod(std::atan2(double(l[3] - l[1]), double(l[2] - l[0])) * 180 / CV_PI + 180, 90);
-            if (std::abs(std::remainder(a - theta * 180 / CV_PI, 90)) > 5) continue;
-            for (int k : {0, 2})
-            {
-                u.push_back(co * l[k] + si * l[k + 1]);
-                v.push_back(-si * l[k] + co * l[k + 1]);
-            }
-        }
-        std::sort(u.begin(), u.end());
-        std::sort(v.begin(), v.end());
-        if (u.size() >= 16)
-            for (double trim : {.05, .10, .15})
-            {
-                size_t lo = (size_t)(trim * (u.size() - 1)), hi = (size_t)((1 - trim) * (u.size() - 1));
-                double padU = (u[hi] - u[lo]) * .04, padV = (v[hi] - v[lo]) * .04;
-                auto point = [&](double x, double y)
-                { return cv::Point2f((float)(co * x - si * y), (float)(si * x + co * y)); };
-                addQuad({point(u[lo] - padU, v[lo] - padV), point(u[hi] + padU, v[lo] - padV),
-                         point(u[hi] + padU, v[hi] + padV), point(u[lo] - padU, v[hi] + padV)});
-            }
-    }
-    for (const auto &c : contours)
-    {
-        double area = std::abs(cv::contourArea(c));
-        if (area < image.total() * options.minAreaFraction || area > image.total() * 0.99) continue;
-        std::vector<cv::Point> p;
-        cv::approxPolyDP(c, p, 0.02 * cv::arcLength(c, true), true);
-        std::vector<cv::Point2f> q;
-        if (p.size() == 4 && cv::isContourConvex(p))
-            q.assign(p.begin(), p.end());
-        else
-        {
-            // Cables/occlusions can join or break the outer contour. This is only a proposal;
-            // acceptance still requires the internal 9-by-10 lattice and line refinement.
-            auto box = cv::minAreaRect(c);
-            if (std::min(box.size.width, box.size.height) < 80) continue;
-            cv::Point2f corners[4];
-            box.points(corners);
-            q.assign(corners, corners + 4);
-        }
-        // Red-view column-right / rank-away is counterclockwise in a normal image's down-positive Y.
-        // This fixes chirality before resolving the remaining 180-degree end ambiguity.
-        addQuad(q);
-        if (weight > 0 && p.size() != 4)
-        {
-            double u0 = 1e9, u1 = -1e9, v0 = 1e9, v1 = -1e9;
-            for (auto point : c)
-            {
-                double u = co * point.x + si * point.y, v = -si * point.x + co * point.y;
-                u0 = std::min(u0, u);
-                u1 = std::max(u1, u);
-                v0 = std::min(v0, v);
-                v1 = std::max(v1, v);
-            }
-            auto point = [&](double u, double v)
-            { return cv::Point2f((float)(co * u - si * v), (float)(si * u + co * v)); };
-            addQuad({point(u0, v0), point(u1, v0), point(u1, v1), point(u0, v1)});
-        }
-    }
-    std::sort(quads.begin(), quads.end(),
-              [](const auto &a, const auto &b) { return cv::contourArea(a) > cv::contourArea(b); });
-    if (quads.size() > 24) quads.resize(24);
-    Board best;
-    best.cameraId = camera.id;
-    best.frameId = frame;
-    best.orientationSource = "natural_grid_unoriented";
-    const cv::Size size(480, 528);
-    const std::vector<cv::Point2f> rect{{0, 0}, {479, 0}, {479, 527}, {0, 527}};
-    for (const auto &quad : quads)
-        for (int rotation = 0; rotation < 4; ++rotation)
-        {
-            std::vector<cv::Point2f> q;
-            for (int i = 0; i < 4; ++i)
-                q.push_back(quad[(i + rotation) % 4]);
-            const auto pixelToRect = homography(q, rect);
-            cv::Mat warped, binary, vertical, horizontal, px, py;
-            cv::warpPerspective(g, warped, pixelToRect, size);
-            cv::adaptiveThreshold(warped, binary, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY_INV, 31, 8);
-            cv::morphologyEx(binary, vertical, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, {1, 25}));
-            cv::morphologyEx(binary, horizontal, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, {25, 1}));
-            cv::reduce(vertical, px, 0, cv::REDUCE_SUM, CV_32F);
-            cv::reduce(horizontal, py, 1, cv::REDUCE_SUM, CV_32F);
-            const auto x = fitAxis(px, Columns), y = fitAxis(py, Rows);
-            const double score = (x.score + y.score) * 0.5;
-            if (std::getenv("SCARA_GRID_DEBUG"))
-                std::cerr << "quad " << cv::contourArea(quad) << " rot " << rotation << " x " << x.start << ","
-                          << x.step << "," << x.support << " y " << y.start << "," << y.step << "," << y.support
-                          << " score " << score << '\n';
-            if (x.support < options.minLineSupport || y.support < options.minLineSupport ||
-                score < options.minGridScore)
-                continue;
-            for (int dx : {-1, 0, 1})
-                for (int dy : {-1, 0, 1})
-                    try
-                    {
-                        auto sx = x, sy = y;
-                        sx.start += dx * x.step;
-                        sy.start += dy * y.step;
-                        auto gridToRect = refineGrid(vertical, horizontal, sx, sy);
-                        const double structural = structureScore(binary, vertical, horizontal, gridToRect);
-                        if (structural < options.minGridScore || structural <= best.gridScore) continue;
-                        auto candidate = boardWithMatrix(camera, frame, pixelToRect.inv() * gridToRect);
-                        candidate.gridScore = structural;
-                        candidate.orientationSource = "natural_grid_unoriented";
-                        best = candidate;
-                    }
-                    catch (const std::exception &)
-                    { /* Reject bad extrapolation; try next natural-border candidate. */
-                    }
-        }
-    board = best;
+
+    camera.geometricImage(raw, image);
+    gray(image, grayscale);
+    boardEdges(grayscale, edges);
+    borderCandidates(edges, options, quads);
+    chooseGrid(grayscale, camera, frame, quads, options, board);
 }
 void confirmOrientation(const Board &input, bool flip, Board &board)
 {
@@ -447,7 +495,8 @@ void makeOrientationReference(const cv::Mat &raw, const Camera &camera, const Bo
     camera.geometricImage(raw, image);
     cv::Mat rectified;
     rectifiedBoard(image, b, rectified);
-    cv::Mat canonical = gray(rectified);
+    cv::Mat canonical;
+    gray(rectified, canonical);
     cv::Scalar mean, stddev;
     cv::meanStdDev(canonical(patch), mean, stddev);
     require(stddev[0] >= 8, "Reference patch lacks distinctive texture");
@@ -477,7 +526,8 @@ void orientByReference(const cv::Mat &raw, const Camera &camera, const Board &in
         cv::Mat rectified;
         confirmOrientation(input, flip != 0, b);
         rectifiedBoard(image, b, rectified);
-        cv::Mat rect = gray(rectified);
+        cv::Mat rect;
+        gray(rectified, rect);
         cv::Rect search(ref.patchRect.x - 4, ref.patchRect.y - 4, ref.patchRect.width + 8, ref.patchRect.height + 8);
         search &= cv::Rect(0, 0, RectWidth, RectHeight);
         cv::Mat score;

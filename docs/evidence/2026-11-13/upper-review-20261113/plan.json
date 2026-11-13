@@ -83,6 +83,12 @@
       "title": "棋盘与棋局坐标的显式数据流",
       "record": "round-02.json",
       "checks": "7 CTest + 55 Python + identical geometry and vision outputs"
+    },
+    {
+      "round": 3,
+      "title": "棋盘定位按图像步骤展开",
+      "record": "round-03.json",
+      "checks": "all outputs identical"
     }
   ],
   "known_limits": [

@@ -117,7 +117,7 @@ bool Camera::sameGeometry(const Camera &other) const
 }
 cv::Point2d Camera::geometricPixel(cv::Point2d raw) const
 {
-    validate();
+    // 相机配置由载入/标定入口验证一次，这里只做单点换算。
     require(finite(raw), "Nonfinite pixel");
     if (K.empty()) return raw;
     std::vector<cv::Point2d> in{raw}, out;

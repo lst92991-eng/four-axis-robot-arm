@@ -19,7 +19,7 @@ struct Camera
     cv::Mat K, distortion; // Both empty = raw pixels, subject to independent error validation.
     void validate() const;
     bool sameGeometry(const Camera &) const;
-    cv::Point2d geometricPixel(cv::Point2d raw) const;
+    cv::Point2d geometricPixel(cv::Point2d raw) const; // 使用已验证的相机配置，输入输出单位均为像素。
     void geometricImage(const cv::Mat &raw, cv::Mat &image) const;
 };
 
