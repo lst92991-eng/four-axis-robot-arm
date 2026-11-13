@@ -69,11 +69,7 @@ const YoloHead *Yolo_run(const cv::Mat &rgb)
     uint8_t *input = static_cast<uint8_t *>(Model.inputMemory->virt_addr);
     size_t rowBytes = (Model.input.w_stride ? Model.input.w_stride : YoloSize) * 3;
     for (int row = 0; row < YoloSize; ++row)
-    {
-        uint8_t *targetRow = input + row * rowBytes;
-        const uint8_t *sourceRow = rgb.ptr<uint8_t>(row);
-        std::memcpy(targetRow, sourceRow, YoloSize * 3);
-    }
+        std::memcpy(input + row * rowBytes, rgb.ptr<uint8_t>(row), YoloSize * 3);
     check(rknn_run(Model.context, nullptr), "rknn_run");
     return Model.heads;
 }

@@ -1,0 +1,81 @@
+{
+  "task_start": {
+    "commit": "760a4de",
+    "nloc": 618,
+    "scope": "YOLO + preview including HTTP and dual preview",
+    "files": {
+      "temp/yolo_live/host_preview.py": 257,
+      "temp/yolo_live/board_npu.py": 240,
+      "temp/yolo_live/dual_preview.py": 121
+    }
+  },
+  "cpp_first_draft_nloc": 402,
+  "cpp_this_change_before": 506,
+  "cpp_after": 450,
+  "reduction": 56,
+  "scope_note": "The 618-line Python module includes features not migrated into the six C++ files; do not claim equal-feature 618-to-450 savings.",
+  "production_files": [
+    {
+      "file": "app/vision_main.cpp",
+      "nloc": 53,
+      "sha256": "c47fa7a3c1a382032e2b6f1c57d7855a84d49f2b0ee7c0e450283ef382535f2d"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "nloc": 8,
+      "sha256": "9d3ee026cd2df71aafe2817274b7ff751bb75cbf7b945d02d866483f4033d1cf"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "nloc": 89,
+      "sha256": "70c328495aff84c1aaa7bbe9930382764ed73efee64e6912777fca6a5f3edc6e"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "nloc": 51,
+      "sha256": "513816666320bb44df80fd32d34a2f902bcf62c55eb3b1b3960cd7387c45628c"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "nloc": 156,
+      "sha256": "09fffcd54c7575dd6b787b782c51b0a818195b1e446bd4a5839ddfd1e8790959"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "nloc": 93,
+      "sha256": "a6c1deb5daeece028252741ab9453af14f867a4bf37cc63f84f4b65af2a0f9f4"
+    }
+  ],
+  "ctest_suites": 6,
+  "ctest_passed": true,
+  "accuracy": {
+    "frames": 16,
+    "detections": 501,
+    "identical": true,
+    "visual_correct": 64,
+    "visual_total": 64,
+    "recorded_npu_correct": 32
+  },
+  "recorded_npu_detections": 152,
+  "recorded_npu_max_box_difference_px": 0,
+  "synthetic": {
+    "seed": 20261113,
+    "cases": 30,
+    "detections": 2520,
+    "identical": true,
+    "purpose": "Synthetic tensor edge coverage; never used as training or real-piece accuracy data.",
+    "coverage": [
+      "zero/tiny/large boxes",
+      "border cells",
+      "five ROI aspect ratios",
+      "equal scores",
+      "three output heads"
+    ]
+  },
+  "ownership": "Main closes Camera and Yolo after success or failure; Yolo_open partial failure also requires Yolo_close.",
+  "caller_contract": "Yolo tensor layout is checked at initialization; saved-file loader checks its own input. Decode receives Yolo_run views; draw receives decoded classes and a checked grayscale label atlas.",
+  "limitations": [
+    "No ARM cross-build or real RV1106 validation in this change.",
+    "The same saved images were reused; synthetic tensors are not real-piece accuracy data."
+  ]
+}

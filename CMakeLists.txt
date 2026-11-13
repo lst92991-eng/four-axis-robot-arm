@@ -80,6 +80,8 @@ if(BUILD_TESTING)
     target_link_libraries(scara_vision_test PRIVATE scara_vision_core)
     add_executable(scara_vision_replay tests/vision_replay.cpp)
     target_link_libraries(scara_vision_replay PRIVATE scara_vision_core)
+    add_test(NAME saved_tensor_input_contracts COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/tests/saved_tensor_input_test.py $<TARGET_FILE:scara_vision_replay>)
     add_test(NAME vision_pipeline_contracts COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/tests/with_camera_stream.py $<TARGET_FILE:scara_vision_test>)
     set_tests_properties(vision_pipeline_contracts PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

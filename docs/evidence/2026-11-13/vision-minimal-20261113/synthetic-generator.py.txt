@@ -1,0 +1,59 @@
+"""Synthetic tensor edge coverage; never used as training or real-piece accuracy data."""
+from pathlib import Path
+import json, os, struct, subprocess, sys
+import numpy as np
+
+ROOT=Path(__file__).resolve().parents[2]
+os.chdir(ROOT)
+work=Path('output/vision-minimal-20261113/synthetic')
+work.mkdir(parents=True,exist_ok=True)
+packet=Path('tests/fixtures/vision/rknn-output.bin').read_bytes()
+n=struct.unpack_from('<I',packet)[0]
+meta=json.loads(packet[4:4+n])
+rng=np.random.default_rng(20261113)
+cases=[]
+rois=[[300,70,650,600],[300,100,620,600],[0,0,1280,720],[0,0,17,719],[500,200,200,200]]
+for index in range(30):
+    arrays=[]
+    for h,size in enumerate([80,40,20]):
+        a=np.full((size,size,3,19),-128,np.int8)
+        for k in range(35):
+            y,x,anchor=int(rng.integers(size)),int(rng.integers(size)),int(rng.integers(3))
+            p=a[y,x,anchor]
+            p[:4]=rng.integers(-128,128,4,dtype=np.int16).astype(np.int8)
+            p[4]=127
+            p[5+int(rng.integers(14))]=127
+        for k,value in enumerate([-128,-127,0,126,127]):
+            p=a[(k%2)*(size-1),((k//2)%2)*(size-1),k%3]
+            p[:4]=value; p[4]=127; p[5+k]=127
+        arrays.append(a)
+    meta['frame_id']=f'synthetic-{index:02d}'
+    header=json.dumps(meta).encode()
+    path=work/f'tensor-{index:02d}.bin'
+    path.write_bytes(struct.pack('<I',len(header))+header+b''.join(a.tobytes() for a in arrays))
+    cases.append(dict(id=f'case-{index:02d}',image='tests/fixtures/vision/source.png',
+                      packet=path.as_posix(),roi=rois[index%len(rois)]))
+manifest=work/'cases.json'
+manifest.write_text(json.dumps(dict(purpose=__doc__,cases=cases),indent=2),encoding='utf-8')
+env=dict(os.environ)
+env['PATH']=str((ROOT/'build/commit-verify').resolve())+os.pathsep+env.get('PATH','')
+stage=sys.argv[1]
+exe='output/vision-minimal-20261113/baseline-replay.exe' if stage=='before' else 'build/commit-verify/scara_vision_replay.exe'
+r=subprocess.run([exe,str(manifest),str(work/stage)],env=env,capture_output=True,text=True)
+(work/(stage+'.log')).write_text(r.stdout+r.stderr,encoding='utf-8')
+if r.returncode: print(r.stdout+r.stderr); raise SystemExit(r.returncode)
+if stage=='after':
+    total=0
+    for c in cases:
+        before=json.loads((work/'before'/(c['id']+'.json')).read_text())['detections']
+        after=json.loads((work/'after'/(c['id']+'.json')).read_text())['detections']
+        assert before==after,c['id']
+        for suffix in ['.rgb','.png']:
+            assert (work/'before'/(c['id']+suffix)).read_bytes()==(work/'after'/(c['id']+suffix)).read_bytes(),(c['id'],suffix)
+        total+=len(after)
+    report=dict(seed=20261113,cases=len(cases),detections=total,identical=True,
+                purpose=__doc__,coverage=['zero/tiny/large boxes','border cells','five ROI aspect ratios','equal scores','three output heads'])
+    (work/'summary.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    print(json.dumps(report))
+else:
+    print('Saved 30 synthetic baseline cases.')

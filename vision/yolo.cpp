@@ -19,20 +19,13 @@ const cv::Size2f Anchors[YoloHeads][YoloAnchors] = {
     {{116, 90}, {156, 198}, {373, 326}},
 };
 
-struct Candidate
-{
-    int classId;
-    float score;
-    double x1, y1, x2, y2; // 640 输入图中的左上角、右下角，尚未裁切。
-};
 } // namespace
 
-static void readCandidates(const YoloHead &head, int index, float scoreThreshold, std::vector<Candidate> &candidates);
-static int bestClass(const int8_t *classScores);
+static void readCandidates(const YoloHead &head, int index, float scoreThreshold, std::vector<Detection> &candidates);
 static float dequantize(const YoloHead &head, int8_t value);
-static bool higherScore(const Candidate &a, const Candidate &b);
-static double intersectionOverUnion(const Candidate &a, const Candidate &b);
-static bool overlapsKept(const Candidate &box, const std::vector<Candidate> &kept, float threshold);
+static bool higherScore(const Detection &a, const Detection &b);
+static double intersectionOverUnion(const cv::Rect2d &a, const cv::Rect2d &b);
+static bool overlapsKept(const Detection &box, const std::vector<Detection> &kept, float threshold);
 
 //---------模型输入区---------
 cv::Mat Vision_prepare(const cv::Mat &bgr, const VisionConfig &config, ImageMapping &mapping)
@@ -66,33 +59,29 @@ cv::Mat Vision_prepare(const cv::Mat &bgr, const VisionConfig &config, ImageMapp
 std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads], const ImageMapping &mapping,
                                      const VisionConfig &config)
 {
-    std::vector<Candidate> candidates, kept;
+    // 候选和去重阶段均为640输入图坐标，返回前统一换成原图坐标。
+    std::vector<Detection> candidates, kept;
     // 1. 逐路、逐格读取候选框及其最高分类分数。
     for (int index = 0; index < YoloHeads; ++index)
         readCandidates(heads[index], index, config.scoreThreshold, candidates);
     // 2. 按分数去重；同分保留遍历顺序，不因类别不同重复保留同一枚棋子。
     std::stable_sort(candidates.begin(), candidates.end(), higherScore);
-    for (const Candidate &candidate : candidates)
+    for (const Detection &candidate : candidates)
     {
         if (!overlapsKept(candidate, kept, config.nmsThreshold)) kept.push_back(candidate);
     }
     // 3. 去掉留白、还原缩放，最后加回裁剪区域在原图中的偏移。
     std::vector<Detection> detections;
-    for (const Candidate &box : kept)
+    for (Detection piece : kept)
     {
-        double x1 = std::clamp((box.x1 - mapping.left) / mapping.scale, 0.0, double(mapping.roi.width));
-        double y1 = std::clamp((box.y1 - mapping.top) / mapping.scale, 0.0, double(mapping.roi.height));
-        double x2 = std::clamp((box.x2 - mapping.left) / mapping.scale, 0.0, double(mapping.roi.width));
-        double y2 = std::clamp((box.y2 - mapping.top) / mapping.scale, 0.0, double(mapping.roi.height));
+        cv::Rect2d box = piece.bbox;
+        double x1 = std::clamp((box.x - mapping.left) / mapping.scale, 0.0, double(mapping.roi.width));
+        double y1 = std::clamp((box.y - mapping.top) / mapping.scale, 0.0, double(mapping.roi.height));
+        double x2 = std::clamp((box.x + box.width - mapping.left) / mapping.scale, 0.0, double(mapping.roi.width));
+        double y2 = std::clamp((box.y + box.height - mapping.top) / mapping.scale, 0.0, double(mapping.roi.height));
         if (x2 > x1 && y2 > y1)
         {
-            Detection piece;
-            piece.classId = box.classId;
-            piece.confidence = box.score;
-            piece.bbox.x = x1 + mapping.roi.x;
-            piece.bbox.y = y1 + mapping.roi.y;
-            piece.bbox.width = x2 - x1;
-            piece.bbox.height = y2 - y1;
+            piece.bbox = cv::Rect2d(x1 + mapping.roi.x, y1 + mapping.roi.y, x2 - x1, y2 - y1);
             detections.push_back(piece);
         }
     }
@@ -129,7 +118,7 @@ cv::Mat Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections
 
 //---------内部计算区---------
 // 一次处理一路输出；候选框保持原来的行、列、锚框遍历顺序。
-static void readCandidates(const YoloHead &head, int index, float scoreThreshold, std::vector<Candidate> &candidates)
+static void readCandidates(const YoloHead &head, int index, float scoreThreshold, std::vector<Detection> &candidates)
 {
     int size = YoloGrid[index];
     int stride = YoloSize / size;
@@ -145,7 +134,9 @@ static void readCandidates(const YoloHead &head, int index, float scoreThreshold
                 const int8_t *prediction = head.data + y * head.rowBytes + x * YoloChannels + anchor * YoloBoxValues;
                 float objectScore = dequantize(head, prediction[4]);
                 if (objectScore >= 0 && objectScore * maximumClassScore < scoreThreshold) continue;
-                int classId = bestClass(prediction + 5);
+                const int8_t *classScores = prediction + 5;
+                const int8_t *best = std::max_element(classScores, classScores + YoloClasses);
+                int classId = int(best - classScores);
                 float score = objectScore * dequantize(head, prediction[5 + classId]);
                 if (score < scoreThreshold) continue;
                 // 先得到格内偏移，再加网格位置；与原实现保持相同的 float/double 顺序。
@@ -158,26 +149,14 @@ static void readCandidates(const YoloHead &head, int index, float scoreThreshold
                 cv::Size2f anchorSize = Anchors[index][anchor];
                 float width = widthFactor * widthFactor * anchorSize.width;
                 float height = heightFactor * heightFactor * anchorSize.height;
-                Candidate box;
+                Detection box;
                 box.classId = classId;
-                box.score = score;
-                box.x1 = centerX - width / 2;
-                box.y1 = centerY - height / 2;
-                box.x2 = centerX + width / 2;
-                box.y2 = centerY + height / 2;
+                box.confidence = score;
+                box.bbox = cv::Rect2d(centerX - width / 2, centerY - height / 2, width, height);
                 candidates.push_back(box);
             }
         }
     }
-}
-
-// 同一路输出的量化比例为正，直接比较整数即可；同分保留编号较小者。
-static int bestClass(const int8_t *classScores)
-{
-    int best = 0;
-    for (int index = 1; index < YoloClasses; ++index)
-        if (classScores[index] > classScores[best]) best = index;
-    return best;
 }
 
 static float dequantize(const YoloHead &head, int8_t value)
@@ -185,24 +164,22 @@ static float dequantize(const YoloHead &head, int8_t value)
     return (int(value) - head.zeroPoint) * head.scale;
 }
 
-static bool higherScore(const Candidate &a, const Candidate &b)
+static bool higherScore(const Detection &a, const Detection &b)
 {
-    return a.score > b.score;
+    return a.confidence > b.confidence;
 }
 
-static bool overlapsKept(const Candidate &box, const std::vector<Candidate> &kept, float threshold)
+static bool overlapsKept(const Detection &box, const std::vector<Detection> &kept, float threshold)
 {
-    for (const Candidate &old : kept)
-        if (intersectionOverUnion(box, old) > threshold) return true;
+    for (const Detection &old : kept)
+        if (intersectionOverUnion(box.bbox, old.bbox) > threshold) return true;
     return false;
 }
 
-static double intersectionOverUnion(const Candidate &a, const Candidate &b)
+static double intersectionOverUnion(const cv::Rect2d &a, const cv::Rect2d &b)
 {
-    double width = std::max(0.0, std::min(a.x2, b.x2) - std::max(a.x1, b.x1));
-    double height = std::max(0.0, std::min(a.y2, b.y2) - std::max(a.y1, b.y1));
-    double intersection = width * height;
-    double area = (a.x2 - a.x1) * (a.y2 - a.y1) + (b.x2 - b.x1) * (b.y2 - b.y1);
-    return intersection / std::max(area - intersection, 1e-9);
+    double intersection = (a & b).area();
+    double combined = a.area() + b.area() - intersection;
+    return intersection / std::max(combined, 1e-9);
 }
 } // namespace scara

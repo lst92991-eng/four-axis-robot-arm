@@ -1,0 +1,14 @@
+{
+  "seed": 20261113,
+  "cases": 30,
+  "detections": 2520,
+  "identical": true,
+  "purpose": "Synthetic tensor edge coverage; never used as training or real-piece accuracy data.",
+  "coverage": [
+    "zero/tiny/large boxes",
+    "border cells",
+    "five ROI aspect ratios",
+    "equal scores",
+    "three output heads"
+  ]
+}
