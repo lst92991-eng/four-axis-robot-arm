@@ -11,12 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--review', choices=('upper-review-20261113', 'fixed-minimal-20261113'),
+    parser.add_argument('--review', choices=('upper-review-20261113', 'fixed-minimal-20261113', 'game-main-20261114'),
                         default='fixed-minimal-20261113')
     parser.add_argument('--round', type=int, required=True)
     args = parser.parse_args()
     review = Path('output') / args.review
-    evidence = Path('docs/evidence/2026-11-13') / args.review
+    date = args.review[-8:]
+    evidence = Path('docs/evidence') / (date[:4] + '-' + date[4:6] + '-' + date[6:]) / args.review
     current = review / f'round-{args.round:02d}'
     report = json.loads((ROOT / evidence / f'round-{args.round:02d}.json').read_text(encoding='utf-8'))
     files = set()
@@ -29,6 +30,8 @@ def main():
         'tools/run-vision.sh', 'tools/upper_review.py', 'tools/fixed_review.py', 'tools/package_upper.py',
         'docs/项目收敛与下棋闭环_2026-11-09.md', 'docs/棋局与视觉接口_2026-11-09.md'))
     files.add(review / 'check_vision.py')
+    if args.review.startswith('game-'):
+        files.update(Path(name) for name in ('tools/game_review.py', 'tools/run-game.sh', 'tools/game-preview.html'))
     for folder in (Path('config'), Path('tests'), evidence, review/'round-00/replay',
                    review/'round-00/geometry', current/'replay', current/'geometry'):
         for path in (ROOT / folder).rglob('*'):
@@ -37,7 +40,7 @@ def main():
                     files.add(path.relative_to(ROOT))
     files.update(current / name for name in (
         'code.txt', 'vision-code.txt', 'build-test.log', 'python-tests.log', 'accuracy.log'))
-    if args.review.startswith('fixed-'):
+    if args.review.startswith(('fixed-', 'game-')):
         files.update(current / name for name in ('cpp-code.txt', 'cpp-code.zip'))
     inventory = []
     for path in sorted(files):
@@ -54,7 +57,8 @@ def main():
                    onnx_sha256='fdf31b53da7bc2350936bb51fb6e53ddf0d5958aa36830a6493a187332458047',
                    rknn_sha256='ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2'),
         files=inventory)
-    name = 'fixed-application-source.zip' if args.review.startswith('fixed-') else 'upper-application-source.zip'
+    name = 'game-application-source.zip' if args.review.startswith('game-') else (
+        'fixed-application-source.zip' if args.review.startswith('fixed-') else 'upper-application-source.zip')
     bundle = ROOT / review / name
     with zipfile.ZipFile(bundle, 'w', zipfile.ZIP_DEFLATED) as archive:
         for entry in inventory:

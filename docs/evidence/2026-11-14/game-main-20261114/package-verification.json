@@ -1,0 +1,25 @@
+{
+  "verified_utc": "2026-11-13T17:34:44.372347+00:00",
+  "source_commit": "3b21bfe",
+  "snapshot": "round-02",
+  "cpp_nloc": 2472,
+  "method": "Unpacked into an empty directory and rebuilt without old cache, then reran all tests and retained image/geometry comparisons.",
+  "ctest_suites": 17,
+  "match_program_scenarios": 15,
+  "python_checks": 60,
+  "own_cpp_compiled_as_cpp17": 18,
+  "source_files_verified": 45,
+  "saved_frame_cases": 16,
+  "identical_rgb_and_annotation_files": 32,
+  "identical_geometry_outputs": 4,
+  "vision_six_files_unchanged": true,
+  "simulation_history": "a3a4 a6a5 a4a5 a9a5",
+  "build_log_sha256": "fb2306ac8ab0432a0dea88ef63a487e1cc763364ed5d3fc88312e54faabf1cfc",
+  "hardware_actions": false,
+  "protected_changes": "Only a new config/game.example.json; firmware, engine, models and all previous configuration unchanged.",
+  "limits": [
+    "Real ARM/Linux/RV1106 acceptance not performed. Live wrapper external APIs mocked on Windows.",
+    "SPI-CAN/H-bridge execution remains an external implementation, not a simulated success in the live program.",
+    "Same saved samples were reused; not new accuracy or real-game validation."
+  ]
+}

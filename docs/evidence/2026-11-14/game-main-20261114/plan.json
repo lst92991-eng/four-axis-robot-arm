@@ -3,7 +3,7 @@
   "started_utc": "2026-11-13T16:48:20.632548+00:00",
   "baseline_commit": "52058b5",
   "baseline_cpp_nloc": 1800,
-  "status": "active",
+  "status": "complete",
   "design": [
     "主循环明确区分玩家回合与机器人回合",
     "实际相机/NPU与Pikafish分时使用，保留原视觉接口与参数",
@@ -38,8 +38,24 @@
     },
     {
       "name": "regression_and_source_delivery",
-      "status": "in_progress"
+      "status": "complete"
     }
   ],
-  "validated_snapshot": "round-02"
+  "validated_snapshot": "round-02",
+  "finished_utc": "2026-11-13T17:36:04.455749+00:00",
+  "result": {
+    "source_commit": "3b21bfe",
+    "cpp_nloc": 2472,
+    "cpp_added": 672,
+    "main_nloc": 75,
+    "ctest_suites": 17,
+    "main_scenarios": 15,
+    "python_checks": 60,
+    "clean_package_verified": true,
+    "hardware_actions": false,
+    "remote_push": false,
+    "entry": "app/game_main.cpp",
+    "source": "output/game-main-20261114/round-02/cpp-code.txt",
+    "package": "output/game-main-20261114/game-application-source.zip"
+  }
 }

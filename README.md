@@ -1,3 +1,64 @@
+# 完整对弈主程序（2026-11-14）
+
+**第一目标已经补齐：可执行的C++主程序贯通整个对弈循环。** 当前自有C++总2472有效行，包含所有实现和头文件；相对之前1800行核心新增672行。新的硬件执行器和实机验收仍待你后续推进，主程序不会伪造真实执行成功。
+
+## 先看与先运行
+
+- [完整主入口 game_main.cpp](app/game_main.cpp)：75有效行，初始化、查询引擎、区分双方回合、结束与清理。
+- [回合流程 game.cpp](app/game.cpp)：131有效行，初局确认、玩家走棋、机器人取放与失败恢复。
+- [配置读取](app/game_config.cpp)、[实机IO](app/game_live_io.cpp)、[执行请求/状态输出](app/game_files.cpp)、[仿真IO](app/game_sim_io.cpp)。
+- [全部C++阅读稿](output/game-main-20261114/round-02/cpp-code.txt) · [仅C++源码包](output/game-main-20261114/round-02/cpp-code.zip) · [完整源码与验证包](output/game-main-20261114/game-application-source.zip)。
+
+本机直接跑完整仿真，不需要板子、相机、模型或引擎：
+
+```powershell
+.\build\commit-verify\scara_game_sim.exe tests/fixtures/game-app/simulation.json
+```
+
+它使用和实机目标相同的main/回合逻辑，模拟两轮走棋和机器人吃子，然后退出。终端明确标记SIMULATION，结果在 [status.json](output/game-main-simulation/status.json)，已确认历史应为 `a3a4 a6a5 a4a5 a9a5`。这是真实主程序的离线运行，感知、引擎回复和机械结果是场景夹具，不是实际硬件验收。
+
+## 主程序已经处理的流程
+
+初始化固定90点、机械参考和示教高度 → 操作者确认进入观察位 → 新图识别与开局确认 → 玩家走完并移开手后回车 → 确认唯一合法变化 → 引擎应手 → 搜索后重新观察 → 生成并发布取放步骤 → 等待已停稳的执行结果 → 回观察位后重新识别 → 吻合才提交历史 → 下一回合。
+
+普通搬子、吃子、红黑方选择、任意已确认起始盘面、无合法走法、认输/和棋和重复局面人工裁定均有对应流程。执行失败或盘面不符时不盲目重发；retry只观察，accept需要人工确认且盘面吻合，restored必须看到完整复位盘面才清pending，已有历史不清空。当前不支持退出进程后自动续局。
+
+相机/NPU与Pikafish分时使用，搜索和运动时不保持旧视觉资源。预览是最近一次识别的双画面，固定2560×720，识别ROI/模型/预处理不变。状态文件包含记录时间和帧号，不把状态时间当作硬件心跳。
+
+## 你后续对接的两个点
+
+1. **硬件执行器**：读取工作目录的motion-request.json，按有单位的动作数组执行，完成并停稳后回传同ticket的motion-reply.json；处理取消并去重，真实执行器拒绝simulated=1。也可以在IO_execute内直接调用你的驱动库，主循环不需要改。
+2. **实机验证**：填入真实观察位和吃子区，接入SPI-CAN/H桥，完成板端依赖/构建以及连续走棋、释放、吃子、异常恢复验收。
+
+接口细节、启动配置和恢复命令见 [完整对弈与执行器协议](docs/棋局与视觉接口_2026-11-09.md)。[game.example.json](config/game.example.json)中的null是未示教占位，不能直接当现场数据；仿真配置也不能用来控制真实机械臂。主程序不实现SPI-CAN或H桥引脚驱动。
+
+Linux+RKNN构建启用SCARA_WITH_RKNN后生成scara_game，安装的bin/run-game.sh先校验原v3模型SHA256再启动。使用新程序时停用旧YOLO测试服务、保留ISP/RTSP供图。只读预览页是 [game-preview.html](tools/game-preview.html)，复制到工作目录为index.html后，可用普通静态HTTP服务查看；操作在终端完成。
+
+## 新增代码与验证
+
+| 新增文件 | 有效行数 |
+| --- | ---: |
+| game_main.cpp | 75 |
+| game.cpp / game.hpp | 167 |
+| game_config.cpp | 67 |
+| game_files.cpp / game_files.hpp | 129 |
+| game_live_io.cpp | 120 |
+| game_sim_io.cpp | 96 |
+| Session恢复与状态补充 | 18 |
+| 新增合计 | **672** |
+
+这些都计入2472行，没有只展示75行入口而隐藏其调用实现。仿真后端也在总数中；只读HTML、构建/启动脚本、测试和已有Python上位机另列。
+
+当前通过17组CTest、60项原Python检查，其中包括15种真实main可执行程序的场景。另检查旧/未停稳回执、失败及取消、实际IO包装的资源生命周期。视觉六文件哈希不变；16张保存图、152个历史NPU结果、原ONNX CPU的501个结果以及4份固定几何输出保持一致。原64枚棋子核对保持一致，不把重复回放当新样本。
+
+证据见 [本轮自审](docs/evidence/2026-11-14/game-main-20261114/self-review.json)、[行数与源码清单](docs/evidence/2026-11-14/game-main-20261114/final-metrics.json)、[计划与状态](docs/evidence/2026-11-14/game-main-20261114/plan.json)。真实Linux引擎进程、ARM交叉构建、NPU和整机动作未验收；Windows真实IO包装检查使用外部API替身。
+
+源码包已解到空目录重新构建，17组CTest、60项Python检查及保存图像/几何回放再次通过；45个应用源文件、18个CPP编译单元与已验证快照一致。见[交付包验证](docs/evidence/2026-11-14/game-main-20261114/package-verification.json)。
+
+---
+
+下面保留此前1800行固定核心的说明。当前完整程序、接口、总行数与交付入口以上述新增章节为准。
+
 # SCARA 中国象棋机器人
 
 **当前固定棋盘版共1800行自有C++，包含全部CPP、头文件和内部实现。** 本轮以 `6bd2287` 的2975行为起点，实际减少1175行。首次像素/基座标定、YOLO、棋局/UCI、逆解、取放计划和落子确认均保留；不再逐帧自动找棋盘。机械参考和Z高度读取已有实测/示教文件。
