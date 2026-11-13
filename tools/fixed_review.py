@@ -71,6 +71,14 @@ def main():
             source, _ = upper.read_source(ROOT / name)
             view.write('\n' + '=' * 72 + '\n' + name + '\n' + '=' * 72 + '\n' + source + '\n')
             archive.writestr(name, (ROOT / name).read_bytes())
+    with (output / 'cpp-code.txt').open('w', encoding='utf-8') as view, zipfile.ZipFile(
+            output / 'cpp-code.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
+        for entry in after:
+            if entry['group'] == 'application_cpp':
+                name = entry['file']
+                source, _ = upper.read_source(ROOT / name)
+                view.write('\n' + '=' * 72 + '\n' + name + '\n' + '=' * 72 + '\n' + source + '\n')
+                archive.writestr(name, (ROOT / name).read_bytes())
     (output / 'changes.diff').write_bytes(subprocess.check_output(['git', 'diff', '--',
         'app', 'vision', 'chess', 'motion', 'manual_control', 'temp/yolo_live', 'tests', 'CMakeLists.txt']))
     print(json.dumps(dict(round=args.number, group_nloc=dict(counts), geometry_files=len(geometry_outputs)),

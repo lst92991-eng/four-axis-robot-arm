@@ -3,7 +3,7 @@
   "started_utc": "2026-11-13T22:24:44.727811+08:00",
   "baseline_commit": "6bd2287",
   "baseline_cpp_nloc": 2975,
-  "status": "active",
+  "status": "complete",
   "scope": "当前app/vision/chess/motion及需要同步的Python调用方；所有C++头文件与内部实现计数。",
   "retained": [
     "已认可的Camera和视觉主循环",
@@ -45,7 +45,7 @@
     },
     {
       "name": "offline_verification_and_delivery",
-      "status": "in_progress"
+      "status": "complete"
     }
   ],
   "completed_rounds": [
@@ -102,5 +102,21 @@
       "cpp_nloc": 1800,
       "checks": "14 CTest, 60 Python, all retained outputs identical"
     }
-  ]
+  ],
+  "finished_utc": "2026-11-13T16:07:21.735199+00:00",
+  "elapsed_minutes": 102.6,
+  "result": {
+    "cpp_nloc": 1800,
+    "cpp_removed": 1175,
+    "review_rounds": 8,
+    "cpp_suites": 14,
+    "python_checks": 60,
+    "source_commit": "63aebac",
+    "fresh_package_build_passed": true,
+    "hardware_actions": false,
+    "remote_push": false,
+    "cpp_text": "output/fixed-minimal-20261113/round-08/cpp-code.txt",
+    "cpp_zip": "output/fixed-minimal-20261113/round-08/cpp-code.zip",
+    "full_package": "output/fixed-minimal-20261113/fixed-application-source.zip"
+  }
 }

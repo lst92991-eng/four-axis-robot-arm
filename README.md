@@ -1,108 +1,103 @@
 # SCARA 中国象棋机器人
 
-本项目包含四轴驱动固件、RV1106 视觉、棋盘坐标、棋局与机械臂上层程序。**2026-11-13 晚间整理的是整个自有上层应用**：保持原有实测参数与数据结果，按课堂手写方式展开数据、调用顺序和模块职责。底层固件、模型、引擎及既有配置文件未改动。
+**当前固定棋盘版共1800行自有C++，包含全部CPP、头文件和内部实现。** 本轮以 `6bd2287` 的2975行为起点，实际减少1175行。首次像素/基座标定、YOLO、棋局/UCI、逆解、取放计划和落子确认均保留；不再逐帧自动找棋盘。机械参考和Z高度读取已有实测/示教文件。
 
-## 先从这里读代码
+## 直接阅读源码
 
-完整文本：[全部上层源码](output/upper-review-20261113/round-19/code.txt) · [六个视觉文件](output/upper-review-20261113/round-19/vision-code.txt)。
+[1800行C++专用阅读稿](output/fixed-minimal-20261113/round-08/cpp-code.txt) · [仅C++源码包](output/fixed-minimal-20261113/round-08/cpp-code.zip) · [全部语言源码](output/fixed-minimal-20261113/round-08/code.txt) · [六个视觉文件完整文本](output/fixed-minimal-20261113/round-08/vision-code.txt) · [源码、构建与测试材料包](output/fixed-minimal-20261113/fixed-application-source.zip)。
 
-完整交付：[源码与构建/测试材料包](output/upper-review-20261113/upper-application-source.zip)。逐轮快照在 `output/upper-review-20261113/round-NN/`，源码本体仍只有一套；逐轮哈希与验证记录纳入 [Git 证据目录](docs/evidence/2026-11-13/upper-review-20261113/)。
-
-| 阅读顺序 | 源码入口 | 输入与输出 | 当前有效行数 |
+| 顺序 | 源码入口 | 处理的数据 | 有效行数，含头文件 |
 | --- | --- | --- | ---: |
-| 1. 取图和识别 | [vision_main.cpp](app/vision_main.cpp)、[capture.cpp](vision/capture.cpp)、[yolo_npu.cpp](vision/yolo_npu.cpp)、[yolo.cpp](vision/yolo.cpp) | BGR原图 → 固定ROI的RGB图 → NPU三路张量 → 类别/分数/原图检测框 → 标注图 | 408，含两个头文件 |
-| 2. 标定和棋盘定位 | [geometry_tool.cpp](app/geometry_tool.cpp)、[geometry.cpp](vision/geometry.cpp)、[board.cpp](vision/board.cpp) | 采点/原图/四角 → 像素到基座映射、棋盘方向、90交点 | 1581，含两个头文件 |
-| 3. 固定棋盘 | [fixed_board.cpp](vision/fixed_board.cpp) | 启动时的标定/格点 → 90个XY缓存；每帧检测 → 格点棋子 | 57，含头文件 |
-| 4. 棋局和引擎 | [board.cpp](chess/board.cpp)、[pikafish.cpp](chess/pikafish.cpp)、[vision_bridge.cpp](chess/vision_bridge.cpp) | 稳定盘面 → FEN与完整历史 → 合法走法/引擎选择 → 待确认局面 | 692，含头文件 |
-| 5. 运动与取放 | [plan.cpp](motion/plan.cpp) | 基座XY与示教Z → J2/J3目标角及取放步骤 | 161，含头文件 |
-| 6. 一回合的连接 | [session.cpp](chess/session.cpp) | 新盘面 → 待执行计划 → 执行结果/新盘面核对 → 已完成历史 | 76，含头文件 |
+| 1. 取图、识别、绘框 | [vision_main.cpp](app/vision_main.cpp)、[capture.cpp](vision/capture.cpp)、[yolo_npu.cpp](vision/yolo_npu.cpp)、[yolo.cpp](vision/yolo.cpp) | BGR原图 → 固定ROI的RGB输入 → NPU张量 → 类别/分数/原图检测框 → 预览图 | 408 |
+| 2. 首次标定、四角建格 | [geometry_tool.cpp](app/geometry_tool.cpp)、[geometry.cpp](vision/geometry.cpp)、[board.cpp](vision/board.cpp) | 采点与独立检查点 → 像素到基座映射；确认四角 → 90个交点 | 547 |
+| 3. 固定交点坐标 | [fixed_board.cpp](vision/fixed_board.cpp) | 初始化时保存90个基座XY；日常根据行列查表 | 48 |
+| 4. 棋局和引擎 | [board.cpp](chess/board.cpp)、[pikafish.cpp](chess/pikafish.cpp) | 已确认盘面 → 起始FEN和完整历史 → 引擎合法走法与应手 | 542 |
+| 5. 逆解和取放 | [plan.cpp](motion/plan.cpp) | 源/目标XY及示教Z → J2/J3目标角、升降与释放步骤 | 161 |
+| 6. 一回合的顺序 | [session.cpp](chess/session.cpp) | 识别 → 格点棋子 → 三帧稳定 → 走法/取放计划 → 新盘面确认 | 94 |
 
-C++主流程现在以输入输出参数连接。先在 `vision_main.cpp` 看本帧的 `source`、`input`、`heads`、`pieces`、`preview`，再按调用顺序读各个实现。公开数据及单位写在头文件里，内部实现也全部保留在上述文件中。
+先看 `vision_main.cpp` 的 `source`、`input`、`heads`、`pieces`、`preview`。用户已经认可的直接调用顺序和Camera接收写法保持原样；六个视觉文件的字节哈希与本轮开始时相同。再沿Session中的调用阅读棋局与取放。
 
-`Session_observe` 把本帧检测对应到格点并等待不同帧稳定；`Session_acceptHuman` 接受合法的人类走法；`Session_plan` 产生普通搬子或先清走被吃棋子的计划；`Session_confirm` 在动作成功且新盘面符合预期后提交历史。引擎查询保留起始FEN和完整走法，计划生成时不提前更改权威盘面。
+## 固定流程怎么运行
 
-这些是可编译、已离线验证的C++核心库，**还不是已部署的整机自动对弈程序**。真实Linux引擎子进程、ARM交叉构建及RV1106运行仍待验证。现有实机上位机与演示入口仍在下面的Python文件，正式SPI-CAN执行端尚未实现。
+1. 首次记录不少于4组像素/基座XY配对，再用独立采点验误。`calibratePlane`计算映射，`savePlane`保存。`loadPlane`统一读取新采点或已保存标定，并复算、验误。
+2. 按红方视角给出四个格线交点：红方左下、红方右下、黑方右上、黑方左上，对应a0、i0、i9、a9。`boardFromCorners`生成90点；人工确认朝向后，`FixedBoard_setup`一次缓存XY。
+3. 每个新识别帧通过 `Session_observe` 分配棋子。格点层只保留棋子身份和一个有效标志，连续三个不同有效帧一致后才交给棋局。YOLO原有置信度仍用于阈值和绘框。
+4. `Pikafish::legalMoves(game, legal)`、`think(game, timeMs, choice)`直接接收已确认的Game，发送其起始FEN和完整走法历史。只有查询成功后才使用输出；引擎返回的走法格式在接收处检查。
+5. `Session_plan`准备普通搬子或先清走被吃棋子的计划，`Session_confirm`在动作成功且新盘面符合预期后才提交历史。结果未确认时不自动重发。和棋/认输通过 `Game_finish`提交明确结果。
 
-## 现有上位机与演示入口
+**固定90点是保存的布局，不代表当前画面已自动定位。** 只移动棋盘时须重新输入并确认四角；相机或基座位置、焦距改变时重新标定映射。重新设置布局后调用 `session.stable.reset()`，再观察新的稳定盘面。坐标查表与帧号无关；识别帧仍必须有编号，重复帧不能推进稳定计数。
 
-| 文件 | 数据和职责 |
-| --- | --- |
-| [server.py](manual_control/server.py)、[index.html](manual_control/index.html) | 页面请求 → 控制队列 → 接收驱动状态 → 更新页面；主循环按步骤调用 |
-| [core.py](manual_control/core.py)、[telemetry.py](manual_control/telemetry.py) | J1～J4状态、已有CAN命令与应答、参考恢复、诊断帧解释 |
-| [first_pick.py](manual_control/first_pick.py) | 已示教高度和目标角 → 先取子、抬升、搬运、释放脉冲、抬升 |
-| [chess_demo.py](manual_control/chess_demo.py) | 已验证的棋盘/机械臂标定 → 演示走法与逆解目标 |
-| [tune_release.py](manual_control/tune_release.py) | 识别棋子实际位置、取放结果和释放调试；沿用现有现场流程 |
-| [host_preview.py](temp/yolo_live/host_preview.py)、[board_npu.py](temp/yolo_live/board_npu.py)、[dual_preview.py](temp/yolo_live/dual_preview.py) | 原有取流、板端推理服务和双画面服务；仍保留全部源码 |
-
-调参/电角标定/升级工具单列在 `manual_control/calibrate_j1.py`、`j1_bench.py`、`software_update_j1.py`。临时USB-CAN适配在 `temp/transport/`，与未来SPI-CAN分开统计。
-
-## 行数与这次整理的实际变化
-
-口径为Lizard有效代码行，排除空行、注释；所有头文件、辅助函数和数据表均计入。页面脚本计入上位机，未改变的非脚本HTML另计20行。
-
-| 范围 | 本次开始 `2ce033d` | 当前 |
-| --- | ---: | ---: |
-| 自有C++应用 | 1761 | 2975 |
-| 上位机、取放、演示和页面脚本 | 1808 | 2184 |
-| 调参/标定/升级工具 | 490 | 740 |
-| 旧实时视觉服务 | 618 | 841 |
-| USB-CAN适配，另列 | 302 | 302 |
-
-**本轮不是总行数压缩。** 原代码中多条语句挤在一行的部分已展开；C++增加固定棋盘、运动规划、回合连接三个模块共294行，其余增量主要来自排版、显式参数和中间步骤。较长入口拆成能顺着讲的步骤，但辅助函数仍完整计数。
-
-例如定位入口 `locateBoard` 从79行变为16行，标定入口 `registerArm` 从90行变为27行，上位机每轮处理 `Worker.run` 从72行变为29行；这些是入口规模变化，不是整个模块少掉了同样多的代码。实测行数、每文件哈希及前后复杂度见 [final-metrics.json](docs/evidence/2026-11-13/upper-review-20261113/final-metrics.json)。
-
-六个视觉文件本次从378行变为408行。更早用户任务起点的618行是三个Python服务，包含网页/双画面；不能与当前408行C++识别核心相减来声称等功能缩减。此前各版详情留在 [整理过程记录](docs/项目收敛与下棋闭环_2026-11-09.md)。
-
-## 保持的运行约定
-
-- 识别仍采用原始1280×720图像中的ROI `[300,70,650,600]`，640×640 RGB letterbox，填充值114、线性插值、分数0.50及跨类别NMS 0.45；显示与识别裁剪分别处理。v3模型未训练、更换或转换。
-- 主循环只有一个 `running`；取帧、预处理、推理、解码、绘制直接顺序调用，真实失败在已有入口统一清理。没有逐句 `if/break`。
-- 相机后台 `while(capturing)` 持续取帧，只留一帧；单次读取失败短等后重试。`Camera_read` 等待调用后收到的新帧，未加应用层5秒截止。原FFmpeg打开/单次读取的5000毫秒参数保留，停止请求可结束等帧；没有增加自动重连。
-- `Camera_open` 只写关闭旧连接、把open结果赋给capturing、启动线程三步。NPU四个缓冲槽使用同一参数表初始化，SDK真实失败和资源释放仍保留。
-- 固定棋盘在启动时设置映射和90个XY；日常识别直接分配格点。棋盘或相机移动后重新设置。旧自动定位/方向确认/标定工具仍在，没有删掉后藏到别处。
-- 运动规划沿用275＋275mm、已保存参考角与传动关系。Z用已示教吸取层和搬运层，不将估计20mm当成已测丝杆导程。当前磁铁仍是被动吸持、通电脉冲释放，脉冲结束后再抬升；硬件释放稳定性不由离线测试代替。
-
-## 已验证的范围
-
-本次有基线及19轮独立源码/证据，逐轮先自查再运行离线对照，每轮形成本地Git版本。最终通过 **13组CTest、59项Python检查**；真实HTTP服务仅在 `--simulate` 下测试，先核实模拟状态，再验证允许控制、J1模拟运动、松手制动和停止。
-
-视觉对照包括16张保存图的RGB输入和完整标注PNG逐字节相同，7份历史NPU张量的152个检测结果相同，原v3 ONNX在CPU上重新推理的501个结果相同。已有两张实拍共64枚棋子的类别/位置核对保持一致，保存v3 NPU的32枚核对一致。同批样本反复验证不增加独立样本数，也不等于完整准确率或真实NPU验收。
-
-几何13份输出逐字节相同；98组原有逆解结果在9位小数度上相同；48600组棋子搬移数据检查与原版摘要相同。后两项分别验证旧运动公式和棋盘数据语义，不能代替机械运动验收或完整象棋规则库。UCI检查编译真实通信实现，模拟POSIX接口验证协议、取消和回收；未运行Linux真实Pikafish子进程。
-
-本轮未连接RV1106、CAN或GPIO。原驱动固件、模型、第三方引擎和既有 `config/` 与本次开始版本相同。
-
-最终还将交付源码包解到空目录重新配置、编译，13组CTest及59项Python检查全部通过；用新目录生成的程序再次回放16张保存图，32份RGB/标注图与基线逐字节相同，检测结果相同。39个应用源文件与第19轮已验证哈希一致，基线及19轮归档也逐个核对过；见 [源码包验证](docs/evidence/2026-11-13/upper-review-20261113/package-verification.json) 和 [归档一致性检查](docs/evidence/2026-11-13/upper-review-20261113/artifact-audit.json)。
-
-## 本机构建与离线检查
-
-C++要求C++17、OpenCV **5.0.0**，包含core、imgproc、imgcodecs、geometry、calib及videoio模块。相机本地视频流检查需要FFmpeg解码。使用支持C++17的编译器，在开发终端执行：
+布局字段见 [离线格式示例](tests/fixtures/fixed-app/setup.json)。它是测试夹具，不应直接当作现场坐标。相机标识及1280×720尺寸集中在 `vision/geometry.hpp`；当前只接受已独立验误的原始像素标定，含非空镜头畸变参数的配置会被拒绝。
 
 ```sh
-cmake -S . -B build/lesson -G Ninja -DOpenCV_DIR="<OpenCV5安装目录>/build" -DBUILD_TESTING=ON
-cmake --build build/lesson
-ctest --test-dir build/lesson --output-on-failure
+scara_geometry_tool calibrate measured-pairs.json plane-map.yml
+scara_geometry_tool inspect fixed-board.json grid.json
+```
+
+两个命令都只处理文件，不连接机械臂。旧双画面入口改用 `--layout`读取固定布局，不再使用 `--orientation-reference`。启动时仍显式保留已验证的识别ROI：
+
+```sh
+python temp/yolo_live/dual_preview.py --board <RV1106_IP> --geometry-exe <scara_geometry_tool路径> --layout <现场固定布局.json> --out output/dual-fixed --roi 0 0 1280 720 --inference-roi 300 70 650 600
+```
+
+此处是调用格式，本轮没有连接或启动板端服务。预览文字已改为“固定90点已加载”，不能拿它作为自动定位成功的证据。
+
+## 实际删掉了哪些内容
+
+- 自动边框/格线搜索、旋转判向、河界方向模板及对应工具入口。
+- 重复运行的机械参考四种方向搜索；当前直接读取已验证的机械参考文件，没有伪造新参考。
+- 多相机/多检测坐标格式适配、识别日志导入到标定工具的旁路。
+- 每个固定坐标携带的重复帧号等字段、未使用的格点置信度副本和错误列表。
+- 把自己生成的FEN再次反向解析的过程、独立视觉转棋局转发库、重复的合法走法列表检查。任意起始盘面仍可用 `Game_reset`设置；不再提供外部FEN文本导入。
+
+代码实际从当前源码删除，旧版保存在Git和已有快照中，没有挪到Python或未计数文件中隐藏。新代码仍保留真实数据入口、SDK/管道失败、资源回收、棋局确认和不可达目标处理；没有删除固件保护。
+
+## 同一口径的行数
+
+NLOC由Lizard统计，排除空行和注释；所有头文件、辅助函数及参数表都计入。页面脚本计入上位机，非脚本HTML另计20行。
+
+| 范围 | 本轮起点 | 当前 |
+| --- | ---: | ---: |
+| 自有C++应用 | 2975 | **1800** |
+| Python上位机、取放、演示与页面脚本 | 2184 | 2138 |
+| Python电机标定/调参/升级工具 | 740 | 740 |
+| 旧实时视觉服务 | 841 | 835 |
+| USB-CAN适配，另列 | 302 | 302 |
+
+1800行不是整仓库所有语言的总数，不含测试、第三方OpenCV/RKNN/Pikafish源码、模型权重或未来SPI-CAN实现。[逐文件计数与哈希](docs/evidence/2026-11-13/fixed-minimal-20261113/final-metrics.json)与[计划/逐轮记录](docs/evidence/2026-11-13/fixed-minimal-20261113/plan.json)可直接核对。此前2975行版本的记录仍在 `upper-review-20261113`。
+
+## 验证范围
+
+本轮完成基线及8轮自查、改写和离线回归，每轮有独立源码快照与本地Git提交。当前通过14组CTest、60项Python检查，包含模拟HTTP控制、重复帧处理、坐标缓存失败恢复、UCI协议、取放顺序和棋局提交。
+
+16张保存图的RGB输入及完整标注PNG逐字节相同；152个历史NPU检测、原v3 ONNX CPU重新推理的501个结果相同。既有两张实拍64枚棋子的类别/位置核对以及保存v3 NPU的32枚核对保持一致。没有新增训练或准确率样本，也没有更换、转换模型。
+
+固定流程的标定文件、90点JSON、叠加图及俯视图共4份输出与精简前逐字节一致。98组逆解结果与旧Python一致；48600组搬子数据摘要保持一致。14400组合成输入比较格点身份和有效性；已删除的格点置信度字段不再计作当前输出，YOLO检测分数仍在视觉回放中比较。第6轮首次检查有一条旧动态帧号测试未同步，失败日志保留；迁移为当前识别帧编号约定后全量通过。
+
+交付包已解到全新目录，重新配置和编译，14组CTest与60项Python检查通过；新编译程序对16张图、4份固定几何输出的回放也一致。37个应用源文件与第8轮快照相同，12个CPP均按C++17编译，六个视觉文件哈希保持本轮起点值。证据见[源码包验证](docs/evidence/2026-11-13/fixed-minimal-20261113/package-verification.json)与[九份快照核验](docs/evidence/2026-11-13/fixed-minimal-20261113/artifact-audit.json)。
+
+这些是离线一致性检查。未进行ARM交叉构建、Linux真实引擎进程、真实NPU连续运行或整机运动验收。当前C++核心产生计划，实际执行入口仍为现有Python上位机/演示；正式SPI-CAN和H桥硬件尚未接入。
+
+## 构建与继续检查
+
+自有C++使用C++17、OpenCV **5.0.0**，需要core、imgproc、imgcodecs、geometry及videoio。相机检查需要FFmpeg解码支持。开发终端中配置并构建：
+
+```sh
+cmake -S . -B build/commit-verify -G Ninja -DOpenCV_DIR="<OpenCV5安装目录>/build" -DBUILD_TESTING=ON
+cmake --build build/commit-verify
+ctest --test-dir build/commit-verify --output-on-failure
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-上述命令不启动真实机械臂。Windows须让OpenCV运行库所在目录进入PATH；CMake生成 `compile_commands.json`，VS Code设置读取现有 `build/commit-verify/` 或 `build/` 下的数据库。换构建目录时修改 `.vscode/settings.json` 中的对应路径。
+本次14组CTest包括RKNN模拟ABI/主入口检查，配置时另传实际SDK头文件目录 `RKNN_INCLUDE_DIR`；未提供时不构建这两组。Windows需要OpenCV运行库可加载。CMake导出的编译数据库已接入 `.vscode/settings.json`。
 
-本次13组CTest还包括RKNN模拟ABI和主入口测试，配置时额外指定实际SDK的 `RKNN_INCLUDE_DIR`；不需要连接NPU。未提供该头文件时，这两组不会构建。Python检查环境为Python3.13.6、NumPy2.5.4、cv2 4.13.0（既有 `opencv-python-headless`）、ONNX Runtime1.31.1，USB导入依赖pyusb1.3.1/libusb-package1.0.30.0。Python旧服务没有冒称使用OpenCV5。
+现有Python检查环境为Python3.13.6、NumPy2.5.4、cv2 4.13.0、ONNX Runtime1.31.1、pyusb1.3.1和libusb-package1.0.30.0。Python旧服务不冒称使用OpenCV5。连续审查使用 `tools/fixed_review.py`，打包使用 `tools/package_upper.py --review fixed-minimal-20261113 --round 8`；它们使用本机SDK与冻结数据，完整ONNX复核另需manifest所列同哈希模型。
 
-持续审查入口 `tools/upper_review.py` 使用本机既有SDK、模型和冻结baseline，是本机维护工具；源码包另附它使用的 `check_vision.py`、基线输出和说明。跨机常规构建按上面命令，完整ONNX复核还须提供manifest中同哈希的原模型。
-
-板端原生视觉构建另加 `-DSCARA_WITH_RKNN=ON`，提供 `RKNN_INCLUDE_DIR`、`RKNN_LIBRARY`；ARM工具链配置在 `cmake/rv1106.cmake`。板上SC3336 ISP/RTSP仍由已有 `camera-sc3336.sh` 负责。安装后的顺序入口为：
-
-```sh
-./bin/run-vision.sh /userdata/scara-yolo-v3/xiangqi14-local-v3-rv1106.rknn rtsp://127.0.0.1/live/0 /tmp/scara-vision.jpg
-```
-
-此原生入口输出JPEG，尚未取代原浏览器预览服务；本轮没有执行交叉编译、部署或实机动作。
+RV1106工具链在 `cmake/rv1106.cmake`。原生视觉构建另加 `SCARA_WITH_RKNN=ON`并提供RKNN头文件/库，安装后使用 `tools/run-vision.sh`校验v3模型再启动。此入口只输出识别JPEG，尚未替代原浏览器服务。本轮未部署，也未连接CAN、ADB或GPIO；底层固件、模型、第三方引擎及原现场配置保持不变。
 
 ## 现场资料与历史
 
-当前机械参考、固件构建号及实机结果请看 [续做交接](docs/续做交接_2026-11-09.md)、[坐标与下棋记录](docs/项目收敛与下棋闭环_2026-11-09.md)、[CAD选型](docs/cad/SCARA33接收与当前选型.md)。以下带日期段落是历史记录，其中旧减速比、未标定状态不覆盖后续确认结果。
+机械参考与实机过程见 [续做交接](docs/续做交接_2026-11-09.md)、[坐标与下棋记录](docs/项目收敛与下棋闭环_2026-11-09.md)、[当前棋局接口](docs/棋局与视觉接口_2026-11-09.md)。以下带日期段落只记当时事实，其中旧减速比、构建号和未标定状态不覆盖后续确认结果。
 
 ## 2026-11-04 实机验收记录
 

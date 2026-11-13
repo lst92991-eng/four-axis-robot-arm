@@ -1,0 +1,29 @@
+{
+  "verified_utc": "2026-11-13T16:03:40.978589+00:00",
+  "code_commit": "63aebac",
+  "source_round": 8,
+  "method": "Extracted the complete package into an empty directory, configured and compiled from scratch, ran tests and replayed retained outputs with the newly built executables.",
+  "cpp_nloc": 1800,
+  "own_cpp_files_compiled_as_cpp17": 12,
+  "source_files_compared": 37,
+  "cpp_suites_passed": 14,
+  "python_checks_passed": 60,
+  "saved_frame_cases": 16,
+  "rgb_and_annotation_files_identical": 32,
+  "recorded_detections_identical": true,
+  "fixed_geometry_files_identical": 4,
+  "vision_six_file_hashes_identical_to_start": true,
+  "build_log_sha256": "fea65d716f88b37b479d04721a4879c62bedcc28edf3e592534cfa8de6b9aeae",
+  "hardware_actions": false,
+  "protected_trees_unchanged": [
+    "firmware",
+    "engine",
+    "models",
+    "config"
+  ],
+  "limits": [
+    "Used installed MSVC/OpenCV5/RKNN header and existing Python environment; vendor runtime/model weights excluded from package.",
+    "ONNX CPU comparison passed in round08; archive replay uses saved tensors.",
+    "No ARM cross build, Linux real engine process, real NPU or physical motion."
+  ]
+}
