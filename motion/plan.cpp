@@ -34,28 +34,35 @@ bool Arm_load(const std::string &path, ArmGeometry &arm)
 
 void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d &baseMm)
 {
-    double shoulder =
+    double shoulder, elbow; // 大臂相对基座、小臂相对大臂的角度，弧度。
+
+    shoulder =
         arm.shoulderReferenceRad + (joints.j2Deg - arm.j2ReferenceDeg) * arm.j2Scale * arm.j2Sign * RadiansPerDegree;
-    double elbow = arm.elbowReferenceRad +
-                   (joints.j3MotorDeg - arm.j3ReferenceMotorDeg) * arm.j3Sign / arm.j3Ratio * RadiansPerDegree;
+    elbow = arm.elbowReferenceRad +
+            (joints.j3MotorDeg - arm.j3ReferenceMotorDeg) * arm.j3Sign / arm.j3Ratio * RadiansPerDegree;
     baseMm.x = arm.upperMm * std::cos(shoulder) + arm.forearmMm * std::cos(shoulder + elbow);
     baseMm.y = arm.upperMm * std::sin(shoulder) + arm.forearmMm * std::sin(shoulder + elbow);
 }
 
 bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints)
 {
+    double radiusSquared; // 目标到基座的距离平方，mm²。
+    double cosine, shoulder, elbow;
+    double shoulderDelta, elbowDelta; // 相对已示教参考姿态的角度差，弧度。
+    bool reachable;
+
     joints = {};
-    double cosine =
-        (baseMm.x * baseMm.x + baseMm.y * baseMm.y - arm.upperMm * arm.upperMm - arm.forearmMm * arm.forearmMm) /
-        (2 * arm.upperMm * arm.forearmMm);
-    bool reachable = cosine >= -1 && cosine <= 1;
+    radiusSquared = baseMm.x * baseMm.x + baseMm.y * baseMm.y;
+    cosine =
+        (radiusSquared - arm.upperMm * arm.upperMm - arm.forearmMm * arm.forearmMm) / (2 * arm.upperMm * arm.forearmMm);
+    reachable = cosine >= -1 && cosine <= 1;
     if (reachable)
     {
-        double elbow = std::copysign(std::acos(cosine), arm.elbowReferenceRad);
-        double shoulder = std::atan2(baseMm.y, baseMm.x) -
-                          std::atan2(arm.forearmMm * std::sin(elbow), arm.upperMm + arm.forearmMm * std::cos(elbow));
-        double shoulderDelta = std::remainder(shoulder - arm.shoulderReferenceRad, 2 * CV_PI);
-        double elbowDelta = std::remainder(elbow - arm.elbowReferenceRad, 2 * CV_PI);
+        elbow = std::copysign(std::acos(cosine), arm.elbowReferenceRad);
+        shoulder = std::atan2(baseMm.y, baseMm.x) -
+                   std::atan2(arm.forearmMm * std::sin(elbow), arm.upperMm + arm.forearmMm * std::cos(elbow));
+        shoulderDelta = std::remainder(shoulder - arm.shoulderReferenceRad, 2 * CV_PI);
+        elbowDelta = std::remainder(elbow - arm.elbowReferenceRad, 2 * CV_PI);
         joints.j2Deg = arm.j2ReferenceDeg + shoulderDelta * DegreesPerRadian / (arm.j2Scale * arm.j2Sign);
         joints.j3MotorDeg = arm.j3ReferenceMotorDeg + elbowDelta * DegreesPerRadian * arm.j3Ratio / arm.j3Sign;
     }
@@ -92,24 +99,47 @@ bool WorkHeights_load(const std::string &path, WorkHeights &heights)
 bool Pick_plan(const ArmGeometry &arm, const WorkHeights &heights, cv::Point2d sourceMm, cv::Point2d destinationMm,
                bool alreadyHeld, std::vector<PickStep> &steps)
 {
+    JointTarget source, destination; // 起点和终点的J2反馈角、J3电机角，度。
+    bool sourceValid = true, destinationValid;
+    PickStep hold;                        // 吸持状态。
+    PickStep moveSource, moveDestination; // 两次平面移动。
+    PickStep pickup, travel, release;     // 三个已示教的Z工作层。
+    PickStep pulse;                       // 在释放层给一次放棋脉冲。
+
     steps.clear();
     if (heights.pickupDeg == heights.travelDeg) return false;
-    JointTarget source, destination;
-    bool sourceValid = true;
     if (!alreadyHeld) sourceValid = Arm_inverse(arm, sourceMm, source);
-    bool destinationValid = Arm_inverse(arm, destinationMm, destination);
+    destinationValid = Arm_inverse(arm, destinationMm, destination);
     if (sourceValid == false || destinationValid == false) return false;
-    steps.push_back({PickAction::Hold});
+
+    hold.action = PickAction::Hold;
+    moveSource.action = PickAction::MoveXY;
+    moveSource.joints = source;
+    moveDestination.action = PickAction::MoveXY;
+    moveDestination.joints = destination;
+    pickup.action = PickAction::MoveZ;
+    pickup.zDeg = heights.pickupDeg;
+    pickup.speedDegS = heights.speedDegS;
+    travel.action = PickAction::MoveZ;
+    travel.zDeg = heights.travelDeg;
+    travel.speedDegS = heights.speedDegS;
+    release.action = PickAction::MoveZ;
+    release.zDeg = heights.releaseDeg;
+    release.speedDegS = heights.speedDegS;
+    pulse.action = PickAction::ReleasePulse;
+    pulse.durationMs = heights.releasePulseMs;
+
+    steps.push_back(hold);
     if (!alreadyHeld)
     {
-        steps.push_back({PickAction::MoveXY, source});
-        steps.push_back({PickAction::MoveZ, {}, heights.pickupDeg, heights.speedDegS});
-        steps.push_back({PickAction::MoveZ, {}, heights.travelDeg, heights.speedDegS});
+        steps.push_back(moveSource);
+        steps.push_back(pickup);
+        steps.push_back(travel);
     }
-    steps.push_back({PickAction::MoveXY, destination});
-    steps.push_back({PickAction::MoveZ, {}, heights.releaseDeg, heights.speedDegS});
-    steps.push_back({PickAction::ReleasePulse, {}, 0, 0, heights.releasePulseMs});
-    steps.push_back({PickAction::MoveZ, {}, heights.travelDeg, heights.speedDegS});
+    steps.push_back(moveDestination);
+    steps.push_back(release);
+    steps.push_back(pulse);
+    steps.push_back(travel);
     return true;
 }
 } // namespace scara

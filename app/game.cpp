@@ -35,10 +35,13 @@ static void readCommand(const std::string &phase, const std::string &prompt, Com
 
 static bool finishCommand(Session &session, Command command)
 {
+    chess::Result winner;
     if (command == Command::Draw) return chess::Game_finish(session.game, chess::Result::Draw);
     if (command == Command::Resign)
-        return chess::Game_finish(session.game,
-                                  session.game.humanRed ? chess::Result::BlackWon : chess::Result::RedWon);
+    {
+        winner = session.game.humanRed ? chess::Result::BlackWon : chess::Result::RedWon;
+        return chess::Game_finish(session.game, winner);
+    }
     return false;
 }
 
@@ -59,12 +62,21 @@ static void observe(Session &session)
 
 void Match_start(const GameConfig &config, Session &session)
 {
-    Command command = Command::Retry; // 本阶段接收的操作，结果通过参数写回。
+    Command command = Command::Retry; // 操作员在当前阶段输入的命令。
     bool prepared = false;            // 执行器是否已到示教观察位。
-    std::vector<PickStep> prepare{    // 保持吸持、抬升、移到观察位。
-                                  {PickAction::Hold},
-                                  {PickAction::MoveZ, {}, session.heights.travelDeg, session.heights.speedDegS},
-                                  {PickAction::MoveXY, config.park}};
+    chess::Board initial;             // 等待操作员核对的开局盘面。
+    PickStep hold, lift, park;        // 保持吸持、抬到搬运层、让开棋盘。
+    std::vector<PickStep> prepare;    // 按执行顺序保存上述三个动作。
+
+    hold.action = PickAction::Hold;
+    lift.action = PickAction::MoveZ;
+    lift.zDeg = session.heights.travelDeg;
+    lift.speedDegS = session.heights.speedDegS;
+    park.action = PickAction::MoveXY;
+    park.joints = config.park;
+    prepare.push_back(hold);
+    prepare.push_back(lift);
+    prepare.push_back(park);
 
     Match_report("prepare", session);
     while (command != Command::Ready)
@@ -80,7 +92,7 @@ void Match_start(const GameConfig &config, Session &session)
             readCommand("start_retry", "识别未稳定或棋子不完整；调整后回车重读，quit退出。", command);
             continue;
         }
-        auto initial = session.observed.board;
+        initial = session.observed.board;
         Match_report("confirm_start", session);
         readCommand("confirm_start", "核对预览和识别盘面；回车确认开局，retry重读，quit退出。", command);
         if (command != Command::Ready) continue;
@@ -118,7 +130,11 @@ void Match_robot(const GameConfig &config, Session &session, const std::vector<s
 {
     Command command;
     bool completed = false; // 执行器是否已完成全部动作并停稳。
-    observe(session);       // 搜索结束后重新取图，不能直接用搜索前的观察执行。
+    PickStep park;          // 放子后让开棋盘，才能重新观察全部棋子。
+
+    park.action = PickAction::MoveXY;
+    park.joints = config.park;
+    observe(session); // 搜索结束后重新取图，不能直接用搜索前的观察执行。
     while (!session.observed.valid || session.observed.board != session.game.board)
     {
         Match_report("board_changed", session);
@@ -127,7 +143,7 @@ void Match_robot(const GameConfig &config, Session &session, const std::vector<s
         observe(session);
     }
     if (!Session_plan(session, choice, legal)) throw std::runtime_error(session.game.error);
-    session.steps.push_back({PickAction::MoveXY, config.park}); // 放子抬升后让开棋盘，才能视觉复核。
+    session.steps.push_back(park);
     Match_report("executing", session);
     Robot_execute("move", choice, session.steps, completed);
     if (completed) observe(session);

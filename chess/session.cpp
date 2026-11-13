@@ -39,16 +39,21 @@ bool Session_plan(Session &session, const std::string &choice, const std::vector
     chess::Move move;
     cv::Point2d source, destination;        // 本次起点和终点，基座毫米坐标。
     std::vector<PickStep> prepared, moving; // 先清走被吃棋子，再搬自己的棋子。
-    bool ready = chess::parseMove(choice, move);
+    bool sourceMapped, destinationMapped, capture, ready;
+
+    ready = chess::parseMove(choice, move);
     if (ready)
     {
-        bool sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
-        bool destinationMapped = FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, destination);
+        sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
+        destinationMapped = FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, destination);
         ready = sourceMapped && destinationMapped;
-        bool capture = session.game.board[move.toRow][move.toCol] != '.';
+        capture = session.game.board[move.toRow][move.toCol] != '.';
         if (ready && capture)
-            ready = session.capturePlaceTaught &&
-                    Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
+        {
+            ready = session.capturePlaceTaught;
+            if (ready)
+                ready = Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
+        }
         if (ready) ready = Pick_plan(session.arm, session.heights, source, destination, false, moving);
     }
     if (!ready)
