@@ -176,13 +176,14 @@ int main()
     cv::Mat rgb = storage(cv::Rect(3,4,640,640));
     rgb.setTo(cv::Scalar(11,22,33));
     check(!rgb.isContinuous(), "Stride test unexpectedly used tightly packed source rows");
-    auto heads = scara::Yolo_run(rgb);
-    check(heads!=nullptr, "Inference unexpectedly failed");
+    scara::YoloHead heads[scara::YoloHeads];
+    check(scara::Yolo_run(rgb,heads), "Inference unexpectedly failed");
     scara::Vision_setup({640,640},{0,0,640,640});
-    auto pieces = scara::Vision_decode(heads);
+    std::vector<scara::Detection> pieces;
+    scara::Vision_decode(heads,pieces);
     check(pieces.size()==1 && pieces[0].classId==12, "Native padded output was decoded incorrectly");
     failRun = true;
-    bool failed = scara::Yolo_run(rgb)==nullptr;
+    bool failed = !scara::Yolo_run(rgb,heads);
     scara::Yolo_close();
     check(failed && !contextOpen && !alive, "Inference failure cleanup failed");
     std::cout << "PASS RKNN input/output strides, result codes and failure cleanup; simulated ABI\n";

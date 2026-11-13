@@ -25,7 +25,8 @@ cv::Mat image(const std::string& path, int mode=cv::IMREAD_COLOR)
 void sameInput(const cv::Mat& source, cv::Rect roi, const std::string& expected)
 {
   scara::Vision_setup(source.size(),roi);
-  auto input = scara::Vision_prepare(source);
+  cv::Mat input;
+  check(scara::Vision_prepare(source,input), "Preparation failed");
   cv::Mat rgb;
   cv::cvtColor(image(expected), rgb, cv::COLOR_BGR2RGB);
   check(cv::norm(input, rgb, cv::NORM_INF)==0, "Preprocessing differs from the verified Python path");
@@ -45,24 +46,27 @@ void decodeEdges()
   auto *p = data[0].data()+(20*80+20)*57;
   p[0] = p[1] = p[2] = p[3] = 50;
   p[4] = 40; p[5+8] = 126; // 0.40 * 1.26 = 0.504, above the 0.50 threshold.
-  auto found = scara::Vision_decode(heads);
+  std::vector<scara::Detection> found;
+  scara::Vision_decode(heads,found);
   check(found.size()==1 && found[0].classId==8, "Early rejection assumed class scores cannot exceed one");
   p[5+2] = 126;
-  found = scara::Vision_decode(heads);
+  scara::Vision_decode(heads,found);
   check(found.size()==1 && found[0].classId==2, "Equal class scores did not keep the first class");
   p[5+2] = 0;
   p[4] = 39;
-  check(scara::Vision_decode(heads).empty(), "Below-threshold candidate survived");
+  scara::Vision_decode(heads,found);
+  check(found.empty(), "Below-threshold candidate survived");
   p[2] = p[3] = p[4] = 100; p[5+8] = 0; p[5+2] = 90;
   auto *q = p+19;
   q[0] = q[1] = 50; q[2] = 80; q[3] = 66; q[4] = 100; q[5+5] = 90;
-  found = scara::Vision_decode(heads);
+  scara::Vision_decode(heads,found);
   check(found.size()==1 && found[0].classId==2, "Cross-class NMS or equal-score traversal order changed");
   q[5+5] = 91;
-  found = scara::Vision_decode(heads);
+  scara::Vision_decode(heads,found);
   check(found.size()==1 && found[0].classId==5, "NMS did not keep the highest scoring overlapping box");
   q[4] = 0; p[5+2] = 50;
-  check(scara::Vision_decode(heads).size()==1, "Score exactly 0.50 was rejected");
+  scara::Vision_decode(heads,found);
+  check(found.size()==1, "Score exactly 0.50 was rejected");
 }
 }
 
@@ -96,7 +100,8 @@ int main(int argc, char **argv)
       offset += bytes;
     }
     scara::Vision_setup(source.size(),historical);
-    auto pieces = scara::Vision_decode(heads);
+    std::vector<scara::Detection> pieces;
+    scara::Vision_decode(heads,pieces);
     check(pieces.size()==expected["detections"].size(), "Detection count changed");
     double maximum = 0;
     for (size_t i=0; i<pieces.size(); ++i)
@@ -111,13 +116,19 @@ int main(int argc, char **argv)
     }
     check(maximum<.0001, "Original-image bounding boxes changed");
     auto labels = image("config/vision/chinese-labels.png", cv::IMREAD_GRAYSCALE);
-    auto preview = scara::Vision_draw(source, pieces, labels);
+    cv::Mat preview, drawing;
+    auto originalSource = source.clone();
+    scara::Vision_draw(source,pieces,labels,preview);
+    check(cv::norm(source,originalSource,cv::NORM_INF)==0, "Drawing modified the source image");
     check(preview.size()==source.size(), "Drawing changed the display field of view");
-    check(cv::norm(scara::Vision_draw(source, {}, labels), source, cv::NORM_INF)==0, "Empty detection altered frame");
-    check(cv::norm(scara::Vision_draw(source, {{0,.9,{-100,-100,10,10}}}, labels),source,cv::NORM_INF)==0,
+    scara::Vision_draw(source,{},labels,drawing);
+    check(cv::norm(drawing, source, cv::NORM_INF)==0, "Empty detection altered frame");
+    scara::Vision_draw(source,{{0,.9,{-100,-100,10,10}}},labels,drawing);
+    check(cv::norm(drawing,source,cv::NORM_INF)==0,
           "Off-image detection drew a false label at the image origin");
     cv::Mat tiny(12,20,CV_8UC3,cv::Scalar::all(0));
-    check(scara::Vision_draw(tiny, {{12,.9,{0,0,5,5}}}, labels).size()==tiny.size(),
+    scara::Vision_draw(tiny,{{12,.9,{0,0,5,5}}},labels,drawing);
+    check(drawing.size()==tiny.size(),
           "Clipped Chinese label changed the image size");
     std::filesystem::create_directories("output/vision-stage-verify");
     std::vector<uint8_t> encoded;
@@ -129,38 +140,39 @@ int main(int argc, char **argv)
     {
       check(scara::Camera_open(argv[1]), "Cannot open test stream");
       std::this_thread::sleep_for(std::chrono::milliseconds(300));
-      auto first = scara::Camera_read();
+      cv::Mat first, next, resumed;
+      check(scara::Camera_read(first), "Missing first frame");
       auto saved = first.clone();
-      auto next = scara::Camera_read();
+      check(scara::Camera_read(next), "Missing next frame");
       check(first.size()==source.size() && next.size()==source.size(), "Camera frame size changed");
       check(cv::norm(first,next,cv::NORM_INF)>10, "Camera returned a cached frame again");
       std::this_thread::sleep_for(std::chrono::milliseconds(1200));
-      check(scara::Camera_read().size()==source.size(), "Camera did not resume with a new frame");
+      check(scara::Camera_read(resumed) && resumed.size()==source.size(), "Camera did not resume with a new frame");
       check(cv::norm(first,saved,cv::NORM_INF)==0, "Background capture modified a frame still held by the caller");
       scara::Camera_close();
     }
     check(scara::Camera_open(std::string(argv[1])+"/finite"), "Cannot open finite stream");
+    cv::Mat frame;
     bool ended = false;
     for (int i=0; i<20 && !ended; ++i)
     {
-      ended = scara::Camera_read().empty();
+      ended = !scara::Camera_read(frame);
     }
     scara::Camera_close();
-    check(ended, "End of stream did not stop fresh-frame reads");
+    check(ended && frame.empty(), "End of stream did not clear the output frame");
     check(scara::Camera_open(std::string(argv[1])+"/stall"), "Cannot open stalled stream");
     auto waiting = std::chrono::steady_clock::now();
     ended = false;
-    for (int i=0; i<20 && !ended; ++i) ended = scara::Camera_read().empty();
+    for (int i=0; i<20 && !ended; ++i) ended = !scara::Camera_read(frame);
     double waitSeconds = std::chrono::duration<double>(std::chrono::steady_clock::now()-waiting).count();
     scara::Camera_close();
     check(ended && waitSeconds<8, "Stalled stream left the consumer waiting indefinitely");
     std::cout << "camera_stall_wait_s=" << waitSeconds << '\n';
     check(scara::Camera_open(argv[1]), "Cannot reopen stream");
-    check(scara::Camera_read().size()==source.size(), "Camera retained an old failure after reopening");
+    check(scara::Camera_read(frame) && frame.size()==source.size(), "Camera retained an old failure after reopening");
     scara::Camera_close();
-    bool rejected = false;
-    try { scara::Vision_prepare(source(cv::Rect(0,0,320,240))); }
-    catch (const std::exception&) { rejected = true; }
+    cv::Mat badInput;
+    bool rejected = !scara::Vision_prepare(source(cv::Rect(0,0,320,240)),badInput);
     check(rejected, "Unexpected camera size was accepted");
     std::cout << "PASS preprocessing byte equality, " << pieces.size()
               << " recorded NPU detections, max box difference " << maximum

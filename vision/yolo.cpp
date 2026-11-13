@@ -1,7 +1,6 @@
 #include "yolo.hpp"
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
-#include <stdexcept>
 
 namespace scara
 {
@@ -74,19 +73,20 @@ void Vision_setup(cv::Size frameSize, cv::Rect roi)
     InputArea = {(YoloSize - resized.width) / 2, (YoloSize - resized.height) / 2, resized.width, resized.height};
 }
 
-cv::Mat Vision_prepare(const cv::Mat &bgr)
+bool Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
 {
-    if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) throw std::runtime_error("Unexpected camera frame");
-    cv::Mat rgb, input(YoloSize, YoloSize, CV_8UC3, cv::Scalar::all(114));
+    if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) return false;
+    cv::Mat rgb;
     cv::cvtColor(bgr(Roi), rgb, cv::COLOR_BGR2RGB);
+    input = cv::Mat(YoloSize, YoloSize, CV_8UC3, cv::Scalar::all(114));
     cv::Mat picture = input(InputArea);
     cv::resize(rgb, picture, InputArea.size(), 0, 0, cv::INTER_LINEAR);
-    return input;
+    return true;
 }
 
-std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads])
+void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &boxes)
 {
-    std::vector<Detection> boxes;
+    boxes.clear();
     for (int i = 0; i < YoloHeads; ++i)
         readCandidates(heads[i], i, boxes);
     std::stable_sort(boxes.begin(), boxes.end(), higherScore);
@@ -118,12 +118,11 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads])
         }
     }
     boxes.resize(count);
-    return boxes;
 }
 
-cv::Mat Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels)
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels, cv::Mat &result)
 {
-    cv::Mat result = bgr.clone();
+    result = bgr.clone();
     cv::Rect bounds(0, 0, result.cols, result.rows);
     for (const Detection &piece : detections)
     {
@@ -142,6 +141,5 @@ cv::Mat Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections
         cv::putText(result, cv::format("%.2f", piece.confidence), {x + 3, scoreY + 12}, cv::FONT_HERSHEY_SIMPLEX, .4,
                     cv::Scalar::all(255), 1, cv::LINE_AA);
     }
-    return result;
 }
 } // namespace scara

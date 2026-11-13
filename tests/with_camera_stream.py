@@ -56,11 +56,12 @@ def main():
                    'output/vision-stage-verify/entry.jpg']
     try:
         if args.entry:
-            invalid = command.copy()
-            invalid[3] = 'missing-labels.png'
-            result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
-            if result.returncode!=1 or 'label image' not in result.stderr or 'TEST ONLY' in result.stderr:
-                raise RuntimeError('Invalid label image opened the NPU or lost its error: '+result.stderr)
+            for labels in ('missing-labels.png','tests/fixtures/camera/0.jpg'):
+                invalid = command.copy()
+                invalid[3] = labels
+                result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
+                if result.returncode!=1 or 'TEST ONLY' in result.stderr:
+                    raise RuntimeError('Invalid label image opened the NPU or was accepted: '+result.stderr)
             unavailable = command.copy()
             unavailable[2] = url+'/not-a-stream'
             result = subprocess.run(unavailable,cwd=ROOT,capture_output=True,text=True,timeout=15)

@@ -47,13 +47,14 @@ bool Camera_open(const std::string &source)
     return true;
 }
 
-cv::Mat Camera_read()
+bool Camera_read(cv::Mat &frame)
 {
     std::unique_lock<std::mutex> lock(Mutex);
     Latest.release();
     while (Running && Latest.empty())
         Ready.wait(lock);
-    return Latest;
+    frame = Latest;
+    return !frame.empty();
 }
 
 void Camera_close()

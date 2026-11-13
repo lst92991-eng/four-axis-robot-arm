@@ -29,7 +29,8 @@ int main(int argc, char **argv)
       auto roi = item["roi"];
       cv::Rect region = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
       scara::Vision_setup(source.size(),region);
-      auto input = scara::Vision_prepare(source);
+      cv::Mat input;
+      if (!scara::Vision_prepare(source,input)) throw std::runtime_error("Preparation failed");
       scara::writeBytes(prefix+".rgb", {reinterpret_cast<const char *>(input.data), input.total()*input.elemSize()});
       std::vector<scara::Detection> detections;
       double decodeMs = 0;
@@ -61,9 +62,9 @@ int main(int argc, char **argv)
           offset += length;
         }
         if (offset!=packet.size()) throw std::runtime_error("Unexpected tensor tail");
-        detections = scara::Vision_decode(heads);
+        scara::Vision_decode(heads,detections);
         auto start = std::chrono::steady_clock::now();
-        for (int i=0; i<100; ++i) scara::Vision_decode(heads);
+        for (int i=0; i<100; ++i) scara::Vision_decode(heads,detections);
         decodeMs = std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()/100;
       }
       auto result = scara::memoryStorage(true);
@@ -73,7 +74,8 @@ int main(int argc, char **argv)
                << d.bbox.x << d.bbox.y << d.bbox.x+d.bbox.width << d.bbox.y+d.bbox.height << "]" << "}";
       result << "]";
       scara::writeBytes(prefix+".json", result.releaseAndGetString());
-      auto preview = scara::Vision_draw(source, detections, labels);
+      cv::Mat preview;
+      scara::Vision_draw(source,detections,labels,preview);
       std::vector<uint8_t> png;
       cv::imencode(".png", preview, png);
       scara::writeBytes(prefix+".png", {png.begin(),png.end()});

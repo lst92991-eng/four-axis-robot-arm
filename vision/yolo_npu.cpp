@@ -45,13 +45,16 @@ bool Yolo_open(std::string path)
     return true;
 }
 
-const YoloHead *Yolo_run(const cv::Mat &rgb)
+bool Yolo_run(const cv::Mat &rgb, YoloHead heads[YoloHeads])
 {
     uint8_t *input = static_cast<uint8_t *>(Model.memory[0]->virt_addr);
     size_t rowBytes = (Model.attr[0].w_stride ? Model.attr[0].w_stride : YoloSize) * 3;
     for (int row = 0; row < YoloSize; ++row)
         std::memcpy(input + row * rowBytes, rgb.ptr<uint8_t>(row), YoloSize * 3);
-    return rknn_run(Model.context, nullptr) == 0 ? Model.heads : nullptr;
+    if (rknn_run(Model.context, nullptr) != 0) return false;
+    for (int i = 0; i < YoloHeads; ++i)
+        heads[i] = Model.heads[i]; // 复制地址和格式描述，不复制整块输出数据。
+    return true;
 }
 
 void Yolo_close()

@@ -1,0 +1,31 @@
+{
+  "baseline_commit": "c99a081",
+  "style": "explicit input/output parameters",
+  "before_nloc": 350,
+  "after_nloc": 353,
+  "cpp_nloc": 307,
+  "header_nloc": 46,
+  "ctest_suites": 6,
+  "ctest_passed": true,
+  "accuracy": {
+    "frames": 16,
+    "detections": 501,
+    "identical": true,
+    "visual_correct": 64,
+    "visual_total": 64,
+    "recorded_npu_correct": 32
+  },
+  "label_behavior": "Invalid or missing atlas prevents startup and returns failure without an explicit runtime_error.",
+  "output_contract": "Use outputs only after success; raw NPU tensor data is valid until the next inference or close.",
+  "interfaces": [
+    "Camera_read(source)",
+    "Vision_prepare(source, input)",
+    "Yolo_run(input, heads)",
+    "Vision_decode(heads, pieces)",
+    "Vision_draw(source, pieces, labels, preview)"
+  ],
+  "limits": [
+    "No actual RV1106 run or ARM build in this change.",
+    "Repeated saved samples do not expand the accuracy dataset."
+  ]
+}
