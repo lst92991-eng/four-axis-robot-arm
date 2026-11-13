@@ -1,0 +1,19 @@
+{
+  "user_correction": "关注逐行手写教学的书写方式，不是仅减少有效行数或更换接口名称。",
+  "reference": "原电机驱动pid.c/wheel_control.c：先声明数据、说明单位、按计算和状态更新顺序写出，保留真实入口检查。",
+  "reviewed_changes": [
+    {"file": "motion/plan.cpp", "before": "动作构造中的空花括号和位置参数要求反查结构体。", "after": "命名每个动作，action/zDeg/speedDegS/durationMs逐字段赋值，再排执行顺序。", "check": "所有无关字段仍由原默认值初始化；8步、已持子5步、捕获顺序和脉冲结束后抬升保持。"},
+    {"file": "app/game.cpp", "before": "准备阶段嵌套初始化器，一行包含动作类型、空值和高度。", "after": "先声明hold/lift/park，再分别设置字段和调用执行。", "check": "准备、复核、确认、恢复、退出的原分支保持。"},
+    {"file": "vision/io.hpp", "before": "返回临时FileStorage或迭代器构造的字符串，调用者看不到输出参数。", "after": "readBytes/readStorage/memoryStorage把数据写入调用方已声明变量。", "check": "中文路径、二进制图像和张量、文件失败与内存存储模式仍由既有测试覆盖。"},
+    {"file": "app/game_config.cpp", "before": "路径换算、加载和成败组合在同一条件表达式。", "after": "先取路径，再读取和使用；布局、标定、机械参考、示教工作高度顺序可读。", "check": "没有用零替代缺失示教值；原标定/可达性入口验证保留。"},
+    {"file": "app/game_files.cpp", "before": "多字段消息挤在一条很长的流表达式中。", "after": "每条语句写一个字段，组装完整消息再原子发布。", "check": "ticket、simulated、settled和success契约、动作与状态字段顺序不变；没有重写硬件接口。"},
+    {"file": "app/game_live_io.cpp", "before": "解码和发布调用中直接构造临时容器，帧号在参数中自增。", "after": "分别声明字节、图像、编码结果并顺序调用；帧号先更新再格式化。", "check": "视觉主链顺序、固定ROI、2560x720预览和引擎/视觉分时资源生命周期保持。"},
+    {"file": "vision/geometry.cpp", "before": "投影嵌在误差运算里，位置靠构造顺序表达，单字母对象多。", "after": "project输出XY，fitted/prepared/center/grid/nearest明确每步数据；存取配置逐字段。", "check": "齐次运算顺序、格距阈值、边界验证、朝向确认、三帧稳定和独立验误未删除；4份几何输出字节相同。"},
+    {"file": "chess/board.cpp", "before": "UCI坐标转换以四项聚合初始化写出，计数藏在比较表达式里。", "after": "from/to的row/col逐项转换，自增和判断分开，FEN按字段拼接。", "check": "长度检查仍在字符索引之前；非法输入不会写出半个走法；48600组原走法对照摘要一致。"},
+    {"file": "chess/pikafish.cpp", "before": "等待参数用decltype/min/cast多层组合，读写字节变量仅叫n。", "after": "先算剩余毫秒，再确定等待毫秒数；written/received说明字节数，进程资源逐字段初始化。", "check": "短读短写、取消、超时、UCI响应验证及进程回收保留；只做POSIX替身测试，不声称运行了真实Linux引擎。"}
+  ],
+  "unchanged": ["已认可的六个视觉文件及其哈希", "模型与识别预处理", "固件与实机机械/高度参数", "文件执行协议", "原测试断言和场景"],
+  "scope": "共三轮应用源码修改，逐轮完整源码、离线回归和独立本地提交；未操作硬件。",
+  "remaining_teaching_topics": ["vector、引用和OpenCV矩阵", "相机线程与同步", "Linux进程和管道", "实际数据失败与资源释放"],
+  "conclusion_limit": "测试证明所覆盖行为一致，不能证明用户已认可逐行手写体验。增加中间步骤导致行数上升，如实计入全部实现。"
+}

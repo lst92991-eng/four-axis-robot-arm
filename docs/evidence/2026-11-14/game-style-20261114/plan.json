@@ -2,13 +2,25 @@
   "objective": "按原电机驱动代码的顺序写法改进逐行手写教学，不以减少行数或修改接口名称充当风格改进。",
   "baseline_commit": "796746f",
   "baseline_cpp_nloc": 2465,
-  "status": "in_progress",
+  "status": "source_refactor_verified",
   "reference": "output/vision-review-15/reference/MotorDriver/Control/pid.c",
   "rounds": [
-    {"round": 0, "scope": "冻结源码、功能与离线结果"},
-    {"round": 1, "scope": "主流程与取放：先声明含义明确的数据，逐字段设置动作，展开混在调用里的副作用"},
-    {"round": 2, "scope": "配置和IO：读出数据后使用，消息按字段书写，消除匿名临时构造和复杂类型推导"},
-    {"round": 3, "scope": "棋局、坐标和引擎：按计算过程书写，保留数据入口检查与既有行为"}
+    {
+      "round": 0,
+      "scope": "冻结源码、功能与离线结果"
+    },
+    {
+      "round": 1,
+      "scope": "主流程与取放：先声明含义明确的数据，逐字段设置动作，展开混在调用里的副作用"
+    },
+    {
+      "round": 2,
+      "scope": "配置和IO：读出数据后使用，消息按字段书写，消除匿名临时构造和复杂类型推导"
+    },
+    {
+      "round": 3,
+      "scope": "棋局、坐标和引擎：按计算过程书写，保留数据入口检查与既有行为"
+    }
   ],
   "constraints": [
     "保留已认可的六个视觉文件；模型、ROI、数值参数和硬件参考不改",
@@ -18,5 +30,14 @@
     "每轮自审、全部既有离线回归、完整源码快照和独立本地提交",
     "所有CPP、头文件与辅助实现统计在内；展开造成增行如实报告",
     "不连接硬件；离线一致不等于实机验收"
-  ]
+  ],
+  "finished_utc": "2026-11-13T20:29:02.532876+00:00",
+  "result": {
+    "cpp_nloc": 2758,
+    "cpp_delta": 293,
+    "rounds": 3,
+    "hardware_actions": false,
+    "protocol_preserved": true,
+    "user_style_acceptance": "Not inferred from passing tests"
+  }
 }

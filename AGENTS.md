@@ -37,6 +37,8 @@
 
 ## 上层代码的手写风格与自审交付
 
+2026-11-14 用户再次强调本轮问题是代码风格与逐行手写教学，不是行数或包装名称。三轮实际修改后的自有C++为2758行（起点2465，增加293行，不能称压缩），源码/证据为game-style-20261114/round-03。PickStep先逐字段定义，再按顺序排入步骤；readBytes/readStorage/memoryStorage、project/matrix33改为输出参数；配置先声明接收数据，再读取使用；JSON/YAML按字段写，保留字段顺序和原协议；坐标、UCI与进程通信使用具名中间量，去掉嵌套decltype及混在调用中的自增。测试只同步必要调用接口，原断言保留。三轮各17组CTest、60项Python通过，改前改后15场景完整状态/动作一致；六视觉文件哈希、识别ROI、模型、机械参数不变。本轮未连接硬件。后续不得把“测试通过”宣称成用户已认可手写风格，也不能通过新增包装或搬走实现来伪装易读。
+
 2026-11-14后续用户要求再仔细精简重构。当前完成保持文件执行协议兼容的手写复核版，共2465行自有C++（原2472行），不能把净减7行说成大幅压缩。Operator_read使用输出参数，共用Command_parse；Runtime_open/stop/close、Vision_observe、Engine_query、Robot_execute、Match_report按职责命名。删除仅转发的Session_acceptHuman和FixedBoard_assign，直接调用Game_acceptHuman与assignPieces。Session_plan先完成局部步骤准备，再调用Game_prepareRobot锁定棋局，并移动步骤结果，不再复制包含完整历史的Game来试做。预览与消息共用Runtime_publish。17组CTest、60项Python及15场景旧/新完整状态/动作请求对照通过，六视觉文件字节保持不变。源码/证据为game-lesson-20261114/round-05。关于直接C++执行接口还是保留文件请求/回执，已发偏好问题但尚未收到答复；当前保持文件协议，不得声称用户已同意删除它。后续若确认直接接口，再撤掉这层，不通过挪文件漏计实现。
 
 2026-11-14 用户明确只要求补齐第一个目标“完整主程序”，SPI-CAN/H桥硬件执行器及实机验收由用户后续推进。已新增app/game_main.cpp及Match/IO实现，同一main链接实机或显式仿真后端；当前自有C++总2472行，原1800行核心之外增加672行，包含实机IO、文件执行接口和可运行仿真后端，不能再称全部程序只有1800行。实机模式相机/NPU与Pikafish分时使用；玩家用回车确认手已移开，执行后回示教观察位，再以新三帧核对expected才提交历史。动作请求ticket唯一，settled=1且success=0/1才算有效回执；仅发送成功不等于动作完成。失败只观察或明确accept/restored，不盲重发；复位保持完整历史。重复局面使用review_required出口，不宣称自动判和。进程重启自动续局尚未实现。相关源码/证据为game-main-20261114，检查使用tools/game_review.py；旧视觉六文件保持原哈希。当前有15种程序级仿真、17组CTest与60项原Python检查，通过不等于真实NPU/引擎/整机验收；本轮不连接硬件。执行器契约见docs/棋局与视觉接口_2026-11-09.md顶部，真实执行器必须拒绝simulated=1，负责动作到位、取消、通信监督及H桥语义实现。
