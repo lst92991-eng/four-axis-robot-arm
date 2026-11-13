@@ -25,7 +25,7 @@ bool Command_parse(const std::string &text, Command &command)
 
 static void readCommand(const std::string &phase, const std::string &prompt, Command &command)
 {
-    IO_command(phase, prompt, command);
+    Operator_read(phase, prompt, command);
     if (command == Command::Quit)
     {
         gameRunning = 0;
@@ -45,41 +45,43 @@ static bool finishCommand(Session &session, Command command)
 static void observe(Session &session)
 {
     session.stable.reset();
-    IO_report("observing", session);
+    Match_report("observing", session);
     for (int frame = 0; frame < 3; ++frame)
     {
         if (!gameRunning) throw std::runtime_error("对局已停止");
         std::string frameId;
         std::vector<Detection> pieces;
-        IO_observe(session.layout, frameId, pieces);
+        Vision_observe(session.layout, frameId, pieces);
         Session_observe(session, frameId, pieces, true); // 已确认手移开，执行器已停在观察位。
     }
-    IO_report("observed", session);
+    Match_report("observed", session);
 }
 
 void Match_start(const GameConfig &config, Session &session)
 {
     Command command = Command::Retry; // 本阶段接收的操作，结果通过参数写回。
-    IO_report("prepare", session);
-    while (command != Command::Ready)
-        readCommand("prepare", "先将空吸头抬离棋盘并移开手，回车让执行器进入示教搬运高度和观察位；quit退出。", command);
-    std::vector<PickStep> prepare{{PickAction::Hold},
+    bool prepared = false;            // 执行器是否已到示教观察位。
+    std::vector<PickStep> prepare{    // 保持吸持、抬升、移到观察位。
+                                  {PickAction::Hold},
                                   {PickAction::MoveZ, {}, session.heights.travelDeg, session.heights.speedDegS},
                                   {PickAction::MoveXY, config.park}};
-    bool prepared = false;
-    IO_execute("prepare", "", prepare, prepared);
+
+    Match_report("prepare", session);
+    while (command != Command::Ready)
+        readCommand("prepare", "先将空吸头抬离棋盘并移开手，回车让执行器进入示教搬运高度和观察位；quit退出。", command);
+    Robot_execute("prepare", "", prepare, prepared);
     if (!prepared) throw std::runtime_error("执行器未准备好；没有开始对局");
     while (gameRunning)
     {
         observe(session);
         if (!session.observed.valid)
         {
-            IO_report("start_unreadable", session);
+            Match_report("start_unreadable", session);
             readCommand("start_retry", "识别未稳定或棋子不完整；调整后回车重读，quit退出。", command);
             continue;
         }
         auto initial = session.observed.board;
-        IO_report("confirm_start", session);
+        Match_report("confirm_start", session);
         readCommand("confirm_start", "核对预览和识别盘面；回车确认开局，retry重读，quit退出。", command);
         if (command != Command::Ready) continue;
         observe(session);
@@ -87,7 +89,7 @@ void Match_start(const GameConfig &config, Session &session)
         {
             if (!chess::Game_reset(session.game, initial, config.redToMove, config.humanRed))
                 throw std::runtime_error(session.game.error);
-            IO_report("started", session);
+            Match_report("started", session);
             return;
         }
     }
@@ -100,13 +102,13 @@ void Match_human(Session &session, const std::vector<std::string> &legal)
     chess::Move move;
     while (gameRunning)
     {
-        IO_report("wait_human", session);
+        Match_report("wait_human", session);
         readCommand("human", "请走棋并移开手，回车确认；resign认输，draw和棋，quit退出。", command);
         if (finishCommand(session, command)) return;
         if (command != Command::Ready && command != Command::Retry) continue;
         observe(session);
         if (Session_acceptHuman(session, legal, move)) return;
-        IO_report("human_rejected", session);
+        Match_report("human_rejected", session);
     }
     throw std::runtime_error("对局已停止");
 }
@@ -119,20 +121,20 @@ void Match_robot(const GameConfig &config, Session &session, const std::vector<s
     observe(session);       // 搜索结束后重新取图，不能直接用搜索前的观察执行。
     while (!session.observed.valid || session.observed.board != session.game.board)
     {
-        IO_report("board_changed", session);
+        Match_report("board_changed", session);
         readCommand("restore_before_move", "盘面尚未稳定或已变化；恢复后回车，quit退出。", command);
         if (finishCommand(session, command)) return;
         observe(session);
     }
     if (!Session_plan(session, choice, legal)) throw std::runtime_error(session.game.error);
     session.steps.push_back({PickAction::MoveXY, config.park}); // 放子抬升后让开棋盘，才能视觉复核。
-    IO_report("executing", session);
-    IO_execute("move", choice, session.steps, completed);
+    Match_report("executing", session);
+    Robot_execute("move", choice, session.steps, completed);
     if (completed) observe(session);
     if (Session_confirm(session, completed)) return;
     while (gameRunning)
     {
-        IO_report("recovery", session);
+        Match_report("recovery", session);
         readCommand(
             "recovery",
             "动作未确认：回车/retry只重读；accept确认实际已完成；restored确认全部复位、吸头空并回观察位后重新规划；quit退出。",

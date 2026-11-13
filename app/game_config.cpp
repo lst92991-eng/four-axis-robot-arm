@@ -10,19 +10,18 @@ static std::string filePath(const std::string &owner, const cv::FileNode &node)
 {
     std::string name = (std::string)node;
     if (name.empty()) return {};
-    auto path = std::filesystem::u8path(name);
-    return (path.is_absolute() ? path : std::filesystem::u8path(owner).parent_path() / path)
-        .lexically_normal()
-        .u8string();
+    auto path = std::filesystem::u8path(owner).parent_path() / std::filesystem::u8path(name);
+    return path.lexically_normal().u8string();
 }
 
-static void pair(const cv::FileNode &node, cv::Point2d &point)
+static void readPair(const cv::FileNode &node, double &first, double &second)
 {
     if (node.size() != 2) throw std::runtime_error("需要两个已示教数值");
     for (auto value : node)
         if ((!value.isInt() && !value.isReal()) || !std::isfinite(double(value)))
             throw std::runtime_error("示教值不能为空或占位符");
-    point = {double(node[0]), double(node[1])};
+    first = double(node[0]);
+    second = double(node[1]);
 }
 
 void Match_load(const std::string &path, GameConfig &config, Session &session)
@@ -37,7 +36,7 @@ void Match_load(const std::string &path, GameConfig &config, Session &session)
     if (cornersNode.size() != 4) throw std::runtime_error("固定布局需要四角");
     std::array<cv::Point2d, 4> corners;
     for (int i = 0; i < 4; ++i)
-        pair(cornersNode[i], corners[i]);
+        readPair(cornersNode[i], corners[i].x, corners[i].y);
     Board grid;
     PlaneMap plane;
     boardFromCorners(corners, int(layout["canonical_order_confirmed"]) == 1, grid);
@@ -46,11 +45,8 @@ void Match_load(const std::string &path, GameConfig &config, Session &session)
     if (!Arm_load(filePath(path, file["arm_file"]), session.arm) ||
         !WorkHeights_load(filePath(path, file["heights_file"]), session.heights))
         throw std::runtime_error("机械参考或工作高度尚未示教");
-    cv::Point2d park;
-    pair(file["park_joints_deg"], park);
-    config.park.j2Deg = park.x;
-    config.park.j3MotorDeg = park.y;
-    pair(file["capture_place_mm"], session.capturePlaceMm);
+    readPair(file["park_joints_deg"], config.park.j2Deg, config.park.j3MotorDeg);
+    readPair(file["capture_place_mm"], session.capturePlaceMm.x, session.capturePlaceMm.y);
     JointTarget target;
     session.capturePlaceTaught = Arm_inverse(session.arm, session.capturePlaceMm, target);
     if (!session.capturePlaceTaught) throw std::runtime_error("吃子区不在可达范围内");

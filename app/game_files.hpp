@@ -9,4 +9,5 @@ void Motion_request(const std::string &purpose, const std::string &move, const s
 void Motion_wait(const std::string &ticket, bool &success);
 bool Motion_cancel();
 std::string Runtime_path(const std::string &name);
+bool Runtime_publish(const std::string &name, const std::string &bytes);
 } // namespace scara

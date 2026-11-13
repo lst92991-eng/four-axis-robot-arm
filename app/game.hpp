@@ -30,13 +30,14 @@ void Match_robot(const GameConfig &config, Session &session, const std::vector<s
                  const std::string &choice);
 
 // 相同主程序在链接时选择实机IO或仿真IO，没有两套对局逻辑。
-void IO_open(const GameConfig &config, const std::string &modelPath);
-void IO_stop(); // 信号回调只设置停止状态，不等待、不写文件。
-bool IO_close();
-void IO_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces);
-void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::string &choice);
+void Runtime_open(const GameConfig &config, const std::string &modelPath);
+void Runtime_stop(); // 信号回调只设置停止状态，不等待、不写文件。
+bool Runtime_close();
+void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces);
+void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice);
 bool Command_parse(const std::string &text, Command &command);
-void IO_command(const std::string &phase, const std::string &prompt, Command &command);
-void IO_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps, bool &success);
-void IO_report(const std::string &phase, const Session &session);
+void Operator_read(const std::string &phase, const std::string &prompt, Command &command);
+void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
+                   bool &success);
+void Match_report(const std::string &phase, const Session &session);
 } // namespace scara

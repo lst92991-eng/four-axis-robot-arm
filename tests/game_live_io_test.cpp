@@ -129,11 +129,11 @@ int main()
         config.labelPath = "config/vision/chinese-labels.png";
         config.engineDir = "fake-engine";
         config.workDir = "output/game-live-wrapper-test";
-        IO_open(config, "fake-model");
+        Runtime_open(config, "fake-model");
         std::string frame, previous, choice;
         std::vector<Detection> pieces;
         std::vector<std::string> legal;
-        IO_observe(session.layout, frame, pieces);
+        Vision_observe(session.layout, frame, pieces);
         fake::check(fake::events ==
                         std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode", "draw"},
                     "Live observation no longer follows the verified order");
@@ -142,16 +142,16 @@ int main()
         fake::check(preview.cols == 2560 && preview.rows == 720, "Preview changed full-frame geometry");
         previous = frame;
         session.game.humanRed = false;
-        IO_search(session.game, legal, choice);
+        Engine_query(session.game, legal, choice);
         fake::check(choice == "a3a4" && !fake::camera && !fake::npu && !fake::engine,
                     "Search retained overlapping resources");
-        IO_observe(session.layout, frame, pieces);
+        Vision_observe(session.layout, frame, pieces);
         fake::check(frame != previous, "Observation identity was reused after search");
         fake::failSearch = true;
         bool failed = false;
         try
         {
-            IO_search(session.game, legal, choice);
+            Engine_query(session.game, legal, choice);
         }
         catch (const std::exception &)
         {
@@ -163,20 +163,20 @@ int main()
         failed = false;
         try
         {
-            IO_observe(session.layout, frame, pieces);
+            Vision_observe(session.layout, frame, pieces);
         }
         catch (const std::exception &)
         {
             failed = true;
         }
-        IO_close();
+        Runtime_close();
         fake::check(failed && !fake::camera && !fake::npu, "Partially opened model was not released");
         fake::keyboard = "unknown\nready\n";
         Command command;
-        IO_command("human", "fixture", command);
+        Operator_read("human", "fixture", command);
         fake::check(command == Command::Ready, "Console command parsing failed");
-        IO_stop();
-        fake::check(IO_close(), "Live wrapper cleanup failed");
+        Runtime_stop();
+        fake::check(Runtime_close(), "Live wrapper cleanup failed");
         std::cout
             << "PASS actual live wrapper: vision call order, 2560x720 preview, exclusive engine lifetime, failure and close; external APIs mocked\n";
         return 0;

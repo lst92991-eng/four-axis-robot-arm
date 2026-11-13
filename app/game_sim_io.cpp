@@ -21,7 +21,7 @@ static void readBoard(const cv::FileNode &rows)
     }
 }
 
-void IO_open(const GameConfig &config, const std::string &)
+void Runtime_open(const GameConfig &config, const std::string &)
 {
     Files_open(config.workDir, true);
     script = readStorage(config.scenarioPath);
@@ -29,15 +29,15 @@ void IO_open(const GameConfig &config, const std::string &)
     std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
 }
 
-void IO_stop()
+void Runtime_stop()
 {
 }
-bool IO_close()
+bool Runtime_close()
 {
     return Motion_cancel();
 }
 
-void IO_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
+void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
 {
     frameId = std::to_string(++frameNumber);
     pieces.clear();
@@ -51,7 +51,7 @@ void IO_observe(const FixedBoard &layout, std::string &frameId, std::vector<Dete
             }
 }
 
-void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
+void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
 {
     for (const auto &query : script["queries"])
         if ((std::string)query["history"] == game.history)
@@ -66,7 +66,7 @@ void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::st
     throw std::runtime_error("仿真没有当前完整历史的引擎回复：" + game.history);
 }
 
-void IO_command(const std::string &phase, const std::string &, Command &result)
+void Operator_read(const std::string &phase, const std::string &, Command &result)
 {
     result = Command::Quit;
     auto commands = script["commands"];
@@ -78,7 +78,8 @@ void IO_command(const std::string &phase, const std::string &, Command &result)
     if (!Command_parse(name, result)) throw std::runtime_error("未知仿真命令");
 }
 
-void IO_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps, bool &success)
+void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
+                   bool &success)
 {
     auto events = script["executions"];
     if (executionIndex >= events.size()) throw std::runtime_error("仿真出现了额外的机械执行请求");

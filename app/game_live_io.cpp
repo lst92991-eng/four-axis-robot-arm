@@ -23,7 +23,7 @@ static void closeVision()
     visionOpen = false;
 }
 
-void IO_open(const GameConfig &config, const std::string &modelPath)
+void Runtime_open(const GameConfig &config, const std::string &modelPath)
 {
     settings = config;
     model = modelPath;
@@ -36,12 +36,12 @@ void IO_open(const GameConfig &config, const std::string &modelPath)
     engine.cancelled = [] { return !gameRunning; };
 }
 
-void IO_stop()
+void Runtime_stop()
 {
     Camera_stop();
 }
 
-bool IO_close()
+bool Runtime_close()
 {
     bool stopped = Motion_cancel();
     bool reaped = engine.close();
@@ -49,7 +49,7 @@ bool IO_close()
     return stopped && reaped;
 }
 
-void IO_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
+void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
 {
     if (!gameRunning) throw std::runtime_error("对局已停止");
     if (!visionOpen)
@@ -69,15 +69,13 @@ void IO_observe(const FixedBoard &layout, std::string &frameId, std::vector<Dete
     Vision_draw(source, pieces, labels, detected);
     drawBoard(source, layout.grid, grid);
     cv::hconcat(detected, grid, preview); // 固定双画面尺寸，和识别ROI分别处理。
-    auto path = Runtime_path("preview.jpg");
     std::vector<unsigned char> jpeg;
     if (!cv::imencode(".jpg", preview, jpeg)) throw std::runtime_error("无法生成预览");
-    writeBytes(path + ".tmp", {jpeg.begin(), jpeg.end()});
-    std::filesystem::rename(std::filesystem::u8path(path + ".tmp"), std::filesystem::u8path(path));
+    if (!Runtime_publish("preview.jpg", {jpeg.begin(), jpeg.end()})) throw std::runtime_error("无法写入预览");
     frameId = std::to_string(++frameNumber);
 }
 
-void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
+void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
 {
     closeVision(); // 释放相机线程和NPU后才创建引擎进程。
     choice.clear();
@@ -90,7 +88,7 @@ void IO_search(const chess::Game &game, std::vector<std::string> &legal, std::st
     // 下次观察才重开相机/NPU；失败时不会拿空合法列表宣布胜负。
 }
 
-void IO_command(const std::string &, const std::string &prompt, Command &command)
+void Operator_read(const std::string &, const std::string &prompt, Command &command)
 {
     command = Command::Quit; // EOF或停止时，向调用方报告退出。
     std::cout << prompt << '\n' << std::flush;
@@ -113,7 +111,8 @@ void IO_command(const std::string &, const std::string &prompt, Command &command
     }
 }
 
-void IO_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps, bool &success)
+void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
+                   bool &success)
 {
     closeVision();
     std::string ticket;

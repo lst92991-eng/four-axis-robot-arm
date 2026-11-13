@@ -16,7 +16,7 @@ std::string Runtime_path(const std::string &name)
     return (std::filesystem::u8path(directory) / name).u8string();
 }
 
-static bool publish(const std::string &name, const std::string &text)
+bool Runtime_publish(const std::string &name, const std::string &text)
 {
     std::string target = Runtime_path(name), temporary = target + ".tmp";
     std::ofstream file(std::filesystem::u8path(temporary), std::ios::binary);
@@ -59,7 +59,8 @@ void Motion_request(const std::string &purpose, const std::string &move, const s
     }
     file << "]";
     activeTicket = ticket;
-    if (!publish("motion-request.json", file.releaseAndGetString())) throw std::runtime_error("无法发布动作请求");
+    if (!Runtime_publish("motion-request.json", file.releaseAndGetString()))
+        throw std::runtime_error("无法发布动作请求");
 }
 
 void Motion_wait(const std::string &ticket, bool &success)
@@ -91,7 +92,7 @@ bool Motion_cancel()
     if (activeTicket.empty()) return true;
     auto file = memoryStorage(true);
     file << "ticket" << activeTicket << "action" << "stop";
-    bool sent = publish("motion-cancel.json", file.releaseAndGetString());
+    bool sent = Runtime_publish("motion-cancel.json", file.releaseAndGetString());
     if (sent) activeTicket.clear();
     return sent;
 }
@@ -104,7 +105,7 @@ static void writeBoard(cv::FileStorage &file, const char *key, const chess::Boar
     file << "]";
 }
 
-void IO_report(const std::string &phase, const Session &session)
+void Match_report(const std::string &phase, const Session &session)
 {
     if (directory.empty()) return;
     const auto &game = session.game;
@@ -118,7 +119,7 @@ void IO_report(const std::string &phase, const Session &session)
     writeBoard(file, "board", game.board);
     writeBoard(file, "observed", session.observed.board);
     writeBoard(file, "expected", game.expected);
-    if (!publish("status.json", file.releaseAndGetString())) std::cerr << "无法保存对局状态\n";
+    if (!Runtime_publish("status.json", file.releaseAndGetString())) std::cerr << "无法保存对局状态\n";
     std::cout << (simulated ? "[SIMULATION] " : "") << phase << " | " << game.history << " | " << game.error << '\n';
     if (phase == "confirm_start")
         for (const auto &row : session.observed.board)
