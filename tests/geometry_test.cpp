@@ -192,77 +192,6 @@ void assignmentTests()
     stable.update(b, o, stableResult);
     check(!stableResult.valid, "Board motion failed to reset stability");
 }
-void boardTests()
-{
-    Camera c;
-    c.id = "synthetic-grid-only";
-    c.imageSize = {800, 700};
-    cv::Mat image(c.imageSize, CV_8UC3, cv::Scalar(235, 230, 215));
-    cv::rectangle(image, {128, 68, 424, 474}, {20, 20, 20}, 4);
-    for (int x = 0; x < 9; ++x)
-    {
-        int u = 140 + x * 50;
-        if (x == 0 || x == 8)
-            cv::line(image, {u, 80}, {u, 530}, {30, 30, 30}, 2);
-        else
-        {
-            cv::line(image, {u, 80}, {u, 280}, {30, 30, 30}, 2);
-            cv::line(image, {u, 330}, {u, 530}, {30, 30, 30}, 2);
-        }
-    }
-    for (int r = 0; r < 10; ++r)
-        cv::line(image, {140, 80 + r * 50}, {540, 80 + r * 50}, {30, 30, 30}, 2);
-    for (int y : {80, 430})
-    {
-        cv::line(image, {290, y}, {390, y + 100}, {30, 30, 30}, 2);
-        cv::line(image, {390, y}, {290, y + 100}, {30, 30, 30}, 2);
-    }
-    cv::putText(image, "RIVER-A", {200, 314}, cv::FONT_HERSHEY_SIMPLEX, .55, {15, 15, 15}, 2);
-    Board b;
-    locateBoard(image, c, "auto", {}, b);
-    check(b.geometryValid, "Synthetic natural-grid localization failed");
-    check(!b.orientationValid, "Symmetric grid silently chose a red side");
-    double maxError = 0;
-    for (auto p : b.intersections)
-    {
-        double nearest = 1e9;
-        for (int r = 0; r < 10; ++r)
-            for (int col = 0; col < 9; ++col)
-                nearest = std::min(nearest, cv::norm(p - cv::Point2d(140 + col * 50, 80 + r * 50)));
-        maxError = std::max(maxError, nearest);
-    }
-    std::cout << "synthetic grid maximum nearest-point error: " << maxError << " px\n";
-    check(maxError < 4, "Wrong lattice selected");
-    Board exact, flipped, oriented, autoOriented, ambiguous;
-    OrientationReference ref;
-    boardFromCorners(c, "ref", {{{140, 530}, {540, 530}, {540, 80}, {140, 80}}}, true, exact);
-    makeOrientationReference(image, c, exact, {65, 218, 220, 40}, ref);
-    confirmOrientation(exact, true, flipped);
-    flipped.orientationValid = false;
-    orientByReference(image, c, flipped, ref, oriented);
-    check(oriented.orientationValid && cv::norm(oriented.intersections[0] - cv::Point2d(140, 530)) < .01,
-          "Printed-feature orientation failed");
-    orientByReference(image, c, b, ref, autoOriented);
-    check(autoOriented.orientationValid && cv::norm(autoOriented.intersections[0] - cv::Point2d(140, 530)) < 4,
-          "Auto-grid chirality/orientation mismatch");
-    auto symmetric = ref;
-    symmetric.patch = cv::Mat::ones(ref.patch.size(), CV_8U) * 120;
-    orientByReference(image, c, exact, symmetric, ambiguous);
-    check(!ambiguous.orientationValid, "Ambiguous texture accepted");
-    cv::Mat blank(c.imageSize, CV_8UC3, cv::Scalar::all(255));
-    Board blankBoard = b;
-    locateBoard(blank, c, "blank", {}, blankBoard);
-    check(!blankBoard.geometryValid && cv::norm(blankBoard.intersections[0]) == 0,
-          "Blank image accepted as board or retained old points");
-    auto affine = cv::getRotationMatrix2D({340, 305}, 20, 1);
-    affine.at<double>(0, 2) += 40;
-    affine.at<double>(1, 2) += 20;
-    cv::Mat moved;
-    cv::warpAffine(image, moved, affine, c.imageSize, cv::INTER_LINEAR, cv::BORDER_CONSTANT, cv::Scalar::all(240));
-    Board rotated;
-    locateBoard(moved, c, "rotated", {}, rotated);
-    check(rotated.geometryValid, "Rotated natural grid not found");
-}
 } // namespace
 int main()
 {
@@ -271,7 +200,6 @@ int main()
         calibrationTests();
         targetTests();
         assignmentTests();
-        boardTests();
         std::cout << "PASS " << checks << " geometry checks; no hardware linked.\n";
         return 0;
     }

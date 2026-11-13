@@ -66,32 +66,8 @@ struct Board
 // 四角按逻辑格点(0,0)、(8,0)、(8,9)、(0,9)给出，需对应红黑方向。
 void boardFromCorners(const Camera &camera, const std::string &frameId, const std::array<cv::Point2d, 4> &rawCorners,
                       bool canonicalOrderConfirmed, Board &board);
-struct LocateOptions
-{
-    double minAreaFraction = 0.08;
-    double minLineSupport = 0.65;
-    double minGridScore = 0.50;
-};
-// 从边框、格线、河界和九宫找网格；找到90点后仍须确认红黑方向。
-void locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &frameId, const LocateOptions &options,
-                 Board &board);
-// 看过90点叠加后，保留当前方向或转180度。
-void confirmOrientation(const Board &input, bool rotate180, Board &board);
-
-struct OrientationReference
-{
-    cv::Mat patch; // 棋盘印刷图案中的不对称部分，例如河界文字。
-    cv::Rect patchRect;
-    std::string cameraId;
-    double minCorrelation = 0.70, minMargin = 0.12;
-};
+// 固定棋盘的俯视展示。
 void rectifiedBoard(const cv::Mat &geometricImage, const Board &board, cv::Mat &image);
-void makeOrientationReference(const cv::Mat &raw, const Camera &camera, const Board &board,
-                              cv::Rect patchInRectifiedImage, OrientationReference &reference);
-void orientByReference(const cv::Mat &raw, const Camera &camera, const Board &input,
-                       const OrientationReference &reference, Board &board);
-void saveOrientationReference(const std::string &, const OrientationReference &);
-void loadOrientationReference(const std::string &path, OrientationReference &reference);
 
 enum class DetectionSpace
 {

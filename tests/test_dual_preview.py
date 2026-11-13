@@ -8,6 +8,7 @@ import tempfile
 import time
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 import cv2
 import numpy as np
@@ -17,6 +18,37 @@ import dual_preview as preview
 
 
 class ViewportTest(unittest.TestCase):
+    def test_fixed_layout_keeps_confirmed_corners_and_uses_the_current_frame(self):
+        source = np.zeros((720, 1280, 3), np.uint8)
+        corners = [[100, 600], [900, 600], [900, 60], [100, 60]]
+        with tempfile.TemporaryDirectory() as folder:
+            base = Path(folder)
+            out = base / 'frames'
+            out.mkdir()
+            layout = base / 'layout.json'
+            saved = dict(camera=dict(id='fixed-camera', width=1280, height=720), corners=corners,
+                         canonical_order_confirmed=1, plane_file='plane.yml')
+            layout.write_text(json.dumps(saved), encoding='utf-8')
+
+            def inspect(command, **kwargs):
+                current = json.loads((out / 'inspect.json').read_text(encoding='utf-8'))
+                self.assertEqual(command[1], 'inspect')
+                self.assertEqual(current['mode'], 'manual')
+                self.assertEqual(current['corners'], corners)
+                self.assertEqual(current['camera'], saved['camera'])
+                self.assertEqual(current['frame_id'], 'new-frame')
+                self.assertEqual(Path(current['plane_file']), base / 'plane.yml')
+                result = dict(frame_id='new-frame', geometry_valid=True, orientation_valid=True)
+                (out / 'geometry.json').write_text(json.dumps(result), encoding='utf-8')
+                preview.hp.write_image(out / 'geometry.json.png', source)
+                return SimpleNamespace(returncode=0)
+
+            with patch.object(preview.subprocess, 'run', side_effect=inspect):
+                result, overlay = preview.inspect_geometry(Path('offline-tool'), layout, out, source, 'new-frame')
+            self.assertTrue(result['geometry_valid'])
+            np.testing.assert_array_equal(overlay, source)
+            self.assertEqual(json.loads(layout.read_text(encoding='utf-8')), saved)
+
     def test_inference_crop_boxes_map_to_display_without_changing_labels(self):
         detection={'bbox':[10,20,40,60],'class_id':3,'score':.9}
         result=preview.display_detections([detection],[300,70,650,600],[100,50,1000,650])
@@ -55,7 +87,7 @@ class ViewportTest(unittest.TestCase):
                     frames.append(cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR))
 
                 argv = ['dual_preview', '--board', 'offline', '--geometry-exe', str(exe),
-                        '--orientation-reference', str(reference), '--out', str(out)]
+                        '--layout', str(reference), '--out', str(out)]
                 if roi is not None:
                     argv += ['--roi', *map(str, roi)]
                 health = json.dumps({'model_sha256': 'ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2'}).encode()

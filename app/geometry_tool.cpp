@@ -39,190 +39,6 @@ std::vector<PointPair> pairs(const cv::FileNode &node)
     }
     return out;
 }
-struct ArmTouch
-{
-    cv::Point2d board;
-    double j2Deg, j3MotorDeg;
-};
-
-std::vector<ArmTouch> armTouches(const cv::FileNode &node)
-{
-    std::vector<ArmTouch> out;
-    if (node.empty()) return out;
-    require(node.isSeq(), "Arm touches must be a list");
-    for (const auto &n : node)
-    {
-        const auto p = n["board_xy_mm"];
-        require(p.isSeq() && p.size() == 2, "Arm touch requires board_xy_mm");
-        out.push_back({{number(p[0]), number(p[1])}, number(n["j2_deg"]), number(n["j3_motor_deg"])});
-    }
-    return out;
-}
-
-// 标定输入：位置用毫米，读回角用度；待求参数是原点XY和两段臂的参考弧度。
-struct ArmSurvey
-{
-    std::vector<ArmTouch> fit, checks;
-    ArmTouch reference;
-    double upperMm = 0, forearmMm = 0, j3Ratio = 1, j2Scale = 1;
-    int j2Sign = 1, j3Sign = 1;
-};
-
-void readArmSurvey(const std::string &path, ArmSurvey &data)
-{
-    auto file = readStorage(path);
-    data.fit = armTouches(file["fit_touches"]);
-    data.checks = armTouches(file["check_touches"]);
-    require(data.fit.size() >= 3, "Record at least three distributed arm touches");
-    auto lengths = file["arm_lengths_mm"];
-    require(lengths.isSeq() && lengths.size() == 2, "Two arm lengths are required");
-    data.upperMm = number(lengths[0]);
-    data.forearmMm = number(lengths[1]);
-    data.j3Ratio = number(file["j3_ratio"]);
-    data.j2Scale = file["j2_scale"].empty() ? 1 : number(file["j2_scale"]);
-    require(data.upperMm > 0 && data.forearmMm > 0 && data.j3Ratio > 0 && data.j2Scale > 0,
-            "Arm lengths and transmission ratios must be positive");
-    data.reference = data.fit.front();
-}
-
-cv::Vec2d armPhase(const ArmSurvey &data, const ArmTouch &point)
-{
-    double shoulder = data.j2Sign * data.j2Scale * (point.j2Deg - data.reference.j2Deg) * CV_PI / 180;
-    double forearm =
-        shoulder + data.j3Sign * (point.j3MotorDeg - data.reference.j3MotorDeg) * CV_PI / (180 * data.j3Ratio);
-    return {shoulder, forearm};
-}
-
-cv::Point2d armPoint(const ArmSurvey &data, const ArmTouch &point, const cv::Vec4d &parameters)
-{
-    auto phase = armPhase(data, point);
-    double shoulder = phase[0] + parameters[2];
-    double forearm = phase[1] + parameters[3];
-    return {parameters[0] + data.upperMm * std::cos(shoulder) + data.forearmMm * std::cos(forearm),
-            parameters[1] + data.upperMm * std::sin(shoulder) + data.forearmMm * std::sin(forearm)};
-}
-
-double armCost(const ArmSurvey &data, const cv::Vec4d &parameters)
-{
-    double squaredMm = 0;
-    for (const auto &point : data.fit)
-    {
-        auto error = armPoint(data, point, parameters) - point.board;
-        squaredMm += error.dot(error);
-    }
-    return squaredMm;
-}
-
-bool linearArm(const ArmSurvey &data, cv::Vec4d &parameters)
-{
-    int rows = 2 * static_cast<int>(data.fit.size());
-    cv::Mat design(rows, 6, CV_64F), observation(rows, 1, CV_64F);
-    for (int row = 0; row < rows; row += 2)
-    {
-        const auto &point = data.fit[row / 2];
-        auto phase = armPhase(data, point);
-        double c1 = std::cos(phase[0]), s1 = std::sin(phase[0]);
-        double c2 = std::cos(phase[1]), s2 = std::sin(phase[1]);
-        const std::array<double, 6> x{1, 0, c1, -s1, c2, -s2}, y{0, 1, s1, c1, s2, c2};
-        std::copy(x.begin(), x.end(), design.ptr<double>(row));
-        std::copy(y.begin(), y.end(), design.ptr<double>(row + 1));
-        observation.at<double>(row) = point.board.x;
-        observation.at<double>(row + 1) = point.board.y;
-    }
-    cv::Mat singular, linear;
-    cv::SVD::compute(design, singular);
-    bool independent = singular.at<double>(5) > singular.at<double>(0) * 1e-9;
-    bool solved = independent && cv::solve(design, observation, linear, cv::DECOMP_SVD);
-    if (solved)
-        parameters = {linear.at<double>(0), linear.at<double>(1),
-                      std::atan2(linear.at<double>(3), linear.at<double>(2)),
-                      std::atan2(linear.at<double>(5), linear.at<double>(4))};
-    return solved;
-}
-
-void refineArm(const ArmSurvey &data, cv::Vec4d &parameters)
-{
-    int rows = 2 * static_cast<int>(data.fit.size());
-    cv::Mat jacobian(rows, 4, CV_64F), residual(rows, 1, CV_64F);
-    int iteration = 0;
-    bool refining = true;
-    while (refining && iteration < 20)
-    {
-        for (int row = 0; row < rows; row += 2)
-        {
-            const auto &point = data.fit[row / 2];
-            auto phase = armPhase(data, point);
-            double shoulder = phase[0] + parameters[2], forearm = phase[1] + parameters[3];
-            const std::array<double, 4> x{1, 0, -data.upperMm * std::sin(shoulder),
-                                          -data.forearmMm * std::sin(forearm)};
-            const std::array<double, 4> y{0, 1, data.upperMm * std::cos(shoulder), data.forearmMm * std::cos(forearm)};
-            std::copy(x.begin(), x.end(), jacobian.ptr<double>(row));
-            std::copy(y.begin(), y.end(), jacobian.ptr<double>(row + 1));
-            auto error = point.board - armPoint(data, point, parameters);
-            residual.at<double>(row) = error.x;
-            residual.at<double>(row + 1) = error.y;
-        }
-        cv::Mat delta;
-        refining = cv::solve(jacobian, residual, delta, cv::DECOMP_SVD);
-        if (refining)
-        {
-            cv::Vec4d step(delta.at<double>(0), delta.at<double>(1), delta.at<double>(2), delta.at<double>(3));
-            auto next = parameters + step;
-            double previousCost = armCost(data, parameters);
-            for (int attempt = 0; attempt < 6 && armCost(data, next) > previousCost; ++attempt)
-            {
-                step *= .5;
-                next = parameters + step;
-            }
-            bool noImprovement = armCost(data, next) >= previousCost;
-            refining = noImprovement == false;
-            if (refining) parameters = next;
-        }
-        ++iteration;
-    }
-}
-
-void writeArmSolution(cv::FileStorage &out, const ArmSurvey &data, const cv::Vec4d &parameters)
-{
-    out << "{" << "j2_sign" << data.j2Sign << "j3_sign" << data.j3Sign << "j2_origin_board_mm" << "[" << parameters[0]
-        << parameters[1] << "]" << "shoulder_ref_rad" << parameters[2] << "elbow_ref_rad"
-        << std::remainder(parameters[3] - parameters[2], 2 * CV_PI) << "fit_rms_mm"
-        << std::sqrt(armCost(data, parameters) / data.fit.size()) << "fit_errors_mm" << "[";
-    for (const auto &point : data.fit)
-        out << cv::norm(armPoint(data, point, parameters) - point.board);
-    out << "]" << "check_errors_mm" << "[";
-    for (const auto &point : data.checks)
-        out << cv::norm(armPoint(data, point, parameters) - point.board);
-    out << "]" << "}";
-}
-
-void registerArm(const std::string &config, const std::string &output)
-{
-    ArmSurvey data;
-    readArmSurvey(config, data);
-    auto out = memoryStorage(true);
-    out << "j2_reference_deg" << data.reference.j2Deg << "j3_reference_motor_deg" << data.reference.j3MotorDeg
-        << "arm_lengths_mm" << "[" << data.upperMm << data.forearmMm << "]" << "j2_scale" << data.j2Scale << "j3_ratio"
-        << data.j3Ratio << "solutions" << "[";
-    int solutions = 0;
-    for (int shoulderSign : {-1, 1})
-        for (int elbowSign : {-1, 1})
-        {
-            data.j2Sign = shoulderSign;
-            data.j3Sign = elbowSign;
-            cv::Vec4d parameters;
-            bool solved = linearArm(data, parameters);
-            if (solved)
-            {
-                refineArm(data, parameters);
-                writeArmSolution(out, data, parameters);
-                ++solutions;
-            }
-        }
-    require(solutions > 0, "Arm touches do not span enough different poses");
-    out << "]";
-    writeBytes(output, out.releaseAndGetString());
-}
 void imageFile(const std::string &path, cv::Mat &image)
 {
     auto bytes = readBytes(path);
@@ -237,41 +53,19 @@ void saveImage(const std::string &path, const cv::Mat &image)
     require(cv::imencode(".png", image, b), "Cannot encode overlay");
     writeBytes(path, {b.begin(), b.end()});
 }
-void getBoard(const cv::FileStorage &fs, const cv::Mat &image, const Camera &camera, const std::string &frame,
-              const std::string &config, Board &board)
+// 四角依次为红方左下、右下、黑方右上、左上；方向由首次示教确认。
+void getBoard(const cv::FileStorage &file, const Camera &camera, const std::string &frame, Board &board)
 {
-    board = {};
-    std::string mode = (std::string)fs["mode"];
-    if (mode == "manual")
+    require((std::string)file["mode"] == "manual", "Fixed board requires saved manual corners");
+    auto points = file["corners"];
+    require(points.isSeq() && points.size() == 4, "Four original-image corners required");
+    std::array<cv::Point2d, 4> corners;
+    for (int i = 0; i < 4; ++i)
     {
-        auto n = fs["corners"];
-        require(n.isSeq() && n.size() == 4, "Four original-image corners required");
-        std::array<cv::Point2d, 4> corners;
-        for (int i = 0; i < 4; ++i)
-        {
-            require(n[i].size() == 2, "Corner must have two coordinates");
-            corners[i] = {number(n[i][0]), number(n[i][1])};
-        }
-        boardFromCorners(camera, frame, corners, (int)fs["canonical_order_confirmed"] == 1, board);
+        require(points[i].size() == 2, "Corner must have two coordinates");
+        corners[i] = {number(points[i][0]), number(points[i][1])};
     }
-    else
-    {
-        require(mode == "auto", "mode must be auto or manual");
-        LocateOptions options;
-        locateBoard(image, camera, frame, options, board);
-        std::string orientation = (std::string)fs["orientation"];
-        if (board.geometryValid && (orientation == "manual_keep" || orientation == "manual_flip"))
-            confirmOrientation(board, orientation == "manual_flip", board);
-        else if (board.geometryValid && orientation == "reference")
-        {
-            OrientationReference reference;
-            loadOrientationReference(relativePath(config, (std::string)fs["orientation_reference"]), reference);
-            orientByReference(image, camera, board, reference, board);
-        }
-        else
-            require(orientation.empty() || orientation == "unconfirmed" || !board.geometryValid,
-                    "Unknown orientation mode");
-    }
+    boardFromCorners(camera, frame, corners, (int)file["canonical_order_confirmed"] == 1, board);
 }
 void detectionsFile(const std::string &path, const Camera &camera, const Board &board, bool clear,
                     Observation &observation)
@@ -334,7 +128,7 @@ void inspect(const std::string &config, const std::string &output)
     Board board;
     PlaneMap plane;
     Observation observation;
-    getBoard(fs, image, camera, frame, config, board);
+    getBoard(fs, camera, frame, board);
     if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
         loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
     bool hasObservation = !fs["detections_file"].empty() && !((std::string)fs["detections_file"]).empty();
@@ -384,9 +178,7 @@ int runGeometryTool(int argc, char **argv)
         {
             std::cout << "Geometry only (C++17 / OpenCV " << CV_VERSION << ")\n"
                       << "  scara_geometry_tool calibrate measured-pairs.yml plane-map.yml\n"
-                      << "  scara_geometry_tool inspect inspect.yml result.json\n"
-                      << "  scara_geometry_tool register-arm touches.json result.json\n"
-                      << "  scara_geometry_tool reference manual-inspect.yml orientation.yml\n";
+                      << "  scara_geometry_tool inspect fixed-board.yml result.json\n";
             return argc == 1 ? 0 : 1;
         }
         const std::string command = argv[1], input = argv[2], output = argv[3];
@@ -415,24 +207,6 @@ int runGeometryTool(int argc, char **argv)
         }
         else if (command == "inspect")
             inspect(input, output);
-        else if (command == "register-arm")
-            registerArm(input, output);
-        else if (command == "reference")
-        {
-            auto fs = scara::readStorage(input);
-            scara::Camera camera;
-            scara::readCamera(fs["camera"], camera);
-            cv::Mat image;
-            Board board;
-            imageFile(relativePath(input, (std::string)fs["image"]), image);
-            getBoard(fs, image, camera, (std::string)fs["frame_id"], input, board);
-            auto n = fs["reference_patch"];
-            require(n.isSeq() && n.size() == 4, "reference_patch [x,y,w,h] required in 432x480 rectified board");
-            scara::OrientationReference ref;
-            cv::Rect patch((int)n[0], (int)n[1], (int)n[2], (int)n[3]);
-            scara::makeOrientationReference(image, camera, board, patch, ref);
-            scara::saveOrientationReference(output, ref);
-        }
         else
             throw std::runtime_error("Unknown command");
         return 0;

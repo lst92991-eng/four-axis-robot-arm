@@ -8,7 +8,7 @@ import subprocess
 import sys
 import time
 
-from chess_demo import Capture, Demo, ROOT, cv2, disk, np, square_map
+from chess_demo import Capture, Demo, ROOT, cv2, disk, np
 import host_preview as hp
 
 MODEL_SHA = 'ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2'
@@ -110,60 +110,14 @@ class Tuning:
             time.sleep(0.025)
         raise RuntimeError('没有新的相机画面')
 
-    def inspect(self, config):
-        path = self.directory / 'inspect.json'
-        path.write_text(json.dumps(config, ensure_ascii=False), encoding='utf-8')
-        output = self.directory / 'grid.json'
-        result = subprocess.run(
-            [str(self.args.geometry.resolve()), 'inspect', str(path), str(output)],
-            capture_output=True,
-            timeout=8,
-            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
-        )
-        if result.returncode:
-            raise RuntimeError(result.stderr.decode('utf-8', errors='replace'))
-        grid = json.loads(output.read_text(encoding='utf-8'))
-        if not grid['geometry_valid']:
-            raise RuntimeError('当前帧未定位到完整格线')
-        return grid
-
     def scene(self, label):
         if self.trial.owns_panel:
             raise RuntimeError('相机推理前先停稳并释放手动控制')
         frame = self.frame()
         hp.write_image(self.directory / 'source.png', frame)
         detections = self.infer(frame, label)
-        localization = 'printed_reference'
-        try:
-            self.demo.observe(frame, ())
-        except RuntimeError as exc:
-            if str(exc) != '棋盘基准位置变化':
-                raise
-            config = dict(
-                image='source.png',
-                mode='auto',
-                frame_id=label,
-                orientation='unconfirmed',
-                camera=dict(id='sc3336-1280x720-fixed-focus-v1', width=1280, height=720),
-            )
-            raw = self.inspect(config)
-            grid = {f"{chr(97+p['column'])}{p['row']}": p for p in raw['points']}
-            matrix = board_transform(grid)
-            red = [transform_point(matrix, d['pixel'])[1] for d in detections if d['class_id'] >= 7]
-            black = [transform_point(matrix, d['pixel'])[1] for d in detections if d['class_id'] < 7]
-            if min(len(red), len(black)) < 3 or abs(float(np.median(red) - np.median(black))) < 2:
-                raise RuntimeError('当前局面的红黑端头不明确')
-            config.update(
-                orientation='manual_keep' if np.median(red) < np.median(black) else 'manual_flip',
-                plane_file=str((ROOT / 'output/xy-registration-20261111/plane-map.yml').resolve()),
-            )
-            self.demo.grid = square_map(self.inspect(config))
-            self.demo.reference = frame
-            self.demo.anchors = [
-                (x, y, cv2.cvtColor(frame[y : y + h, x : x + w], cv2.COLOR_BGR2GRAY))
-                for x, y, w, h in ((375, 109, 65, 70), (900, 109, 60, 70))
-            ]
-            localization = 'native_grid'
+        localization = 'fixed_board'
+        self.demo.observe(frame, ())
         matrix = board_transform(self.demo.grid)
         cannon = moving_cannon(detections, matrix, self.fixed_board)
         second = self.frame()
@@ -288,7 +242,6 @@ def main():
     parser.add_argument('--reference', required=True)
     parser.add_argument('--board', required=True)
     parser.add_argument('--adb', required=True)
-    parser.add_argument('--geometry', type=Path, default=ROOT / 'build/commit-verify/scara_geometry_tool.exe')
     parser.add_argument('--held', action='store_true')
     parser.add_argument('--run', action='store_true')
     args = parser.parse_args()

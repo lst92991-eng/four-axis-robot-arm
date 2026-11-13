@@ -1,6 +1,6 @@
 """Same-frame YOLO (real RV1106 NPU) + native C++ OpenCV 5 geometry browser preview.
-Python transports/displays frames; grid detection runs in scara_geometry_tool, not Python.
-No robot connections. No calibration matrix is supplied or generated here.
+Python transports/displays frames; C++ renders the saved fixed board layout.
+No robot connections. Moving the board requires a new confirmed layout.
 """
 
 import argparse
@@ -37,20 +37,14 @@ def publish_pair(board, jpeg, frame_id, geometry):
         conn.close()
 
 
-def inspect_geometry(exe, reference, out, source, frame_id):
+def inspect_geometry(exe, layout, out, source, frame_id):
     try:
         hp.write_image(out / 'current-source.png', source)
-        cfg = {
-            'camera': {'id': 'sc3336-1280x720-fixed-focus-v1', 'width': source.shape[1], 'height': source.shape[0]},
-            'image': str(out / 'current-source.png'),
-            'frame_id': frame_id,
-            'mode': 'auto',
-            'orientation': 'reference',
-            'orientation_reference': str(reference),
-            'plane_file': '',
-            'detections_file': '',
-            'scene_clear': 0,
-        }
+        cfg = json.loads(layout.read_text(encoding='utf-8'))
+        cfg.update(image=str(out / 'current-source.png'), frame_id=frame_id, mode='manual',
+                   detections_file='', scene_clear=0)
+        if cfg.get('plane_file'):
+            cfg['plane_file'] = str((layout.parent / cfg['plane_file']).resolve())
         (out / 'inspect.json').write_text(json.dumps(cfg, ensure_ascii=False), encoding='utf-8')
         result = subprocess.run(
             [str(exe), 'inspect', str(out / 'inspect.json'), str(out / 'geometry.json')],
@@ -98,7 +92,7 @@ def grid_view(overlay, roi, geometry, geometry_ms, processed):
     x, y, w, h = roi
     right_view = overlay[y : y + h, x : x + w].copy()
     right_view = cv2.copyMakeBorder(right_view, 70, 35, 0, 0, cv2.BORDER_CONSTANT, value=(24, 32, 45))
-    label = '90 grid points' if geometry.get('geometry_valid') else 'Board not found'
+    label = '90 fixed grid points' if geometry.get('geometry_valid') else 'Fixed layout unavailable'
     direction = 'direction OK' if geometry.get('orientation_valid') else 'direction unconfirmed'
     cv2.putText(
         right_view,
@@ -122,7 +116,7 @@ def grid_view(overlay, roi, geometry, geometry_ms, processed):
     )
     cv2.putText(
         right_view,
-        'Grid preview only - robot XY calibration not applied',
+        'Fixed board - reset layout after moving board or camera',
         (12, right_view.shape[0] - 12),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.43,
@@ -137,7 +131,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--board', required=True)
     p.add_argument('--geometry-exe', type=Path, required=True)
-    p.add_argument('--orientation-reference', type=Path, required=True)
+    p.add_argument('--layout', type=Path, required=True, help='Saved, confirmed fixed-board JSON')
     p.add_argument('--out', type=Path, required=True)
     p.add_argument(
         '--roi',
@@ -159,9 +153,9 @@ def main():
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
     exe = args.geometry_exe.resolve()
-    reference = args.orientation_reference.resolve()
-    if not exe.is_file() or not reference.is_file():
-        raise ValueError('Geometry executable/reference missing')
+    layout = args.layout.resolve()
+    if not exe.is_file() or not layout.is_file():
+        raise ValueError('Geometry executable/layout missing')
     health = json.loads(hp.request(args.board, '/health'))
     if health['model_sha256'] != args.expected_sha:
         raise ValueError('Unexpected NPU model')
@@ -195,7 +189,7 @@ def main():
                 if last_begin is not None:
                     periods.append(begin - last_begin)
                 last_begin = begin
-                geometry, overlay = inspect_geometry(exe, reference, out, source, frame_id)
+                geometry, overlay = inspect_geometry(exe, layout, out, source, frame_id)
                 geometry_ms = (time.monotonic() - begin) * 1000
                 # Keep the viewport independent of grid detection and its failure state.
                 # Recomputing this crop per frame changes MJPEG aspect ratio and zoom.

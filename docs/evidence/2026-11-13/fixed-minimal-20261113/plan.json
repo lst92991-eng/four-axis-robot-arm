@@ -33,11 +33,11 @@
     },
     {
       "name": "remove_dynamic_geometry",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "name": "simplify_fixed_mapping",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "name": "connect_existing_consumers",
@@ -53,6 +53,12 @@
       "round": 0,
       "title": "固定流程精简前基线",
       "cpp_nloc": 2975
+    },
+    {
+      "round": 1,
+      "title": "删除动态棋盘与机械参考搜索分支",
+      "cpp_nloc": 2257,
+      "checks": "13 CTest, 60 Python, fixed geometry and vision unchanged"
     }
   ]
 }
