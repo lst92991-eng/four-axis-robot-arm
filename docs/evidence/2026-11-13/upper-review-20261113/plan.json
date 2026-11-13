@@ -63,7 +63,7 @@
     {
       "id": "integration",
       "task": "跨模块离线走棋、复核日志和源码交付",
-      "status": "pending"
+      "status": "in_progress"
     }
   ],
   "completed_rounds": [
@@ -129,6 +129,11 @@
       "round": 11,
       "title": "上位机每轮流程与取放重试",
       "record": "round-11.json"
+    },
+    {
+      "round": 12,
+      "title": "视觉棋局与取放规划的事务连接",
+      "record": "round-12.json"
     }
   ],
   "known_limits": [
