@@ -149,6 +149,11 @@
       "round": 15,
       "title": "控制分发与双画面处理步骤",
       "record": "round-15.json"
+    },
+    {
+      "round": 16,
+      "title": "未示教输入与失败输出复核",
+      "record": "round-16.json"
     }
   ],
   "known_limits": [

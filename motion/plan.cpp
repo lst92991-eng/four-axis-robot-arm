@@ -9,6 +9,7 @@ constexpr double DegreesPerRadian = 180.0 / CV_PI;
 
 bool Arm_load(const std::string &path, ArmGeometry &arm)
 {
+    arm = {};
     auto file = readStorage(path);
     auto lengths = file["arm_lengths_mm"];
     if (!lengths.isSeq() || lengths.size() != 2) return false;
@@ -25,8 +26,10 @@ bool Arm_load(const std::string &path, ArmGeometry &arm)
     arm.j3Sign = double(file["j3_sign"]);
     arm.shoulderReferenceRad = double(file["shoulder_ref_rad"]);
     arm.elbowReferenceRad = double(file["elbow_ref_rad"]);
-    return arm.upperMm > 0 && arm.forearmMm > 0 && arm.j2Scale > 0 && arm.j3Ratio > 0 && std::abs(arm.j2Sign) == 1 &&
-           std::abs(arm.j3Sign) == 1;
+    bool valid = arm.upperMm > 0 && arm.forearmMm > 0 && arm.j2Scale > 0 && arm.j3Ratio > 0 &&
+                 std::abs(arm.j2Sign) == 1 && std::abs(arm.j3Sign) == 1;
+    if (valid == false) arm = {};
+    return valid;
 }
 
 void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d &baseMm)
@@ -56,13 +59,18 @@ bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints
         joints.j2Deg = arm.j2ReferenceDeg + shoulderDelta * DegreesPerRadian / (arm.j2Scale * arm.j2Sign);
         joints.j3MotorDeg = arm.j3ReferenceMotorDeg + elbowDelta * DegreesPerRadian * arm.j3Ratio / arm.j3Sign;
     }
-    return reachable && std::isfinite(joints.j2Deg) && std::isfinite(joints.j3MotorDeg);
+    reachable = reachable && std::isfinite(joints.j2Deg) && std::isfinite(joints.j3MotorDeg);
+    if (reachable == false) joints = {};
+    return reachable;
 }
 
 bool WorkHeights_load(const std::string &path, WorkHeights &heights)
 {
+    heights = {};
     auto file = readStorage(path);
     auto z = file["z"];
+    for (const char *key : {"pickup_deg", "travel_deg"})
+        if (!z[key].isInt() && !z[key].isReal()) return false;
     if (!file["release_pulse_ms"].empty() && !file["release_pulse_ms"].isInt()) return false;
     heights.pickupDeg = double(z["pickup_deg"]);
     heights.travelDeg = double(z["travel_deg"]);
@@ -73,15 +81,19 @@ bool WorkHeights_load(const std::string &path, WorkHeights &heights)
     double releaseOffsetMm = z["release_offset_mm"].empty() ? 0 : double(z["release_offset_mm"]);
     double deltaDeg = heights.travelDeg - heights.pickupDeg;
     heights.releaseDeg = heights.pickupDeg + deltaDeg / estimatedRiseMm * releaseOffsetMm;
-    return std::isfinite(heights.pickupDeg) && std::isfinite(heights.travelDeg) && std::isfinite(heights.releaseDeg) &&
-           deltaDeg != 0 && estimatedRiseMm > 0 && (heights.releaseDeg - heights.travelDeg) * deltaDeg <= 0 &&
-           heights.releasePulseMs > 0 && std::isfinite(heights.speedDegS) && heights.speedDegS > 0;
+    bool valid = std::isfinite(heights.pickupDeg) && std::isfinite(heights.travelDeg) &&
+                 std::isfinite(heights.releaseDeg) && deltaDeg != 0 && estimatedRiseMm > 0 &&
+                 (heights.releaseDeg - heights.travelDeg) * deltaDeg <= 0 && heights.releasePulseMs > 0 &&
+                 std::isfinite(heights.speedDegS) && heights.speedDegS > 0;
+    if (valid == false) heights = {};
+    return valid;
 }
 
 bool Pick_plan(const ArmGeometry &arm, const WorkHeights &heights, cv::Point2d sourceMm, cv::Point2d destinationMm,
                bool alreadyHeld, std::vector<PickStep> &steps)
 {
     steps.clear();
+    if (heights.pickupDeg == heights.travelDeg) return false;
     JointTarget source, destination;
     bool sourceValid = true;
     if (!alreadyHeld) sourceValid = Arm_inverse(arm, sourceMm, source);

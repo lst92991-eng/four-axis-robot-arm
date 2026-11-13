@@ -59,6 +59,18 @@ int main()
               "Held-piece resume tried to pick from a source again");
         check(!scara::Pick_plan(arm, heights, source, {1000, 1000}, false, steps) && steps.empty(),
               "Unreachable destination retained an old plan");
+        scara::WorkHeights missingHeights = heights;
+        check(!scara::WorkHeights_load("tests/fixtures/upper-app/missing-heights.json", missingHeights),
+              "Missing taught pickup height was silently replaced by zero");
+        check(!scara::Pick_plan(arm, missingHeights, source, destination, false, steps) && steps.empty(),
+              "Unconfigured work heights generated a movement plan");
+        scara::ArmGeometry missingArm = arm;
+        check(!scara::Arm_load("tests/fixtures/upper-app/missing-arm-reference.json", missingArm),
+              "Missing mechanical reference was silently replaced by zero");
+        scara::JointTarget invalidTarget{12, 34};
+        check(!scara::Arm_inverse(missingArm, source, invalidTarget) && invalidTarget.j2Deg == 0 &&
+                  invalidTarget.j3MotorDeg == 0,
+              "Failed reload reused old joint targets");
         std::cout << "PASS " << count
                   << " saved kinematic cases, taught heights, release order and held-piece resume; no I/O\n";
         return 0;
