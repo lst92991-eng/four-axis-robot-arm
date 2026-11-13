@@ -104,6 +104,11 @@
       "round": 6,
       "title": "棋局显式状态与参数式接口",
       "record": "round-06.json"
+    },
+    {
+      "round": 7,
+      "title": "棋局重复校验合并与48600组等价对照",
+      "record": "round-07.json"
     }
   ],
   "known_limits": [
