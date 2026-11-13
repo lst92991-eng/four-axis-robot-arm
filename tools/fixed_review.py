@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import runpy
 import shutil
@@ -36,11 +37,19 @@ def geometry(output, number):
 
 
 def main():
+    global OUTPUT, EVIDENCE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('number', type=int)
     parser.add_argument('title')
     parser.add_argument('finding')
+    parser.add_argument('--series', help='Independent review directory, ending in YYYYMMDD')
     args = parser.parse_args()
+    if args.series:
+        if not re.fullmatch(r'[a-z0-9-]+-\d{8}', args.series):
+            parser.error('Invalid review directory name')
+        date = args.series[-8:]
+        OUTPUT = ROOT / 'output' / args.series
+        EVIDENCE = ROOT / 'docs/evidence' / (date[:4] + '-' + date[4:6] + '-' + date[6:]) / args.series
     os.chdir(ROOT)
     output = OUTPUT / f'round-{args.number:02d}'
     output.mkdir(parents=True, exist_ok=True)
