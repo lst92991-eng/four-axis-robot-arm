@@ -1,0 +1,31 @@
+{
+  "source_round": 19,
+  "source_commit": "04287a5ccaa6b34cf3d6d67f60573b12c1f5674c",
+  "fresh_directory": "output/upper-review-20261113/package-verification-source",
+  "method": "Extracted source archive into an empty directory, configured and compiled without old build cache, ran CTest and Python tests. Replayed all saved frames using the newly built executable.",
+  "cpp_suites_passed": 13,
+  "python_tests_passed": 59,
+  "saved_frame_cases": 16,
+  "rgb_and_annotation_files_identical": 32,
+  "recorded_detections_identical": true,
+  "application_source_files_verified": 39,
+  "archive_program_build_config_test_inputs_unchanged": true,
+  "build_log_sha256": "2b9a8fbd33b8fb7d65324920624f17f29ab6f90a0eb13ee84b00f26ecbe4cc9d",
+  "protected_paths_unchanged": [
+    "firmware",
+    "engine",
+    "models",
+    "config"
+  ],
+  "hardware_actions": false,
+  "limits": [
+    "Reused installed MSVC, OpenCV5 and actual RKNN header; vendor binaries are not in the source package.",
+    "Python tests use the existing cv2 4.13.0 environment.",
+    "Full ONNX CPU comparison passed in source round19; source package contains no model weights.",
+    "No ARM cross build, Linux real engine process, real NPU or motor acceptance."
+  ],
+  "documentation_and_packaging_updated_after_build": true,
+  "application_sources_and_build_inputs_identical": true,
+  "own_cpp_files_compiled_as_cpp17": 13,
+  "approved_vision_and_camera_flow_checked": true
+}

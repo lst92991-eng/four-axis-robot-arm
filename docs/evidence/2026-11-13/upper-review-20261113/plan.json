@@ -4,8 +4,8 @@
   "review_until_utc": "2026-11-13T14:45:00Z",
   "timezone": "Asia/Shanghai",
   "baseline_commit": "2ce033d",
-  "status": "active",
-  "current_stage": "integration",
+  "status": "complete",
+  "current_stage": "delivered",
   "scope": [
     "app",
     "vision",
@@ -63,7 +63,7 @@
     {
       "id": "integration",
       "task": "跨模块离线走棋、复核日志和源码交付",
-      "status": "in_progress"
+      "status": "complete"
     }
   ],
   "completed_rounds": [
@@ -172,8 +172,26 @@
     }
   ],
   "known_limits": [
-    "当前未连接RV1106，不能作实板验收",
-    "WSL未安装，Linux UCI验证途径待核对",
-    "SPI-CAN扩展芯片实现仍不在本轮通信适配范围"
-  ]
+    "尚未连接RV1106，没有ARM交叉构建、真实NPU连续运行或整机运动验收。",
+    "Linux真实Pikafish进程待验证；现有协议检查使用真实适配实现和POSIX替身。",
+    "正式SPI-CAN执行端与H桥硬件仍需后续接入；现有Python实机入口保留。",
+    "本轮是流程与可读性整理，总NLOC增加，用户仍需逐文件确认教学手写体验。"
+  ],
+  "finished_utc": "2026-11-13T14:15:13.156297+00:00",
+  "elapsed_minutes": 180.2,
+  "result": {
+    "completed_review_rounds": 19,
+    "baseline_rounds": 1,
+    "source_files": 39,
+    "ctest_suites": 13,
+    "python_checks": 59,
+    "vision_nloc": 408,
+    "cpp_application_nloc": 2975,
+    "native_code_commit": "04287a5",
+    "source_text": "output/upper-review-20261113/round-19/code.txt",
+    "source_package": "output/upper-review-20261113/upper-application-source.zip",
+    "fresh_archive_build_and_replay_passed": true,
+    "hardware_actions": false,
+    "remote_push": false
+  }
 }

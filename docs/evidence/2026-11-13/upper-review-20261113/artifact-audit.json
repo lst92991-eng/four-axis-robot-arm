@@ -1,0 +1,170 @@
+{
+  "checked_utc": "2026-11-13T14:10:23.930443+00:00",
+  "baseline_and_rounds": 20,
+  "note": "Integrity check of already-run evidence and source archives; not additional accuracy samples or test runs.",
+  "all_recorded_checks_passed": true,
+  "rounds": [
+    {
+      "round": 0,
+      "parent": "2ce033d2d7aea0d1c9c5c0bf8d07a81ac204363f",
+      "source_files": 33,
+      "source_archive_sha256": "69bfd660e5ebcd5442d69131a00c3b7ca575140cb1e3e13ee3cb20630ff27b4a",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 1,
+      "parent": "5a084a7f926d5f544f43effc6ba33ad1d17ad265",
+      "source_files": 33,
+      "source_archive_sha256": "bfe06b2657c502f1e2905018022c7a9432df3cf71673e28c41c66c73e782f8e9",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 2,
+      "parent": "5644ab0b2a61eb1d56602c5718aaa57a7c1c0b1d",
+      "source_files": 33,
+      "source_archive_sha256": "6b9e049f02d5ef55a8cc50b982b96d99c708013eacef85c3147806e944225676",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 3,
+      "parent": "cf3527194fb7be4af8085774b46440665ac96f34",
+      "source_files": 33,
+      "source_archive_sha256": "4b28f6a46d86efab28c247a53eb6bac64aa02ea427f81fd5b1a5dd2caf8f2709",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 4,
+      "parent": "a1523704ebb2b99202db806233f6334518dd3b66",
+      "source_files": 35,
+      "source_archive_sha256": "9d38e6acdc6ccef89a78082339f44978268f64274372679949e4790bac05a3bb",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 5,
+      "parent": "93a2375b5b0ee43129b9b91f5ca3e69fd12e5aaa",
+      "source_files": 35,
+      "source_archive_sha256": "1fea258f0beff3a06c1def7df41cc80a383691a5bc7960fe15ecc872142eedf4",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 6,
+      "parent": "e33926da5613356a407fed001cfa72cf61e2938b",
+      "source_files": 35,
+      "source_archive_sha256": "c387fe8e2a4942ddf5db93ddbf2161157aa0f45b60b93eb16a393201d5dab7e8",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 7,
+      "parent": "574fa5a6079dda598fec9bd96a74533bd41a413f",
+      "source_files": 35,
+      "source_archive_sha256": "3e88482d95d5d7d027c5298531226da42cfc582eb9038c85868381705d7a3d68",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 8,
+      "parent": "1e7880317b2b1ddb8a815ff554bfd10ffd725d24",
+      "source_files": 35,
+      "source_archive_sha256": "0cc1563647cb02228f260928c92252c8a712680fbb65d943e402bce58d681d1a",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 9,
+      "parent": "2e065042909c201124a3142f7aea3d60fabece5a",
+      "source_files": 37,
+      "source_archive_sha256": "dff4c43e01f059ac754c3a5e7c7b1c7eacbfc6e7782dd661f58642176eafa39f",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 10,
+      "parent": "10f3896a07a06301d250768c6165b588b4e5c461",
+      "source_files": 37,
+      "source_archive_sha256": "1032ec329a74b5ac1c0b661fcc7de3014afc6786803f5b37bd440ee32a9ba2dc",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 11,
+      "parent": "7745f2f9d288b832d090491ede2bceafb0362a4a",
+      "source_files": 37,
+      "source_archive_sha256": "d77e58b18e51ee055c0fbd197d987a64e94b96ea4ba2943b6b58f83ac24ba601",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 12,
+      "parent": "cc12c7d96640310fb7d4577002bc5cf43597af25",
+      "source_files": 39,
+      "source_archive_sha256": "330870468749918a559f871f74607affb4751467ca0bb8fd951470730dbdb1b1",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 13,
+      "parent": "9c8275abb6381cf8a650ed0469694c9ced39c9ee",
+      "source_files": 39,
+      "source_archive_sha256": "bf3367ec69b9be74df5fe70f27cd8ad2f2cd78e02f1ea5b80124e5be2df2bdc9",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 14,
+      "parent": "1468e90d821b83d212daaeb68622e7275cc25b34",
+      "source_files": 39,
+      "source_archive_sha256": "3c683e141f271ca9fffae709602ecb423a19fe628ccfdaefb98afcaeb99fff0a",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 15,
+      "parent": "168ec9acd13d0282cbd1d0cc04687a4027032c6d",
+      "source_files": 39,
+      "source_archive_sha256": "fdd898de6aa19e66bb1b28c9669aac7fcd6a30832ec0cbe729d808fcff018874",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 16,
+      "parent": "3559ef1f4203fa03bf20d1b191a67a56a956f0e2",
+      "source_files": 39,
+      "source_archive_sha256": "792af5443dc0dc0620aabd14182159163e6379738d2e9caac57d22b6eabeb59e",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 17,
+      "parent": "c3fd318c441d5dbcc86ddd3765a67a8468baa3bf",
+      "source_files": 39,
+      "source_archive_sha256": "adac1d96107ef52ce06ca83e6aefd01d67f0b52013c915c6ffe197c033776083",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 18,
+      "parent": "3606503f1a1529d875816841ac54eb83ab77aefe",
+      "source_files": 39,
+      "source_archive_sha256": "585059064efc33aba5b55505c126555a550496eddb12375b6669e019b48d5e8b",
+      "tested_snapshot_matches_report": true
+    },
+    {
+      "round": 19,
+      "parent": "27018ccf1548652a76cdf39e4652c7312698ea6e",
+      "source_files": 39,
+      "source_archive_sha256": "0233cd8f10a85665bac1662b660e5774e72603c670b520c9e0a4caadc3a397ed",
+      "tested_snapshot_matches_report": true
+    }
+  ],
+  "commits": [
+    "5a084a7 建立全量上层整理计划与离线对照基线",
+    "5644ab0 整理几何标定输出参数和顺序入口",
+    "cf35271 统一棋盘和棋局坐标的输入输出参数",
+    "a152370 按图像步骤组织棋盘定位并去掉临时打印",
+    "93a2375 准备固定棋盘的一次建系与目标缓存",
+    "e33926d 用固定张量配置和成功状态组织NPU初始化",
+    "574fa5a 将棋局状态和走法接口改为显式参数流程",
+    "1e78803 合并棋局重复检查并建立UCI离线协议基线",
+    "2e06504 整理UCI完整局面接口与顺序握手",
+    "10f3896 提取示教运动学和取放步骤的C++接口",
+    "7745f2f 统一上位机与实时服务的可读排版",
+    "cc12c7d 按请求接收发布组织上位机循环与重试",
+    "9c8275a 连接识别棋局与取放规划并验证确认事务",
+    "1468e90 展开界面脚本并保持预览和控制密钥兼容",
+    "168ec9a 按求解阶段和协议职责整理长函数",
+    "3559ef1 按控制请求和双画面步骤组织入口",
+    "c3fd318 拒绝缺少示教输入并清空失败规划输出",
+    "3606503 验证模拟HTTP控制链并展开停止回调",
+    "27018cc 明确接口单位并保留初始化期间的停止请求",
+    "04287a5 导出课堂源码编译配置并完成全量离线复核"
+  ]
+}
