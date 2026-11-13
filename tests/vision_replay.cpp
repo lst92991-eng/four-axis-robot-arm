@@ -26,12 +26,10 @@ int main(int argc, char **argv)
       auto bytes = scara::readBytes(imagePath);
       auto source = cv::imdecode(std::vector<uint8_t>(bytes.begin(),bytes.end()), cv::IMREAD_COLOR);
       if (source.empty()) throw std::runtime_error("Cannot decode replay image");
-      scara::VisionConfig config;
-      config.frameSize = source.size();
       auto roi = item["roi"];
-      config.inferenceRoi = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
-      scara::ImageMapping mapping;
-      auto input = scara::Vision_prepare(source, config, mapping);
+      cv::Rect region = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
+      scara::Vision_setup(source.size(),region);
+      auto input = scara::Vision_prepare(source);
       scara::writeBytes(prefix+".rgb", {reinterpret_cast<const char *>(input.data), input.total()*input.elemSize()});
       std::vector<scara::Detection> detections;
       double decodeMs = 0;
@@ -63,9 +61,9 @@ int main(int argc, char **argv)
           offset += length;
         }
         if (offset!=packet.size()) throw std::runtime_error("Unexpected tensor tail");
-        detections = scara::Vision_decode(heads, mapping, config);
+        detections = scara::Vision_decode(heads);
         auto start = std::chrono::steady_clock::now();
-        for (int i=0; i<100; ++i) scara::Vision_decode(heads, mapping, config);
+        for (int i=0; i<100; ++i) scara::Vision_decode(heads);
         decodeMs = std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()/100;
       }
       auto result = scara::memoryStorage(true);

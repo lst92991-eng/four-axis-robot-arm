@@ -26,23 +26,6 @@ struct Detection
     cv::Rect2d bbox;
 };
 
-//---------图像与模型参数区---------
-struct VisionConfig
-{
-    cv::Size frameSize{1280, 720};
-    cv::Rect inferenceRoi{300, 70, 650, 600};
-    float scoreThreshold = .50f;
-    float nmsThreshold = .45f;
-};
-
-struct ImageMapping
-{
-    cv::Rect roi;     // 原图中的裁剪区域，单位：原图像素。
-    double scale = 1; // 输入图像素 / 原图像素，X、Y 共用此缩放比。
-    int left = 0;     // 640 输入图左侧的留白像素。
-    int top = 0;      // 640 输入图顶部的留白像素。
-};
-
 // NPU 原生输出为 NHWC INT8，布局与量化参数在 Yolo_open 中检查一次。
 struct YoloHead
 {
@@ -53,18 +36,19 @@ struct YoloHead
 };
 
 //---------图像处理接口区---------
-// 输入原图 BGR；返回 640×640 RGB，同时填写后处理要用的缩放和留白。
-cv::Mat Vision_prepare(const cv::Mat &bgr, const VisionConfig &config, ImageMapping &mapping);
+// 启动时设置一次已选定的有效图像几何；正常循环只处理同一相机和裁剪区域。
+void Vision_setup(cv::Size frameSize = {1280, 720}, cv::Rect roi = {300, 70, 650, 600});
+cv::Mat Vision_prepare(const cv::Mat &bgr);
 // heads 来自成功的 Yolo_run；离线文件读取入口负责检查自己的数据边界和格式。
-std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads], const ImageMapping &mapping,
-                                     const VisionConfig &config);
+std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads]);
 // 复制原图后绘制。检测来自 Vision_decode，字图在载入时核对尺寸并转换为灰度。
 cv::Mat Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &chineseLabels);
 
 //---------NPU接口区---------
 // 模块内只保存一个模型。主流程统一调用 Yolo_close，包括打开或运行失败时。
-void Yolo_open(std::string modelPath);
-// 返回三路输出数组，数据在下一次推理或关闭模型前有效。
+bool Yolo_open(std::string modelPath);
+// 先成功打开模型，输入必须来自 Vision_prepare；失败返回 nullptr。
+// 输出数据在下一次推理或关闭模型前有效。
 const YoloHead *Yolo_run(const cv::Mat &rgb640);
 void Yolo_close();
 } // namespace scara

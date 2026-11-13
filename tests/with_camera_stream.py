@@ -16,6 +16,10 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        if self.path.endswith('/not-a-stream'):
+            self.send_response(404)
+            self.end_headers()
+            return
         self.send_response(200)
         self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=frame')
         self.end_headers()
@@ -28,6 +32,9 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.flush()
                 index += 1
                 if self.path.endswith('/finite') and index==12:
+                    return
+                if self.path.endswith('/stall') and index==12:
+                    time.sleep(15)
                     return
                 time.sleep(.1)
         except (ConnectionError, OSError):
@@ -54,6 +61,11 @@ def main():
             result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
             if result.returncode!=1 or 'label image' not in result.stderr or 'TEST ONLY' in result.stderr:
                 raise RuntimeError('Invalid label image opened the NPU or lost its error: '+result.stderr)
+            unavailable = command.copy()
+            unavailable[2] = url+'/not-a-stream'
+            result = subprocess.run(unavailable,cwd=ROOT,capture_output=True,text=True,timeout=15)
+            if result.returncode!=1 or 'TEST cleanup: allocations=0 runs=0' not in result.stdout:
+                raise RuntimeError('Camera-open failure did not release the model: '+result.stderr+result.stdout)
             for stage in ('query','allocate','bind','run'):
                 env = dict(os.environ, SCARA_MOCK_FAILURE=stage)
                 result = subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)

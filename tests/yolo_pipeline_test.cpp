@@ -22,10 +22,10 @@ cv::Mat image(const std::string& path, int mode=cv::IMREAD_COLOR)
   return cv::imdecode(std::vector<uint8_t>(bytes.begin(),bytes.end()), mode);
 }
 
-void sameInput(const cv::Mat& source, const scara::VisionConfig& config, const std::string& expected)
+void sameInput(const cv::Mat& source, cv::Rect roi, const std::string& expected)
 {
-  scara::ImageMapping mapping;
-  auto input = scara::Vision_prepare(source, config, mapping);
+  scara::Vision_setup(source.size(),roi);
+  auto input = scara::Vision_prepare(source);
   cv::Mat rgb;
   cv::cvtColor(image(expected), rgb, cv::COLOR_BGR2RGB);
   check(cv::norm(input, rgb, cv::NORM_INF)==0, "Preprocessing differs from the verified Python path");
@@ -33,6 +33,7 @@ void sameInput(const cv::Mat& source, const scara::VisionConfig& config, const s
 
 void decodeEdges()
 {
+  scara::Vision_setup({640,640},{0,0,640,640});
   std::vector<int8_t> data[3];
   scara::YoloHead heads[3];
   for (int i=0; i<3; ++i)
@@ -44,24 +45,24 @@ void decodeEdges()
   auto *p = data[0].data()+(20*80+20)*57;
   p[0] = p[1] = p[2] = p[3] = 50;
   p[4] = 40; p[5+8] = 126; // 0.40 * 1.26 = 0.504, above the 0.50 threshold.
-  auto found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  auto found = scara::Vision_decode(heads);
   check(found.size()==1 && found[0].classId==8, "Early rejection assumed class scores cannot exceed one");
   p[5+2] = 126;
-  found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  found = scara::Vision_decode(heads);
   check(found.size()==1 && found[0].classId==2, "Equal class scores did not keep the first class");
   p[5+2] = 0;
   p[4] = 39;
-  check(scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {}).empty(), "Below-threshold candidate survived");
+  check(scara::Vision_decode(heads).empty(), "Below-threshold candidate survived");
   p[2] = p[3] = p[4] = 100; p[5+8] = 0; p[5+2] = 90;
   auto *q = p+19;
   q[0] = q[1] = 50; q[2] = 80; q[3] = 66; q[4] = 100; q[5+5] = 90;
-  found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  found = scara::Vision_decode(heads);
   check(found.size()==1 && found[0].classId==2, "Cross-class NMS or equal-score traversal order changed");
   q[5+5] = 91;
-  found = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+  found = scara::Vision_decode(heads);
   check(found.size()==1 && found[0].classId==5, "NMS did not keep the highest scoring overlapping box");
   q[4] = 0; p[5+2] = 50;
-  check(scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {}).size()==1, "Score exactly 0.50 was rejected");
+  check(scara::Vision_decode(heads).size()==1, "Score exactly 0.50 was rejected");
 }
 }
 
@@ -74,10 +75,9 @@ int main(int argc, char **argv)
     auto source = image(fixture+"source.png");
     auto expected = scara::readStorage(fixture+"expected.json");
     auto roi = expected["roi"];
-    scara::VisionConfig historical;
-    historical.inferenceRoi = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
+    cv::Rect historical = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
     sameInput(source, historical, fixture+"historical-input.png");
-    sameInput(source, scara::VisionConfig{}, fixture+"fixed-input.png");
+    sameInput(source, {300,70,650,600}, fixture+"fixed-input.png");
 
     auto packet = scara::readBytes(fixture+"rknn-output.bin");
     uint32_t headerSize;
@@ -95,9 +95,8 @@ int main(int argc, char **argv)
                   int(attr["zero_point"]), float(attr["scale"])};
       offset += bytes;
     }
-    scara::ImageMapping mapping;
-    scara::Vision_prepare(source, historical, mapping);
-    auto pieces = scara::Vision_decode(heads, mapping, historical);
+    scara::Vision_setup(source.size(),historical);
+    auto pieces = scara::Vision_decode(heads);
     check(pieces.size()==expected["detections"].size(), "Detection count changed");
     double maximum = 0;
     for (size_t i=0; i<pieces.size(); ++i)
@@ -128,7 +127,7 @@ int main(int argc, char **argv)
     check(argc==2, "Camera test needs the local stream fixture");
     for (int i=0; i<2; ++i)
     {
-      scara::Camera_open(argv[1]);
+      check(scara::Camera_open(argv[1]), "Cannot open test stream");
       std::this_thread::sleep_for(std::chrono::milliseconds(300));
       auto first = scara::Camera_read();
       auto saved = first.clone();
@@ -140,20 +139,27 @@ int main(int argc, char **argv)
       check(cv::norm(first,saved,cv::NORM_INF)==0, "Background capture modified a frame still held by the caller");
       scara::Camera_close();
     }
-    scara::Camera_open(std::string(argv[1])+"/finite");
+    check(scara::Camera_open(std::string(argv[1])+"/finite"), "Cannot open finite stream");
     bool ended = false;
     for (int i=0; i<20 && !ended; ++i)
     {
-      try { scara::Camera_read(); }
-      catch (const std::exception& e) { ended = std::string(e.what())=="Camera stream ended"; }
+      ended = scara::Camera_read().empty();
     }
     scara::Camera_close();
     check(ended, "End of stream did not stop fresh-frame reads");
-    scara::Camera_open(argv[1]);
+    check(scara::Camera_open(std::string(argv[1])+"/stall"), "Cannot open stalled stream");
+    auto waiting = std::chrono::steady_clock::now();
+    ended = false;
+    for (int i=0; i<20 && !ended; ++i) ended = scara::Camera_read().empty();
+    double waitSeconds = std::chrono::duration<double>(std::chrono::steady_clock::now()-waiting).count();
+    scara::Camera_close();
+    check(ended && waitSeconds<8, "Stalled stream left the consumer waiting indefinitely");
+    std::cout << "camera_stall_wait_s=" << waitSeconds << '\n';
+    check(scara::Camera_open(argv[1]), "Cannot reopen stream");
     check(scara::Camera_read().size()==source.size(), "Camera retained an old failure after reopening");
     scara::Camera_close();
     bool rejected = false;
-    try { scara::Vision_prepare(source(cv::Rect(0,0,320,240)), historical, mapping); }
+    try { scara::Vision_prepare(source(cv::Rect(0,0,320,240))); }
     catch (const std::exception&) { rejected = true; }
     check(rejected, "Unexpected camera size was accepted");
     std::cout << "PASS preprocessing byte equality, " << pieces.size()

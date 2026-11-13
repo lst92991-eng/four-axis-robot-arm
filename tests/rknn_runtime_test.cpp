@@ -30,7 +30,7 @@ int rknn_init(rknn_context *context, void *, uint32_t, uint32_t, rknn_init_exten
   const char *failure = std::getenv("SCARA_MOCK_FAILURE");
   if (failure)
   {
-    if (std::strcmp(failure,"query")==0) failQuery = RKNN_QUERY_IN_OUT_NUM;
+    if (std::strcmp(failure,"query")==0) failQuery = RKNN_QUERY_NATIVE_INPUT_ATTR;
     if (std::strcmp(failure,"allocate")==0) failAt = 2;
     if (std::strcmp(failure,"bind")==0) failBind = 3;
     if (std::strcmp(failure,"run")==0) failRun = true;
@@ -144,56 +144,53 @@ int main()
   {
     for (failAt=1; failAt<=4; ++failAt)
     {
-      bool rejected = false;
-      try { scara::Yolo_open("mock.rknn"); scara::Yolo_close(); }
-      catch (const std::exception&) { scara::Yolo_close(); rejected = true; }
-      check(rejected && !contextOpen && !alive, "Partial allocation leaked resources");
+      bool opened = scara::Yolo_open("mock.rknn");
+      scara::Yolo_close();
+      check(!opened && !contextOpen && !alive, "Partial allocation leaked resources");
     }
     failAt = 0;
-    for (int command : {RKNN_QUERY_IN_OUT_NUM, RKNN_QUERY_NATIVE_INPUT_ATTR, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR})
+    for (int command : {RKNN_QUERY_NATIVE_INPUT_ATTR, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR})
     {
       failQuery = command;
-      bool reported = false;
-      try { scara::Yolo_open("mock.rknn"); }
-      catch (const std::exception& e) { scara::Yolo_close(); reported = std::string(e.what()).find("-21")!=std::string::npos; }
-      check(reported && !contextOpen && !alive, "Query failure lost status or leaked resources");
+      bool opened = scara::Yolo_open("mock.rknn");
+      scara::Yolo_close();
+      check(!opened && !contextOpen && !alive, "Query failure was accepted or leaked resources");
     }
     failQuery = -1;
     for (failBind=1; failBind<=4; ++failBind)
     {
-      bool reported = false;
-      try { scara::Yolo_open("mock.rknn"); }
-      catch (const std::exception& e) { scara::Yolo_close(); reported = std::string(e.what()).find("-22")!=std::string::npos; }
-      check(reported && !contextOpen && !alive, "Binding failure lost status or leaked resources");
+      bool opened = scara::Yolo_open("mock.rknn");
+      scara::Yolo_close();
+      check(!opened && !contextOpen && !alive, "Binding failure was accepted or leaked resources");
     }
     failBind = 0;
     badOutput = true;
-    bool rejected = false;
-    try { scara::Yolo_open("mock.rknn"); scara::Yolo_close(); }
-    catch (const std::exception&) { scara::Yolo_close(); rejected = true; }
-    check(rejected && !contextOpen && !alive, "Output layout failure leaked resources");
+    bool opened = scara::Yolo_open("mock.rknn");
+    scara::Yolo_close();
+    check(!opened && !contextOpen && !alive, "Unsupported output was accepted or leaked resources");
     badOutput = false;
-    scara::Yolo_open("mock.rknn");
-    scara::Yolo_open("mock.rknn");
+    check(scara::Yolo_open("mock.rknn"), "Cannot open test model");
+    check(scara::Yolo_open("mock.rknn"), "Cannot reopen test model");
     check(contextOpen && alive==4, "Reopening the fixed model leaked its previous buffers");
     cv::Mat storage(648,656,CV_8UC3,cv::Scalar(99,88,77));
     cv::Mat rgb = storage(cv::Rect(3,4,640,640));
     rgb.setTo(cv::Scalar(11,22,33));
     check(!rgb.isContinuous(), "Stride test unexpectedly used tightly packed source rows");
     auto heads = scara::Yolo_run(rgb);
-    auto pieces = scara::Vision_decode(heads, {{0,0,640,640},1,0,0}, {});
+    check(heads!=nullptr, "Inference unexpectedly failed");
+    scara::Vision_setup({640,640},{0,0,640,640});
+    auto pieces = scara::Vision_decode(heads);
     check(pieces.size()==1 && pieces[0].classId==12, "Native padded output was decoded incorrectly");
     failRun = true;
-    rejected = false;
-    try { scara::Yolo_run(rgb); }
-    catch (const std::exception& e) { rejected = std::string(e.what()).find("rknn_run failed: -7")!=std::string::npos; }
+    bool failed = scara::Yolo_run(rgb)==nullptr;
     scara::Yolo_close();
-    check(rejected && !contextOpen && !alive, "Inference failure cleanup failed");
-    std::cout << "PASS RKNN adapter input/output strides and failure cleanup; simulated ABI\n";
+    check(failed && !contextOpen && !alive, "Inference failure cleanup failed");
+    std::cout << "PASS RKNN input/output strides, result codes and failure cleanup; simulated ABI\n";
     return 0;
   }
   catch (const std::exception& e)
   {
+    scara::Yolo_close();
     std::cerr << e.what() << '\n';
     return 1;
   }
