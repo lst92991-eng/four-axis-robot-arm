@@ -10,6 +10,8 @@
 
 相机后台持续读取 RTSP 流，只保存一张图。`Camera_read` 清空已有图像，等待调用后接收到的一帧；因此恢复调用时不会直接返回上次缓存，正常情况下最多多等一个帧间隔。后台任务负责持续接收，避免推理期间视频流在接收端积压。模块已经删去独立的帧编号、时间戳和定时轮询。直接使用板端取帧接口能否进一步简化，留待核对当前镜像的接口与颜色输出后决定。
 
+当前从主流程继续阅读 `vision/capture.hpp` 和 `vision/capture.cpp`：三个公开接口负责打开、取图、关闭，内部 `receiveFrames` 负责后台收图。变量依次为视频解码器 video、最新帧 latestFrame、接收线程 captureThread、交帧锁 frameMutex、通知 frameReady、接收状态 capturing。源码注释解释了等待时释放锁、接收对象每轮新建、输出共享像素，以及关闭时先结束线程再释放视频的顺序。此次只整理命名和说明，捕获逻辑和 5000 毫秒超时未改；相机 CPP 仍为 65 行、头文件 8 行。
+
 按用户最新“一个运行标志、输入输出参数、循环中直接调用”要求整理后，本段 C++ 源文件按去掉空行、注释的 Lizard NLOC 口径合计 **366 行**：四个 CPP 共 320 行，两个头文件共 46 行。按以下顺序展开阅读：
 
 | 文件 | 讲解内容 | 有效行数 |
@@ -40,11 +42,11 @@
 
 `savePreview` 只负责输出：先完整写入临时 JPEG，再用 `std::filesystem::rename` 替换正式预览文件。它在同一个 main.cpp 中，全部计入行数。这样预览读取端不会读到本程序写到一半的 JPEG。当前 366 行比上一版 353 行多 13 行，主要是具名命令参数、分别声明变量及保存函数；主循环结构变直，未宣称代码总量下降。
 
-最新六文件文本/压缩包在 `output/vision-straight-loop-20261113/round-01/code.txt`、`code.zip`，记录在 `docs/evidence/2026-11-13/vision-straight-loop-20261113/`。6 组检查通过；16 张图的输入/完整标注图逐字节一致，152 个保存 NPU 结果及 501 个 CPU 检测结果前后一致，既有 64 枚棋子读图核对保持一致。此前 353 行参数式版本仍保留在 `output/vision-io-params-20261113/`。
+最新六文件文本/压缩包在 `output/vision-camera-flow-20261113/round-01/code.txt`、`code.zip`，记录在 `docs/evidence/2026-11-13/vision-camera-flow-20261113/`。相机讲解版仍为 366 行，用户已认可的 main 文件未修改。6 组检查通过；16 张图的输入/完整标注图逐字节一致，152 个保存 NPU 结果及 501 个 CPU 检测结果前后一致，既有 64 枚棋子读图核对保持一致。此前主循环版和 353 行参数式版本分别保留在 `output/vision-straight-loop-20261113/` 与 `output/vision-io-params-20261113/`。
 
 前十轮从 395 行增加到 428 行，并减少了两次图像拷贝及低分候选框的类别遍历；记录见[十轮自审](docs/项目收敛与下棋闭环_2026-11-09.md#2026-11-13-视觉代码十轮自审)。追加十五轮以原始《电机驱动板_最终完整代码_20260911.zip》为风格基准，从 428 行展开为 506 行。解码主函数从 66 行变为 32 行，最长函数从 66 行变为 48 行；新增的三个内部计算函数完整保留在同一 `yolo.cpp` 中。中间量、结构体字段和 SDK 返回码逐项写明，参数表按逻辑分组，采用四空格排版。格式配置是 `config/vision/handwrite.clang-format`。
 
-十五轮阶段的代码哈希、自查理由、函数规模及验证结果见 `docs/evidence/2026-11-13/vision-review-15/`，历史快照位于本机 `output/vision-review-15/round-NN/`。450 行阶段的记录见 `docs/evidence/2026-11-13/vision-minimal-20261113/`，最新记录见 `docs/evidence/2026-11-13/vision-straight-loop-20261113/`。课堂仍须讲清 Camera 的后台交帧和 RKNN 的内存、步幅规则；这些部分保留真实实现。
+十五轮阶段的代码哈希、自查理由、函数规模及验证结果见 `docs/evidence/2026-11-13/vision-review-15/`，历史快照位于本机 `output/vision-review-15/round-NN/`。450 行阶段的记录见 `docs/evidence/2026-11-13/vision-minimal-20261113/`，最新记录见 `docs/evidence/2026-11-13/vision-camera-flow-20261113/`。课堂仍须讲清 Camera 的后台交帧和 RKNN 的内存、步幅规则；这些部分保留真实实现。
 
 常规 CMake 构建可验证图像处理与采集。配置 `RKNN_INCLUDE_DIR` 后可增加使用实际 SDK 头文件的模拟 ABI 检查。板端构建使用 `-DSCARA_WITH_RKNN=ON`，提供 `RKNN_SDK_DIR` 或 `RKNN_INCLUDE_DIR`、`RKNN_LIBRARY`，并使用含 FFmpeg 视频解码支持的 OpenCV 5.0.0。安装入口为 `bin/run-vision.sh`，先核对 v3 模型 SHA256，再启动程序。
 
