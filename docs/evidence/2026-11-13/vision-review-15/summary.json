@@ -1,0 +1,275 @@
+{
+  "baseline_commit": "e657d61",
+  "round_count": 15,
+  "all_passed": true,
+  "effective_lines_before": 428,
+  "effective_lines_after": 506,
+  "largest_function_before": 66,
+  "largest_function_after": 48,
+  "function_count_before": 20,
+  "function_count_after": 23,
+  "original_driver_archive_sha256": "a0b937b62d3e8b7966b2284da0e2601739887e5bac84acf1761860ceb1e567e2",
+  "rknn_sha256": "ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2",
+  "rounds": [
+    {
+      "round": 1,
+      "title": "接口的参数、单位与输出说清楚",
+      "self_review": "参照Pid_Update和Wheel_Differential的头文件约定，补齐省略的形参名与像素/字节单位，分开模型常量；已逐项核对默认值、字段顺序和引用方向，未更换类型、阈值或布局。",
+      "nloc": 432,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-01/code.txt"
+    },
+    {
+      "round": 2,
+      "title": "主循环直接显示每一步的数据类型",
+      "self_review": "对照原板App任务的顺序调用：显式写出NPU输出指针和Detection数组类型，分开帧数设置与计数，具名停止回调；审查了指针只在本次推理使用、信号只写sig_atomic_t，退出与释放顺序保持原样。",
+      "nloc": 434,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-02/code.txt"
+    },
+    {
+      "round": 3,
+      "title": "预处理逐项计算缩放和留白",
+      "self_review": "按原板GPIO配置逐字段赋值的写法，明确原图边界、XY候选缩放比、最终统一缩放比、留白和输入区域；核对仍先BGR转RGB再INTER_LINEAR缩放，double比例、cvRound与114填充值均未变。",
+      "nloc": 442,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-03/code.txt"
+    },
+    {
+      "round": 4,
+      "title": "三路输出与单路解析分开阅读",
+      "self_review": "把单路输出遍历放入同文件readCandidates，主流程只依次处理三路；已核对head/y/x/anchor的插入顺序、阈值与引用传递，保留全部布局检查，没有转移到外部库或增加通用层。",
+      "nloc": 446,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-04/code.txt"
+    },
+    {
+      "round": 5,
+      "title": "分类选择作为独立的简单循环",
+      "self_review": "依照原板Clamp等单一计算函数的写法，分开14类最大值选择；审查同分时仍取首个类别、INT8比较由已验证的正scale保证有序，新增同分不同类别的回归用例。",
+      "nloc": 452,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-05/code.txt"
+    },
+    {
+      "round": 6,
+      "title": "框的几何公式展开为中间量",
+      "self_review": "参照Pid_Update的error/next_i/candidate逐步计算，明确格内偏移、中心、宽高系数和四条边；逐项审查float偏移与宽高计算后再参与double坐标运算，六个Candidate字段全部赋值，不能改成全float或全double。",
+      "nloc": 460,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-06/code.txt"
+    },
+    {
+      "round": 7,
+      "title": "去重用直接的是否重叠判断",
+      "self_review": "检查NMS后以具名overlapsKept替代duplicate标志和break嵌套，原始未裁切坐标与严格大于阈值的判断保留；审查仅与已保留高分框比较，稳定排序、跨类别规则和同分顺序都不变。",
+      "nloc": 458,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-07/code.txt"
+    },
+    {
+      "round": 8,
+      "title": "还原坐标后逐字段填写棋子结果",
+      "self_review": "将嵌套的匿名初始化改为Detection具名对象，位置和宽高含义直接可见；审查保留先裁切再加ROI偏移、只接收正宽高的原判断，六个结果字段均赋值且没有交换xy或宽高。",
+      "nloc": 467,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-08/code.txt"
+    },
+    {
+      "round": 9,
+      "title": "锚框参数直接表达宽和高",
+      "self_review": "参照原板具名硬件参数表，把平铺六个数字改为三个Size2f宽高对，去掉anchor乘2及加1的隐式索引；逐一核对18个数值及三路顺序，成员仍为float且乘法顺序未变。",
+      "nloc": 472,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-09/code.txt"
+    },
+    {
+      "round": 10,
+      "title": "绘图按取字形填底色写文字展开",
+      "self_review": "具名描述字图尺寸，单独取textMask和caption，再填底色和字形；审查Rect裁切后的掩模尺寸一致，框线/颜色/文本基线不变，要求16张完整绘制PNG逐字节相同并复查小图与画外框。",
+      "nloc": 480,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-10/code.txt"
+    },
+    {
+      "round": 11,
+      "title": "SDK操作与结果检查分成两步",
+      "self_review": "把嵌套在check中的SDK调用展开成status赋值后检查，便于手写和单步观察；逐处核对每个查询都立即检查且失败仍进入同一释放路径，原始错误码与调用次序保持，故障注入检查全部重跑。",
+      "nloc": 486,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-11/code.txt"
+    },
+    {
+      "round": 12,
+      "title": "输出缓冲的含义逐字段可见",
+      "self_review": "参照原板DMA配置的逐字段赋值，明确属性类型、内存类型以及data/bytes/rowBytes/zeroPoint/scale的对应关系；核对先分配绑定成功后取地址，步幅乘通道数保持字节单位，SDK对齐空间未被当成有效像素。",
+      "nloc": 490,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-12/code.txt"
+    },
+    {
+      "round": 13,
+      "title": "逐行拷贝明确源行与目标行",
+      "self_review": "明确源Mat行地址和NPU目标行地址，保留两个不同的步幅；补测从较大图像截出的非连续640x640视图、目标行尾填充不被覆盖，审查只复制每行640乘3字节，未改成整段拷贝假设。",
+      "nloc": 494,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-13/code.txt"
+    },
+    {
+      "round": 14,
+      "title": "相机配置和打开操作单独列出",
+      "self_review": "对照原板先准备参数再初始化外设的写法，将OpenCV键值参数数组放在open前；三处既有5秒等待合用同一毫秒常量，等价核对5000ms=5s，后台接收、单帧交接和关闭顺序没有删改。",
+      "nloc": 499,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-14/code.txt"
+    },
+    {
+      "round": 15,
+      "title": "逐函数复核手写风格和最终排版",
+      "self_review": "按原板四空格和展开函数体统一六个文件；人工复查发现格式化压缩锚框表且拆开相机键值对，已恢复逻辑分组再完整验证。明确缓冲容量中间量与释放指针类型，核对数据类型、字段、失败清理及全部可见代码。",
+      "nloc": 506,
+      "previous_version_identical": true,
+      "build_and_ctest_passed": true,
+      "onnx_cpu_and_spot_check": {
+        "frames": 16,
+        "detections": 501,
+        "identical": true,
+        "visual_correct": 64,
+        "visual_total": 64,
+        "recorded_npu_correct": 32
+      },
+      "code_snapshot": "output/vision-review-15/round-15/code.txt"
+    }
+  ],
+  "limitations": [
+    "Same 16 saved images reused each round.",
+    "64-piece visual spot check is not mAP or overall accuracy.",
+    "ARM cross-build and real RV1106 operation remain unverified."
+  ]
+}

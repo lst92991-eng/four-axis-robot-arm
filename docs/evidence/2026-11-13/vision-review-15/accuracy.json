@@ -1,0 +1,1753 @@
+{
+  "model_sha256": "fdf31b53da7bc2350936bb51fb6e53ddf0d5958aa36830a6493a187332458047",
+  "provider": [
+    "CPUExecutionProvider"
+  ],
+  "comparisons": [
+    {
+      "id": "npu-yolo-expanded-v1-20261105",
+      "identical": true,
+      "detections": 30
+    },
+    {
+      "id": "npu-yolo-full-frame",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "npu-yolo-live-20261104",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "npu-yolo-live-active",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "npu-reference",
+      "identical": true,
+      "detections": 28
+    },
+    {
+      "id": "npu-v3",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "npu-diagnosis",
+      "identical": true,
+      "detections": 30
+    },
+    {
+      "id": "fixed-01",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-02",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-03",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-04",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-05",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-06",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-07",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-08",
+      "identical": true,
+      "detections": 32
+    },
+    {
+      "id": "fixed-09",
+      "identical": true,
+      "detections": 29
+    }
+  ],
+  "visual_spot_checks": [
+    {
+      "id": "npu-v3",
+      "backend": "v3 ONNX CPU",
+      "before": {
+        "expected": 32,
+        "detected": 32,
+        "matched": 32,
+        "correctly_identified": 32,
+        "missing": [],
+        "extra_predictions": 0,
+        "details": [
+          {
+            "truth": [
+              "c",
+              805,
+              206
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 0.30268822465983025
+          },
+          {
+            "truth": [
+              "P",
+              690,
+              506
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 0.5134374833167542
+          },
+          {
+            "truth": [
+              "p",
+              581,
+              630
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.6638994469523645
+          },
+          {
+            "truth": [
+              "A",
+              757,
+              445
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 0.7866152466936972
+          },
+          {
+            "truth": [
+              "p",
+              574,
+              506
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.7985814340879215
+          },
+          {
+            "truth": [
+              "R",
+              420,
+              508
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 0.8682917219309435
+          },
+          {
+            "truth": [
+              "p",
+              522,
+              270
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.925692701489824
+          },
+          {
+            "truth": [
+              "C",
+              759,
+              388
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 0.9561510319559547
+          },
+          {
+            "truth": [
+              "C",
+              581,
+              326
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 1.248272606008189
+          },
+          {
+            "truth": [
+              "b",
+              462,
+              139
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.364755747581706
+          },
+          {
+            "truth": [
+              "n",
+              576,
+              571
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 1.3761691417176465
+          },
+          {
+            "truth": [
+              "b",
+              355,
+              495
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.3889251832100828
+          },
+          {
+            "truth": [
+              "k",
+              413,
+              385
+            ],
+            "prediction": "k",
+            "correct": true,
+            "distance_px": 1.8821736341325337
+          },
+          {
+            "truth": [
+              "a",
+              465,
+              321
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 1.9250267683087399
+          },
+          {
+            "truth": [
+              "N",
+              808,
+              328
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 1.977508935245482
+          },
+          {
+            "truth": [
+              "a",
+              456,
+              445
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 2.022382077569338
+          },
+          {
+            "truth": [
+              "r",
+              745,
+              325
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 2.0863138660421754
+          },
+          {
+            "truth": [
+              "K",
+              870,
+              449
+            ],
+            "prediction": "K",
+            "correct": true,
+            "distance_px": 2.0866099488925163
+          },
+          {
+            "truth": [
+              "P",
+              701,
+              149
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.1614260032637698
+          },
+          {
+            "truth": [
+              "P",
+              695,
+              267
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.1779028792842783
+          },
+          {
+            "truth": [
+              "c",
+              359,
+              558
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 2.260589546669781
+          },
+          {
+            "truth": [
+              "r",
+              358,
+              620
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 2.34165738747616
+          },
+          {
+            "truth": [
+              "n",
+              695,
+              387
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 2.914426886186591
+          },
+          {
+            "truth": [
+              "p",
+              520,
+              154
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 2.97244133028232
+          },
+          {
+            "truth": [
+              "P",
+              694,
+              635
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.9745969433596247
+          },
+          {
+            "truth": [
+              "P",
+              640,
+              389
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 3.312144531257934
+          },
+          {
+            "truth": [
+              "p",
+              521,
+              387
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 3.682729142600608
+          },
+          {
+            "truth": [
+              "B",
+              752,
+              151
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 3.8247439584770158
+          },
+          {
+            "truth": [
+              "B",
+              743,
+              633
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 3.9095430979248103
+          },
+          {
+            "truth": [
+              "R",
+              866,
+              510
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 4.802916213893179
+          },
+          {
+            "truth": [
+              "A",
+              808,
+              385
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 4.885687603191053
+          },
+          {
+            "truth": [
+              "N",
+              805,
+              635
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 7.174369357364752
+          }
+        ]
+      },
+      "after": {
+        "expected": 32,
+        "detected": 32,
+        "matched": 32,
+        "correctly_identified": 32,
+        "missing": [],
+        "extra_predictions": 0,
+        "details": [
+          {
+            "truth": [
+              "c",
+              805,
+              206
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 0.30268822465983025
+          },
+          {
+            "truth": [
+              "P",
+              690,
+              506
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 0.5134374833167542
+          },
+          {
+            "truth": [
+              "p",
+              581,
+              630
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.6638994469523645
+          },
+          {
+            "truth": [
+              "A",
+              757,
+              445
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 0.7866152466936972
+          },
+          {
+            "truth": [
+              "p",
+              574,
+              506
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.7985814340879215
+          },
+          {
+            "truth": [
+              "R",
+              420,
+              508
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 0.8682917219309435
+          },
+          {
+            "truth": [
+              "p",
+              522,
+              270
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.925692701489824
+          },
+          {
+            "truth": [
+              "C",
+              759,
+              388
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 0.9561510319559547
+          },
+          {
+            "truth": [
+              "C",
+              581,
+              326
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 1.248272606008189
+          },
+          {
+            "truth": [
+              "b",
+              462,
+              139
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.364755747581706
+          },
+          {
+            "truth": [
+              "n",
+              576,
+              571
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 1.3761691417176465
+          },
+          {
+            "truth": [
+              "b",
+              355,
+              495
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.3889251832100828
+          },
+          {
+            "truth": [
+              "k",
+              413,
+              385
+            ],
+            "prediction": "k",
+            "correct": true,
+            "distance_px": 1.8821736341325337
+          },
+          {
+            "truth": [
+              "a",
+              465,
+              321
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 1.9250267683087399
+          },
+          {
+            "truth": [
+              "N",
+              808,
+              328
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 1.977508935245482
+          },
+          {
+            "truth": [
+              "a",
+              456,
+              445
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 2.022382077569338
+          },
+          {
+            "truth": [
+              "r",
+              745,
+              325
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 2.0863138660421754
+          },
+          {
+            "truth": [
+              "K",
+              870,
+              449
+            ],
+            "prediction": "K",
+            "correct": true,
+            "distance_px": 2.0866099488925163
+          },
+          {
+            "truth": [
+              "P",
+              701,
+              149
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.1614260032637698
+          },
+          {
+            "truth": [
+              "P",
+              695,
+              267
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.1779028792842783
+          },
+          {
+            "truth": [
+              "c",
+              359,
+              558
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 2.260589546669781
+          },
+          {
+            "truth": [
+              "r",
+              358,
+              620
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 2.34165738747616
+          },
+          {
+            "truth": [
+              "n",
+              695,
+              387
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 2.914426886186591
+          },
+          {
+            "truth": [
+              "p",
+              520,
+              154
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 2.97244133028232
+          },
+          {
+            "truth": [
+              "P",
+              694,
+              635
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.9745969433596247
+          },
+          {
+            "truth": [
+              "P",
+              640,
+              389
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 3.312144531257934
+          },
+          {
+            "truth": [
+              "p",
+              521,
+              387
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 3.682729142600608
+          },
+          {
+            "truth": [
+              "B",
+              752,
+              151
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 3.8247439584770158
+          },
+          {
+            "truth": [
+              "B",
+              743,
+              633
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 3.9095430979248103
+          },
+          {
+            "truth": [
+              "R",
+              866,
+              510
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 4.802916213893179
+          },
+          {
+            "truth": [
+              "A",
+              808,
+              385
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 4.885687603191053
+          },
+          {
+            "truth": [
+              "N",
+              805,
+              635
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 7.174369357364752
+          }
+        ]
+      }
+    },
+    {
+      "id": "fixed-01",
+      "backend": "v3 ONNX CPU",
+      "before": {
+        "expected": 32,
+        "detected": 32,
+        "matched": 32,
+        "correctly_identified": 32,
+        "missing": [],
+        "extra_predictions": 0,
+        "details": [
+          {
+            "truth": [
+              "c",
+              468,
+              558
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 0.22131595663205414
+          },
+          {
+            "truth": [
+              "N",
+              879,
+              194
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 0.4707667169169047
+          },
+          {
+            "truth": [
+              "p",
+              532,
+              370
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.5169543573078271
+          },
+          {
+            "truth": [
+              "K",
+              882,
+              384
+            ],
+            "prediction": "K",
+            "correct": true,
+            "distance_px": 0.6671387323146215
+          },
+          {
+            "truth": [
+              "p",
+              534,
+              612
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.7812757152942333
+          },
+          {
+            "truth": [
+              "R",
+              876,
+              136
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 0.8966688168666019
+          },
+          {
+            "truth": [
+              "P",
+              706,
+              247
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 1.0166064726553543
+          },
+          {
+            "truth": [
+              "b",
+              356,
+              488
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.0611617844250965
+          },
+          {
+            "truth": [
+              "n",
+              366,
+              183
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 1.130596462288957
+          },
+          {
+            "truth": [
+              "k",
+              363,
+              379
+            ],
+            "prediction": "k",
+            "correct": true,
+            "distance_px": 1.3795032913844951
+          },
+          {
+            "truth": [
+              "P",
+              709,
+              137
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 1.4276001169262356
+          },
+          {
+            "truth": [
+              "p",
+              537,
+              517
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 1.5127835636802787
+          },
+          {
+            "truth": [
+              "b",
+              362,
+              253
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.6009651881466507
+          },
+          {
+            "truth": [
+              "c",
+              480,
+              191
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 1.601443652473024
+          },
+          {
+            "truth": [
+              "N",
+              881,
+              567
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 1.6192720887402505
+          },
+          {
+            "truth": [
+              "p",
+              534,
+              248
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 1.77961388536599
+          },
+          {
+            "truth": [
+              "P",
+              692,
+              498
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 1.8184127986884493
+          },
+          {
+            "truth": [
+              "a",
+              360,
+              316
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 2.0224453988748046
+          },
+          {
+            "truth": [
+              "A",
+              885,
+              324
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 2.1002616334991626
+          },
+          {
+            "truth": [
+              "B",
+              882,
+              514
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 2.254299339619611
+          },
+          {
+            "truth": [
+              "P",
+              695,
+              615
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.3068846585116507
+          },
+          {
+            "truth": [
+              "C",
+              772,
+              200
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 2.3740765536649713
+          },
+          {
+            "truth": [
+              "p",
+              532,
+              138
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 2.462849762941948
+          },
+          {
+            "truth": [
+              "r",
+              368,
+              131
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 2.780773546196147
+          },
+          {
+            "truth": [
+              "a",
+              360,
+              429
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 2.8722303699275304
+          },
+          {
+            "truth": [
+              "r",
+              356,
+              610
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 3.0199211044820626
+          },
+          {
+            "truth": [
+              "C",
+              761,
+              552
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 3.0358373647774255
+          },
+          {
+            "truth": [
+              "B",
+              886,
+              258
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 3.2948450918373937
+          },
+          {
+            "truth": [
+              "P",
+              695,
+              370
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 3.5545878710018792
+          },
+          {
+            "truth": [
+              "n",
+              355,
+              548
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 3.8253875010859364
+          },
+          {
+            "truth": [
+              "R",
+              875,
+              615
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 4.101920749453305
+          },
+          {
+            "truth": [
+              "A",
+              884,
+              448
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 7.037551583366022
+          }
+        ]
+      },
+      "after": {
+        "expected": 32,
+        "detected": 32,
+        "matched": 32,
+        "correctly_identified": 32,
+        "missing": [],
+        "extra_predictions": 0,
+        "details": [
+          {
+            "truth": [
+              "c",
+              468,
+              558
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 0.22131595663205414
+          },
+          {
+            "truth": [
+              "N",
+              879,
+              194
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 0.4707667169169047
+          },
+          {
+            "truth": [
+              "p",
+              532,
+              370
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.5169543573078271
+          },
+          {
+            "truth": [
+              "K",
+              882,
+              384
+            ],
+            "prediction": "K",
+            "correct": true,
+            "distance_px": 0.6671387323146215
+          },
+          {
+            "truth": [
+              "p",
+              534,
+              612
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 0.7812757152942333
+          },
+          {
+            "truth": [
+              "R",
+              876,
+              136
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 0.8966688168666019
+          },
+          {
+            "truth": [
+              "P",
+              706,
+              247
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 1.0166064726553543
+          },
+          {
+            "truth": [
+              "b",
+              356,
+              488
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.0611617844250965
+          },
+          {
+            "truth": [
+              "n",
+              366,
+              183
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 1.130596462288957
+          },
+          {
+            "truth": [
+              "k",
+              363,
+              379
+            ],
+            "prediction": "k",
+            "correct": true,
+            "distance_px": 1.3795032913844951
+          },
+          {
+            "truth": [
+              "P",
+              709,
+              137
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 1.4276001169262356
+          },
+          {
+            "truth": [
+              "p",
+              537,
+              517
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 1.5127835636802787
+          },
+          {
+            "truth": [
+              "b",
+              362,
+              253
+            ],
+            "prediction": "b",
+            "correct": true,
+            "distance_px": 1.6009651881466507
+          },
+          {
+            "truth": [
+              "c",
+              480,
+              191
+            ],
+            "prediction": "c",
+            "correct": true,
+            "distance_px": 1.601443652473024
+          },
+          {
+            "truth": [
+              "N",
+              881,
+              567
+            ],
+            "prediction": "N",
+            "correct": true,
+            "distance_px": 1.6192720887402505
+          },
+          {
+            "truth": [
+              "p",
+              534,
+              248
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 1.77961388536599
+          },
+          {
+            "truth": [
+              "P",
+              692,
+              498
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 1.8184127986884493
+          },
+          {
+            "truth": [
+              "a",
+              360,
+              316
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 2.0224453988748046
+          },
+          {
+            "truth": [
+              "A",
+              885,
+              324
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 2.1002616334991626
+          },
+          {
+            "truth": [
+              "B",
+              882,
+              514
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 2.254299339619611
+          },
+          {
+            "truth": [
+              "P",
+              695,
+              615
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 2.3068846585116507
+          },
+          {
+            "truth": [
+              "C",
+              772,
+              200
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 2.3740765536649713
+          },
+          {
+            "truth": [
+              "p",
+              532,
+              138
+            ],
+            "prediction": "p",
+            "correct": true,
+            "distance_px": 2.462849762941948
+          },
+          {
+            "truth": [
+              "r",
+              368,
+              131
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 2.780773546196147
+          },
+          {
+            "truth": [
+              "a",
+              360,
+              429
+            ],
+            "prediction": "a",
+            "correct": true,
+            "distance_px": 2.8722303699275304
+          },
+          {
+            "truth": [
+              "r",
+              356,
+              610
+            ],
+            "prediction": "r",
+            "correct": true,
+            "distance_px": 3.0199211044820626
+          },
+          {
+            "truth": [
+              "C",
+              761,
+              552
+            ],
+            "prediction": "C",
+            "correct": true,
+            "distance_px": 3.0358373647774255
+          },
+          {
+            "truth": [
+              "B",
+              886,
+              258
+            ],
+            "prediction": "B",
+            "correct": true,
+            "distance_px": 3.2948450918373937
+          },
+          {
+            "truth": [
+              "P",
+              695,
+              370
+            ],
+            "prediction": "P",
+            "correct": true,
+            "distance_px": 3.5545878710018792
+          },
+          {
+            "truth": [
+              "n",
+              355,
+              548
+            ],
+            "prediction": "n",
+            "correct": true,
+            "distance_px": 3.8253875010859364
+          },
+          {
+            "truth": [
+              "R",
+              875,
+              615
+            ],
+            "prediction": "R",
+            "correct": true,
+            "distance_px": 4.101920749453305
+          },
+          {
+            "truth": [
+              "A",
+              884,
+              448
+            ],
+            "prediction": "A",
+            "correct": true,
+            "distance_px": 7.037551583366022
+          }
+        ]
+      }
+    }
+  ],
+  "recorded_v3_npu_spot_check": {
+    "expected": 32,
+    "detected": 32,
+    "matched": 32,
+    "correctly_identified": 32,
+    "missing": [],
+    "extra_predictions": 0,
+    "details": [
+      {
+        "truth": [
+          "c",
+          805,
+          206
+        ],
+        "prediction": "c",
+        "correct": true,
+        "distance_px": 0.05879723586220491
+      },
+      {
+        "truth": [
+          "p",
+          574,
+          506
+        ],
+        "prediction": "p",
+        "correct": true,
+        "distance_px": 0.49740426571347013
+      },
+      {
+        "truth": [
+          "p",
+          522,
+          270
+        ],
+        "prediction": "p",
+        "correct": true,
+        "distance_px": 0.5425401946058882
+      },
+      {
+        "truth": [
+          "A",
+          757,
+          445
+        ],
+        "prediction": "A",
+        "correct": true,
+        "distance_px": 0.6222891134606702
+      },
+      {
+        "truth": [
+          "C",
+          759,
+          388
+        ],
+        "prediction": "C",
+        "correct": true,
+        "distance_px": 0.6598954242048397
+      },
+      {
+        "truth": [
+          "P",
+          690,
+          506
+        ],
+        "prediction": "P",
+        "correct": true,
+        "distance_px": 0.7881120888498551
+      },
+      {
+        "truth": [
+          "p",
+          581,
+          630
+        ],
+        "prediction": "p",
+        "correct": true,
+        "distance_px": 0.793205829582554
+      },
+      {
+        "truth": [
+          "R",
+          420,
+          508
+        ],
+        "prediction": "R",
+        "correct": true,
+        "distance_px": 0.7967976387278335
+      },
+      {
+        "truth": [
+          "b",
+          355,
+          495
+        ],
+        "prediction": "b",
+        "correct": true,
+        "distance_px": 1.180035091397818
+      },
+      {
+        "truth": [
+          "k",
+          413,
+          385
+        ],
+        "prediction": "k",
+        "correct": true,
+        "distance_px": 1.3815340589512766
+      },
+      {
+        "truth": [
+          "n",
+          576,
+          571
+        ],
+        "prediction": "n",
+        "correct": true,
+        "distance_px": 1.407088545778348
+      },
+      {
+        "truth": [
+          "C",
+          581,
+          326
+        ],
+        "prediction": "C",
+        "correct": true,
+        "distance_px": 1.4104144156838685
+      },
+      {
+        "truth": [
+          "b",
+          462,
+          139
+        ],
+        "prediction": "b",
+        "correct": true,
+        "distance_px": 1.5166515310614106
+      },
+      {
+        "truth": [
+          "a",
+          465,
+          321
+        ],
+        "prediction": "a",
+        "correct": true,
+        "distance_px": 1.9067914079806936
+      },
+      {
+        "truth": [
+          "a",
+          456,
+          445
+        ],
+        "prediction": "a",
+        "correct": true,
+        "distance_px": 2.0151279713844388
+      },
+      {
+        "truth": [
+          "r",
+          358,
+          620
+        ],
+        "prediction": "r",
+        "correct": true,
+        "distance_px": 2.031783656211083
+      },
+      {
+        "truth": [
+          "N",
+          808,
+          328
+        ],
+        "prediction": "N",
+        "correct": true,
+        "distance_px": 2.0662414273947722
+      },
+      {
+        "truth": [
+          "P",
+          701,
+          149
+        ],
+        "prediction": "P",
+        "correct": true,
+        "distance_px": 2.1054467858826813
+      },
+      {
+        "truth": [
+          "P",
+          695,
+          267
+        ],
+        "prediction": "P",
+        "correct": true,
+        "distance_px": 2.1856139526814093
+      },
+      {
+        "truth": [
+          "c",
+          359,
+          558
+        ],
+        "prediction": "c",
+        "correct": true,
+        "distance_px": 2.2158562996872164
+      },
+      {
+        "truth": [
+          "r",
+          745,
+          325
+        ],
+        "prediction": "r",
+        "correct": true,
+        "distance_px": 2.3349667299172703
+      },
+      {
+        "truth": [
+          "K",
+          870,
+          449
+        ],
+        "prediction": "K",
+        "correct": true,
+        "distance_px": 2.4089166400234845
+      },
+      {
+        "truth": [
+          "p",
+          520,
+          154
+        ],
+        "prediction": "p",
+        "correct": true,
+        "distance_px": 2.8005807887289254
+      },
+      {
+        "truth": [
+          "n",
+          695,
+          387
+        ],
+        "prediction": "n",
+        "correct": true,
+        "distance_px": 2.9098142403495975
+      },
+      {
+        "truth": [
+          "P",
+          694,
+          635
+        ],
+        "prediction": "P",
+        "correct": true,
+        "distance_px": 2.9929529379532855
+      },
+      {
+        "truth": [
+          "B",
+          752,
+          151
+        ],
+        "prediction": "B",
+        "correct": true,
+        "distance_px": 3.210903249394054
+      },
+      {
+        "truth": [
+          "P",
+          640,
+          389
+        ],
+        "prediction": "P",
+        "correct": true,
+        "distance_px": 3.5729540846545174
+      },
+      {
+        "truth": [
+          "p",
+          521,
+          387
+        ],
+        "prediction": "p",
+        "correct": true,
+        "distance_px": 3.8570061380799463
+      },
+      {
+        "truth": [
+          "B",
+          743,
+          633
+        ],
+        "prediction": "B",
+        "correct": true,
+        "distance_px": 3.9340593571640747
+      },
+      {
+        "truth": [
+          "R",
+          866,
+          510
+        ],
+        "prediction": "R",
+        "correct": true,
+        "distance_px": 4.429199072737701
+      },
+      {
+        "truth": [
+          "A",
+          808,
+          385
+        ],
+        "prediction": "A",
+        "correct": true,
+        "distance_px": 4.807769277113545
+      },
+      {
+        "truth": [
+          "N",
+          805,
+          635
+        ],
+        "prediction": "N",
+        "correct": true,
+        "distance_px": 7.460126297620092
+      }
+    ]
+  },
+  "limitations": [
+    "Only 64 visually reviewed pieces in two saved scenes; no bounding-box mAP.",
+    "CPU inference uses the supplied floating-point ONNX, not the RV1106 INT8 runtime.",
+    "Recorded NPU tensors verify host processing and do not validate a new NPU execution."
+  ]
+}
