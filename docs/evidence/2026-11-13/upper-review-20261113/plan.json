@@ -5,7 +5,7 @@
   "timezone": "Asia/Shanghai",
   "baseline_commit": "2ce033d",
   "status": "active",
-  "current_stage": "geometry",
+  "current_stage": "vision",
   "scope": [
     "app",
     "vision",
@@ -38,12 +38,12 @@
     {
       "id": "vision",
       "task": "视觉/NPU命名、参数及顺序接口审查",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "geometry",
       "task": "标定、定位、90点与棋子分配的输入输出接口和固定棋盘路径",
-      "status": "in_progress"
+      "status": "complete"
     },
     {
       "id": "chess",
@@ -89,6 +89,11 @@
       "title": "棋盘定位按图像步骤展开",
       "record": "round-03.json",
       "checks": "all outputs identical"
+    },
+    {
+      "round": 4,
+      "title": "固定棋盘的90点缓存与识别接口",
+      "record": "round-04.json"
     }
   ],
   "known_limits": [
