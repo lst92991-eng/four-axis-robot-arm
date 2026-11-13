@@ -28,14 +28,9 @@ void Session_observe(Session &session, const std::string &frameId, const std::ve
 {
     session.lastFrameId = frameId;
     Observation current, stable;
-    FixedBoard_assign(session.layout, frameId, pieces, sceneClear, current);
+    assignPieces(session.layout.grid, frameId, pieces, sceneClear, current);
     session.stable.update(current, stable);
     chessObservation(stable, session.observed);
-}
-
-bool Session_acceptHuman(Session &session, const std::vector<std::string> &legal, chess::Move &move)
-{
-    return chess::Game_acceptHuman(session.game, session.observed, legal, move);
 }
 
 bool Session_plan(Session &session, const std::string &choice, const std::vector<std::string> &legal)

@@ -24,7 +24,6 @@ struct Session
 void chessObservation(const Observation &source, chess::Observation &result);
 void Session_observe(Session &session, const std::string &frameId, const std::vector<Detection> &pieces,
                      bool sceneClear);
-bool Session_acceptHuman(Session &session, const std::vector<std::string> &legal, chess::Move &move);
 bool Session_plan(Session &session, const std::string &choice, const std::vector<std::string> &legal);
 bool Session_confirm(Session &session, bool armSucceeded);
 // 操作员确认棋子全部复位、吸头空并已停回观察位后使用；完整历史保留。

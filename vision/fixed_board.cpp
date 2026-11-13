@@ -18,12 +18,6 @@ bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixe
     return mappedCount > 0;
 }
 
-void FixedBoard_assign(FixedBoard &fixed, const std::string &frameId, const std::vector<Detection> &pieces,
-                       bool sceneClear, Observation &observation)
-{
-    assignPieces(fixed.grid, frameId, pieces, sceneClear, observation);
-}
-
 bool FixedBoard_target(const FixedBoard &fixed, int column, int row, cv::Point2d &baseMm)
 {
     baseMm = {};

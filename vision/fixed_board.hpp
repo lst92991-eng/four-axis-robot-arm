@@ -12,7 +12,5 @@ struct FixedBoard
 };
 
 bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixed);
-void FixedBoard_assign(FixedBoard &fixed, const std::string &frameId, const std::vector<Detection> &pieces,
-                       bool sceneClear, Observation &observation);
 bool FixedBoard_target(const FixedBoard &fixed, int column, int row, cv::Point2d &baseMm);
 } // namespace scara

@@ -107,7 +107,7 @@ void Match_human(Session &session, const std::vector<std::string> &legal)
         if (finishCommand(session, command)) return;
         if (command != Command::Ready && command != Command::Retry) continue;
         observe(session);
-        if (Session_acceptHuman(session, legal, move)) return;
+        if (chess::Game_acceptHuman(session.game, session.observed, legal, move)) return;
         Match_report("human_rejected", session);
     }
     throw std::runtime_error("对局已停止");

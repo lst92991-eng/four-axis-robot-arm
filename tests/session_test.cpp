@@ -61,7 +61,8 @@ int main()
         chess::parseMove("a6a5", human);
         chess::applyMove(session.game.board, false, human, afterHuman, error);
         observe(session, afterHuman);
-        check(scara::Session_acceptHuman(session, {"a6a5"}, human) && session.game.history == "a3a4 a6a5",
+        check(chess::Game_acceptHuman(session.game, session.observed, {"a6a5"}, human) &&
+                  session.game.history == "a3a4 a6a5",
               "Human response did not preserve full history");
 
         chess::Board capture;
