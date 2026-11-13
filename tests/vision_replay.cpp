@@ -30,7 +30,7 @@ int main(int argc, char **argv)
       cv::Rect region = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
       scara::Vision_setup(source.size(),region);
       cv::Mat input;
-      if (!scara::Vision_prepare(source,input)) throw std::runtime_error("Preparation failed");
+      scara::Vision_prepare(source,input);
       scara::writeBytes(prefix+".rgb", {reinterpret_cast<const char *>(input.data), input.total()*input.elemSize()});
       std::vector<scara::Detection> detections;
       double decodeMs = 0;

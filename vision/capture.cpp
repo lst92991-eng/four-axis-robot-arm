@@ -3,6 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include <stdexcept>
 
 namespace scara
 {
@@ -36,25 +37,24 @@ static void receiveFrames()
     Ready.notify_all();
 }
 
-bool Camera_open(const std::string &source)
+void Camera_open(const std::string &source)
 {
     Camera_close();
     if (!Video.open(source, cv::CAP_FFMPEG,
                     {cv::CAP_PROP_OPEN_TIMEOUT_MSEC, 5000, cv::CAP_PROP_READ_TIMEOUT_MSEC, 5000}))
-        return false;
+        throw std::runtime_error("Cannot open camera stream");
     Running = true;
     Reader = std::thread(receiveFrames);
-    return true;
 }
 
-bool Camera_read(cv::Mat &frame)
+void Camera_read(cv::Mat &frame)
 {
     std::unique_lock<std::mutex> lock(Mutex);
     Latest.release();
     while (Running && Latest.empty())
         Ready.wait(lock);
     frame = Latest;
-    return !frame.empty();
+    if (frame.empty()) throw std::runtime_error("Camera stream ended");
 }
 
 void Camera_close()

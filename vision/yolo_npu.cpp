@@ -1,6 +1,7 @@
 #include "yolo.hpp"
 #include <rknn_api.h>
 #include <cstring>
+#include <stdexcept>
 
 namespace scara
 {
@@ -13,48 +14,50 @@ static struct
     YoloHead heads[YoloHeads];
 } Model;
 
-bool Yolo_open(std::string path)
+void Yolo_open(std::string path)
 {
     Yolo_close();
-    if (rknn_init(&Model.context, path.data(), 0, 0, nullptr) != 0) return false;
+    if (rknn_init(&Model.context, path.data(), 0, 0, nullptr) != 0)
+        throw std::runtime_error("NPU initialization failed");
     for (int i = 0; i < 4; ++i)
     {
         rknn_tensor_attr &attr = Model.attr[i];
         attr.index = i ? i - 1 : 0;
         rknn_query_cmd query = i ? RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR : RKNN_QUERY_NATIVE_INPUT_ATTR;
-        if (rknn_query(Model.context, query, &attr, sizeof(attr)) != 0) return false;
+        if (rknn_query(Model.context, query, &attr, sizeof(attr)) != 0)
+            throw std::runtime_error("NPU initialization failed");
         int width = i ? YoloGrid[i - 1] : YoloSize;
         int channels = i ? YoloChannels : 3;
         size_t rowWidth = attr.w_stride ? attr.w_stride : width;
         if (attr.n_dims != 4 || attr.dims[0] != 1 || attr.dims[1] != unsigned(width) ||
             attr.dims[2] != unsigned(width) || attr.dims[3] != unsigned(channels) || attr.fmt != RKNN_TENSOR_NHWC ||
             rowWidth < unsigned(width) || ((width - 1) * rowWidth + width) * channels > attr.size_with_stride)
-            return false;
-        if (i && (attr.type != RKNN_TENSOR_INT8 || !(attr.scale > 0))) return false;
+            throw std::runtime_error("NPU initialization failed");
+        if (i && (attr.type != RKNN_TENSOR_INT8 || !(attr.scale > 0)))
+            throw std::runtime_error("NPU initialization failed");
         attr.type = i ? RKNN_TENSOR_INT8 : RKNN_TENSOR_UINT8;
         attr.pass_through = 0;
         Model.memory[i] = rknn_create_mem(Model.context, attr.size_with_stride);
         rknn_tensor_mem *memory = Model.memory[i];
-        if (!memory || !memory->virt_addr || memory->size < attr.size_with_stride) return false;
+        if (!memory || !memory->virt_addr || memory->size < attr.size_with_stride)
+            throw std::runtime_error("NPU initialization failed");
         std::memset(memory->virt_addr, 0, memory->size);
-        if (rknn_set_io_mem(Model.context, memory, &attr) != 0) return false;
+        if (rknn_set_io_mem(Model.context, memory, &attr) != 0) throw std::runtime_error("NPU initialization failed");
         if (i)
             Model.heads[i - 1] = {static_cast<const int8_t *>(memory->virt_addr), rowWidth * YoloChannels, attr.zp,
                                   attr.scale};
     }
-    return true;
 }
 
-bool Yolo_run(const cv::Mat &rgb, YoloHead heads[YoloHeads])
+void Yolo_run(const cv::Mat &rgb, YoloHead heads[YoloHeads])
 {
     uint8_t *input = static_cast<uint8_t *>(Model.memory[0]->virt_addr);
     size_t rowBytes = (Model.attr[0].w_stride ? Model.attr[0].w_stride : YoloSize) * 3;
     for (int row = 0; row < YoloSize; ++row)
         std::memcpy(input + row * rowBytes, rgb.ptr<uint8_t>(row), YoloSize * 3);
-    if (rknn_run(Model.context, nullptr) != 0) return false;
+    if (rknn_run(Model.context, nullptr) != 0) throw std::runtime_error("NPU inference failed");
     for (int i = 0; i < YoloHeads; ++i)
         heads[i] = Model.heads[i]; // 复制地址和格式描述，不复制整块输出数据。
-    return true;
 }
 
 void Yolo_close()

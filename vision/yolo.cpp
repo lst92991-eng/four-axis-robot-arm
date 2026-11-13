@@ -1,6 +1,7 @@
 #include "yolo.hpp"
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
+#include <stdexcept>
 
 namespace scara
 {
@@ -73,15 +74,14 @@ void Vision_setup(cv::Size frameSize, cv::Rect roi)
     InputArea = {(YoloSize - resized.width) / 2, (YoloSize - resized.height) / 2, resized.width, resized.height};
 }
 
-bool Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
+void Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
 {
-    if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) return false;
+    if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) throw std::runtime_error("Unexpected camera frame");
     cv::Mat rgb;
     cv::cvtColor(bgr(Roi), rgb, cv::COLOR_BGR2RGB);
     input = cv::Mat(YoloSize, YoloSize, CV_8UC3, cv::Scalar::all(114));
     cv::Mat picture = input(InputArea);
     cv::resize(rgb, picture, InputArea.size(), 0, 0, cv::INTER_LINEAR);
-    return true;
 }
 
 void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &boxes)

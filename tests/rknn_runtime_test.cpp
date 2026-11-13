@@ -20,13 +20,20 @@ void check(bool value, const char *message)
 {
   if (!value) throw std::runtime_error(message);
 }
+
+bool openFailed()
+{
+  try { scara::Yolo_open("mock.rknn"); }
+  catch (const std::runtime_error&) { return true; }
+  return false;
+}
 }
 
 extern "C" {
 int rknn_init(rknn_context *context, void *, uint32_t, uint32_t, rknn_init_extend *)
 {
 #ifdef RKNN_MOCK_ENTRY
-  std::cerr << "TEST ONLY: simulated RKNN ABI, empty model outputs\n";
+  std::cerr << "TEST ONLY: simulated RKNN ABI, one synthetic detection\n";
   const char *failure = std::getenv("SCARA_MOCK_FAILURE");
   if (failure)
   {
@@ -107,11 +114,9 @@ int rknn_run(rknn_context, rknn_run_extend *)
   }
 #endif
   for (auto *output : outputs) std::memset(output->virt_addr, 128, output->size);
-#ifndef RKNN_MOCK_ENTRY
   auto *p = static_cast<int8_t *>(outputs[0]->virt_addr)+(20*82+20)*57;
   p[0] = p[1] = p[2] = p[3] = 0;
   p[4] = p[5+12] = 127;
-#endif
 #ifdef RKNN_MOCK_ENTRY
   // 测试驱动自行结束连续程序，产品入口不再保留运行N帧的分支。
   if (runs==3) std::raise(SIGINT);
@@ -144,49 +149,51 @@ int main()
   {
     for (failAt=1; failAt<=4; ++failAt)
     {
-      bool opened = scara::Yolo_open("mock.rknn");
+      bool failed = openFailed();
       scara::Yolo_close();
-      check(!opened && !contextOpen && !alive, "Partial allocation leaked resources");
+      check(failed && !contextOpen && !alive, "Partial allocation leaked resources");
     }
     failAt = 0;
     for (int command : {RKNN_QUERY_NATIVE_INPUT_ATTR, RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR})
     {
       failQuery = command;
-      bool opened = scara::Yolo_open("mock.rknn");
+      bool failed = openFailed();
       scara::Yolo_close();
-      check(!opened && !contextOpen && !alive, "Query failure was accepted or leaked resources");
+      check(failed && !contextOpen && !alive, "Query failure was accepted or leaked resources");
     }
     failQuery = -1;
     for (failBind=1; failBind<=4; ++failBind)
     {
-      bool opened = scara::Yolo_open("mock.rknn");
+      bool failed = openFailed();
       scara::Yolo_close();
-      check(!opened && !contextOpen && !alive, "Binding failure was accepted or leaked resources");
+      check(failed && !contextOpen && !alive, "Binding failure was accepted or leaked resources");
     }
     failBind = 0;
     badOutput = true;
-    bool opened = scara::Yolo_open("mock.rknn");
+    bool failed = openFailed();
     scara::Yolo_close();
-    check(!opened && !contextOpen && !alive, "Unsupported output was accepted or leaked resources");
+    check(failed && !contextOpen && !alive, "Unsupported output was accepted or leaked resources");
     badOutput = false;
-    check(scara::Yolo_open("mock.rknn"), "Cannot open test model");
-    check(scara::Yolo_open("mock.rknn"), "Cannot reopen test model");
+    scara::Yolo_open("mock.rknn");
+    scara::Yolo_open("mock.rknn");
     check(contextOpen && alive==4, "Reopening the fixed model leaked its previous buffers");
     cv::Mat storage(648,656,CV_8UC3,cv::Scalar(99,88,77));
     cv::Mat rgb = storage(cv::Rect(3,4,640,640));
     rgb.setTo(cv::Scalar(11,22,33));
     check(!rgb.isContinuous(), "Stride test unexpectedly used tightly packed source rows");
     scara::YoloHead heads[scara::YoloHeads];
-    check(scara::Yolo_run(rgb,heads), "Inference unexpectedly failed");
+    scara::Yolo_run(rgb,heads);
     scara::Vision_setup({640,640},{0,0,640,640});
     std::vector<scara::Detection> pieces;
     scara::Vision_decode(heads,pieces);
     check(pieces.size()==1 && pieces[0].classId==12, "Native padded output was decoded incorrectly");
     failRun = true;
-    bool failed = !scara::Yolo_run(rgb,heads);
+    failed = false;
+    try { scara::Yolo_run(rgb,heads); }
+    catch (const std::runtime_error&) { failed = true; }
     scara::Yolo_close();
     check(failed && !contextOpen && !alive, "Inference failure cleanup failed");
-    std::cout << "PASS RKNN input/output strides, result codes and failure cleanup; simulated ABI\n";
+    std::cout << "PASS RKNN input/output strides, failure propagation and cleanup; simulated ABI\n";
     return 0;
   }
   catch (const std::exception& e)

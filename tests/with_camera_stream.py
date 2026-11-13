@@ -56,12 +56,14 @@ def main():
                    'output/vision-stage-verify/entry.jpg']
     try:
         if args.entry:
-            for labels in ('missing-labels.png','tests/fixtures/camera/0.jpg'):
+            # The teaching entry assumes the bundled atlas. Exercise actual draw
+            # failure after inference, rather than its removed startup size gate.
+            for labels in ('missing-labels.png','tests/fixtures/vision/tiny-labels.pgm'):
                 invalid = command.copy()
                 invalid[3] = labels
                 result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
-                if result.returncode!=1 or 'TEST ONLY' in result.stderr:
-                    raise RuntimeError('Invalid label image opened the NPU or was accepted: '+result.stderr)
+                if result.returncode!=1 or 'TEST cleanup: allocations=0 runs=1' not in result.stdout:
+                    raise RuntimeError('Label drawing failure did not release resources: '+result.stderr+result.stdout)
             unavailable = command.copy()
             unavailable[2] = url+'/not-a-stream'
             result = subprocess.run(unavailable,cwd=ROOT,capture_output=True,text=True,timeout=15)

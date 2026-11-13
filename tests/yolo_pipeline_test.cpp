@@ -26,7 +26,7 @@ void sameInput(const cv::Mat& source, cv::Rect roi, const std::string& expected)
 {
   scara::Vision_setup(source.size(),roi);
   cv::Mat input;
-  check(scara::Vision_prepare(source,input), "Preparation failed");
+  scara::Vision_prepare(source,input);
   cv::Mat rgb;
   cv::cvtColor(image(expected), rgb, cv::COLOR_BGR2RGB);
   check(cv::norm(input, rgb, cv::NORM_INF)==0, "Preprocessing differs from the verified Python path");
@@ -138,41 +138,50 @@ int main(int argc, char **argv)
     check(argc==2, "Camera test needs the local stream fixture");
     for (int i=0; i<2; ++i)
     {
-      check(scara::Camera_open(argv[1]), "Cannot open test stream");
+      scara::Camera_open(argv[1]);
       std::this_thread::sleep_for(std::chrono::milliseconds(300));
       cv::Mat first, next, resumed;
-      check(scara::Camera_read(first), "Missing first frame");
+      scara::Camera_read(first);
       auto saved = first.clone();
-      check(scara::Camera_read(next), "Missing next frame");
+      scara::Camera_read(next);
       check(first.size()==source.size() && next.size()==source.size(), "Camera frame size changed");
       check(cv::norm(first,next,cv::NORM_INF)>10, "Camera returned a cached frame again");
       std::this_thread::sleep_for(std::chrono::milliseconds(1200));
-      check(scara::Camera_read(resumed) && resumed.size()==source.size(), "Camera did not resume with a new frame");
+      scara::Camera_read(resumed);
+      check(resumed.size()==source.size(), "Camera did not resume with a new frame");
       check(cv::norm(first,saved,cv::NORM_INF)==0, "Background capture modified a frame still held by the caller");
       scara::Camera_close();
     }
-    check(scara::Camera_open(std::string(argv[1])+"/finite"), "Cannot open finite stream");
+    scara::Camera_open(std::string(argv[1])+"/finite");
     cv::Mat frame;
     bool ended = false;
-    for (int i=0; i<20 && !ended; ++i)
+    try
     {
-      ended = !scara::Camera_read(frame);
+      for (int i=0; i<20; ++i) scara::Camera_read(frame);
     }
+    catch (const std::runtime_error&) { ended = true; }
     scara::Camera_close();
     check(ended && frame.empty(), "End of stream did not clear the output frame");
-    check(scara::Camera_open(std::string(argv[1])+"/stall"), "Cannot open stalled stream");
+    scara::Camera_open(std::string(argv[1])+"/stall");
     auto waiting = std::chrono::steady_clock::now();
     ended = false;
-    for (int i=0; i<20 && !ended; ++i) ended = !scara::Camera_read(frame);
+    try
+    {
+      for (int i=0; i<20; ++i) scara::Camera_read(frame);
+    }
+    catch (const std::runtime_error&) { ended = true; }
     double waitSeconds = std::chrono::duration<double>(std::chrono::steady_clock::now()-waiting).count();
     scara::Camera_close();
-    check(ended && waitSeconds<8, "Stalled stream left the consumer waiting indefinitely");
+    check(ended && frame.empty() && waitSeconds<8, "Stalled stream left the consumer waiting indefinitely");
     std::cout << "camera_stall_wait_s=" << waitSeconds << '\n';
-    check(scara::Camera_open(argv[1]), "Cannot reopen stream");
-    check(scara::Camera_read(frame) && frame.size()==source.size(), "Camera retained an old failure after reopening");
+    scara::Camera_open(argv[1]);
+    scara::Camera_read(frame);
+    check(frame.size()==source.size(), "Camera retained an old failure after reopening");
     scara::Camera_close();
     cv::Mat badInput;
-    bool rejected = !scara::Vision_prepare(source(cv::Rect(0,0,320,240)),badInput);
+    bool rejected = false;
+    try { scara::Vision_prepare(source(cv::Rect(0,0,320,240)),badInput); }
+    catch (const std::runtime_error&) { rejected = true; }
     check(rejected, "Unexpected camera size was accepted");
     std::cout << "PASS preprocessing byte equality, " << pieces.size()
               << " recorded NPU detections, max box difference " << maximum

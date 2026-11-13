@@ -38,19 +38,19 @@ struct YoloHead
 //---------图像处理接口区---------
 // 启动时设置一次已选定的有效图像几何；正常循环只处理同一相机和裁剪区域。
 void Vision_setup(cv::Size frameSize = {1280, 720}, cv::Rect roi = {300, 70, 650, 600});
-// 输出参数放在末尾；返回 false 时不要继续使用本次输出。
-bool Vision_prepare(const cv::Mat &bgr, cv::Mat &rgb640);
-// heads 来自成功的 Yolo_run；离线文件读取入口负责检查自己的数据边界和格式。
+// 输出参数放在末尾；实际失败直接交给主入口的统一异常出口。
+void Vision_prepare(const cv::Mat &bgr, cv::Mat &rgb640);
+// heads 来自完成的 Yolo_run；离线文件读取入口负责检查自己的数据边界和格式。
 void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &pieces);
-// 复制原图后绘制。检测来自 Vision_decode，字图在载入时核对尺寸并转换为灰度。
+// 复制原图后绘制。检测来自 Vision_decode，字图使用随程序提供的 64×336 灰度图。
 void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces, const cv::Mat &chineseLabels,
                  cv::Mat &preview);
 
 //---------NPU接口区---------
 // 模块内只保存一个模型。主流程统一调用 Yolo_close，包括打开或运行失败时。
-bool Yolo_open(std::string modelPath);
+void Yolo_open(std::string modelPath);
 // 先成功打开模型，输入来自 Vision_prepare；成功时填写三路输出描述。
-// 返回 true 后方可读取 heads，描述中的数据在下一次推理或关闭前有效。
-bool Yolo_run(const cv::Mat &rgb640, YoloHead heads[YoloHeads]);
+// 正常返回后方可读取 heads，描述中的数据在下一次推理或关闭前有效。
+void Yolo_run(const cv::Mat &rgb640, YoloHead heads[YoloHeads]);
 void Yolo_close();
 } // namespace scara
