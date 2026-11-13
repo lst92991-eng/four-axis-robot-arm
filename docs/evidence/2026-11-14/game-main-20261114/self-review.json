@@ -1,0 +1,41 @@
+{
+  "baseline_commit": "52058b5",
+  "core_before_nloc": 1800,
+  "current_cpp_nloc": 2472,
+  "main_scenarios": 15,
+  "ctest_suites": 17,
+  "python_existing_checks": 60,
+  "findings": [
+    {
+      "issue": "搜索与相机/NPU并行增加内存及fork线程风险",
+      "resolution": "先关视觉，再查询并回收引擎，之后重新观察"
+    },
+    {
+      "issue": "成功回执不等于实际落子正确",
+      "resolution": "重新取三帧，expected吻合才提交；错盘面进入恢复"
+    },
+    {
+      "issue": "restored但未复位时可能落入普通确认",
+      "resolution": "复位失败留在恢复循环，程序级场景拒绝悄悄提交"
+    },
+    {
+      "issue": "取消请求发布失败不能声称已发停止",
+      "resolution": "明确区分写出成功/失败，停稳仍由执行器确认"
+    },
+    {
+      "issue": "Windows测试execl与CRT冲突",
+      "resolution": "仅给测试替身独立名称，生产POSIX实现不变"
+    },
+    {
+      "issue": "复杂重复局面不应显示为已结束/自动判和",
+      "resolution": "main使用review_required出口，并以两次合法马步循环测试"
+    }
+  ],
+  "hardware_actions": false,
+  "limits": [
+    "SPI-CAN/H桥执行器未实现；通过文件请求/回执，未伪造真实成功",
+    "新主程序未在真实RV1106运行",
+    "仿真是场景夹具，不是棋力或真实模型验收",
+    "支持进程内人工恢复，不支持进程重启后自动续局"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "objective": "补齐完整C++对弈主程序，硬件执行与实机验证由用户后续推进；用同一主循环的仿真后端完成离线闭环。",
+  "started_utc": "2026-11-13T16:48:20.632548+00:00",
+  "baseline_commit": "52058b5",
+  "baseline_cpp_nloc": 1800,
+  "status": "active",
+  "design": [
+    "主循环明确区分玩家回合与机器人回合",
+    "实际相机/NPU与Pikafish分时使用，保留原视觉接口与参数",
+    "启动和玩家落子用回车确认手已移开；新棋局先展示识别结果再确认",
+    "动作请求带唯一编号，收到已停止的完成/失败回执后才重新观察",
+    "相机复核成功才提交历史；失败只观察或显式复位，不盲目重发",
+    "结束取放后回到已示教观察位，避免小臂遮挡棋盘",
+    "同一main与业务代码链接实机IO或公开仿真IO，全部自有CPP计数"
+  ],
+  "scope_limits": [
+    "本轮不实现SPI-CAN和H桥电平驱动",
+    "不触发实机动作、不连接RV1106",
+    "不伪造观察位、吃子区或机械参考",
+    "仿真引擎走法来自明确夹具，不冒充真实Pikafish整局验收"
+  ],
+  "stages": [
+    {
+      "name": "main_and_configuration",
+      "status": "complete"
+    },
+    {
+      "name": "execution_interface",
+      "status": "complete"
+    },
+    {
+      "name": "live_and_simulated_io",
+      "status": "complete"
+    },
+    {
+      "name": "failure_and_multiturn_tests",
+      "status": "complete"
+    },
+    {
+      "name": "regression_and_source_delivery",
+      "status": "in_progress"
+    }
+  ],
+  "validated_snapshot": "round-02"
+}

@@ -26,6 +26,7 @@ void chessObservation(const Observation &source, chess::Observation &result)
 void Session_observe(Session &session, const std::string &frameId, const std::vector<Detection> &pieces,
                      bool sceneClear)
 {
+    session.lastFrameId = frameId;
     Observation current, stable;
     FixedBoard_assign(session.layout, frameId, pieces, sceneClear, current);
     session.stable.update(current, stable);
@@ -71,5 +72,21 @@ bool Session_confirm(Session &session, bool armSucceeded)
     bool confirmed = chess::Game_confirmRobot(session.game, session.observed, armSucceeded);
     if (confirmed) session.steps.clear();
     return confirmed;
+}
+
+bool Session_restore(Session &session)
+{
+    if (!session.game.pending || !session.observed.valid || session.observed.board != session.game.board)
+    {
+        session.game.error = "复位盘面还未与上一步已确认盘面一致";
+        return false;
+    }
+    session.game.pending = false;
+    session.game.pendingMove = {};
+    session.game.expected = session.game.board;
+    session.game.error.clear();
+    session.steps.clear();
+    session.stable.reset();
+    return true;
 }
 } // namespace scara

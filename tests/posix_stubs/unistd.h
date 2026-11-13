@@ -8,9 +8,11 @@ using ssize_t = std::ptrdiff_t;
 #define SIGKILL 9
 #endif
 #define _exit scara_test_exit
+#define execl scara_test_execl
 extern "C" {
 int fork();
 int close(int);
+ssize_t read(int, void *, size_t);
 int chdir(const char *);
 int dup2(int, int);
 int execl(const char *, const char *, ...);

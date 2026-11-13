@@ -1,0 +1,15 @@
+{
+  "layout_file": "site/layout.json",
+  "arm_file": "site/arm-registration.json",
+  "heights_file": "site/trial-plan.json",
+  "camera_url": "rtsp://127.0.0.1/live/0",
+  "label_image": "vision/chinese-labels.png",
+  "engine_directory": "../engine/pikafish-2023-03-05",
+  "work_directory": "/tmp/scara-game",
+  "human_red": 1,
+  "red_to_move": 1,
+  "think_ms": 1000,
+  "park_joints_deg": [null, null],
+  "capture_place_mm": [null, null],
+  "note": "填入真实观察位J2反馈角/J3电机角和吃子区基座XY；null不是零位，不可直接作为实机配置。"
+}

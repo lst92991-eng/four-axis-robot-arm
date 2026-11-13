@@ -14,6 +14,7 @@ struct Session
     ArmGeometry arm;
     WorkHeights heights;
     chess::Observation observed;
+    std::string lastFrameId; // 最近一次识别编号，用于状态显示；固定XY不依赖它。
     std::vector<PickStep> steps;
     bool capturePlaceTaught = false;
     cv::Point2d capturePlaceMm;
@@ -26,4 +27,6 @@ void Session_observe(Session &session, const std::string &frameId, const std::ve
 bool Session_acceptHuman(Session &session, const std::vector<std::string> &legal, chess::Move &move);
 bool Session_plan(Session &session, const std::string &choice, const std::vector<std::string> &legal);
 bool Session_confirm(Session &session, bool armSucceeded);
+// 操作员确认棋子全部复位、吸头空并已停回观察位后使用；完整历史保留。
+bool Session_restore(Session &session);
 } // namespace scara
