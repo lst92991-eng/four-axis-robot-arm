@@ -21,7 +21,7 @@ bool Session_plan(Session &session, const std::string &choice, const std::vector
 {
     chess::Game preparedGame = session.game;
     chess::Move move;
-    TargetXY source, destination;
+    cv::Point2d source, destination;
     std::vector<PickStep> prepared, moving;
     bool ready = chess::Game_prepareRobot(preparedGame, session.observed, choice, legal, move);
     if (ready)
@@ -33,9 +33,9 @@ bool Session_plan(Session &session, const std::string &choice, const std::vector
         ready = sourceMapped && destinationMapped;
         bool capture = session.game.board[move.toRow][move.toCol] != '.';
         if (ready && capture)
-            ready = session.capturePlaceTaught && Pick_plan(session.arm, session.heights, destination.baseMm,
-                                                            session.capturePlaceMm, false, prepared);
-        if (ready) ready = Pick_plan(session.arm, session.heights, source.baseMm, destination.baseMm, false, moving);
+            ready = session.capturePlaceTaught &&
+                    Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
+        if (ready) ready = Pick_plan(session.arm, session.heights, source, destination, false, moving);
     }
     if (ready)
     {

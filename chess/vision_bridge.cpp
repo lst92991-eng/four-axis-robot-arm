@@ -30,19 +30,4 @@ void chessObservation(const Board &grid, const Observation &source, bool stable,
     result.stable = stable && result.complete;
 }
 
-bool chessMoveTargets(const PlaneMap &plane, const Board &grid, const chess::Move &move,
-                      const std::string &currentFrameId, ChessMoveTargets &targets)
-{
-    targets = {};
-    std::string moveText;
-    bool moveValid = chess::uci(move, moveText);
-    if (moveValid == false) return false;
-    TargetXY from, to;
-    bool fromValid = gridTarget(plane, grid, move.fromCol, Rows - 1 - move.fromRow, currentFrameId, from);
-    bool toValid = gridTarget(plane, grid, move.toCol, Rows - 1 - move.toRow, currentFrameId, to);
-    if (!fromValid || !toValid) return false;
-    targets.from = from;
-    targets.to = to;
-    return true;
-}
 } // namespace scara

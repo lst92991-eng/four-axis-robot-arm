@@ -6,7 +6,6 @@ bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixe
 {
     FixedBoard prepared;
     int mappedCount = 0;
-    prepared.camera = plane.camera;
     prepared.grid = grid;
     for (int row = 0; row < Rows; ++row)
         for (int column = 0; column < Columns; ++column)
@@ -23,18 +22,17 @@ void FixedBoard_assign(FixedBoard &fixed, const std::string &frameId, const std:
                        bool sceneClear, Observation &observation)
 {
     fixed.grid.frameId = frameId;
-    assignPieces(fixed.camera, fixed.grid, frameId, pieces, sceneClear, observation);
+    assignPieces(fixed.grid.geometryCamera, fixed.grid, frameId, pieces, sceneClear, observation);
 }
 
-bool FixedBoard_target(const FixedBoard &fixed, int column, int row, const std::string &frameId, TargetXY &target)
+bool FixedBoard_target(const FixedBoard &fixed, int column, int row, const std::string &frameId, cv::Point2d &baseMm)
 {
-    target = {};
+    baseMm = {};
     bool inside = column >= 0 && column < Columns && row >= 0 && row < Rows;
     if (!inside || frameId.empty() || frameId != fixed.grid.frameId) return false;
     int index = row * Columns + column;
     if (!fixed.mapped[index]) return false;
-    target = fixed.targets[index];
-    target.frameId = frameId;
+    baseMm = fixed.targets[index];
     return true;
 }
 } // namespace scara

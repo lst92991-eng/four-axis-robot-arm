@@ -30,17 +30,12 @@ cv::Matx33d matrix33(const cv::Mat &input)
     require(std::abs(cv::determinant(h)) > 1e-14, "Singular matrix");
     return h;
 }
-std::vector<cv::Point2d> hull(const std::vector<cv::Point2d> &points)
+std::vector<cv::Point2f> hull(const std::vector<cv::Point2d> &points)
 {
     std::vector<cv::Point2f> p(points.begin(), points.end()), h;
     cv::convexHull(p, h);
     require(h.size() >= 3 && std::abs(cv::contourArea(h)) > 1.0, "Points are collinear or too concentrated");
-    return {h.begin(), h.end()};
-}
-bool contains(const std::vector<cv::Point2d> &h, cv::Point2d p)
-{
-    std::vector<cv::Point2f> f(h.begin(), h.end());
-    return f.size() >= 3 && cv::pointPolygonTest(f, p, true) >= -1e-4;
+    return h;
 }
 void errorReport(const cv::Matx33d &matrix, const std::vector<PointPair> &pairs, ErrorReport &report)
 {
@@ -172,7 +167,7 @@ void savePlane(const std::string &path, const PlaneMap &m)
 void loadPlane(const std::string &path, PlaneMap &map)
 {
     auto fs = readStorage(path);
-    require((int)fs["schema_version"] == 1, "Unsupported calibration schema");
+    require(fs["schema_version"].empty() || (int)fs["schema_version"] == 1, "Unsupported calibration schema");
     require(fs["plane_z_mm"].isReal() || fs["plane_z_mm"].isInt(), "Plane height is missing");
     require(fs["allowed_error_mm"].isReal() || fs["allowed_error_mm"].isInt(), "Validation tolerance is missing");
     Camera camera;
@@ -183,12 +178,15 @@ void loadPlane(const std::string &path, PlaneMap &map)
     readCamera(fs["camera"], camera);
     calibratePlane(camera, (std::string)fs["calibration_id"], (double)fs["plane_z_mm"], (double)fs["allowed_error_mm"],
                    fit, checks, m);
-    cv::Mat saved;
-    fs["pixel_to_base"] >> saved;
-    auto h = matrix33(saved);
-    for (const auto &p : m.fitPoints)
-        require(cv::norm(project(h, p.pixel) - project(m.pixelToBase, p.pixel)) < 1e-5,
-                "Stored map differs from calibration samples");
+    if (!fs["pixel_to_base"].empty())
+    {
+        cv::Mat saved;
+        fs["pixel_to_base"] >> saved;
+        auto matrix = matrix33(saved);
+        for (const auto &point : m.fitPoints)
+            require(cv::norm(project(matrix, point.pixel) - project(m.pixelToBase, point.pixel)) < 1e-5,
+                    "Stored map differs from calibration samples");
+    }
     require(m.accepted, "Independent validation failed");
     map = m;
 }
@@ -276,24 +274,19 @@ void Stabilizer::update(const Board &board, const Observation &input, Observatio
     if (!result.valid) result.issues.push_back("waiting for stable distinct frames");
 }
 bool gridTarget(const PlaneMap &map, const Board &board, int c, int r, const std::string &currentFrameId,
-                TargetXY &target)
+                cv::Point2d &baseMm)
 {
-    target = {};
+    baseMm = {};
     if (!map.accepted || !board.geometryValid || !board.orientationValid || map.camera.id != board.cameraId ||
         !map.camera.sameGeometry(board.geometryCamera) || currentFrameId.empty() || currentFrameId != board.frameId ||
         c < 0 || c >= Columns || r < 0 || r >= Rows)
         return false;
     auto pixel = board.intersections[r * Columns + c];
-    if (!contains(map.validPixelHull, pixel)) return false;
-    target.column = c;
-    target.row = r;
-    target.baseMm = project(map.pixelToBase, pixel);
-    target.planeZmm = map.planeZmm;
-    target.calibrationId = map.id;
-    target.frameId = currentFrameId;
+    if (map.validPixelHull.size() < 3 || cv::pointPolygonTest(map.validPixelHull, pixel, true) < -1e-4) return false;
+    baseMm = project(map.pixelToBase, pixel);
     return true;
 }
-void drawBoard(const cv::Mat &image, const Board &board, const Observation *o, cv::Mat &out)
+void drawBoard(const cv::Mat &image, const Board &board, cv::Mat &out)
 {
     out = image.clone();
     if (!board.geometryValid) return;
@@ -303,11 +296,6 @@ void drawBoard(const cv::Mat &image, const Board &board, const Observation *o, c
             auto p = board.intersections[r * Columns + c];
             cv::circle(out, p, 3, {0, 255, 255}, -1);
             std::string label = std::to_string(c) + "," + std::to_string(r);
-            if (o)
-            {
-                int v = o->pieces[r * Columns + c];
-                label += v == Unknown ? ":?" : v == Empty ? ":." : std::string(":") + PieceSymbols[v];
-            }
             cv::putText(out, label, p + cv::Point2d(4, -4), cv::FONT_HERSHEY_SIMPLEX, 0.32, {0, 0, 255}, 1,
                         cv::LINE_AA);
         }

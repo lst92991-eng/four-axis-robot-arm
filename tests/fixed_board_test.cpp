@@ -28,11 +28,10 @@ int main()
         for (int row = 0; row < 10; ++row)
             for (int column = 0; column < 9; ++column)
             {
-                scara::TargetXY expected, actual;
+                cv::Point2d expected, actual;
                 check(scara::gridTarget(plane, grid, column, row, "grid-0", expected), "Generic target missing");
                 check(scara::FixedBoard_target(fixed, column, row, "grid-0", actual), "Cached target missing");
-                check(actual.baseMm == expected.baseMm && actual.calibrationId == expected.calibrationId,
-                      "Cache changed a calibrated XY target");
+                check(actual == expected, "Cache changed a calibrated XY target");
             }
 
         chess::Board initial;
@@ -52,9 +51,9 @@ int main()
         scara::FixedBoard_assign(fixed, "frame-1", pieces, true, observation);
         scara::chessObservation(fixed.grid, observation, true, gameObservation);
         check(gameObservation.complete && gameObservation.board == initial, "Fixed layout changed piece identities");
-        scara::TargetXY target;
+        cv::Point2d target;
         check(scara::FixedBoard_target(fixed, 0, 3, "frame-1", target), "New frame cannot use fixed targets");
-        check(!scara::FixedBoard_target(fixed, 0, 3, "grid-0", target) && target.frameId.empty(),
+        check(!scara::FixedBoard_target(fixed, 0, 3, "grid-0", target) && target == cv::Point2d(),
               "Stale frame retained a target");
         check(!scara::FixedBoard_target(fixed, 9, 3, "frame-1", target), "Out-of-range column accepted");
 

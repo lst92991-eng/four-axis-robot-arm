@@ -3,7 +3,6 @@
 #include <opencv2/imgcodecs.hpp>
 #include <filesystem>
 #include <iostream>
-#include <sstream>
 #include <cmath>
 
 namespace
@@ -54,34 +53,6 @@ void getBoard(const cv::FileStorage &file, const Camera &camera, const std::stri
     }
     boardFromCorners(camera, frame, corners, (int)file["canonical_order_confirmed"] == 1, board);
 }
-void detectionsFile(const std::string &path, const Camera &camera, const Board &board, bool clear,
-                    Observation &observation)
-{
-    // Accept one JSON object or the last complete JSONL record from the current preview program.
-    auto bytes = readBytes(path);
-    if (std::filesystem::u8path(path).extension() == ".jsonl")
-    {
-        std::istringstream s(bytes);
-        std::string line, last;
-        while (std::getline(s, line))
-            if (!line.empty()) last = line;
-        bytes = last;
-    }
-    cv::FileStorage fs(bytes, cv::FileStorage::READ | cv::FileStorage::MEMORY);
-    std::string frame = (std::string)fs["frame_id"], space = (std::string)fs["coordinates"];
-    require(space == "original", "Detection boxes must use original camera pixels");
-    std::vector<Detection> ds;
-    auto input = fs["detections"];
-    require(input.isSeq(), "detections must be an array");
-    for (const auto &d : input)
-    {
-        auto b = d["bbox"];
-        require(b.size() == 4, "bbox must be x1,y1,x2,y2");
-        double x = number(b[0]), y = number(b[1]);
-        ds.push_back({(int)d["class_id"], number(d["score"]), {x, y, number(b[2]) - x, number(b[3]) - y}});
-    }
-    assignPieces(camera, board, frame, ds, clear, observation);
-}
 void inspect(const std::string &config, const std::string &output)
 {
     auto fs = readStorage(config);
@@ -93,14 +64,9 @@ void inspect(const std::string &config, const std::string &output)
     require(image.size() == camera.imageSize, "Image size differs from camera profile");
     Board board;
     PlaneMap plane;
-    Observation observation;
     getBoard(fs, camera, frame, board);
     if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
         loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
-    bool hasObservation = !fs["detections_file"].empty() && !((std::string)fs["detections_file"]).empty();
-    if (hasObservation)
-        detectionsFile(relativePath(config, (std::string)fs["detections_file"]), camera, board,
-                       (int)fs["scene_clear"] == 1, observation);
     auto result = memoryStorage(true);
     result << "motion_enabled" << 0 << "single_frame_only" << 1 << "camera_id" << camera.id << "frame_id" << frame
            << "geometry_valid" << (int)board.geometryValid << "orientation_valid" << (int)board.orientationValid
@@ -111,20 +77,17 @@ void inspect(const std::string &config, const std::string &output)
             {
                 auto p = board.intersections[r * Columns + c];
                 result << "{" << "column" << c << "row" << r << "pixel_geometric" << "[" << p.x << p.y << "]";
-                TargetXY target;
-                bool targetValid = gridTarget(plane, board, c, r, frame, target);
+                cv::Point2d baseMm;
+                bool targetValid = gridTarget(plane, board, c, r, frame, baseMm);
                 result << "base_xy_valid" << (int)targetValid;
                 if (targetValid)
-                    result << "base_xy_mm" << "[" << target.baseMm.x << target.baseMm.y << "]" << "plane_z_mm"
-                           << target.planeZmm;
-                if (hasObservation) result << "piece_id" << observation.pieces[r * Columns + c];
+                    result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]" << "plane_z_mm" << plane.planeZmm;
                 result << "}";
             }
     result << "]";
-    if (hasObservation) result << "observation_valid" << (int)observation.valid << "issues" << observation.issues;
     writeBytes(output, result.releaseAndGetString());
     cv::Mat overlay, rectified;
-    drawBoard(image, board, hasObservation ? &observation : nullptr, overlay);
+    drawBoard(image, board, overlay);
     saveImage(output + ".png", overlay);
     if (board.geometryValid)
     {
@@ -149,26 +112,9 @@ int runGeometryTool(int argc, char **argv)
         const std::string command = argv[1], input = argv[2], output = argv[3];
         if (command == "calibrate")
         {
-            auto fs = scara::readStorage(input);
-            scara::Camera camera;
             scara::PlaneMap map;
-            std::string id = (std::string)fs["calibration_id"];
-            double planeZmm = number(fs["plane_z_mm"]);
-            double allowedErrorMm = number(fs["allowed_error_mm"]);
-            std::vector<scara::PointPair> fit, checks;
-            scara::readPairs(fs["fit_points"], fit);
-            scara::readPairs(fs["check_points"], checks);
-            scara::readCamera(fs["camera"], camera);
-            scara::calibratePlane(camera, id, planeZmm, allowedErrorMm, fit, checks, map);
-            std::cout << "fit RMS/max mm: " << map.fitError.rmsMm << "/" << map.fitError.maxMm
-                      << "\ncheck RMS/max mm: " << map.checkError.rmsMm << "/" << map.checkError.maxMm << '\n';
-            for (size_t i = 0; i < map.checkError.errorsMm.size(); ++i)
-                std::cout << "check[" << i << "] error mm: " << map.checkError.errorsMm[i] << '\n';
-            if (!map.accepted)
-            {
-                std::cerr << "REJECTED: errors exceed tolerance; no usable map saved.\n";
-                return 2;
-            }
+            scara::loadPlane(input, map);
+            std::cout << "fit/check maximum error (mm): " << map.fitError.maxMm << "/" << map.checkError.maxMm << '\n';
             scara::savePlane(output, map);
         }
         else if (command == "inspect")

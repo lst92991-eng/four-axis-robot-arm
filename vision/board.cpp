@@ -14,39 +14,13 @@ void require(bool value, const char *message)
 {
     if (!value) throw std::runtime_error(message);
 }
-cv::Matx33d homography(const std::vector<cv::Point2f> &a, const std::vector<cv::Point2f> &b)
-{
-    cv::Mat m = cv::getPerspectiveTransform(a, b);
-    cv::Matx33d h;
-    std::copy(m.ptr<double>(), m.ptr<double>() + 9, h.val);
-    require(std::abs(cv::determinant(h)) > 1e-14, "Degenerate board quadrilateral");
-    return h;
-}
-Board boardWithMatrix(const Camera &camera, const std::string &frame, const cv::Matx33d &h)
-{
-    require(!frame.empty(), "Frame ID required");
-    Board b;
-    b.cameraId = camera.id;
-    b.geometryCamera = camera;
-    b.frameId = frame;
-    b.gridToPixel = h;
-    for (int r = 0; r < Rows; ++r)
-        for (int c = 0; c < Columns; ++c)
-        {
-            auto p = project(h, {(double)c, (double)r});
-            require(p.x >= 0 && p.y >= 0 && p.x < camera.imageSize.width && p.y < camera.imageSize.height,
-                    "Grid extends outside image");
-            b.intersections[r * Columns + c] = p;
-        }
-    b.geometryValid = true;
-    return b;
-}
 } // namespace
 
 void boardFromCorners(const Camera &camera, const std::string &frame, const std::array<cv::Point2d, 4> &raw,
                       bool confirmed, Board &board)
 {
     camera.validate();
+    require(!frame.empty(), "Frame ID required");
     std::vector<cv::Point2f> p;
     for (auto v : raw)
     {
@@ -57,7 +31,17 @@ void boardFromCorners(const Camera &camera, const std::string &frame, const std:
     }
     require(cv::isContourConvex(p) && std::abs(cv::contourArea(p)) > 100,
             "Corners must form a nondegenerate ordered convex quad");
-    auto b = boardWithMatrix(camera, frame, homography({{0, 0}, {8, 0}, {8, 9}, {0, 9}}, p));
+    cv::Mat matrix = cv::getPerspectiveTransform(std::vector<cv::Point2f>{{0, 0}, {8, 0}, {8, 9}, {0, 9}}, p);
+    Board b;
+    std::copy(matrix.ptr<double>(), matrix.ptr<double>() + 9, b.gridToPixel.val);
+    require(std::abs(cv::determinant(matrix)) > 1e-14, "Degenerate board quadrilateral");
+    b.cameraId = camera.id;
+    b.geometryCamera = camera;
+    b.frameId = frame;
+    for (int row = 0; row < Rows; ++row)
+        for (int col = 0; col < Columns; ++col)
+            b.intersections[row * Columns + col] = project(b.gridToPixel, {double(col), double(row)});
+    b.geometryValid = true;
     b.orientationValid = confirmed;
     b.orientationSource = confirmed ? "manual_canonical_corners" : "unconfirmed_corners";
     board = b;

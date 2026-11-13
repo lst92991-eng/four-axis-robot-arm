@@ -65,6 +65,12 @@
       "title": "统一原图坐标与采点输入",
       "cpp_nloc": 2091,
       "checks": "14 CTest, 60 Python, 14400 assignment cases and fixed outputs identical"
+    },
+    {
+      "round": 3,
+      "title": "合并标定入口和XY输出",
+      "cpp_nloc": 1979,
+      "checks": "14 CTest, 60 Python; retained outputs identical"
     }
   ]
 }

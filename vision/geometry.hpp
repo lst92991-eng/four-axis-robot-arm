@@ -35,7 +35,7 @@ struct PlaneMap
     std::string id;
     double planeZmm = 0, allowedErrorMm = 0; // 标定平面说明与验误要求，不是J1驱动角度。
     cv::Matx33d pixelToBase = cv::Matx33d::eye();
-    std::vector<cv::Point2d> validPixelHull; // 拟合点覆盖的几何像素范围。
+    std::vector<cv::Point2f> validPixelHull; // 拟合点覆盖的几何像素范围。
     std::vector<PointPair> fitPoints, checkPoints;
     ErrorReport fitError, checkError;
     bool accepted = false;
@@ -45,7 +45,7 @@ struct PlaneMap
 void calibratePlane(const Camera &camera, const std::string &id, double planeZmm, double allowedErrorMm,
                     const std::vector<PointPair> &fit, const std::vector<PointPair> &independentChecks, PlaneMap &map);
 void savePlane(const std::string &path, const PlaneMap &);
-void loadPlane(const std::string &path, PlaneMap &map); // 从保存的采点复算映射和误差。
+void loadPlane(const std::string &path, PlaneMap &map); // 读取新采点或已保存标定，统一复算并验误。
 void saveCamera(cv::FileStorage &, const Camera &);
 void readCamera(const cv::FileNode &node, Camera &camera);
 void readPairs(const cv::FileNode &node, std::vector<PointPair> &pairs);
@@ -91,17 +91,10 @@ class Stabilizer
     Observation previous_;
 };
 
-struct TargetXY
-{
-    int column = 0, row = 0;
-    cv::Point2d baseMm;
-    double planeZmm = 0;
-    std::string calibrationId, frameId;
-};
 // 交点转换成基座XY；方向、帧号和覆盖范围满足条件才返回true。
 // 关节逆解和Z层次由运动模块处理。
 bool gridTarget(const PlaneMap &map, const Board &board, int column, int row, const std::string &currentFrameId,
-                TargetXY &target);
+                cv::Point2d &baseMm);
 cv::Point2d project(const cv::Matx33d &, cv::Point2d);
-void drawBoard(const cv::Mat &geometricImage, const Board &board, const Observation *observation, cv::Mat &image);
+void drawBoard(const cv::Mat &source, const Board &board, cv::Mat &image);
 } // namespace scara

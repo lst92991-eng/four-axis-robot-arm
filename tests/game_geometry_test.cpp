@@ -1,4 +1,5 @@
 #include "chess/vision_bridge.hpp"
+#include "vision/fixed_board.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -94,14 +95,16 @@ int main()
         check(chess::parseMove("a3a4", human) && chess::uci(human, moveText) && moveText == "a3a4",
               "UCI conversion failed");
         auto p = plane();
-        scara::ChessMoveTargets xy, rejected;
-        bool targetsValid = scara::chessMoveTargets(p, g, human, "frame-1", xy);
-        check(targetsValid && xy.from.column == 0 && xy.from.row == 3 && xy.to.row == 4,
-              "UCI mapped to wrong grid rank");
-        check(cv::norm(xy.from.baseMm - cv::Point2d(10, 42)) < .001, "Source target XY incorrect");
-        check(cv::norm(xy.to.baseMm - cv::Point2d(10, 36)) < .001, "Destination target XY incorrect");
-        check(!scara::chessMoveTargets(p, g, human, "stale", rejected), "Stale target accepted");
-        check(!scara::chessMoveTargets(p, unoriented, human, "frame-1", rejected), "Unoriented target accepted");
+        scara::FixedBoard fixed;
+        check(scara::FixedBoard_setup(p, g, fixed), "Fixed setup failed");
+        cv::Point2d from, to, rejected;
+        bool fromValid = scara::FixedBoard_target(fixed, human.fromCol, 9 - human.fromRow, "frame-1", from);
+        bool toValid = scara::FixedBoard_target(fixed, human.toCol, 9 - human.toRow, "frame-1", to);
+        check(fromValid && toValid, "UCI mapped to unavailable targets");
+        check(cv::norm(from - cv::Point2d(10, 42)) < .001, "Source target XY incorrect");
+        check(cv::norm(to - cv::Point2d(10, 36)) < .001, "Destination target XY incorrect");
+        check(!scara::FixedBoard_target(fixed, 0, 3, "stale", rejected), "Stale target accepted");
+        check(!scara::FixedBoard_setup(p, unoriented, fixed), "Unoriented target accepted");
 
         chess::Game game;
         const auto base = game.baseFen;

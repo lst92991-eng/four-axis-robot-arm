@@ -97,9 +97,9 @@ void targetTests()
 {
     auto p = plane();
     auto b = board();
-    TargetXY t, rejected;
+    cv::Point2d t, rejected;
     check(gridTarget(p, b, 3, 4, "1", t), "Target missing");
-    check(cv::norm(t.baseMm - project(BaseH, b.intersections[39])) < .001, "Wrong target XY");
+    check(cv::norm(t - project(BaseH, b.intersections[39])) < .001, "Wrong target XY");
     check(!gridTarget(p, b, 9, 0, "1", rejected) && !gridTarget(p, b, 0, 0, "old", rejected),
           "Bounds/stale frame accepted");
     auto unknown = b;
@@ -115,7 +115,7 @@ void targetTests()
     limited.validPixelHull = {{20, 20}, {80, 20}, {80, 80}, {20, 80}};
     rejected = t;
     check(!gridTarget(limited, b, 3, 4, "1", rejected), "Calibration extrapolation accepted");
-    check(rejected.frameId.empty() && rejected.calibrationId.empty(), "Rejected output retained an old target");
+    check(rejected == cv::Point2d(), "Rejected output retained an old target");
     double a = .15, co = std::cos(a), si = std::sin(a);
     cv::Matx33d move(co, -si, 55, si, co, -25, 0, 0, 1);
     std::array<cv::Point2d, 4> corners;
@@ -123,12 +123,12 @@ void targetTests()
     for (int i : {0, 8, 89, 81})
         corners[j++] = project(move, b.intersections[i]);
     Board moved;
-    TargetXY mt;
+    cv::Point2d mt;
     boardFromCorners(camera(), "2", corners, true, moved);
     bool movedValid = gridTarget(p, moved, 3, 4, "2", mt);
-    check(movedValid && cv::norm(mt.baseMm - project(BaseH, project(move, b.intersections[39]))) < .001,
+    check(movedValid && cv::norm(mt - project(BaseH, project(move, b.intersections[39]))) < .001,
           "Moved board incorrectly requires/reuses old robot calibration");
-    check(cv::norm(mt.baseMm - t.baseMm) > 1, "Moved board target did not change");
+    check(cv::norm(mt - t) > 1, "Moved board target did not change");
     rejects([&] { boardFromCorners(camera(), "x", {{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
 }
 void assignmentTests()
