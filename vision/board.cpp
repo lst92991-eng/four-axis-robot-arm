@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <iostream>
+#include <optional>
 
 namespace scara
 {
@@ -224,8 +225,8 @@ double structureScore(const cv::Mat &binary, const cv::Mat &vertical, const cv::
 }
 } // namespace
 
-Board boardFromCorners(const Camera &camera, const std::string &frame, const std::array<cv::Point2d, 4> &raw,
-                       bool confirmed)
+void boardFromCorners(const Camera &camera, const std::string &frame, const std::array<cv::Point2d, 4> &raw,
+                      bool confirmed, Board &board)
 {
     camera.validate();
     std::vector<cv::Point2f> p;
@@ -241,9 +242,10 @@ Board boardFromCorners(const Camera &camera, const std::string &frame, const std
     auto b = boardWithMatrix(camera, frame, homography({{0, 0}, {8, 0}, {8, 9}, {0, 9}}, p));
     b.orientationValid = confirmed;
     b.orientationSource = confirmed ? "manual_canonical_corners" : "unconfirmed_corners";
-    return b;
+    board = b;
 }
-Board locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &frame, const LocateOptions &options)
+void locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &frame, const LocateOptions &options,
+                 Board &board)
 {
     require(options.minAreaFraction > 0 && options.minAreaFraction < 1 && options.minLineSupport > 0 &&
                 options.minLineSupport <= 1,
@@ -413,9 +415,9 @@ Board locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &f
                     { /* Reject bad extrapolation; try next natural-border candidate. */
                     }
         }
-    return best;
+    board = best;
 }
-Board confirmOrientation(const Board &input, bool flip)
+void confirmOrientation(const Board &input, bool flip, Board &board)
 {
     require(input.geometryValid, "Cannot orient invalid grid");
     auto b = input;
@@ -425,18 +427,17 @@ Board confirmOrientation(const Board &input, bool flip)
             b.intersections[r * Columns + c] = project(b.gridToPixel, {(double)c, (double)r});
     b.orientationValid = true;
     b.orientationSource = "manual_end_confirmation";
-    return b;
+    board = b;
 }
-cv::Mat rectifiedBoard(const cv::Mat &image, const Board &b)
+void rectifiedBoard(const cv::Mat &image, const Board &b, cv::Mat &result)
 {
     require(b.geometryValid, "Grid required for rectification");
-    cv::Mat result;
     // Human-facing rectification keeps red at the bottom, without mirroring Chinese glyphs.
     cv::Matx33d gridToRect(Step, 0, Margin, 0, -Step, Margin + 9 * Step, 0, 0, 1);
     cv::warpPerspective(image, result, gridToRect * b.gridToPixel.inv(), {RectWidth, RectHeight});
-    return result;
 }
-OrientationReference makeOrientationReference(const cv::Mat &raw, const Camera &camera, const Board &b, cv::Rect patch)
+void makeOrientationReference(const cv::Mat &raw, const Camera &camera, const Board &b, cv::Rect patch,
+                              OrientationReference &reference)
 {
     require(b.orientationValid && b.cameraId == camera.id && camera.sameGeometry(b.geometryCamera),
             "Confirm canonical board orientation with matching camera profile first");
@@ -444,7 +445,9 @@ OrientationReference makeOrientationReference(const cv::Mat &raw, const Camera &
             "Invalid reference patch");
     cv::Mat image;
     camera.geometricImage(raw, image);
-    auto canonical = gray(rectifiedBoard(image, b));
+    cv::Mat rectified;
+    rectifiedBoard(image, b, rectified);
+    cv::Mat canonical = gray(rectified);
     cv::Scalar mean, stddev;
     cv::meanStdDev(canonical(patch), mean, stddev);
     require(stddev[0] >= 8, "Reference patch lacks distinctive texture");
@@ -452,9 +455,10 @@ OrientationReference makeOrientationReference(const cv::Mat &raw, const Camera &
     ref.cameraId = camera.id;
     ref.patchRect = patch;
     ref.patch = canonical(patch).clone();
-    return ref;
+    reference = ref;
 }
-Board orientByReference(const cv::Mat &raw, const Camera &camera, const Board &input, const OrientationReference &ref)
+void orientByReference(const cv::Mat &raw, const Camera &camera, const Board &input, const OrientationReference &ref,
+                       Board &board)
 {
     require(input.geometryValid && input.cameraId == camera.id && camera.sameGeometry(input.geometryCamera) &&
                 ref.cameraId == camera.id,
@@ -469,8 +473,11 @@ Board orientByReference(const cv::Mat &raw, const Camera &camera, const Board &i
     std::array<double, 2> scores{};
     for (int flip = 0; flip < 2; ++flip)
     {
-        auto b = confirmOrientation(input, flip != 0);
-        auto rect = gray(rectifiedBoard(image, b));
+        Board b;
+        cv::Mat rectified;
+        confirmOrientation(input, flip != 0, b);
+        rectifiedBoard(image, b, rectified);
+        cv::Mat rect = gray(rectified);
         cv::Rect search(ref.patchRect.x - 4, ref.patchRect.y - 4, ref.patchRect.width + 8, ref.patchRect.height + 8);
         search &= cv::Rect(0, 0, RectWidth, RectHeight);
         cv::Mat score;
@@ -484,11 +491,13 @@ Board orientByReference(const cv::Mat &raw, const Camera &camera, const Board &i
         auto b = input;
         b.orientationValid = false;
         b.orientationSource = "ambiguous_printed_feature";
-        return b;
+        board = b;
+        return;
     }
-    auto b = confirmOrientation(input, winner != 0);
+    Board b;
+    confirmOrientation(input, winner != 0, b);
     b.orientationSource = "printed_board_feature";
-    return b;
+    board = b;
 }
 void saveOrientationReference(const std::string &path, const OrientationReference &r)
 {
@@ -498,7 +507,7 @@ void saveOrientationReference(const std::string &path, const OrientationReferenc
        << "patch" << r.patch << "min_correlation" << r.minCorrelation << "min_margin" << r.minMargin;
     writeBytes(path, fs.releaseAndGetString());
 }
-OrientationReference loadOrientationReference(const std::string &path)
+void loadOrientationReference(const std::string &path, OrientationReference &reference)
 {
     auto fs = readStorage(path);
     OrientationReference r;
@@ -511,6 +520,6 @@ OrientationReference loadOrientationReference(const std::string &path)
     r.minMargin = (double)fs["min_margin"];
     require(r.minCorrelation > 0 && r.minCorrelation <= 1 && r.minMargin > 0 && r.minMargin <= 2,
             "Invalid orientation thresholds");
-    return r;
+    reference = r;
 }
 } // namespace scara

@@ -166,13 +166,13 @@ void registerArm(const std::string &config, const std::string &output)
     out << "]";
     writeBytes(output, out.releaseAndGetString());
 }
-cv::Mat imageFile(const std::string &path)
+void imageFile(const std::string &path, cv::Mat &image)
 {
     auto bytes = readBytes(path);
     std::vector<unsigned char> data(bytes.begin(), bytes.end());
     auto im = cv::imdecode(data, cv::IMREAD_COLOR);
     require(!im.empty(), "Cannot decode image");
-    return im;
+    image = im;
 }
 void saveImage(const std::string &path, const cv::Mat &image)
 {
@@ -180,10 +180,10 @@ void saveImage(const std::string &path, const cv::Mat &image)
     require(cv::imencode(".png", image, b), "Cannot encode overlay");
     writeBytes(path, {b.begin(), b.end()});
 }
-Board getBoard(const cv::FileStorage &fs, const cv::Mat &image, const Camera &camera, const std::string &frame,
-               const std::string &config)
+void getBoard(const cv::FileStorage &fs, const cv::Mat &image, const Camera &camera, const std::string &frame,
+              const std::string &config, Board &board)
 {
-    Board board;
+    board = {};
     std::string mode = (std::string)fs["mode"];
     if (mode == "manual")
     {
@@ -195,26 +195,29 @@ Board getBoard(const cv::FileStorage &fs, const cv::Mat &image, const Camera &ca
             require(n[i].size() == 2, "Corner must have two coordinates");
             corners[i] = {number(n[i][0]), number(n[i][1])};
         }
-        board = boardFromCorners(camera, frame, corners, (int)fs["canonical_order_confirmed"] == 1);
+        boardFromCorners(camera, frame, corners, (int)fs["canonical_order_confirmed"] == 1, board);
     }
     else
     {
         require(mode == "auto", "mode must be auto or manual");
-        board = locateBoard(image, camera, frame);
+        LocateOptions options;
+        locateBoard(image, camera, frame, options, board);
         std::string orientation = (std::string)fs["orientation"];
         if (board.geometryValid && (orientation == "manual_keep" || orientation == "manual_flip"))
-            board = confirmOrientation(board, orientation == "manual_flip");
+            confirmOrientation(board, orientation == "manual_flip", board);
         else if (board.geometryValid && orientation == "reference")
-            board = orientByReference(
-                image, camera, board,
-                loadOrientationReference(relativePath(config, (std::string)fs["orientation_reference"])));
+        {
+            OrientationReference reference;
+            loadOrientationReference(relativePath(config, (std::string)fs["orientation_reference"]), reference);
+            orientByReference(image, camera, board, reference, board);
+        }
         else
             require(orientation.empty() || orientation == "unconfirmed" || !board.geometryValid,
                     "Unknown orientation mode");
     }
-    return board;
 }
-Observation detectionsFile(const std::string &path, const Camera &camera, const Board &board, bool clear)
+void detectionsFile(const std::string &path, const Camera &camera, const Board &board, bool clear,
+                    Observation &observation)
 {
     // Accept one JSON object or the last complete JSONL record from the current preview program.
     auto bytes = readBytes(path);
@@ -259,7 +262,8 @@ Observation detectionsFile(const std::string &path, const Camera &camera, const 
         double x = number(b[0]), y = number(b[1]);
         ds.push_back({(int)d["class_id"], number(d["score"]), {x, y, number(b[2]) - x, number(b[3]) - y}});
     }
-    return assignPieces(camera, board, frame, ds, t, kind, clear);
+    AssignmentOptions options;
+    assignPieces(camera, board, frame, ds, t, kind, clear, options, observation);
 }
 void inspect(const std::string &config, const std::string &output)
 {
@@ -267,19 +271,19 @@ void inspect(const std::string &config, const std::string &output)
     Camera camera;
     readCamera(fs["camera"], camera);
     std::string frame = (std::string)fs["frame_id"];
-    auto image = imageFile(relativePath(config, (std::string)fs["image"]));
+    cv::Mat image;
+    imageFile(relativePath(config, (std::string)fs["image"]), image);
     require(image.size() == camera.imageSize, "Image size differs from camera profile");
-    auto board = getBoard(fs, image, camera, frame, config);
-    std::optional<PlaneMap> plane;
-    std::optional<Observation> observation;
+    Board board;
+    PlaneMap plane;
+    Observation observation;
+    getBoard(fs, image, camera, frame, config, board);
     if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
-    {
-        plane.emplace();
-        loadPlane(relativePath(config, (std::string)fs["plane_file"]), *plane);
-    }
-    if (!fs["detections_file"].empty() && !((std::string)fs["detections_file"]).empty())
-        observation = detectionsFile(relativePath(config, (std::string)fs["detections_file"]), camera, board,
-                                     (int)fs["scene_clear"] == 1);
+        loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
+    bool hasObservation = !fs["detections_file"].empty() && !((std::string)fs["detections_file"]).empty();
+    if (hasObservation)
+        detectionsFile(relativePath(config, (std::string)fs["detections_file"]), camera, board,
+                       (int)fs["scene_clear"] == 1, observation);
     auto result = memoryStorage(true);
     result << "motion_enabled" << 0 << "single_frame_only" << 1 << "camera_id" << camera.id << "frame_id" << frame
            << "geometry_valid" << (int)board.geometryValid << "orientation_valid" << (int)board.orientationValid
@@ -290,21 +294,27 @@ void inspect(const std::string &config, const std::string &output)
             {
                 auto p = board.intersections[r * Columns + c];
                 result << "{" << "column" << c << "row" << r << "pixel_geometric" << "[" << p.x << p.y << "]";
-                auto target = plane ? gridTarget(*plane, board, c, r, frame) : std::nullopt;
-                result << "base_xy_valid" << (int)target.has_value();
-                if (target)
-                    result << "base_xy_mm" << "[" << target->baseMm.x << target->baseMm.y << "]" << "plane_z_mm"
-                           << target->planeZmm;
-                if (observation) result << "piece_id" << observation->pieces[r * Columns + c];
+                TargetXY target;
+                bool targetValid = gridTarget(plane, board, c, r, frame, target);
+                result << "base_xy_valid" << (int)targetValid;
+                if (targetValid)
+                    result << "base_xy_mm" << "[" << target.baseMm.x << target.baseMm.y << "]" << "plane_z_mm"
+                           << target.planeZmm;
+                if (hasObservation) result << "piece_id" << observation.pieces[r * Columns + c];
                 result << "}";
             }
     result << "]";
-    if (observation) result << "observation_valid" << (int)observation->valid << "issues" << observation->issues;
+    if (hasObservation) result << "observation_valid" << (int)observation.valid << "issues" << observation.issues;
     writeBytes(output, result.releaseAndGetString());
-    cv::Mat geometric;
+    cv::Mat geometric, overlay, rectified;
     camera.geometricImage(image, geometric);
-    saveImage(output + ".png", drawBoard(geometric, board, observation ? &*observation : nullptr));
-    if (board.geometryValid) saveImage(output + ".rectified.png", rectifiedBoard(geometric, board));
+    drawBoard(geometric, board, hasObservation ? &observation : nullptr, overlay);
+    saveImage(output + ".png", overlay);
+    if (board.geometryValid)
+    {
+        rectifiedBoard(geometric, board, rectified);
+        saveImage(output + ".rectified.png", rectified);
+    }
     std::cout << "geometry=" << board.geometryValid << " orientation=" << board.orientationValid
               << " score=" << board.gridScore << "\nWrote " << output << " and overlay. No motion.\n";
 }
@@ -355,12 +365,15 @@ int runGeometryTool(int argc, char **argv)
             auto fs = scara::readStorage(input);
             scara::Camera camera;
             scara::readCamera(fs["camera"], camera);
-            auto image = imageFile(relativePath(input, (std::string)fs["image"]));
-            auto board = getBoard(fs, image, camera, (std::string)fs["frame_id"], input);
+            cv::Mat image;
+            Board board;
+            imageFile(relativePath(input, (std::string)fs["image"]), image);
+            getBoard(fs, image, camera, (std::string)fs["frame_id"], input, board);
             auto n = fs["reference_patch"];
             require(n.isSeq() && n.size() == 4, "reference_patch [x,y,w,h] required in 432x480 rectified board");
-            auto ref =
-                scara::makeOrientationReference(image, camera, board, {(int)n[0], (int)n[1], (int)n[2], (int)n[3]});
+            scara::OrientationReference ref;
+            cv::Rect patch((int)n[0], (int)n[1], (int)n[2], (int)n[3]);
+            scara::makeOrientationReference(image, camera, board, patch, ref);
             scara::saveOrientationReference(output, ref);
         }
         else

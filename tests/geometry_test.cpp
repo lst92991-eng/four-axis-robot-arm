@@ -50,7 +50,9 @@ PlaneMap plane()
 }
 Board board(const std::string &frame = "1")
 {
-    return boardFromCorners(camera(), frame, {{{150, 80}, {500, 100}, {480, 400}, {130, 380}}}, true);
+    Board result;
+    boardFromCorners(camera(), frame, {{{150, 80}, {500, 100}, {480, 400}, {130, 380}}}, true, result);
+    return result;
 }
 void calibrationTests()
 {
@@ -103,34 +105,39 @@ void targetTests()
 {
     auto p = plane();
     auto b = board();
-    auto t = gridTarget(p, b, 3, 4, "1");
-    check(t.has_value(), "Target missing");
-    check(cv::norm(t->baseMm - project(BaseH, b.intersections[39])) < .001, "Wrong target XY");
-    check(!gridTarget(p, b, 9, 0, "1") && !gridTarget(p, b, 0, 0, "old"), "Bounds/stale frame accepted");
+    TargetXY t, rejected;
+    check(gridTarget(p, b, 3, 4, "1", t), "Target missing");
+    check(cv::norm(t.baseMm - project(BaseH, b.intersections[39])) < .001, "Wrong target XY");
+    check(!gridTarget(p, b, 9, 0, "1", rejected) && !gridTarget(p, b, 0, 0, "old", rejected),
+          "Bounds/stale frame accepted");
     auto unknown = b;
     unknown.orientationValid = false;
-    check(!gridTarget(p, unknown, 3, 4, "1"), "Unoriented board generated target");
+    check(!gridTarget(p, unknown, 3, 4, "1", rejected), "Unoriented board generated target");
     auto wrong = b;
     wrong.cameraId = "different-camera";
-    check(!gridTarget(p, wrong, 3, 4, "1"), "Different camera accepted");
+    check(!gridTarget(p, wrong, 3, 4, "1", rejected), "Different camera accepted");
     wrong = b;
     wrong.geometryCamera.imageSize.width += 1;
-    check(!gridTarget(p, wrong, 3, 4, "1"), "Changed numeric camera profile accepted under same ID");
+    check(!gridTarget(p, wrong, 3, 4, "1", rejected), "Changed numeric camera profile accepted under same ID");
     auto limited = p;
     limited.validPixelHull = {{20, 20}, {80, 20}, {80, 80}, {20, 80}};
-    check(!gridTarget(limited, b, 3, 4, "1"), "Calibration extrapolation accepted");
+    rejected = t;
+    check(!gridTarget(limited, b, 3, 4, "1", rejected), "Calibration extrapolation accepted");
+    check(rejected.frameId.empty() && rejected.calibrationId.empty(), "Rejected output retained an old target");
     double a = .15, co = std::cos(a), si = std::sin(a);
     cv::Matx33d move(co, -si, 55, si, co, -25, 0, 0, 1);
     std::array<cv::Point2d, 4> corners;
     int j = 0;
     for (int i : {0, 8, 89, 81})
         corners[j++] = project(move, b.intersections[i]);
-    auto moved = boardFromCorners(camera(), "2", corners, true);
-    auto mt = gridTarget(p, moved, 3, 4, "2");
-    check(mt && cv::norm(mt->baseMm - project(BaseH, project(move, b.intersections[39]))) < .001,
+    Board moved;
+    TargetXY mt;
+    boardFromCorners(camera(), "2", corners, true, moved);
+    bool movedValid = gridTarget(p, moved, 3, 4, "2", mt);
+    check(movedValid && cv::norm(mt.baseMm - project(BaseH, project(move, b.intersections[39]))) < .001,
           "Moved board incorrectly requires/reuses old robot calibration");
-    check(cv::norm(mt->baseMm - t->baseMm) > 1, "Moved board target did not change");
-    rejects([&] { boardFromCorners(camera(), "x", {{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true); });
+    check(cv::norm(mt.baseMm - t.baseMm) > 1, "Moved board target did not change");
+    rejects([&] { boardFromCorners(camera(), "x", {{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
 }
 void assignmentTests()
 {
@@ -156,28 +163,34 @@ void assignmentTests()
     auto b = board();
     auto center = b.intersections[39];
     Detection d{12, .9, {center.x - 12, center.y - 12, 24, 24}};
-    auto o = assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, true);
+    Observation o, hidden, collision, stale, offGrid, stableResult;
+    assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, true, {}, o);
     check(o.valid && o.pieces[39] == 12 && o.pieces[0] == Empty, "Grid assignment failed");
-    auto hidden = assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, false);
+    assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, false, {}, hidden);
     check(!hidden.valid && hidden.pieces[0] == Unknown, "Occluded cell treated as empty");
-    auto collision = assignPieces(camera(), b, "1", {d, d}, transform, DetectionSpace::Original, true);
+    assignPieces(camera(), b, "1", {d, d}, transform, DetectionSpace::Original, true, {}, collision);
     check(!collision.valid && collision.pieces[39] == Unknown, "Collision silently resolved");
-    auto stale = assignPieces(camera(), b, "wrong", {d}, transform, DetectionSpace::Original, true);
+    assignPieces(camera(), b, "wrong", {d}, transform, DetectionSpace::Original, true, {}, stale);
     check(!stale.valid, "Mixed frames accepted");
     auto p = project(b.gridToPixel, {3.48, 4});
     d.bbox = {p.x - 12, p.y - 12, 24, 24};
-    check(!assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, true).valid,
-          "Off-grid piece accepted");
+    assignPieces(camera(), b, "1", {d}, transform, DetectionSpace::Original, true, {}, offGrid);
+    check(!offGrid.valid, "Off-grid piece accepted");
     Stabilizer stable(3);
-    check(!stable.update(b, o).valid, "Single frame stable");
-    check(!stable.update(b, o).valid, "Repeated frame counted");
+    stable.update(b, o, stableResult);
+    check(!stableResult.valid, "Single frame stable");
+    stable.update(b, o, stableResult);
+    check(!stableResult.valid, "Repeated frame counted");
     b.frameId = o.frameId = "2";
-    check(!stable.update(b, o).valid, "Two frames stable");
+    stable.update(b, o, stableResult);
+    check(!stableResult.valid, "Two frames stable");
     b.frameId = o.frameId = "3";
-    check(stable.update(b, o).valid, "Three frames did not stabilize");
+    stable.update(b, o, stableResult);
+    check(stableResult.valid, "Three frames did not stabilize");
     b.frameId = o.frameId = "4";
     b.intersections[0].x += 10;
-    check(!stable.update(b, o).valid, "Board motion failed to reset stability");
+    stable.update(b, o, stableResult);
+    check(!stableResult.valid, "Board motion failed to reset stability");
 }
 void boardTests()
 {
@@ -205,7 +218,8 @@ void boardTests()
         cv::line(image, {390, y}, {290, y + 100}, {30, 30, 30}, 2);
     }
     cv::putText(image, "RIVER-A", {200, 314}, cv::FONT_HERSHEY_SIMPLEX, .55, {15, 15, 15}, 2);
-    auto b = locateBoard(image, c, "auto");
+    Board b;
+    locateBoard(image, c, "auto", {}, b);
     check(b.geometryValid, "Synthetic natural-grid localization failed");
     check(!b.orientationValid, "Symmetric grid silently chose a red side");
     double maxError = 0;
@@ -219,27 +233,35 @@ void boardTests()
     }
     std::cout << "synthetic grid maximum nearest-point error: " << maxError << " px\n";
     check(maxError < 4, "Wrong lattice selected");
-    auto exact = boardFromCorners(c, "ref", {{{140, 530}, {540, 530}, {540, 80}, {140, 80}}}, true);
-    auto ref = makeOrientationReference(image, c, exact, {65, 218, 220, 40});
-    auto flipped = confirmOrientation(exact, true);
+    Board exact, flipped, oriented, autoOriented, ambiguous;
+    OrientationReference ref;
+    boardFromCorners(c, "ref", {{{140, 530}, {540, 530}, {540, 80}, {140, 80}}}, true, exact);
+    makeOrientationReference(image, c, exact, {65, 218, 220, 40}, ref);
+    confirmOrientation(exact, true, flipped);
     flipped.orientationValid = false;
-    auto oriented = orientByReference(image, c, flipped, ref);
+    orientByReference(image, c, flipped, ref, oriented);
     check(oriented.orientationValid && cv::norm(oriented.intersections[0] - cv::Point2d(140, 530)) < .01,
           "Printed-feature orientation failed");
-    auto autoOriented = orientByReference(image, c, b, ref);
+    orientByReference(image, c, b, ref, autoOriented);
     check(autoOriented.orientationValid && cv::norm(autoOriented.intersections[0] - cv::Point2d(140, 530)) < 4,
           "Auto-grid chirality/orientation mismatch");
     auto symmetric = ref;
     symmetric.patch = cv::Mat::ones(ref.patch.size(), CV_8U) * 120;
-    check(!orientByReference(image, c, exact, symmetric).orientationValid, "Ambiguous texture accepted");
+    orientByReference(image, c, exact, symmetric, ambiguous);
+    check(!ambiguous.orientationValid, "Ambiguous texture accepted");
     cv::Mat blank(c.imageSize, CV_8UC3, cv::Scalar::all(255));
-    check(!locateBoard(blank, c, "blank").geometryValid, "Blank image accepted as board");
+    Board blankBoard = b;
+    locateBoard(blank, c, "blank", {}, blankBoard);
+    check(!blankBoard.geometryValid && cv::norm(blankBoard.intersections[0]) == 0,
+          "Blank image accepted as board or retained old points");
     auto affine = cv::getRotationMatrix2D({340, 305}, 20, 1);
     affine.at<double>(0, 2) += 40;
     affine.at<double>(1, 2) += 20;
     cv::Mat moved;
     cv::warpAffine(image, moved, affine, c.imageSize, cv::INTER_LINEAR, cv::BORDER_CONSTANT, cv::Scalar::all(240));
-    check(locateBoard(moved, c, "rotated").geometryValid, "Rotated natural grid not found");
+    Board rotated;
+    locateBoard(moved, c, "rotated", {}, rotated);
+    check(rotated.geometryValid, "Rotated natural grid not found");
 }
 } // namespace
 int main()

@@ -279,11 +279,13 @@ cv::Point2d ImageTransform::toOriginal(cv::Point2d p, DetectionSpace space) cons
             "Detection outside source frame");
     return p;
 }
-Observation assignPieces(const Camera &camera, const Board &board, const std::string &frameId,
-                         const std::vector<Detection> &detections, const ImageTransform &transform,
-                         DetectionSpace space, bool clear, double minScore, double maxDistance)
+void assignPieces(const Camera &camera, const Board &board, const std::string &frameId,
+                  const std::vector<Detection> &detections, const ImageTransform &transform, DetectionSpace space,
+                  bool clear, const AssignmentOptions &options, Observation &o)
 {
-    Observation o;
+    double minScore = options.minConfidence;
+    double maxDistance = options.maxGridDistance;
+    o = {};
     o.cameraId = camera.id;
     o.frameId = frameId;
     o.pieces.fill(Unknown);
@@ -294,7 +296,7 @@ Observation assignPieces(const Camera &camera, const Board &board, const std::st
         transform.sourceSize != camera.imageSize)
     {
         o.issues.push_back("geometry/orientation/camera/frame mismatch");
-        return o;
+        return;
     }
     if (clear)
         o.pieces.fill(Empty);
@@ -340,7 +342,6 @@ Observation assignPieces(const Camera &camera, const Board &board, const std::st
         }
     }
     o.valid = o.issues.empty();
-    return o;
 }
 Stabilizer::Stabilizer(int frames, double tolerance) : needed_(frames), tolerance_(tolerance)
 {
@@ -353,21 +354,21 @@ void Stabilizer::reset()
     previous_ = Observation{};
     previousBoard_ = Board{};
 }
-Observation Stabilizer::update(const Board &board, const Observation &input)
+void Stabilizer::update(const Board &board, const Observation &input, Observation &result)
 {
-    auto result = input;
+    result = input;
     if (!input.valid || !board.geometryValid || !board.orientationValid || input.cameraId != board.cameraId ||
         input.frameId != board.frameId)
     {
         reset();
         result.valid = false;
-        return result;
+        return;
     }
     if (input.frameId == previous_.frameId)
     {
         result.valid = false;
         result.issues.push_back("repeated frame is not new evidence");
-        return result;
+        return;
     }
     bool same = count_ > 0 && input.cameraId == previous_.cameraId && input.pieces == previous_.pieces;
     for (int i : {0, 8, 81, 89})
@@ -377,23 +378,29 @@ Observation Stabilizer::update(const Board &board, const Observation &input)
     previousBoard_ = board;
     result.valid = count_ >= needed_;
     if (!result.valid) result.issues.push_back("waiting for stable distinct frames");
-    return result;
 }
-std::optional<TargetXY> gridTarget(const PlaneMap &map, const Board &board, int c, int r,
-                                   const std::string &currentFrameId)
+bool gridTarget(const PlaneMap &map, const Board &board, int c, int r, const std::string &currentFrameId,
+                TargetXY &target)
 {
+    target = {};
     if (!map.accepted || !board.geometryValid || !board.orientationValid || map.camera.id != board.cameraId ||
         !map.camera.sameGeometry(board.geometryCamera) || currentFrameId.empty() || currentFrameId != board.frameId ||
         c < 0 || c >= Columns || r < 0 || r >= Rows)
-        return std::nullopt;
+        return false;
     auto pixel = board.intersections[r * Columns + c];
-    if (!contains(map.validPixelHull, pixel)) return std::nullopt;
-    return TargetXY{c, r, project(map.pixelToBase, pixel), map.planeZmm, map.id, currentFrameId};
+    if (!contains(map.validPixelHull, pixel)) return false;
+    target.column = c;
+    target.row = r;
+    target.baseMm = project(map.pixelToBase, pixel);
+    target.planeZmm = map.planeZmm;
+    target.calibrationId = map.id;
+    target.frameId = currentFrameId;
+    return true;
 }
-cv::Mat drawBoard(const cv::Mat &image, const Board &board, const Observation *o)
+void drawBoard(const cv::Mat &image, const Board &board, const Observation *o, cv::Mat &out)
 {
-    auto out = image.clone();
-    if (!board.geometryValid) return out;
+    out = image.clone();
+    if (!board.geometryValid) return;
     for (int r = 0; r < Rows; ++r)
         for (int c = 0; c < Columns; ++c)
         {
@@ -410,6 +417,5 @@ cv::Mat drawBoard(const cv::Mat &image, const Board &board, const Observation *o
         }
     cv::putText(out, board.orientationValid ? "ORIENTATION CONFIRMED" : "ORIENTATION UNKNOWN - NO ROBOT TARGETS",
                 {10, 24}, cv::FONT_HERSHEY_SIMPLEX, 0.55, {0, 0, 255}, 2);
-    return out;
 }
 } // namespace scara

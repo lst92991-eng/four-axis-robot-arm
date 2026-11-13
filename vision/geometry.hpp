@@ -2,7 +2,6 @@
 #include "yolo.hpp"
 #include <opencv2/core.hpp>
 #include <array>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -65,8 +64,8 @@ struct Board
 };
 
 // Corner order MUST be logical (0,0),(8,0),(8,9),(0,9), NOT screen top-left order.
-Board boardFromCorners(const Camera &, const std::string &frameId, const std::array<cv::Point2d, 4> &rawCorners,
-                       bool canonicalOrderConfirmed);
+void boardFromCorners(const Camera &camera, const std::string &frameId, const std::array<cv::Point2d, 4> &rawCorners,
+                      bool canonicalOrderConfirmed, Board &board);
 struct LocateOptions
 {
     double minAreaFraction = 0.08;
@@ -74,9 +73,10 @@ struct LocateOptions
     double minGridScore = 0.50;
 };
 // Searches natural border/grid features. A successful geometry result is deliberately UNORIENTED.
-Board locateBoard(const cv::Mat &raw, const Camera &, const std::string &frameId, const LocateOptions & = {});
+void locateBoard(const cv::Mat &raw, const Camera &camera, const std::string &frameId, const LocateOptions &options,
+                 Board &board);
 // A screen confirmation of which end is canonical, after inspecting the 90-point overlay.
-Board confirmOrientation(const Board &, bool rotate180);
+void confirmOrientation(const Board &input, bool rotate180, Board &board);
 
 struct OrientationReference
 {
@@ -85,12 +85,13 @@ struct OrientationReference
     std::string cameraId;
     double minCorrelation = 0.70, minMargin = 0.12;
 };
-cv::Mat rectifiedBoard(const cv::Mat &geometricImage, const Board &);
-OrientationReference makeOrientationReference(const cv::Mat &raw, const Camera &, const Board &,
-                                              cv::Rect patchInRectifiedImage);
-Board orientByReference(const cv::Mat &raw, const Camera &, const Board &, const OrientationReference &);
+void rectifiedBoard(const cv::Mat &geometricImage, const Board &board, cv::Mat &image);
+void makeOrientationReference(const cv::Mat &raw, const Camera &camera, const Board &board,
+                              cv::Rect patchInRectifiedImage, OrientationReference &reference);
+void orientByReference(const cv::Mat &raw, const Camera &camera, const Board &input,
+                       const OrientationReference &reference, Board &board);
 void saveOrientationReference(const std::string &, const OrientationReference &);
-OrientationReference loadOrientationReference(const std::string &);
+void loadOrientationReference(const std::string &path, OrientationReference &reference);
 
 enum class DetectionSpace
 {
@@ -115,14 +116,19 @@ struct Observation
     bool valid = false; // Single-frame result; use Stabilizer before committing a board state.
     std::vector<std::string> issues;
 };
-Observation assignPieces(const Camera &, const Board &, const std::string &detectionFrameId,
-                         const std::vector<Detection> &, const ImageTransform &, DetectionSpace, bool sceneClear,
-                         double minConfidence = 0.50, double maxGridDistance = 0.35);
+struct AssignmentOptions
+{
+    double minConfidence = 0.50;   // 接受的最小识别分数。
+    double maxGridDistance = 0.35; // 棋子中心距最近交点，单位为格距。
+};
+void assignPieces(const Camera &camera, const Board &board, const std::string &detectionFrameId,
+                  const std::vector<Detection> &detections, const ImageTransform &transform, DetectionSpace space,
+                  bool sceneClear, const AssignmentOptions &options, Observation &observation);
 class Stabilizer
 {
   public:
     explicit Stabilizer(int frames = 3, double cornerTolerancePixels = 2.0);
-    Observation update(const Board &, const Observation &);
+    void update(const Board &board, const Observation &input, Observation &result);
     void reset();
 
   private:
@@ -141,8 +147,8 @@ struct TargetXY
 };
 // Pure calculation: validates orientation, camera identity and calibrated coverage.
 // IK reachability / Z approach / TCP compensation are responsibilities of the motion caller.
-std::optional<TargetXY> gridTarget(const PlaneMap &, const Board &, int column, int row,
-                                   const std::string &currentFrameId);
+bool gridTarget(const PlaneMap &map, const Board &board, int column, int row, const std::string &currentFrameId,
+                TargetXY &target);
 cv::Point2d project(const cv::Matx33d &, cv::Point2d);
-cv::Mat drawBoard(const cv::Mat &geometricImage, const Board &, const Observation * = nullptr);
+void drawBoard(const cv::Mat &geometricImage, const Board &board, const Observation *observation, cv::Mat &image);
 } // namespace scara

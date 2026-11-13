@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <iostream>
 #include <algorithm>
+#include <optional>
 
 // Offline repeatability against known image transforms. Not a physical millimetre accuracy test.
 int main(int argc, char **argv)
@@ -20,15 +21,20 @@ int main(int argc, char **argv)
         auto image = cv::imdecode(encoded, cv::IMREAD_COLOR);
         if (image.empty()) throw std::runtime_error("No source image");
         std::optional<scara::OrientationReference> orientation;
-        if (argc == 4) orientation = scara::loadOrientationReference(argv[3]);
+        if (argc == 4)
+        {
+            orientation.emplace();
+            scara::loadOrientationReference(argv[3], *orientation);
+        }
         scara::Camera camera;
         camera.id = orientation ? orientation->cameraId : "offline-image-repeatability-only";
         camera.imageSize = image.size();
-        auto reference = scara::locateBoard(image, camera, "reference");
+        scara::Board reference;
+        scara::locateBoard(image, camera, "reference", {}, reference);
         if (!reference.geometryValid) throw std::runtime_error("Reference grid not found");
         if (orientation)
         {
-            reference = scara::orientByReference(image, camera, reference, *orientation);
+            scara::orientByReference(image, camera, reference, *orientation, reference);
             if (!reference.orientationValid) throw std::runtime_error("Reference orientation ambiguous");
         }
         cv::Point2d center;
@@ -47,11 +53,12 @@ int main(int argc, char **argv)
             cv::Mat moved;
             cv::warpAffine(image, moved, affine, image.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT,
                            cv::Scalar::all(230));
-            auto actual = scara::locateBoard(moved, camera, "rotation-" + std::to_string(angle));
+            scara::Board actual;
+            scara::locateBoard(moved, camera, "rotation-" + std::to_string(angle), {}, actual);
             if (!actual.geometryValid) throw std::runtime_error("Grid not found at rotation " + std::to_string(angle));
             if (orientation)
             {
-                actual = scara::orientByReference(moved, camera, actual, *orientation);
+                scara::orientByReference(moved, camera, actual, *orientation, actual);
                 if (!actual.orientationValid)
                     throw std::runtime_error("Printed-feature orientation ambiguous at " + std::to_string(angle));
             }
@@ -73,7 +80,9 @@ int main(int argc, char **argv)
             }
             std::string name = "rotation-" + std::to_string(angle) + ".png";
             std::vector<unsigned char> png;
-            cv::imencode(".png", scara::drawBoard(moved, actual), png);
+            cv::Mat overlay;
+            scara::drawBoard(moved, actual, nullptr, overlay);
+            cv::imencode(".png", overlay, png);
             scara::writeBytes((directory / name).u8string(), {png.begin(), png.end()});
             std::cout << angle << " deg: grid score=" << actual.gridScore << " max=" << maximum
                       << " rms=" << std::sqrt(squared / scara::Cells) << " px\n";

@@ -77,6 +77,12 @@
       "title": "几何标定与图像输出参数",
       "record": "round-01.json",
       "checks": "7 CTest + 55 Python + 13 geometry outputs + visual replay"
+    },
+    {
+      "round": 2,
+      "title": "棋盘与棋局坐标的显式数据流",
+      "record": "round-02.json",
+      "checks": "7 CTest + 55 Python + identical geometry and vision outputs"
     }
   ],
   "known_limits": [

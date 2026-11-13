@@ -20,7 +20,9 @@ scara::Camera camera()
 }
 scara::Board grid()
 {
-    return scara::boardFromCorners(camera(), "frame-1", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true);
+    scara::Board result;
+    scara::boardFromCorners(camera(), "frame-1", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, result);
+    return result;
 }
 scara::Observation observed(const chess::Board &board)
 {
@@ -57,50 +59,60 @@ int main()
         const auto initial = chess::initialBoard();
         auto g = grid();
         auto o = observed(initial);
-        auto c = scara::chessObservation(g, o, true);
+        chess::Observation c, checked;
+        scara::chessObservation(g, o, true, c);
         check(c.complete && c.stable && c.board == initial,
               "All 90 cells must preserve piece identity and reverse rows");
-        check(!scara::chessObservation(g, o, false).stable, "Unstable frames accepted");
+        scara::chessObservation(g, o, false, checked);
+        check(!checked.stable, "Unstable frames accepted");
         auto bad = o;
         bad.pieces[0] = scara::Unknown;
-        check(!scara::chessObservation(g, bad, true).complete, "Unknown became empty");
+        scara::chessObservation(g, bad, true, checked);
+        check(!checked.complete, "Unknown became empty");
         bad = o;
         bad.pieces[0] = 99;
-        check(!scara::chessObservation(g, bad, true).complete, "Invalid class accepted");
+        scara::chessObservation(g, bad, true, checked);
+        check(!checked.complete, "Invalid class accepted");
         bad = o;
         bad.frameId = "old-frame";
-        check(!scara::chessObservation(g, bad, true).complete, "Mixed frames accepted");
+        scara::chessObservation(g, bad, true, checked);
+        check(!checked.complete, "Mixed frames accepted");
         bad = o;
         bad.issues.push_back("duplicate cell");
-        check(!scara::chessObservation(g, bad, true).complete, "Reported vision conflict accepted");
+        scara::chessObservation(g, bad, true, checked);
+        check(!checked.complete, "Reported vision conflict accepted");
         auto unoriented = g;
         unoriented.orientationValid = false;
-        check(!scara::chessObservation(unoriented, o, true).complete, "Unknown board orientation accepted");
+        scara::chessObservation(unoriented, o, true, checked);
+        check(!checked.complete, "Unknown board orientation accepted");
 
         chess::Move human, robot;
         std::string error;
         chess::Board afterHuman;
         check(chess::parseMove("a3a4", human) && chess::uci(human) == "a3a4", "UCI conversion failed");
         auto p = plane();
-        auto xy = scara::chessMoveTargets(p, g, human, "frame-1");
-        check(xy && xy->from.column == 0 && xy->from.row == 3 && xy->to.row == 4, "UCI mapped to wrong grid rank");
-        check(cv::norm(xy->from.baseMm - cv::Point2d(10, 42)) < .001, "Source target XY incorrect");
-        check(cv::norm(xy->to.baseMm - cv::Point2d(10, 36)) < .001, "Destination target XY incorrect");
-        check(!scara::chessMoveTargets(p, g, human, "stale"), "Stale target accepted");
-        check(!scara::chessMoveTargets(p, unoriented, human, "frame-1"), "Unoriented target accepted");
+        scara::ChessMoveTargets xy, rejected;
+        bool targetsValid = scara::chessMoveTargets(p, g, human, "frame-1", xy);
+        check(targetsValid && xy.from.column == 0 && xy.from.row == 3 && xy.to.row == 4,
+              "UCI mapped to wrong grid rank");
+        check(cv::norm(xy.from.baseMm - cv::Point2d(10, 42)) < .001, "Source target XY incorrect");
+        check(cv::norm(xy.to.baseMm - cv::Point2d(10, 36)) < .001, "Destination target XY incorrect");
+        check(!scara::chessMoveTargets(p, g, human, "stale", rejected), "Stale target accepted");
+        check(!scara::chessMoveTargets(p, unoriented, human, "frame-1", rejected), "Unoriented target accepted");
 
         chess::Game game;
         const auto base = game.baseFen();
         check(chess::applyMove(initial, true, human, afterHuman, error), "Fixture human move failed");
-        check(game.acceptHuman(scara::chessObservation(g, observed(afterHuman), true), {"a3a4"}, human),
-              "Human move not accepted");
+        scara::chessObservation(g, observed(afterHuman), true, checked);
+        check(game.acceptHuman(checked, {"a3a4"}, human), "Human move not accepted");
         check(game.history() == "a3a4" && !game.redToMove() && game.baseFen() == base,
               "Base FEN/history/turn corrupted");
-        auto beforeRobot = scara::chessObservation(g, observed(afterHuman), true);
+        chess::Observation beforeRobot, expected;
+        scara::chessObservation(g, observed(afterHuman), true, beforeRobot);
         check(game.prepareRobot(beforeRobot, "a6a5", {"a6a5"}, robot), "Robot plan failed");
         check(game.pending() && game.board() == afterHuman && game.history() == "a3a4",
               "Planned move committed too soon");
-        auto expected = scara::chessObservation(g, observed(game.expectedBoard()), true);
+        scara::chessObservation(g, observed(game.expectedBoard()), true, expected);
         check(!game.confirmRobot(expected, false) && game.pending() && game.history() == "a3a4",
               "Failed motion committed history");
         check(!game.confirmRobot(beforeRobot, true) && game.pending(), "Wrong resulting board accepted");
