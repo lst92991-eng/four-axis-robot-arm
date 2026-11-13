@@ -1,7 +1,6 @@
 #include "geometry.hpp"
 #include "io.hpp"
 #include <opencv2/geometry.hpp>
-#include <opencv2/calib.hpp>
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
 #include <cmath>
@@ -59,7 +58,7 @@ void writePairs(cv::FileStorage &fs, const char *key, const std::vector<PointPai
 }
 } // namespace
 
-void readPairs(const cv::FileNode &node, std::vector<PointPair> &pairs)
+static void readPairs(const cv::FileNode &node, std::vector<PointPair> &pairs)
 {
     pairs.clear();
     require(node.isSeq(), "Missing point pair sequence");
@@ -180,13 +179,12 @@ void assignPieces(const Board &board, const std::string &frameId, const std::vec
     observation = {};
     observation.frameId = frameId;
     observation.pieces.fill(Unknown);
-    if (!board.geometryValid || !board.orientationValid || frameId.empty() || frameId != board.frameId)
-        observation.issues.push_back("geometry/orientation/frame unavailable");
-    if (!observation.issues.empty()) return;
+    observation.valid = board.geometryValid && board.orientationValid && !frameId.empty();
+    if (!observation.valid) return;
     if (clear)
         observation.pieces.fill(Empty);
     else
-        observation.issues.push_back("scene not declared clear");
+        observation.valid = false;
     constexpr double MinScore = .50, MaxGridDistance = .35; // 分数与格距阈值保持原值。
     std::array<bool, Cells> occupied{};
     auto inverse = board.gridToPixel.inv();
@@ -199,7 +197,7 @@ void assignPieces(const Board &board, const std::string &frameId, const std::vec
                      center.x < ImageWidth && center.y < ImageHeight;
         if (!valid)
         {
-            observation.issues.push_back("invalid or uncertain detection");
+            observation.valid = false;
             continue;
         }
         auto homogeneous = inverse * cv::Vec3d(center.x, center.y, 1);
@@ -207,16 +205,14 @@ void assignPieces(const Board &board, const std::string &frameId, const std::vec
         bool inside = finite(grid) && grid.x > -.5 && grid.y > -.5 && grid.x < Columns - .5 && grid.y < Rows - .5;
         if (!inside || cv::norm(grid - cv::Point2d(std::round(grid.x), std::round(grid.y))) > MaxGridDistance)
         {
-            observation.issues.push_back("piece outside grid gate");
+            observation.valid = false;
             continue;
         }
         int index = int(std::lround(grid.y)) * Columns + int(std::lround(grid.x));
         observation.pieces[index] = occupied[index] ? Unknown : piece.classId;
-        observation.confidence[index] = occupied[index] ? 0 : piece.confidence;
-        if (occupied[index]) observation.issues.push_back("multiple pieces assigned to one intersection");
+        if (occupied[index]) observation.valid = false;
         occupied[index] = true;
     }
-    observation.valid = observation.issues.empty();
 }
 void Stabilizer::reset()
 {
@@ -234,21 +230,17 @@ void Stabilizer::update(const Observation &input, Observation &result)
     if (input.frameId == previous_.frameId)
     {
         result.valid = false;
-        result.issues.push_back("repeated frame is not new evidence");
         return;
     }
     bool same = count_ > 0 && input.pieces == previous_.pieces;
     count_ = same ? std::min(count_ + 1, 3) : 1;
     previous_ = input;
     result.valid = count_ >= 3;
-    if (!result.valid) result.issues.push_back("waiting for stable distinct frames");
 }
-bool gridTarget(const PlaneMap &map, const Board &board, int c, int r, const std::string &currentFrameId,
-                cv::Point2d &baseMm)
+bool gridTarget(const PlaneMap &map, const Board &board, int c, int r, cv::Point2d &baseMm)
 {
     baseMm = {};
-    if (!map.accepted || !board.geometryValid || !board.orientationValid || currentFrameId.empty() ||
-        currentFrameId != board.frameId || c < 0 || c >= Columns || r < 0 || r >= Rows)
+    if (!map.accepted || !board.geometryValid || !board.orientationValid || c < 0 || c >= Columns || r < 0 || r >= Rows)
         return false;
     auto pixel = board.intersections[r * Columns + c];
     if (map.validPixelHull.size() < 3 || cv::pointPolygonTest(map.validPixelHull, pixel, true) < -1e-4) return false;

@@ -16,16 +16,15 @@ struct Move
 struct Observation
 {
     Board board{};
-    bool complete = false;
-    bool stable = false;
-    bool duplicate = false;
+    bool valid = false; // 已完成识别、不同帧稳定确认和棋子数量检查。
 };
 
 void initialBoard(Board &board);
 bool parseMove(const std::string &text, Move &move);
 bool uci(const Move &move, std::string &text);
 bool validBoard(const Board &board, std::string &error);
-bool fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
+// 只格式化已验证的盘面；Game_reset/走法确认负责盘面有效性。
+void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
 // 只检查搬子数据，不重复实现象棋规则；调用者必须先查引擎合法走法表。
 bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error);
 bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
@@ -63,7 +62,7 @@ bool Game_acceptHuman(Game &game, const Observation &after, const std::vector<st
 bool Game_prepareRobot(Game &game, const Observation &before, const std::string &choice,
                        const std::vector<std::string> &legal, Move &move);
 bool Game_confirmRobot(Game &game, const Observation &after, bool armSucceeded);
-// 无合法走法即负；复杂重复局面仍交人工裁定。
+// legal须来自成功的Pikafish::legalMoves；无合法走法即负，复杂重复局面交人工裁定。
 bool Game_judge(Game &game, const std::vector<std::string> &legal);
 // 同意和棋或认输时，提交明确结果；正在搬子时不能结束对局。
 bool Game_finish(Game &game, Result outcome);

@@ -196,7 +196,7 @@ int main()
         std::string detail;
         chess::parseMove("a3a4", human);
         chess::applyMove(game.board, true, human, observed.board, detail);
-        observed.complete = observed.stable = true;
+        observed.valid = true;
         check(chess::Game_acceptHuman(game, observed, {"a3a4"}, human), "Fixture move confirmation failed");
         check(engine.think(game, 120, best) && best == "a6a5", "Best move decode failed");
         check(mock::position == "position fen " + fen + " moves a3a4", "Full FEN/history was not sent");

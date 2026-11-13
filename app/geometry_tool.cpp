@@ -3,7 +3,6 @@
 #include <opencv2/imgcodecs.hpp>
 #include <filesystem>
 #include <iostream>
-#include <cmath>
 
 namespace
 {
@@ -15,9 +14,7 @@ void require(bool v, const char *s)
 double number(const cv::FileNode &n)
 {
     require(n.isReal() || n.isInt(), "A real measured numeric value is required");
-    double v = (double)n;
-    require(std::isfinite(v), "Fill all measured values; NaN placeholders are not calibration");
-    return v;
+    return (double)n; // 四角的有限值和范围由boardFromCorners核对。
 }
 std::string relativePath(const std::string &config, const std::string &value)
 {
@@ -29,9 +26,8 @@ void imageFile(const std::string &path, cv::Mat &image)
 {
     auto bytes = readBytes(path);
     std::vector<unsigned char> data(bytes.begin(), bytes.end());
-    auto im = cv::imdecode(data, cv::IMREAD_COLOR);
-    require(!im.empty(), "Cannot decode image");
-    image = im;
+    image = cv::imdecode(data, cv::IMREAD_COLOR);
+    require(!image.empty(), "Cannot decode image");
 }
 void saveImage(const std::string &path, const cv::Mat &image)
 {
@@ -40,7 +36,7 @@ void saveImage(const std::string &path, const cv::Mat &image)
     writeBytes(path, {b.begin(), b.end()});
 }
 // 四角依次为红方左下、右下、黑方右上、左上；方向由首次示教确认。
-void getBoard(const cv::FileStorage &file, const std::string &frame, Board &board)
+void getBoard(const cv::FileStorage &file, Board &board)
 {
     require((std::string)file["mode"] == "manual", "Fixed board requires saved manual corners");
     auto points = file["corners"];
@@ -51,7 +47,7 @@ void getBoard(const cv::FileStorage &file, const std::string &frame, Board &boar
         require(points[i].size() == 2, "Corner must have two coordinates");
         corners[i] = {number(points[i][0]), number(points[i][1])};
     }
-    boardFromCorners(frame, corners, (int)file["canonical_order_confirmed"] == 1, board);
+    boardFromCorners(corners, (int)file["canonical_order_confirmed"] == 1, board);
 }
 void inspect(const std::string &config, const std::string &output)
 {
@@ -63,7 +59,7 @@ void inspect(const std::string &config, const std::string &output)
     require(image.size() == cv::Size(ImageWidth, ImageHeight), "Image size differs from camera profile");
     Board board;
     PlaneMap plane;
-    getBoard(fs, frame, board);
+    getBoard(fs, board);
     if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
         loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
     auto result = memoryStorage(true);
@@ -77,7 +73,7 @@ void inspect(const std::string &config, const std::string &output)
                 auto p = board.intersections[r * Columns + c];
                 result << "{" << "column" << c << "row" << r << "pixel_geometric" << "[" << p.x << p.y << "]";
                 cv::Point2d baseMm;
-                bool targetValid = gridTarget(plane, board, c, r, frame, baseMm);
+                bool targetValid = gridTarget(plane, board, c, r, baseMm);
                 result << "base_xy_valid" << (int)targetValid;
                 if (targetValid)
                     result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]" << "plane_z_mm" << plane.planeZmm;

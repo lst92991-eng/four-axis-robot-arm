@@ -9,10 +9,11 @@
     "vision/io.hpp": "84c9167b1fb9d867b2f79ff14dab294083ed57ff13093b4d3d6edeb08c5d673f",
     "vision/yolo.hpp": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
   },
-  "driver_sha256": "b2b098127ac60163310fb84dcfb867695527ed783d2dc33eb0fd727676d87317",
+  "driver_sha256": "51a2c0275b246d46c00d46cdb01fb9ac53721c61d821ebdf098ac03b6e61689c",
   "cases": 14400,
-  "baseline_digest": "25f76ca44edfd6eb",
-  "comparison": "Observation validity, 90 piece identities, exact confidence bits; error strings intentionally excluded.",
+  "baseline_digest": "972399c77b6cf003",
+  "comparison": "Observation validity and all 90 piece identities; unused cell-confidence array and issue text retired. Detector scores remain in unchanged YOLO and visual replay.",
   "scope": "Synthetic input equivalence, not additional accuracy or hardware samples.",
-  "driver_api_update": "Old-API branch regenerated after adapting the current fixed-camera API; same 14400-case digest 25f76ca44edfd6eb."
+  "driver_api_update": "Empty frame case replaces dynamic-board frame mismatch (retired for fixed XY); regenerated from old source and compared to current source.",
+  "previous_digest_with_cell_confidence": "25f76ca44edfd6eb"
 }

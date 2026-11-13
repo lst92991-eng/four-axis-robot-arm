@@ -19,6 +19,8 @@ struct Session
     cv::Point2d capturePlaceMm;
 };
 
+// 将稳定的格点身份转换为黑方起算的9x10棋局数组。
+void chessObservation(const Observation &source, chess::Observation &result);
 void Session_observe(Session &session, const std::string &frameId, const std::vector<Detection> &pieces,
                      bool sceneClear);
 bool Session_acceptHuman(Session &session, const std::vector<std::string> &legal, chess::Move &move);

@@ -42,10 +42,10 @@ PlaneMap plane()
     calibratePlane("synthetic-map-do-not-use-on-robot", 12, 0.001, fit, validation, result);
     return result;
 }
-Board board(const std::string &frame = "1")
+Board board()
 {
     Board result;
-    boardFromCorners(frame, {{{150, 80}, {500, 100}, {480, 400}, {130, 380}}}, true, result);
+    boardFromCorners({{{150, 80}, {500, 100}, {480, 400}, {130, 380}}}, true, result);
     return result;
 }
 void calibrationTests()
@@ -99,17 +99,16 @@ void targetTests()
     auto p = plane();
     auto b = board();
     cv::Point2d t, rejected;
-    check(gridTarget(p, b, 3, 4, "1", t), "Target missing");
+    check(gridTarget(p, b, 3, 4, t), "Target missing");
     check(cv::norm(t - project(BaseH, b.intersections[39])) < .001, "Wrong target XY");
-    check(!gridTarget(p, b, 9, 0, "1", rejected) && !gridTarget(p, b, 0, 0, "old", rejected),
-          "Bounds/stale frame accepted");
+    check(!gridTarget(p, b, 9, 0, rejected), "Out-of-range column accepted");
     auto unknown = b;
     unknown.orientationValid = false;
-    check(!gridTarget(p, unknown, 3, 4, "1", rejected), "Unoriented board generated target");
+    check(!gridTarget(p, unknown, 3, 4, rejected), "Unoriented board generated target");
     auto limited = p;
     limited.validPixelHull = {{20, 20}, {80, 20}, {80, 80}, {20, 80}};
     rejected = t;
-    check(!gridTarget(limited, b, 3, 4, "1", rejected), "Calibration extrapolation accepted");
+    check(!gridTarget(limited, b, 3, 4, rejected), "Calibration extrapolation accepted");
     check(rejected == cv::Point2d(), "Rejected output retained an old target");
     double a = .15, co = std::cos(a), si = std::sin(a);
     cv::Matx33d move(co, -si, 55, si, co, -25, 0, 0, 1);
@@ -119,12 +118,12 @@ void targetTests()
         corners[j++] = project(move, b.intersections[i]);
     Board moved;
     cv::Point2d mt;
-    boardFromCorners("2", corners, true, moved);
-    bool movedValid = gridTarget(p, moved, 3, 4, "2", mt);
+    boardFromCorners(corners, true, moved);
+    bool movedValid = gridTarget(p, moved, 3, 4, mt);
     check(movedValid && cv::norm(mt - project(BaseH, project(move, b.intersections[39]))) < .001,
           "Moved board incorrectly requires/reuses old robot calibration");
     check(cv::norm(mt - t) > 1, "Moved board target did not change");
-    rejects([&] { boardFromCorners("x", {{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
+    rejects([&] { boardFromCorners({{{100, 100}, {400, 400}, {400, 100}, {100, 400}}}, true, moved); });
 }
 void assignmentTests()
 {
@@ -138,8 +137,8 @@ void assignmentTests()
     check(!hidden.valid && hidden.pieces[0] == Unknown, "Occluded cell treated as empty");
     assignPieces(b, "1", {d, d}, true, collision);
     check(!collision.valid && collision.pieces[39] == Unknown, "Collision silently resolved");
-    assignPieces(b, "wrong", {d}, true, stale);
-    check(!stale.valid, "Mixed frames accepted");
+    assignPieces(b, "", {d}, true, stale);
+    check(!stale.valid, "Missing observation frame identity accepted");
     auto p = project(b.gridToPixel, {3.48, 4});
     d.bbox = {p.x - 12, p.y - 12, 24, 24};
     assignPieces(b, "1", {d}, true, offGrid);
@@ -149,13 +148,13 @@ void assignmentTests()
     check(!stableResult.valid, "Single frame stable");
     stable.update(o, stableResult);
     check(!stableResult.valid, "Repeated frame counted");
-    b.frameId = o.frameId = "2";
+    o.frameId = "2";
     stable.update(o, stableResult);
     check(!stableResult.valid, "Two frames stable");
-    b.frameId = o.frameId = "3";
+    o.frameId = "3";
     stable.update(o, stableResult);
     check(stableResult.valid, "Three frames did not stabilize");
-    b.frameId = o.frameId = "4";
+    o.frameId = "4";
     stable.reset(); // 重新示教固定棋盘后，重新累计稳定帧。
     stable.update(o, stableResult);
     check(!stableResult.valid, "New fixed layout failed to restart stability");

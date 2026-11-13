@@ -16,9 +16,8 @@ void require(bool value, const char *message)
 }
 } // namespace
 
-void boardFromCorners(const std::string &frame, const std::array<cv::Point2d, 4> &raw, bool confirmed, Board &board)
+void boardFromCorners(const std::array<cv::Point2d, 4> &raw, bool confirmed, Board &board)
 {
-    require(!frame.empty(), "Frame ID required");
     std::vector<cv::Point2f> p;
     for (auto v : raw)
     {
@@ -33,7 +32,6 @@ void boardFromCorners(const std::string &frame, const std::array<cv::Point2d, 4>
     Board b;
     std::copy(matrix.ptr<double>(), matrix.ptr<double>() + 9, b.gridToPixel.val);
     require(std::abs(cv::determinant(matrix)) > 1e-14, "Degenerate board quadrilateral");
-    b.frameId = frame;
     for (int row = 0; row < Rows; ++row)
         for (int col = 0; col < Columns; ++col)
             b.intersections[row * Columns + col] = project(b.gridToPixel, {double(col), double(row)});

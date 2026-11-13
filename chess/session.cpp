@@ -1,15 +1,35 @@
 #include "session.hpp"
-#include "vision_bridge.hpp"
 
 namespace scara
 {
+void chessObservation(const Observation &source, chess::Observation &result)
+{
+    result = {};
+    result.valid = source.valid && !source.frameId.empty();
+    for (int rank = 0; rank < Rows; ++rank)
+        for (int col = 0; col < Columns; ++col)
+        {
+            const int piece = source.pieces[rank * Columns + col];
+            char symbol = '?';
+            if (piece == Empty)
+                symbol = '.';
+            else if (piece >= 0 && piece < int(sizeof(PieceSymbols) - 1))
+                symbol = PieceSymbols[piece];
+            else
+                result.valid = false;
+            result.board[Rows - 1 - rank][col] = symbol;
+        }
+    std::string error;
+    if (result.valid && !chess::validBoard(result.board, error)) result.valid = false;
+}
+
 void Session_observe(Session &session, const std::string &frameId, const std::vector<Detection> &pieces,
                      bool sceneClear)
 {
     Observation current, stable;
     FixedBoard_assign(session.layout, frameId, pieces, sceneClear, current);
     session.stable.update(current, stable);
-    chessObservation(session.layout.grid, stable, stable.valid, session.observed);
+    chessObservation(stable, session.observed);
 }
 
 bool Session_acceptHuman(Session &session, const std::vector<std::string> &legal, chess::Move &move)
@@ -26,10 +46,8 @@ bool Session_plan(Session &session, const std::string &choice, const std::vector
     bool ready = chess::Game_prepareRobot(preparedGame, session.observed, choice, legal, move);
     if (ready)
     {
-        const std::string &frame = session.layout.grid.frameId;
-        bool sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, frame, source);
-        bool destinationMapped =
-            FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, frame, destination);
+        bool sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
+        bool destinationMapped = FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, destination);
         ready = sourceMapped && destinationMapped;
         bool capture = session.game.board[move.toRow][move.toCol] != '.';
         if (ready && capture)

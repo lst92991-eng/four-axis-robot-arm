@@ -3,7 +3,7 @@
 
 namespace scara
 {
-// 棋盘和基座固定后，保存一次网格与90个基座目标；每帧只更新棋子和帧号。
+// 棋盘和基座固定后，保存一次网格与90个基座目标；每帧只更新棋子；帧号用于识别稳定确认。
 struct FixedBoard
 {
     Board grid;
@@ -14,5 +14,5 @@ struct FixedBoard
 bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixed);
 void FixedBoard_assign(FixedBoard &fixed, const std::string &frameId, const std::vector<Detection> &pieces,
                        bool sceneClear, Observation &observation);
-bool FixedBoard_target(const FixedBoard &fixed, int column, int row, const std::string &frameId, cv::Point2d &baseMm);
+bool FixedBoard_target(const FixedBoard &fixed, int column, int row, cv::Point2d &baseMm);
 } // namespace scara

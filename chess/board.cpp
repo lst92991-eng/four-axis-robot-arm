@@ -48,23 +48,8 @@ bool applyKnownBoard(const Board &before, bool redToMove, const Move &move, Boar
 
 bool observed(const Observation &value, std::string &error)
 {
-    if (!value.complete || !value.stable || value.duplicate)
-        return reject(error, "盘面不完整、不稳定或检测重复，等待重新识别");
+    if (!value.valid) return reject(error, "盘面不完整、不稳定或检测重复，等待重新识别");
     return validBoard(value.board, error);
-}
-
-bool legalList(const Board &board, bool redToMove, const std::vector<std::string> &legal, std::string &error)
-{
-    if (!validBoard(board, error)) return false;
-    for (size_t i = 0; i < legal.size(); ++i)
-    {
-        Move move;
-        Board next;
-        if (!parseMove(legal[i], move) || std::find(legal.begin(), legal.begin() + i, legal[i]) != legal.begin() + i)
-            return reject(error, "合法走法列表格式错误或重复");
-        if (!applyKnownBoard(board, redToMove, move, next, error)) return false;
-    }
-    return true;
 }
 
 } // namespace
@@ -105,7 +90,6 @@ bool validBoard(const Board &board, std::string &error)
     const int maximum[] = {1, 2, 2, 2, 2, 2, 5, 1, 2, 2, 2, 2, 2, 5};
     int counts[14] = {};
     for (int row = 0; row < 10; ++row)
-    {
         for (int col = 0; col < 9; ++col)
         {
             const char piece = board[row][col];
@@ -115,16 +99,13 @@ bool validBoard(const Board &board, std::string &error)
             if (++counts[index] > maximum[index]) return reject(error, "同类棋子数量超过初始数量");
             if (kingInPalace(piece, row, col) == false) return reject(error, "将帅不在九宫内，请核对识别和棋盘方向");
         }
-    }
     if (counts[0] != 1 || counts[7] != 1) return reject(error, "将帅缺失属于待核对盘面，不能据此宣布胜负");
     return true;
 }
 
-bool fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &result)
+void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &result)
 {
     result.clear();
-    std::string error;
-    if (!validBoard(board, error) || halfmoves < 0 || fullmove < 1) return false;
     for (int row = 0; row < 10; ++row)
     {
         int empty = 0;
@@ -146,7 +127,6 @@ bool fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::s
         if (row != 9) result += '/';
     }
     result += (redToMove ? " w - - " : " b - - ") + std::to_string(halfmoves) + " " + std::to_string(fullmove);
-    return true;
 }
 
 bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error)
@@ -248,7 +228,6 @@ bool Game_prepareRobot(Game &game, const Observation &before, const std::string 
     if (game.redToMove == game.humanRed) return reject(game.error, "当前是人类一方的回合");
     if (!observed(before, game.error)) return false;
     if (before.board != game.board) return reject(game.error, "执行前盘面已变化，取消本次动作");
-    if (!legalList(game.board, game.redToMove, legal, game.error)) return false;
     if (std::find(legal.begin(), legal.end(), choice) == legal.end() || !parseMove(choice, move))
         return reject(game.error, "引擎选择不在当前合法走法表内");
     if (!applyKnownBoard(game.board, game.redToMove, move, game.expected, game.error)) return false;
@@ -274,7 +253,6 @@ bool Game_judge(Game &game, const std::vector<std::string> &legal)
     game.error.clear();
     if (game.pending) return reject(game.error, "必须先确认机械动作，再判断下一回合");
     if (game.result != Result::Playing) return reject(game.error, "棋局已结束或等待人工裁定");
-    if (!legalList(game.board, game.redToMove, legal, game.error)) return false;
     if (legal.empty())
         game.result = game.redToMove ? Result::BlackWon : Result::RedWon;
     else if (std::count(game.positions.begin(), game.positions.end(), game.positions.back()) >= 3 ||

@@ -1,4 +1,4 @@
-#include "chess/vision_bridge.hpp"
+#include "chess/session.hpp"
 #include "vision/fixed_board.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -16,7 +16,7 @@ void check(bool value, const char *message)
 scara::Board grid()
 {
     scara::Board result;
-    scara::boardFromCorners("frame-1", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, result);
+    scara::boardFromCorners({{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, result);
     return result;
 }
 scara::Observation observed(const chess::Board &board)
@@ -55,31 +55,35 @@ int main()
         auto g = grid();
         auto o = observed(initial);
         chess::Observation c, checked;
-        scara::chessObservation(g, o, true, c);
-        check(c.complete && c.stable && c.board == initial,
-              "All 90 cells must preserve piece identity and reverse rows");
-        scara::chessObservation(g, o, false, checked);
-        check(!checked.stable, "Unstable frames accepted");
+        scara::chessObservation(o, c);
+        check(c.valid && c.board == initial, "All 90 cells must preserve piece identity and reverse rows");
+        auto unstable = o;
+        unstable.valid = false;
+        scara::chessObservation(unstable, checked);
+        check(!checked.valid, "Unstable frames accepted");
         auto bad = o;
         bad.pieces[0] = scara::Unknown;
-        scara::chessObservation(g, bad, true, checked);
-        check(!checked.complete, "Unknown became empty");
+        scara::chessObservation(bad, checked);
+        check(!checked.valid, "Unknown became empty");
         bad = o;
         bad.pieces[0] = 99;
-        scara::chessObservation(g, bad, true, checked);
-        check(!checked.complete, "Invalid class accepted");
+        scara::chessObservation(bad, checked);
+        check(!checked.valid, "Invalid class accepted");
         bad = o;
-        bad.frameId = "old-frame";
-        scara::chessObservation(g, bad, true, checked);
-        check(!checked.complete, "Mixed frames accepted");
+        bad.frameId.clear();
+        scara::chessObservation(bad, checked);
+        check(!checked.valid, "Missing frame identity accepted");
         bad = o;
-        bad.issues.push_back("duplicate cell");
-        scara::chessObservation(g, bad, true, checked);
-        check(!checked.complete, "Reported vision conflict accepted");
+        auto center = g.intersections[0];
+        scara::Detection duplicate{12, .9, {center.x - 10, center.y - 10, 20, 20}};
+        scara::assignPieces(g, "duplicate", {duplicate, duplicate}, true, bad);
+        scara::chessObservation(bad, checked);
+        check(!checked.valid, "Reported vision conflict accepted");
         auto unoriented = g;
         unoriented.orientationValid = false;
-        scara::chessObservation(unoriented, o, true, checked);
-        check(!checked.complete, "Unknown board orientation accepted");
+        scara::assignPieces(unoriented, "unconfirmed", {}, true, bad);
+        scara::chessObservation(bad, checked);
+        check(!checked.valid, "Unknown board orientation accepted");
 
         chess::Move human, robot;
         std::string error;
@@ -91,25 +95,26 @@ int main()
         scara::FixedBoard fixed;
         check(scara::FixedBoard_setup(p, g, fixed), "Fixed setup failed");
         cv::Point2d from, to, rejected;
-        bool fromValid = scara::FixedBoard_target(fixed, human.fromCol, 9 - human.fromRow, "frame-1", from);
-        bool toValid = scara::FixedBoard_target(fixed, human.toCol, 9 - human.toRow, "frame-1", to);
+        bool fromValid = scara::FixedBoard_target(fixed, human.fromCol, 9 - human.fromRow, from);
+        bool toValid = scara::FixedBoard_target(fixed, human.toCol, 9 - human.toRow, to);
         check(fromValid && toValid, "UCI mapped to unavailable targets");
         check(cv::norm(from - cv::Point2d(10, 42)) < .001, "Source target XY incorrect");
         check(cv::norm(to - cv::Point2d(10, 36)) < .001, "Destination target XY incorrect");
-        check(!scara::FixedBoard_target(fixed, 0, 3, "stale", rejected), "Stale target accepted");
         check(!scara::FixedBoard_setup(p, unoriented, fixed), "Unoriented target accepted");
 
         chess::Game game;
         const auto base = game.baseFen;
         check(chess::applyMove(initial, true, human, afterHuman, error), "Fixture human move failed");
-        scara::chessObservation(g, observed(afterHuman), true, checked);
+        scara::chessObservation(observed(afterHuman), checked);
         check(chess::Game_acceptHuman(game, checked, {"a3a4"}, human), "Human move not accepted");
         check(game.history == "a3a4" && !game.redToMove && game.baseFen == base, "Base FEN/history/turn corrupted");
         chess::Observation beforeRobot, expected;
-        scara::chessObservation(g, observed(afterHuman), true, beforeRobot);
+        scara::chessObservation(observed(afterHuman), beforeRobot);
+        check(!chess::Game_prepareRobot(game, beforeRobot, "b9b8", {"a6a5"}, robot) && !game.pending,
+              "Selected move outside the engine legal list was accepted");
         check(chess::Game_prepareRobot(game, beforeRobot, "a6a5", {"a6a5"}, robot), "Robot plan failed");
         check(game.pending && game.board == afterHuman && game.history == "a3a4", "Planned move committed too soon");
-        scara::chessObservation(g, observed(game.expected), true, expected);
+        scara::chessObservation(observed(game.expected), expected);
         check(!chess::Game_confirmRobot(game, expected, false) && game.pending && game.history == "a3a4",
               "Failed motion committed history");
         check(!chess::Game_confirmRobot(game, beforeRobot, true) && game.pending, "Wrong resulting board accepted");

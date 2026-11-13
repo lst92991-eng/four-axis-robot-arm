@@ -1,5 +1,5 @@
 #include "vision/fixed_board.hpp"
-#include "chess/vision_bridge.hpp"
+#include "chess/session.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -19,15 +19,15 @@ int main()
         scara::PlaneMap plane;
         scara::calibratePlane("fixed-plane", 0, .001, fit, checks, plane);
         scara::Board grid;
-        scara::boardFromCorners("grid-0", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
+        scara::boardFromCorners({{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
         scara::FixedBoard fixed;
         check(scara::FixedBoard_setup(plane, grid, fixed), "Cannot prepare fixed board");
         for (int row = 0; row < 10; ++row)
             for (int column = 0; column < 9; ++column)
             {
                 cv::Point2d expected, actual;
-                check(scara::gridTarget(plane, grid, column, row, "grid-0", expected), "Generic target missing");
-                check(scara::FixedBoard_target(fixed, column, row, "grid-0", actual), "Cached target missing");
+                check(scara::gridTarget(plane, grid, column, row, expected), "Generic target missing");
+                check(scara::FixedBoard_target(fixed, column, row, actual), "Cached target missing");
                 check(actual == expected, "Cache changed a calibrated XY target");
             }
 
@@ -46,13 +46,15 @@ int main()
         scara::Observation observation;
         chess::Observation gameObservation;
         scara::FixedBoard_assign(fixed, "frame-1", pieces, true, observation);
-        scara::chessObservation(fixed.grid, observation, true, gameObservation);
-        check(gameObservation.complete && gameObservation.board == initial, "Fixed layout changed piece identities");
+        scara::chessObservation(observation, gameObservation);
+        check(gameObservation.valid && gameObservation.board == initial, "Fixed layout changed piece identities");
         cv::Point2d target;
-        check(scara::FixedBoard_target(fixed, 0, 3, "frame-1", target), "New frame cannot use fixed targets");
-        check(!scara::FixedBoard_target(fixed, 0, 3, "grid-0", target) && target == cv::Point2d(),
-              "Stale frame retained a target");
-        check(!scara::FixedBoard_target(fixed, 9, 3, "frame-1", target), "Out-of-range column accepted");
+        check(scara::FixedBoard_target(fixed, 0, 3, target), "New frame cannot use fixed targets");
+        auto sameTarget = target;
+        scara::FixedBoard_assign(fixed, "another-frame", pieces, true, observation);
+        check(scara::FixedBoard_target(fixed, 0, 3, target) && target == sameTarget,
+              "A new observation changed fixed coordinates");
+        check(!scara::FixedBoard_target(fixed, 9, 3, target), "Out-of-range column accepted");
 
         scara::FixedBoard_assign(fixed, "frame-2", pieces, false, observation);
         check(!observation.valid, "Occluded scene became a complete board");
@@ -63,7 +65,7 @@ int main()
         auto unknown = grid;
         unknown.orientationValid = false;
         check(!scara::FixedBoard_setup(plane, unknown, fixed), "Unoriented setup accepted");
-        check(!scara::FixedBoard_target(fixed, 0, 3, "grid-0", target), "Failed setup reused prior XY");
+        check(!scara::FixedBoard_target(fixed, 0, 3, target), "Failed setup reused prior XY");
         check(scara::FixedBoard_setup(plane, grid, fixed), "Valid setup did not recover");
         check(scara::FixedBoard_setup(plane, fixed.grid, fixed), "In-place setup corrupted the grid input");
         scara::FixedBoard_assign(fixed, "frame-4", {}, true, observation);

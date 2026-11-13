@@ -21,7 +21,7 @@ static void observe(scara::Session &session, const chess::Board &board)
             }
     for (int i = 0; i < 3; ++i)
         scara::Session_observe(session, std::to_string(++frame), pieces, true);
-    check(session.observed.complete && session.observed.stable, "Fixture did not produce a stable board");
+    check(session.observed.valid, "Fixture did not produce a stable board");
 }
 
 int main()
@@ -37,7 +37,7 @@ int main()
         scara::PlaneMap plane;
         scara::calibratePlane("session-plane", 0, .001, fit, checks, plane);
         scara::Board grid;
-        scara::boardFromCorners("grid", {{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
+        scara::boardFromCorners({{{100, 600}, {900, 600}, {900, 60}, {100, 60}}}, true, grid);
         check(scara::FixedBoard_setup(plane, grid, session.layout), "Layout setup failed");
         check(scara::Arm_load("tests/fixtures/upper-app/arm-registration.json", session.arm), "Arm load failed");
         check(scara::WorkHeights_load("tests/fixtures/upper-app/pick-plan.json", session.heights),

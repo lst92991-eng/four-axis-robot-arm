@@ -1,6 +1,5 @@
 #include "vision/geometry.hpp"
 #include <cstdint>
-#include <cstring>
 #include <iostream>
 #include <limits>
 
@@ -13,7 +12,7 @@ int main()
     camera.imageSize = {1280, 720};
     scara::boardFromCorners(camera, "frame", {{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
 #else
-    scara::boardFromCorners("frame", {{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
+    scara::boardFromCorners({{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
 #endif
     uint64_t digest = 1469598103934665603ULL;
     int cases = 0;
@@ -43,7 +42,7 @@ int main()
                 if (variation == 18) piece.bbox.width = -1;
                 std::vector<scara::Detection> pieces{piece};
                 if (variation == 10 || variation == 11) pieces.push_back(piece);
-                const std::string frame = variation == 19 ? "old-frame" : "frame";
+                const std::string frame = variation == 19 ? "" : "frame";
                 bool sceneClear = variation % 4 != 0;
                 scara::Observation result;
 #ifdef SCARA_OLD_GEOMETRY_API
@@ -58,9 +57,6 @@ int main()
                 for (int i = 0; i < scara::Cells; ++i)
                 {
                     add(static_cast<uint64_t>(result.pieces[i]));
-                    uint64_t confidence;
-                    std::memcpy(&confidence, &result.confidence[i], sizeof(confidence));
-                    add(confidence);
                 }
                 ++cases;
             }
