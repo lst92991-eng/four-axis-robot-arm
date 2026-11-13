@@ -1,5 +1,6 @@
 """Feed a timed local camera stream to C++ tests; no physical camera is opened."""
 import argparse
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import subprocess
@@ -45,15 +46,23 @@ def main():
     command = [args.executable, url]
     if args.entry:
         command = [args.executable, 'mock.rknn', url, 'config/vision/chinese-labels.png',
-                   'output/vision-stage-verify/entry.jpg', '3']
+                   'output/vision-stage-verify/entry.jpg']
     try:
         if args.entry:
-            for index,value,message in ((5,'3junk','Frame count'),(3,'missing-labels.png','Cannot read label image')):
-                invalid = command.copy()
-                invalid[index] = value
-                result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
-                if result.returncode!=1 or message not in result.stderr or 'TEST ONLY' in result.stderr:
-                    raise RuntimeError('Invalid startup input opened the NPU or lost its error: '+result.stderr)
+            invalid = command.copy()
+            invalid[3] = 'missing-labels.png'
+            result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
+            if result.returncode!=1 or 'label image' not in result.stderr or 'TEST ONLY' in result.stderr:
+                raise RuntimeError('Invalid label image opened the NPU or lost its error: '+result.stderr)
+            for stage in ('query','allocate','bind','run'):
+                env = dict(os.environ, SCARA_MOCK_FAILURE=stage)
+                result = subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)
+                if result.returncode!=1 or 'TEST cleanup: allocations=0' not in result.stdout:
+                    raise RuntimeError('Application did not release resources after '+stage+': '+result.stderr+result.stdout)
+            result = subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=30)
+            if result.returncode!=0 or 'TEST cleanup: allocations=0 runs=3' not in result.stdout:
+                raise RuntimeError('Continuous entry did not stop cleanly: '+result.stderr+result.stdout)
+            return 0
         return subprocess.run(command, cwd=ROOT, timeout=30).returncode
     finally:
         server.shutdown()

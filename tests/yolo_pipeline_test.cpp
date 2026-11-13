@@ -39,7 +39,7 @@ void decodeEdges()
   {
     int size = 80 >> i;
     data[i].resize(size*size*57, 0);
-    heads[i] = {data[i].data(), data[i].size(), size_t(size)*57, 0, .01f};
+    heads[i] = {data[i].data(), size_t(size)*57, 0, .01f};
   }
   auto *p = data[0].data()+(20*80+20)*57;
   p[0] = p[1] = p[2] = p[3] = 50;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
       size_t bytes = size_t(size)*size*57;
       auto attr = meta["outputs"][i];
       check(offset+bytes<=packet.size(), "Recorded tensor is incomplete");
-      heads[i] = {reinterpret_cast<const int8_t *>(packet.data()+offset), bytes, size_t(size)*57,
+      heads[i] = {reinterpret_cast<const int8_t *>(packet.data()+offset), size_t(size)*57,
                   int(attr["zero_point"]), float(attr["scale"])};
       offset += bytes;
     }

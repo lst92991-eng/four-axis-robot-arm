@@ -2,6 +2,7 @@
 #include "vision/yolo.hpp"
 #include <rknn_api.h>
 #include <array>
+#include <csignal>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -11,6 +12,7 @@ namespace {
 int allocations = 0, alive = 0, failAt = 0;
 int failQuery = -1, failBind = 0, bindings = 0;
 bool contextOpen = false, badOutput = false, failRun = false;
+int runs = 0;
 rknn_tensor_mem *input = nullptr;
 std::array<rknn_tensor_mem *, 3> outputs{};
 
@@ -25,11 +27,20 @@ int rknn_init(rknn_context *context, void *, uint32_t, uint32_t, rknn_init_exten
 {
 #ifdef RKNN_MOCK_ENTRY
   std::cerr << "TEST ONLY: simulated RKNN ABI, empty model outputs\n";
+  const char *failure = std::getenv("SCARA_MOCK_FAILURE");
+  if (failure)
+  {
+    if (std::strcmp(failure,"query")==0) failQuery = RKNN_QUERY_IN_OUT_NUM;
+    if (std::strcmp(failure,"allocate")==0) failAt = 2;
+    if (std::strcmp(failure,"bind")==0) failBind = 3;
+    if (std::strcmp(failure,"run")==0) failRun = true;
+  }
 #endif
   *context = 1;
   contextOpen = true;
   allocations = 0;
   bindings = 0;
+  runs = 0;
   return 0;
 }
 
@@ -79,6 +90,7 @@ int rknn_set_io_mem(rknn_context, rknn_tensor_mem *memory, rknn_tensor_attr *att
 
 int rknn_run(rknn_context, rknn_run_extend *)
 {
+  ++runs;
   if (failRun) return -7;
 #ifndef RKNN_MOCK_ENTRY
   const auto *bytes = static_cast<const uint8_t *>(input->virt_addr);
@@ -100,6 +112,10 @@ int rknn_run(rknn_context, rknn_run_extend *)
   p[0] = p[1] = p[2] = p[3] = 0;
   p[4] = p[5+12] = 127;
 #endif
+#ifdef RKNN_MOCK_ENTRY
+  // 测试驱动自行结束连续程序，产品入口不再保留运行N帧的分支。
+  if (runs==3) std::raise(SIGINT);
+#endif
   return 0;
 }
 
@@ -114,6 +130,9 @@ int rknn_destroy_mem(rknn_context, rknn_tensor_mem *memory)
 int rknn_destroy(rknn_context)
 {
   contextOpen = false;
+#ifdef RKNN_MOCK_ENTRY
+  std::cout << "TEST cleanup: allocations=" << alive << " runs=" << runs << '\n';
+#endif
   return 0;
 }
 }
@@ -127,7 +146,7 @@ int main()
     {
       bool rejected = false;
       try { scara::Yolo_open("mock.rknn"); scara::Yolo_close(); }
-      catch (const std::exception&) { rejected = true; }
+      catch (const std::exception&) { scara::Yolo_close(); rejected = true; }
       check(rejected && !contextOpen && !alive, "Partial allocation leaked resources");
     }
     failAt = 0;
@@ -136,7 +155,7 @@ int main()
       failQuery = command;
       bool reported = false;
       try { scara::Yolo_open("mock.rknn"); }
-      catch (const std::exception& e) { reported = std::string(e.what()).find("-21")!=std::string::npos; }
+      catch (const std::exception& e) { scara::Yolo_close(); reported = std::string(e.what()).find("-21")!=std::string::npos; }
       check(reported && !contextOpen && !alive, "Query failure lost status or leaked resources");
     }
     failQuery = -1;
@@ -144,14 +163,14 @@ int main()
     {
       bool reported = false;
       try { scara::Yolo_open("mock.rknn"); }
-      catch (const std::exception& e) { reported = std::string(e.what()).find("-22")!=std::string::npos; }
+      catch (const std::exception& e) { scara::Yolo_close(); reported = std::string(e.what()).find("-22")!=std::string::npos; }
       check(reported && !contextOpen && !alive, "Binding failure lost status or leaked resources");
     }
     failBind = 0;
     badOutput = true;
     bool rejected = false;
     try { scara::Yolo_open("mock.rknn"); scara::Yolo_close(); }
-    catch (const std::exception&) { rejected = true; }
+    catch (const std::exception&) { scara::Yolo_close(); rejected = true; }
     check(rejected && !contextOpen && !alive, "Output layout failure leaked resources");
     badOutput = false;
     scara::Yolo_open("mock.rknn");

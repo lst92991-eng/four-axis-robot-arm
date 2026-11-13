@@ -2,7 +2,6 @@
 #include "yolo.hpp"
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
-#include <cmath>
 #include <stdexcept>
 
 namespace scara
@@ -10,9 +9,7 @@ namespace scara
 namespace
 {
 // 中文字图每行占 64×24；其中 44 像素用于显示两个字。
-constexpr int AtlasWidth = 64;
 constexpr int LabelWidth = 44;
-constexpr int LabelHeight = 24;
 constexpr int ScoreHeight = 16;
 
 // 每一对分别是锚框的宽、高，单位：640 输入图像素。
@@ -105,13 +102,10 @@ std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads], const Imag
 //---------识别画面区---------
 cv::Mat Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels)
 {
-    if (labels.type() != CV_8UC1 || labels.rows != YoloClasses * LabelHeight || labels.cols != AtlasWidth)
-        throw std::runtime_error("Expected the 14-class Chinese label atlas");
     cv::Mat result = bgr.clone();
     cv::Rect bounds(0, 0, result.cols, result.rows);
     for (const Detection &detection : detections)
     {
-        if (detection.classId < 0 || detection.classId >= YoloClasses) continue;
         cv::Rect box = cv::Rect(detection.bbox) & bounds;
         if (box.empty()) continue;
         cv::Scalar color = detection.classId < 7 ? cv::Scalar(255, 180, 65) : cv::Scalar(65, 85, 245);
@@ -139,10 +133,6 @@ static void readCandidates(const YoloHead &head, int index, float scoreThreshold
 {
     int size = YoloGrid[index];
     int stride = YoloSize / size;
-    if (!head.data || head.rowBytes < size_t(size) * YoloChannels ||
-        head.bytes < size_t(size - 1) * head.rowBytes + size * YoloChannels || !std::isfinite(head.scale) ||
-        head.scale <= 0)
-        throw std::runtime_error("Invalid native YOLO output layout");
     // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
     float maximumClassScore = dequantize(head, 127);
     // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。

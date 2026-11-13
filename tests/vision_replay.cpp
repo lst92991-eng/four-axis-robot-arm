@@ -3,6 +3,7 @@
 #include "vision/io.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <chrono>
+#include <cmath>
 #include <cstring>
 #include <iostream>
 
@@ -16,6 +17,8 @@ int main(int argc, char **argv)
     cv::setNumThreads(1);
     auto labelBytes = scara::readBytes("config/vision/chinese-labels.png");
     auto labels = cv::imdecode(std::vector<uint8_t>(labelBytes.begin(),labelBytes.end()), cv::IMREAD_GRAYSCALE);
+    if (labels.cols!=scara::AtlasWidth || labels.rows!=scara::YoloClasses*scara::LabelHeight)
+      throw std::runtime_error("Invalid label atlas");
     for (auto item : manifest["cases"])
     {
       std::string id = item["id"], imagePath = item["image"], packetPath = item["packet"];
@@ -46,10 +49,17 @@ int main(int argc, char **argv)
         {
           int size = 80 >> i;
           auto attr = meta["outputs"][i];
+          auto dims = attr["dims"];
+          float scale = attr["scale"];
+          int widthStride = attr["w_stride"];
+          if (dims.size()!=4 || int(dims[0])!=1 || int(dims[1])!=size || int(dims[2])!=size || int(dims[3])!=57 ||
+              int(attr["type"])!=2 || int(attr["fmt"])!=1 || (widthStride!=0 && widthStride!=size) ||
+              !std::isfinite(scale) || scale<=0)
+            throw std::runtime_error("Unexpected recorded tensor layout");
           size_t rowBytes = size*57, length = rowBytes*size;
           if (offset+length>packet.size()) throw std::runtime_error("Truncated tensor data");
-          heads[i] = {reinterpret_cast<const int8_t *>(packet.data()+offset), length, rowBytes,
-                      int(attr["zero_point"]), float(attr["scale"])};
+          heads[i] = {reinterpret_cast<const int8_t *>(packet.data()+offset), rowBytes,
+                      int(attr["zero_point"]), scale};
           offset += length;
         }
         if (offset!=packet.size()) throw std::runtime_error("Unexpected tensor tail");

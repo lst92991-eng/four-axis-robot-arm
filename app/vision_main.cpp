@@ -15,23 +15,18 @@ static void requestStop(int)
 
 int main(int argc, char **argv)
 {
-    if (argc < 5 || argc > 6)
+    if (argc != 5)
     {
-        std::cerr << "Usage: scara_vision model.rknn camera-url labels.png preview.jpg [frame-count]\n";
+        std::cerr << "Usage: scara_vision model.rknn camera-url labels.png preview.jpg\n";
         return 2;
     }
     int result = 0;
     try
     {
         scara::VisionConfig config;
-        std::string limitText = argc == 6 ? argv[5] : "0";
-        size_t parsed = 0;
-        int limit = std::stoi(limitText, &parsed);
-        int count = 0;
-        if (limit < 0 || parsed != limitText.size())
-            throw std::runtime_error("Frame count must be a nonnegative integer");
         cv::Mat labels = cv::imread(argv[3], cv::IMREAD_GRAYSCALE);
-        if (labels.empty()) throw std::runtime_error("Cannot read label image");
+        if (labels.cols != scara::AtlasWidth || labels.rows != scara::YoloClasses * scara::LabelHeight)
+            throw std::runtime_error("Cannot read the 14-class label image");
         std::string temporary = std::string(argv[4]) + ".tmp.jpg";
         std::signal(SIGINT, requestStop);
         std::signal(SIGTERM, requestStop);
@@ -40,7 +35,7 @@ int main(int argc, char **argv)
         scara::Camera_open(argv[2]);
 
         //---------取帧、识别与绘制区---------
-        while (!stopped && (!limit || count < limit))
+        while (!stopped)
         {
             cv::Mat source = scara::Camera_read();
             scara::ImageMapping mapping;
@@ -50,8 +45,6 @@ int main(int argc, char **argv)
             cv::Mat preview = scara::Vision_draw(source, pieces, labels);
             if (!cv::imwrite(temporary, preview)) throw std::runtime_error("Cannot write preview");
             std::filesystem::rename(std::filesystem::u8path(temporary), std::filesystem::u8path(argv[4]));
-            ++count;
-            std::cout << "frame=" << count << " pieces=" << pieces.size() << '\n';
         }
     }
     catch (const std::exception &e)
