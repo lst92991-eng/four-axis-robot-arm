@@ -49,6 +49,13 @@ int main()
         check(scara::Session_plan(session, "a3a4", {"a3a4"}) && session.steps.size() == 8 && session.game.pending,
               "Robot turn did not create a pending plan");
         check(session.game.board == initial && session.game.history.empty(), "Planning committed the turn");
+        auto expected = session.game.expected;
+        auto firstTarget = session.steps[1].joints;
+        check(!scara::Session_plan(session, "c3c4", {"c3c4"}) && session.game.pending &&
+                  session.game.expected == expected && session.steps.size() == 8 &&
+                  session.steps[1].joints.j2Deg == firstTarget.j2Deg &&
+                  session.steps[1].joints.j3MotorDeg == firstTarget.j3MotorDeg,
+              "A second plan replaced the unconfirmed transaction");
         check(!scara::Session_confirm(session, false) && session.game.pending && session.steps.size() == 8,
               "Failed execution discarded its pending state");
         observe(session, session.game.expected);
@@ -75,6 +82,8 @@ int main()
         capture[6][0] = 'p';
         chess::Game_reset(session.game, capture, true, false);
         observe(session, capture);
+        check(!scara::Session_plan(session, "j0j3", {"j0j3"}) && !session.game.pending && session.steps.empty(),
+              "Invalid coordinates generated a plan");
         check(!scara::Session_plan(session, "a0a3", {"a0a3"}) && !session.game.pending && session.steps.empty(),
               "Untaught capture zone still produced or locked a plan");
         session.capturePlaceTaught = true;

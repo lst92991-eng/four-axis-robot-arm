@@ -1,4 +1,5 @@
 #include "session.hpp"
+#include <utility>
 
 namespace scara
 {
@@ -35,11 +36,10 @@ void Session_observe(Session &session, const std::string &frameId, const std::ve
 
 bool Session_plan(Session &session, const std::string &choice, const std::vector<std::string> &legal)
 {
-    chess::Game preparedGame = session.game;
     chess::Move move;
-    cv::Point2d source, destination;
-    std::vector<PickStep> prepared, moving;
-    bool ready = chess::Game_prepareRobot(preparedGame, session.observed, choice, legal, move);
+    cv::Point2d source, destination;        // 本次起点和终点，基座毫米坐标。
+    std::vector<PickStep> prepared, moving; // 先清走被吃棋子，再搬自己的棋子。
+    bool ready = chess::parseMove(choice, move);
     if (ready)
     {
         bool sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
@@ -51,15 +51,16 @@ bool Session_plan(Session &session, const std::string &choice, const std::vector
                     Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
         if (ready) ready = Pick_plan(session.arm, session.heights, source, destination, false, moving);
     }
-    if (ready)
+    if (!ready)
     {
-        prepared.insert(prepared.end(), moving.begin(), moving.end());
-        session.steps = prepared;
-        session.game = preparedGame;
+        session.game.error = "走法坐标、可达范围或吃子区尚未准备好";
+        return false;
     }
-    else
-        session.game.error = preparedGame.error.empty() ? "取放坐标、可达范围或吃子区尚未准备好" : preparedGame.error;
-    return ready;
+    // 全部计算完成后才锁定走法；失败不会覆盖原有棋局、历史或待执行步骤。
+    prepared.insert(prepared.end(), moving.begin(), moving.end());
+    if (!chess::Game_prepareRobot(session.game, session.observed, choice, legal, move)) return false;
+    session.steps = std::move(prepared);
+    return true;
 }
 
 bool Session_confirm(Session &session, bool armSucceeded)
