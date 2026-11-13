@@ -12,10 +12,12 @@ int main(int argc, char **argv)
   try
   {
     if (argc!=3) throw std::runtime_error("Usage: replay manifest.json output-directory");
-    auto manifest = scara::readStorage(argv[1]);
+    cv::FileStorage manifest;
+    scara::readStorage(argv[1], manifest);
     std::filesystem::create_directories(std::filesystem::u8path(argv[2]));
     cv::setNumThreads(1);
-    auto labelBytes = scara::readBytes("config/vision/chinese-labels.png");
+    std::string labelBytes;
+    scara::readBytes("config/vision/chinese-labels.png", labelBytes);
     auto labels = cv::imdecode(std::vector<uint8_t>(labelBytes.begin(),labelBytes.end()), cv::IMREAD_GRAYSCALE);
     if (labels.cols!=scara::AtlasWidth || labels.rows!=scara::YoloClasses*scara::LabelHeight)
       throw std::runtime_error("Invalid label atlas");
@@ -23,7 +25,8 @@ int main(int argc, char **argv)
     {
       std::string id = item["id"], imagePath = item["image"], packetPath = item["packet"];
       std::string prefix = std::string(argv[2])+"/"+id;
-      auto bytes = scara::readBytes(imagePath);
+      std::string bytes;
+      scara::readBytes(imagePath, bytes);
       auto source = cv::imdecode(std::vector<uint8_t>(bytes.begin(),bytes.end()), cv::IMREAD_COLOR);
       if (source.empty()) throw std::runtime_error("Cannot decode replay image");
       auto roi = item["roi"];
@@ -36,7 +39,8 @@ int main(int argc, char **argv)
       double decodeMs = 0;
       if (!packetPath.empty())
       {
-        auto packet = scara::readBytes(packetPath);
+        std::string packet;
+        scara::readBytes(packetPath, packet);
         if (packet.size()<4) throw std::runtime_error("Missing tensor header");
         uint32_t headerSize;
         std::memcpy(&headerSize, packet.data(), 4);
@@ -67,7 +71,8 @@ int main(int argc, char **argv)
         for (int i=0; i<100; ++i) scara::Vision_decode(heads,detections);
         decodeMs = std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()/100;
       }
-      auto result = scara::memoryStorage(true);
+      cv::FileStorage result;
+      scara::memoryStorage(true, result);
       result << "id" << id << "decode_ms" << decodeMs << "detections" << "[";
       for (const auto& d : detections)
         result << "{" << "class_id" << d.classId << "score" << d.confidence << "bbox" << "["

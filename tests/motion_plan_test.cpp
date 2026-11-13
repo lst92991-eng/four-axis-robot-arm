@@ -19,7 +19,8 @@ int main()
         check(scara::WorkHeights_load("tests/fixtures/upper-app/pick-plan.json", heights), "Work heights failed");
         check(arm.upperMm == 275 && arm.forearmMm == 275 && arm.j2Scale == .8 && arm.j3Ratio == 3,
               "Saved arm scales were replaced");
-        auto reference = scara::readStorage("tests/fixtures/upper-app/kinematic-reference.json");
+        cv::FileStorage reference;
+        scara::readStorage("tests/fixtures/upper-app/kinematic-reference.json", reference);
         int count = 0;
         for (const auto &item : reference["cases"])
         {
@@ -39,7 +40,8 @@ int main()
             }
             ++count;
         }
-        auto plan = scara::readStorage("tests/fixtures/upper-app/pick-plan.json");
+        cv::FileStorage plan;
+        scara::readStorage("tests/fixtures/upper-app/pick-plan.json", plan);
         auto from = plan["source"]["base_xy_mm"], to = plan["destination"]["base_xy_mm"];
         cv::Point2d source{double(from[0]), double(from[1])};
         cv::Point2d destination{double(to[0]), double(to[1])};

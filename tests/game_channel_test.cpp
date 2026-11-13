@@ -14,7 +14,8 @@ static void check(bool value, const char *message)
 
 static void reply(const std::string &ticket, int settled, int success)
 {
-    auto file = scara::memoryStorage(true);
+    cv::FileStorage file;
+    scara::memoryStorage(true, file);
     file << "ticket" << ticket << "settled" << settled << "success" << success;
     auto path = scara::Runtime_path("motion-reply.json");
     scara::writeBytes(path + ".producer", file.releaseAndGetString());
@@ -45,7 +46,8 @@ int main()
         producer.join();
         check(success && std::chrono::steady_clock::now() - began >= std::chrono::milliseconds(70),
               "Old or unsettled reply was accepted");
-        auto request = readStorage(Runtime_path("motion-request.json"));
+        cv::FileStorage request;
+        readStorage(Runtime_path("motion-request.json"), request);
         check(int(request["simulated"]) == 1 && request["steps"].size() == 2, "Request contract incomplete");
         check((std::string)request["steps"][0]["action"] == "z" && double(request["steps"][0]["j1_deg"]) == 123,
               "J1 angle lost its unit or value");
@@ -65,12 +67,14 @@ int main()
         {
             stopped = true;
         }
-        auto cancel = readStorage(Runtime_path("motion-cancel.json"));
+        cv::FileStorage cancel;
+        readStorage(Runtime_path("motion-cancel.json"), cancel);
         check(stopped && (std::string)cancel["ticket"] == ticket && (std::string)cancel["action"] == "stop",
               "Cancellation did not identify the active transaction");
         gameRunning = 1;
         Motion_request("move", "a3a4", steps, ticket);
-        auto malformed = memoryStorage(true);
+        cv::FileStorage malformed;
+        memoryStorage(true, malformed);
         malformed << "ticket" << ticket << "settled" << 1;
         writeBytes(Runtime_path("motion-reply.json"), malformed.releaseAndGetString());
         bool rejected = false;

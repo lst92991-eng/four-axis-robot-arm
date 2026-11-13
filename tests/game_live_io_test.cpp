@@ -137,7 +137,8 @@ int main()
         fake::check(fake::events ==
                         std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode", "draw"},
                     "Live observation no longer follows the verified order");
-        auto bytes = readBytes(Runtime_path("preview.jpg"));
+        std::string bytes;
+        readBytes(Runtime_path("preview.jpg"), bytes);
         auto preview = cv::imdecode(std::vector<unsigned char>(bytes.begin(), bytes.end()), cv::IMREAD_COLOR);
         fake::check(preview.cols == 2560 && preview.rows == 720, "Preview changed full-frame geometry");
         previous = frame;

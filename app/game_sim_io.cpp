@@ -24,7 +24,7 @@ static void readBoard(const cv::FileNode &rows)
 void Runtime_open(const GameConfig &config, const std::string &)
 {
     Files_open(config.workDir, true);
-    script = readStorage(config.scenarioPath);
+    readStorage(config.scenarioPath, script);
     readBoard(script["initial_board"]);
     std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
 }
@@ -39,21 +39,31 @@ bool Runtime_close()
 
 void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
 {
-    frameId = std::to_string(++frameNumber);
-    pieces.clear();
     std::string symbols = PieceSymbols;
+    cv::Point2d center; // 场景中的棋子中心，原图像素。
+    Detection piece;
+
+    ++frameNumber;
+    frameId = std::to_string(frameNumber);
+    pieces.clear();
     for (int row = 0; row < 10; ++row)
         for (int col = 0; col < 9; ++col)
             if (world[row][col] != '.')
             {
-                auto center = layout.grid.intersections[(9 - row) * Columns + col];
-                pieces.push_back({int(symbols.find(world[row][col])), .9, {center.x - 10, center.y - 10, 20, 20}});
+                center = layout.grid.intersections[(9 - row) * Columns + col];
+                piece.classId = int(symbols.find(world[row][col]));
+                piece.confidence = .9;
+                piece.bbox.x = center.x - 10;
+                piece.bbox.y = center.y - 10;
+                piece.bbox.width = 20;
+                piece.bbox.height = 20;
+                pieces.push_back(piece);
             }
 }
 
 void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
 {
-    for (const auto &query : script["queries"])
+    for (const cv::FileNode &query : script["queries"])
         if ((std::string)query["history"] == game.history)
         {
             if (int(query["fail"]) == 1) throw std::runtime_error("仿真引擎查询失败");
@@ -68,32 +78,46 @@ void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std:
 
 void Operator_read(const std::string &phase, const std::string &, Command &result)
 {
+    cv::FileNode commands = script["commands"];
+    cv::FileNode command;
+    std::string name;
+
     result = Command::Quit;
-    auto commands = script["commands"];
     if (commandIndex >= commands.size()) return;
-    auto command = commands[int(commandIndex++)];
+    command = commands[int(commandIndex)];
+    ++commandIndex;
     if ((std::string)command["phase"] != phase) throw std::runtime_error("仿真进入了意外的交互阶段：" + phase);
     if (!command["board"].empty()) readBoard(command["board"]);
-    std::string name = (std::string)command["command"];
+    command["command"] >> name;
     if (!Command_parse(name, result)) throw std::runtime_error("未知仿真命令");
 }
 
 void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
                    bool &success)
 {
-    auto events = script["executions"];
+    cv::FileNode events = script["executions"];
+    cv::FileNode event;
+    cv::FileStorage reply;
+    std::string ticket, path, message;
+
     if (executionIndex >= events.size()) throw std::runtime_error("仿真出现了额外的机械执行请求");
-    auto event = events[int(executionIndex++)];
+    event = events[int(executionIndex)];
+    ++executionIndex;
     if ((std::string)event["purpose"] != purpose || (std::string)event["move"] != move)
         throw std::runtime_error("仿真动作与预定场景不符");
-    std::string ticket;
     Motion_request(purpose, move, steps, ticket);
-    writeBytes(Runtime_path("request-" + std::to_string(executionIndex) + ".json"),
-               readBytes(Runtime_path("motion-request.json")));
+    path = Runtime_path("motion-request.json");
+    readBytes(path, message);
+    path = Runtime_path("request-" + std::to_string(executionIndex) + ".json");
+    writeBytes(path, message);
     if (!event["board"].empty()) readBoard(event["board"]); // 独立场景决定落子结果，不直接复制计划盘面。
-    auto reply = memoryStorage(true);
-    reply << "ticket" << ticket << "settled" << 1 << "success" << int(event["success"]);
-    writeBytes(Runtime_path("motion-reply.json"), reply.releaseAndGetString());
+    memoryStorage(true, reply);
+    reply << "ticket" << ticket;
+    reply << "settled" << 1;
+    reply << "success" << int(event["success"]);
+    path = Runtime_path("motion-reply.json");
+    message = reply.releaseAndGetString();
+    writeBytes(path, message);
     Motion_wait(ticket, success);
 }
 } // namespace scara

@@ -24,7 +24,8 @@ std::string relativePath(const std::string &config, const std::string &value)
 }
 void imageFile(const std::string &path, cv::Mat &image)
 {
-    auto bytes = readBytes(path);
+    std::string bytes;
+    readBytes(path, bytes);
     std::vector<unsigned char> data(bytes.begin(), bytes.end());
     image = cv::imdecode(data, cv::IMREAD_COLOR);
     require(!image.empty(), "Cannot decode image");
@@ -51,7 +52,8 @@ void getBoard(const cv::FileStorage &file, Board &board)
 }
 void inspect(const std::string &config, const std::string &output)
 {
-    auto fs = readStorage(config);
+    cv::FileStorage fs;
+    readStorage(config, fs);
     checkCamera(fs["camera"]);
     std::string frame = (std::string)fs["frame_id"];
     cv::Mat image;
@@ -62,7 +64,8 @@ void inspect(const std::string &config, const std::string &output)
     getBoard(fs, board);
     if (!fs["plane_file"].empty() && !((std::string)fs["plane_file"]).empty())
         loadPlane(relativePath(config, (std::string)fs["plane_file"]), plane);
-    auto result = memoryStorage(true);
+    cv::FileStorage result;
+    memoryStorage(true, result);
     result << "motion_enabled" << 0 << "single_frame_only" << 1 << "camera_id" << CameraId << "frame_id" << frame
            << "geometry_valid" << (int)board.geometryValid << "orientation_valid" << (int)board.orientationValid
            << "orientation_source" << board.orientationSource << "grid_score" << board.gridScore << "points" << "[";

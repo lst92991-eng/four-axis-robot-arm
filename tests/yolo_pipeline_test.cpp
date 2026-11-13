@@ -19,7 +19,8 @@ void check(bool passed, const char *message)
 
 cv::Mat image(const std::string& path, int mode=cv::IMREAD_COLOR)
 {
-  auto bytes = scara::readBytes(path);
+  std::string bytes;
+  scara::readBytes(path, bytes);
   return cv::imdecode(std::vector<uint8_t>(bytes.begin(),bytes.end()), mode);
 }
 
@@ -78,13 +79,16 @@ int main(int argc, char **argv)
     decodeEdges();
     const std::string fixture = "tests/fixtures/vision/";
     auto source = image(fixture+"source.png");
-    auto expected = scara::readStorage(fixture+"expected.json");
+    cv::FileStorage expected;
+    scara::readStorage(fixture+"expected.json", expected);
     auto roi = expected["roi"];
     cv::Rect historical = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
     sameInput(source, historical, fixture+"historical-input.png");
     sameInput(source, {300,70,650,600}, fixture+"fixed-input.png");
 
-    auto packet = scara::readBytes(fixture+"rknn-output.bin");
+    std::string packet;
+
+    scara::readBytes(fixture+"rknn-output.bin", packet);
     uint32_t headerSize;
     std::memcpy(&headerSize, packet.data(), sizeof(headerSize));
     auto meta = cv::FileStorage(packet.substr(4,headerSize), cv::FileStorage::READ|cv::FileStorage::MEMORY);

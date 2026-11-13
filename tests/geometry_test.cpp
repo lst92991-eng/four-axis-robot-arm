@@ -77,7 +77,8 @@ void calibrationTests()
                 line.push_back({{50. + i * 50, 100}, {double(i), 0}});
             calibratePlane(p.id, 0, 1, line, p.checkPoints, attempted);
         });
-    auto altered = readBytes(path);
+    std::string altered;
+    readBytes(path, altered);
     auto at = altered.find("pixel_to_base:");
     check(at != std::string::npos, "Missing saved matrix");
     // Matrix corruption is checked against persisted independent sample pairs on load.
@@ -86,7 +87,8 @@ void calibrationTests()
     savePlane(path, corrupt);
     rejects([&] { loadPlane(path, attempted); });
     savePlane(path, p);
-    auto wrongCamera = readBytes(path);
+    std::string wrongCamera;
+    readBytes(path, wrongCamera);
     auto cameraAt = wrongCamera.find(CameraId);
     check(cameraAt != std::string::npos, "Saved camera identity missing");
     wrongCamera.replace(cameraAt, sizeof(CameraId) - 1, "different-camera");

@@ -136,7 +136,8 @@ void checkCamera(const cv::FileNode &node)
 void savePlane(const std::string &path, const PlaneMap &m)
 {
     require(m.accepted, "Calibration failed; not saving a usable plane map");
-    auto fs = memoryStorage();
+    cv::FileStorage fs;
+    memoryStorage(false, fs);
     fs << "schema_version" << 1 << "calibration_id" << m.id << "plane_z_mm" << m.planeZmm << "allowed_error_mm"
        << m.allowedErrorMm;
     fs << "camera" << "{" << "id" << CameraId << "width" << ImageWidth << "height" << ImageHeight << "K" << cv::Mat()
@@ -150,7 +151,8 @@ void savePlane(const std::string &path, const PlaneMap &m)
 }
 void loadPlane(const std::string &path, PlaneMap &map)
 {
-    auto fs = readStorage(path);
+    cv::FileStorage fs;
+    readStorage(path, fs);
     require(fs["schema_version"].empty() || (int)fs["schema_version"] == 1, "Unsupported calibration schema");
     require(fs["plane_z_mm"].isReal() || fs["plane_z_mm"].isInt(), "Plane height is missing");
     require(fs["allowed_error_mm"].isReal() || fs["allowed_error_mm"].isInt(), "Validation tolerance is missing");
