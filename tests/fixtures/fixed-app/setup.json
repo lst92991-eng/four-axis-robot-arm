@@ -1,0 +1,31 @@
+{
+  "camera": {
+    "id": "sc3336-1280x720-fixed-focus-v1",
+    "width": 1280,
+    "height": 720
+  },
+  "image": "../upper-app/source.png",
+  "frame_id": "fixed-board-offline-01",
+  "mode": "manual",
+  "corners": [
+    [
+      382.4037121271646,
+      183.08693857616453
+    ],
+    [
+      405.45068784781944,
+      682.0855125081187
+    ],
+    [
+      937.8220542810498,
+      659.5125137742832
+    ],
+    [
+      924.110583798846,
+      162.3372157893879
+    ]
+  ],
+  "canonical_order_confirmed": 1,
+  "plane_file": "../upper-app/plane-map.yml",
+  "scene_clear": 1
+}
