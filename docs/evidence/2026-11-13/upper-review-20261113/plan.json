@@ -119,6 +119,11 @@
       "round": 9,
       "title": "已验证运动学与取放规划接口",
       "record": "round-09.json"
+    },
+    {
+      "round": 10,
+      "title": "Python上层语法树等价排版",
+      "record": "round-10.json"
     }
   ],
   "known_limits": [

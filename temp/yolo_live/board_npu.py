@@ -3,6 +3,7 @@
 ABI reference: Rockchip rknn_api.h at model-zoo eaa94d6.
 Uses the documented RV1106 native NHWC zero-copy API, not PyTorch.
 """
+
 import argparse
 import ctypes as C
 import hashlib
@@ -19,12 +20,24 @@ U32 = C.c_uint32
 
 
 class Attr(C.Structure):
-    _fields_ = [('index', U32), ('n_dims', U32), ('dims', U32 * 16),
-                ('name', C.c_char * 256), ('n_elems', U32), ('size', U32),
-                ('fmt', C.c_int), ('type', C.c_int), ('qnt_type', C.c_int),
-                ('fl', C.c_int8), ('zp', C.c_int32), ('scale', C.c_float),
-                ('w_stride', U32), ('size_with_stride', U32),
-                ('pass_through', C.c_uint8), ('h_stride', U32)]
+    _fields_ = [
+        ('index', U32),
+        ('n_dims', U32),
+        ('dims', U32 * 16),
+        ('name', C.c_char * 256),
+        ('n_elems', U32),
+        ('size', U32),
+        ('fmt', C.c_int),
+        ('type', C.c_int),
+        ('qnt_type', C.c_int),
+        ('fl', C.c_int8),
+        ('zp', C.c_int32),
+        ('scale', C.c_float),
+        ('w_stride', U32),
+        ('size_with_stride', U32),
+        ('pass_through', C.c_uint8),
+        ('h_stride', U32),
+    ]
 
 
 class Version(C.Structure):
@@ -32,11 +45,20 @@ class Version(C.Structure):
 
 
 def info(a):
-    return dict(index=a.index, dims=list(a.dims)[:a.n_dims],
-                name=a.name.decode(), elements=a.n_elems, size=a.size,
-                fmt=a.fmt, type=a.type, qnt_type=a.qnt_type,
-                zero_point=a.zp, scale=a.scale, w_stride=a.w_stride,
-                allocation=a.size_with_stride)
+    return dict(
+        index=a.index,
+        dims=list(a.dims)[: a.n_dims],
+        name=a.name.decode(),
+        elements=a.n_elems,
+        size=a.size,
+        fmt=a.fmt,
+        type=a.type,
+        qnt_type=a.qnt_type,
+        zero_point=a.zp,
+        scale=a.scale,
+        w_stride=a.w_stride,
+        allocation=a.size_with_stride,
+    )
 
 
 class NPU:
@@ -79,10 +101,15 @@ class NPU:
                 self.query(11, a)
                 assert list(a.dims)[:4] == [1, width, width, 57], info(a)
                 assert a.fmt == 1 and a.type == 2 and a.qnt_type == 2 and a.scale > 0
-                assert a.w_stride in (0, width) and a.n_elems == width*width*57
+                assert a.w_stride in (0, width) and a.n_elems == width * width * 57
                 self.outputs.append((a, self.allocate(a)))
-            self.description = dict(model_sha256=model_sha, model_name=Path(path).name, version=self.version,
-                input=info(self.input_attr), outputs=[info(a) for a, _ in self.outputs])
+            self.description = dict(
+                model_sha256=model_sha,
+                model_name=Path(path).name,
+                version=self.version,
+                input=info(self.input_attr),
+                outputs=[info(a) for a, _ in self.outputs],
+            )
             print(json.dumps(self.description), flush=True)
         except BaseException:
             self.close()
@@ -98,7 +125,7 @@ class NPU:
 
     def allocate(self, attr):
         size = attr.size_with_stride
-        assert size >= attr.n_elems and size < 16*1024*1024
+        assert size >= attr.n_elems and size < 16 * 1024 * 1024
         memory = self.api.rknn_create_mem(self.ctx, size)
         if not memory:
             raise MemoryError('rknn_create_mem')
@@ -111,21 +138,22 @@ class NPU:
         return address
 
     def run(self, data, frame_id):
-        if len(data) != 640*640*3:
+        if len(data) != 640 * 640 * 3:
             raise ValueError('Expected exactly 640x640 RGB bytes')
         stride = self.input_attr.w_stride or 640
-        assert stride >= 640 and stride*640*3 <= self.input_attr.size_with_stride
+        assert stride >= 640 and stride * 640 * 3 <= self.input_attr.size_with_stride
         if stride == 640:
             C.memmove(self.input_address, data, len(data))
         else:
             for y in range(640):
-                C.memmove(self.input_address+y*stride*3, data[y*1920:(y+1)*1920], 1920)
+                C.memmove(self.input_address + y * stride * 3, data[y * 1920 : (y + 1) * 1920], 1920)
         start = time.monotonic()
         self.check(self.api.rknn_run(self.ctx, None))
-        elapsed = (time.monotonic()-start)*1000
+        elapsed = (time.monotonic() - start) * 1000
         blobs = [C.string_at(address, attr.n_elems) for attr, address in self.outputs]
-        header = json.dumps(dict(frame_id=frame_id, npu_ms=elapsed,
-            outputs=[info(a) for a, _ in self.outputs])).encode()
+        header = json.dumps(
+            dict(frame_id=frame_id, npu_ms=elapsed, outputs=[info(a) for a, _ in self.outputs])
+        ).encode()
         return struct.pack('<I', len(header)) + header + b''.join(blobs)
 
     def close(self):
@@ -186,20 +214,27 @@ def main():
             view = dual if self.path.startswith('/dual/') else preview
             if self.path == '/':
                 self.reply(PAGE.encode(), 'text/html; charset=utf-8')
-            elif self.path in ('/dual','/dual/'):
+            elif self.path in ('/dual', '/dual/'):
                 self.reply(DUAL_PAGE.encode(), 'text/html; charset=utf-8')
             elif self.path == '/health':
                 self.reply(json.dumps(npu.description).encode())
-            elif self.path in ('/status','/dual/status'):
+            elif self.path in ('/status', '/dual/status'):
                 with condition:
-                    self.reply(json.dumps(dict(frame_id=view['frame_id'],
-                        age_s=None if view['updated'] is None else time.monotonic()-view['updated'],
-                        geometry_valid=view.get('geometry_valid'),orientation_valid=view.get('orientation_valid'))).encode())
-            elif self.path in ('/latest.jpg','/dual/latest.jpg'):
+                    self.reply(
+                        json.dumps(
+                            dict(
+                                frame_id=view['frame_id'],
+                                age_s=None if view['updated'] is None else time.monotonic() - view['updated'],
+                                geometry_valid=view.get('geometry_valid'),
+                                orientation_valid=view.get('orientation_valid'),
+                            )
+                        ).encode()
+                    )
+            elif self.path in ('/latest.jpg', '/dual/latest.jpg'):
                 with condition:
                     jpeg = view['jpeg']
                 self.reply(jpeg or b'No frame', 'image/jpeg' if jpeg else 'text/plain', 200 if jpeg else 503)
-            elif self.path in ('/stream.mjpg','/dual/stream.mjpg'):
+            elif self.path in ('/stream.mjpg', '/dual/stream.mjpg'):
                 self.send_response(200)
                 self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=frame')
                 self.send_header('Cache-Control', 'no-store')
@@ -211,7 +246,13 @@ def main():
                             condition.wait_for(lambda: view['updated'] != previous, timeout=5)
                             jpeg, previous = view['jpeg'], view['updated']
                         if jpeg:
-                            self.wfile.write(b'--frame\r\nContent-Type: image/jpeg\r\nContent-Length: '+str(len(jpeg)).encode()+b'\r\n\r\n'+jpeg+b'\r\n')
+                            self.wfile.write(
+                                b'--frame\r\nContent-Type: image/jpeg\r\nContent-Length: '
+                                + str(len(jpeg)).encode()
+                                + b'\r\n\r\n'
+                                + jpeg
+                                + b'\r\n'
+                            )
                             self.wfile.flush()
                 except (BrokenPipeError, ConnectionResetError, OSError):
                     pass
@@ -225,7 +266,7 @@ def main():
             try:
                 self.connection.settimeout(10)
                 length = int(self.headers.get('Content-Length', '0'))
-                limit = 640*640*3 if self.path == '/infer' else 2*1024*1024
+                limit = 640 * 640 * 3 if self.path == '/infer' else 2 * 1024 * 1024
                 if length <= 0 or length > limit:
                     raise ValueError('Invalid payload length')
                 data = self.rfile.read(length)
@@ -236,7 +277,7 @@ def main():
                     with lock:
                         result = npu.run(data, frame_id)
                     self.reply(result, 'application/octet-stream')
-                elif self.path in ('/preview','/dual/preview') and data.startswith(b'\xff\xd8'):
+                elif self.path in ('/preview', '/dual/preview') and data.startswith(b'\xff\xd8'):
                     with condition:
                         view = dual if self.path == '/dual/preview' else preview
                         view.update(jpeg=data, updated=time.monotonic(), frame_id=frame_id)
@@ -250,12 +291,14 @@ def main():
             except (BrokenPipeError, ConnectionResetError):
                 pass
             except Exception as exc:
-                self.reply(json.dumps({'error':str(exc)}).encode(), code=500)
+                self.reply(json.dumps({'error': str(exc)}).encode(), code=500)
 
     server = ThreadingHTTPServer((args.bind, args.port), Handler)
     server.daemon_threads = True
+
     def stop(*_):
         threading.Thread(target=server.shutdown, daemon=True).start()
+
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
     print('READY http://%s:%s/' % (args.bind, args.port), flush=True)
