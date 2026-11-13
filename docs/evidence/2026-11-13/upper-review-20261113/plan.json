@@ -164,6 +164,11 @@
       "round": 18,
       "title": "接口单位与初始化停止请求自审",
       "record": "round-18.json"
+    },
+    {
+      "round": 19,
+      "title": "最终构建与源码阅读配置",
+      "record": "round-19.json"
     }
   ],
   "known_limits": [

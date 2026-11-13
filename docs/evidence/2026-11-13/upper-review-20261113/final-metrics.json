@@ -1,0 +1,265 @@
+{
+  "baseline_group_nloc": {
+    "application_cpp": 1761,
+    "commissioning_tools": 490,
+    "manual_and_demo": 1808,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 618
+  },
+  "current_group_nloc": {
+    "application_cpp": 2975,
+    "commissioning_tools": 740,
+    "manual_and_demo": 2184,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 841
+  },
+  "cpp_modules": {
+    "vision_core": [
+      {
+        "file": "app/vision_main.cpp",
+        "group": "application_cpp",
+        "nloc": 64,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+      },
+      {
+        "file": "vision/capture.cpp",
+        "group": "application_cpp",
+        "nloc": 74,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+      },
+      {
+        "file": "vision/capture.hpp",
+        "group": "application_cpp",
+        "nloc": 9,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+      },
+      {
+        "file": "vision/yolo.cpp",
+        "group": "application_cpp",
+        "nloc": 131,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+      },
+      {
+        "file": "vision/yolo.hpp",
+        "group": "application_cpp",
+        "nloc": 38,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+      },
+      {
+        "file": "vision/yolo_npu.cpp",
+        "group": "application_cpp",
+        "nloc": 92,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+      }
+    ],
+    "geometry_and_calibration": [
+      {
+        "file": "app/geometry_tool.cpp",
+        "group": "application_cpp",
+        "nloc": 447,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "56ebad168f925561033f71f2b3bb6a17582c2002ee4c02587e60f9608790543b"
+      },
+      {
+        "file": "vision/board.cpp",
+        "group": "application_cpp",
+        "nloc": 549,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "7cd9d469cb0bc6b480a810f90f9f385b20212e765f77796a9495f06929112567"
+      },
+      {
+        "file": "vision/geometry.cpp",
+        "group": "application_cpp",
+        "nloc": 417,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "17f642c9f4ab6267a9c90f2dce60a5fe6e82e4f13103269556a299a1c9718472"
+      },
+      {
+        "file": "vision/geometry.hpp",
+        "group": "application_cpp",
+        "nloc": 136,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "5c2390c370f9e1e7b073255b40de82f2c584f9eb25ee933c5aa165117d0592fe"
+      },
+      {
+        "file": "vision/io.hpp",
+        "group": "application_cpp",
+        "nloc": 32,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "84c9167b1fb9d867b2f79ff14dab294083ed57ff13093b4d3d6edeb08c5d673f"
+      }
+    ],
+    "fixed_board": [
+      {
+        "file": "vision/fixed_board.cpp",
+        "group": "application_cpp",
+        "nloc": 41,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "0c9659f08092f2576795c6480a420d67d2ae9abe56fcd95083977e3423608c18"
+      },
+      {
+        "file": "vision/fixed_board.hpp",
+        "group": "application_cpp",
+        "nloc": 16,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "a0fdeb0f459d8aacf426b4628e6ea2f0d69e428db83326f5a085aeb68d26191e"
+      }
+    ],
+    "chess_and_engine": [
+      {
+        "file": "chess/board.cpp",
+        "group": "application_cpp",
+        "nloc": 326,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "90a6a5f9c00e0ec5efa1868691046f153722c42692b91e687cc5d86497824d14"
+      },
+      {
+        "file": "chess/board.hpp",
+        "group": "application_cpp",
+        "nloc": 59,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "cbc91100a8ef06445b544bf6e506f1cbea0e03f88306404c8ce0ae28414e66c6"
+      },
+      {
+        "file": "chess/pikafish.cpp",
+        "group": "application_cpp",
+        "nloc": 217,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "3adf3b414a91c853413bd2b22eaec14073bb757ce936bfb160dbc3bb6aac7ab4"
+      },
+      {
+        "file": "chess/pikafish.hpp",
+        "group": "application_cpp",
+        "nloc": 32,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "35ca211e8f76543085fb4fc0a4802f5c904e244cbfe9fc343ddb465c30eba178"
+      },
+      {
+        "file": "chess/vision_bridge.cpp",
+        "group": "application_cpp",
+        "nloc": 46,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "733449e4bef3e15e42a9e76bb302661c918129ac84872a020a63b764c9857ff8"
+      },
+      {
+        "file": "chess/vision_bridge.hpp",
+        "group": "application_cpp",
+        "nloc": 12,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "d66610586141e11aa57403d09c941ec07adb6442790a5f279ce4a5dad84de333"
+      }
+    ],
+    "motion_plan": [
+      {
+        "file": "motion/plan.cpp",
+        "group": "application_cpp",
+        "nloc": 108,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "7ca4dd3b737d25fc9d158ca6613a63328db2c054bf55f2b0aa313d6cd4f80a3d"
+      },
+      {
+        "file": "motion/plan.hpp",
+        "group": "application_cpp",
+        "nloc": 53,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "f9ef544c27cc0e0144e79fbace905e03e3b866250401deceb70f8ec7ba983253"
+      }
+    ],
+    "session": [
+      {
+        "file": "chess/session.cpp",
+        "group": "application_cpp",
+        "nloc": 53,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "82f2531f5691aa6a04f31399e118a4740451eeb85ca68857e156e2921f553600"
+      },
+      {
+        "file": "chess/session.hpp",
+        "group": "application_cpp",
+        "nloc": 23,
+        "encoding": "utf-8-sig",
+        "markup_nonblank_lines": 0,
+        "sha256": "b99437a1ac17f5ea95c6ef43844dfcf87425818b285724630bb68da00368d3c3"
+      }
+    ]
+  },
+  "entry_functions": [
+    {
+      "file": "vision/board.cpp",
+      "function": "scara::locateBoard",
+      "before_nloc": 79,
+      "after_nloc": 16,
+      "before_complexity": 38,
+      "after_complexity": 4
+    },
+    {
+      "file": "app/geometry_tool.cpp",
+      "function": "registerArm",
+      "before_nloc": 90,
+      "after_nloc": 27,
+      "before_complexity": 20,
+      "after_complexity": 4
+    },
+    {
+      "file": "manual_control/server.py",
+      "function": "run",
+      "before_nloc": 72,
+      "after_nloc": 29,
+      "before_complexity": 32,
+      "after_complexity": 9
+    },
+    {
+      "file": "manual_control/core.py",
+      "function": "action",
+      "before_nloc": 109,
+      "after_nloc": 35,
+      "before_complexity": 65,
+      "after_complexity": 20
+    },
+    {
+      "file": "manual_control/core.py",
+      "function": "receive",
+      "before_nloc": 114,
+      "after_nloc": 17,
+      "before_complexity": 60,
+      "after_complexity": 9
+    },
+    {
+      "file": "temp/yolo_live/dual_preview.py",
+      "function": "main",
+      "before_nloc": 77,
+      "after_nloc": 111,
+      "before_complexity": 35,
+      "after_complexity": 19
+    }
+  ],
+  "method": "Lizard NLOC; blank/comment lines excluded; HTML script counted separately from unchanged markup. All helper implementations included."
+}

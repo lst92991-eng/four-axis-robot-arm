@@ -1,0 +1,7 @@
+{
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.compileCommands": [
+        "${workspaceFolder}/build/commit-verify/compile_commands.json",
+        "${workspaceFolder}/build/compile_commands.json"
+    ]
+}
