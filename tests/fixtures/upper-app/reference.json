@@ -1,0 +1,17 @@
+{
+  "orientation": "manual_keep",
+  "image": "source.png",
+  "frame_id": "xy-20261111-frame-03",
+  "camera": {
+    "id": "sc3336-1280x720-fixed-focus-v1",
+    "height": 720,
+    "width": 1280
+  },
+  "mode": "auto",
+  "reference_patch": [
+    58,
+    216,
+    110,
+    47
+  ]
+}

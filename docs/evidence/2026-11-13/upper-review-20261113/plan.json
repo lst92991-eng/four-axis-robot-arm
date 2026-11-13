@@ -1,0 +1,81 @@
+{
+  "objective": "按用户已确认的课堂手写风格整理整个自有上层应用，保留已验证功能和实际数据流",
+  "started_utc": "2026-11-13T11:15:00Z",
+  "review_until_utc": "2026-11-13T14:45:00Z",
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "2ce033d",
+  "status": "active",
+  "current_stage": "geometry",
+  "scope": [
+    "app",
+    "vision",
+    "chess",
+    "motion",
+    "manual_control",
+    "temp/yolo_live"
+  ],
+  "separate_counts": [
+    "temp/transport USB-CAN",
+    "调参/标定/升级工具",
+    "测试与离线审查工具",
+    "第三方引擎和模型"
+  ],
+  "constraints": [
+    "保持C++17和OpenCV5.0.0，不训练、更换或转换YOLO模型",
+    "保持已验证的ROI、颜色、letterbox、阈值、坐标和方向关系",
+    "不修改底层固件，不连接硬件或运行实机动作",
+    "输入输出参数明确，主流程顺序调用，变量注明用途与单位",
+    "无限循环使用while，常规失败按既有状态流表达，避免重复检查和异常包装",
+    "不通过隐藏代码、合并多条语句到一行或移出统计来声称精简",
+    "每轮自查后运行相应离线验证，保留完整源码、哈希、有效行数和本地Git版本"
+  ],
+  "stages": [
+    {
+      "id": "baseline",
+      "task": "全量范围、冻结输入输出、统一离线harness",
+      "status": "complete"
+    },
+    {
+      "id": "vision",
+      "task": "视觉/NPU命名、参数及顺序接口审查",
+      "status": "pending"
+    },
+    {
+      "id": "geometry",
+      "task": "标定、定位、90点与棋子分配的输入输出接口和固定棋盘路径",
+      "status": "in_progress"
+    },
+    {
+      "id": "chess",
+      "task": "棋局/FEN/走法/结果确认和UCI调用",
+      "status": "pending"
+    },
+    {
+      "id": "motion",
+      "task": "已验证FK/IK、两层Z、取放、磁铁和演示流程",
+      "status": "pending"
+    },
+    {
+      "id": "host",
+      "task": "现有上位机/实时服务及诊断代码按职责整理",
+      "status": "pending"
+    },
+    {
+      "id": "integration",
+      "task": "跨模块离线走棋、复核日志和源码交付",
+      "status": "pending"
+    }
+  ],
+  "completed_rounds": [
+    {
+      "round": 0,
+      "title": "全量离线基线",
+      "record": "round-00.json"
+    }
+  ],
+  "known_limits": [
+    "当前未连接RV1106，不能作实板验收",
+    "WSL未安装，Linux UCI验证途径待核对",
+    "SPI-CAN扩展芯片实现仍不在本轮通信适配范围"
+  ]
+}

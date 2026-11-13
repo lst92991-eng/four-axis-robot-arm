@@ -1,0 +1,13 @@
+{
+  "orientation": "reference",
+  "image": "source.png",
+  "frame_id": "xy-20261111-frame-03",
+  "camera": {
+    "id": "sc3336-1280x720-fixed-focus-v1",
+    "height": 720,
+    "width": 1280
+  },
+  "mode": "auto",
+  "orientation_reference": "orientation.yml",
+  "plane_file": "plane-map.yml"
+}

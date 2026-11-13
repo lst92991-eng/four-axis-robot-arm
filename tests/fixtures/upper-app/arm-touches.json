@@ -1,0 +1,88 @@
+{
+  "arm_lengths_mm": [
+    275,
+    275
+  ],
+  "j3_ratio": 3,
+  "fit_touches": [
+    {
+      "grid_id": "e1",
+      "frame_id": "xy-e1-teach",
+      "image": "e1-teach.png",
+      "pixel": [
+        458.1027447718267,
+        384.88078900269915
+      ],
+      "board_xy_mm": [
+        114.82056115538929,
+        47.5247932387084
+      ],
+      "j2_deg": -53.23,
+      "j3_motor_deg": -76.971,
+      "j4_deg": 5.075,
+      "axis_reference_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261111-152021-765842-real.jsonl",
+      "captured_at": "2026-11-11T15:24:55.9950880+08:00",
+      "source": "operator aligned magnet above the crossing"
+    },
+    {
+      "grid_id": "c4",
+      "frame_id": "xy-c4-teach",
+      "image": "c4-teach.png",
+      "pixel": [
+        638.083549311252,
+        260.376818208944
+      ],
+      "board_xy_mm": [
+        57.59620127437339,
+        137.09997318665512
+      ],
+      "j2_deg": -51.488,
+      "j3_motor_deg": -9.141,
+      "j4_deg": 6.437,
+      "axis_reference_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261111-152021-765842-real.jsonl",
+      "captured_at": "2026-11-11T15:30:30.6204306+08:00",
+      "source": "operator aligned magnet above the crossing"
+    },
+    {
+      "grid_id": "g4",
+      "frame_id": "xy-g4-teach",
+      "image": "g4-teach.png",
+      "pixel": [
+        637.243163147503,
+        510.1017354664673
+      ],
+      "board_xy_mm": [
+        179.61700369812317,
+        132.70761802035275
+      ],
+      "j2_deg": -25.12,
+      "j3_motor_deg": -12.854,
+      "j4_deg": 6.437,
+      "axis_reference_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261111-152021-765842-real.jsonl",
+      "captured_at": "2026-11-11T15:32:22.5155094+08:00",
+      "source": "operator aligned magnet above the crossing"
+    }
+  ],
+  "check_touches": [
+    {
+      "grid_id": "e2",
+      "frame_id": "xy-e2-teach",
+      "image": "e2-teach.png",
+      "pixel": [
+        518.5174425992366,
+        385.2923981324017
+      ],
+      "board_xy_mm": [
+        116.11140938811364,
+        76.86909576163332
+      ],
+      "j2_deg": -47.431,
+      "j3_motor_deg": -52.141,
+      "j4_deg": 6.437,
+      "axis_reference_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261111-152021-765842-real.jsonl",
+      "captured_at": "2026-11-11T15:34:08.4885848+08:00",
+      "source": "operator aligned magnet above the crossing"
+    }
+  ],
+  "j2_scale": 0.8
+}
