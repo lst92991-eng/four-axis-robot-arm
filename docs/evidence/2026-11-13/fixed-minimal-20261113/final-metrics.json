@@ -1,0 +1,370 @@
+{
+  "baseline_commit": "6bd2287",
+  "baseline_group_nloc": {
+    "application_cpp": 2975,
+    "commissioning_tools": 740,
+    "manual_and_demo": 2184,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 841
+  },
+  "current_group_nloc": {
+    "application_cpp": 1799,
+    "commissioning_tools": 740,
+    "manual_and_demo": 2138,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 835
+  },
+  "modules": {
+    "vision_core": {
+      "nloc": 408,
+      "files": [
+        "app/vision_main.cpp",
+        "vision/capture.cpp",
+        "vision/capture.hpp",
+        "vision/yolo.cpp",
+        "vision/yolo.hpp",
+        "vision/yolo_npu.cpp"
+      ]
+    },
+    "calibration_and_grid": {
+      "nloc": 546,
+      "files": [
+        "app/geometry_tool.cpp",
+        "vision/geometry.cpp",
+        "vision/geometry.hpp",
+        "vision/board.cpp",
+        "vision/io.hpp"
+      ]
+    },
+    "fixed_board": {
+      "nloc": 48,
+      "files": [
+        "vision/fixed_board.cpp",
+        "vision/fixed_board.hpp"
+      ]
+    },
+    "chess_and_engine": {
+      "nloc": 542,
+      "files": [
+        "chess/board.cpp",
+        "chess/board.hpp",
+        "chess/pikafish.cpp",
+        "chess/pikafish.hpp"
+      ]
+    },
+    "motion": {
+      "nloc": 161,
+      "files": [
+        "motion/plan.cpp",
+        "motion/plan.hpp"
+      ]
+    },
+    "session": {
+      "nloc": 94,
+      "files": [
+        "chess/session.cpp",
+        "chess/session.hpp"
+      ]
+    }
+  },
+  "cpp_removed": 1176,
+  "source_inventory": [
+    {
+      "file": "app/geometry_tool.cpp",
+      "group": "application_cpp",
+      "nloc": 139,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "b585236d9af653db16254973c560c652b6524723ff39ac920c1aa971639e421d"
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "group": "application_cpp",
+      "nloc": 64,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "chess/board.cpp",
+      "group": "application_cpp",
+      "nloc": 253,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "951635cba81b46b33716dab0c8cc13c7757f373f109015a816db27eed3a6dcab"
+    },
+    {
+      "file": "chess/board.hpp",
+      "group": "application_cpp",
+      "nloc": 55,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "bdc8eb5b2b25f3bb8a3923a481f5089fa9d18f7baf1b6c8290d885617f0bb1fb"
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "group": "application_cpp",
+      "nloc": 201,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "60fe225ebba6f6e694c61312ac6ba64e39d82e5f350029bff1ee8208ec0f7fb8"
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "group": "application_cpp",
+      "nloc": 33,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "994914063ade0779c9e2ee5d57efc9d187a7e03db2740ba48c6d73a66dab5099"
+    },
+    {
+      "file": "chess/session.cpp",
+      "group": "application_cpp",
+      "nloc": 70,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "cce9e7f1ee2d43611d9f249e6de7f40f01cbdefa4b627d2e17e03977a043dac9"
+    },
+    {
+      "file": "chess/session.hpp",
+      "group": "application_cpp",
+      "nloc": 24,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "9fef013436f57fe38231ea61828d1af47d5b0bd81b35c06d4036f497204b8969"
+    },
+    {
+      "file": "manual_control/calibrate_j1.py",
+      "group": "commissioning_tools",
+      "nloc": 289,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "09c0484c6ba829e4a6a73924786954f627ea87fa6737750de155aa1420d30d11"
+    },
+    {
+      "file": "manual_control/chess_demo.py",
+      "group": "manual_and_demo",
+      "nloc": 248,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "ec2e4272e08317b1d91b7ab94a8dc4bb855c3c08b4e555d097d2cbd4e9e4e023"
+    },
+    {
+      "file": "manual_control/core.py",
+      "group": "manual_and_demo",
+      "nloc": 591,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "8cf7d397c6b609efabf1ef0dd0f06a12f7db99a67271fd9dc052fab2d2b7287b"
+    },
+    {
+      "file": "manual_control/first_pick.py",
+      "group": "manual_and_demo",
+      "nloc": 374,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "8ab83005a1eea47d34dc0141cf958411550517d8bfe4fbdcaceef4afa09f15bc"
+    },
+    {
+      "file": "manual_control/index.html",
+      "group": "manual_and_demo",
+      "nloc": 211,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 20,
+      "sha256": "d9330ca277d9702cf926ad7ae597f5294a6c3ee4644f816c5546663286a973ec"
+    },
+    {
+      "file": "manual_control/j1_bench.py",
+      "group": "commissioning_tools",
+      "nloc": 377,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "de78a2c987965d5d682439c8989748a964dd4e0c48c04f49ce55c94098e6b928"
+    },
+    {
+      "file": "manual_control/server.py",
+      "group": "manual_and_demo",
+      "nloc": 415,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "5f1a7c88b302302bd36ecaf709eef1c49024ee5f0fc5b7f04c63dc30a1931ede"
+    },
+    {
+      "file": "manual_control/software_update_j1.py",
+      "group": "commissioning_tools",
+      "nloc": 74,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "863486d630b8f2f2bb661670c1e2621d0511b4c4587034587447971ebc12f3f7"
+    },
+    {
+      "file": "manual_control/telemetry.py",
+      "group": "manual_and_demo",
+      "nloc": 47,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "e46642bd9a9094756399f3780e5e4ec453737302903a6589aa9190aef55a9ebe"
+    },
+    {
+      "file": "manual_control/tune_release.py",
+      "group": "manual_and_demo",
+      "nloc": 252,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "6995dfb0ce2bf14b9be385c5500f44a8192541192ade321d4a0c2416be1f3793"
+    },
+    {
+      "file": "motion/plan.cpp",
+      "group": "application_cpp",
+      "nloc": 108,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "7ca4dd3b737d25fc9d158ca6613a63328db2c054bf55f2b0aa313d6cd4f80a3d"
+    },
+    {
+      "file": "motion/plan.hpp",
+      "group": "application_cpp",
+      "nloc": 53,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "f9ef544c27cc0e0144e79fbace905e03e3b866250401deceb70f8ec7ba983253"
+    },
+    {
+      "file": "temp/transport/candle_bus.py",
+      "group": "usb_can_adapter_excluded",
+      "nloc": 21,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "096e8e394433c3ba61d7404e458dd481f10de912abcb353f5754cd8f125d1a73"
+    },
+    {
+      "file": "temp/transport/stepfoc_candlelight.py",
+      "group": "usb_can_adapter_excluded",
+      "nloc": 251,
+      "encoding": "gb18030",
+      "markup_nonblank_lines": 0,
+      "sha256": "d23b0fc24e808918e429950e5e07f40bc430982ec1c4b2a5442946bec8a5ddb0"
+    },
+    {
+      "file": "temp/transport/usb_owner.py",
+      "group": "usb_can_adapter_excluded",
+      "nloc": 30,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "2d3f79a3a90a2fe2419186505d4baffc38b36e2c404f53a75ae9014f24e4cdd8"
+    },
+    {
+      "file": "temp/yolo_live/board_npu.py",
+      "group": "legacy_live_vision",
+      "nloc": 280,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "ef7f8e35e6054002d5a0f4d9fb2de2de8878e62b853ac162a20dd4978edbf9d4"
+    },
+    {
+      "file": "temp/yolo_live/dual_preview.py",
+      "group": "legacy_live_vision",
+      "nloc": 224,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "dc2465acab6ec1e6a660264bad77656938df0eb97857d07f4e86e0a39f1cee99"
+    },
+    {
+      "file": "temp/yolo_live/host_preview.py",
+      "group": "legacy_live_vision",
+      "nloc": 331,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "b23eb5d42ae789f05599b985d70a8fa138b6688a986e6dd8027837f695bebb91"
+    },
+    {
+      "file": "vision/board.cpp",
+      "group": "application_cpp",
+      "nloc": 47,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "01f19f4a9f14246311667a78b825e0bf79fce299c54d6904a27296fb397c39bb"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "group": "application_cpp",
+      "nloc": 74,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "group": "application_cpp",
+      "nloc": 9,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/fixed_board.cpp",
+      "group": "application_cpp",
+      "nloc": 34,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "201cffc81500c9a93a399102273dfc5b4393c0b82226a073a09b6cf4fc7a59e5"
+    },
+    {
+      "file": "vision/fixed_board.hpp",
+      "group": "application_cpp",
+      "nloc": 14,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "289209bc2501c51e02e7b1e55b52f8ef47822ccf7f082562f05ed35625b7ccb3"
+    },
+    {
+      "file": "vision/geometry.cpp",
+      "group": "application_cpp",
+      "nloc": 261,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "e6d61c6b8e092ad51f9d10b82662bb8d999b84377e7644907ba03e889bb88fab"
+    },
+    {
+      "file": "vision/geometry.hpp",
+      "group": "application_cpp",
+      "nloc": 67,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "cca4143bf2a3d48a72223e59029d606b0e9e89807535da06fe85e5d9f02149ba"
+    },
+    {
+      "file": "vision/io.hpp",
+      "group": "application_cpp",
+      "nloc": 32,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "84c9167b1fb9d867b2f79ff14dab294083ed57ff13093b4d3d6edeb08c5d673f"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "group": "application_cpp",
+      "nloc": 131,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "group": "application_cpp",
+      "nloc": 38,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "group": "application_cpp",
+      "nloc": 92,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+    }
+  ],
+  "count_method": "Lizard NLOC, includes all own CPP/headers/helpers. Excludes blank lines/comments. All other languages/tools/USB adapter listed separately."
+}

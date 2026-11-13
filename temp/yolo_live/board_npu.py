@@ -176,12 +176,12 @@ DUAL_PAGE = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta nam
 <title>象棋双画面：识别与交点</title>
 <style>body{margin:18px;background:#111827;color:#e5e7eb;font:17px sans-serif}h1{font-size:23px;margin:0 0 12px}.titles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 8px}.titles div{padding:10px;background:#1e293b;border-radius:6px}img{display:block;width:100%;height:auto;border:1px solid #475569;box-sizing:border-box}#state{color:#fbbf24}small{color:#94a3b8}main{max-width:1720px;margin:auto}</style>
 <main><h1>象棋实时双画面</h1><div id="state">正在连接画面…</div>
-<div class="titles"><div>左侧：YOLO 棋子识别</div><div>右侧：OpenCV 棋盘交点</div></div>
+<div class="titles"><div>左侧：YOLO 棋子识别</div><div>右侧：OpenCV 固定棋盘交点</div></div>
 <img id="views" src="/dual/stream.mjpg" alt="左侧棋子识别，右侧棋盘交点，同一帧画面">
 <p><small>两侧来自同一帧。只显示画面，不控制机械臂。黄色圆点是交点，红色数字是列、行编号。</small></p></main>
 <script>const im=document.querySelector('#views');im.onerror=()=>setTimeout(()=>{im.src='/dual/stream.mjpg'},1500);
 setInterval(async()=>{const el=document.querySelector('#state');try{let s=await(await fetch('/dual/status',{cache:'no-store'})).json();
-el.textContent=s.age_s===null?'等待画面':s.age_s>3?'画面已暂停，请检查采集服务':('实时画面 · '+s.age_s.toFixed(1)+' 秒前更新 · '+(s.geometry_valid?'已找到 90 个交点':'暂未找到完整棋盘')+' · '+(s.orientation_valid?'朝向已确认':'朝向待确认'));
+el.textContent=s.age_s===null?'等待画面':s.age_s>3?'画面已暂停，请检查采集服务':('实时画面 · '+s.age_s.toFixed(1)+' 秒前更新 · '+(s.geometry_valid?'固定 90 点已加载':'固定布局未就绪')+' · '+(s.orientation_valid?'使用已确认朝向':'布局朝向待确认'));
 }catch(e){el.textContent='连接中断，正在等待恢复';}},1000);</script></html>'''
 
 
