@@ -14,7 +14,7 @@ struct ChessMoveTargets
 };
 // A pure coordinate conversion, not legal-move validation or a motor command.
 // Check against the engine's legal list; finish geometry/IK checks before locking
-// the turn with Game::prepareRobot and passing it to a separate motion executor.
+// the turn with Game_prepareRobot and passing it to a separate motion executor.
 bool chessMoveTargets(const PlaneMap &plane, const Board &grid, const chess::Move &move,
                       const std::string &currentFrameId, ChessMoveTargets &targets);
 } // namespace scara

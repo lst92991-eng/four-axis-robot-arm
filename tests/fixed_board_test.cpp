@@ -35,7 +35,8 @@ int main()
                       "Cache changed a calibrated XY target");
             }
 
-        chess::Board initial = chess::initialBoard();
+        chess::Board initial;
+        chess::initialBoard(initial);
         std::vector<scara::Detection> pieces;
         std::string symbols = scara::PieceSymbols;
         for (int row = 0; row < 10; ++row)

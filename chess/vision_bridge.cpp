@@ -34,7 +34,9 @@ bool chessMoveTargets(const PlaneMap &plane, const Board &grid, const chess::Mov
                       const std::string &currentFrameId, ChessMoveTargets &targets)
 {
     targets = {};
-    if (chess::uci(move).empty()) return false;
+    std::string moveText;
+    bool moveValid = chess::uci(move, moveText);
+    if (moveValid == false) return false;
     TargetXY from, to;
     bool fromValid = gridTarget(plane, grid, move.fromCol, Rows - 1 - move.fromRow, currentFrameId, from);
     bool toValid = gridTarget(plane, grid, move.toCol, Rows - 1 - move.toRow, currentFrameId, to);

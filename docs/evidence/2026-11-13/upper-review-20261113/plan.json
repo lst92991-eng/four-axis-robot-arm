@@ -99,6 +99,11 @@
       "round": 5,
       "title": "NPU配置表与初始化状态流",
       "record": "round-05.json"
+    },
+    {
+      "round": 6,
+      "title": "棋局显式状态与参数式接口",
+      "record": "round-06.json"
     }
   ],
   "known_limits": [

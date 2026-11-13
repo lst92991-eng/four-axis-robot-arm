@@ -15,10 +15,11 @@ struct TensorSpec
 };
 
 // 输入和三路输出按固定次序准备；每路矩阵的高、宽相同。
-static const TensorSpec Tensors[] = {{RKNN_QUERY_NATIVE_INPUT_ATTR, 0, YoloSize, 3, RKNN_TENSOR_UINT8},
-                                     {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 0, 80, YoloChannels, RKNN_TENSOR_INT8},
-                                     {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 1, 40, YoloChannels, RKNN_TENSOR_INT8},
-                                     {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 2, 20, YoloChannels, RKNN_TENSOR_INT8}};
+static const TensorSpec Tensors[] = {
+    {RKNN_QUERY_NATIVE_INPUT_ATTR, 0, YoloSize, 3, RKNN_TENSOR_UINT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 0, YoloGrid[0], YoloChannels, RKNN_TENSOR_INT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 1, YoloGrid[1], YoloChannels, RKNN_TENSOR_INT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 2, YoloGrid[2], YoloChannels, RKNN_TENSOR_INT8}};
 
 // 缓冲0是输入，缓冲1～3是输出；SDK输出编号从0开始。
 static struct

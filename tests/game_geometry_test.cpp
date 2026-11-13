@@ -56,7 +56,8 @@ int main()
 {
     try
     {
-        const auto initial = chess::initialBoard();
+        chess::Board initial;
+        chess::initialBoard(initial);
         auto g = grid();
         auto o = observed(initial);
         chess::Observation c, checked;
@@ -89,7 +90,9 @@ int main()
         chess::Move human, robot;
         std::string error;
         chess::Board afterHuman;
-        check(chess::parseMove("a3a4", human) && chess::uci(human) == "a3a4", "UCI conversion failed");
+        std::string moveText;
+        check(chess::parseMove("a3a4", human) && chess::uci(human, moveText) && moveText == "a3a4",
+              "UCI conversion failed");
         auto p = plane();
         scara::ChessMoveTargets xy, rejected;
         bool targetsValid = scara::chessMoveTargets(p, g, human, "frame-1", xy);
@@ -101,22 +104,20 @@ int main()
         check(!scara::chessMoveTargets(p, unoriented, human, "frame-1", rejected), "Unoriented target accepted");
 
         chess::Game game;
-        const auto base = game.baseFen();
+        const auto base = game.baseFen;
         check(chess::applyMove(initial, true, human, afterHuman, error), "Fixture human move failed");
         scara::chessObservation(g, observed(afterHuman), true, checked);
-        check(game.acceptHuman(checked, {"a3a4"}, human), "Human move not accepted");
-        check(game.history() == "a3a4" && !game.redToMove() && game.baseFen() == base,
-              "Base FEN/history/turn corrupted");
+        check(chess::Game_acceptHuman(game, checked, {"a3a4"}, human), "Human move not accepted");
+        check(game.history == "a3a4" && !game.redToMove && game.baseFen == base, "Base FEN/history/turn corrupted");
         chess::Observation beforeRobot, expected;
         scara::chessObservation(g, observed(afterHuman), true, beforeRobot);
-        check(game.prepareRobot(beforeRobot, "a6a5", {"a6a5"}, robot), "Robot plan failed");
-        check(game.pending() && game.board() == afterHuman && game.history() == "a3a4",
-              "Planned move committed too soon");
-        scara::chessObservation(g, observed(game.expectedBoard()), true, expected);
-        check(!game.confirmRobot(expected, false) && game.pending() && game.history() == "a3a4",
+        check(chess::Game_prepareRobot(game, beforeRobot, "a6a5", {"a6a5"}, robot), "Robot plan failed");
+        check(game.pending && game.board == afterHuman && game.history == "a3a4", "Planned move committed too soon");
+        scara::chessObservation(g, observed(game.expected), true, expected);
+        check(!chess::Game_confirmRobot(game, expected, false) && game.pending && game.history == "a3a4",
               "Failed motion committed history");
-        check(!game.confirmRobot(beforeRobot, true) && game.pending(), "Wrong resulting board accepted");
-        check(game.confirmRobot(expected, true) && !game.pending() && game.history() == "a3a4 a6a5",
+        check(!chess::Game_confirmRobot(game, beforeRobot, true) && game.pending, "Wrong resulting board accepted");
+        check(chess::Game_confirmRobot(game, expected, true) && !game.pending && game.history == "a3a4 a6a5",
               "Confirmed result not committed");
         chess::Board parsed;
         bool red = false;
