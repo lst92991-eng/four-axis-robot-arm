@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <thread>
+#include <future>
 
 namespace {
 void check(bool passed, const char *message)
@@ -154,26 +155,26 @@ int main(int argc, char **argv)
     }
     scara::Camera_open(std::string(argv[1])+"/finite");
     cv::Mat frame;
-    bool ended = false;
-    try
-    {
-      for (int i=0; i<20; ++i) scara::Camera_read(frame);
-    }
-    catch (const std::runtime_error&) { ended = true; }
+    auto receiveUntilStopped = [&frame] {
+      try { for (int i=0; i<20; ++i) scara::Camera_read(frame); }
+      catch (const std::runtime_error&) { return frame.empty(); }
+      return false;
+    };
+    auto finite = std::async(std::launch::async,receiveUntilStopped);
+    bool finiteWaited = finite.wait_for(std::chrono::milliseconds(1600))==std::future_status::timeout;
     scara::Camera_close();
-    check(ended && frame.empty(), "End of stream did not clear the output frame");
+    check(finiteWaited && finite.get(), "Finished source did not wait until explicitly closed");
     scara::Camera_open(std::string(argv[1])+"/stall");
-    auto waiting = std::chrono::steady_clock::now();
-    ended = false;
-    try
-    {
-      for (int i=0; i<20; ++i) scara::Camera_read(frame);
-    }
-    catch (const std::runtime_error&) { ended = true; }
-    double waitSeconds = std::chrono::duration<double>(std::chrono::steady_clock::now()-waiting).count();
+    auto stalled = std::async(std::launch::async,receiveUntilStopped);
+    bool stallWaited = stalled.wait_for(std::chrono::seconds(7))==std::future_status::timeout;
+    auto stopping = std::chrono::steady_clock::now();
+    scara::Camera_stop();
+    bool stopDelivered = stalled.wait_for(std::chrono::seconds(1))==std::future_status::ready;
     scara::Camera_close();
-    check(ended && frame.empty() && waitSeconds<8, "Stalled stream left the consumer waiting indefinitely");
-    std::cout << "camera_stall_wait_s=" << waitSeconds << '\n';
+    double closeSeconds = std::chrono::duration<double>(std::chrono::steady_clock::now()-stopping).count();
+    check(stallWaited && stopDelivered && stalled.get() && closeSeconds<7,
+          "Stalled stream did not remain waiting or could not stop cleanly");
+    std::cout << "camera_stall_close_s=" << closeSeconds << '\n';
     scara::Camera_open(argv[1]);
     scara::Camera_read(frame);
     check(frame.size()==source.size(), "Camera retained an old failure after reopening");

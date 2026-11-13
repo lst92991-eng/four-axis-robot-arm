@@ -14,6 +14,7 @@ std::atomic<int> failedReads = 0;
 std::atomic<int> activeReads = 0;
 std::atomic<bool> alwaysFail = false;
 std::atomic<bool> throwOnRead = false;
+std::atomic<bool> pauseRead = false;
 bool releasedWhileReading = false;
 }
 
@@ -34,6 +35,7 @@ public:
       return false;
     }
     ++mock::activeReads;
+    while (mock::pauseRead) std::this_thread::sleep_for(std::chrono::milliseconds(1));
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     frame = Mat(720,1280,CV_8UC3,Scalar::all(index%255));
     --mock::activeReads;
@@ -75,20 +77,34 @@ int main()
       return false;
     });
     auto start = std::chrono::steady_clock::now();
-    std::this_thread::sleep_for(std::chrono::milliseconds(120));
-    check(waiting.wait_for(std::chrono::milliseconds(0))==std::future_status::timeout,
-          "A temporary read failure woke the caller as a terminal error");
+    bool stillWaiting = waiting.wait_for(std::chrono::milliseconds(5200))==std::future_status::timeout;
     auto elapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::steady_clock::now()-start).count();
-    check(mock::attempts>=2 && mock::attempts<=elapsedMs/5+5,
-          "Retry loop did not pace repeated immediate failures");
+    bool paced = mock::attempts>=2 && mock::attempts<=elapsedMs/5+5;
     auto stop = std::chrono::steady_clock::now();
+    scara::Camera_stop();
+    bool stopDelivered = waiting.wait_for(std::chrono::seconds(1))==std::future_status::ready;
     scara::Camera_close();
+    check(stillWaiting, "No-frame wait still has an application timeout");
+    check(paced, "Retry loop did not pace repeated immediate failures");
+    check(stopDelivered, "Stop request did not interrupt a no-frame wait");
     check(waiting.get(), "Explicit close did not unblock the waiting reader with empty output");
     check(std::chrono::steady_clock::now()-stop<std::chrono::seconds(2),
           "Explicit close failed to stop the retry loop promptly");
 
     mock::alwaysFail = false;
+    mock::pauseRead = true;
+    scara::Camera_open("scripted");
+    for (int i=0; i<1000 && mock::activeReads==0; ++i)
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    check(mock::activeReads==1, "Did not start the held read");
+    auto closing = std::async(std::launch::async, [] { scara::Camera_close(); });
+    bool waitedForRead = closing.wait_for(std::chrono::milliseconds(30))==std::future_status::timeout;
+    mock::pauseRead = false;
+    closing.get();
+    check(waitedForRead && scara::latestFrame.empty(),
+          "Close did not wait for the last frame and clear it at thread exit");
+
     mock::throwOnRead = true;
     scara::Camera_open("scripted");
     bool ended = false;
@@ -101,11 +117,12 @@ int main()
     scara::Camera_read(frame);
     scara::Camera_close();
     check(!frame.empty() && !mock::releasedWhileReading, "Reopen failed or video closed while reading");
-    std::cout << "PASS transient read failures recover, retries paced, explicit close unblocks, decoder exception exits\n";
+    std::cout << "PASS retry, wait beyond five seconds, explicit stop, final-frame cleanup, decoder exception\n";
     return 0;
   }
   catch (const std::exception& error)
   {
+    mock::pauseRead = false;
     scara::Camera_close();
     std::cerr << error.what() << '\n';
     return 1;

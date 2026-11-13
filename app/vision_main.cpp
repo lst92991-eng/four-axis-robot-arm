@@ -11,6 +11,7 @@ static volatile std::sig_atomic_t running = 1;
 static void requestStop(int)
 {
     running = 0;
+    scara::Camera_stop();
 }
 
 // 完整写入临时图后，再替换给预览端读取的文件。
@@ -59,7 +60,8 @@ int main(int argc, char **argv)
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << '\n';
+        result = running ? 1 : 0;
+        if (running) std::cerr << e.what() << '\n';
     }
     Camera_close();
     Yolo_close();

@@ -28,7 +28,7 @@ static void receiveFrames()
             cv::Mat frame; // 每轮新建，避免下一次解码改写主线程正在使用的图。
             bool received = video.read(frame);
             std::unique_lock<std::mutex> lock(frameMutex);
-            if (received && capturing)
+            if (received)
             {
                 latestFrame = frame;
                 frameReady.notify_one();
@@ -42,6 +42,7 @@ static void receiveFrames()
     } // 后台异常也走下面的结束通知，不能让主线程一直等图。
     std::lock_guard<std::mutex> lock(frameMutex);
     capturing = false;
+    latestFrame.release(); // 当前读取完成后统一清空，关闭时允许这一轮收尾。
     frameReady.notify_all();
 }
 
@@ -61,26 +62,24 @@ void Camera_open(const std::string &cameraUrl)
 void Camera_read(cv::Mat &frame)
 {
     std::unique_lock<std::mutex> lock(frameMutex);
-    frame.release();
     latestFrame.release(); // 丢弃调用前缓存的图，等调用后收到的新帧。
-    auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
     while (capturing && latestFrame.empty())
-    {
-        if (frameReady.wait_until(lock, deadline) == std::cv_status::timeout && latestFrame.empty())
-            throw std::runtime_error("Camera frame timeout");
-    }
-    frame = latestFrame; // 将图像交给输出参数，共享像素，不复制整张图。
+        frameReady.wait_for(lock, std::chrono::milliseconds(10)); // 醒来检查新图或停止请求，不设无图截止。
+    // 将图像交给输出参数，共享像素，不复制整张图。
+    frame = latestFrame;
     if (frame.empty()) throw std::runtime_error("Camera stream ended");
+}
+
+// 停止回调只改原子开关；不在信号回调中加锁、等线程或操作视频。
+void Camera_stop()
+{
+    capturing = false;
 }
 
 //---------关闭相机区---------
 void Camera_close()
 {
-    {
-        std::lock_guard<std::mutex> lock(frameMutex);
-        capturing = false;
-        latestFrame.release();
-    } // 先解锁，后台才能完成结束通知。
+    Camera_stop();
     frameReady.notify_all();
     if (captureThread.joinable()) captureThread.join(); // 等后台结束，避免边读边关闭。
     video.release();
