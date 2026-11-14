@@ -9,7 +9,7 @@ struct GameConfig
     std::string cameraUrl;    // 相机RTSP地址。
     std::string labelPath;    // 中文标签图片。
     std::string engineDir;    // Pikafish程序及配套NNUE所在目录。
-    std::string workDir;      // 预览、动作请求、回执和状态的保存目录。
+    std::string workDir;      // 预览和棋局状态的保存目录。
     std::string scenarioPath; // 仅仿真使用的场景脚本。
     JointTarget park;         // 已示教、能看清整张棋盘的J2反馈角与J3电机角，单位度。
     bool humanRed = true, redToMove = true;

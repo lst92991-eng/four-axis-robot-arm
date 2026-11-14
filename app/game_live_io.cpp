@@ -1,4 +1,5 @@
 #include "game_files.hpp"
+#include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
 #include "vision/io.hpp"
@@ -47,7 +48,7 @@ void Runtime_stop()
 
 bool Runtime_close()
 {
-    bool stopped = Motion_cancel();
+    bool stopped = Motion_stop();
     bool reaped = engine.close();
     closeVision();
     return stopped && reaped;
@@ -130,13 +131,10 @@ void Operator_read(const std::string &, const std::string &prompt, Command &comm
     }
 }
 
-void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
-                   bool &success)
+void Robot_execute(const std::string &, const std::string &, const std::vector<PickStep> &steps, bool &success)
 {
-    std::string ticket;
     closeVision();
-    Motion_request(purpose, move, steps, ticket);
-    std::cout << "等待执行器回执：" << ticket << '\n' << std::flush;
-    Motion_wait(ticket, success);
+    Motion_execute(steps, gameRunning, success);
+    if (!gameRunning) throw std::runtime_error("对局已停止");
 }
 } // namespace scara

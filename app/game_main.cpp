@@ -55,7 +55,7 @@ int runGame(int argc, char **argv)
     if (!Runtime_close())
     {
         result = 1;
-        session.game.error += "；停止请求或资源回收未确认";
+        session.game.error += "；机械停止或资源回收未确认";
     }
     std::string phase = "finished";
     if (session.game.result == chess::Result::Playing) phase = "stopped";

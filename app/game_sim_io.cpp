@@ -2,6 +2,7 @@
 #include "vision/io.hpp"
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 
 namespace scara
 {
@@ -34,7 +35,7 @@ void Runtime_stop()
 }
 bool Runtime_close()
 {
-    return Motion_cancel();
+    return true; // 仿真没有硬件动作需要停止。
 }
 
 void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
@@ -97,27 +98,24 @@ void Robot_execute(const std::string &purpose, const std::string &move, const st
 {
     cv::FileNode events = script["executions"];
     cv::FileNode event;
-    cv::FileStorage reply;
-    std::string ticket, path, message;
+    int result;
 
+    success = false;
+    if (!gameRunning) throw std::runtime_error("对局已停止");
     if (executionIndex >= events.size()) throw std::runtime_error("仿真出现了额外的机械执行请求");
     event = events[int(executionIndex)];
     ++executionIndex;
     if ((std::string)event["purpose"] != purpose || (std::string)event["move"] != move)
         throw std::runtime_error("仿真动作与预定场景不符");
-    Motion_request(purpose, move, steps, ticket);
-    path = Runtime_path("motion-request.json");
-    readBytes(path, message);
-    path = Runtime_path("request-" + std::to_string(executionIndex) + ".json");
-    writeBytes(path, message);
+    // 单向打印调用参数供离线核对，不生成请求文件，也不从日志接收命令。
+    std::cout << "SIM_CALL " << purpose << ' ' << (move.empty() ? "-" : move) << '\n' << std::setprecision(17);
+    for (const PickStep &step : steps)
+        std::cout << "SIM_STEP " << int(step.action) << ' ' << step.joints.j2Deg << ' ' << step.joints.j3MotorDeg << ' '
+                  << step.zDeg << ' ' << step.speedDegS << ' ' << step.durationMs << '\n';
     if (!event["board"].empty()) readBoard(event["board"]); // 独立场景决定落子结果，不直接复制计划盘面。
-    memoryStorage(true, reply);
-    reply << "ticket" << ticket;
-    reply << "settled" << 1;
-    reply << "success" << int(event["success"]);
-    path = Runtime_path("motion-reply.json");
-    message = reply.releaseAndGetString();
-    writeBytes(path, message);
-    Motion_wait(ticket, success);
+    result = int(event["success"]);
+    if (result != 0 && result != 1) throw std::runtime_error("仿真执行结果必须是0或1");
+    success = result == 1;
+    std::cout << "SIM_RETURN " << result << '\n';
 }
 } // namespace scara

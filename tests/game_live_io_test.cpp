@@ -1,5 +1,6 @@
 // Compile the actual live wrapper, replacing only its external devices/process API.
 #include "app/game_files.hpp"
+#include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
 #include "vision/io.hpp"
@@ -7,12 +8,14 @@
 #include <poll.h>
 #include <cstring>
 #include <iostream>
-#include <thread>
 
 volatile std::sig_atomic_t scara::gameRunning = 1;
 namespace fake
 {
 bool camera = false, npu = false, engine = false, failSearch = false, failModel = false;
+bool motionSuccess = true, stopSuccess = true, cancelMotion = false;
+int executions = 0, stops = 0;
+std::vector<scara::PickStep> receivedSteps;
 std::vector<std::string> events;
 std::string keyboard;
 void check(bool value, const char *message)
@@ -47,6 +50,26 @@ bool Pikafish::close()
 
 namespace scara
 {
+void Motion_execute(const std::vector<PickStep> &steps, const volatile std::sig_atomic_t &running, bool &success)
+{
+    fake::check(!fake::camera && !fake::npu && !fake::engine, "Motion started before resource cleanup");
+    success = false;
+    if (!running) return;
+    ++fake::executions;
+    fake::receivedSteps = steps;
+    if (fake::cancelMotion)
+    {
+        gameRunning = 0; // 模拟执行过程中收到停止信号，不发送实际命令。
+        Motion_stop();
+        return;
+    }
+    success = fake::motionSuccess;
+}
+bool Motion_stop()
+{
+    ++fake::stops;
+    return fake::stopSuccess;
+}
 void Camera_open(const std::string &)
 {
     fake::camera = true;
@@ -128,7 +151,7 @@ int main()
         config.cameraUrl = "fake-stream";
         config.labelPath = "config/vision/chinese-labels.png";
         config.engineDir = "fake-engine";
-        config.workDir = "output/game-live-wrapper-test";
+        config.workDir = "output/game-direct-live-wrapper-test";
         Runtime_open(config, "fake-model");
         std::string frame, previous, choice;
         std::vector<Detection> pieces;
@@ -148,6 +171,56 @@ int main()
                     "Search retained overlapping resources");
         Vision_observe(session.layout, frame, pieces);
         fake::check(frame != previous, "Observation identity was reused after search");
+
+        PickStep lift, release;
+        lift.action = PickAction::MoveZ;
+        lift.zDeg = 123;
+        lift.speedDegS = 180;
+        release.action = PickAction::ReleasePulse;
+        release.durationMs = 20;
+        std::vector<PickStep> steps{lift, release};
+        bool completed = false;
+        Robot_execute("move", "a3a4", steps, completed);
+        fake::check(completed && fake::executions == 1 && fake::receivedSteps.size() == 2,
+                    "Direct execution did not receive the action array or return completion");
+        fake::check(fake::receivedSteps[0].zDeg == 123 && fake::receivedSteps[0].speedDegS == 180 &&
+                        fake::receivedSteps[1].action == PickAction::ReleasePulse &&
+                        fake::receivedSteps[1].durationMs == 20,
+                    "Direct interface changed action units or pulse duration");
+        fake::motionSuccess = false;
+        Robot_execute("move", "a3a4", steps, completed);
+        fake::check(!completed, "Failed direct execution became success");
+        fake::motionSuccess = true;
+        fake::cancelMotion = true;
+        bool cancelled = false;
+        try
+        {
+            Robot_execute("move", "a3a4", steps, completed);
+        }
+        catch (const std::exception &)
+        {
+            cancelled = true;
+        }
+        fake::check(cancelled && !completed && fake::stops == 1, "Cancellation did not stop and leave execution");
+        int executed = fake::executions;
+        try
+        {
+            Robot_execute("move", "a3a4", steps, completed);
+        }
+        catch (const std::exception &)
+        {
+        }
+        fake::check(!completed && fake::executions == executed, "A stopped run started another move");
+        fake::cancelMotion = false;
+        gameRunning = 1;
+        int stopped = fake::stops;
+        Runtime_stop();
+        fake::check(fake::stops == stopped, "Signal callback performed blocking hardware I/O");
+        fake::stopSuccess = false;
+        fake::check(!Runtime_close(), "Failed stop was reported as confirmed");
+        fake::stopSuccess = true;
+        fake::check(Runtime_close(), "Confirmed stop or cleanup failed");
+
         fake::failSearch = true;
         bool failed = false;
         try
@@ -179,7 +252,7 @@ int main()
         Runtime_stop();
         fake::check(Runtime_close(), "Live wrapper cleanup failed");
         std::cout
-            << "PASS actual live wrapper: vision call order, 2560x720 preview, exclusive engine lifetime, failure and close; external APIs mocked\n";
+            << "PASS actual live wrapper: vision, engine, direct execution/result/cancellation/stop; external APIs mocked\n";
         return 0;
     }
     catch (const std::exception &error)

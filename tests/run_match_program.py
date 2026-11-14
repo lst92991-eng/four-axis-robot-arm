@@ -1,4 +1,4 @@
-"""Run the actual match entry with explicit scenes and scripted engine/actuator replies."""
+"""Run the actual match entry with scripted scenes, engine answers and direct actuator results."""
 import copy
 import json
 from pathlib import Path
@@ -16,7 +16,38 @@ AFTER_ROBOT = BASE['executions'][1]['board']
 passed = 0
 
 
-def run(name, scenario, history=None, exit_code=0, requests=3, settings=None):
+def read_calls(output):
+    calls = []
+    current = None
+    for line in output.splitlines():
+        fields = line.split()
+        if line.startswith('SIM_CALL '):
+            assert current is None, 'Overlapping direct calls'
+            current = dict(simulated=1, purpose=fields[1], move='' if fields[2] == '-' else fields[2], steps=[])
+        elif line.startswith('SIM_STEP '):
+            assert current is not None
+            action = int(fields[1])
+            j2, j3, z, speed = map(float, fields[2:6])
+            duration = int(fields[6])
+            if action == 0:
+                step = dict(action='hold')
+            elif action == 1:
+                step = dict(action='xy', j2_deg=j2, j3_motor_deg=j3)
+            elif action == 2:
+                step = dict(action='z', j1_deg=z, speed_deg_s=speed)
+            else:
+                assert action == 3
+                step = dict(action='release', duration_ms=duration)
+            current['steps'].append(step)
+        elif line.startswith('SIM_RETURN '):
+            assert current is not None and fields[1] in ('0', '1')
+            calls.append(current)
+            current = None
+    assert current is None, 'A direct call did not return'
+    return calls
+
+
+def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
     global passed
     with tempfile.TemporaryDirectory(prefix='scara_对弈_') as directory:
         work = Path(directory)
@@ -34,30 +65,31 @@ def run(name, scenario, history=None, exit_code=0, requests=3, settings=None):
         state = json.loads((work / 'runtime/status.json').read_text(encoding='utf-8'))
         assert state['simulated'] == 1, name
         assert state['history'] == (BASE['expected_history'] if history is None else history), (name, state)
-        packets = [json.loads(path.read_text(encoding='utf-8')) for path in sorted((work / 'runtime').glob('request-*.json'))]
-        assert len(packets) == requests, (name, len(packets), result.stdout)
-        assert len({packet['ticket'] for packet in packets}) == requests
-        assert all(packet['simulated'] == 1 for packet in packets)
-        assert [step['action'] for step in packets[0]['steps']] == ['hold', 'z', 'xy']
-        for packet in packets[1:]:
-            assert packet['steps'][-1] == dict(action='xy', j2_deg=config['park_joints_deg'][0],
+        executions = read_calls(result.stdout)
+        assert len(executions) == calls, (name, len(executions), result.stdout)
+        assert not list((work / 'runtime').glob('motion-*.json')), 'Retired motion protocol is still active'
+        assert not list((work / 'runtime').glob('request-*.json')), 'Simulation still uses request files'
+        assert all(execution['simulated'] == 1 for execution in executions)
+        assert [step['action'] for step in executions[0]['steps']] == ['hold', 'z', 'xy']
+        for execution in executions[1:]:
+            assert execution['steps'][-1] == dict(action='xy', j2_deg=config['park_joints_deg'][0],
                                               j3_motor_deg=config['park_joints_deg'][1])
-            for i, step in enumerate(packet['steps']):
+            for i, step in enumerate(execution['steps']):
                 if step['action'] == 'release':
-                    assert packet['steps'][i + 1]['action'] == 'z', name
+                    assert execution['steps'][i + 1]['action'] == 'z', name
         passed += 1
         print('PASS', name)
-        return state, packets, result.stdout
+        return state, executions, result.stdout
 
 
-state, packets, output = run('two rounds with robot capture', BASE)
+state, executions, output = run('two rounds with robot capture', BASE)
 assert state['board'] == BASE['expected_board'] and state['pending'] == 0
-assert [len(packet['steps']) for packet in packets] == [3, 9, 17]
+assert [len(execution['steps']) for execution in executions] == [3, 9, 17]
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['board'] = AFTER_HUMAN
 case['commands'].insert(3, dict(phase='recovery', command='retry', board=AFTER_ROBOT))
-state, _, output = run('success receipt still requires visual confirmation', case)
+state, _, output = run('successful return still requires visual confirmation', case)
 assert 'recovery | a3a4 |' in output and state['pending'] == 0
 
 case = copy.deepcopy(BASE)
@@ -70,14 +102,14 @@ assert output.count('recovery | a3a4 |') == 2
 case = copy.deepcopy(BASE)
 case['executions'][1]['success'] = 0
 case['commands'].insert(3, dict(phase='recovery', command='accept'))
-state, _, output = run('operator accepts already completed action after failure receipt', case)
+state, _, output = run('operator accepts already completed action after failed return', case)
 assert 'recovery | a3a4 |' in output
 
 case = copy.deepcopy(BASE)
 case['executions'][1].update(success=0, board=AFTER_HUMAN)
 case['executions'].insert(2, copy.deepcopy(BASE['executions'][1]))
 case['commands'].insert(3, dict(phase='recovery', command='restored', board=AFTER_HUMAN))
-run('explicit restore retains history and permits one replan', case, requests=4)
+run('explicit restore retains history and permits one replan', case, calls=4)
 
 case = copy.deepcopy(BASE)
 case['commands'].insert(2, dict(phase='human', command='ready', board=INITIAL))
@@ -96,7 +128,7 @@ assert state['pending'] == 0
 
 case = copy.deepcopy(BASE)
 case['queries'][0]['legal'] = []
-state, _, _ = run('scripted terminal signal', case, '', requests=1)
+state, _, _ = run('scripted terminal signal', case, '', calls=1)
 assert state['result'] == 2 and state['phase'] == 'finished'
 
 case = copy.deepcopy(BASE)
@@ -105,7 +137,7 @@ run('prepare failure does not start the game', case, '', 1, 1)
 
 case = copy.deepcopy(BASE)
 case['commands'][2] = dict(phase='human', command='resign')
-state, _, _ = run('human resignation', case, '', requests=1)
+state, _, _ = run('human resignation', case, '', calls=1)
 assert state['result'] == 2
 
 case = copy.deepcopy(BASE)
@@ -113,12 +145,12 @@ case['commands'] = case['commands'][:2] + [dict(phase='human', command='quit')]
 case['queries'][0]['choice'] = 'a3a4'
 case['queries'][1]['choice'] = ''
 case['executions'] = [case['executions'][0], dict(purpose='move', move='a3a4', success=1, board=AFTER_HUMAN)]
-run('robot can play red first', case, 'a3a4', requests=2, settings={'human_red': 0})
+run('robot can play red first', case, 'a3a4', calls=2, settings={'human_red': 0})
 
 case = copy.deepcopy(BASE)
 case['executions'][1].update(success=0, board=AFTER_HUMAN)
 case['commands'].insert(3, dict(phase='recovery', command='quit'))
-state, _, _ = run('quit preserves unconfirmed action', case, 'a3a4', requests=2)
+state, _, _ = run('quit preserves unconfirmed action', case, 'a3a4', calls=2)
 assert state['pending'] == 1 and state['phase'] == 'stopped'
 
 case = copy.deepcopy(BASE)
@@ -126,7 +158,7 @@ case['commands'] = [dict(phase='prepare', command='ready'),
                     dict(phase='confirm_start', command='ready', board=AFTER_HUMAN),
                     dict(phase='confirm_start', command='ready')]
 case['queries'] = [dict(history='', legal=[])]
-state, _, output = run('changed starting board is confirmed again', case, '', requests=1)
+state, _, output = run('changed starting board is confirmed again', case, '', calls=1)
 assert output.count('confirm_start |') == 2 and state['board'] == AFTER_HUMAN
 
 # Two legal knight cycles return to the initial position three times. The app
@@ -155,7 +187,7 @@ for index, move in enumerate(moves):
         case['commands'].append(dict(phase='human', command='ready', board=boards[index]))
     case['queries'].append(query)
 case['queries'].append(dict(history=' '.join(moves), legal=['b0c2']))
-state, _, _ = run('repetition requests adjudication', case, ' '.join(moves), requests=5)
+state, _, _ = run('repetition requires adjudication', case, ' '.join(moves), calls=5)
 assert state['result'] == 4 and state['phase'] == 'review_required'
 
 print(f'PASS {passed} actual-main scenarios; scripted perception/engine/execution, no hardware.')
