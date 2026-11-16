@@ -8,7 +8,7 @@
 
 namespace scara
 {
-// 先用文件流处理中文路径，再把读出的字节交给OpenCV。
+//读取二进制文件，结果写入字节字符串
 inline void readBytes(const std::string &path, std::string &bytes)
 {
     std::ostringstream buffer;
@@ -25,9 +25,7 @@ inline void writeBytes(const std::string &path, const std::string &bytes)
 }
 inline void readStorage(const std::string &path, cv::FileStorage &file)
 {
-    std::string bytes;
-    readBytes(path, bytes);
-    file.open(bytes, cv::FileStorage::READ | cv::FileStorage::MEMORY);
+    file.open(path, cv::FileStorage::READ);
     if (!file.isOpened()) throw std::runtime_error("Invalid configuration: " + path);
 }
 inline void memoryStorage(bool json, cv::FileStorage &file)

@@ -25,25 +25,6 @@ std::string relativePath(const std::string &config, const std::string &value)
     path /= std::filesystem::u8path(value);
     return path.lexically_normal().u8string();
 }
-void imageFile(const std::string &path, cv::Mat &image)
-{
-    std::string bytes;
-    readBytes(path, bytes);
-    std::vector<unsigned char> data(bytes.begin(), bytes.end());
-    image = cv::imdecode(data, cv::IMREAD_COLOR);
-    require(!image.empty(), "Cannot decode image");
-}
-void saveImage(const std::string &path, const cv::Mat &image)
-{
-    std::vector<unsigned char> png;
-    std::string bytes;
-    bool encoded;
-
-    encoded = cv::imencode(".png", image, png);
-    require(encoded, "Cannot encode overlay");
-    bytes.assign(png.begin(), png.end());
-    writeBytes(path, bytes);
-}
 // 四角依次为红方左下、右下、黑方右上、左上；方向由首次示教确认。
 void getBoard(const cv::FileStorage &file, Board &board)
 {
@@ -74,7 +55,8 @@ void inspect(const std::string &config, const std::string &output)
     checkCamera(fs["camera"]);
     fs["frame_id"] >> frame;
     path = relativePath(config, (std::string)fs["image"]);
-    imageFile(path, image);
+    image = cv::imread(path, cv::IMREAD_COLOR);
+    require(!image.empty(), "Cannot decode image");
     require(image.size() == cv::Size(ImageWidth, ImageHeight), "Image size differs from camera profile");
     getBoard(fs, board);
     fs["plane_file"] >> planeFile;
@@ -87,46 +69,43 @@ void inspect(const std::string &config, const std::string &output)
     result << "motion_enabled" << 0;
     result << "single_frame_only" << 1;
     result << "camera_id" << CameraId;
+    result << "mapping_model" << "affine";
+    result << "calibration_id" << plane.id;
     result << "frame_id" << frame;
     result << "geometry_valid" << int(board.geometryValid);
     result << "orientation_valid" << int(board.orientationValid);
-    result << "orientation_source" << board.orientationSource;
-    result << "grid_score" << board.gridScore;
     result << "points" << "[";
-    if (board.geometryValid)
-        for (int r = 0; r < Rows; ++r)
-            for (int c = 0; c < Columns; ++c)
+    //四角建系成功后，依次导出90个交点的像素与基座坐标
+    for (int r = 0; r < Rows; ++r)
+        for (int c = 0; c < Columns; ++c)
+        {
+            cv::Point2d pixel = board.intersections[r * Columns + c];
+            cv::Point2d baseMm;
+            bool targetValid = gridTarget(plane, board, c, r, baseMm);
+            result << "{";
+            result << "column" << c;
+            result << "row" << r;
+            result << "pixel_geometric" << "[" << pixel.x << pixel.y << "]";
+            result << "base_xy_valid" << int(targetValid);
+            if (targetValid)
             {
-                cv::Point2d pixel = board.intersections[r * Columns + c];
-                cv::Point2d baseMm;
-                bool targetValid = gridTarget(plane, board, c, r, baseMm);
-                result << "{";
-                result << "column" << c;
-                result << "row" << r;
-                result << "pixel_geometric" << "[" << pixel.x << pixel.y << "]";
-                result << "base_xy_valid" << int(targetValid);
-                if (targetValid)
-                {
-                    result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]";
-                    result << "plane_z_mm" << plane.planeZmm;
-                }
-                result << "}";
+                result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]";
+                result << "plane_z_mm" << plane.planeZmm;
             }
+            result << "}";
+        }
     result << "]";
     message = result.releaseAndGetString();
     writeBytes(output, message);
     drawBoard(image, board, overlay);
-    saveImage(output + ".png", overlay);
-    if (board.geometryValid)
-    {
-        rectifiedBoard(image, board, rectified);
-        saveImage(output + ".rectified.png", rectified);
-    }
+    require(cv::imwrite(output + ".png", overlay), "Cannot write overlay");
+    rectifiedBoard(image, board, rectified);
+    require(cv::imwrite(output + ".rectified.png", rectified), "Cannot write rectified board");
     std::cout << "geometry=" << board.geometryValid << " orientation=" << board.orientationValid
-              << " score=" << board.gridScore << "\nWrote " << output << " and overlay. No motion.\n";
+              << "\nWrote " << output << " and overlay. No motion.\n";
 }
 } // namespace
-int runGeometryTool(int argc, char **argv)
+int main(int argc, char **argv)
 {
     try
     {
@@ -157,23 +136,3 @@ int runGeometryTool(int argc, char **argv)
         return 1;
     }
 }
-
-#ifdef _WIN32
-// Windows supplies UTF-16 arguments. Convert them explicitly; /utf-8 alone does not change argv.
-int wmain(int argc, wchar_t **argv)
-{
-    std::vector<std::string> utf8;
-    utf8.reserve(argc);
-    for (int i = 0; i < argc; ++i)
-        utf8.push_back(std::filesystem::path(argv[i]).u8string());
-    std::vector<char *> args;
-    for (auto &value : utf8)
-        args.push_back(value.data());
-    return runGeometryTool(argc, args.data());
-}
-#else
-int main(int argc, char **argv)
-{
-    return runGeometryTool(argc, argv);
-}
-#endif

@@ -26,6 +26,6 @@
     ]
   ],
   "canonical_order_confirmed": 1,
-  "plane_file": "../upper-app/plane-map.yml",
+  "plane_file": "affine-pairs.json",
   "scene_clear": 1
 }

@@ -1,4 +1,4 @@
-"""Execute one taught pick-and-place through the local manual panel."""
+"""通过本机点动面板执行一次已示教的取放。"""
 
 import argparse
 from datetime import datetime
@@ -14,14 +14,17 @@ import uuid
 
 URL = 'http://127.0.0.1:8090'
 GPIO = '/sys/class/gpio/gpio40/value'
+RV1106_SERIAL = 'abc8f01242c327ec'
 ROOT = Path(__file__).resolve().parents[1]
 CALIBRATION = ROOT / 'output/xy-registration-20261111'
 PICK_PLAN = ROOT / 'output/first-pick-c3-c4-20261111/trial-plan.json'
 
 
 class Trial:
-    def __init__(self, plan, adb, log, nodes=(1, 2, 3)):
-        self.plan, self.adb, self.log = plan, [adb, '-s', 'abc8f01242c327ec', 'shell'], log
+    def __init__(self, plan, adb, log, nodes=(1, 2, 3), *, calibration=CALIBRATION):
+        self.plan = plan
+        self.adb = [adb, '-s', RV1106_SERIAL, 'shell']
+        self.log = log
         self.release_pulse_ms = plan.get('release_pulse_ms', 1000)
         if type(self.release_pulse_ms) is not int or self.release_pulse_ms <= 0:
             raise ValueError('release_pulse_ms 必须为正整数')
@@ -46,16 +49,72 @@ class Trial:
         self.release_height = self.pick + self.up * self.degrees_per_mm * release_offset
         if not math.isfinite(self.release_height) or (self.release_height - self.high) * self.up > 0:
             raise ValueError('放棋高度必须有效且不高于搬运高度')
-        arm_file = CALIBRATION / 'arm-registration.json'
+        arm_file = calibration / 'arm-registration.json'
         self.arm = json.loads(arm_file.read_text(encoding='utf-8'))
         if not self.span > 0 or not all(math.isfinite(x) for x in (self.pick, self.high)):
             raise ValueError('需要两个实测的 Z 高度')
 
-    def note(self, step, **data):
-        row = dict(step=step, time=datetime.now().astimezone().isoformat(), **data)
-        print(json.dumps(row, ensure_ascii=False), flush=True)
-        with self.log.open('a', encoding='utf-8') as f:
-            f.write(json.dumps(row, ensure_ascii=False) + '\n')
+    #---------取放流程区---------
+    def run(self, place_held=False):
+        self.acquire()
+        if place_held:
+            self.note('resume_with_held_piece')
+        else:
+            self.pick_piece(self.plan['source'])
+        self.place_piece(self.plan['destination'])
+        axes = self.axes(self.sample())
+        self.note('motion_complete', axes={n: a['position'] for n, a in axes.items()})
+
+    def pick_piece(self, target, height=None):
+        self.xy(target)
+        self.z(self.pick if height is None else height)
+        self.note('pickup_height', grid=target['grid_id'])
+        self.z(self.high)
+
+    def place_piece(self, target, height=None):
+        self.xy(target)
+        self.z(self.release_height if height is None else height)
+        self.release_piece(target['grid_id'])
+
+    #---------控制权与反馈区---------
+    def acquire(self, require_raised=True):
+        state = self.request('/api/state')
+        if state['simulated'] or state['active'] or state['stopping']:
+            raise RuntimeError('手动操作尚未停稳')
+        if require_raised and (self.axes(state)[1]['position'] - self.high) * self.up < -self.z_tolerance:
+            raise RuntimeError('当前 Z 已离开示教抬升位置')
+        self.action('stop', disarm=True)
+        for node in self.nodes:
+            state = self.request('/api/state')
+            axis = self.axes(state)[node]
+            if not (axis['fault'] or axis['interlocked'] or not axis['referenced'] or axis['recoverable']):
+                continue
+            end = time.monotonic() + 1.5
+            while not axis['recoverable'] and time.monotonic() < end:
+                time.sleep(0.03)
+                state = self.request('/api/state')
+                axis = self.axes(state)[node]
+            if not axis['recoverable']:
+                raise RuntimeError(axis['reason'])
+            self.action('recover', node=node)
+            end = time.monotonic() + 1.5
+            while time.monotonic() < end:
+                state = self.request('/api/state')
+                axis = self.axes(state)[node]
+                if not (axis['interlocked'] or axis['fault'] or state['recovering']):
+                    break
+                time.sleep(0.03)
+            else:
+                raise RuntimeError(f'J{node} 恢复未确认')
+        self.wait(
+            lambda s: not s['armed'] and not s['stopping'] and all(self.axes(s)[n]['stationary'] for n in self.nodes),
+            1.5,
+        )
+        self.action('arm')
+        self.wait(lambda s: s['armed'] and s['owner'] == self.client, 0.25)
+        self.owns_panel = True
+        self.wait(lambda s: all(self.axes(s)[n]['ready'] for n in self.nodes), 2)
+        self.gpio(0)
 
     def request(self, path, body=None):
         data = None if body is None else json.dumps(body).encode()
@@ -107,14 +166,14 @@ class Trial:
             time.sleep(0.022)
         raise TimeoutError('等待轴到位或停稳超时')
 
+    #---------轴指令区---------
     def begin(self, action, node, **args):
         self.press = str(uuid.uuid4())
         deadline = time.monotonic() + 1.5
-        waiting = True
-        while waiting:
+        while True:
             try:
                 self.action(action, node=node, press=self.press, **args)
-                waiting = False
+                break
             except RuntimeError as exc:
                 if str(exc) != '等待轴停稳' or time.monotonic() >= deadline:
                     raise
@@ -164,6 +223,7 @@ class Trial:
         self.note('rotation', axis=node, goal=goal, position=self.axes(s)[node]['position'])
         return True
 
+    #---------平面与升降区---------
     def xy(self, target):
         z = self.axes(self.sample())[1]
         if (z['position'] - self.high) * self.up < -self.z_tolerance:
@@ -242,14 +302,13 @@ class Trial:
                 self.note('z', goal=target, position=initial['position'])
                 return
             if attempt == 0 and initial['power']:
-                # Reset the holding current before reversing the self-locking
-                # screw between the two taught heights.
+                # 丝杆换向前退出保持，清除上一段运动留下的保持电流。
                 self.action('idle_z')
                 self.wait(lambda s: self.axes(s)[1]['state'] == 0 and not self.axes(s)[1]['power'], 1)
                 initial = self.at_rest(1)
                 delta = target - initial['position']
             direction = 1 if delta > 0 else -1
-            # Use a slow final approach at the taught pickup height.
+            # 下降到取子高度前预留低速接近的距离。
             brake_goal = target
             if attempt == 0 and delta * self.up < -2 * self.degrees_per_mm:
                 brake_goal += self.up * 0.8 * self.degrees_per_mm
@@ -269,6 +328,7 @@ class Trial:
             raise RuntimeError(f'Z 停在 {final:.3f}°，目标 {target:.3f}°')
         self.note('z', goal=target, position=final)
 
+    #---------吸放区---------
     def gpio(self, value, write=True):
         command = f"echo {value} > {GPIO} && cat {GPIO}" if write else f"cat {GPIO}"
         with subprocess.Popen(
@@ -290,7 +350,7 @@ class Trial:
         self.note('gpio', value=value)
 
     def release_piece(self, grid):
-        # End the pulse on the RV1106 before raising the arm.
+        # RV1106 确认放棋脉冲归零后再抬升。
         seconds = self.release_pulse_ms / 1000
         remote = (
             f"set -e; trap 'echo 0 > {GPIO}' EXIT; trap 'exit 1' HUP INT TERM; "
@@ -331,83 +391,35 @@ class Trial:
             subprocess.run(self.adb + [f'echo 0 > {GPIO}'], timeout=2, check=True)
             self.pulse = None
 
-    def acquire(self, require_raised=True):
-        state = self.request('/api/state')
-        if state['simulated'] or state['active'] or state['stopping']:
-            raise RuntimeError('手动操作尚未停稳')
-        if require_raised and (self.axes(state)[1]['position'] - self.high) * self.up < -self.z_tolerance:
-            raise RuntimeError('当前 Z 已离开示教抬升位置')
-        self.action('stop', disarm=True)
-        for node in self.nodes:
-            state = self.request('/api/state')
-            axis = self.axes(state)[node]
-            if not (axis['fault'] or axis['interlocked'] or not axis['referenced'] or axis['recoverable']):
-                continue
-            end = time.monotonic() + 1.5
-            while not self.axes(state)[node]['recoverable'] and time.monotonic() < end:
-                time.sleep(0.03)
-                state = self.request('/api/state')
-            if not self.axes(state)[node]['recoverable']:
-                raise RuntimeError(self.axes(state)[node]['reason'])
-            self.action('recover', node=node)
-            end = time.monotonic() + 1.5
-            while time.monotonic() < end:
-                state = self.request('/api/state')
-                a = self.axes(state)[node]
-                if not (a['interlocked'] or a['fault'] or state['recovering']):
-                    break
-                time.sleep(0.03)
-            else:
-                raise RuntimeError(f'J{node} 恢复未确认')
-        self.wait(
-            lambda s: not s['armed'] and not s['stopping'] and all(self.axes(s)[n]['stationary'] for n in self.nodes),
-            1.5,
-        )
-        self.action('arm')
-        self.wait(lambda s: s['armed'] and s['owner'] == self.client, 0.25)
-        self.owns_panel = True
-        self.wait(lambda s: all(self.axes(s)[n]['ready'] for n in self.nodes), 2)
-        self.gpio(0)
-
-    def pick_piece(self, target, height=None):
-        self.xy(target)
-        self.z(self.pick if height is None else height)
-        self.note('pickup_height', grid=target['grid_id'])
-        self.z(self.high)
-
-    def place_piece(self, target, height=None):
-        self.xy(target)
-        self.z(self.release_height if height is None else height)
-        self.release_piece(target['grid_id'])
-
-    def run(self, place_held=False):
-        self.acquire()
-        if not place_held:
-            self.pick_piece(self.plan['source'])
-        else:
-            self.note('resume_with_held_piece')
-        self.place_piece(self.plan['destination'])
-        self.note('motion_complete', axes={n: a['position'] for n, a in self.axes(self.sample()).items()})
-
+    #---------停止与记录区---------
     def stop(self):
         try:
             if self.owns_panel:
                 self.action('stop', disarm=True)
         finally:
             self.cancel_pulse()
+        self.owns_panel = False
+
+    def note(self, step, **data):
+        row = dict(step=step, time=datetime.now().astimezone().isoformat(), **data)
+        line = json.dumps(row, ensure_ascii=False)
+        print(line, flush=True)
+        with self.log.open('a', encoding='utf-8') as f:
+            f.write(line + '\n')
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('plan', type=Path)
     parser.add_argument('--adb', required=True)
+    parser.add_argument('--calibration', type=Path, default=CALIBRATION)
     parser.add_argument('--run', action='store_true')
     parser.add_argument('--place-held', action='store_true', help='Finish placement of a piece already held')
     args = parser.parse_args()
     if not args.run:
         parser.error('需要 --run 执行本次取放')
     plan = json.loads(args.plan.read_text(encoding='utf-8-sig'))
-    trial = Trial(plan, args.adb, args.plan.with_name('trial-events.jsonl'))
+    trial = Trial(plan, args.adb, args.plan.with_name('trial-events.jsonl'), calibration=args.calibration)
     try:
         trial.run(args.place_held)
     except Exception as exc:

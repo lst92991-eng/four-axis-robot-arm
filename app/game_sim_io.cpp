@@ -91,6 +91,8 @@ void Operator_read(const std::string &phase, const std::string &, Command &resul
     if (!command["board"].empty()) readBoard(command["board"]);
     command["command"] >> name;
     if (!Command_parse(name, result)) throw std::runtime_error("未知仿真命令");
+    //离线检查用交互记录确认实际进入的等待与恢复分支
+    std::cout << "SIM_COMMAND " << phase << ' ' << name << '\n';
 }
 
 void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,

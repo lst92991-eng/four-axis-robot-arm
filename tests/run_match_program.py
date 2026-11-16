@@ -90,20 +90,20 @@ case = copy.deepcopy(BASE)
 case['executions'][1]['board'] = AFTER_HUMAN
 case['commands'].insert(3, dict(phase='recovery', command='retry', board=AFTER_ROBOT))
 state, _, output = run('successful return still requires visual confirmation', case)
-assert 'recovery | a3a4 |' in output and state['pending'] == 0
+assert 'SIM_COMMAND recovery retry' in output and state['pending'] == 0
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['board'] = AFTER_HUMAN
 case['commands'][3:3] = [dict(phase='recovery', command='restored', board=AFTER_ROBOT),
                          dict(phase='recovery', command='retry')]
 _, _, output = run('incorrect restore does not silently accept the move', case)
-assert output.count('recovery | a3a4 |') == 2
+assert output.count('SIM_COMMAND recovery ') == 2
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['success'] = 0
 case['commands'].insert(3, dict(phase='recovery', command='accept'))
 state, _, output = run('operator accepts already completed action after failed return', case)
-assert 'recovery | a3a4 |' in output
+assert 'SIM_COMMAND recovery accept' in output
 
 case = copy.deepcopy(BASE)
 case['executions'][1].update(success=0, board=AFTER_HUMAN)
@@ -114,7 +114,7 @@ run('explicit restore retains history and permits one replan', case, calls=4)
 case = copy.deepcopy(BASE)
 case['commands'].insert(2, dict(phase='human', command='ready', board=INITIAL))
 _, _, output = run('unchanged player board does not consume a turn', case)
-assert 'human_rejected' in output
+assert output.count('SIM_COMMAND human ready') == 3
 
 case = copy.deepcopy(BASE)
 case['queries'][1]['fail'] = 1
@@ -159,7 +159,7 @@ case['commands'] = [dict(phase='prepare', command='ready'),
                     dict(phase='confirm_start', command='ready')]
 case['queries'] = [dict(history='', legal=[])]
 state, _, output = run('changed starting board is confirmed again', case, '', calls=1)
-assert output.count('confirm_start |') == 2 and state['board'] == AFTER_HUMAN
+assert output.count('SIM_COMMAND confirm_start ready') == 2 and state['board'] == AFTER_HUMAN
 
 # Two legal knight cycles return to the initial position three times. The app
 # must request human adjudication, not announce a draw or a winner.

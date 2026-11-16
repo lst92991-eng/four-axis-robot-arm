@@ -53,7 +53,8 @@ static void writeBoard(cv::FileStorage &file, const char *key, const chess::Boar
     file << "]";
 }
 
-void Match_report(const std::string &phase, const Session &session)
+//将当前盘面、走棋历史和错误原因交给预览页面
+void Match_publishStatus(const std::string &phase, const Session &session)
 {
     const chess::Game &game = session.game;
     cv::FileStorage file;
@@ -83,10 +84,5 @@ void Match_report(const std::string &phase, const Session &session)
     writeBoard(file, "expected", game.expected);
     message = file.releaseAndGetString();
     if (!Runtime_publish("status.json", message)) std::cerr << "无法保存对局状态\n";
-    std::cout << (simulated ? "[SIMULATION] " : "") << phase << " | " << game.history << " | " << game.error << '\n';
-    if (phase == "confirm_start")
-        for (const auto &row : session.observed.board)
-            std::cout << std::string(row.begin(), row.end()) << '\n';
-    std::cout.flush();
 }
 } // namespace scara

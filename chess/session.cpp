@@ -5,7 +5,6 @@ namespace scara
 {
 void chessObservation(const Observation &source, chess::Observation &result)
 {
-    result = {};
     result.valid = source.valid && !source.frameId.empty();
     for (int rank = 0; rank < Rows; ++rank)
         for (int col = 0; col < Columns; ++col)
@@ -39,23 +38,19 @@ bool Session_plan(Session &session, const std::string &choice, const std::vector
     chess::Move move;
     cv::Point2d source, destination;        // 本次起点和终点，基座毫米坐标。
     std::vector<PickStep> prepared, moving; // 先清走被吃棋子，再搬自己的棋子。
-    bool sourceMapped, destinationMapped, capture, ready;
+    bool ready;
 
     ready = chess::parseMove(choice, move);
-    if (ready)
+    if (ready) ready = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
+    if (ready) ready = FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, destination);
+
+    // 目标格有棋子时，先规划从目标格搬到示教收纳位。
+    if (ready && session.game.board[move.toRow][move.toCol] != '.')
     {
-        sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
-        destinationMapped = FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, destination);
-        ready = sourceMapped && destinationMapped;
-        capture = session.game.board[move.toRow][move.toCol] != '.';
-        if (ready && capture)
-        {
-            ready = session.capturePlaceTaught;
-            if (ready)
-                ready = Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
-        }
-        if (ready) ready = Pick_plan(session.arm, session.heights, source, destination, false, moving);
+        ready = session.capturePlaceTaught;
+        if (ready) ready = Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
     }
+    if (ready) ready = Pick_plan(session.arm, session.heights, source, destination, false, moving);
     if (!ready)
     {
         session.game.error = "走法坐标、可达范围或吃子区尚未准备好";

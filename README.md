@@ -2,20 +2,49 @@
 
 跨设备续做请从[重构交接](docs/重构交接_2026-11-16.md)开始，里面有 Git 分支、历史材料下载和回归验收约定。
 
-2026-11-15按用户选择，机械执行改为直接函数调用。当前全部自有C++为 **2679有效行**，包括头文件、内部实现、仿真后端和待接入硬件接口；比上一版2758行减少79行。动作JSON请求、回执、取消文件和轮询已从源码删除，预览图片与棋局状态仍保留供显示。
+机械执行通过直接函数调用交接动作数组。预览图片与棋局状态供浏览器显示。
 
 ## 先看这些代码
 
-| 阅读顺序 | 文件 | 处理的数据 |
-| --- | --- | --- |
-| 1. 主循环与双方回合 | [game_main.cpp](app/game_main.cpp)、[game.cpp](app/game.cpp) | 初始化、玩家确认、引擎应手、执行和落子复核 |
-| 2. 图像识别 | [vision_main.cpp](app/vision_main.cpp)、[capture.cpp](vision/capture.cpp)、[yolo_npu.cpp](vision/yolo_npu.cpp)、[yolo.cpp](vision/yolo.cpp) | 相机原图→固定ROI输入→NPU张量→类别/分数/原图位置→预览 |
-| 3. 坐标与稳定观察 | [geometry.cpp](vision/geometry.cpp)、[fixed_board.cpp](vision/fixed_board.cpp)、[session.cpp](chess/session.cpp) | 首次标定、四角90点、棋子归格、连续三帧和基座XY |
-| 4. 棋局与引擎 | [board.cpp](chess/board.cpp)、[pikafish.cpp](chess/pikafish.cpp) | 已确认盘面、起始FEN、完整历史、合法走法和应手 |
-| 5. 逆解和取放 | [plan.cpp](motion/plan.cpp) | 已保存机械参考、示教Z、源/目标XY→按顺序执行的PickStep数组 |
-| 6. 硬件接入位置 | [execute.hpp](motion/execute.hpp)、[execute.cpp](motion/execute.cpp) | 直接执行动作数组，以及停止；SPI-CAN/H桥接这里 |
+按下面的顺序逐块审核。每块完成精简与离线回归后，由用户审核代码，再继续下一块。当前正式 C++ 共 33 个文件、2648 有效行，包含头文件、内部实现和仿真后端。
 
-[全部C++阅读稿](output/game-direct-20261115/round-01/cpp-code.txt) · [仅C++源码包](output/game-direct-20261115/round-01/cpp-code.zip) · [源码与验证包](output/game-direct-20261115/game-application-source.zip)。保持先声明、说明单位、逐字段赋值和顺序调用的手写风格。六个已认可视觉文件的字节保持不变。
+| 审核模块 | 阅读入口与范围 | 数据流与精简重点 | 当前有效行 |
+| --- | --- | --- | ---: |
+| 1. 取流与识别 | [capture.hpp](vision/capture.hpp)、[capture.cpp](vision/capture.cpp)、yolo、yolo_npu及[vision_main.cpp](app/vision_main.cpp) | 原图→RGB输入→NPU张量→类别和位置→预览。沿单帧处理顺序阅读 | 430 |
+| 2. 棋盘坐标与标定 | [calibration.cpp](vision/calibration.cpp)、[geometry.cpp](vision/geometry.cpp)、board、fixed_board、io及[geometry_tool.cpp](app/geometry_tool.cpp) | 读取采点→拟合六个仿射系数→棋盘建系与归格→毫米坐标缓存 | 664 |
+| 3. 棋局与引擎 | [board.cpp](chess/board.cpp)、[pikafish.cpp](chess/pikafish.cpp)及头文件 | 已确认盘面与历史→合法走法和应手。核对状态和协议解析 | 577 |
+| 4. 运动规划与执行接口 | [plan.cpp](motion/plan.cpp)、[execute.cpp](motion/execute.cpp)及头文件 | 基座XY→关节目标→取放步骤→执行结果。明确角度单位与动作顺序 | 211 |
+| 5. 配置与运行输入输出 | [game_config.cpp](app/game_config.cpp)、game_files、game_live_io、game_sim_io及头文件 | 参数读取、相机与引擎资源交接、状态显示。收敛重复转换与收尾 | 396 |
+| 6. 实机控制与配套工具 | [manual_control](manual_control)、temp/yolo_live、temp/transport | 点动与取放2144行、标定工具740行、实时预览835行、USB-CAN302行。逐项核对入口用途与重复实现 | 4021 |
+| 7. 主流程与对局交接 | [game_main.cpp](app/game_main.cpp)、[game.cpp](app/game.cpp)、[session.cpp](chess/session.cpp)及头文件 | 各模块审核后，最后统一初始化、双方回合、执行与落子确认的调用顺序 | 370 |
+
+有效行按 Lizard 统计，排除空行和注释，包含辅助函数与头文件。网页中的脚本计入，HTML/CSS另列。测试、第三方库和固件另计。
+
+相机采集、NPU接口及原 `vision/board.cpp` 已通过本轮用户代码审核，`yolo.cpp` 的重构讲解已完成。当前几何模块已按用户要求改用仿射，等待代码审核。阅读从 `calibration.cpp::loadPlane` 开始，随后是 `calibratePlane`、`geometry.cpp::fitAffine/transformPoint`、`board.cpp` 和 `fixed_board.cpp`。主流程在各模块确认后统一定稿。[本轮数据流与远程续做](docs/重构交接_2026-11-16.md#当前仿射候选与远程续做)。
+
+前一轮将标定与棋盘观察分开，整组模块690→665行，保持原单应计算时通过了输出字节对照。本轮统一使用2×3仿射系数，去掉透视除法、旧评分字段和逐点误差缓存；补入全部采点最小二乘及仿射角点验误，整组665→664行。`geometry.cpp`为45有效行，包含拟合、两行坐标公式和格点目标三个函数；没有新增生产文件。
+
+仿射候选通过15组Linux CTest、64项Python检查及14400组独立公式归格用例，CLI生成的90个坐标与解析式吻合。标定格式升级为schema 2，旧单应文件明确拒绝；从原采点重新拟合后仍须通过原误差要求。旧8拟合点、1检查点的最大误差为2.369/0.900毫米，超过旧2毫米拟合门限，程序正确拒绝保存。历史数据和门限原样保留；新增仿真采点明确标为synthetic，当前机位仍待实测。参见[验证和行数记录](docs/evidence/2026-11-16/affine-review.json)。
+
+用户计划于2026-11-16远程继续逐模块整理，全部模块完成后于11月17日上机验证，再进行整局对弈稳定性测试，通过后开始编写教材。时间为计划，完成情况按实测记录更新。
+
+后续开发使用 Linux。当前主程序直接进入 `main`，终端输出操作提示、开局核对盘面和最终错误。预览页面从 `Match_publishStatus` 写出的 `status.json` 读取阶段、棋局与错误信息。
+
+本轮主程序从76降到63有效行。Ubuntu 24.04 WSL、GCC 13.3、OpenCV 5.0.0 构建与15组 Linux CTest通过，修改前后15种对局场景的完整状态和动作数值一致。整机运动待现场验证。
+
+当前 `Vision_decode` 用10有效行顺序交接候选读取、去重和坐标还原。NPU输出通过OpenCV整理为每行19列的浮点候选表，逐行解码；去重按得分向保留表追加，原图坐标由独立函数还原。列索引使用具名枚举，`yolo.cpp` 为153有效行，本轮由142增加11行。
+
+4组相关检查通过，包含行尾对齐和三个连续重叠框的回归用例。16帧、152个检测结果及RGB输入、预览图与重构前一致。本机7组张量平均解码耗时约0.35→0.49毫秒，最大浮点工作区约1.4MiB；RV1106性能待实测。本轮已完成后处理代码讲解，继续审核NPU接口。
+
+[交接C++阅读稿](output/game-direct-20261115/round-01/cpp-code.txt) · [交接C++源码包](output/game-direct-20261115/round-01/cpp-code.zip) · [交接源码与验证包](output/game-direct-20261115/game-application-source.zip)。这些资料对应2026-11-15交接快照。当前审核使用工作目录中的源码，中文注释密度参考FOC固件，逐段说明变量含义、处理步骤和数据交接。
+
+## 实机取放的阅读顺序
+
+1. [first_pick.py](manual_control/first_pick.py) 从 `Trial.run` 读。申请控制权，移到源格、下降取子、抬高搬运，到目标格释放，确认脉冲归零再抬升。
+2. [server.py](manual_control/server.py) 的 `Worker.run` 按顺序处理操作、CAN反馈和页面状态。[core.py](manual_control/core.py) 的 `Controller.action` 处理点动、定位与停止，CAN收发在同一文件的独立区块。
+3. [chess_demo.py](manual_control/chess_demo.py) 在取子和放子后用新画面确认盘面。[tune_release.py](manual_control/tune_release.py) 在确认连续三次合格落点后写回释放参数。
+
+单次取放从位置参数读取示教计划。演示和释放调参使用同一个 `--plan-file`，三个入口均可用 `--calibration` 指向现场标定目录。该目录的 `arm-registration.json` 用于机械参考，`plane-map.yml` 用于把像素转换为基座毫米。点动面板可用 `--simulate` 离线检查操作顺序。
 
 ## 后续硬件只接两个函数
 
@@ -32,8 +61,8 @@ bool Motion_stop();
 
 ## 现在可以离线运行完整对局
 
-```powershell
-.\build\commit-verify\scara_game_sim.exe tests/fixtures/game-app/simulation.json
+```sh
+./build/commit-verify/scara_game_sim tests/fixtures/game-app/simulation.json
 ```
 
 同一main和业务流程链接仿真IO，场景包含两轮走棋和一次机器人吃子，完整历史为 `a3a4 a6a5 a4a5 a9a5`。状态保存在 `output/game-main-simulation/status.json`。仿真把动作调用参数单向打印为SIM_CALL/SIM_STEP/SIM_RETURN，供离线核对，不生成或读取动作往返文件，也不加载真实相机/NPU/引擎/电机。
@@ -44,7 +73,7 @@ bool Motion_stop();
 
 ## 固定流程怎么运行
 
-1. 首次记录不少于4组像素/基座XY配对，再用独立采点验误。`calibratePlane`计算映射，`savePlane`保存。`loadPlane`统一读取新采点或已保存标定，并复算、验误。
+1. 首次记录至少3组不共线的像素/基座XY配对；上机建议四角拟合、另采中心和边缘验误。`loadPlane`读入采点，`calibratePlane`计算六个仿射系数并验误，`savePlane`保存schema 2。读取保存文件时复算核对，旧单应文件需重新拟合。
 2. 按红方视角给出四个格线交点：红方左下、红方右下、黑方右上、黑方左上，对应a0、i0、i9、a9。`boardFromCorners`生成90点；人工确认朝向后，`FixedBoard_setup`一次缓存XY。
 3. 每个新识别帧通过 `Session_observe` 分配棋子。格点层只保留棋子身份和一个有效标志，连续三个不同有效帧一致后才交给棋局。YOLO原有置信度仍用于阈值和绘框。
 4. `Pikafish::legalMoves(game, legal)`、`think(game, timeMs, choice)`直接接收已确认的Game，发送其起始FEN和完整走法历史。只有查询成功后才使用输出；引擎返回的走法格式在接收处检查。
@@ -52,7 +81,7 @@ bool Motion_stop();
 
 **固定90点是保存的布局，不代表当前画面已自动定位。** 只移动棋盘时须重新输入并确认四角；相机或基座位置、焦距改变时重新标定映射。重新设置布局后调用 `session.stable.reset()`，再观察新的稳定盘面。坐标查表与帧号无关；识别帧仍必须有编号，重复帧不能推进稳定计数。
 
-布局字段见 [离线格式示例](tests/fixtures/fixed-app/setup.json)。它是测试夹具，不应直接当作现场坐标。相机标识及1280×720尺寸集中在 `vision/geometry.hpp`；当前只接受已独立验误的原始像素标定，含非空镜头畸变参数的配置会被拒绝。
+布局字段见 [离线格式示例](tests/fixtures/fixed-app/setup.json)。它是测试夹具，不应直接当作现场坐标。相机标识及1280×720尺寸集中在 `vision/calibration.hpp`；当前只接受已独立验误的原始像素标定，含非空镜头畸变参数的配置会被拒绝。
 
 ```sh
 scara_geometry_tool calibrate measured-pairs.json plane-map.yml
@@ -67,7 +96,7 @@ python temp/yolo_live/dual_preview.py --board <RV1106_IP> --geometry-exe <scara_
 
 此处是调用格式，本轮没有连接或启动板端服务。预览文字已改为“固定90点已加载”，不能拿它作为自动定位成功的证据。
 
-## 本轮验证与行数
+## 2026-11-15 的直接执行接口验证
 
 17组CTest、60项Python检查通过。原文件通道检查已退役，改为验证直接接口的执行结果、取消、停止失败和未接入实现；真实IO包装仍验证相机/NPU/引擎的资源顺序。旧版和新版15种完整对局场景的棋局状态和动作内容一致，明确排除已删除的ticket和文件传输格式，不把它们算作需要保持的行为。
 
@@ -82,13 +111,13 @@ python temp/yolo_live/dual_preview.py --board <RV1106_IP> --geometry-exe <scara_
 C++17、OpenCV **5.0.0**，需要core、imgproc、imgcodecs、geometry及videoio；相机检查需要FFmpeg解码支持。
 
 ```sh
-cmake -S . -B build/commit-verify -G Ninja -DOpenCV_DIR="<OpenCV5安装目录>/build" -DBUILD_TESTING=ON
+cmake -S . -B build/commit-verify -DOpenCV_DIR="<Linux OpenCV5的CMake目录>" -DBUILD_TESTING=ON
 cmake --build build/commit-verify
 ctest --test-dir build/commit-verify --output-on-failure
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-本机17组CTest包含Windows POSIX替身及RKNN模拟ABI/主入口检查，配置时传 `RKNN_INCLUDE_DIR`；未提供RKNN头文件时少两组。Windows需要OpenCV运行库可加载，编译数据库已接入VS Code。已有Python离线/旧服务cv2为4.13.0，不冒称使用OpenCV5。
+Linux 使用对应的 OpenCV 5.0.0 开发库。配置时传入 `RKNN_INCLUDE_DIR` 可加入 RKNN 模拟 ABI 和主入口两组检查。CMake 生成的编译数据库供编辑器读取；此前 Windows 下的17组检查记录见上节历史验证。
 
 完整审查使用 `tools/game_review.py`，本轮系列参数为 `--series game-direct-20261115`；打包使用 `tools/package_upper.py --review game-direct-20261115 --round 1`。回放需本机SDK、冻结夹具及原哈希的v3 ONNX。
 

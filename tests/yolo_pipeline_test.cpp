@@ -4,6 +4,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/videoio.hpp>
+#include <algorithm>
 #include <chrono>
 #include <cstring>
 #include <iostream>
@@ -69,6 +70,34 @@ void decodeEdges()
   q[4] = 0; p[5+2] = 50;
   scara::Vision_decode(heads,found);
   check(found.size()==1, "Score exactly 0.50 was rejected");
+
+  // 三个框依次重叠，第二个被第一个排除后，第三个仍应保留。
+  std::fill(data[0].begin(),data[0].end(),0);
+  for (int i=0; i<3; ++i)
+  {
+    auto *candidate = data[0].data()+(20*80+20+i*2)*57;
+    candidate[0] = candidate[1] = candidate[3] = 50;
+    candidate[2] = 112;
+    candidate[4] = 100;
+    candidate[5+2] = int8_t(90-i*10);
+  }
+  scara::Vision_decode(heads,found);
+  check(found.size()==2 && found[1].bbox.x>found[0].bbox.x+25,
+        "A discarded middle box suppressed the final candidate");
+
+  // 每行填入额外的高分字节，验证只读取有效列并正确跨过对齐区。
+  std::vector<scara::Detection> expected = found;
+  size_t rowBytes = size_t(81)*scara::YoloChannels;
+  std::vector<int8_t> padded(80*rowBytes,127);
+  for (int row=0; row<80; ++row)
+    std::memcpy(padded.data()+row*rowBytes,data[0].data()+row*80*scara::YoloChannels,80*scara::YoloChannels);
+  heads[0].data = padded.data();
+  heads[0].rowBytes = rowBytes;
+  scara::Vision_decode(heads,found);
+  check(found.size()==expected.size(), "Padded tensor changed the detection count");
+  for (size_t i=0; i<found.size(); ++i)
+    check(found[i].classId==expected[i].classId && found[i].confidence==expected[i].confidence &&
+          found[i].bbox==expected[i].bbox, "Padded tensor changed a decoded value");
 }
 }
 

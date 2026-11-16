@@ -43,5 +43,6 @@ bool Command_parse(const std::string &text, Command &command);
 void Operator_read(const std::string &phase, const std::string &prompt, Command &command);
 void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
                    bool &success);
-void Match_report(const std::string &phase, const Session &session);
+//更新页面读取的棋局状态与错误信息
+void Match_publishStatus(const std::string &phase, const Session &session);
 } // namespace scara

@@ -1,4 +1,4 @@
-"""Local browser jog panel, reusing the project's verified Candlelight transport."""
+"""为浏览器点动面板提供本机 HTTP 和 Candlelight CAN 通信。"""
 
 import argparse
 from collections import deque
@@ -277,9 +277,8 @@ class Worker:
         try:
             request = self.requests.get_nowait()
         except queue.Empty:
-            request = None
-        if request:
-            self.process(request)
+            return
+        self.process(request)
 
     def process_frame(self, frame, received_at):
         if frame is None or frame.echo:
@@ -308,13 +307,6 @@ class Worker:
             node, kind, values = diagnostic(frame.identifier, frame.data)
             self.diagnostics.setdefault(node, {})[kind] = dict(values, received=received_at)
 
-    def receive_once(self):
-        if self.adapter:
-            frame, received_at = self.read_frame()
-            self.process_frame(frame, received_at)
-        else:
-            time.sleep(0.01)
-
     def publish_state(self):
         now = time.monotonic()
         if now >= self.next_snapshot:
@@ -341,7 +333,11 @@ class Worker:
             while not self.shutdown.is_set():
                 try:
                     self.process_requests()
-                    self.receive_once()
+                    if self.adapter:
+                        frame, received_at = self.read_frame()
+                        self.process_frame(frame, received_at)
+                    else:
+                        time.sleep(0.01)
                 except Exception as exc:
                     self.core.fail('USB/CAN 异常：' + str(exc))
                     self.core.connected = False
@@ -354,8 +350,7 @@ class Worker:
                 self.publish_state()
         finally:
             self.core.stop('上位机退出，停止并保持位置', disarm=True)
-            # Do not send OFF: releasing the Z axis could drop the mechanism.
-            # No PING follows; firmware's 500 ms watchdog is the fallback.
+            # 退出时减速保持。停止续发 PING 后由固件的 500 ms 看门狗接管。
             if self.adapter:
                 try:
                     self.close_adapter()

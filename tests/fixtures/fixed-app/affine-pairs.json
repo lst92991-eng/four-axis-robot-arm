@@ -1,0 +1,16 @@
+{
+  "note": "SYNTHETIC OFFLINE ONLY. X=0.02*u+0.49*v-194, Y=0.49*u-0.015*v-620; not a robot calibration.",
+  "camera": {"id": "sc3336-1280x720-fixed-focus-v1", "width": 1280, "height": 720},
+  "calibration_id": "synthetic-affine-offline-only",
+  "plane_z_mm": 0,
+  "allowed_error_mm": 0.001,
+  "fit_points": [
+    {"pixel": [300,100], "base_xy": [-139,-474.5]},
+    {"pixel": [980,100], "base_xy": [-125.4,-141.3]},
+    {"pixel": [980,710], "base_xy": [173.5,-150.45]},
+    {"pixel": [300,710], "base_xy": [159.9,-483.65]}
+  ],
+  "check_points": [
+    {"pixel": [600,400], "base_xy": [14,-332]}
+  ]
+}

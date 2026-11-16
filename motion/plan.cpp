@@ -110,10 +110,10 @@ bool Pick_plan(const ArmGeometry &arm, const WorkHeights &heights, cv::Point2d s
 {
     JointTarget source, destination; // 起点和终点的J2反馈角、J3电机角，度。
     bool sourceValid = true, destinationValid;
-    PickStep hold;                        // 吸持状态。
-    PickStep moveSource, moveDestination; // 两次平面移动。
-    PickStep pickup, travel, release;     // 三个已示教的Z工作层。
-    PickStep pulse;                       // 在释放层给一次放棋脉冲。
+    PickStep hold;   // 吸持状态。
+    PickStep moveXY; // 平面移动的关节目标，度。
+    PickStep moveZ;  // 示教高度对应的J1角度，度。
+    PickStep pulse;  // 放棋脉冲，毫秒。
 
     steps.clear();
     if (heights.pickupDeg == heights.travelDeg) return false;
@@ -122,33 +122,32 @@ bool Pick_plan(const ArmGeometry &arm, const WorkHeights &heights, cv::Point2d s
     if (sourceValid == false || destinationValid == false) return false;
 
     hold.action = PickAction::Hold;
-    moveSource.action = PickAction::MoveXY;
-    moveSource.joints = source;
-    moveDestination.action = PickAction::MoveXY;
-    moveDestination.joints = destination;
-    pickup.action = PickAction::MoveZ;
-    pickup.zDeg = heights.pickupDeg;
-    pickup.speedDegS = heights.speedDegS;
-    travel.action = PickAction::MoveZ;
-    travel.zDeg = heights.travelDeg;
-    travel.speedDegS = heights.speedDegS;
-    release.action = PickAction::MoveZ;
-    release.zDeg = heights.releaseDeg;
-    release.speedDegS = heights.speedDegS;
-    pulse.action = PickAction::ReleasePulse;
-    pulse.durationMs = heights.releasePulseMs;
-
     steps.push_back(hold);
+
+    // 入列时复制本步目标，后续可填写新的关节角或高度。
+    moveXY.action = PickAction::MoveXY;
+    moveZ.action = PickAction::MoveZ;
+    moveZ.speedDegS = heights.speedDegS;
     if (!alreadyHeld)
     {
-        steps.push_back(moveSource);
-        steps.push_back(pickup);
-        steps.push_back(travel);
+        moveXY.joints = source;
+        steps.push_back(moveXY);
+        moveZ.zDeg = heights.pickupDeg;
+        steps.push_back(moveZ);
+        moveZ.zDeg = heights.travelDeg;
+        steps.push_back(moveZ);
     }
-    steps.push_back(moveDestination);
-    steps.push_back(release);
+
+    moveXY.joints = destination;
+    steps.push_back(moveXY);
+    moveZ.zDeg = heights.releaseDeg;
+    steps.push_back(moveZ);
+    // 先在释放层放棋，脉冲结束后抬升离开。
+    pulse.action = PickAction::ReleasePulse;
+    pulse.durationMs = heights.releasePulseMs;
     steps.push_back(pulse);
-    steps.push_back(travel);
+    moveZ.zDeg = heights.travelDeg;
+    steps.push_back(moveZ);
     return true;
 }
 } // namespace scara
