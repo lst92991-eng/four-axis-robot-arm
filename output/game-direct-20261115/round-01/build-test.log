@@ -1,0 +1,63 @@
+[0/1] Re-running CMake...
+-- Found OpenCV: C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build (found suitable exact version "5.0.0") found components: core imgproc imgcodecs geometry
+-- Found OpenCV: C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build (found suitable exact version "5.0.0") found components: core imgproc imgcodecs videoio
+-- Configuring done (1.8s)
+-- Generating done (0.2s)
+-- Build files have been written to: C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify
+[1/19] Building CXX object CMakeFiles\scara_motion.dir\motion\execute.cpp.obj
+[2/19] Building CXX object CMakeFiles\scara_motion_backend_test.dir\tests\motion_backend_test.cpp.obj
+[3/19] Building CXX object CMakeFiles\scara_match.dir\app\game.cpp.obj
+[4/19] Building CXX object CMakeFiles\scara_game_sim.dir\app\game_sim_io.cpp.obj
+[5/19] Building CXX object CMakeFiles\scara_game_sim.dir\app\game_main.cpp.obj
+[6/19] Building CXX object CMakeFiles\scara_game_live_io_test.dir\app\game_live_io.cpp.obj
+[7/19] Building CXX object CMakeFiles\scara_match.dir\app\game_config.cpp.obj
+[8/19] Building CXX object CMakeFiles\scara_match.dir\app\game_files.cpp.obj
+[9/19] Linking CXX static library scara_motion.lib
+[10/19] Linking CXX static library scara_match.lib
+[11/19] Building CXX object CMakeFiles\scara_game_live_io_test.dir\tests\game_live_io_test.cpp.obj
+[12/19] Linking CXX executable scara_motion_backend_test.exe
+[13/19] Linking CXX executable scara_game_geometry_test.exe
+[14/19] Linking CXX executable scara_fixed_board_test.exe
+[15/19] Linking CXX executable scara_motion_plan_test.exe
+[16/19] Linking CXX executable scara_session_test.exe
+[17/19] Linking CXX executable scara_game_sim.exe
+[18/19] Linking CXX executable scara_game_live_io_test.exe
+Test project C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify
+      Start  1: match_main_contracts
+ 1/17 Test  #1: match_main_contracts .............   Passed    1.98 sec
+      Start  2: motion_backend_contracts
+ 2/17 Test  #2: motion_backend_contracts .........   Passed    0.03 sec
+      Start  3: match_live_wrapper_contracts
+ 3/17 Test  #3: match_live_wrapper_contracts .....   Passed    0.13 sec
+      Start  4: geometry_contracts
+ 4/17 Test  #4: geometry_contracts ...............   Passed    0.07 sec
+      Start  5: fixed_assignment_equivalence
+ 5/17 Test  #5: fixed_assignment_equivalence .....   Passed    0.08 sec
+      Start  6: game_geometry_contracts
+ 6/17 Test  #6: game_geometry_contracts ..........   Passed    0.06 sec
+      Start  7: chess_contracts
+ 7/17 Test  #7: chess_contracts ..................   Passed    0.03 sec
+      Start  8: chess_move_equivalence
+ 8/17 Test  #8: chess_move_equivalence ...........   Passed    0.04 sec
+      Start  9: pikafish_protocol_contracts
+ 9/17 Test  #9: pikafish_protocol_contracts ......   Passed    0.06 sec
+      Start 10: fixed_board_contracts
+10/17 Test #10: fixed_board_contracts ............   Passed    0.11 sec
+      Start 11: motion_plan_contracts
+11/17 Test #11: motion_plan_contracts ............   Passed    0.07 sec
+      Start 12: session_contracts
+12/17 Test #12: session_contracts ................   Passed    0.06 sec
+      Start 13: camera_retry_contracts
+13/17 Test #13: camera_retry_contracts ...........   Passed    5.42 sec
+      Start 14: saved_tensor_input_contracts
+14/17 Test #14: saved_tensor_input_contracts .....   Passed    0.78 sec
+      Start 15: vision_pipeline_contracts
+15/17 Test #15: vision_pipeline_contracts ........   Passed   13.29 sec
+      Start 16: rknn_adapter_contracts
+16/17 Test #16: rknn_adapter_contracts ...........   Passed    0.07 sec
+      Start 17: vision_entry_contracts
+17/17 Test #17: vision_entry_contracts ...........   Passed    1.99 sec
+
+100% tests passed, 0 tests failed out of 17
+
+Total Test time (real) =  24.32 sec

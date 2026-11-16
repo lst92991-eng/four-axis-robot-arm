@@ -1,0 +1,3143 @@
+
+========================================================================
+app/game.cpp
+========================================================================
+#include "game.hpp"
+#include <stdexcept>
+
+namespace scara
+{
+bool Command_parse(const std::string &text, Command &command)
+{
+    command = Command::Quit;
+    if (text.empty() || text == "ready")
+        command = Command::Ready;
+    else if (text == "retry")
+        command = Command::Retry;
+    else if (text == "accept")
+        command = Command::Accept;
+    else if (text == "restored")
+        command = Command::Restored;
+    else if (text == "resign")
+        command = Command::Resign;
+    else if (text == "draw")
+        command = Command::Draw;
+    else if (text != "quit")
+        return false;
+    return true;
+}
+
+static void readCommand(const std::string &phase, const std::string &prompt, Command &command)
+{
+    Operator_read(phase, prompt, command);
+    if (command == Command::Quit)
+    {
+        gameRunning = 0;
+        throw std::runtime_error("对局已停止");
+    }
+}
+
+static bool finishCommand(Session &session, Command command)
+{
+    chess::Result winner;
+    if (command == Command::Draw) return chess::Game_finish(session.game, chess::Result::Draw);
+    if (command == Command::Resign)
+    {
+        winner = session.game.humanRed ? chess::Result::BlackWon : chess::Result::RedWon;
+        return chess::Game_finish(session.game, winner);
+    }
+    return false;
+}
+
+static void observe(Session &session)
+{
+    session.stable.reset();
+    Match_report("observing", session);
+    for (int frame = 0; frame < 3; ++frame)
+    {
+        if (!gameRunning) throw std::runtime_error("对局已停止");
+        std::string frameId;
+        std::vector<Detection> pieces;
+        Vision_observe(session.layout, frameId, pieces);
+        Session_observe(session, frameId, pieces, true); // 已确认手移开，执行器已停在观察位。
+    }
+    Match_report("observed", session);
+}
+
+void Match_start(const GameConfig &config, Session &session)
+{
+    Command command = Command::Retry; // 操作员在当前阶段输入的命令。
+    bool prepared = false;            // 执行器是否已到示教观察位。
+    chess::Board initial;             // 等待操作员核对的开局盘面。
+    PickStep hold, lift, park;        // 保持吸持、抬到搬运层、让开棋盘。
+    std::vector<PickStep> prepare;    // 按执行顺序保存上述三个动作。
+
+    hold.action = PickAction::Hold;
+    lift.action = PickAction::MoveZ;
+    lift.zDeg = session.heights.travelDeg;
+    lift.speedDegS = session.heights.speedDegS;
+    park.action = PickAction::MoveXY;
+    park.joints = config.park;
+    prepare.push_back(hold);
+    prepare.push_back(lift);
+    prepare.push_back(park);
+
+    Match_report("prepare", session);
+    while (command != Command::Ready)
+        readCommand("prepare", "先将空吸头抬离棋盘并移开手，回车让执行器进入示教搬运高度和观察位；quit退出。", command);
+    Robot_execute("prepare", "", prepare, prepared);
+    if (!prepared) throw std::runtime_error("执行器未准备好；没有开始对局");
+    while (gameRunning)
+    {
+        observe(session);
+        if (!session.observed.valid)
+        {
+            Match_report("start_unreadable", session);
+            readCommand("start_retry", "识别未稳定或棋子不完整；调整后回车重读，quit退出。", command);
+            continue;
+        }
+        initial = session.observed.board;
+        Match_report("confirm_start", session);
+        readCommand("confirm_start", "核对预览和识别盘面；回车确认开局，retry重读，quit退出。", command);
+        if (command != Command::Ready) continue;
+        observe(session);
+        if (session.observed.valid && session.observed.board == initial)
+        {
+            if (!chess::Game_reset(session.game, initial, config.redToMove, config.humanRed))
+                throw std::runtime_error(session.game.error);
+            Match_report("started", session);
+            return;
+        }
+    }
+    throw std::runtime_error("对局已停止");
+}
+
+void Match_human(Session &session, const std::vector<std::string> &legal)
+{
+    Command command;
+    chess::Move move;
+    while (gameRunning)
+    {
+        Match_report("wait_human", session);
+        readCommand("human", "请走棋并移开手，回车确认；resign认输，draw和棋，quit退出。", command);
+        if (finishCommand(session, command)) return;
+        if (command != Command::Ready && command != Command::Retry) continue;
+        observe(session);
+        if (chess::Game_acceptHuman(session.game, session.observed, legal, move)) return;
+        Match_report("human_rejected", session);
+    }
+    throw std::runtime_error("对局已停止");
+}
+
+void Match_robot(const GameConfig &config, Session &session, const std::vector<std::string> &legal,
+                 const std::string &choice)
+{
+    Command command;
+    bool completed = false; // 执行器是否已完成全部动作并停稳。
+    PickStep park;          // 放子后让开棋盘，才能重新观察全部棋子。
+
+    park.action = PickAction::MoveXY;
+    park.joints = config.park;
+    observe(session); // 搜索结束后重新取图，不能直接用搜索前的观察执行。
+    while (!session.observed.valid || session.observed.board != session.game.board)
+    {
+        Match_report("board_changed", session);
+        readCommand("restore_before_move", "盘面尚未稳定或已变化；恢复后回车，quit退出。", command);
+        if (finishCommand(session, command)) return;
+        observe(session);
+    }
+    if (!Session_plan(session, choice, legal)) throw std::runtime_error(session.game.error);
+    session.steps.push_back(park);
+    Match_report("executing", session);
+    Robot_execute("move", choice, session.steps, completed);
+    if (completed) observe(session);
+    if (Session_confirm(session, completed)) return;
+    while (gameRunning)
+    {
+        Match_report("recovery", session);
+        readCommand(
+            "recovery",
+            "动作未确认：回车/retry只重读；accept确认实际已完成；restored确认全部复位、吸头空并回观察位后重新规划；quit退出。",
+            command);
+        if (finishCommand(session, command)) return;
+        if (command == Command::Resign || command == Command::Draw) continue;
+        if (command == Command::Accept) completed = true;
+        observe(session);
+        if (command == Command::Restored)
+        {
+            if (Session_restore(session)) return;
+            continue;
+        }
+        if (Session_confirm(session, completed)) return;
+    }
+    throw std::runtime_error("对局已停止");
+}
+} // namespace scara
+
+
+========================================================================
+app/game.hpp
+========================================================================
+#pragma once
+#include "chess/session.hpp"
+#include <csignal>
+
+namespace scara
+{
+struct GameConfig
+{
+    std::string cameraUrl;    // 相机RTSP地址。
+    std::string labelPath;    // 中文标签图片。
+    std::string engineDir;    // Pikafish程序及配套NNUE所在目录。
+    std::string workDir;      // 预览和棋局状态的保存目录。
+    std::string scenarioPath; // 仅仿真使用的场景脚本。
+    JointTarget park;         // 已示教、能看清整张棋盘的J2反馈角与J3电机角，单位度。
+    bool humanRed = true, redToMove = true;
+    int thinkMs = 1000; // 每步思考时间，毫秒。
+};
+enum class Command
+{
+    Ready,
+    Retry,
+    Accept,
+    Restored,
+    Resign,
+    Draw,
+    Quit
+};
+extern volatile std::sig_atomic_t gameRunning;
+
+void Match_load(const std::string &path, GameConfig &config, Session &session);
+void Match_start(const GameConfig &config, Session &session);
+void Match_human(Session &session, const std::vector<std::string> &legal);
+void Match_robot(const GameConfig &config, Session &session, const std::vector<std::string> &legal,
+                 const std::string &choice);
+
+// 相同主程序在链接时选择实机IO或仿真IO，没有两套对局逻辑。
+void Runtime_open(const GameConfig &config, const std::string &modelPath);
+void Runtime_stop(); // 信号回调只设置停止状态，不等待、不写文件。
+bool Runtime_close();
+void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces);
+void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice);
+bool Command_parse(const std::string &text, Command &command);
+void Operator_read(const std::string &phase, const std::string &prompt, Command &command);
+void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
+                   bool &success);
+void Match_report(const std::string &phase, const Session &session);
+} // namespace scara
+
+
+========================================================================
+app/game_config.cpp
+========================================================================
+#include "game.hpp"
+#include "vision/io.hpp"
+#include <cmath>
+#include <filesystem>
+#include <stdexcept>
+
+namespace scara
+{
+static std::string filePath(const std::string &owner, const cv::FileNode &node)
+{
+    std::string name = (std::string)node;
+    std::filesystem::path path;
+    if (name.empty()) return {};
+    path = std::filesystem::u8path(owner).parent_path();
+    path /= std::filesystem::u8path(name);
+    return path.lexically_normal().u8string();
+}
+
+static void readPair(const cv::FileNode &node, double &first, double &second)
+{
+    if (node.size() != 2) throw std::runtime_error("需要两个已示教数值");
+    for (cv::FileNode value : node)
+        if ((!value.isInt() && !value.isReal()) || !std::isfinite(double(value)))
+            throw std::runtime_error("示教值不能为空或占位符");
+    first = double(node[0]);
+    second = double(node[1]);
+}
+
+void Match_load(const std::string &path, GameConfig &config, Session &session)
+{
+    cv::FileStorage file, layout; // 对局设置、固定棋盘设置。
+    cv::FileNode cornersNode;
+    std::string layoutPath, armPath, heightsPath, planePath;
+    std::array<cv::Point2d, 4> corners; // 原图四角，像素。
+    Board grid;                         // 棋盘90个交点，像素。
+    PlaneMap plane;                     // 像素到基座毫米的标定映射。
+    JointTarget target;                 // 检查交点能否逆解，不发送运动。
+    bool confirmed, ready;
+
+    for (auto &row : session.observed.board)
+        row.fill('?');
+    readStorage(path, file);
+    layoutPath = filePath(path, file["layout_file"]);
+    readStorage(layoutPath, layout);
+    checkCamera(layout["camera"]);
+    cornersNode = layout["corners"];
+    if (cornersNode.size() != 4) throw std::runtime_error("固定布局需要四角");
+    for (int i = 0; i < 4; ++i)
+        readPair(cornersNode[i], corners[i].x, corners[i].y);
+    confirmed = int(layout["canonical_order_confirmed"]) == 1;
+    planePath = filePath(layoutPath, layout["plane_file"]);
+    boardFromCorners(corners, confirmed, grid);
+    loadPlane(planePath, plane);
+    ready = FixedBoard_setup(plane, grid, session.layout);
+    if (!ready) throw std::runtime_error("固定坐标尚未确认");
+
+    armPath = filePath(path, file["arm_file"]);
+    heightsPath = filePath(path, file["heights_file"]);
+    ready = Arm_load(armPath, session.arm);
+    if (ready) ready = WorkHeights_load(heightsPath, session.heights);
+    if (!ready) throw std::runtime_error("机械参考或工作高度尚未示教");
+    readPair(file["park_joints_deg"], config.park.j2Deg, config.park.j3MotorDeg);
+    readPair(file["capture_place_mm"], session.capturePlaceMm.x, session.capturePlaceMm.y);
+    session.capturePlaceTaught = Arm_inverse(session.arm, session.capturePlaceMm, target);
+    if (!session.capturePlaceTaught) throw std::runtime_error("吃子区不在可达范围内");
+    for (int i = 0; i < Cells; ++i)
+        if (!session.layout.mapped[i] || !Arm_inverse(session.arm, session.layout.targets[i], target))
+            throw std::runtime_error("棋盘存在未标定或不可达的交点：" + std::to_string(i));
+    file["camera_url"] >> config.cameraUrl;
+    config.labelPath = filePath(path, file["label_image"]);
+    config.engineDir = filePath(path, file["engine_directory"]);
+    config.workDir = filePath(path, file["work_directory"]);
+    config.scenarioPath = filePath(path, file["simulation_file"]);
+    if (config.workDir.empty()) throw std::runtime_error("需要对局输出目录");
+    if (!file["human_red"].empty()) config.humanRed = int(file["human_red"]) != 0;
+    if (!file["red_to_move"].empty()) config.redToMove = int(file["red_to_move"]) != 0;
+    if (!file["think_ms"].empty()) config.thinkMs = int(file["think_ms"]);
+}
+} // namespace scara
+
+
+========================================================================
+app/game_files.cpp
+========================================================================
+#include "game_files.hpp"
+#include "vision/io.hpp"
+#include <chrono>
+#include <filesystem>
+#include <iostream>
+
+namespace scara
+{
+static std::string directory; // 对局文件所在目录。
+static std::string runId;     // 本次程序运行编号，区分以前留下的文件。
+static bool simulated = false;
+
+std::string Runtime_path(const std::string &name)
+{
+    std::filesystem::path path = std::filesystem::u8path(directory);
+    path /= name;
+    return path.u8string();
+}
+
+bool Runtime_publish(const std::string &name, const std::string &text)
+{
+    std::filesystem::path target = std::filesystem::u8path(Runtime_path(name));
+    std::filesystem::path temporary = target;
+    std::ofstream file;
+    std::error_code error;
+
+    temporary += ".tmp";
+    file.open(temporary, std::ios::binary);
+    file.write(text.data(), std::streamsize(text.size()));
+    if (!file) return false;
+    file.close();
+    if (!file) return false;
+    std::filesystem::rename(temporary, target, error);
+    return !error;
+}
+
+void Files_open(const std::string &path, bool simulation)
+{
+    std::chrono::system_clock::time_point started;
+
+    directory = path;
+    simulated = simulation;
+    started = std::chrono::system_clock::now();
+    runId = std::to_string(started.time_since_epoch().count());
+    std::filesystem::create_directories(std::filesystem::u8path(directory));
+}
+
+static void writeBoard(cv::FileStorage &file, const char *key, const chess::Board &board)
+{
+    file << key << "[";
+    for (const auto &row : board)
+        file << std::string(row.begin(), row.end());
+    file << "]";
+}
+
+void Match_report(const std::string &phase, const Session &session)
+{
+    const chess::Game &game = session.game;
+    cv::FileStorage file;
+    std::chrono::system_clock::time_point now;
+    std::chrono::duration<double, std::milli> elapsed;
+    std::string message;
+
+    if (directory.empty()) return;
+    memoryStorage(true, file);
+    now = std::chrono::system_clock::now();
+    elapsed = now.time_since_epoch();
+    file << "run_id" << runId;
+    file << "updated_at_ms" << elapsed.count();
+    file << "frame_id" << session.lastFrameId;
+    file << "simulated" << int(simulated);
+    file << "phase" << phase;
+    file << "base_fen" << game.baseFen;
+    file << "history" << game.history;
+    file << "red_to_move" << int(game.redToMove);
+    file << "human_red" << int(game.humanRed);
+    file << "pending" << int(game.pending);
+    file << "result" << int(game.result);
+    file << "error" << game.error;
+    file << "observation_valid" << int(session.observed.valid);
+    writeBoard(file, "board", game.board);
+    writeBoard(file, "observed", session.observed.board);
+    writeBoard(file, "expected", game.expected);
+    message = file.releaseAndGetString();
+    if (!Runtime_publish("status.json", message)) std::cerr << "无法保存对局状态\n";
+    std::cout << (simulated ? "[SIMULATION] " : "") << phase << " | " << game.history << " | " << game.error << '\n';
+    if (phase == "confirm_start")
+        for (const auto &row : session.observed.board)
+            std::cout << std::string(row.begin(), row.end()) << '\n';
+    std::cout.flush();
+}
+} // namespace scara
+
+
+========================================================================
+app/game_files.hpp
+========================================================================
+#pragma once
+#include "game.hpp"
+
+namespace scara
+{
+// 仅保存预览和棋局状态，机械执行不经过文件。
+void Files_open(const std::string &directory, bool simulated);
+std::string Runtime_path(const std::string &name);
+bool Runtime_publish(const std::string &name, const std::string &bytes);
+} // namespace scara
+
+
+========================================================================
+app/game_live_io.cpp
+========================================================================
+#include "game_files.hpp"
+#include "motion/execute.hpp"
+#include "chess/pikafish.hpp"
+#include "vision/capture.hpp"
+#include "vision/io.hpp"
+#include <opencv2/imgcodecs.hpp>
+#include <iostream>
+#include <poll.h>
+#include <unistd.h>
+
+namespace scara
+{
+static GameConfig settings;
+static std::string model;
+static cv::Mat labels;
+static Pikafish engine;
+static bool visionOpen = false;
+static unsigned frameNumber = 0;
+
+static void closeVision()
+{
+    Camera_close();
+    Yolo_close();
+    visionOpen = false;
+}
+
+void Runtime_open(const GameConfig &config, const std::string &modelPath)
+{
+    std::string bytes;               // 标签图片文件的原始字节。
+    std::vector<unsigned char> data; // OpenCV解码需要的字节数组。
+
+    settings = config;
+    model = modelPath;
+    if (model.empty() || settings.cameraUrl.empty() || settings.labelPath.empty() || settings.engineDir.empty())
+        throw std::runtime_error("实机模式需要模型、相机、字图及引擎路径");
+    Files_open(settings.workDir, false);
+    readBytes(settings.labelPath, bytes);
+    data.assign(bytes.begin(), bytes.end());
+    labels = cv::imdecode(data, cv::IMREAD_GRAYSCALE);
+    Vision_setup();
+    engine.cancelled = [] { return !gameRunning; };
+}
+
+void Runtime_stop()
+{
+    Camera_stop();
+}
+
+bool Runtime_close()
+{
+    bool stopped = Motion_stop();
+    bool reaped = engine.close();
+    closeVision();
+    return stopped && reaped;
+}
+
+void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
+{
+    cv::Mat source;                  // 新收到的1280x720 BGR原图。
+    cv::Mat input;                   // 原有固定ROI生成的640x640 RGB输入。
+    cv::Mat detected;                // 左侧：棋子检测框、类别和分数。
+    cv::Mat grid;                    // 右侧：固定90个交点。
+    cv::Mat preview;                 // 左右拼接后的预览。
+    YoloHead heads[YoloHeads];       // NPU三路输出的地址和格式。
+    std::vector<unsigned char> jpeg; // 压缩后的预览图片。
+    std::string bytes;               // 待写入文件的图片字节。
+    bool encoded, published;
+
+    if (!gameRunning) throw std::runtime_error("对局已停止");
+    if (!visionOpen)
+    {
+        if (!Yolo_open(model)) throw std::runtime_error("无法打开NPU模型");
+        Camera_open(settings.cameraUrl);
+        visionOpen = true;
+    }
+    Camera_read(source);
+    Vision_prepare(source, input);
+    Yolo_run(input, heads);
+    Vision_decode(heads, pieces);
+    Vision_draw(source, pieces, labels, detected);
+    drawBoard(source, layout.grid, grid);
+    cv::hconcat(detected, grid, preview); // 固定双画面尺寸，和识别ROI分别处理。
+    encoded = cv::imencode(".jpg", preview, jpeg);
+    if (!encoded) throw std::runtime_error("无法生成预览");
+    bytes.assign(jpeg.begin(), jpeg.end());
+    published = Runtime_publish("preview.jpg", bytes);
+    if (!published) throw std::runtime_error("无法写入预览");
+    ++frameNumber;
+    frameId = std::to_string(frameNumber);
+}
+
+void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
+{
+    bool ready, reaped;
+
+    closeVision(); // 释放相机线程和NPU后才创建引擎进程。
+    choice.clear();
+    ready = engine.start(settings.engineDir.c_str());
+    if (ready) ready = engine.legalMoves(game, legal);
+    if (ready && !legal.empty() && game.redToMove != game.humanRed)
+        ready = engine.think(game, settings.thinkMs, choice);
+    reaped = engine.close();
+    if (!ready || !reaped) throw std::runtime_error("引擎查询失败：" + engine.error);
+    // 下次观察才重开相机/NPU；失败时不会拿空合法列表宣布胜负。
+}
+
+void Operator_read(const std::string &, const std::string &prompt, Command &command)
+{
+    std::string line; // 按回车之前输入的命令文本。
+    char character;
+    pollfd input;
+
+    input.fd = STDIN_FILENO;
+    input.events = POLLIN;
+    input.revents = 0;
+    command = Command::Quit; // EOF或停止时，向调用方报告退出。
+    std::cout << prompt << '\n' << std::flush;
+    while (gameRunning)
+    {
+        if (poll(&input, 1, 100) <= 0) continue;
+        if (read(STDIN_FILENO, &character, 1) <= 0) return;
+        if (character == '\r') continue;
+        if (character != '\n')
+        {
+            line += character;
+            continue;
+        }
+        if (Command_parse(line, command)) return;
+        std::cout << "请输入提示中的命令。\n" << std::flush;
+        line.clear();
+    }
+}
+
+void Robot_execute(const std::string &, const std::string &, const std::vector<PickStep> &steps, bool &success)
+{
+    closeVision();
+    Motion_execute(steps, gameRunning, success);
+    if (!gameRunning) throw std::runtime_error("对局已停止");
+}
+} // namespace scara
+
+
+========================================================================
+app/game_main.cpp
+========================================================================
+#include "game.hpp"
+#include <iostream>
+#include <filesystem>
+#include <stdexcept>
+
+volatile std::sig_atomic_t scara::gameRunning = 1;
+
+static void requestStop(int)
+{
+    scara::gameRunning = 0;
+    scara::Runtime_stop();
+}
+
+int runGame(int argc, char **argv)
+{
+    using namespace scara;
+    if (argc < 2 || argc > 3) return 2;
+    const char *configPath = argv[1];                 // 布局、机械参考、示教高度与对局设置。
+    const char *modelPath = argc == 3 ? argv[2] : ""; // 实机需要RKNN模型；仿真不加载模型。
+    GameConfig config;                                // 配置与示教观察位。
+    Session session;                                  // 已确认棋局、当前观察和待执行步骤。
+    int result = 0;
+    std::signal(SIGINT, requestStop);
+    std::signal(SIGTERM, requestStop);
+    try
+    {
+        Match_load(configPath, config, session);
+        Runtime_open(config, modelPath);
+        Match_start(config, session);
+        while (gameRunning)
+        {
+            std::vector<std::string> legal; // 当前已确认盘面的合法走法。
+            std::string choice;             // 机器人回合的最佳应手。
+
+            Match_report("thinking", session);
+            Engine_query(session.game, legal, choice);
+            if (!chess::Game_judge(session.game, legal)) throw std::runtime_error(session.game.error);
+            if (session.game.result == chess::Result::Playing)
+            {
+                if (session.game.redToMove == session.game.humanRed)
+                    Match_human(session, legal);
+                else
+                    Match_robot(config, session, legal, choice);
+            }
+            Match_report("turn_complete", session);
+            if (session.game.result != chess::Result::Playing) gameRunning = 0;
+        }
+    }
+    catch (const std::exception &error)
+    {
+        result = gameRunning ? 1 : 0;
+        if (gameRunning) session.game.error = error.what();
+        std::cerr << error.what() << '\n';
+    }
+    if (!Runtime_close())
+    {
+        result = 1;
+        session.game.error += "；机械停止或资源回收未确认";
+    }
+    std::string phase = "finished";
+    if (session.game.result == chess::Result::Playing) phase = "stopped";
+    if (session.game.result == chess::Result::ReviewRequired) phase = "review_required";
+    if (result) phase = "error";
+    Match_report(phase, session);
+    return result;
+}
+
+#ifdef _WIN32
+int wmain(int argc, wchar_t **argv)
+{
+    std::vector<std::string> text;
+    for (int i = 0; i < argc; ++i)
+        text.push_back(std::filesystem::path(argv[i]).u8string());
+    std::vector<char *> args;
+    for (auto &value : text)
+        args.push_back(value.data());
+    return runGame(argc, args.data());
+}
+#else
+int main(int argc, char **argv)
+{
+    return runGame(argc, argv);
+}
+#endif
+
+
+========================================================================
+app/game_sim_io.cpp
+========================================================================
+#include "game_files.hpp"
+#include "vision/io.hpp"
+#include <algorithm>
+#include <iostream>
+#include <iomanip>
+
+namespace scara
+{
+static cv::FileStorage script;
+static chess::Board world;
+static size_t commandIndex = 0, executionIndex = 0;
+static unsigned frameNumber = 0;
+
+static void readBoard(const cv::FileNode &rows)
+{
+    if (rows.size() != 10) throw std::runtime_error("仿真盘面必须有10行");
+    for (int row = 0; row < 10; ++row)
+    {
+        std::string line = (std::string)rows[row];
+        if (line.size() != 9) throw std::runtime_error("仿真盘面必须有9列");
+        std::copy(line.begin(), line.end(), world[row].begin());
+    }
+}
+
+void Runtime_open(const GameConfig &config, const std::string &)
+{
+    Files_open(config.workDir, true);
+    readStorage(config.scenarioPath, script);
+    readBoard(script["initial_board"]);
+    std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
+}
+
+void Runtime_stop()
+{
+}
+bool Runtime_close()
+{
+    return true; // 仿真没有硬件动作需要停止。
+}
+
+void Vision_observe(const FixedBoard &layout, std::string &frameId, std::vector<Detection> &pieces)
+{
+    std::string symbols = PieceSymbols;
+    cv::Point2d center; // 场景中的棋子中心，原图像素。
+    Detection piece;
+
+    ++frameNumber;
+    frameId = std::to_string(frameNumber);
+    pieces.clear();
+    for (int row = 0; row < 10; ++row)
+        for (int col = 0; col < 9; ++col)
+            if (world[row][col] != '.')
+            {
+                center = layout.grid.intersections[(9 - row) * Columns + col];
+                piece.classId = int(symbols.find(world[row][col]));
+                piece.confidence = .9;
+                piece.bbox.x = center.x - 10;
+                piece.bbox.y = center.y - 10;
+                piece.bbox.width = 20;
+                piece.bbox.height = 20;
+                pieces.push_back(piece);
+            }
+}
+
+void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
+{
+    for (const cv::FileNode &query : script["queries"])
+        if ((std::string)query["history"] == game.history)
+        {
+            if (int(query["fail"]) == 1) throw std::runtime_error("仿真引擎查询失败");
+            if (!query["base_fen"].empty() && (std::string)query["base_fen"] != game.baseFen)
+                throw std::runtime_error("仿真起始FEN不匹配");
+            query["legal"] >> legal;
+            choice = (std::string)query["choice"];
+            return;
+        }
+    throw std::runtime_error("仿真没有当前完整历史的引擎回复：" + game.history);
+}
+
+void Operator_read(const std::string &phase, const std::string &, Command &result)
+{
+    cv::FileNode commands = script["commands"];
+    cv::FileNode command;
+    std::string name;
+
+    result = Command::Quit;
+    if (commandIndex >= commands.size()) return;
+    command = commands[int(commandIndex)];
+    ++commandIndex;
+    if ((std::string)command["phase"] != phase) throw std::runtime_error("仿真进入了意外的交互阶段：" + phase);
+    if (!command["board"].empty()) readBoard(command["board"]);
+    command["command"] >> name;
+    if (!Command_parse(name, result)) throw std::runtime_error("未知仿真命令");
+}
+
+void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
+                   bool &success)
+{
+    cv::FileNode events = script["executions"];
+    cv::FileNode event;
+    int result;
+
+    success = false;
+    if (!gameRunning) throw std::runtime_error("对局已停止");
+    if (executionIndex >= events.size()) throw std::runtime_error("仿真出现了额外的机械执行请求");
+    event = events[int(executionIndex)];
+    ++executionIndex;
+    if ((std::string)event["purpose"] != purpose || (std::string)event["move"] != move)
+        throw std::runtime_error("仿真动作与预定场景不符");
+    // 单向打印调用参数供离线核对，不生成请求文件，也不从日志接收命令。
+    std::cout << "SIM_CALL " << purpose << ' ' << (move.empty() ? "-" : move) << '\n' << std::setprecision(17);
+    for (const PickStep &step : steps)
+        std::cout << "SIM_STEP " << int(step.action) << ' ' << step.joints.j2Deg << ' ' << step.joints.j3MotorDeg << ' '
+                  << step.zDeg << ' ' << step.speedDegS << ' ' << step.durationMs << '\n';
+    if (!event["board"].empty()) readBoard(event["board"]); // 独立场景决定落子结果，不直接复制计划盘面。
+    result = int(event["success"]);
+    if (result != 0 && result != 1) throw std::runtime_error("仿真执行结果必须是0或1");
+    success = result == 1;
+    std::cout << "SIM_RETURN " << result << '\n';
+}
+} // namespace scara
+
+
+========================================================================
+app/geometry_tool.cpp
+========================================================================
+#include "vision/geometry.hpp"
+#include "vision/io.hpp"
+#include <opencv2/imgcodecs.hpp>
+#include <filesystem>
+#include <iostream>
+
+namespace
+{
+using namespace scara;
+void require(bool v, const char *s)
+{
+    if (!v) throw std::runtime_error(s);
+}
+double number(const cv::FileNode &n)
+{
+    require(n.isReal() || n.isInt(), "A real measured numeric value is required");
+    return (double)n; // 四角的有限值和范围由boardFromCorners核对。
+}
+std::string relativePath(const std::string &config, const std::string &value)
+{
+    std::filesystem::path path;
+
+    require(!value.empty(), "Missing file path");
+    path = std::filesystem::u8path(config).parent_path();
+    path /= std::filesystem::u8path(value);
+    return path.lexically_normal().u8string();
+}
+void imageFile(const std::string &path, cv::Mat &image)
+{
+    std::string bytes;
+    readBytes(path, bytes);
+    std::vector<unsigned char> data(bytes.begin(), bytes.end());
+    image = cv::imdecode(data, cv::IMREAD_COLOR);
+    require(!image.empty(), "Cannot decode image");
+}
+void saveImage(const std::string &path, const cv::Mat &image)
+{
+    std::vector<unsigned char> png;
+    std::string bytes;
+    bool encoded;
+
+    encoded = cv::imencode(".png", image, png);
+    require(encoded, "Cannot encode overlay");
+    bytes.assign(png.begin(), png.end());
+    writeBytes(path, bytes);
+}
+// 四角依次为红方左下、右下、黑方右上、左上；方向由首次示教确认。
+void getBoard(const cv::FileStorage &file, Board &board)
+{
+    cv::FileNode points = file["corners"];
+    std::array<cv::Point2d, 4> corners;
+    bool confirmed;
+
+    require((std::string)file["mode"] == "manual", "Fixed board requires saved manual corners");
+    require(points.isSeq() && points.size() == 4, "Four original-image corners required");
+    for (int i = 0; i < 4; ++i)
+    {
+        require(points[i].size() == 2, "Corner must have two coordinates");
+        corners[i].x = number(points[i][0]);
+        corners[i].y = number(points[i][1]);
+    }
+    confirmed = int(file["canonical_order_confirmed"]) == 1;
+    boardFromCorners(corners, confirmed, board);
+}
+void inspect(const std::string &config, const std::string &output)
+{
+    cv::FileStorage fs, result;
+    std::string frame, path, planeFile, message;
+    cv::Mat image, overlay, rectified;
+    Board board;
+    PlaneMap plane;
+
+    readStorage(config, fs);
+    checkCamera(fs["camera"]);
+    fs["frame_id"] >> frame;
+    path = relativePath(config, (std::string)fs["image"]);
+    imageFile(path, image);
+    require(image.size() == cv::Size(ImageWidth, ImageHeight), "Image size differs from camera profile");
+    getBoard(fs, board);
+    fs["plane_file"] >> planeFile;
+    if (!planeFile.empty())
+    {
+        path = relativePath(config, planeFile);
+        loadPlane(path, plane);
+    }
+    memoryStorage(true, result);
+    result << "motion_enabled" << 0;
+    result << "single_frame_only" << 1;
+    result << "camera_id" << CameraId;
+    result << "frame_id" << frame;
+    result << "geometry_valid" << int(board.geometryValid);
+    result << "orientation_valid" << int(board.orientationValid);
+    result << "orientation_source" << board.orientationSource;
+    result << "grid_score" << board.gridScore;
+    result << "points" << "[";
+    if (board.geometryValid)
+        for (int r = 0; r < Rows; ++r)
+            for (int c = 0; c < Columns; ++c)
+            {
+                cv::Point2d pixel = board.intersections[r * Columns + c];
+                cv::Point2d baseMm;
+                bool targetValid = gridTarget(plane, board, c, r, baseMm);
+                result << "{";
+                result << "column" << c;
+                result << "row" << r;
+                result << "pixel_geometric" << "[" << pixel.x << pixel.y << "]";
+                result << "base_xy_valid" << int(targetValid);
+                if (targetValid)
+                {
+                    result << "base_xy_mm" << "[" << baseMm.x << baseMm.y << "]";
+                    result << "plane_z_mm" << plane.planeZmm;
+                }
+                result << "}";
+            }
+    result << "]";
+    message = result.releaseAndGetString();
+    writeBytes(output, message);
+    drawBoard(image, board, overlay);
+    saveImage(output + ".png", overlay);
+    if (board.geometryValid)
+    {
+        rectifiedBoard(image, board, rectified);
+        saveImage(output + ".rectified.png", rectified);
+    }
+    std::cout << "geometry=" << board.geometryValid << " orientation=" << board.orientationValid
+              << " score=" << board.gridScore << "\nWrote " << output << " and overlay. No motion.\n";
+}
+} // namespace
+int runGeometryTool(int argc, char **argv)
+{
+    try
+    {
+        if (argc != 4)
+        {
+            std::cout << "Geometry only (C++17 / OpenCV " << CV_VERSION << ")\n"
+                      << "  scara_geometry_tool calibrate measured-pairs.yml plane-map.yml\n"
+                      << "  scara_geometry_tool inspect fixed-board.yml result.json\n";
+            return argc == 1 ? 0 : 1;
+        }
+        const std::string command = argv[1], input = argv[2], output = argv[3];
+        if (command == "calibrate")
+        {
+            scara::PlaneMap map;
+            scara::loadPlane(input, map);
+            std::cout << "fit/check maximum error (mm): " << map.fitError.maxMm << "/" << map.checkError.maxMm << '\n';
+            scara::savePlane(output, map);
+        }
+        else if (command == "inspect")
+            inspect(input, output);
+        else
+            throw std::runtime_error("Unknown command");
+        return 0;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "ERROR: " << e.what() << '\n';
+        return 1;
+    }
+}
+
+#ifdef _WIN32
+// Windows supplies UTF-16 arguments. Convert them explicitly; /utf-8 alone does not change argv.
+int wmain(int argc, wchar_t **argv)
+{
+    std::vector<std::string> utf8;
+    utf8.reserve(argc);
+    for (int i = 0; i < argc; ++i)
+        utf8.push_back(std::filesystem::path(argv[i]).u8string());
+    std::vector<char *> args;
+    for (auto &value : utf8)
+        args.push_back(value.data());
+    return runGeometryTool(argc, args.data());
+}
+#else
+int main(int argc, char **argv)
+{
+    return runGeometryTool(argc, argv);
+}
+#endif
+
+
+========================================================================
+app/vision_main.cpp
+========================================================================
+#include "vision/capture.hpp"
+#include "vision/yolo.hpp"
+#include <opencv2/imgcodecs.hpp>
+#include <csignal>
+#include <filesystem>
+#include <iostream>
+#include <stdexcept>
+
+static volatile std::sig_atomic_t running = 1;
+
+static void requestStop(int)
+{
+    running = 0;
+    scara::Camera_stop();
+}
+
+// 完整写入临时图后，再替换给预览端读取的文件。
+static void savePreview(const cv::Mat &image, const std::string &temporary, const char *output)
+{
+    if (!cv::imwrite(temporary, image)) throw std::runtime_error("Cannot write preview");
+    std::filesystem::rename(std::filesystem::u8path(temporary), std::filesystem::u8path(output));
+}
+
+int main(int argc, char **argv)
+{
+    using namespace scara;
+    if (argc != 5) return 2;           // 程序名之外，需要下面四个路径/地址参数。
+    const char *modelPath = argv[1];   // 已训练好的 RKNN 模型。
+    const char *cameraUrl = argv[2];   // 摄像头 RTSP 视频流地址。
+    const char *labelPath = argv[3];   // 用于显示中文名称的固定字图。
+    const char *previewPath = argv[4]; // 保存识别画面的 JPEG 文件。
+    int result = 1;
+    try
+    {
+        Vision_setup();
+        cv::Mat labels = cv::imread(labelPath, cv::IMREAD_GRAYSCALE);
+        std::string temporary = std::string(previewPath) + ".tmp.jpg";
+        std::signal(SIGINT, requestStop);
+        std::signal(SIGTERM, requestStop);
+        result = Yolo_open(modelPath) ? 0 : 1;
+        if (result != 0) running = 0; // 初始化失败只关掉运行开关，不能覆盖已收到的停止请求。
+        Camera_open(cameraUrl);
+
+        //---------取帧、识别与绘制区---------
+        while (running)
+        {
+            cv::Mat source;                // 摄像头解码得到的 BGR 原图。
+            cv::Mat input;                 // 裁剪、转 RGB、缩放补边后的 640×640 图。
+            cv::Mat preview;               // 画好框、中文标签和分数的原尺寸预览图。
+            YoloHead heads[YoloHeads];     // NPU 三路输出的地址和格式描述。
+            std::vector<Detection> pieces; // 检测到的棋子：类别、分数、原图位置框。
+
+            Camera_read(source);
+            Vision_prepare(source, input);
+            Yolo_run(input, heads);
+            Vision_decode(heads, pieces);
+            Vision_draw(source, pieces, labels, preview);
+            savePreview(preview, temporary, previewPath);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        if (running)
+        {
+            result = 1;
+            std::cerr << e.what() << '\n';
+        }
+    }
+    Camera_close();
+    Yolo_close();
+    return result;
+}
+
+
+========================================================================
+chess/board.cpp
+========================================================================
+#include "board.hpp"
+
+#include <algorithm>
+
+namespace chess
+{
+namespace
+{
+bool inside(int row, int col)
+{
+    return row >= 0 && row < 10 && col >= 0 && col < 9;
+}
+bool redPiece(char piece)
+{
+    return piece >= 'A' && piece <= 'Z';
+}
+bool reject(std::string &error, const std::string &message)
+{
+    error = message;
+    return false;
+}
+
+bool kingInPalace(char piece, int row, int col)
+{
+    bool column = col >= 3 && col <= 5;
+    if (piece == 'K') return column && row >= 7;
+    if (piece == 'k') return column && row <= 2;
+    return true;
+}
+
+// 盘面在入口已验证；一次搬子只需检查本次起点、终点与将帅位置。
+bool applyKnownBoard(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error)
+{
+    std::string moveText;
+    if (uci(move, moveText) == false) return reject(error, "走法坐标不合法");
+    char piece = before[move.fromRow][move.fromCol];
+    char target = before[move.toRow][move.toCol];
+    if (piece == '.' || redPiece(piece) != redToMove || (target != '.' && redPiece(target) == redToMove))
+        return reject(error, "走法起点、轮次或目标棋子不匹配");
+    if (target == 'K' || target == 'k') return reject(error, "不能把拿走将帅当作合法终局");
+    if (kingInPalace(piece, move.toRow, move.toCol) == false)
+        return reject(error, "将帅不在九宫内，请核对识别和棋盘方向");
+    after = before;
+    after[move.fromRow][move.fromCol] = '.';
+    after[move.toRow][move.toCol] = piece;
+    return true;
+}
+
+bool observed(const Observation &value, std::string &error)
+{
+    if (!value.valid) return reject(error, "盘面不完整、不稳定或检测重复，等待重新识别");
+    return validBoard(value.board, error);
+}
+
+} // namespace
+
+void initialBoard(Board &board)
+{
+    const char *rows[] = {"rnbakabnr", ".........", ".c.....c.", "p.p.p.p.p", ".........",
+                          ".........", "P.P.P.P.P", ".C.....C.", ".........", "RNBAKABNR"};
+    for (int row = 0; row < 10; ++row)
+        for (int col = 0; col < 9; ++col)
+            board[row][col] = rows[row][col];
+}
+
+bool parseMove(const std::string &text, Move &move)
+{
+    bool filesValid, ranksValid;
+
+    move = {};
+    if (text.size() != 4) return false;
+    filesValid = text[0] >= 'a' && text[0] <= 'i' && text[2] >= 'a' && text[2] <= 'i';
+    ranksValid = text[1] >= '0' && text[1] <= '9' && text[3] >= '0' && text[3] <= '9';
+    if (!filesValid || !ranksValid || text.substr(0, 2) == text.substr(2, 2)) return false;
+
+    // UCI从红方底线记作0；棋局数组从黑方底线记作第0行。
+    move.fromRow = 9 - (text[1] - '0');
+    move.fromCol = text[0] - 'a';
+    move.toRow = 9 - (text[3] - '0');
+    move.toCol = text[2] - 'a';
+    return true;
+}
+
+bool uci(const Move &move, std::string &text)
+{
+    text.clear();
+    if (!inside(move.fromRow, move.fromCol) || !inside(move.toRow, move.toCol) ||
+        (move.fromRow == move.toRow && move.fromCol == move.toCol))
+        return false;
+    text += char('a' + move.fromCol);
+    text += char('0' + 9 - move.fromRow);
+    text += char('a' + move.toCol);
+    text += char('0' + 9 - move.toRow);
+    return true;
+}
+
+bool validBoard(const Board &board, std::string &error)
+{
+    error.clear();
+    const std::string pieces = "KABNRCPkabnrcp";
+    const int maximum[] = {1, 2, 2, 2, 2, 2, 5, 1, 2, 2, 2, 2, 2, 5};
+    int counts[14] = {};
+    for (int row = 0; row < 10; ++row)
+        for (int col = 0; col < 9; ++col)
+        {
+            const char piece = board[row][col];
+            if (piece == '.') continue;
+            size_t index = pieces.find(piece);
+            if (index == std::string::npos) return reject(error, "棋盘存在未知或无效棋子，不能当作空位");
+            ++counts[index];
+            if (counts[index] > maximum[index]) return reject(error, "同类棋子数量超过初始数量");
+            if (kingInPalace(piece, row, col) == false) return reject(error, "将帅不在九宫内，请核对识别和棋盘方向");
+        }
+    if (counts[0] != 1 || counts[7] != 1) return reject(error, "将帅缺失属于待核对盘面，不能据此宣布胜负");
+    return true;
+}
+
+void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &result)
+{
+    result.clear();
+    for (int row = 0; row < 10; ++row)
+    {
+        int empty = 0;
+        for (int col = 0; col < 9; ++col)
+        {
+            if (board[row][col] == '.')
+            {
+                ++empty;
+                continue;
+            }
+            if (empty)
+            {
+                result += char('0' + empty);
+                empty = 0;
+            }
+            result += board[row][col];
+        }
+        if (empty) result += char('0' + empty);
+        if (row != 9) result += '/';
+    }
+    result += redToMove ? " w - - " : " b - - ";
+    result += std::to_string(halfmoves);
+    result += ' ';
+    result += std::to_string(fullmove);
+}
+
+bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error)
+{
+    if (!validBoard(before, error)) return false;
+    return applyKnownBoard(before, redToMove, move, after, error);
+}
+
+bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
+               Move &move, std::string &error)
+{
+    int matches = 0;
+    Move candidate;
+
+    move = {};
+    if (!observed(after, error) || !validBoard(before, error)) return false;
+    for (size_t index = 0; index < legal.size(); ++index)
+    {
+        Move current;
+        Board predicted;
+        bool parsed = parseMove(legal[index], current);
+        // 只查当前走法之前的部分，防止同一走法被重复计数。
+        auto currentEntry = legal.begin() + index;
+        bool duplicate = std::find(legal.begin(), currentEntry, legal[index]) != currentEntry;
+        if (parsed == false || duplicate) return reject(error, "合法走法列表格式错误或重复");
+        if (!applyKnownBoard(before, redToMove, current, predicted, error)) return false;
+        if (predicted == after.board)
+        {
+            candidate = current;
+            ++matches;
+        }
+    }
+    if (matches != 1)
+        return reject(error, matches == 0 ? "盘面未对应唯一合法走法，请重新观察" : "多种走法匹配，等待人工核对");
+    move = candidate;
+    return true;
+}
+
+Game::Game()
+{
+    Board initial;
+    initialBoard(initial);
+    Game_reset(*this, initial);
+}
+
+bool Game_reset(Game &game, const Board &board, bool redToMove, bool humanRed)
+{
+    if (!validBoard(board, game.error)) return false;
+    game.board = board;
+    game.expected = board;
+    game.redToMove = redToMove;
+    game.humanRed = humanRed;
+    game.result = Result::Playing;
+    game.pending = false;
+    game.pendingMove = {};
+    fen(game.board, game.redToMove, 0, 1, game.baseFen);
+    game.history.clear();
+    game.moveCount = 0;
+    game.positions = {game.baseFen};
+    return true;
+}
+
+static bool canMove(Game &game)
+{
+    game.error.clear();
+    if (game.result != Result::Playing) return reject(game.error, "棋局已结束或等待人工裁定");
+    if (game.pending) return reject(game.error, "机械走法尚未确认，不能接受下一步");
+    if (game.moveCount >= 1024) return reject(game.error, "达到历史长度上限，请人工处理");
+    return true;
+}
+
+static void commit(Game &game, const Board &after, const Move &move)
+{
+    std::string moveText, position;
+
+    game.board = after;
+    uci(move, moveText);
+    if (!game.history.empty()) game.history += ' ';
+    game.history += moveText;
+    game.redToMove = !game.redToMove;
+    ++game.moveCount;
+    fen(game.board, game.redToMove, 0, 1, position);
+    game.positions.push_back(position);
+    game.pending = false;
+    game.error.clear();
+}
+
+bool Game_acceptHuman(Game &game, const Observation &after, const std::vector<std::string> &legal, Move &move)
+{
+    move = {};
+    if (!canMove(game)) return false;
+    if (game.redToMove != game.humanRed) return reject(game.error, "当前是机械臂一方的回合");
+    if (!inferMove(game.board, after, game.redToMove, legal, move, game.error)) return false;
+    commit(game, after.board, move);
+    return true;
+}
+
+bool Game_prepareRobot(Game &game, const Observation &before, const std::string &choice,
+                       const std::vector<std::string> &legal, Move &move)
+{
+    move = {};
+    if (!canMove(game)) return false;
+    if (game.redToMove == game.humanRed) return reject(game.error, "当前是人类一方的回合");
+    if (!observed(before, game.error)) return false;
+    if (before.board != game.board) return reject(game.error, "执行前盘面已变化，取消本次动作");
+    if (std::find(legal.begin(), legal.end(), choice) == legal.end() || !parseMove(choice, move))
+        return reject(game.error, "引擎选择不在当前合法走法表内");
+    if (!applyKnownBoard(game.board, game.redToMove, move, game.expected, game.error)) return false;
+    game.pendingMove = move;
+    game.pending = true;
+    return true;
+}
+
+bool Game_confirmRobot(Game &game, const Observation &after, bool armSucceeded)
+{
+    game.error.clear();
+    if (!game.pending) return reject(game.error, "没有待确认的机械走法");
+    // 失败时保留待确认状态，禁止不清楚棋子位置就重发搬运或切换回合。
+    if (!armSucceeded) return reject(game.error, "机械执行未成功，棋局不提交，请停机核对");
+    if (!observed(after, game.error)) return false;
+    if (after.board != game.expected) return reject(game.error, "执行后盘面与计划不一致，棋局不提交");
+    commit(game, after.board, game.pendingMove);
+    return true;
+}
+
+bool Game_judge(Game &game, const std::vector<std::string> &legal)
+{
+    game.error.clear();
+    if (game.pending) return reject(game.error, "必须先确认机械动作，再判断下一回合");
+    if (game.result != Result::Playing) return reject(game.error, "棋局已结束或等待人工裁定");
+    if (legal.empty())
+        game.result = game.redToMove ? Result::BlackWon : Result::RedWon;
+    else if (std::count(game.positions.begin(), game.positions.end(), game.positions.back()) >= 3 ||
+             game.moveCount >= 1024)
+    {
+        game.result = Result::ReviewRequired;
+        game.error = "重复局面或历史达到上限，暂停人工裁定；未实现完整长将追逐裁判";
+    }
+    return true;
+}
+
+bool Game_finish(Game &game, Result outcome)
+{
+    game.error.clear();
+    if (game.pending || (game.result != Result::Playing && game.result != Result::ReviewRequired))
+        return reject(game.error, "机械动作未确认或棋局已经结束");
+    if (outcome != Result::RedWon && outcome != Result::BlackWon && outcome != Result::Draw)
+        return reject(game.error, "需要明确的胜负或和棋结果");
+    game.result = outcome;
+    return true;
+}
+
+} // namespace chess
+
+
+========================================================================
+chess/board.hpp
+========================================================================
+#pragma once
+
+#include <array>
+#include <string>
+#include <vector>
+
+namespace chess
+{
+
+// row=0 是黑方底线；col=0 是红方视角最左列。空位为 '.'，未知为 '?'。
+using Board = std::array<std::array<char, 9>, 10>;
+struct Move
+{
+    int fromRow = -1; // 起点行，从黑方底线起算。
+    int fromCol = -1; // 起点列，从红方视角左侧起算。
+    int toRow = -1;
+    int toCol = -1;
+};
+struct Observation
+{
+    Board board{};
+    bool valid = false; // 已完成识别、不同帧稳定确认和棋子数量检查。
+};
+
+void initialBoard(Board &board);
+bool parseMove(const std::string &text, Move &move);
+bool uci(const Move &move, std::string &text);
+bool validBoard(const Board &board, std::string &error);
+// 只格式化已验证的盘面；Game_reset/走法确认负责盘面有效性。
+void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
+// 只检查搬子数据，不重复实现象棋规则；调用者必须先查引擎合法走法表。
+bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error);
+bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
+               Move &move, std::string &error);
+
+enum class Result
+{
+    Playing,
+    RedWon,
+    BlackWon,
+    Draw,
+    ReviewRequired
+};
+
+// 权威盘面与待确认盘面分开保存；外部读取状态，通过下面的函数推进对局。
+struct Game
+{
+    Game();
+    Board board{};         // 已确认的权威盘面。
+    Board expected{};      // 待执行走法完成后应看到的盘面。
+    bool redToMove = true; // 当前轮到红方。
+    bool humanRed = true;  // 人类使用红方。
+    bool pending = false;  // 正在等待机器动作及新盘面确认。
+    Move pendingMove;
+    Result result = Result::Playing;
+    std::string baseFen; // 起始局面，不能每回合用新盘面覆盖。
+    std::string history; // 已完成走法，按UCI格式保留完整顺序。
+    std::string error;
+    std::vector<std::string> positions;
+    int moveCount = 0;
+};
+
+bool Game_reset(Game &game, const Board &board, bool redToMove = true, bool humanRed = true);
+bool Game_acceptHuman(Game &game, const Observation &after, const std::vector<std::string> &legal, Move &move);
+bool Game_prepareRobot(Game &game, const Observation &before, const std::string &choice,
+                       const std::vector<std::string> &legal, Move &move);
+bool Game_confirmRobot(Game &game, const Observation &after, bool armSucceeded);
+// legal须来自成功的Pikafish::legalMoves；无合法走法即负，复杂重复局面交人工裁定。
+bool Game_judge(Game &game, const std::vector<std::string> &legal);
+// 同意和棋或认输时，提交明确结果；正在搬子时不能结束对局。
+bool Game_finish(Game &game, Result outcome);
+
+} // namespace chess
+
+
+========================================================================
+chess/pikafish.cpp
+========================================================================
+#include "pikafish.hpp"
+
+#include <algorithm>
+#include <cerrno>
+#include <charconv>
+#include <csignal>
+#include <fcntl.h>
+#include <poll.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+static bool isMove(const std::string &s)
+{
+    chess::Move move;
+    return chess::parseMove(s, move);
+}
+
+bool Pikafish::fail(const std::string &message)
+{
+    error = message;
+    close();
+    return false;
+}
+
+bool Pikafish::wait(short events)
+{
+    std::chrono::milliseconds remaining; // 查询截止之前剩余的毫秒数。
+    int waitMs, result;
+    pollfd pipe;
+
+    while (true)
+    {
+        if (cancelled && cancelled()) return fail("用户取消");
+        if (fd_ < 0) return fail("引擎尚未启动");
+        remaining = std::chrono::duration_cast<std::chrono::milliseconds>(deadline_ - Clock::now());
+        if (remaining.count() <= 0) return fail("等待引擎超时");
+        if (events == POLLIN && pending_.find('\n') != std::string::npos) return true;
+        waitMs = 100; // 分段等待，让取消请求也有机会被处理。
+        if (remaining.count() < waitMs) waitMs = int(remaining.count());
+        pipe.fd = fd_;
+        pipe.events = events;
+        pipe.revents = 0;
+        result = poll(&pipe, 1, waitMs);
+        if (result < 0 && errno != EINTR) return fail("引擎管道轮询失败");
+        if (result > 0)
+        {
+            if (pipe.revents & events) return true;
+            return fail("引擎已退出，请检查程序目录、NNUE和可用内存");
+        }
+    }
+}
+
+bool Pikafish::send(const std::string &text)
+{
+    size_t sent = 0;
+    ssize_t written; // 本次实际写出的字节数；小于请求量时继续写剩余部分。
+    while (sent < text.size())
+    {
+        if (!wait(POLLOUT)) return false;
+        written = ::send(fd_, text.data() + sent, text.size() - sent, MSG_NOSIGNAL);
+        if (written > 0)
+            sent += size_t(written);
+        else if (written == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
+            return fail("无法向引擎写入命令");
+    }
+    return true;
+}
+
+bool Pikafish::readLine(std::string &line)
+{
+    size_t end;
+    char buffer[2048];
+    ssize_t received; // 这次读取到的字节数，不一定刚好是一行。
+
+    while (true)
+    {
+        if (!wait(POLLIN)) return false;
+        end = pending_.find('\n');
+        if (end != std::string::npos)
+        {
+            line = pending_.substr(0, end);
+            pending_.erase(0, end + 1);
+            if (!line.empty() && line.back() == '\r') line.pop_back();
+            return true;
+        }
+        received = recv(fd_, buffer, sizeof(buffer), 0);
+        if (received > 0)
+        {
+            if (pending_.size() + size_t(received) > 16384) return fail("引擎输出行过长");
+            pending_.append(buffer, size_t(received));
+        }
+        else if (received == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
+        {
+            return fail("引擎输出已中断，请检查NNUE和可用内存");
+        }
+    }
+}
+
+bool Pikafish::start(const char *engineDir)
+{
+    int pair[2]; // 主程序和引擎各持有一端的双向管道。
+    int flags, nullfd;
+    rlimit memory;
+    std::string line;
+    bool ready;
+
+    if (!close()) return false;
+    error.clear();
+    if (cancelled && cancelled())
+    {
+        error = "用户取消";
+        return false;
+    }
+    if (!engineDir || !*engineDir) return fail("引擎目录为空");
+    if (socketpair(AF_UNIX, SOCK_STREAM, 0, pair) < 0) return fail("无法创建引擎管道");
+    pid_ = fork();
+    if (pid_ == 0)
+    {
+        ::close(pair[0]);
+        // 只限制引擎地址空间，防止板上剩余内存不足时拖垮客户端。
+        memory.rlim_cur = 140000UL * 1024;
+        memory.rlim_max = 140000UL * 1024;
+        if (setrlimit(RLIMIT_AS, &memory) < 0) _exit(126);
+        if (chdir(engineDir) < 0) _exit(126);
+        if (dup2(pair[1], STDIN_FILENO) < 0) _exit(126);
+        if (dup2(pair[1], STDOUT_FILENO) < 0) _exit(126);
+        if (pair[1] > STDERR_FILENO) ::close(pair[1]);
+        nullfd = open("/dev/null", O_WRONLY);
+        if (nullfd < 0 || dup2(nullfd, STDERR_FILENO) < 0) _exit(126);
+        if (nullfd > STDERR_FILENO) ::close(nullfd);
+        execl("./pikafish", "pikafish", static_cast<char *>(nullptr));
+        _exit(127);
+    }
+    ::close(pair[1]);
+    fd_ = pair[0];
+    if (pid_ < 0) return fail("无法创建引擎子进程");
+    flags = fcntl(fd_, F_GETFL);
+    if (flags < 0 || fcntl(fd_, F_SETFL, flags | O_NONBLOCK) < 0) return fail("无法设置非阻塞管道");
+    deadline_ = Clock::now() + std::chrono::seconds(5);
+    ready = send("uci\n");
+    while (ready && line != "uciok")
+        ready = readLine(line);
+    if (ready) ready = send("setoption name Threads value 1\nsetoption name Hash value 4\nisready\n");
+    line.clear();
+    while (ready && line != "readyok")
+        ready = readLine(line);
+    return ready;
+}
+
+bool Pikafish::position(const chess::Game &game)
+{
+    // FEN与历史已经由Game生成；此处只防止破坏UCI的单行命令。
+    if (game.baseFen.empty() || game.baseFen.find_first_of("\r\n") != std::string::npos ||
+        game.history.find_first_of("\r\n") != std::string::npos)
+        return fail("棋局命令为空或包含换行");
+    std::string command = "position fen " + game.baseFen;
+    if (!game.history.empty()) command += " moves " + game.history;
+    return send(command + '\n');
+}
+
+bool Pikafish::legalMoves(const chess::Game &game, std::vector<std::string> &out)
+{
+    out.clear();
+    deadline_ = Clock::now() + std::chrono::seconds(3);
+    if (!position(game) || !send("go perft 1\n")) return false;
+    std::string line;
+    while (readLine(line))
+    {
+        if (line.empty()) continue;
+        if (line.compare(0, 16, "Nodes searched: ") == 0)
+        {
+            unsigned count = 0;
+            const char *first = line.data() + 16;
+            const char *last = line.data() + line.size();
+            std::from_chars_result result;
+            result = std::from_chars(first, last, count);
+            if (result.ec != std::errc() || result.ptr != last || count != out.size())
+                return fail("引擎合法走法计数不一致");
+            return true;
+        }
+        std::string move = line.substr(0, 4);
+        if (line.size() != 7 || line.compare(4, 3, ": 1") != 0 || !isMove(move) || out.size() >= 256 ||
+            std::find(out.begin(), out.end(), move) != out.end())
+            return fail("引擎合法走法格式不合法");
+        out.push_back(move);
+    }
+    return false;
+}
+
+bool Pikafish::think(const chess::Game &game, int timeMs, std::string &best)
+{
+    best.clear();
+    if (timeMs < 1 || timeMs > 60000) return fail("思考时间应为1到60000毫秒");
+    deadline_ = Clock::now() + std::chrono::milliseconds(timeMs + 2000);
+    if (!position(game) || !send("go movetime " + std::to_string(timeMs) + "\n")) return false;
+    std::string line;
+    while (readLine(line))
+    {
+        if (line.compare(0, 9, "bestmove ") == 0)
+        {
+            best = line.substr(9, line.find(' ', 9) - 9);
+            if (!isMove(best)) return fail("引擎未返回有效走法");
+            return true;
+        }
+        if (!line.empty() && line.compare(0, 5, "info ") != 0) return fail("引擎搜索输出格式不合法");
+    }
+    return false;
+}
+
+bool Pikafish::close()
+{
+    if (fd_ >= 0)
+    {
+        // 清理不检查取消标志；即使Ctrl-C已经生效，也必须回收唯一引擎。
+        ::send(fd_, "stop\nquit\n", 10, MSG_NOSIGNAL | MSG_DONTWAIT);
+        ::close(fd_);
+        fd_ = -1;
+    }
+    pending_.clear();
+    if (pid_ < 0) return true;
+    for (int attempt = 0; attempt < 80; ++attempt)
+    {
+        int result = waitpid(pid_, nullptr, WNOHANG);
+        if (result == pid_ || (result < 0 && errno == ECHILD))
+        {
+            pid_ = -1;
+            return true;
+        }
+        if (attempt == 10) kill(pid_, SIGTERM);
+        if (attempt == 30) kill(pid_, SIGKILL);
+        poll(nullptr, 0, 10);
+    }
+    // 保留PID并禁止再次启动，避免未回收时出现两个引擎。
+    error += "；引擎未能及时退出";
+    return false;
+}
+
+
+========================================================================
+chess/pikafish.hpp
+========================================================================
+#pragma once
+#include "board.hpp"
+
+#include <chrono>
+#include <functional>
+#include <string>
+#include <vector>
+
+// 同步、单实例使用；搜索期间主线程只响应取消，不处理界面或机械臂事件。
+class Pikafish
+{
+  public:
+    Pikafish() = default;
+    ~Pikafish()
+    {
+        close();
+    }
+    Pikafish(const Pikafish &) = delete;
+    Pikafish &operator=(const Pikafish &) = delete;
+
+    bool start(const char *engineDir);
+    // Game由构造/重置和走法确认函数维护；发送它的起始FEN与完整已完成历史。
+    bool legalMoves(const chess::Game &game, std::vector<std::string> &out);
+    bool think(const chess::Game &game, int timeMs, std::string &best);
+    // false表示仍持有未回收子进程，调用者不得开始相机/NPU阶段。
+    bool close();
+    std::string error;
+    std::function<bool()> cancelled;
+
+  private:
+    using Clock = std::chrono::steady_clock;
+    int fd_ = -1;                // 主程序这一端的双向管道。
+    int pid_ = -1;               // 当前引擎子进程，关闭时等待回收。
+    std::string pending_;        // 管道中收到但尚未取走的字符。
+    Clock::time_point deadline_; // 本次查询的截止时间，使用单调时钟。
+
+    bool fail(const std::string &message);
+    bool wait(short events);
+    bool send(const std::string &text);
+    bool readLine(std::string &line);
+    bool position(const chess::Game &game);
+};
+
+
+========================================================================
+chess/session.cpp
+========================================================================
+#include "session.hpp"
+#include <utility>
+
+namespace scara
+{
+void chessObservation(const Observation &source, chess::Observation &result)
+{
+    result = {};
+    result.valid = source.valid && !source.frameId.empty();
+    for (int rank = 0; rank < Rows; ++rank)
+        for (int col = 0; col < Columns; ++col)
+        {
+            const int piece = source.pieces[rank * Columns + col];
+            char symbol = '?';
+            if (piece == Empty)
+                symbol = '.';
+            else if (piece >= 0 && piece < int(sizeof(PieceSymbols) - 1))
+                symbol = PieceSymbols[piece];
+            else
+                result.valid = false;
+            result.board[Rows - 1 - rank][col] = symbol;
+        }
+    std::string error;
+    if (result.valid && !chess::validBoard(result.board, error)) result.valid = false;
+}
+
+void Session_observe(Session &session, const std::string &frameId, const std::vector<Detection> &pieces,
+                     bool sceneClear)
+{
+    session.lastFrameId = frameId;
+    Observation current, stable;
+    assignPieces(session.layout.grid, frameId, pieces, sceneClear, current);
+    session.stable.update(current, stable);
+    chessObservation(stable, session.observed);
+}
+
+bool Session_plan(Session &session, const std::string &choice, const std::vector<std::string> &legal)
+{
+    chess::Move move;
+    cv::Point2d source, destination;        // 本次起点和终点，基座毫米坐标。
+    std::vector<PickStep> prepared, moving; // 先清走被吃棋子，再搬自己的棋子。
+    bool sourceMapped, destinationMapped, capture, ready;
+
+    ready = chess::parseMove(choice, move);
+    if (ready)
+    {
+        sourceMapped = FixedBoard_target(session.layout, move.fromCol, Rows - 1 - move.fromRow, source);
+        destinationMapped = FixedBoard_target(session.layout, move.toCol, Rows - 1 - move.toRow, destination);
+        ready = sourceMapped && destinationMapped;
+        capture = session.game.board[move.toRow][move.toCol] != '.';
+        if (ready && capture)
+        {
+            ready = session.capturePlaceTaught;
+            if (ready)
+                ready = Pick_plan(session.arm, session.heights, destination, session.capturePlaceMm, false, prepared);
+        }
+        if (ready) ready = Pick_plan(session.arm, session.heights, source, destination, false, moving);
+    }
+    if (!ready)
+    {
+        session.game.error = "走法坐标、可达范围或吃子区尚未准备好";
+        return false;
+    }
+    // 全部计算完成后才锁定走法；失败不会覆盖原有棋局、历史或待执行步骤。
+    prepared.insert(prepared.end(), moving.begin(), moving.end());
+    if (!chess::Game_prepareRobot(session.game, session.observed, choice, legal, move)) return false;
+    session.steps = std::move(prepared);
+    return true;
+}
+
+bool Session_confirm(Session &session, bool armSucceeded)
+{
+    bool confirmed = chess::Game_confirmRobot(session.game, session.observed, armSucceeded);
+    if (confirmed) session.steps.clear();
+    return confirmed;
+}
+
+bool Session_restore(Session &session)
+{
+    if (!session.game.pending || !session.observed.valid || session.observed.board != session.game.board)
+    {
+        session.game.error = "复位盘面还未与上一步已确认盘面一致";
+        return false;
+    }
+    session.game.pending = false;
+    session.game.pendingMove = {};
+    session.game.expected = session.game.board;
+    session.game.error.clear();
+    session.steps.clear();
+    session.stable.reset();
+    return true;
+}
+} // namespace scara
+
+
+========================================================================
+chess/session.hpp
+========================================================================
+#pragma once
+#include "board.hpp"
+#include "vision/fixed_board.hpp"
+#include "motion/plan.hpp"
+
+namespace scara
+{
+// 一个对局保存一份识别结果和一份待执行计划。引擎查询与实际IO由调用方负责。
+struct Session
+{
+    chess::Game game;
+    FixedBoard layout;
+    Stabilizer stable;
+    ArmGeometry arm;
+    WorkHeights heights;
+    chess::Observation observed;
+    std::string lastFrameId; // 最近一次识别编号，用于状态显示；固定XY不依赖它。
+    std::vector<PickStep> steps;
+    bool capturePlaceTaught = false;
+    cv::Point2d capturePlaceMm;
+};
+
+// 将稳定的格点身份转换为黑方起算的9x10棋局数组。
+void chessObservation(const Observation &source, chess::Observation &result);
+void Session_observe(Session &session, const std::string &frameId, const std::vector<Detection> &pieces,
+                     bool sceneClear);
+bool Session_plan(Session &session, const std::string &choice, const std::vector<std::string> &legal);
+bool Session_confirm(Session &session, bool armSucceeded);
+// 操作员确认棋子全部复位、吸头空并已停回观察位后使用；完整历史保留。
+bool Session_restore(Session &session);
+} // namespace scara
+
+
+========================================================================
+motion/execute.cpp
+========================================================================
+#include "execute.hpp"
+#include <iostream>
+
+namespace scara
+{
+// 后续直接在这两个函数中接SPI-CAN/H桥。当前没有硬件实现，不伪报完成或停稳。
+void Motion_execute(const std::vector<PickStep> &, const volatile std::sig_atomic_t &, bool &success)
+{
+    success = false;
+    std::cerr << "尚未接入SPI-CAN/H桥执行接口\n";
+}
+
+bool Motion_stop()
+{
+    return false;
+}
+} // namespace scara
+
+
+========================================================================
+motion/execute.hpp
+========================================================================
+#pragma once
+#include "plan.hpp"
+#include <csignal>
+
+namespace scara
+{
+// 同步执行动作数组；全部完成且停稳后，才把success写成true。
+// running变0时停止执行并返回false；不得继续下一步或重发整个数组。
+// 正常返回false表示未执行或已停稳的失败；无法确认停止时抛出异常，由主入口收尾。
+void Motion_execute(const std::vector<PickStep> &steps, const volatile std::sig_atomic_t &running, bool &success);
+
+// 普通函数上下文调用，不能放进信号回调；真实确认停稳才返回true。
+// 允许初始化前和重复调用，供正常退出及异常清理使用。
+bool Motion_stop();
+} // namespace scara
+
+
+========================================================================
+motion/plan.cpp
+========================================================================
+#include "plan.hpp"
+#include "vision/io.hpp"
+#include <cmath>
+
+namespace scara
+{
+constexpr double RadiansPerDegree = CV_PI / 180.0;
+constexpr double DegreesPerRadian = 180.0 / CV_PI;
+
+bool Arm_load(const std::string &path, ArmGeometry &arm)
+{
+    cv::FileStorage file;
+    cv::FileNode lengths;
+    bool valid;
+
+    arm = {};
+    readStorage(path, file);
+    lengths = file["arm_lengths_mm"];
+    if (!lengths.isSeq() || lengths.size() != 2) return false;
+    for (const char *key : {"j2_reference_deg", "j3_reference_motor_deg", "j2_scale", "j3_ratio", "j2_sign", "j3_sign",
+                            "shoulder_ref_rad", "elbow_ref_rad"})
+        if (!file[key].isInt() && !file[key].isReal()) return false;
+    arm.upperMm = double(lengths[0]);
+    arm.forearmMm = double(lengths[1]);
+    arm.j2ReferenceDeg = double(file["j2_reference_deg"]);
+    arm.j3ReferenceMotorDeg = double(file["j3_reference_motor_deg"]);
+    arm.j2Scale = double(file["j2_scale"]);
+    arm.j3Ratio = double(file["j3_ratio"]);
+    arm.j2Sign = double(file["j2_sign"]);
+    arm.j3Sign = double(file["j3_sign"]);
+    arm.shoulderReferenceRad = double(file["shoulder_ref_rad"]);
+    arm.elbowReferenceRad = double(file["elbow_ref_rad"]);
+    valid = arm.upperMm > 0 && arm.forearmMm > 0 && arm.j2Scale > 0 && arm.j3Ratio > 0 && std::abs(arm.j2Sign) == 1 &&
+            std::abs(arm.j3Sign) == 1;
+    if (valid == false) arm = {};
+    return valid;
+}
+
+void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d &baseMm)
+{
+    double shoulder, elbow; // 大臂相对基座、小臂相对大臂的角度，弧度。
+
+    shoulder =
+        arm.shoulderReferenceRad + (joints.j2Deg - arm.j2ReferenceDeg) * arm.j2Scale * arm.j2Sign * RadiansPerDegree;
+    elbow = arm.elbowReferenceRad +
+            (joints.j3MotorDeg - arm.j3ReferenceMotorDeg) * arm.j3Sign / arm.j3Ratio * RadiansPerDegree;
+    baseMm.x = arm.upperMm * std::cos(shoulder) + arm.forearmMm * std::cos(shoulder + elbow);
+    baseMm.y = arm.upperMm * std::sin(shoulder) + arm.forearmMm * std::sin(shoulder + elbow);
+}
+
+bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints)
+{
+    double radiusSquared; // 目标到基座的距离平方，mm²。
+    double cosine, shoulder, elbow;
+    double shoulderDelta, elbowDelta; // 相对已示教参考姿态的角度差，弧度。
+    bool reachable;
+
+    joints = {};
+    radiusSquared = baseMm.x * baseMm.x + baseMm.y * baseMm.y;
+    cosine =
+        (radiusSquared - arm.upperMm * arm.upperMm - arm.forearmMm * arm.forearmMm) / (2 * arm.upperMm * arm.forearmMm);
+    reachable = cosine >= -1 && cosine <= 1;
+    if (reachable)
+    {
+        elbow = std::copysign(std::acos(cosine), arm.elbowReferenceRad);
+        shoulder = std::atan2(baseMm.y, baseMm.x) -
+                   std::atan2(arm.forearmMm * std::sin(elbow), arm.upperMm + arm.forearmMm * std::cos(elbow));
+        shoulderDelta = std::remainder(shoulder - arm.shoulderReferenceRad, 2 * CV_PI);
+        elbowDelta = std::remainder(elbow - arm.elbowReferenceRad, 2 * CV_PI);
+        joints.j2Deg = arm.j2ReferenceDeg + shoulderDelta * DegreesPerRadian / (arm.j2Scale * arm.j2Sign);
+        joints.j3MotorDeg = arm.j3ReferenceMotorDeg + elbowDelta * DegreesPerRadian * arm.j3Ratio / arm.j3Sign;
+    }
+    reachable = reachable && std::isfinite(joints.j2Deg) && std::isfinite(joints.j3MotorDeg);
+    if (reachable == false) joints = {};
+    return reachable;
+}
+
+bool WorkHeights_load(const std::string &path, WorkHeights &heights)
+{
+    cv::FileStorage file;
+    cv::FileNode z;
+    double estimatedRiseMm = 20; // 操作员估计的抬高量，不是丝杆导程。
+    double releaseOffsetMm = 0;  // 释放层相对吸取层的估计高度差。
+    double deltaDeg;             // 两个示教高度之间的J1角度差。
+    bool valid;
+
+    heights = {};
+    readStorage(path, file);
+    z = file["z"];
+    for (const char *key : {"pickup_deg", "travel_deg"})
+        if (!z[key].isInt() && !z[key].isReal()) return false;
+    if (!file["release_pulse_ms"].empty() && !file["release_pulse_ms"].isInt()) return false;
+    heights.pickupDeg = double(z["pickup_deg"]);
+    heights.travelDeg = double(z["travel_deg"]);
+    if (!z["speed_deg_s"].empty()) heights.speedDegS = double(z["speed_deg_s"]);
+    if (!file["release_pulse_ms"].empty()) heights.releasePulseMs = int(file["release_pulse_ms"]);
+    if (!z["operator_estimated_rise_mm"].empty()) estimatedRiseMm = double(z["operator_estimated_rise_mm"]);
+    if (!z["release_offset_mm"].empty()) releaseOffsetMm = double(z["release_offset_mm"]);
+    deltaDeg = heights.travelDeg - heights.pickupDeg;
+    heights.releaseDeg = heights.pickupDeg + deltaDeg / estimatedRiseMm * releaseOffsetMm;
+    valid = std::isfinite(heights.pickupDeg) && std::isfinite(heights.travelDeg) && std::isfinite(heights.releaseDeg) &&
+            deltaDeg != 0 && estimatedRiseMm > 0 && (heights.releaseDeg - heights.travelDeg) * deltaDeg <= 0 &&
+            heights.releasePulseMs > 0 && std::isfinite(heights.speedDegS) && heights.speedDegS > 0;
+    if (valid == false) heights = {};
+    return valid;
+}
+
+bool Pick_plan(const ArmGeometry &arm, const WorkHeights &heights, cv::Point2d sourceMm, cv::Point2d destinationMm,
+               bool alreadyHeld, std::vector<PickStep> &steps)
+{
+    JointTarget source, destination; // 起点和终点的J2反馈角、J3电机角，度。
+    bool sourceValid = true, destinationValid;
+    PickStep hold;                        // 吸持状态。
+    PickStep moveSource, moveDestination; // 两次平面移动。
+    PickStep pickup, travel, release;     // 三个已示教的Z工作层。
+    PickStep pulse;                       // 在释放层给一次放棋脉冲。
+
+    steps.clear();
+    if (heights.pickupDeg == heights.travelDeg) return false;
+    if (!alreadyHeld) sourceValid = Arm_inverse(arm, sourceMm, source);
+    destinationValid = Arm_inverse(arm, destinationMm, destination);
+    if (sourceValid == false || destinationValid == false) return false;
+
+    hold.action = PickAction::Hold;
+    moveSource.action = PickAction::MoveXY;
+    moveSource.joints = source;
+    moveDestination.action = PickAction::MoveXY;
+    moveDestination.joints = destination;
+    pickup.action = PickAction::MoveZ;
+    pickup.zDeg = heights.pickupDeg;
+    pickup.speedDegS = heights.speedDegS;
+    travel.action = PickAction::MoveZ;
+    travel.zDeg = heights.travelDeg;
+    travel.speedDegS = heights.speedDegS;
+    release.action = PickAction::MoveZ;
+    release.zDeg = heights.releaseDeg;
+    release.speedDegS = heights.speedDegS;
+    pulse.action = PickAction::ReleasePulse;
+    pulse.durationMs = heights.releasePulseMs;
+
+    steps.push_back(hold);
+    if (!alreadyHeld)
+    {
+        steps.push_back(moveSource);
+        steps.push_back(pickup);
+        steps.push_back(travel);
+    }
+    steps.push_back(moveDestination);
+    steps.push_back(release);
+    steps.push_back(pulse);
+    steps.push_back(travel);
+    return true;
+}
+} // namespace scara
+
+
+========================================================================
+motion/plan.hpp
+========================================================================
+#pragma once
+#include <opencv2/core.hpp>
+#include <string>
+#include <vector>
+
+namespace scara
+{
+// 直接使用实机示教保存的模型；J2反馈角、J3电机角的换算分别保留。
+struct ArmGeometry
+{
+    double upperMm = 0;
+    double forearmMm = 0;
+    double j2ReferenceDeg = 0;
+    double j3ReferenceMotorDeg = 0;
+    double j2Scale = 1; // 示教得到的J2反馈角到关节角比例。
+    double j3Ratio = 1; // J3电机角到肘轴角的传动比。
+    double j2Sign = 1;
+    double j3Sign = 1;
+    double shoulderReferenceRad = 0;
+    double elbowReferenceRad = 0;
+};
+struct JointTarget
+{
+    double j2Deg = 0;
+    double j3MotorDeg = 0;
+};
+struct WorkHeights
+{
+    double pickupDeg = 0;   // J1吸取层的已示教角度。
+    double travelDeg = 0;   // J1搬运层的已示教角度。
+    double releaseDeg = 0;  // J1释放层角度。
+    double speedDegS = 180; // J1电机度/秒。
+    int releasePulseMs = 1000;
+};
+enum class PickAction
+{
+    Hold,
+    MoveXY,
+    MoveZ,
+    ReleasePulse
+};
+struct PickStep
+{
+    PickAction action = PickAction::Hold;
+    JointTarget joints;
+    double zDeg = 0;
+    double speedDegS = 0;
+    int durationMs = 0;
+};
+
+bool Arm_load(const std::string &path, ArmGeometry &arm);
+void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d &baseMm);
+bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints);
+bool WorkHeights_load(const std::string &path, WorkHeights &heights);
+// Arm_load、WorkHeights_load成功后使用；输入为已标定XY和两层示教高度。
+// 执行前已经在搬运高度，J4保持原姿态。
+// 本模块只生成步骤，不发送CAN/GPIO。释放脉冲完成后，才进入最后的抬升步骤。
+bool Pick_plan(const ArmGeometry &arm, const WorkHeights &heights, cv::Point2d sourceMm, cv::Point2d destinationMm,
+               bool alreadyHeld, std::vector<PickStep> &steps);
+} // namespace scara
+
+
+========================================================================
+vision/board.cpp
+========================================================================
+#include "geometry.hpp"
+#include <opencv2/geometry.hpp>
+#include <opencv2/imgproc.hpp>
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
+
+namespace scara
+{
+namespace
+{
+constexpr int RectWidth = 432, RectHeight = 480, Step = 48, Margin = 24;
+void require(bool value, const char *message)
+{
+    if (!value) throw std::runtime_error(message);
+}
+} // namespace
+
+void boardFromCorners(const std::array<cv::Point2d, 4> &raw, bool confirmed, Board &board)
+{
+    std::vector<cv::Point2f> pixels;                                  // 操作员确认的原图四角。
+    std::vector<cv::Point2f> corners{{0, 0}, {8, 0}, {8, 9}, {0, 9}}; // 对应的棋盘列、行。
+    cv::Mat matrix;
+    cv::Point2d cell;
+    Board prepared;
+
+    for (cv::Point2d point : raw)
+    {
+        require(std::isfinite(point.x) && std::isfinite(point.y) && point.x >= 0 && point.y >= 0 &&
+                    point.x < ImageWidth && point.y < ImageHeight,
+                "Invalid raw corner");
+        pixels.push_back(point);
+    }
+    require(cv::isContourConvex(pixels) && std::abs(cv::contourArea(pixels)) > 100,
+            "Corners must form a nondegenerate ordered convex quad");
+    matrix = cv::getPerspectiveTransform(corners, pixels);
+    std::copy(matrix.ptr<double>(), matrix.ptr<double>() + 9, prepared.gridToPixel.val);
+    require(std::abs(cv::determinant(matrix)) > 1e-14, "Degenerate board quadrilateral");
+    for (int row = 0; row < Rows; ++row)
+        for (int col = 0; col < Columns; ++col)
+        {
+            cell.x = col;
+            cell.y = row;
+            project(prepared.gridToPixel, cell, prepared.intersections[row * Columns + col]);
+        }
+    prepared.geometryValid = true;
+    prepared.orientationValid = confirmed;
+    prepared.orientationSource = confirmed ? "manual_canonical_corners" : "unconfirmed_corners";
+    board = prepared;
+}
+void rectifiedBoard(const cv::Mat &image, const Board &board, cv::Mat &result)
+{
+    // 俯视预览把红方放在下边；矩阵第二行反转纵轴，不镜像棋字。
+    cv::Matx33d gridToRect(Step, 0, Margin, 0, -Step, Margin + 9 * Step, 0, 0, 1);
+    cv::Matx33d pixelToRect;
+    cv::Size outputSize(RectWidth, RectHeight);
+
+    require(board.geometryValid, "Grid required for rectification");
+    pixelToRect = gridToRect * board.gridToPixel.inv();
+    cv::warpPerspective(image, result, pixelToRect, outputSize);
+}
+} // namespace scara
+
+
+========================================================================
+vision/capture.cpp
+========================================================================
+#include "capture.hpp"
+#include <opencv2/videoio.hpp>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <stdexcept>
+#include <atomic>
+#include <chrono>
+#include <vector>
+
+namespace scara
+{
+//---------相机与交帧数据区---------
+static cv::VideoCapture video;              // OpenCV 视频流，负责连接与解码。
+static cv::Mat latestFrame;                 // 只保留后台收到的最新一帧 BGR 原图。
+static std::thread captureThread;           // 持续取流的后台线程。
+static std::mutex frameMutex;               // 交帧时使用的锁，保护缓存和接收状态。
+static std::condition_variable frameReady;  // 新帧到达或接收结束时，唤醒等候者。
+static std::atomic<bool> capturing = false; // 接收开关，允许两个线程直接读取和设置。
+static const std::vector<int> cameraOptions = {
+    cv::CAP_PROP_OPEN_TIMEOUT_MSEC, 5000, // 打开连接的等待上限，毫秒。
+    cv::CAP_PROP_READ_TIMEOUT_MSEC, 5000  // 单次读帧的等待上限，毫秒。
+};
+
+//---------后台接收区---------
+// 推理期间也持续读流，新帧覆盖缓存，避免视频在接收端积压。
+static void receiveFrames()
+{
+    try
+    {
+        while (capturing)
+        {
+            cv::Mat frame; // 每轮新建，避免下一次解码改写主线程正在使用的图。
+            bool received = video.read(frame);
+            std::unique_lock<std::mutex> lock(frameMutex);
+            if (received)
+            {
+                latestFrame = frame;
+                frameReady.notify_one();
+            }
+            else
+                frameReady.wait_for(lock, std::chrono::milliseconds(10)); // 暂时没图，解锁稍等后重试。
+        }
+    }
+    catch (...)
+    {
+    } // 后台异常也走下面的结束通知，不能让主线程一直等图。
+    std::lock_guard<std::mutex> lock(frameMutex);
+    capturing = false;
+    latestFrame.release(); // 当前读取完成后统一清空，关闭时允许这一轮收尾。
+    frameReady.notify_all();
+}
+
+//---------打开相机区---------
+void Camera_open(const std::string &cameraUrl)
+{
+    Camera_close(); // 允许再次打开：先结束上一次接收。
+    capturing = video.open(cameraUrl, cv::CAP_FFMPEG, cameraOptions);
+    captureThread = std::thread(receiveFrames);
+}
+
+//---------向主流程交帧区---------
+void Camera_read(cv::Mat &frame)
+{
+    std::unique_lock<std::mutex> lock(frameMutex);
+    latestFrame.release(); // 丢弃调用前缓存的图，等调用后收到的新帧。
+    while (capturing && latestFrame.empty())
+        frameReady.wait_for(lock, std::chrono::milliseconds(10)); // 醒来检查新图或停止请求，不设无图截止。
+    // 将图像交给输出参数，共享像素，不复制整张图。
+    frame = latestFrame;
+    if (frame.empty()) throw std::runtime_error("Camera stream ended");
+}
+
+// 停止回调只改原子开关；不在信号回调中加锁、等线程或操作视频。
+void Camera_stop()
+{
+    capturing = false;
+}
+
+//---------关闭相机区---------
+void Camera_close()
+{
+    Camera_stop();
+    frameReady.notify_all();
+    if (captureThread.joinable()) captureThread.join(); // 等后台结束，避免边读边关闭。
+    video.release();
+}
+} // namespace scara
+
+
+========================================================================
+vision/capture.hpp
+========================================================================
+#pragma once
+#include <opencv2/core.hpp>
+#include <string>
+
+namespace scara
+{
+// 打开 RTSP 地址，结果直接决定接收开关；打开失败时 Camera_read 按无帧出口结束。
+void Camera_open(const std::string &cameraUrl);
+// 等待并写出下一帧 BGR 原图；没有图就继续等，停止后按原出口结束。
+void Camera_read(cv::Mat &frame);
+// 请求停止接收，允许当前读取收尾；用于主程序的停止回调。
+void Camera_stop();
+// 停止接收，等后台线程结束，再关闭视频流。
+void Camera_close();
+} // namespace scara
+
+
+========================================================================
+vision/fixed_board.cpp
+========================================================================
+#include "fixed_board.hpp"
+
+namespace scara
+{
+bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixed)
+{
+    FixedBoard prepared;
+    int mappedCount = 0;
+    prepared.grid = grid;
+    for (int row = 0; row < Rows; ++row)
+        for (int column = 0; column < Columns; ++column)
+        {
+            int index = row * Columns + column;
+            prepared.mapped[index] = gridTarget(plane, grid, column, row, prepared.targets[index]);
+            mappedCount += prepared.mapped[index];
+        }
+    fixed = prepared;
+    return mappedCount > 0;
+}
+
+bool FixedBoard_target(const FixedBoard &fixed, int column, int row, cv::Point2d &baseMm)
+{
+    baseMm = {};
+    bool inside = column >= 0 && column < Columns && row >= 0 && row < Rows;
+    if (!inside) return false;
+    int index = row * Columns + column;
+    if (!fixed.mapped[index]) return false;
+    baseMm = fixed.targets[index];
+    return true;
+}
+} // namespace scara
+
+
+========================================================================
+vision/fixed_board.hpp
+========================================================================
+#pragma once
+#include "geometry.hpp"
+
+namespace scara
+{
+// 棋盘和基座固定后，保存一次网格与90个基座目标；每帧只更新棋子；帧号用于识别稳定确认。
+struct FixedBoard
+{
+    Board grid;
+    std::array<cv::Point2d, Cells> targets{};
+    std::array<bool, Cells> mapped{}; // 对应格点是否在已验证的标定范围内。
+};
+
+bool FixedBoard_setup(const PlaneMap &plane, const Board &grid, FixedBoard &fixed);
+bool FixedBoard_target(const FixedBoard &fixed, int column, int row, cv::Point2d &baseMm);
+} // namespace scara
+
+
+========================================================================
+vision/geometry.cpp
+========================================================================
+#include "geometry.hpp"
+#include "io.hpp"
+#include <opencv2/geometry.hpp>
+#include <opencv2/imgproc.hpp>
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
+
+namespace scara
+{
+namespace
+{
+void require(bool ok, const char *message)
+{
+    if (!ok) throw std::runtime_error(message);
+}
+bool finite(cv::Point2d p)
+{
+    return std::isfinite(p.x) && std::isfinite(p.y);
+}
+void matrix33(const cv::Mat &input, cv::Matx33d &matrix)
+{
+    cv::Mat values; // 统一使用double保存3x3变换矩阵。
+
+    require(input.rows == 3 && input.cols == 3 && input.channels() == 1, "Expected a scalar 3x3 matrix");
+    input.convertTo(values, CV_64F);
+    require(cv::checkRange(values), "Nonfinite matrix");
+    std::copy(values.ptr<double>(), values.ptr<double>() + 9, matrix.val);
+    require(std::abs(cv::determinant(matrix)) > 1e-14, "Singular matrix");
+}
+void hull(const std::vector<cv::Point2d> &points, std::vector<cv::Point2f> &boundary)
+{
+    std::vector<cv::Point2f> input(points.begin(), points.end());
+    cv::convexHull(input, boundary);
+    require(boundary.size() >= 3 && std::abs(cv::contourArea(boundary)) > 1.0,
+            "Points are collinear or too concentrated");
+}
+void errorReport(const cv::Matx33d &matrix, const std::vector<PointPair> &pairs, ErrorReport &report)
+{
+    cv::Point2d predicted; // 由图像点算出的基座XY，毫米。
+    double errorMm;
+
+    report = {};
+    for (const PointPair &pair : pairs)
+    {
+        project(matrix, pair.pixel, predicted);
+        errorMm = cv::norm(predicted - pair.baseXY);
+        report.errorsMm.push_back(errorMm);
+        report.maxMm = std::max(report.maxMm, errorMm);
+        report.rmsMm += errorMm * errorMm;
+    }
+    report.rmsMm = std::sqrt(report.rmsMm / pairs.size());
+}
+void writePairs(cv::FileStorage &fs, const char *key, const std::vector<PointPair> &pairs)
+{
+    fs << key << "[";
+    for (const PointPair &pair : pairs)
+    {
+        fs << "{";
+        fs << "pixel" << "[" << pair.pixel.x << pair.pixel.y << "]";
+        fs << "base_xy" << "[" << pair.baseXY.x << pair.baseXY.y << "]";
+        fs << "}";
+    }
+    fs << "]";
+}
+} // namespace
+
+static void readPairs(const cv::FileNode &node, std::vector<PointPair> &pairs)
+{
+    pairs.clear();
+    require(node.isSeq(), "Missing point pair sequence");
+    for (const cv::FileNode &point : node)
+    {
+        cv::FileNode pixel = point["pixel"], base = point["base_xy"];
+        PointPair pair;
+        require(pixel.size() == 2 && base.size() == 2, "Each sample needs pixel and base_xy");
+        for (cv::FileNode value : {pixel[0], pixel[1], base[0], base[1]})
+            require(value.isReal() || value.isInt(), "Sample coordinates must be measured numbers");
+        pair.pixel.x = double(pixel[0]);
+        pair.pixel.y = double(pixel[1]);
+        pair.baseXY.x = double(base[0]);
+        pair.baseXY.y = double(base[1]);
+        pairs.push_back(pair);
+    }
+}
+void project(const cv::Matx33d &matrix, cv::Point2d point, cv::Point2d &result)
+{
+    cv::Vec3d homogeneous; // 齐次坐标；前两项除以第三项得到二维坐标。
+    homogeneous = matrix * cv::Vec3d(point.x, point.y, 1);
+    require(std::isfinite(homogeneous[2]) && std::abs(homogeneous[2]) > 1e-10, "Projection at infinity");
+    result.x = homogeneous[0] / homogeneous[2];
+    result.y = homogeneous[1] / homogeneous[2];
+}
+void calibratePlane(const std::string &id, double z, double tolerance, const std::vector<PointPair> &fit,
+                    const std::vector<PointPair> &checks, PlaneMap &map)
+{
+    std::vector<PointPair> samples;
+    std::vector<cv::Point2d> pixels, xy; // 用于拟合的像素点、实测基座坐标。
+    std::vector<cv::Point2f> coverage, baseCoverage;
+    cv::Mat fitted; // OpenCV拟合得到的3x3矩阵。
+    PlaneMap prepared;
+
+    require(!id.empty(), "Calibration ID required");
+    require(std::isfinite(z) && std::isfinite(tolerance) && tolerance > 0, "Real plane Z and error tolerance required");
+    require(fit.size() >= 4 && !checks.empty(), "Need >=4 fit pairs and an independent check pair");
+    // 拟合点和检查点必须分别实测；先统一检查，后面只做计算。
+    samples = fit;
+    samples.insert(samples.end(), checks.begin(), checks.end());
+    for (size_t i = 0; i < samples.size(); ++i)
+    {
+        const PointPair &point = samples[i];
+        require(finite(point.pixel) && finite(point.baseXY) && point.pixel.x >= 0 && point.pixel.y >= 0 &&
+                    point.pixel.x < ImageWidth && point.pixel.y < ImageHeight,
+                "Invalid measured point");
+        for (size_t j = 0; j < i; ++j)
+            require(cv::norm(point.pixel - samples[j].pixel) > 1 && cv::norm(point.baseXY - samples[j].baseXY) > 1e-6,
+                    "Calibration samples must be independent");
+    }
+    for (const PointPair &point : fit)
+    {
+        pixels.push_back(point.pixel);
+        xy.push_back(point.baseXY);
+    }
+    hull(pixels, coverage);
+    hull(xy, baseCoverage);
+    fitted = cv::findHomography(pixels, xy, 0);
+    matrix33(fitted, prepared.pixelToBase);
+    prepared.id = id;
+    prepared.planeZmm = z;
+    prepared.allowedErrorMm = tolerance;
+    prepared.validPixelHull = coverage;
+    prepared.fitPoints = fit;
+    prepared.checkPoints = checks;
+    errorReport(prepared.pixelToBase, fit, prepared.fitError);
+    errorReport(prepared.pixelToBase, checks, prepared.checkError);
+    prepared.accepted = std::isfinite(prepared.fitError.rmsMm) && std::isfinite(prepared.checkError.rmsMm) &&
+                        prepared.fitError.maxMm <= tolerance && prepared.checkError.maxMm <= tolerance;
+    map = prepared;
+}
+// 只在配置入口核对固定机位；帧循环不重复比较多套相机参数。
+void checkCamera(const cv::FileNode &node)
+{
+    std::string id = (std::string)node["id"];
+    int width = int(node["width"]), height = int(node["height"]);
+    cv::Mat intrinsic, distortion;
+
+    require(id == CameraId && width == ImageWidth && height == ImageHeight,
+            "Layout must match the fixed 1280x720 camera");
+    if (!node["K"].empty()) node["K"] >> intrinsic;
+    if (!node["distortion"].empty()) node["distortion"] >> distortion;
+    require(intrinsic.empty() && distortion.empty(), "Fixed layout uses validated raw camera pixels");
+}
+void savePlane(const std::string &path, const PlaneMap &map)
+{
+    cv::FileStorage fs;
+    cv::Mat matrix(map.pixelToBase);
+    cv::Mat empty; // 固定原图像素方案未启用相机去畸变。
+    std::string message;
+
+    require(map.accepted, "Calibration failed; not saving a usable plane map");
+    memoryStorage(false, fs);
+    fs << "schema_version" << 1;
+    fs << "calibration_id" << map.id;
+    fs << "plane_z_mm" << map.planeZmm;
+    fs << "allowed_error_mm" << map.allowedErrorMm;
+    fs << "camera" << "{";
+    fs << "id" << CameraId;
+    fs << "width" << ImageWidth;
+    fs << "height" << ImageHeight;
+    fs << "K" << empty;
+    fs << "distortion" << empty;
+    fs << "}";
+    fs << "pixel_to_base" << matrix;
+    fs << "fit_rms_mm" << map.fitError.rmsMm;
+    fs << "fit_max_mm" << map.fitError.maxMm;
+    fs << "check_rms_mm" << map.checkError.rmsMm;
+    fs << "check_max_mm" << map.checkError.maxMm;
+    fs << "fit_errors_mm" << map.fitError.errorsMm;
+    fs << "check_errors_mm" << map.checkError.errorsMm;
+    writePairs(fs, "fit_points", map.fitPoints);
+    writePairs(fs, "check_points", map.checkPoints);
+    message = fs.releaseAndGetString();
+    writeBytes(path, message);
+}
+void loadPlane(const std::string &path, PlaneMap &map)
+{
+    cv::FileStorage fs;
+    PlaneMap prepared;
+    std::vector<PointPair> fit, checks;
+    std::string id;
+    double planeZmm, toleranceMm;
+    cv::Mat saved;
+    cv::Matx33d matrix;
+    cv::Point2d savedXY, fittedXY; // 保存矩阵和重算矩阵得到的同一个点，毫米。
+
+    readStorage(path, fs);
+    require(fs["schema_version"].empty() || (int)fs["schema_version"] == 1, "Unsupported calibration schema");
+    require(fs["plane_z_mm"].isReal() || fs["plane_z_mm"].isInt(), "Plane height is missing");
+    require(fs["allowed_error_mm"].isReal() || fs["allowed_error_mm"].isInt(), "Validation tolerance is missing");
+    readPairs(fs["fit_points"], fit);
+    readPairs(fs["check_points"], checks);
+    checkCamera(fs["camera"]);
+    fs["calibration_id"] >> id;
+    fs["plane_z_mm"] >> planeZmm;
+    fs["allowed_error_mm"] >> toleranceMm;
+    calibratePlane(id, planeZmm, toleranceMm, fit, checks, prepared);
+    if (!fs["pixel_to_base"].empty())
+    {
+        fs["pixel_to_base"] >> saved;
+        matrix33(saved, matrix);
+        for (const PointPair &point : prepared.fitPoints)
+        {
+            project(matrix, point.pixel, savedXY);
+            project(prepared.pixelToBase, point.pixel, fittedXY);
+            require(cv::norm(savedXY - fittedXY) < 1e-5, "Stored map differs from calibration samples");
+        }
+    }
+    require(prepared.accepted, "Independent validation failed");
+    map = prepared;
+}
+
+void assignPieces(const Board &board, const std::string &frameId, const std::vector<Detection> &detections, bool clear,
+                  Observation &observation)
+{
+    constexpr double MinScore = .50, MaxGridDistance = .35; // 分数与格距阈值保持原值。
+    std::array<bool, Cells> occupied{};
+    cv::Matx33d inverse;
+
+    observation = {};
+    observation.frameId = frameId;
+    observation.pieces.fill(Unknown);
+    observation.valid = board.geometryValid && board.orientationValid && !frameId.empty();
+    if (!observation.valid) return;
+    if (clear)
+        observation.pieces.fill(Empty);
+    else
+        observation.valid = false;
+    inverse = board.gridToPixel.inv();
+    for (const Detection &piece : detections)
+    {
+        cv::Point2d center;        // 棋子检测框中心，原图像素。
+        cv::Point2d grid, nearest; // 连续格点坐标和最近的整数交点。
+        cv::Vec3d homogeneous;
+        int column, row, index;
+        bool valid, inside;
+
+        center.x = piece.bbox.x + piece.bbox.width / 2;
+        center.y = piece.bbox.y + piece.bbox.height / 2;
+        valid = piece.classId >= 0 && piece.classId < YoloClasses && std::isfinite(piece.confidence) &&
+                piece.confidence >= MinScore && piece.confidence <= 1 && piece.bbox.width > 0 &&
+                piece.bbox.height > 0 && finite(center) && center.x >= 0 && center.y >= 0 && center.x < ImageWidth &&
+                center.y < ImageHeight;
+        if (!valid)
+        {
+            observation.valid = false;
+            continue;
+        }
+        homogeneous = inverse * cv::Vec3d(center.x, center.y, 1);
+        grid.x = homogeneous[0] / homogeneous[2];
+        grid.y = homogeneous[1] / homogeneous[2];
+        inside = finite(grid) && grid.x > -.5 && grid.y > -.5 && grid.x < Columns - .5 && grid.y < Rows - .5;
+        if (inside)
+        {
+            nearest.x = std::round(grid.x);
+            nearest.y = std::round(grid.y);
+            inside = cv::norm(grid - nearest) <= MaxGridDistance;
+        }
+        if (!inside)
+        {
+            observation.valid = false;
+            continue;
+        }
+        column = int(std::lround(grid.x));
+        row = int(std::lround(grid.y));
+        index = row * Columns + column;
+        observation.pieces[index] = occupied[index] ? Unknown : piece.classId;
+        if (occupied[index]) observation.valid = false;
+        occupied[index] = true;
+    }
+}
+void Stabilizer::reset()
+{
+    count_ = 0;
+    previous_ = Observation{};
+}
+void Stabilizer::update(const Observation &input, Observation &result)
+{
+    result = input;
+    if (!input.valid)
+    {
+        reset();
+        return;
+    }
+    if (input.frameId == previous_.frameId)
+    {
+        result.valid = false;
+        return;
+    }
+    bool same = count_ > 0 && input.pieces == previous_.pieces;
+    count_ = same ? std::min(count_ + 1, 3) : 1;
+    previous_ = input;
+    result.valid = count_ >= 3;
+}
+bool gridTarget(const PlaneMap &map, const Board &board, int column, int row, cv::Point2d &baseMm)
+{
+    cv::Point2d pixel;
+
+    baseMm = {};
+    if (!map.accepted || !board.geometryValid || !board.orientationValid) return false;
+    if (column < 0 || column >= Columns || row < 0 || row >= Rows) return false;
+    pixel = board.intersections[row * Columns + column];
+    if (map.validPixelHull.size() < 3 || cv::pointPolygonTest(map.validPixelHull, pixel, true) < -1e-4) return false;
+    project(map.pixelToBase, pixel, baseMm);
+    return true;
+}
+void drawBoard(const cv::Mat &image, const Board &board, cv::Mat &out)
+{
+    out = image.clone();
+    if (!board.geometryValid) return;
+    for (int r = 0; r < Rows; ++r)
+        for (int c = 0; c < Columns; ++c)
+        {
+            cv::Point2d pixel = board.intersections[r * Columns + c];
+            cv::Point2d textOrigin = pixel + cv::Point2d(4, -4);
+            std::string label = std::to_string(c) + "," + std::to_string(r);
+            cv::circle(out, pixel, 3, {0, 255, 255}, -1);
+            cv::putText(out, label, textOrigin, cv::FONT_HERSHEY_SIMPLEX, 0.32, {0, 0, 255}, 1, cv::LINE_AA);
+        }
+    cv::putText(out, board.orientationValid ? "ORIENTATION CONFIRMED" : "ORIENTATION UNKNOWN - NO ROBOT TARGETS",
+                {10, 24}, cv::FONT_HERSHEY_SIMPLEX, 0.55, {0, 0, 255}, 2);
+}
+} // namespace scara
+
+
+========================================================================
+vision/geometry.hpp
+========================================================================
+#pragma once
+#include "yolo.hpp"
+#include <opencv2/core.hpp>
+#include <array>
+#include <string>
+#include <vector>
+
+// 固定机位使用已独立验误的原始图像像素；本模块不发送运动命令。
+namespace scara
+{
+constexpr int Columns = 9, Rows = 10, Cells = Columns * Rows;
+constexpr int Unknown = -2, Empty = -1; // 未确认的格子与已确认的空格分开。
+constexpr char PieceSymbols[] = "kabnrcpKABNRCP";
+
+constexpr int ImageWidth = 1280, ImageHeight = 720;
+constexpr char CameraId[] = "sc3336-1280x720-fixed-focus-v1";
+
+struct PointPair
+{
+    cv::Point2d pixel, baseXY;
+}; // pixel为原始图像像素，baseXY为基座毫米坐标。
+struct ErrorReport
+{
+    double rmsMm = 0, maxMm = 0;
+    std::vector<double> errorsMm;
+};
+struct PlaneMap
+{
+    std::string id;
+    double planeZmm = 0, allowedErrorMm = 0; // 标定平面说明与验误要求，不是J1驱动角度。
+    cv::Matx33d pixelToBase = cv::Matx33d::eye();
+    std::vector<cv::Point2f> validPixelHull; // 拟合点覆盖的几何像素范围。
+    std::vector<PointPair> fitPoints, checkPoints;
+    ErrorReport fitError, checkError;
+    bool accepted = false;
+};
+
+// 拟合点和独立检查点使用原图像素、基座毫米；结果由 map 写出。
+void calibratePlane(const std::string &id, double planeZmm, double allowedErrorMm, const std::vector<PointPair> &fit,
+                    const std::vector<PointPair> &independentChecks, PlaneMap &map);
+void savePlane(const std::string &path, const PlaneMap &);
+void loadPlane(const std::string &path, PlaneMap &map); // 读取新采点或已保存标定，统一复算并验误。
+void checkCamera(const cv::FileNode &node);
+
+struct Board
+{
+    cv::Matx33d gridToPixel = cv::Matx33d::eye();   // (列,行)到几何像素；第0行在红方底线。
+    std::array<cv::Point2d, Cells> intersections{}; // 按 行*9+列 保存90个交点。
+    bool geometryValid = false, orientationValid = false;
+    double gridScore = 0;
+    std::string orientationSource;
+};
+
+// 四角按逻辑格点(0,0)、(8,0)、(8,9)、(0,9)给出，需对应红黑方向。
+void boardFromCorners(const std::array<cv::Point2d, 4> &rawCorners, bool canonicalOrderConfirmed, Board &board);
+// 固定棋盘的俯视展示。
+void rectifiedBoard(const cv::Mat &geometricImage, const Board &board, cv::Mat &image);
+
+struct Observation
+{
+    std::string frameId;
+    std::array<int, Cells> pieces{};
+    bool valid = false; // 本帧结果；提交棋局前再经过连续帧稳定确认。
+};
+void assignPieces(const Board &board, const std::string &detectionFrameId, const std::vector<Detection> &detections,
+                  bool sceneClear, Observation &observation);
+class Stabilizer
+{
+  public:
+    void update(const Observation &input, Observation &result);
+    void reset();
+
+  private:
+    int count_ = 0;
+    Observation previous_;
+};
+
+// 固定交点转换成基座XY，与帧号无关；方向和覆盖范围满足条件才返回true。
+// 关节逆解和Z层次由运动模块处理。
+bool gridTarget(const PlaneMap &map, const Board &board, int column, int row, cv::Point2d &baseMm);
+void project(const cv::Matx33d &matrix, cv::Point2d point, cv::Point2d &result);
+void drawBoard(const cv::Mat &source, const Board &board, cv::Mat &image);
+} // namespace scara
+
+
+========================================================================
+vision/io.hpp
+========================================================================
+#pragma once
+#include <opencv2/core.hpp>
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
+namespace scara
+{
+// 先用文件流处理中文路径，再把读出的字节交给OpenCV。
+inline void readBytes(const std::string &path, std::string &bytes)
+{
+    std::ostringstream buffer;
+    std::ifstream file(std::filesystem::u8path(path), std::ios::binary);
+    if (!file) throw std::runtime_error("Cannot read: " + path);
+    buffer << file.rdbuf();
+    bytes = buffer.str();
+}
+inline void writeBytes(const std::string &path, const std::string &bytes)
+{
+    std::ofstream file(std::filesystem::u8path(path), std::ios::binary);
+    file.write(bytes.data(), std::streamsize(bytes.size()));
+    if (!file) throw std::runtime_error("Cannot write: " + path);
+}
+inline void readStorage(const std::string &path, cv::FileStorage &file)
+{
+    std::string bytes;
+    readBytes(path, bytes);
+    file.open(bytes, cv::FileStorage::READ | cv::FileStorage::MEMORY);
+    if (!file.isOpened()) throw std::runtime_error("Invalid configuration: " + path);
+}
+inline void memoryStorage(bool json, cv::FileStorage &file)
+{
+    int mode = cv::FileStorage::WRITE | cv::FileStorage::MEMORY;
+    if (json)
+        mode |= cv::FileStorage::FORMAT_JSON;
+    else
+        mode |= cv::FileStorage::FORMAT_YAML;
+    file.open("memory", mode);
+}
+} // namespace scara
+
+
+========================================================================
+vision/yolo.cpp
+========================================================================
+#include "yolo.hpp"
+#include <opencv2/imgproc.hpp>
+#include <algorithm>
+#include <stdexcept>
+
+namespace scara
+{
+static cv::Size FrameSize;
+static cv::Rect Roi, InputArea;
+static double Scale;
+constexpr float ScoreThreshold = .50f, NmsThreshold = .45f;
+constexpr int LabelWidth = 44, ScoreHeight = 16;
+static const cv::Size2f Anchors[YoloHeads][YoloAnchors] = {
+    {{10, 13}, {16, 30}, {33, 23}},
+    {{30, 61}, {62, 45}, {59, 119}},
+    {{116, 90}, {156, 198}, {373, 326}},
+};
+
+static float dequantize(const YoloHead &head, int8_t value)
+{
+    return (int(value) - head.zeroPoint) * head.scale;
+}
+
+static bool higherScore(const Detection &a, const Detection &b)
+{
+    return a.confidence > b.confidence;
+}
+
+static void readCandidates(const YoloHead &head, int index, std::vector<Detection> &candidates)
+{
+    int size = YoloGrid[index];
+    int stride = YoloSize / size;
+    // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
+    float maximumClassScore = dequantize(head, 127);
+    // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
+    for (int y = 0; y < size; ++y)
+    {
+        for (int x = 0; x < size; ++x)
+        {
+            for (int anchor = 0; anchor < YoloAnchors; ++anchor)
+            {
+                const int8_t *prediction = head.data + y * head.rowBytes + x * YoloChannels + anchor * YoloBoxValues;
+                float objectScore = dequantize(head, prediction[4]);
+                if (objectScore >= 0 && objectScore * maximumClassScore < ScoreThreshold) continue;
+                const int8_t *classScores = prediction + 5;
+                const int8_t *best = std::max_element(classScores, classScores + YoloClasses);
+                int classId = int(best - classScores);
+                float score = objectScore * dequantize(head, prediction[5 + classId]);
+                if (score < ScoreThreshold) continue;
+                // 先得到格内偏移，再加网格位置；与原实现保持相同的 float/double 顺序。
+                float offsetX = dequantize(head, prediction[0]) * 2 - .5f;
+                float offsetY = dequantize(head, prediction[1]) * 2 - .5f;
+                double centerX = (double(offsetX) + x) * stride;
+                double centerY = (double(offsetY) + y) * stride;
+                float widthFactor = dequantize(head, prediction[2]) * 2;
+                float heightFactor = dequantize(head, prediction[3]) * 2;
+                cv::Size2f anchorSize = Anchors[index][anchor];
+                float width = widthFactor * widthFactor * anchorSize.width;
+                float height = heightFactor * heightFactor * anchorSize.height;
+                candidates.push_back(
+                    {classId, score, cv::Rect2d(centerX - width / 2, centerY - height / 2, width, height)});
+            }
+        }
+    }
+}
+
+// 固定流程先设置一次参数，取帧时不再重新计算几何。
+void Vision_setup(cv::Size frameSize, cv::Rect roi)
+{
+    FrameSize = frameSize;
+    Roi = roi;
+    Scale = std::min(double(YoloSize) / roi.width, double(YoloSize) / roi.height);
+    cv::Size resized(cvRound(roi.width * Scale), cvRound(roi.height * Scale));
+    InputArea = {(YoloSize - resized.width) / 2, (YoloSize - resized.height) / 2, resized.width, resized.height};
+}
+
+void Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
+{
+    if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) throw std::runtime_error("Unexpected camera frame");
+    cv::Mat rgb;
+    cv::cvtColor(bgr(Roi), rgb, cv::COLOR_BGR2RGB);
+    input = cv::Mat(YoloSize, YoloSize, CV_8UC3, cv::Scalar::all(114));
+    cv::Mat picture = input(InputArea);
+    cv::resize(rgb, picture, InputArea.size(), 0, 0, cv::INTER_LINEAR);
+}
+
+void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &boxes)
+{
+    boxes.clear();
+    for (int i = 0; i < YoloHeads; ++i)
+        readCandidates(heads[i], i, boxes);
+    std::stable_sort(boxes.begin(), boxes.end(), higherScore);
+    // 保留高分框，删除后面与它重叠的框；同分维持原顺序。
+    for (size_t i = 0; i < boxes.size(); ++i)
+        for (size_t j = i + 1; j < boxes.size();)
+        {
+            cv::Rect2d a = boxes[i].bbox, b = boxes[j].bbox;
+            double overlap = (a & b).area();
+            double total = a.area() + b.area() - overlap;
+            if (overlap / std::max(total, 1e-9) > NmsThreshold)
+                boxes.erase(boxes.begin() + j);
+            else
+                ++j;
+        }
+    // 原地写回有效结果，先去重，再裁切并恢复原图坐标。
+    size_t count = 0;
+    for (Detection piece : boxes)
+    {
+        cv::Rect2d b = piece.bbox;
+        double x1 = std::clamp((b.x - InputArea.x) / Scale, 0.0, double(Roi.width));
+        double y1 = std::clamp((b.y - InputArea.y) / Scale, 0.0, double(Roi.height));
+        double x2 = std::clamp((b.x + b.width - InputArea.x) / Scale, 0.0, double(Roi.width));
+        double y2 = std::clamp((b.y + b.height - InputArea.y) / Scale, 0.0, double(Roi.height));
+        if (x2 > x1 && y2 > y1)
+        {
+            piece.bbox = {x1 + Roi.x, y1 + Roi.y, x2 - x1, y2 - y1};
+            boxes[count++] = piece;
+        }
+    }
+    boxes.resize(count);
+}
+
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels, cv::Mat &result)
+{
+    result = bgr.clone();
+    cv::Rect bounds(0, 0, result.cols, result.rows);
+    for (const Detection &piece : detections)
+    {
+        cv::Rect box = cv::Rect(piece.bbox) & bounds;
+        if (box.empty()) continue;
+        cv::Scalar color = piece.classId < 7 ? cv::Scalar(255, 180, 65) : cv::Scalar(65, 85, 245);
+        cv::rectangle(result, box, color, 2);
+        int x = std::clamp(box.x, 0, std::max(0, result.cols - LabelWidth));
+        int y = std::clamp(box.y - LabelHeight - 1, 0, std::max(0, result.rows - LabelHeight));
+        cv::Rect label = cv::Rect(x, y, LabelWidth, LabelHeight) & bounds;
+        result(label).setTo(color);
+        result(label).setTo(cv::Scalar::all(255),
+                            labels(cv::Rect(0, piece.classId * LabelHeight, label.width, label.height)));
+        int scoreY = std::clamp(box.y + box.height - ScoreHeight, 0, std::max(0, result.rows - ScoreHeight));
+        cv::rectangle(result, {x, scoreY, LabelWidth, ScoreHeight}, color, cv::FILLED);
+        cv::putText(result, cv::format("%.2f", piece.confidence), {x + 3, scoreY + 12}, cv::FONT_HERSHEY_SIMPLEX, .4,
+                    cv::Scalar::all(255), 1, cv::LINE_AA);
+    }
+}
+} // namespace scara
+
+
+========================================================================
+vision/yolo.hpp
+========================================================================
+#pragma once
+#include <opencv2/core.hpp>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <vector>
+
+namespace scara
+{
+// 固定模型：每个候选框有 4 个位置数、1 个目标分数和 14 个类别分数。
+constexpr int YoloSize = 640;
+constexpr int YoloClasses = 14;
+constexpr int YoloAnchors = 3;
+constexpr int YoloHeads = 3;
+constexpr int YoloBoxValues = 5 + YoloClasses;
+constexpr int YoloChannels = YoloAnchors * YoloBoxValues;
+constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
+constexpr int AtlasWidth = 64;
+constexpr int LabelHeight = 24;
+
+// 识别结果交给棋盘模块使用，框的位置和尺寸均为原始图像像素。
+struct Detection
+{
+    int classId = -1;      // 0～6 为黑方，7～13 为红方，顺序与模型一致。
+    double confidence = 0; // 目标分数 × 类别分数。
+    cv::Rect2d bbox;
+};
+
+// NPU 原生输出为 NHWC INT8，布局与量化参数在 Yolo_open 中检查一次。
+struct YoloHead
+{
+    const int8_t *data = nullptr;
+    size_t rowBytes = 0; // 相邻两行的实际间距，包含硬件对齐字节。
+    int zeroPoint = 0;
+    float scale = 0;
+};
+
+//---------图像处理接口区---------
+// 启动时设置一次已选定的有效图像几何；正常循环只处理同一相机和裁剪区域。
+void Vision_setup(cv::Size frameSize = {1280, 720}, cv::Rect roi = {300, 70, 650, 600});
+// 输出参数放在末尾；实际失败直接交给主入口的统一异常出口。
+void Vision_prepare(const cv::Mat &bgr, cv::Mat &rgb640);
+// heads 来自完成的 Yolo_run；离线文件读取入口负责检查自己的数据边界和格式。
+void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &pieces);
+// 复制原图后绘制。检测来自 Vision_decode，字图使用随程序提供的 64×336 灰度图。
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces, const cv::Mat &chineseLabels,
+                 cv::Mat &preview);
+
+//---------NPU接口区---------
+// 模块内只保存一个模型。主流程统一调用 Yolo_close，包括打开或运行失败时。
+bool Yolo_open(std::string modelPath); // 返回初始化结果，失败时仍由主流程关闭已分配资源。
+// 先成功打开模型，输入来自 Vision_prepare；成功时填写三路输出描述。
+// 正常返回后方可读取 heads，描述中的数据在下一次推理或关闭前有效。
+void Yolo_run(const cv::Mat &rgb640, YoloHead heads[YoloHeads]);
+void Yolo_close();
+} // namespace scara
+
+
+========================================================================
+vision/yolo_npu.cpp
+========================================================================
+#include "yolo.hpp"
+#include <rknn_api.h>
+#include <cstring>
+#include <stdexcept>
+
+namespace scara
+{
+struct TensorSpec
+{
+    rknn_query_cmd query;
+    unsigned index;
+    unsigned width;
+    unsigned channels;
+    rknn_tensor_type type;
+};
+
+// 输入和三路输出按固定次序准备；每路矩阵的高、宽相同。
+static const TensorSpec Tensors[] = {
+    {RKNN_QUERY_NATIVE_INPUT_ATTR, 0, YoloSize, 3, RKNN_TENSOR_UINT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 0, YoloGrid[0], YoloChannels, RKNN_TENSOR_INT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 1, YoloGrid[1], YoloChannels, RKNN_TENSOR_INT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 2, YoloGrid[2], YoloChannels, RKNN_TENSOR_INT8}};
+
+// 缓冲0是输入，缓冲1～3是输出；SDK输出编号从0开始。
+static struct
+{
+    rknn_context context = 0;
+    rknn_tensor_attr attr[4]{};
+    rknn_tensor_mem *memory[4]{};
+    YoloHead heads[YoloHeads];
+} Model;
+
+static bool prepareTensor(int slot)
+{
+    const TensorSpec &spec = Tensors[slot];
+    rknn_tensor_attr &attr = Model.attr[slot];
+    attr.index = spec.index;
+    int status = rknn_query(Model.context, spec.query, &attr, sizeof(attr));
+    if (status != 0) return false;
+
+    size_t rowWidth = attr.w_stride ? attr.w_stride : spec.width;
+    bool layout = attr.n_dims == 4 && attr.dims[0] == 1 && attr.dims[1] == spec.width && attr.dims[2] == spec.width &&
+                  attr.dims[3] == spec.channels && attr.fmt == RKNN_TENSOR_NHWC;
+    bool capacity =
+        rowWidth >= spec.width && ((spec.width - 1) * rowWidth + spec.width) * spec.channels <= attr.size_with_stride;
+    bool quantized = slot == 0 || (attr.type == RKNN_TENSOR_INT8 && attr.scale > 0);
+    if (layout == false || capacity == false || quantized == false) return false;
+
+    attr.type = spec.type;
+    attr.pass_through = 0;
+    Model.memory[slot] = rknn_create_mem(Model.context, attr.size_with_stride);
+    rknn_tensor_mem *memory = Model.memory[slot];
+    bool allocated = memory && memory->virt_addr && memory->size >= attr.size_with_stride;
+    if (allocated)
+    {
+        std::memset(memory->virt_addr, 0, memory->size);
+        status = rknn_set_io_mem(Model.context, memory, &attr);
+        if (slot > 0)
+        {
+            YoloHead &head = Model.heads[slot - 1];
+            head.data = static_cast<const int8_t *>(memory->virt_addr);
+            head.rowBytes = rowWidth * YoloChannels;
+            head.zeroPoint = attr.zp;
+            head.scale = attr.scale;
+        }
+    }
+    return allocated && status == 0;
+}
+
+bool Yolo_open(std::string path)
+{
+    Yolo_close();
+    int status = rknn_init(&Model.context, path.data(), 0, 0, nullptr);
+    bool ready = status == 0;
+    int slot = 0;
+    while (ready && slot < 4)
+    {
+        ready = prepareTensor(slot);
+        ++slot;
+    }
+    return ready;
+}
+
+void Yolo_run(const cv::Mat &rgb, YoloHead heads[YoloHeads])
+{
+    uint8_t *input = static_cast<uint8_t *>(Model.memory[0]->virt_addr);
+    size_t rowBytes = (Model.attr[0].w_stride ? Model.attr[0].w_stride : YoloSize) * 3;
+    for (int row = 0; row < YoloSize; ++row)
+        std::memcpy(input + row * rowBytes, rgb.ptr<uint8_t>(row), YoloSize * 3);
+    int status = rknn_run(Model.context, nullptr);
+    if (status != 0) throw std::runtime_error("NPU inference failed");
+    for (int i = 0; i < YoloHeads; ++i)
+        heads[i] = Model.heads[i]; // 复制地址和格式描述，不复制整块输出数据。
+}
+
+void Yolo_close()
+{
+    for (rknn_tensor_mem *memory : Model.memory)
+        if (memory) rknn_destroy_mem(Model.context, memory);
+    if (Model.context) rknn_destroy(Model.context);
+    Model = {};
+}
+} // namespace scara
+

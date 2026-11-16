@@ -1,0 +1,509 @@
+
+========================================================================
+app/vision_main.cpp
+========================================================================
+#include "vision/capture.hpp"
+#include "vision/yolo.hpp"
+#include <opencv2/imgcodecs.hpp>
+#include <csignal>
+#include <filesystem>
+#include <iostream>
+#include <stdexcept>
+
+static volatile std::sig_atomic_t running = 1;
+
+static void requestStop(int)
+{
+    running = 0;
+    scara::Camera_stop();
+}
+
+// 完整写入临时图后，再替换给预览端读取的文件。
+static void savePreview(const cv::Mat &image, const std::string &temporary, const char *output)
+{
+    if (!cv::imwrite(temporary, image)) throw std::runtime_error("Cannot write preview");
+    std::filesystem::rename(std::filesystem::u8path(temporary), std::filesystem::u8path(output));
+}
+
+int main(int argc, char **argv)
+{
+    using namespace scara;
+    if (argc != 5) return 2;           // 程序名之外，需要下面四个路径/地址参数。
+    const char *modelPath = argv[1];   // 已训练好的 RKNN 模型。
+    const char *cameraUrl = argv[2];   // 摄像头 RTSP 视频流地址。
+    const char *labelPath = argv[3];   // 用于显示中文名称的固定字图。
+    const char *previewPath = argv[4]; // 保存识别画面的 JPEG 文件。
+    int result = 1;
+    try
+    {
+        Vision_setup();
+        cv::Mat labels = cv::imread(labelPath, cv::IMREAD_GRAYSCALE);
+        std::string temporary = std::string(previewPath) + ".tmp.jpg";
+        std::signal(SIGINT, requestStop);
+        std::signal(SIGTERM, requestStop);
+        result = Yolo_open(modelPath) ? 0 : 1;
+        if (result != 0) running = 0; // 初始化失败只关掉运行开关，不能覆盖已收到的停止请求。
+        Camera_open(cameraUrl);
+
+        //---------取帧、识别与绘制区---------
+        while (running)
+        {
+            cv::Mat source;                // 摄像头解码得到的 BGR 原图。
+            cv::Mat input;                 // 裁剪、转 RGB、缩放补边后的 640×640 图。
+            cv::Mat preview;               // 画好框、中文标签和分数的原尺寸预览图。
+            YoloHead heads[YoloHeads];     // NPU 三路输出的地址和格式描述。
+            std::vector<Detection> pieces; // 检测到的棋子：类别、分数、原图位置框。
+
+            Camera_read(source);
+            Vision_prepare(source, input);
+            Yolo_run(input, heads);
+            Vision_decode(heads, pieces);
+            Vision_draw(source, pieces, labels, preview);
+            savePreview(preview, temporary, previewPath);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        if (running)
+        {
+            result = 1;
+            std::cerr << e.what() << '\n';
+        }
+    }
+    Camera_close();
+    Yolo_close();
+    return result;
+}
+
+
+========================================================================
+vision/capture.hpp
+========================================================================
+#pragma once
+#include <opencv2/core.hpp>
+#include <string>
+
+namespace scara
+{
+// 打开 RTSP 地址，结果直接决定接收开关；打开失败时 Camera_read 按无帧出口结束。
+void Camera_open(const std::string &cameraUrl);
+// 等待并写出下一帧 BGR 原图；没有图就继续等，停止后按原出口结束。
+void Camera_read(cv::Mat &frame);
+// 请求停止接收，允许当前读取收尾；用于主程序的停止回调。
+void Camera_stop();
+// 停止接收，等后台线程结束，再关闭视频流。
+void Camera_close();
+} // namespace scara
+
+
+========================================================================
+vision/capture.cpp
+========================================================================
+#include "capture.hpp"
+#include <opencv2/videoio.hpp>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <stdexcept>
+#include <atomic>
+#include <chrono>
+#include <vector>
+
+namespace scara
+{
+//---------相机与交帧数据区---------
+static cv::VideoCapture video;              // OpenCV 视频流，负责连接与解码。
+static cv::Mat latestFrame;                 // 只保留后台收到的最新一帧 BGR 原图。
+static std::thread captureThread;           // 持续取流的后台线程。
+static std::mutex frameMutex;               // 交帧时使用的锁，保护缓存和接收状态。
+static std::condition_variable frameReady;  // 新帧到达或接收结束时，唤醒等候者。
+static std::atomic<bool> capturing = false; // 接收开关，允许两个线程直接读取和设置。
+static const std::vector<int> cameraOptions = {
+    cv::CAP_PROP_OPEN_TIMEOUT_MSEC, 5000, // 打开连接的等待上限，毫秒。
+    cv::CAP_PROP_READ_TIMEOUT_MSEC, 5000  // 单次读帧的等待上限，毫秒。
+};
+
+//---------后台接收区---------
+// 推理期间也持续读流，新帧覆盖缓存，避免视频在接收端积压。
+static void receiveFrames()
+{
+    try
+    {
+        while (capturing)
+        {
+            cv::Mat frame; // 每轮新建，避免下一次解码改写主线程正在使用的图。
+            bool received = video.read(frame);
+            std::unique_lock<std::mutex> lock(frameMutex);
+            if (received)
+            {
+                latestFrame = frame;
+                frameReady.notify_one();
+            }
+            else
+                frameReady.wait_for(lock, std::chrono::milliseconds(10)); // 暂时没图，解锁稍等后重试。
+        }
+    }
+    catch (...)
+    {
+    } // 后台异常也走下面的结束通知，不能让主线程一直等图。
+    std::lock_guard<std::mutex> lock(frameMutex);
+    capturing = false;
+    latestFrame.release(); // 当前读取完成后统一清空，关闭时允许这一轮收尾。
+    frameReady.notify_all();
+}
+
+//---------打开相机区---------
+void Camera_open(const std::string &cameraUrl)
+{
+    Camera_close(); // 允许再次打开：先结束上一次接收。
+    capturing = video.open(cameraUrl, cv::CAP_FFMPEG, cameraOptions);
+    captureThread = std::thread(receiveFrames);
+}
+
+//---------向主流程交帧区---------
+void Camera_read(cv::Mat &frame)
+{
+    std::unique_lock<std::mutex> lock(frameMutex);
+    latestFrame.release(); // 丢弃调用前缓存的图，等调用后收到的新帧。
+    while (capturing && latestFrame.empty())
+        frameReady.wait_for(lock, std::chrono::milliseconds(10)); // 醒来检查新图或停止请求，不设无图截止。
+    // 将图像交给输出参数，共享像素，不复制整张图。
+    frame = latestFrame;
+    if (frame.empty()) throw std::runtime_error("Camera stream ended");
+}
+
+// 停止回调只改原子开关；不在信号回调中加锁、等线程或操作视频。
+void Camera_stop()
+{
+    capturing = false;
+}
+
+//---------关闭相机区---------
+void Camera_close()
+{
+    Camera_stop();
+    frameReady.notify_all();
+    if (captureThread.joinable()) captureThread.join(); // 等后台结束，避免边读边关闭。
+    video.release();
+}
+} // namespace scara
+
+
+========================================================================
+vision/yolo.hpp
+========================================================================
+#pragma once
+#include <opencv2/core.hpp>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <vector>
+
+namespace scara
+{
+// 固定模型：每个候选框有 4 个位置数、1 个目标分数和 14 个类别分数。
+constexpr int YoloSize = 640;
+constexpr int YoloClasses = 14;
+constexpr int YoloAnchors = 3;
+constexpr int YoloHeads = 3;
+constexpr int YoloBoxValues = 5 + YoloClasses;
+constexpr int YoloChannels = YoloAnchors * YoloBoxValues;
+constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
+constexpr int AtlasWidth = 64;
+constexpr int LabelHeight = 24;
+
+// 识别结果交给棋盘模块使用，框的位置和尺寸均为原始图像像素。
+struct Detection
+{
+    int classId = -1;      // 0～6 为黑方，7～13 为红方，顺序与模型一致。
+    double confidence = 0; // 目标分数 × 类别分数。
+    cv::Rect2d bbox;
+};
+
+// NPU 原生输出为 NHWC INT8，布局与量化参数在 Yolo_open 中检查一次。
+struct YoloHead
+{
+    const int8_t *data = nullptr;
+    size_t rowBytes = 0; // 相邻两行的实际间距，包含硬件对齐字节。
+    int zeroPoint = 0;
+    float scale = 0;
+};
+
+//---------图像处理接口区---------
+// 启动时设置一次已选定的有效图像几何；正常循环只处理同一相机和裁剪区域。
+void Vision_setup(cv::Size frameSize = {1280, 720}, cv::Rect roi = {300, 70, 650, 600});
+// 输出参数放在末尾；实际失败直接交给主入口的统一异常出口。
+void Vision_prepare(const cv::Mat &bgr, cv::Mat &rgb640);
+// heads 来自完成的 Yolo_run；离线文件读取入口负责检查自己的数据边界和格式。
+void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &pieces);
+// 复制原图后绘制。检测来自 Vision_decode，字图使用随程序提供的 64×336 灰度图。
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces, const cv::Mat &chineseLabels,
+                 cv::Mat &preview);
+
+//---------NPU接口区---------
+// 模块内只保存一个模型。主流程统一调用 Yolo_close，包括打开或运行失败时。
+bool Yolo_open(std::string modelPath); // 返回初始化结果，失败时仍由主流程关闭已分配资源。
+// 先成功打开模型，输入来自 Vision_prepare；成功时填写三路输出描述。
+// 正常返回后方可读取 heads，描述中的数据在下一次推理或关闭前有效。
+void Yolo_run(const cv::Mat &rgb640, YoloHead heads[YoloHeads]);
+void Yolo_close();
+} // namespace scara
+
+
+========================================================================
+vision/yolo.cpp
+========================================================================
+#include "yolo.hpp"
+#include <opencv2/imgproc.hpp>
+#include <algorithm>
+#include <stdexcept>
+
+namespace scara
+{
+static cv::Size FrameSize;
+static cv::Rect Roi, InputArea;
+static double Scale;
+constexpr float ScoreThreshold = .50f, NmsThreshold = .45f;
+constexpr int LabelWidth = 44, ScoreHeight = 16;
+static const cv::Size2f Anchors[YoloHeads][YoloAnchors] = {
+    {{10, 13}, {16, 30}, {33, 23}},
+    {{30, 61}, {62, 45}, {59, 119}},
+    {{116, 90}, {156, 198}, {373, 326}},
+};
+
+static float dequantize(const YoloHead &head, int8_t value)
+{
+    return (int(value) - head.zeroPoint) * head.scale;
+}
+
+static bool higherScore(const Detection &a, const Detection &b)
+{
+    return a.confidence > b.confidence;
+}
+
+static void readCandidates(const YoloHead &head, int index, std::vector<Detection> &candidates)
+{
+    int size = YoloGrid[index];
+    int stride = YoloSize / size;
+    // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
+    float maximumClassScore = dequantize(head, 127);
+    // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
+    for (int y = 0; y < size; ++y)
+    {
+        for (int x = 0; x < size; ++x)
+        {
+            for (int anchor = 0; anchor < YoloAnchors; ++anchor)
+            {
+                const int8_t *prediction = head.data + y * head.rowBytes + x * YoloChannels + anchor * YoloBoxValues;
+                float objectScore = dequantize(head, prediction[4]);
+                if (objectScore >= 0 && objectScore * maximumClassScore < ScoreThreshold) continue;
+                const int8_t *classScores = prediction + 5;
+                const int8_t *best = std::max_element(classScores, classScores + YoloClasses);
+                int classId = int(best - classScores);
+                float score = objectScore * dequantize(head, prediction[5 + classId]);
+                if (score < ScoreThreshold) continue;
+                // 先得到格内偏移，再加网格位置；与原实现保持相同的 float/double 顺序。
+                float offsetX = dequantize(head, prediction[0]) * 2 - .5f;
+                float offsetY = dequantize(head, prediction[1]) * 2 - .5f;
+                double centerX = (double(offsetX) + x) * stride;
+                double centerY = (double(offsetY) + y) * stride;
+                float widthFactor = dequantize(head, prediction[2]) * 2;
+                float heightFactor = dequantize(head, prediction[3]) * 2;
+                cv::Size2f anchorSize = Anchors[index][anchor];
+                float width = widthFactor * widthFactor * anchorSize.width;
+                float height = heightFactor * heightFactor * anchorSize.height;
+                candidates.push_back(
+                    {classId, score, cv::Rect2d(centerX - width / 2, centerY - height / 2, width, height)});
+            }
+        }
+    }
+}
+
+// 固定流程先设置一次参数，取帧时不再重新计算几何。
+void Vision_setup(cv::Size frameSize, cv::Rect roi)
+{
+    FrameSize = frameSize;
+    Roi = roi;
+    Scale = std::min(double(YoloSize) / roi.width, double(YoloSize) / roi.height);
+    cv::Size resized(cvRound(roi.width * Scale), cvRound(roi.height * Scale));
+    InputArea = {(YoloSize - resized.width) / 2, (YoloSize - resized.height) / 2, resized.width, resized.height};
+}
+
+void Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
+{
+    if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) throw std::runtime_error("Unexpected camera frame");
+    cv::Mat rgb;
+    cv::cvtColor(bgr(Roi), rgb, cv::COLOR_BGR2RGB);
+    input = cv::Mat(YoloSize, YoloSize, CV_8UC3, cv::Scalar::all(114));
+    cv::Mat picture = input(InputArea);
+    cv::resize(rgb, picture, InputArea.size(), 0, 0, cv::INTER_LINEAR);
+}
+
+void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &boxes)
+{
+    boxes.clear();
+    for (int i = 0; i < YoloHeads; ++i)
+        readCandidates(heads[i], i, boxes);
+    std::stable_sort(boxes.begin(), boxes.end(), higherScore);
+    // 保留高分框，删除后面与它重叠的框；同分维持原顺序。
+    for (size_t i = 0; i < boxes.size(); ++i)
+        for (size_t j = i + 1; j < boxes.size();)
+        {
+            cv::Rect2d a = boxes[i].bbox, b = boxes[j].bbox;
+            double overlap = (a & b).area();
+            double total = a.area() + b.area() - overlap;
+            if (overlap / std::max(total, 1e-9) > NmsThreshold)
+                boxes.erase(boxes.begin() + j);
+            else
+                ++j;
+        }
+    // 原地写回有效结果，先去重，再裁切并恢复原图坐标。
+    size_t count = 0;
+    for (Detection piece : boxes)
+    {
+        cv::Rect2d b = piece.bbox;
+        double x1 = std::clamp((b.x - InputArea.x) / Scale, 0.0, double(Roi.width));
+        double y1 = std::clamp((b.y - InputArea.y) / Scale, 0.0, double(Roi.height));
+        double x2 = std::clamp((b.x + b.width - InputArea.x) / Scale, 0.0, double(Roi.width));
+        double y2 = std::clamp((b.y + b.height - InputArea.y) / Scale, 0.0, double(Roi.height));
+        if (x2 > x1 && y2 > y1)
+        {
+            piece.bbox = {x1 + Roi.x, y1 + Roi.y, x2 - x1, y2 - y1};
+            boxes[count++] = piece;
+        }
+    }
+    boxes.resize(count);
+}
+
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels, cv::Mat &result)
+{
+    result = bgr.clone();
+    cv::Rect bounds(0, 0, result.cols, result.rows);
+    for (const Detection &piece : detections)
+    {
+        cv::Rect box = cv::Rect(piece.bbox) & bounds;
+        if (box.empty()) continue;
+        cv::Scalar color = piece.classId < 7 ? cv::Scalar(255, 180, 65) : cv::Scalar(65, 85, 245);
+        cv::rectangle(result, box, color, 2);
+        int x = std::clamp(box.x, 0, std::max(0, result.cols - LabelWidth));
+        int y = std::clamp(box.y - LabelHeight - 1, 0, std::max(0, result.rows - LabelHeight));
+        cv::Rect label = cv::Rect(x, y, LabelWidth, LabelHeight) & bounds;
+        result(label).setTo(color);
+        result(label).setTo(cv::Scalar::all(255),
+                            labels(cv::Rect(0, piece.classId * LabelHeight, label.width, label.height)));
+        int scoreY = std::clamp(box.y + box.height - ScoreHeight, 0, std::max(0, result.rows - ScoreHeight));
+        cv::rectangle(result, {x, scoreY, LabelWidth, ScoreHeight}, color, cv::FILLED);
+        cv::putText(result, cv::format("%.2f", piece.confidence), {x + 3, scoreY + 12}, cv::FONT_HERSHEY_SIMPLEX, .4,
+                    cv::Scalar::all(255), 1, cv::LINE_AA);
+    }
+}
+} // namespace scara
+
+
+========================================================================
+vision/yolo_npu.cpp
+========================================================================
+#include "yolo.hpp"
+#include <rknn_api.h>
+#include <cstring>
+#include <stdexcept>
+
+namespace scara
+{
+struct TensorSpec
+{
+    rknn_query_cmd query;
+    unsigned index;
+    unsigned width;
+    unsigned channels;
+    rknn_tensor_type type;
+};
+
+// 输入和三路输出按固定次序准备；每路矩阵的高、宽相同。
+static const TensorSpec Tensors[] = {
+    {RKNN_QUERY_NATIVE_INPUT_ATTR, 0, YoloSize, 3, RKNN_TENSOR_UINT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 0, YoloGrid[0], YoloChannels, RKNN_TENSOR_INT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 1, YoloGrid[1], YoloChannels, RKNN_TENSOR_INT8},
+    {RKNN_QUERY_NATIVE_NHWC_OUTPUT_ATTR, 2, YoloGrid[2], YoloChannels, RKNN_TENSOR_INT8}};
+
+// 缓冲0是输入，缓冲1～3是输出；SDK输出编号从0开始。
+static struct
+{
+    rknn_context context = 0;
+    rknn_tensor_attr attr[4]{};
+    rknn_tensor_mem *memory[4]{};
+    YoloHead heads[YoloHeads];
+} Model;
+
+static bool prepareTensor(int slot)
+{
+    const TensorSpec &spec = Tensors[slot];
+    rknn_tensor_attr &attr = Model.attr[slot];
+    attr.index = spec.index;
+    int status = rknn_query(Model.context, spec.query, &attr, sizeof(attr));
+    if (status != 0) return false;
+
+    size_t rowWidth = attr.w_stride ? attr.w_stride : spec.width;
+    bool layout = attr.n_dims == 4 && attr.dims[0] == 1 && attr.dims[1] == spec.width && attr.dims[2] == spec.width &&
+                  attr.dims[3] == spec.channels && attr.fmt == RKNN_TENSOR_NHWC;
+    bool capacity =
+        rowWidth >= spec.width && ((spec.width - 1) * rowWidth + spec.width) * spec.channels <= attr.size_with_stride;
+    bool quantized = slot == 0 || (attr.type == RKNN_TENSOR_INT8 && attr.scale > 0);
+    if (layout == false || capacity == false || quantized == false) return false;
+
+    attr.type = spec.type;
+    attr.pass_through = 0;
+    Model.memory[slot] = rknn_create_mem(Model.context, attr.size_with_stride);
+    rknn_tensor_mem *memory = Model.memory[slot];
+    bool allocated = memory && memory->virt_addr && memory->size >= attr.size_with_stride;
+    if (allocated)
+    {
+        std::memset(memory->virt_addr, 0, memory->size);
+        status = rknn_set_io_mem(Model.context, memory, &attr);
+        if (slot > 0)
+        {
+            YoloHead &head = Model.heads[slot - 1];
+            head.data = static_cast<const int8_t *>(memory->virt_addr);
+            head.rowBytes = rowWidth * YoloChannels;
+            head.zeroPoint = attr.zp;
+            head.scale = attr.scale;
+        }
+    }
+    return allocated && status == 0;
+}
+
+bool Yolo_open(std::string path)
+{
+    Yolo_close();
+    int status = rknn_init(&Model.context, path.data(), 0, 0, nullptr);
+    bool ready = status == 0;
+    int slot = 0;
+    while (ready && slot < 4)
+    {
+        ready = prepareTensor(slot);
+        ++slot;
+    }
+    return ready;
+}
+
+void Yolo_run(const cv::Mat &rgb, YoloHead heads[YoloHeads])
+{
+    uint8_t *input = static_cast<uint8_t *>(Model.memory[0]->virt_addr);
+    size_t rowBytes = (Model.attr[0].w_stride ? Model.attr[0].w_stride : YoloSize) * 3;
+    for (int row = 0; row < YoloSize; ++row)
+        std::memcpy(input + row * rowBytes, rgb.ptr<uint8_t>(row), YoloSize * 3);
+    int status = rknn_run(Model.context, nullptr);
+    if (status != 0) throw std::runtime_error("NPU inference failed");
+    for (int i = 0; i < YoloHeads; ++i)
+        heads[i] = Model.heads[i]; // 复制地址和格式描述，不复制整块输出数据。
+}
+
+void Yolo_close()
+{
+    for (rknn_tensor_mem *memory : Model.memory)
+        if (memory) rknn_destroy_mem(Model.context, memory);
+    if (Model.context) rknn_destroy(Model.context);
+    Model = {};
+}
+} // namespace scara
+
