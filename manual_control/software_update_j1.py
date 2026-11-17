@@ -9,12 +9,15 @@ import time
 from types import SimpleNamespace
 
 from calibrate_j1 import Session
-from stepfoc_candlelight import Frame
+from candle_bus import CandleBus
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'temp'))
 from ota import unpack, send_image
 
 
+
+#---------升级与参考恢复区---------
+# 先保存停稳时的多圈参考，升级后核对身份和编码器变化，再接续原逻辑高度
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--from-build', required=True)
@@ -47,21 +50,9 @@ def main():
             s.wait(lambda v: v['state'] == 0 and not v['fault'] and v['encoder_valid'], 2, True)
         s.command(11, 0x52454254)
 
-        def send(m, timeout=None):
-            s.adapter.send(Frame(m.arbitration_id, m.data, fd=True, brs=True))
-
-        def recv(timeout):
-            f = s.adapter.recv(timeout)
-            if f and not f.echo:
-                return SimpleNamespace(
-                    arbitration_id=f.identifier,
-                    data=f.data,
-                    is_error_frame=f.error,
-                    is_extended_id=f.extended,
-                    is_fd=f.fd,
-                )
-
-        send_image(SimpleNamespace(send=send, recv=recv), SimpleNamespace(Message=SimpleNamespace), 1, crc, img, 25)
+        # 保留同一个USB会话，复用已有CAN消息适配器交给升级器
+        bus = CandleBus(adapter=s.adapter)
+        send_image(bus, SimpleNamespace(Message=SimpleNamespace), 1, crc, img, 25)
     finally:
         s.close()
     s = Session('37813482333551062', root / 'after')

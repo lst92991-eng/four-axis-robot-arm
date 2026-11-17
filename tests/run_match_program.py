@@ -27,18 +27,20 @@ def read_calls(output):
         elif line.startswith('SIM_STEP '):
             assert current is not None
             action = int(fields[1])
-            j2, j3, z, speed = map(float, fields[2:6])
+            axes = int(fields[2])
+            target = list(map(float, fields[3:6]))
             duration = int(fields[6])
             if action == 0:
                 step = dict(action='hold')
             elif action == 1:
-                step = dict(action='xy', j2_deg=j2, j3_motor_deg=j3)
-            elif action == 2:
-                step = dict(action='z', j1_deg=z, speed_deg_s=speed)
+                step = dict(action='move', axes=axes, target_deg=target)
             else:
-                assert action == 3
+                assert action == 2
                 step = dict(action='release', duration_ms=duration)
             current['steps'].append(step)
+        elif line.startswith('SIM_POSE '):
+            current['end_joint_deg'] = list(map(float, fields[1:4]))
+            current['reference_count'] = int(fields[4])
         elif line.startswith('SIM_RETURN '):
             assert current is not None and fields[1] in ('0', '1')
             calls.append(current)
@@ -70,13 +72,17 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
         assert not list((work / 'runtime').glob('motion-*.json')), 'Retired motion protocol is still active'
         assert not list((work / 'runtime').glob('request-*.json')), 'Simulation still uses request files'
         assert all(execution['simulated'] == 1 for execution in executions)
-        assert [step['action'] for step in executions[0]['steps']] == ['hold', 'z', 'xy']
+        assert [step['action'] for step in executions[0]['steps']] == ['hold', 'move', 'move']
+        assert executions[0]['steps'][1]['axes'] == 1
+        heights = json.loads(Path(config['heights_file']).read_text(encoding='utf-8'))['z']
+        park = [heights['travel_deg'], *config['park_joints_deg']]
         for execution in executions[1:]:
-            assert execution['steps'][-1] == dict(action='xy', j2_deg=config['park_joints_deg'][0],
-                                              j3_motor_deg=config['park_joints_deg'][1])
+            assert execution['steps'][-1] == dict(action='move', axes=7, target_deg=park)
+            assert execution['end_joint_deg'] == park
             for i, step in enumerate(execution['steps']):
                 if step['action'] == 'release':
-                    assert execution['steps'][i + 1]['action'] == 'z', name
+                    assert execution['steps'][i + 1]['action'] == 'move', name
+                    assert execution['steps'][i + 1]['target_deg'][0] == heights.get('clearance_deg', heights['travel_deg'])
         passed += 1
         print('PASS', name)
         return state, executions, result.stdout
@@ -86,80 +92,100 @@ state, executions, output = run('two rounds with robot capture', BASE)
 assert state['board'] == BASE['expected_board'] and state['pending'] == 0
 assert [len(execution['steps']) for execution in executions] == [3, 9, 17]
 
+# 事件回调只显示；相机输入按场景模拟人类恢复，恢复前不能下发新的搬棋动作。
 case = copy.deepcopy(BASE)
-case['executions'][1]['board'] = AFTER_HUMAN
-case['commands'].insert(3, dict(phase='recovery', command='retry', board=AFTER_ROBOT))
-state, _, output = run('successful return still requires visual confirmation', case)
-assert 'SIM_COMMAND recovery retry' in output and state['pending'] == 0
+swapped = AFTER_HUMAN.copy()
+rows = [list(row) for row in swapped]
+rows[7][1], rows[9][1] = rows[9][1], rows[7][1]
+swapped = [''.join(row) for row in rows]
+case['queries'][1]['board_after_think'] = swapped
+case['restorations'] = [dict(event=1, after_frames=6, board=AFTER_HUMAN)]
+_, _, output = run('swap while thinking restores before moving', case)
+assert '棋子位置互换' in output and '红马' in output and '红炮' in output
+event_at = output.index('SIM_EVENT 1')
+assert output.index('SIM_EVENT 7', event_at) < output.index('SIM_CALL move a6a5', event_at)
 
 case = copy.deepcopy(BASE)
-case['executions'][1]['board'] = AFTER_HUMAN
-case['commands'][3:3] = [dict(phase='recovery', command='restored', board=AFTER_ROBOT),
-                         dict(phase='recovery', command='retry')]
-_, _, output = run('incorrect restore does not silently accept the move', case)
-assert output.count('SIM_COMMAND recovery ') == 2
+missing = AFTER_HUMAN.copy()
+row = list(missing[9]); row[4] = '.'; missing[9] = ''.join(row)
+case['queries'][1]['board_after_think'] = missing
+case['restorations'] = [dict(event=1, after_frames=3, board=AFTER_HUMAN)]
+_, _, output = run('missing king is a board event rather than victory', case)
+assert '棋子缺失' in output and 'e0 红帅' in output
 
 case = copy.deepcopy(BASE)
-case['executions'][1]['success'] = 0
-case['commands'].insert(3, dict(phase='recovery', command='accept'))
-state, _, output = run('operator accepts already completed action after failed return', case)
-assert 'SIM_COMMAND recovery accept' in output
+case['queries'][1]['board_after_think'] = swapped
+case['cancel_after_frames'] = 30
+state, _, _ = run('unrestored board never starts robot movement', case, 'a3a4', calls=1)
+assert state['pending'] == 0 and state['phase'] == 'stopped'
 
 case = copy.deepcopy(BASE)
-case['executions'][1].update(success=0, board=AFTER_HUMAN)
-case['executions'].insert(2, copy.deepcopy(BASE['executions'][1]))
-case['commands'].insert(3, dict(phase='recovery', command='restored', board=AFTER_HUMAN))
-run('explicit restore retains history and permits one replan', case, calls=4)
+case['commands'][2]['board'] = swapped
+case['commands'].insert(3,dict(phase='human',command='ready',board=AFTER_HUMAN))
+case['restorations']=[dict(event=2,after_frames=3,board=INITIAL)]
+_, _, output = run('illegal human change restores before next attempt',case)
+assert 'SIM_EVENT 2' in output
 
-case = copy.deepcopy(BASE)
-case['commands'].insert(2, dict(phase='human', command='ready', board=INITIAL))
-_, _, output = run('unchanged player board does not consume a turn', case)
-assert output.count('SIM_COMMAND human ready') == 3
+for failure in ('returned_failure','wrong_placement'):
+    case=copy.deepcopy(BASE)
+    retry=copy.deepcopy(case['executions'][1])
+    case['executions'][1]['board']=AFTER_HUMAN
+    case['executions'][1]['success']=0 if failure=='returned_failure' else 1
+    case['executions'][2:2]=[dict(purpose='prepare',move='',success=1),retry]
+    case['commands'].insert(3,dict(phase='hardware_recovery',command='ready',board=AFTER_HUMAN))
+    _, _, output=run('hardware confirmation and restore: '+failure,case,calls=5)
+    assert 'SIM_COMMAND hardware_recovery ready' in output
+    assert output.count('SIM_CALL move a6a5')==2
 
-case = copy.deepcopy(BASE)
-case['queries'][1]['fail'] = 1
-state, _, _ = run('engine failure is not an empty legal list', case, 'a3a4', 1, 1)
-assert state['result'] == 0 and state['pending'] == 0 and state['phase'] == 'error'
+case=copy.deepcopy(BASE)
+case['executions'][1].update(success=0,board=AFTER_HUMAN)
+case['commands'].insert(3,dict(phase='hardware_recovery',command='quit'))
+state,_,_=run('quit preserves the last confirmed history',case,'a3a4',calls=2)
+assert state['pending']==1
 
-case = copy.deepcopy(BASE)
-case['queries'][1]['choice'] = 'b9b8'
-state, _, _ = run('bestmove outside legal list issues no motion', case, 'a3a4', 1, 1)
-assert state['pending'] == 0
+case=copy.deepcopy(BASE)
+case['queries'][1]['fail_once']=1
+case['commands'].insert(3,dict(phase='engine_recovery',command='ready'))
+_,_,output=run('engine failure is an event and retries the same turn',case)
+assert 'SIM_EVENT 5' in output
 
-case = copy.deepcopy(BASE)
-case['queries'][0]['legal'] = []
-state, _, _ = run('scripted terminal signal', case, '', calls=1)
-assert state['result'] == 2 and state['phase'] == 'finished'
+case=copy.deepcopy(BASE)
+case['queries'][1]['fail']=1
+case['commands'].insert(3,dict(phase='engine_recovery',command='quit'))
+state,_,_=run('engine cannot be mistaken for an empty legal list',case,'a3a4',calls=1)
+assert state['result']==0
 
-case = copy.deepcopy(BASE)
-case['executions'][0]['success'] = 0
-run('prepare failure does not start the game', case, '', 1, 1)
+case=copy.deepcopy(BASE)
+case['queries'][1]['choice']='b9b8'
+state,_,_=run('illegal engine choice issues no movement',case,'a3a4',1,1)
+assert state['pending']==0
 
-case = copy.deepcopy(BASE)
-case['commands'][2] = dict(phase='human', command='resign')
-state, _, _ = run('human resignation', case, '', calls=1)
-assert state['result'] == 2
+case=copy.deepcopy(BASE)
+case['queries'][0]['legal']=[]
+state,_,_=run('terminal signal',case,'',calls=1)
+assert state['result']==2
 
-case = copy.deepcopy(BASE)
-case['commands'] = case['commands'][:2] + [dict(phase='human', command='quit')]
-case['queries'][0]['choice'] = 'a3a4'
-case['queries'][1]['choice'] = ''
-case['executions'] = [case['executions'][0], dict(purpose='move', move='a3a4', success=1, board=AFTER_HUMAN)]
-run('robot can play red first', case, 'a3a4', calls=2, settings={'human_red': 0})
+case=copy.deepcopy(BASE)
+case['executions'][0]['success']=0
+case['commands'].insert(1,dict(phase='hardware_recovery',command='quit'))
+run('preparation failure cannot start a game',case,'',calls=1)
 
-case = copy.deepcopy(BASE)
-case['executions'][1].update(success=0, board=AFTER_HUMAN)
-case['commands'].insert(3, dict(phase='recovery', command='quit'))
-state, _, _ = run('quit preserves unconfirmed action', case, 'a3a4', calls=2)
-assert state['pending'] == 1 and state['phase'] == 'stopped'
+case=copy.deepcopy(BASE)
+case['commands'][2]=dict(phase='human',command='resign')
+state,_,_=run('human resignation',case,'',calls=1)
+assert state['result']==2
 
-case = copy.deepcopy(BASE)
-case['commands'] = [dict(phase='prepare', command='ready'),
-                    dict(phase='confirm_start', command='ready', board=AFTER_HUMAN),
-                    dict(phase='confirm_start', command='ready')]
-case['queries'] = [dict(history='', legal=[])]
-state, _, output = run('changed starting board is confirmed again', case, '', calls=1)
-assert output.count('SIM_COMMAND confirm_start ready') == 2 and state['board'] == AFTER_HUMAN
+case=copy.deepcopy(BASE)
+case['commands']=case['commands'][:2]+[dict(phase='human',command='quit')]
+case['queries'][0]['choice']='a3a4';case['queries'][1]['choice']=''
+case['executions']=[case['executions'][0],dict(purpose='move',move='a3a4',success=1,board=AFTER_HUMAN)]
+run('robot can play red first',case,'a3a4',calls=2,settings={'human_red':0})
+
+case=copy.deepcopy(BASE)
+case['commands']=[dict(phase='prepare',command='ready'),dict(phase='confirm_start',command='ready',board=AFTER_HUMAN),dict(phase='confirm_start',command='ready')]
+case['queries']=[dict(history='',legal=[])]
+state,_,output=run('changed initial board is confirmed again',case,'',calls=1)
+assert output.count('SIM_COMMAND confirm_start ready')==2
 
 # Two legal knight cycles return to the initial position three times. The app
 # must request human adjudication, not announce a draw or a winner.

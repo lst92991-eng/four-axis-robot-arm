@@ -1,5 +1,6 @@
 //程序入口：读取配置，组织双方回合，处理退出收尾
-#include "game.hpp"
+#include "game_files.hpp"
+#include "vision/capture.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -12,7 +13,7 @@ static void requestStop(int)
     //通知主循环、引擎搜索和机械执行结束当前任务
     scara::gameRunning = 0;
     //请求取流停止，让等待图像的代码能够退出
-    scara::Runtime_stop();
+    scara::Camera_stop();
 }
 
 //---------主程序区---------
@@ -34,6 +35,9 @@ int main(int argc, char **argv)
     //将Ctrl+C与进程终止信号交给同一个停止回调
     std::signal(SIGINT, requestStop);
     std::signal(SIGTERM, requestStop);
+    //统一注册屏幕显示回调，具体原因由各处理步骤提供
+    for (size_t i = 0; i < size_t(EventType::Count); ++i)
+        Event_on(static_cast<EventType>(i), Files_event);
     try
     {
         //读取配置与标定，建立棋盘坐标和机械参考
@@ -54,7 +58,19 @@ int main(int argc, char **argv)
             //发布当前棋局和思考状态
             Match_publishStatus("thinking", session);
             //按起始局面与完整走棋历史查询合法走法和机器人应手
-            Engine_query(session.game, legal, choice);
+            try { Engine_query(session.game, legal, choice); }
+            catch (const std::exception &error)
+            {
+                if (!gameRunning) throw;
+                Event_emit(EventType::Engine, error.what());
+                Match_publishStatus("engine_recovery", session);
+                Command command;
+                do
+                {
+                    Operator_read("engine_recovery", "处理引擎问题后回车继续当前棋局；quit退出。", command);
+                } while (command != Command::Ready);
+                continue;
+            }
             //判断终局与重复局面，状态异常时转入统一收尾
             if (!chess::Game_judge(session.game, legal)) throw std::runtime_error(session.game.error);
             //棋局仍在进行时，处理当前一方的回合
@@ -78,6 +94,7 @@ int main(int argc, char **argv)
         result = gameRunning ? 1 : 0;
         //运行异常写入棋局状态，供页面显示
         if (gameRunning) session.game.error = error.what();
+        if (gameRunning) Event_emit(EventType::Application, error.what());
     }
 
     //请求机械停止，并关闭引擎进程、相机和NPU

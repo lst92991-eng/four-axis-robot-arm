@@ -1,4 +1,4 @@
-#include "vision/geometry.hpp"
+#include "geometry_fixture.hpp"
 #include <cmath>
 #include <cstdint>
 #include <iostream>
@@ -7,8 +7,10 @@
 int main()
 {
     // 手写仿射关系独立生成输入，覆盖90交点、边界和识别异常
-    scara::Board original;
-    scara::boardFromCorners({{{100,600},{340,616},{385,346},{145,330}}}, true, original);
+    auto input = fixture::input();
+    double points[3][4] = {{100,600,10,60},{340,616,34,61.6},{145,330,14.5,33}};
+    input.points = cv::Mat(3,4,CV_64F,points).clone();
+    scara::Geometry original = fixture::geometry(input);
     uint64_t digest = 1469598103934665603ULL;
     int cases = 0;
     auto add = [&](uint64_t value)
@@ -34,7 +36,7 @@ int main()
                 piece.bbox = {center.x - 10, center.y - 10, 20, 20};
                 if (variation == 15) piece.confidence = std::numeric_limits<double>::quiet_NaN();
                 if (variation == 16) piece.bbox.x = std::numeric_limits<double>::infinity();
-                if (variation == 17) board.orientationValid = false;
+                if (variation == 17) board.ready = false;
                 if (variation == 18) piece.bbox.width = -1;
                 std::vector<scara::Detection> pieces{piece};
                 bool duplicate = variation == 10 || variation == 11;
@@ -42,9 +44,10 @@ int main()
                 const std::string frame = variation == 19 ? "" : "frame";
                 bool sceneClear = variation % 4 != 0;
                 scara::Observation result;
-                scara::assignPieces(board, frame, pieces, sceneClear, result);
+                for (int repeat = 0; repeat < 3; ++repeat)
+                    scara::Geometry_observe(board, frame.empty() ? frame : frame + std::to_string(repeat), pieces, sceneClear, result);
                 // 独立预期：合格检测位于0.35格内才占格，重叠标成未知
-                bool observed = variation < 17 || variation == 18;
+                bool observed = (variation < 17 || variation == 18) && sceneClear;
                 bool detected = variation < 14 && variation % 3 != 0;
                 bool onCell = std::hypot(offset, rowOffset) <= .35;
                 std::array<int, scara::Cells> expected;

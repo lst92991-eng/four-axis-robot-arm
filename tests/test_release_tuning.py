@@ -48,17 +48,12 @@ class CannonTrackingTests(unittest.TestCase):
         self.assertEqual(demo.target('a0', [200,300])['base_xy_mm'], [186,68])
 
     @patch('chess_demo.Trial')
-    @patch('chess_demo.cv2.FileStorage')
     @patch('chess_demo.cv2.imdecode')
     @patch('chess_demo.Path.read_bytes', return_value=b'')
-    @patch('chess_demo.Path.read_text', return_value='unused-calibration')
     @patch('chess_demo.read')
-    def test_demo_rejects_old_grid_before_hardware_setup(self, read, _text, _bytes, _decode, storage, trial):
+    def test_demo_rejects_old_grid_before_hardware_setup(self, read, _bytes, _decode, trial):
         read.return_value = dict(geometry_valid=True, orientation_valid=True,
                                  points=[dict(column=c,row=r,base_xy_valid=True) for r in range(10) for c in range(9)])
-        node = storage.return_value.getNode.return_value
-        node.real.return_value = 2
-        node.string.return_value = 'affine-current'
         with self.assertRaises(ValueError):
             Demo(Path('unused-work'), 'unused-adb')
         trial.assert_not_called()

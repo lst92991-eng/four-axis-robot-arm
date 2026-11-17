@@ -1,34 +1,28 @@
-"""Process-wide Windows ownership for one physical adapter."""
-import ctypes
+"""用Linux文件锁保证同一USB-CAN只有一个进程控制。"""
 import hashlib
 import os
-from ctypes import wintypes
+from pathlib import Path
+import tempfile
 
 
 class UsbOwner:
     def __init__(self, identity):
-        self.handle = None
-        if os.name != 'nt':
-            return
-        self.api = ctypes.WinDLL('kernel32', use_last_error=True)
-        self.api.CreateMutexW.argtypes = [ctypes.c_void_p, wintypes.BOOL, wintypes.LPCWSTR]
-        self.api.CreateMutexW.restype = wintypes.HANDLE
-        self.api.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
-        self.api.WaitForSingleObject.restype = wintypes.DWORD
-        self.api.ReleaseMutex.argtypes = [wintypes.HANDLE]
-        self.api.CloseHandle.argtypes = [wintypes.HANDLE]
+        self.file = None
+        if os.name != 'posix':
+            raise RuntimeError('USB-CAN实机独占入口仅支持Linux；Windows可运行离线模拟')
+        import fcntl
+
+        # 同一个物理适配器始终使用同一个锁文件
         key = hashlib.sha256(identity.encode('utf-8')).hexdigest()
-        handle = self.api.CreateMutexW(None, False, 'Local\\StepFOC_USB_'+key)
-        if not handle:
-            raise ctypes.WinError(ctypes.get_last_error())
-        status = self.api.WaitForSingleObject(handle, 0)
-        if status not in (0, 0x80):
-            self.api.CloseHandle(handle)
-            raise RuntimeError('\u9002\u914d\u5668\u6b63\u88ab\u53e6\u4e00\u4e2a StepFOC \u7a97\u53e3\u4f7f\u7528\uff0c\u8bf7\u5148\u65ad\u5f00\u5176\u8fde\u63a5')
-        self.handle = handle
+        self.file = (Path(tempfile.gettempdir()) / ('stepfoc-usb-' + key + '.lock')).open('a')
+        try:
+            fcntl.flock(self.file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            self.close()
+            raise RuntimeError('适配器正被另一进程使用，或无法取得独占锁')
 
     def close(self):
-        if self.handle:
-            self.api.ReleaseMutex(self.handle)
-            self.api.CloseHandle(self.handle)
-            self.handle = None
+        # 关闭描述符释放锁，保留锁文件，避免出现同名的不同锁对象
+        if self.file is not None:
+            self.file.close()
+            self.file = None

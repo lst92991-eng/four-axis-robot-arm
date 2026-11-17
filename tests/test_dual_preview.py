@@ -18,6 +18,20 @@ import dual_preview as preview
 
 
 class ViewportTest(unittest.TestCase):
+    def test_shared_http_request_preserves_dual_frame_headers(self):
+        with patch.object(preview.hp.http.client, 'HTTPConnection') as connect:
+            reply = connect.return_value.getresponse.return_value
+            reply.status, reply.read.return_value = 200, b'accepted'
+            result = preview.hp.request('offline', '/dual/preview', b'jpeg', 'frame-7', headers={
+                'Content-Type': 'image/jpeg', 'X-Geometry-Valid': '1', 'X-Orientation-Valid': '0',
+            })
+            self.assertEqual(result, b'accepted')
+            connect.return_value.request.assert_called_once_with('POST', '/dual/preview', body=b'jpeg', headers={
+                'Content-Type': 'image/jpeg', 'X-Frame-ID': 'frame-7',
+                'X-Geometry-Valid': '1', 'X-Orientation-Valid': '0',
+            })
+            connect.return_value.close.assert_called_once()
+
     def test_fixed_layout_keeps_confirmed_corners_and_uses_the_current_frame(self):
         source = np.zeros((720, 1280, 3), np.uint8)
         corners = [[100, 600], [900, 600], [900, 60], [100, 60]]
@@ -26,8 +40,8 @@ class ViewportTest(unittest.TestCase):
             out = base / 'frames'
             out.mkdir()
             layout = base / 'layout.json'
-            saved = dict(camera=dict(id='fixed-camera', width=1280, height=720), corners=corners,
-                         canonical_order_confirmed=1, plane_file='plane.yml')
+            saved = dict(schema_version=3, camera=dict(id='fixed-camera', width=1280, height=720), corners=corners,
+                         canonical_order_confirmed=1, fit_points={'test':'fit'}, check_points={'test':'independent'})
             layout.write_text(json.dumps(saved), encoding='utf-8')
 
             def inspect(command, **kwargs):
@@ -37,7 +51,9 @@ class ViewportTest(unittest.TestCase):
                 self.assertEqual(current['corners'], corners)
                 self.assertEqual(current['camera'], saved['camera'])
                 self.assertEqual(current['frame_id'], 'new-frame')
-                self.assertEqual(Path(current['plane_file']), base / 'plane.yml')
+                self.assertEqual(current['fit_points'], saved['fit_points'])
+                self.assertEqual(current['check_points'], saved['check_points'])
+                self.assertEqual(current['schema_version'], 3)
                 result = dict(frame_id='new-frame', geometry_valid=True, orientation_valid=True)
                 (out / 'geometry.json').write_text(json.dumps(result), encoding='utf-8')
                 preview.hp.write_image(out / 'geometry.json.png', source)
@@ -83,8 +99,12 @@ class ViewportTest(unittest.TestCase):
                     def close(self):
                         pass
 
-                def publish(board, jpeg, frame_id, geometry):
-                    frames.append(cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR))
+                def request(board, path, data=None, frame_id='', headers=None):
+                    if path == '/health':
+                        return health
+                    if path == '/dual/preview':
+                        frames.append(cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR))
+                    return b'{}'
 
                 argv = ['dual_preview', '--board', 'offline', '--geometry-exe', str(exe),
                         '--layout', str(reference), '--out', str(out)]
@@ -93,10 +113,9 @@ class ViewportTest(unittest.TestCase):
                 health = json.dumps({'model_sha256': 'ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2'}).encode()
                 with patch.object(sys, 'argv', argv), \
                      patch.object(preview.hp, 'Capture', return_value=Capture()), \
-                     patch.object(preview.hp, 'request', return_value=health), \
+                     patch.object(preview.hp, 'request', side_effect=request), \
                      patch.object(preview.hp, 'decode', return_value=([], {'npu_ms': 1})), \
                      patch.object(preview, 'inspect_geometry', side_effect=[(g, source.copy()) for g in geometries]), \
-                     patch.object(preview, 'publish_pair', side_effect=publish), \
                      contextlib.redirect_stdout(io.StringIO()):
                     with self.assertRaises(StopIteration):
                         preview.main()

@@ -197,7 +197,8 @@ int main()
         chess::parseMove("a3a4", human);
         chess::applyMove(game.board, true, human, observed.board, detail);
         observed.valid = true;
-        check(chess::Game_acceptHuman(game, observed, {"a3a4"}, human), "Fixture move confirmation failed");
+        check(chess::inferMove(game.board, observed, game.redToMove, {"a3a4"}, human, game.error), "Fixture move confirmation failed");
+        chess::Game_commit(game, observed.board, human);
         check(engine.think(game, 120, best) && best == "a6a5", "Best move decode failed");
         check(mock::position == "position fen " + fen + " moves a3a4", "Full FEN/history was not sent");
         check(engine.close() && mock::openFds == 0, "Normal close leaked descriptors");

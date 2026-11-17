@@ -5,7 +5,6 @@ No robot connections. Moving the board requires a new confirmed layout.
 
 import argparse
 from datetime import datetime
-import http.client
 import json
 from pathlib import Path
 import subprocess
@@ -15,36 +14,15 @@ import numpy as np
 import host_preview as hp
 
 
-def publish_pair(board, jpeg, frame_id, geometry):
-    conn = http.client.HTTPConnection(board, 8088, timeout=10)
-    try:
-        conn.request(
-            'POST',
-            '/dual/preview',
-            body=jpeg,
-            headers={
-                'Content-Type': 'image/jpeg',
-                'X-Frame-ID': frame_id,
-                'X-Geometry-Valid': str(int(bool(geometry.get('geometry_valid')))),
-                'X-Orientation-Valid': str(int(bool(geometry.get('orientation_valid')))),
-            },
-        )
-        reply = conn.getresponse()
-        body = reply.read()
-        if reply.status != 200:
-            raise RuntimeError(f'Dual publish HTTP {reply.status}: {body[:120]!r}')
-    finally:
-        conn.close()
 
-
+#---------固定布局检查区---------
+# 当前帧与已保存布局交给C++，得到同帧交点与叠图
 def inspect_geometry(exe, layout, out, source, frame_id):
     try:
         hp.write_image(out / 'current-source.png', source)
         cfg = json.loads(layout.read_text(encoding='utf-8'))
         cfg.update(image=str(out / 'current-source.png'), frame_id=frame_id, mode='manual',
                    detections_file='', scene_clear=0)
-        if cfg.get('plane_file'):
-            cfg['plane_file'] = str((layout.parent / cfg['plane_file']).resolve())
         (out / 'inspect.json').write_text(json.dumps(cfg, ensure_ascii=False), encoding='utf-8')
         result = subprocess.run(
             [str(exe), 'inspect', str(out / 'inspect.json'), str(out / 'geometry.json')],
@@ -53,7 +31,6 @@ def inspect_geometry(exe, layout, out, source, frame_id):
             encoding='utf-8',
             errors='replace',
             timeout=8,
-            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
         )
         if result.returncode:
             raise RuntimeError((result.stderr or f'Geometry exit {result.returncode}')[-500:])
@@ -76,6 +53,9 @@ def display_detections(detections, inference_roi, display_roi):
     ]
 
 
+
+#---------显示区域初始化区---------
+# 显示裁剪与推理裁剪分开确认，后续帧保持同一组区域
 def fixed_regions(source, requested_roi, requested_inference):
     roi = list(requested_roi) if requested_roi is not None else [0, 0, source.shape[1], source.shape[0]]
     x, y, w, h = roi
@@ -127,6 +107,8 @@ def grid_view(overlay, roi, geometry, geometry_ms, processed):
     return right_view
 
 
+
+#---------双画面处理循环区---------
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--board', required=True)
@@ -191,8 +173,7 @@ def main():
                 last_begin = begin
                 geometry, overlay = inspect_geometry(exe, layout, out, source, frame_id)
                 geometry_ms = (time.monotonic() - begin) * 1000
-                # Keep the viewport independent of grid detection and its failure state.
-                # Recomputing this crop per frame changes MJPEG aspect ratio and zoom.
+                # 按初始化的区域显示，几何成功或失败都保持画面尺寸和缩放
                 frame = hp.transform(source, roi, 0)
                 inference_frame = hp.transform(source, inference_roi, 0)
                 rgb, ratio, left, top = hp.letterbox(inference_frame)
@@ -210,7 +191,12 @@ def main():
                 ok, single = cv2.imencode('.jpg', left_view, [cv2.IMWRITE_JPEG_QUALITY, 90])
                 assert ok
                 hp.request(args.board, '/preview', single.tobytes(), frame_id)
-                publish_pair(args.board, jpg.tobytes(), frame_id, geometry)
+                # 同一收发入口发布双画面，附带本帧的几何状态
+                hp.request(args.board, '/dual/preview', jpg.tobytes(), frame_id, headers={
+                    'Content-Type': 'image/jpeg',
+                    'X-Geometry-Valid': str(int(bool(geometry.get('geometry_valid')))),
+                    'X-Orientation-Valid': str(int(bool(geometry.get('orientation_valid')))),
+                })
                 record = {
                     'frame_id': frame_id,
                     'source_size': [source.shape[1], source.shape[0]],

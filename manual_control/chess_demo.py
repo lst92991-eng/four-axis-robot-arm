@@ -60,6 +60,8 @@ def disk(frame, pixel):
 
 
 class Demo:
+    #---------初始化区---------
+    # 读取同一份交点和仿射系数，准备棋盘基准、走法及中断续做记录
     def __init__(
         self, work, adb, reference='initial', lift_extra_mm=0, cannon_only=False, *,
         calibration=CALIBRATION, plan_file=PICK_PLAN,
@@ -71,17 +73,12 @@ class Demo:
         self.reference = cv2.imdecode(
             np.frombuffer((work / f'{reference}.png').read_bytes(), np.uint8), cv2.IMREAD_COLOR
         )
-        # 使用生成棋盘格点时的六系数仿射映射
-        plane = cv2.FileStorage(
-            (calibration / 'plane-map.yml').read_text(encoding='utf-8'), cv2.FILE_STORAGE_READ | cv2.FILE_STORAGE_MEMORY
-        )
-        schema = int(plane.getNode('schema_version').real())
-        calibration_id = plane.getNode('calibration_id').string()
-        self.pixel_to_base = plane.getNode('pixel_to_base').mat()
-        plane.release()
-        if schema != 2 or layout.get('mapping_model') != 'affine' or layout.get('calibration_id') != calibration_id:
-            raise ValueError('请用同一份仿射标定重新生成棋盘坐标')
-        if self.pixel_to_base is None or self.pixel_to_base.shape != (2, 3) or not np.isfinite(self.pixel_to_base).all():
+        # 六个系数和90点来自同一份导出结果，启动时读入后保存在内存
+        if layout.get('schema_version') != 3 or layout.get('mapping_model') != 'affine':
+            raise ValueError('请用新布局重新导出schema 3棋盘坐标')
+        matrix = layout['pixel_to_base']
+        self.pixel_to_base = np.asarray(matrix['data'], dtype=float).reshape(matrix['rows'], matrix['cols'])
+        if self.pixel_to_base.shape != (2, 3) or not np.isfinite(self.pixel_to_base).all():
             raise ValueError('仿射标定需要有限的2×3系数')
         plan = read(plan_file)
         z = plan['z']
@@ -154,6 +151,7 @@ class Demo:
             )
 
     #---------坐标与盘面核对区---------
+    # 从格点或实拍中心取得基座XY，再沿用已示教参考换算J2/J3目标
     def target(self, square, pixel=None):
         if pixel is None:
             x, y = self.grid[square]['base_xy_mm']
@@ -176,6 +174,7 @@ class Demo:
         )
         return dict(grid_id=square, base_xy_mm=[x, y], j2_deg=j2, j3_motor_deg=j3)
 
+    # 先核对棋盘基准未移动，再返回指定格点的棋子颜色和像素中心
     def observe(self, frame, squares=START):
         if frame.shape != self.reference.shape:
             raise RuntimeError('相机分辨率变化')
@@ -202,6 +201,7 @@ class Demo:
                 self.expected[k] = colors[k]
         return {k: self.target(k, v[1] if v else None) for k, v in found.items() if k in START}
 
+    # 仅恢复演示进度，下一步仍重新核对实际盘面
     def load_checkpoint(self):
         if self.checkpoint.exists():
             state = read(self.checkpoint)

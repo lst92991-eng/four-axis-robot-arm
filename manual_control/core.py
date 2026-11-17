@@ -29,6 +29,8 @@ def packet(kind, node, seq, a=0, b=0):
 
 
 class Controller:
+    #---------初始化区---------
+    # 配置决定每轴能力；status保存反馈，pending保存待应答请求，active保存当前按压
     def __init__(self, config, send, clock=time.monotonic, audit=None, reference_path=None):
         self.config, self.send, self.clock = config, send, clock
         self.audit = audit or (lambda event: None)
@@ -149,8 +151,6 @@ class Controller:
             raise ValueError(reason)
         if n not in self.synced:
             raise ValueError('等待 PING 序号同步')
-        if any(key[0] == n and p['syncing'] for key, p in self.pending.items()):
-            raise ValueError('等待序号同步')
         press = args.get('press')
         if not isinstance(press, str) or not 1 <= len(press) <= 80:
             raise ValueError('缺少本次按压标识')
@@ -194,6 +194,8 @@ class Controller:
         self.transmit(n, command, value, speed_mdeg_s)
         self.message = message
 
+    #---------运动条件区---------
+    # 汇总该轴当前不能运动的原因，页面显示与动作入口共用同一判断
     def reason(self, n, require_still=True):
         s = self.status.get(n)
         if not self.connected or not s or self.clock() - s['received'] > STATUS_S:
@@ -223,6 +225,7 @@ class Controller:
             return '等待轴停稳'
         return ''
 
+    # 调试构建与既有实测构建仍有能力差别，集中在这里识别
     def commissioning_firmware(self, status):
         build = self.config.get('commissioning_build')
         return bool(build and status.get('build') == build)
@@ -400,6 +403,7 @@ class Controller:
             self.log(f'J{node} {COMMAND_NAMES.get(pending["kind"],str(pending["kind"]))} 已接受')
 
     #---------停稳与通信时限区---------
+    # 控制线程周期调用，检查租约、应答期限、保活和停稳反馈
     def tick(self):
         now = self.clock()
         if self.recovering == 1 and self.reference_restore is not None and now > self.reference_deadline:
@@ -415,20 +419,20 @@ class Controller:
                     break
         expired = [k for k, p in self.pending.items() if now - p['sent'] > ACK_S]
         for key in expired:
-            p = self.pending.pop(key, None)
-            if p is not None:
-                status = self.status.get(key[0], {})
-                if (
-                    p['kind'] == PING
-                    and not p['syncing']
-                    and now - status.get('received', 0) <= STATUS_S
-                    and not status.get('interlocked')
-                ):
-                    continue
-                if key[0] == self.recovering:
-                    self.recovering = None
-                    self.log(f'J{key[0]} 恢复应答超时，请看当前状态')
-                self.fail(f'J{key[0]} 应答超时；不重发运动命令')
+            # Controller由控制线程串行调用，列表中的待应答项在本轮仍然存在
+            p = self.pending.pop(key)
+            status = self.status.get(key[0], {})
+            if (
+                p['kind'] == PING
+                and not p['syncing']
+                and now - status.get('received', 0) <= STATUS_S
+                and not status.get('interlocked')
+            ):
+                continue
+            if key[0] == self.recovering:
+                self.recovering = None
+                self.log(f'J{key[0]} 恢复应答超时，请看当前状态')
+            self.fail(f'J{key[0]} 应答超时；不重发运动命令')
         if now - self.last_ping >= 0.10:
             self.last_ping = now
             # 页面失联时先停运动轴。已经停稳的保持轴继续收 CAN 心跳。
@@ -452,6 +456,7 @@ class Controller:
             self.log(self.message)
             self.stop_deadline = None
 
+    # 先撤销当前动作，再给仍在运行的轴发STOP；停止结果由新反馈确认
     def stop(self, reason, disarm=False):
         active_node = self.active['node'] if self.active else None
         active_speed = self.active['speed'] if self.active else 0
@@ -587,6 +592,7 @@ class Controller:
                 temporary.replace(self.reference_path)
 
     #---------状态与记录区---------
+    # 把内部状态整理成页面字段，读取快照不会发送运动指令
     def snapshot(self):
         rows = []
         for n, axis in self.axes.items():

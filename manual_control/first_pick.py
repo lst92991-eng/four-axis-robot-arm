@@ -21,6 +21,8 @@ PICK_PLAN = ROOT / 'output/first-pick-c3-c4-20261111/trial-plan.json'
 
 
 class Trial:
+    #---------初始化区---------
+    # 读入已示教的角度、释放脉冲和机械参考，并取得本机页面控制凭据
     def __init__(self, plan, adb, log, nodes=(1, 2, 3), *, calibration=CALIBRATION):
         self.plan = plan
         self.adb = [adb, '-s', RV1106_SERIAL, 'shell']
@@ -62,7 +64,7 @@ class Trial:
         else:
             self.pick_piece(self.plan['source'])
         self.place_piece(self.plan['destination'])
-        axes = self.axes(self.sample())
+        axes = self.sample()['axes']
         self.note('motion_complete', axes={n: a['position'] for n, a in axes.items()})
 
     def pick_piece(self, target, height=None):
@@ -81,47 +83,52 @@ class Trial:
         state = self.request('/api/state')
         if state['simulated'] or state['active'] or state['stopping']:
             raise RuntimeError('手动操作尚未停稳')
-        if require_raised and (self.axes(state)[1]['position'] - self.high) * self.up < -self.z_tolerance:
+        if require_raised and (state['axes'][1]['position'] - self.high) * self.up < -self.z_tolerance:
             raise RuntimeError('当前 Z 已离开示教抬升位置')
         self.action('stop', disarm=True)
         for node in self.nodes:
             state = self.request('/api/state')
-            axis = self.axes(state)[node]
+            axis = state['axes'][node]
             if not (axis['fault'] or axis['interlocked'] or not axis['referenced'] or axis['recoverable']):
                 continue
             end = time.monotonic() + 1.5
             while not axis['recoverable'] and time.monotonic() < end:
                 time.sleep(0.03)
                 state = self.request('/api/state')
-                axis = self.axes(state)[node]
+                axis = state['axes'][node]
             if not axis['recoverable']:
                 raise RuntimeError(axis['reason'])
             self.action('recover', node=node)
             end = time.monotonic() + 1.5
             while time.monotonic() < end:
                 state = self.request('/api/state')
-                axis = self.axes(state)[node]
+                axis = state['axes'][node]
                 if not (axis['interlocked'] or axis['fault'] or state['recovering']):
                     break
                 time.sleep(0.03)
             else:
                 raise RuntimeError(f'J{node} 恢复未确认')
         self.wait(
-            lambda s: not s['armed'] and not s['stopping'] and all(self.axes(s)[n]['stationary'] for n in self.nodes),
+            lambda s: not s['armed'] and not s['stopping'] and all(s['axes'][n]['stationary'] for n in self.nodes),
             1.5,
         )
         self.action('arm')
         self.wait(lambda s: s['armed'] and s['owner'] == self.client, 0.25)
         self.owns_panel = True
-        self.wait(lambda s: all(self.axes(s)[n]['ready'] for n in self.nodes), 2)
+        self.wait(lambda s: all(s['axes'][n]['ready'] for n in self.nodes), 2)
         self.gpio(0)
 
+    # HTTP读取或提交，轴列表在这里转换成按节点索引的数据
     def request(self, path, body=None):
         data = None if body is None else json.dumps(body).encode()
         request = Request(URL + path, data, headers={'Content-Type': 'application/json'})
         try:
             with self.opener.open(request, timeout=0.7) as response:
-                return json.load(response)
+                result = json.load(response)
+            # 状态列表在接收处转换一次，后续直接按节点读取反馈
+            if path == '/api/state':
+                result['axes'] = {axis['node']: axis for axis in result['axes']}
+            return result
         except HTTPError as exc:
             try:
                 message = json.load(exc).get('error')
@@ -135,9 +142,7 @@ class Trial:
             '/api/action', dict(key=self.key, client=self.client, order=self.order, action=action, **args)
         )
 
-    def axes(self, state):
-        return {a['node']: a for a in state['axes']}
-
+    # 在持有控制权时续租，取得新状态并核对参与轴的实际反馈
     def sample(self):
         now = time.monotonic()
         if self.owns_panel and now - self.last_ping >= 0.075:
@@ -148,13 +153,14 @@ class Trial:
             not state['armed'] or state['owner'] != self.client or state['message'] == '已请求停止并保持位置'
         ):
             raise RuntimeError(f'试走已停止（{state["message"]}）')
-        axes = self.axes(state)
+        axes = state['axes']
         for n in self.nodes:
             a = axes[n]
             if not a['referenced'] or a['fault'] or a['interlocked'] or a['age_ms'] is None or a['age_ms'] > 250:
                 raise RuntimeError(f'J{n} {a["reason"] or "驱动状态异常"}')
         return state
 
+    # 等待期间持续收反馈和续租，满足条件才交付状态
     def wait(self, predicate, seconds, watch_press=False):
         end = time.monotonic() + seconds
         while time.monotonic() < end:
@@ -167,6 +173,7 @@ class Trial:
         raise TimeoutError('等待轴到位或停稳超时')
 
     #---------轴指令区---------
+    # 等待停稳时可重试申请，动作被接受后通过反馈确认本次按压标识
     def begin(self, action, node, **args):
         self.press = str(uuid.uuid4())
         deadline = time.monotonic() + 1.5
@@ -185,14 +192,14 @@ class Trial:
     def end(self, node):
         self.action('release', press=self.press)
         self.press = None
-        return self.wait(lambda s: not s['active'] and not s['stopping'] and self.axes(s)[node]['stationary'], 4)
+        return self.wait(lambda s: not s['active'] and not s['stopping'] and s['axes'][node]['stationary'], 4)
 
     def at_rest(self, node):
         seen = None
 
         def settled(state):
             nonlocal seen
-            axis = self.axes(state)[node]
+            axis = state['axes'][node]
             if axis['state'] not in (0, 1) or not axis['stationary']:
                 seen = None
                 return False
@@ -200,7 +207,7 @@ class Trial:
                 seen = axis['uptime']
             return axis['uptime'] != seen
 
-        return self.axes(self.wait(settled, 2))[node]
+        return self.wait(settled, 2)['axes'][node]
 
     def position(self, node, goal, speed):
         axis = self.at_rest(node)
@@ -210,7 +217,7 @@ class Trial:
         self.begin('position', node, target=goal, speed=speed)
 
         def arrived(s):
-            a = self.axes(s)[node]
+            a = s['axes'][node]
             return (
                 a['state'] in (1, 2)
                 and a['stationary']
@@ -220,12 +227,13 @@ class Trial:
 
         self.wait(arrived, distance / speed + 2 * speed / 30 + 5, True)
         s = self.end(node)
-        self.note('rotation', axis=node, goal=goal, position=self.axes(s)[node]['position'])
+        self.note('rotation', axis=node, goal=goal, position=s['axes'][node]['position'])
         return True
 
     #---------平面与升降区---------
+    # 历史实测流程仍先J2再J3，结束后用正解核对吸头的毫米位置
     def xy(self, target):
-        z = self.axes(self.sample())[1]
+        z = self.sample()['axes'][1]
         if (z['position'] - self.high) * self.up < -self.z_tolerance:
             raise RuntimeError('Z 轴还没到搬运高度')
         if self.position(2, target['j2_deg'], 8):
@@ -234,11 +242,11 @@ class Trial:
             self.wait(lambda _: time.monotonic() >= settled_at, 0.6)
         self.approach_j3(target['j3_motor_deg'])
         for _ in range(2):
-            axes = self.axes(self.sample())
+            axes = self.sample()['axes']
             if self.tip_error(target, axes) <= 2.5:
                 break
             self.trim_j3(target['j3_motor_deg'])
-        axes = self.axes(self.sample())
+        axes = self.sample()['axes']
         error = self.tip_error(target, axes)
         if error > 2.5:
             raise RuntimeError('两旋转轴停稳后偏离取放点')
@@ -254,7 +262,7 @@ class Trial:
         self.begin('jog', 3, direction=direction, speed=speed)
 
         def close_enough(s):
-            a = self.axes(s)[3]
+            a = s['axes'][3]
             v = max(0.0, direction * a['velocity'])
             return direction * (goal - a['position']) <= v * v / 60 + 0.05 * v
 
@@ -283,7 +291,7 @@ class Trial:
         self.begin('jog', 3, direction=direction, speed=speed)
 
         def close_enough(s):
-            a = self.axes(s)[3]
+            a = s['axes'][3]
             speed_toward = max(0.0, direction * a['velocity'])
             if direction * (a['position'] - initial) < -5:
                 raise RuntimeError('J3 反馈位置离目标越来越远')
@@ -291,7 +299,7 @@ class Trial:
 
         self.wait(close_enough, abs(delta) / 5 + 4, True)
         settled = self.end(3)
-        self.note('j3_approach', goal=goal, position=self.axes(settled)[3]['position'])
+        self.note('j3_approach', goal=goal, position=settled['axes'][3]['position'])
 
     def z(self, target, speed_limit=None):
         speed_limit = self.z_speed if speed_limit is None else speed_limit
@@ -304,7 +312,7 @@ class Trial:
             if attempt == 0 and initial['power']:
                 # 丝杆换向前退出保持，清除上一段运动留下的保持电流。
                 self.action('idle_z')
-                self.wait(lambda s: self.axes(s)[1]['state'] == 0 and not self.axes(s)[1]['power'], 1)
+                self.wait(lambda s: s['axes'][1]['state'] == 0 and not s['axes'][1]['power'], 1)
                 initial = self.at_rest(1)
                 delta = target - initial['position']
             direction = 1 if delta > 0 else -1
@@ -317,13 +325,13 @@ class Trial:
             start = time.monotonic()
 
             def brake_now(state):
-                a = self.axes(state)[1]
+                a = state['axes'][1]
                 v = min(speed, max(0.0, direction * a['velocity'], (time.monotonic() - start) * 60))
                 return direction * (brake_goal - a['target']) <= v * v / (2 * 360) + 0.033 * v
 
             self.wait(brake_now, abs(delta) / speed + speed / 60 + 4, True)
             self.end(1)
-        final = self.axes(self.sample())[1]['position']
+        final = self.sample()['axes'][1]['position']
         if abs(final - target) > self.z_tolerance and not (target == self.high and (final - target) * self.up >= 0):
             raise RuntimeError(f'Z 停在 {final:.3f}°，目标 {target:.3f}°')
         self.note('z', goal=target, position=final)
@@ -335,7 +343,6 @@ class Trial:
             self.adb + [command],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
         ) as process:
             end = time.monotonic() + 2
             while process.poll() is None and time.monotonic() < end:
@@ -361,7 +368,6 @@ class Trial:
             self.adb + [remote],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
         )
         try:
             deadline = time.monotonic() + seconds + 2

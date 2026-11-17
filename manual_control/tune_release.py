@@ -48,6 +48,8 @@ def moving_cannon(detections, matrix, fixed_board):
 
 
 class Tuning:
+    #---------初始化区---------
+    # 读取演示配置、固定棋盘变换及已有释放进度
     def __init__(self, args):
         self.args = args
         self.plan_path = args.plan_file
@@ -70,8 +72,9 @@ class Tuning:
         if health['model_sha256'] != MODEL_SHA:
             raise RuntimeError('实际 NPU 模型与已验证模型不一致')
         initial = self.infer(self.demo.reference, 'reference')
-        matrix = board_transform(self.demo.grid)
-        cannons = [transform_point(matrix, d['pixel']) for d in initial if d['symbol'] == 'C']
+        # 固定布局的像素到行列关系只求一次，两帧确认共用
+        self.board_matrix = board_transform(self.demo.grid)
+        cannons = [transform_point(self.board_matrix, d['pixel']) for d in initial if d['symbol'] == 'C']
         if not cannons:
             raise RuntimeError('参考画面缺少固定红炮')
         self.fixed_board = min(cannons, key=lambda p: math.dist(p, [1, 2]))
@@ -211,6 +214,7 @@ class Tuning:
             time.sleep(0.025)
         raise RuntimeError('没有新的相机画面')
 
+    # 机械停稳后取两张新画面，只有棋子身份与位置一致才用于下一次取放
     def scene(self, label):
         if self.trial.owns_panel:
             raise RuntimeError('相机推理前先停稳并释放手动控制')
@@ -218,11 +222,10 @@ class Tuning:
         hp.write_image(self.directory / 'source.png', frame)
         detections = self.infer(frame, label)
         self.demo.observe(frame, ())
-        matrix = board_transform(self.demo.grid)
-        cannon = moving_cannon(detections, matrix, self.fixed_board)
+        cannon = moving_cannon(detections, self.board_matrix, self.fixed_board)
         second = self.frame()
         self.demo.observe(second, ())
-        confirmed = moving_cannon(self.infer(second, label + '-confirm'), matrix, self.fixed_board)
+        confirmed = moving_cannon(self.infer(second, label + '-confirm'), self.board_matrix, self.fixed_board)
         if (cannon is None) != (confirmed is None) or (
             cannon is not None and math.dist(cannon['pixel'], confirmed['pixel']) > 4
         ):

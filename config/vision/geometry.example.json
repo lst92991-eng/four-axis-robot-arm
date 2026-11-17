@@ -1,0 +1,12 @@
+{
+  "note": "三行依次填写a0、i0、a9的[u像素,v像素,X毫米,Y毫米]。相机和棋盘固定，选三点不共线，先用叠图和现场取放检查结果。data按行填写12个实测数值。",
+  "points": {
+    "type_id": "opencv-matrix",
+    "rows": 3,
+    "cols": 4,
+    "dt": "d",
+    "data": []
+  },
+  "image": "current-source.png",
+  "frame_id": "measured-frame"
+}

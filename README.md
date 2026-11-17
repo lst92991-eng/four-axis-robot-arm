@@ -1,100 +1,66 @@
-# SCARA 中国象棋机器人：直接C++执行接口
+# SCARA 中国象棋机器人：C++ 教学主线
 
-跨设备续做请从[重构交接](docs/重构交接_2026-11-16.md)开始，里面有 Git 分支、历史材料下载和回归验收约定。
+当前版本先交用户运行验证，验证通过后再进行第二轮 app 文件合并。正式开发与教学范围是 C++；Python 脚本和 C++ 仿真后端作为辅助验证及历史资料保留。
 
-机械执行通过直接函数调用交接动作数组。预览图片与棋局状态供浏览器显示。
+本轮已合并独立 device 文件，删除 chess/session 转发层，整理棋局与主流程，并接入事件显示回调。正式 C++ 为26个文件、2228有效行；仿真后端198行另计。[本版改动与验证入口](docs/剩余模块预审_2026-11-17.md) · [逐文件行数与哈希](docs/evidence/2026-11-17/event-app-review.json)。
 
-## 先看这些代码
+## 阅读顺序
 
-按下面的顺序逐块审核。每块完成精简与离线回归后，由用户审核代码，再继续下一块。当前正式 C++ 共 33 个文件、2648 有效行，包含头文件、内部实现和仿真后端。
-
-| 审核模块 | 阅读入口与范围 | 数据流与精简重点 | 当前有效行 |
+| 模块 | 阅读入口 | 数据流 | 有效行 |
 | --- | --- | --- | ---: |
-| 1. 取流与识别 | [capture.hpp](vision/capture.hpp)、[capture.cpp](vision/capture.cpp)、yolo、yolo_npu及[vision_main.cpp](app/vision_main.cpp) | 原图→RGB输入→NPU张量→类别和位置→预览。沿单帧处理顺序阅读 | 430 |
-| 2. 棋盘坐标与标定 | [calibration.cpp](vision/calibration.cpp)、[geometry.cpp](vision/geometry.cpp)、board、fixed_board、io及[geometry_tool.cpp](app/geometry_tool.cpp) | 读取采点→拟合六个仿射系数→棋盘建系与归格→毫米坐标缓存 | 664 |
-| 3. 棋局与引擎 | [board.cpp](chess/board.cpp)、[pikafish.cpp](chess/pikafish.cpp)及头文件 | 已确认盘面与历史→合法走法和应手。核对状态和协议解析 | 577 |
-| 4. 运动规划与执行接口 | [plan.cpp](motion/plan.cpp)、[execute.cpp](motion/execute.cpp)及头文件 | 基座XY→关节目标→取放步骤→执行结果。明确角度单位与动作顺序 | 211 |
-| 5. 配置与运行输入输出 | [game_config.cpp](app/game_config.cpp)、game_files、game_live_io、game_sim_io及头文件 | 参数读取、相机与引擎资源交接、状态显示。收敛重复转换与收尾 | 396 |
-| 6. 实机控制与配套工具 | [manual_control](manual_control)、temp/yolo_live、temp/transport | 点动与取放2144行、标定工具740行、实时预览835行、USB-CAN302行。逐项核对入口用途与重复实现 | 4021 |
-| 7. 主流程与对局交接 | [game_main.cpp](app/game_main.cpp)、[game.cpp](app/game.cpp)、[session.cpp](chess/session.cpp)及头文件 | 各模块审核后，最后统一初始化、双方回合、执行与落子确认的调用顺序 | 370 |
+| 取流与识别 | vision/capture、yolo、yolo_npu、app/vision_main | 原图→RGB输入→NPU张量→棋子类别和位置 | 430 |
+| 棋盘坐标 | vision/geometry、io、app/geometry_tool | 三点建系→90点归格→目标XY | 223 |
+| 运动 | motion/plan.hpp → plan.cpp → execute.hpp → execute.cpp | XY→三轴目标→共同轨迹→反馈到位 | 352 |
+| 棋局与引擎 | chess/board.hpp → board.cpp → pikafish.cpp | 盘面差分→合法走法→引擎选择→已确认历史 | 518 |
+| 配置与运行IO | app/game_config → game_live_io → game_files | 参数读取→资源与驱动交接→屏幕状态 | 327 |
+| 对局主流程与事件 | app/game.hpp → game_main.cpp → game.cpp → common/events.hpp | 开局→双方回合→恢复确认→收尾 | 378 |
 
-有效行按 Lizard 统计，排除空行和注释，包含辅助函数与头文件。网页中的脚本计入，HTML/CSS另列。测试、第三方库和固件另计。
+有效行排除空白和纯注释，包含头文件、内部辅助函数、预处理及独立括号。测试、第三方库、固件和辅助仿真另计。取流与识别已讲解，三点几何已获用户基本认可；余下四块在本版验证后继续审核。
 
-相机采集、NPU接口及原 `vision/board.cpp` 已通过本轮用户代码审核，`yolo.cpp` 的重构讲解已完成。当前几何模块已按用户要求改用仿射，等待代码审核。阅读从 `calibration.cpp::loadPlane` 开始，随后是 `calibratePlane`、`geometry.cpp::fitAffine/transformPoint`、`board.cpp` 和 `fixed_board.cpp`。主流程在各模块确认后统一定稿。[本轮数据流与远程续做](docs/重构交接_2026-11-16.md#当前仿射候选与远程续做)。
+## 棋盘异常怎样处理
 
-前一轮将标定与棋盘观察分开，整组模块690→665行，保持原单应计算时通过了输出字节对照。本轮统一使用2×3仿射系数，去掉透视除法、旧评分字段和逐点误差缓存；补入全部采点最小二乘及仿射角点验误，整组665→664行。`geometry.cpp`为45有效行，包含拟合、两行坐标公式和格点目标三个函数；没有新增生产文件。
+main 注册事件显示函数。视觉、盘面变化、非法走法、运动、落子、引擎、停止、恢复及应用异常分别发事件。Files_event 只整理原因、棋子名称和格位，更新终端与页面状态；实体板载屏幕尚待绑定该回调。
 
-仿射候选通过15组Linux CTest、64项Python检查及14400组独立公式归格用例，CLI生成的90个坐标与解析式吻合。标定格式升级为schema 2，旧单应文件明确拒绝；从原采点重新拟合后仍须通过原误差要求。旧8拟合点、1检查点的最大误差为2.369/0.900毫米，超过旧2毫米拟合门限，程序正确拒绝保存。历史数据和门限原样保留；新增仿真采点明确标为synthetic，当前机位仍待实测。参见[验证和行数记录](docs/evidence/2026-11-16/affine-review.json)。
+机器人思考后、启动动作前，重新读取稳定盘面。检测到交换或取走棋子时，显示差异，等待人恢复原先棋局；视觉确认恢复后继续该回合。执行失败时还需要确认设备停止并重新进入观察位。旧 retry/accept/restored 命令已移除，保留回车确认、认输、和棋、退出。
 
-用户计划于2026-11-16远程继续逐模块整理，全部模块完成后于11月17日上机验证，再进行整局对弈稳定性测试，通过后开始编写教材。时间为计划，完成情况按实测记录更新。
+正常数据流为 GameConfig_load → Match_start → Match_human / Engine_query → Match_robot → Game_commit。执行成功且新盘面符合预期，才写入走法历史。
 
-后续开发使用 Linux。当前主程序直接进入 `main`，终端输出操作提示、开局核对盘面和最终错误。预览页面从 `Match_publishStatus` 写出的 `status.json` 读取阶段、棋局与错误信息。
+## 运行本版离线演示
 
-本轮主程序从76降到63有效行。Ubuntu 24.04 WSL、GCC 13.3、OpenCV 5.0.0 构建与15组 Linux CTest通过，修改前后15种对局场景的完整状态和动作数值一致。整机运动待现场验证。
-
-当前 `Vision_decode` 用10有效行顺序交接候选读取、去重和坐标还原。NPU输出通过OpenCV整理为每行19列的浮点候选表，逐行解码；去重按得分向保留表追加，原图坐标由独立函数还原。列索引使用具名枚举，`yolo.cpp` 为153有效行，本轮由142增加11行。
-
-4组相关检查通过，包含行尾对齐和三个连续重叠框的回归用例。16帧、152个检测结果及RGB输入、预览图与重构前一致。本机7组张量平均解码耗时约0.35→0.49毫秒，最大浮点工作区约1.4MiB；RV1106性能待实测。本轮已完成后处理代码讲解，继续审核NPU接口。
-
-[交接C++阅读稿](output/game-direct-20261115/round-01/cpp-code.txt) · [交接C++源码包](output/game-direct-20261115/round-01/cpp-code.zip) · [交接源码与验证包](output/game-direct-20261115/game-application-source.zip)。这些资料对应2026-11-15交接快照。当前审核使用工作目录中的源码，中文注释密度参考FOC固件，逐段说明变量含义、处理步骤和数据交接。
-
-## 实机取放的阅读顺序
-
-1. [first_pick.py](manual_control/first_pick.py) 从 `Trial.run` 读。申请控制权，移到源格、下降取子、抬高搬运，到目标格释放，确认脉冲归零再抬升。
-2. [server.py](manual_control/server.py) 的 `Worker.run` 按顺序处理操作、CAN反馈和页面状态。[core.py](manual_control/core.py) 的 `Controller.action` 处理点动、定位与停止，CAN收发在同一文件的独立区块。
-3. [chess_demo.py](manual_control/chess_demo.py) 在取子和放子后用新画面确认盘面。[tune_release.py](manual_control/tune_release.py) 在确认连续三次合格落点后写回释放参数。
-
-单次取放从位置参数读取示教计划。演示和释放调参使用同一个 `--plan-file`，三个入口均可用 `--calibration` 指向现场标定目录。该目录的 `arm-registration.json` 用于机械参考，`plane-map.yml` 用于把像素转换为基座毫米。点动面板可用 `--simulate` 离线检查操作顺序。
-
-## 后续硬件只接两个函数
-
-```cpp
-void Motion_execute(const std::vector<PickStep> &steps,
-                    const volatile std::sig_atomic_t &running,
-                    bool &success);
-bool Motion_stop();
-```
-
-`Motion_execute`同步执行整个数组，全部完成并停稳后才写 `success=true`。`running`变0时停止，不继续下一步；失败不会自动重发。`Motion_stop`在普通函数上下文调用，真实确认停稳才返回true。信号回调只关运行标志和相机，不进行阻塞硬件I/O。
-
-**当前 execute.cpp 尚未实现真实SPI-CAN/H桥，两个接口明确返回失败。** 这是待硬件接入的位置，不能直接用它跑实机下棋。补齐实现后，主循环、棋局、坐标和取放计划不需要改变。`Robot_execute`先关闭相机/NPU，再调用它；实际执行成功之后，主程序仍要看到新三帧盘面与预期一致才提交走法。详细约定见[对弈与执行接口](docs/棋局与视觉接口_2026-11-09.md)。
-
-## 现在可以离线运行完整对局
+Linux 项目根目录，安装 OpenCV 5.0.0 开发包并设置 OpenCV_DIR 后执行：
 
 ```sh
-./build/commit-verify/scara_game_sim tests/fixtures/game-app/simulation.json
+cmake -S . -B build/review -DOpenCV_DIR="$OpenCV_DIR" -DBUILD_TESTING=ON
+cmake --build build/review --parallel
+ctest --test-dir build/review --output-on-failure
+./build/review/scara_game_sim tests/fixtures/game-app/event-demo-config.json
 ```
 
-同一main和业务流程链接仿真IO，场景包含两轮走棋和一次机器人吃子，完整历史为 `a3a4 a6a5 a4a5 a9a5`。状态保存在 `output/game-main-simulation/status.json`。仿真把动作调用参数单向打印为SIM_CALL/SIM_STEP/SIM_RETURN，供离线核对，不生成或读取动作往返文件，也不加载真实相机/NPU/引擎/电机。
+演示脚本自动模拟两轮对弈、一次吃子，以及思考期间交换棋子再恢复。终端先显示交换原因，确认恢复后继续走棋；结束历史为 a3a4 a6a5 a4a5 a9a5，状态写入 output/event-demo/status.json。该程序使用仿真IO，不连接相机或电机。本机现成运行命令见[交接说明](docs/剩余模块预审_2026-11-17.md)。
 
-普通搬子、吃子、双方轮次、任意已确认初始盘面、无合法走法、认输/和棋、重复局面人工裁定和失败恢复仍保留。玩家走完并移开手后回车；retry只观察，accept仍需盘面吻合，restored只在完整复位后解除待确认状态。当前不支持重启进程自动续局。
+本版12组 Linux CTest、17个真实 main 对局场景通过；真实 Linux IO 源文件单独编译通过。旧 session 接口测试随层次删除，回合恢复检查合并到 main 场景。离线检查与实机验收分别记录。
 
-实机需要在 `config/game.example.json` 填入实际观察位、吃子区和已有标定/示教文件。模板null和仿真夹具不能当真实坐标。浏览器只读显示最新 `preview.jpg` 与 `status.json`，思考和运动期间相机暂停，终端负责交互。
+## 实机接入状态
 
-## 固定流程怎么运行
+J1/J2/J3使用同一时间进度，J4保持原状态。阅读 Pick_plan → Trajectory_plan → Trajectory_sample → Motion_execute；Motion_execute负责周期参考和实际到位确认。
 
-1. 首次记录至少3组不共线的像素/基座XY配对；上机建议四角拟合、另采中心和边缘验误。`loadPlane`读入采点，`calibratePlane`计算六个仿射系数并验误，`savePlane`保存schema 2。读取保存文件时复算核对，旧单应文件需重新拟合。
-2. 按红方视角给出四个格线交点：红方左下、红方右下、黑方右上、黑方左上，对应a0、i0、i9、a9。`boardFromCorners`生成90点；人工确认朝向后，`FixedBoard_setup`一次缓存XY。
-3. 每个新识别帧通过 `Session_observe` 分配棋子。格点层只保留棋子身份和一个有效标志，连续三个不同有效帧一致后才交给棋局。YOLO原有置信度仍用于阈值和绘框。
-4. `Pikafish::legalMoves(game, legal)`、`think(game, timeMs, choice)`直接接收已确认的Game，发送其起始FEN和完整走法历史。只有查询成功后才使用输出；引擎返回的走法格式在接收处检查。
-5. `Session_plan`准备普通搬子或先清走被吃棋子的计划，`Session_confirm`在动作成功且新盘面符合预期后才提交历史。结果未确认时不自动重发。和棋/认输通过 `Game_finish`提交明确结果。
+驱动声明位于 motion/execute.hpp，真实 Drive_read/write/release/stop 定义位于 app/game_live_io.cpp，目前返回未连接。C++ 的 CAN/H桥链路尚待接入；当前v3固件MOVE只接受停稳后的新目标，周期参考还需对应下位机支持。因此本版不能直接进行真实机械臂取放验证。历史 Python 实测入口保留在 manual_control，正式C++开发不再以它作为课程模块。
 
-**固定90点是保存的布局，不代表当前画面已自动定位。** 只移动棋盘时须重新输入并确认四角；相机或基座位置、焦距改变时重新标定映射。重新设置布局后调用 `session.stable.reset()`，再观察新的稳定盘面。坐标查表与帧号无关；识别帧仍必须有编号，重复帧不能推进稳定计数。
+## 固定棋盘怎样建系
 
-布局字段见 [离线格式示例](tests/fixtures/fixed-app/setup.json)。它是测试夹具，不应直接当作现场坐标。相机标识及1280×720尺寸集中在 `vision/calibration.hpp`；当前只接受已独立验误的原始像素标定，含非空镜头畸变参数的配置会被拒绝。
+Geometry_init 读取a0、i0、a9三组对应点，每行是像素u、v和基座X、Y毫米。三点不共线、相机与棋盘固定；一次求出像素到基座和像素到行列的关系，再生成90个点。核心140有效行，初始化21行。
+
+每帧由Geometry_observe归格并确认连续三帧；Match_robot内的planMove查XY、做逆解并准备取放。相机或棋盘移动后重新采点。保留已验证的识别ROI及坐标还原方式。
 
 ```sh
-scara_geometry_tool calibrate measured-pairs.json plane-map.yml
-scara_geometry_tool inspect fixed-board.json grid.json
+scara_geometry_tool inspect layout.json grid.json
 ```
 
-两个命令都只处理文件，不连接机械臂。旧双画面入口改用 `--layout`读取固定布局，不再使用 `--orientation-reference`。启动时仍显式保留已验证的识别ROI：
+该命令输出grid.json与grid.json.png，不连接设备。模板见config/vision/geometry.example.json；测试夹具中的坐标只供离线测试。
 
-```sh
-python temp/yolo_live/dual_preview.py --board <RV1106_IP> --geometry-exe <scara_geometry_tool路径> --layout <现场固定布局.json> --out output/dual-fixed --roi 0 0 1280 720 --inference-roi 300 70 650 600
-```
+## 历史材料
 
-此处是调用格式，本轮没有连接或启动板端服务。预览文字已改为“固定90点已加载”，不能拿它作为自动定位成功的证据。
+跨设备来源与既有材料见[重构交接](docs/重构交接_2026-11-16.md)。以下记录对应各自日期的版本和硬件，当前行为以本页上方及本轮证据为准。
 
 ## 2026-11-15 的直接执行接口验证
 

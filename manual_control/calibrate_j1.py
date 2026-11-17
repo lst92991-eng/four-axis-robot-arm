@@ -81,6 +81,8 @@ def decode(data, node=1):
 
 
 class Session:
+    #---------初始化区---------
+    # 打开单个节点的标定会话，记录回复、实际状态和故障证据
     def __init__(self, serial, out, node=1):
         if node not in range(1, 5):
             raise ValueError('标定节点必须为 1–4')
@@ -105,6 +107,8 @@ class Session:
         self.reply_values = {}
         self.last_reply_values = None
 
+    #---------反馈接收区---------
+    # 按CAN ID分出状态、应答和诊断，保留原始记录后再解析
     def receive(self, timeout=0.01):
         f = self.adapter.recv(timeout)
         if not f or f.echo:
@@ -157,6 +161,8 @@ class Session:
             self.status = value
             self.seen = time.monotonic()
 
+    #---------命令与等待区---------
+    # 发送一个序号的请求，等待对应应答，随后由wait核对实际状态
     def command(self, kind, a=0, b=0, rejection_ok=False, timeout=0.35):
         self.seq = (self.seq + 1) & 0xFFFFFFFF
         identifier = 0x400 + self.node
@@ -200,6 +206,9 @@ class Session:
         self.log.close()
 
 
+
+#---------标定入口区---------
+# 读取显式命令行选择，再按供电和参考状态执行对应步骤
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--node', type=int, choices=range(1, 5), default=1)

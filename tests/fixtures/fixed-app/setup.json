@@ -1,31 +1,25 @@
 {
-  "camera": {
-    "id": "sc3336-1280x720-fixed-focus-v1",
-    "width": 1280,
-    "height": 720
+  "note": "SYNTHETIC ONLY. a0/i0/a9 derived from the preceding offline affine grid; not real calibration.",
+  "points": {
+    "type_id": "opencv-matrix",
+    "rows": 3,
+    "cols": 4,
+    "dt": "d",
+    "data": [
+      384.7375884367774,
+      183.54275756292935,
+      -96.36929702542906,
+      -434.23172302942305,
+      403.11681153820666,
+      681.629693521354,
+      148.06088605622762,
+      -432.697207749099,
+      921.7767074892333,
+      161.8813968026232,
+      -96.24258141692992,
+      -170.75763428231494
+    ]
   },
   "image": "../upper-app/source.png",
-  "frame_id": "fixed-board-offline-01",
-  "mode": "manual",
-  "corners": [
-    [
-      382.4037121271646,
-      183.08693857616453
-    ],
-    [
-      405.45068784781944,
-      682.0855125081187
-    ],
-    [
-      937.8220542810498,
-      659.5125137742832
-    ],
-    [
-      924.110583798846,
-      162.3372157893879
-    ]
-  ],
-  "canonical_order_confirmed": 1,
-  "plane_file": "affine-pairs.json",
-  "scene_clear": 1
+  "frame_id": "three-point-offline"
 }
