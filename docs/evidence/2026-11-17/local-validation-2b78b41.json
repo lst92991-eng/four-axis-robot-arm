@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-17",
+  "candidate": "2b78b416b19c338b980030c3bcc0269e6d7b9cad",
+  "integration_merge": "3a0e48c3b73f58c8adda6f0550dec7390c3beda5",
+  "development_branch": "codex/canfd-vision-magnet-20261106",
+  "source": {
+    "formal_cpp_files": 26,
+    "formal_cpp_effective_lines": 2228,
+    "simulation_cpp_effective_lines": 198,
+    "git_blob_sha256_matches": 27,
+    "application_firmware_config_and_test_tree_equal_to_candidate": true,
+    "line_count_rule": "Use the submitted count, excluding blank lines, pure comments and #pragma once."
+  },
+  "local_review": {
+    "platform": "Windows x64",
+    "compiler": "MSVC 19.50.35729.0",
+    "opencv_cpp": "5.0.0",
+    "build": "Release, RKNN mock tests enabled, real RKNN deployment disabled",
+    "ctest": {
+      "initial_passed": 13,
+      "initial_total": 14,
+      "initial_failure": "match_main_contracts encountered a non-ASCII absolute path on Windows",
+      "recheck": "Same executable and assertions were run in an ASCII checkout with an ASCII temporary-directory prefix",
+      "match_scenarios_passed": 17
+    },
+    "python_unittest": {
+      "passed": 67,
+      "skipped": 1,
+      "skip_reason": "Linux USB-owner locking test"
+    },
+    "event_demo": {
+      "simulated": 1,
+      "pending": 0,
+      "phase": "stopped",
+      "history": "a3a4 a6a5 a4a5 a9a5",
+      "error": ""
+    },
+    "vision_replay": {
+      "reference": "game-direct-20261115/round-01",
+      "frames": 16,
+      "rgb_and_preview_png_byte_match": true,
+      "npu_tensor_detections_match": 152,
+      "onnx_cpu_detections_match": 501,
+      "previous_visual_spot_checks_match": 64
+    },
+    "geometry_replay": {
+      "grid_intersections_exported": 90,
+      "comparison": "Archived frame with the new affine layout derived from the former mapping at a0, i0 and a9",
+      "greatest_delta_square": "i9",
+      "greatest_pixel_delta": 9.5118612976,
+      "greatest_base_xy_delta_mm": 1.9660551520,
+      "archived_check_point_error_mm": 0.8772824828,
+      "scope": "Archived mapping comparison before field teaching"
+    }
+  },
+  "field_status": {
+    "hardware_io_performed": false,
+    "first_powered_check": "Receive J1–J4 CAN STATUS and verify each node, encoder, mechanical reference and fault state. Check live board overlay and i9.",
+    "automatic_pick_and_place": "Pending actual Drive_read, Drive_write, Drive_release and Drive_stop integration and firmware support for periodic joint references."
+  }
+}
