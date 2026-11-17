@@ -15,6 +15,21 @@ void Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limi
 // 允许初始化前和重复调用，供正常退出及异常清理使用。
 bool Motion_stop();
 
+//---------单次实物取放区---------
+struct PickSetup
+{
+    ArmGeometry arm;
+    WorkHeights heights;
+    //从两处示教高度估算的度/毫米，用于接近与制动
+    double zDegreesPerMm = 0;
+    double zSpeed = 180;
+    std::string canSerial, adbSerial;
+};
+//沿用旧实机CAN指令和GPIO40，先停稳当前轴再执行下一轴
+//run为false时仅观察设备状态，执行故障时尝试停止并抛出原因
+void Motion_pick(const std::vector<PickStep> &steps, const PickSetup &setup, bool run,
+                 const volatile std::sig_atomic_t &running);
+
 //---------驱动数据交接区---------
 //本结构由实机IO或仿真IO填写，执行器按同一份数据推进动作
 struct DriveFeedback

@@ -40,11 +40,48 @@ ctest --test-dir build/review --output-on-failure
 
 本版12组 Linux CTest、17个真实 main 对局场景通过；真实 Linux IO 源文件单独编译通过。旧 session 接口测试随层次删除，回合恢复检查合并到 main 场景。离线检查与实机验收分别记录。
 
-## 实机接入状态
+## 实机搬一枚棋子
 
-J1/J2/J3使用同一时间进度，J4保持原状态。阅读 Pick_plan → Trajectory_plan → Trajectory_sample → Motion_execute；Motion_execute负责周期参考和实际到位确认。
+`scara_pick` 用现有取放规划、原 Candlelight USB-CAN 和 RV1106 的 GPIO40 搬运一枚棋子。J1 用速度指令接近示教高度，J2 用位置指令，J3 用速度接近与微调。J2、J3 停稳后才下降，释放后回读低电平再抬升。吸持沿用棋子磁铁吸住铁芯，放棋由原 MOS 模块给线圈通电脉冲，无需 H 桥。
 
-驱动声明位于 motion/execute.hpp，真实 Drive_read/write/release/stop 定义位于 app/game_live_io.cpp，目前返回未连接。C++ 的 CAN/H桥链路尚待接入；当前v3固件MOVE只接受停稳后的新目标，周期参考还需对应下位机支持。因此本版不能直接进行真实机械臂取放验证。历史 Python 实测入口保留在 manual_control，正式C++开发不再以它作为课程模块。
+首次复验使用原 `c3→c4` 坐标。放一枚棋子在 c3，保持 c4 清空，确认棋盘机位、J2/J3 的机械参考和 J1 示教高度与计划一致。J1 先抬到搬运层，确认电磁铁线圈按上次斥放方向连接且供电开启。关闭旧控制面板，让出适配器。板端应为 J1 `d3b08bf8`、J2/J3 `41f870bf`，且参考有效、编码器正常。旧记录中 J3 实测调整为 Kp 1、Ki 35，断电后按原调试值核对。
+
+### 构建 scara_pick
+
+Windows x64 使用现成的 OpenCV 5.0.0 和 MSVC。把 ADB 加到 PATH，从 [libusb 1.0.30 官方发布](https://github.com/libusb/libusb/releases/tag/v1.0.30) 取 `libusb-1.0.30.7z` 并解压。以下命令在仓库根目录执行，`$usb` 指向解压目录，`OpenCV_DIR` 沿用现有构建设置。
+
+```powershell
+$usb = 'D:/sdk/libusb-1.0.30'
+cmake -S . -B build/pick -A x64 "-DOpenCV_DIR=$env:OpenCV_DIR" "-DSCARA_LIBUSB_DIR=$usb" -DSCARA_BUILD_PICK=ON -DSCARA_BUILD_VISION=OFF -DBUILD_TESTING=OFF
+cmake --build build/pick --config Release --target scara_pick --parallel
+$env:Path = "$usb/VS2022/MS64/dll;$env:Path"
+```
+
+Linux 安装 `libusb-1.0` 开发包，沿用 OpenCV 5.0.0。直接访问 USB 适配器需要本机 USB 权限和空闲接口。
+
+```sh
+cmake -S . -B build/pick -DOpenCV_DIR="$OpenCV_DIR" -DSCARA_BUILD_PICK=ON -DSCARA_BUILD_VISION=OFF -DBUILD_TESTING=OFF
+cmake --build build/pick --target scara_pick --parallel
+```
+
+### 检查后运行
+
+下面以 Windows 为例，Linux 把程序路径换为 `./build/pick/scara_pick`。`-` 选唯一在线的 ADB 板子，多块板时填 `adb devices` 列出的 RV1106 序列号。有多个 USB-CAN 时通过 `SCARA_CAN_SERIAL` 指定。板上 Linux 直接运行时可用 `local` 访问本机 GPIO40。
+
+```powershell
+$plan = 'docs/evidence/2026-11-13/first-pick-c3-c4-20261111/trial-plan.json'
+$arm = 'docs/evidence/2026-11-13/xy-registration-20261111/arm-registration.json'
+& ./build/pick/Release/scara_pick.exe $plan $arm - --check
+& ./build/pick/Release/scara_pick.exe $plan $arm - --run
+```
+
+`--plan` 只打印角度和释放时长，`--check` 只收三轴状态并读取 GPIO40，`--run` 才执行取放。在第二条命令前确认吸头通路和两格状态，Ctrl+C 请求停止。
+
+归档计划保留了 5mm 释放偏移和 20ms 试验脉冲。历史独立释放确认使用过 1 秒脉冲，仓库没有证据表明 20ms 已通过连续自动取放。如果现场留有已确认的工作高度和释放参数，用对应的 `trial-plan.json` 代替上面的 `$plan`。测试时看棋子是否吸起、释放后有没有粘回、最终是否在目标格。
+
+要换格位，在 `--check` 或 `--run` 后加 `实际三点布局.json c3c4`。这时两格的坐标由当前仿射布局生成，Z 和释放参数仍由取放计划提供。先复验原路线有助于把驱动接入和新布局的落点误差区分开。
+
+当前单枚取放入口通过 Windows/Linux 构建、原 c3/c4 目标角度复核和 USB/GPIO 替身检查。替身覆盖分包收发、通信锁定接续、应答丢失减速、GPIO回读错误和版本不符。整局入口的三轴周期参考仍待板端支持。
 
 ## 固定棋盘怎样建系
 
