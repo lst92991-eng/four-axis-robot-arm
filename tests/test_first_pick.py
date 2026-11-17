@@ -1,5 +1,7 @@
 """Exercise placement timing without connecting to the arm or GPIO."""
 from pathlib import Path
+import io
+import json
 import sys
 import unittest
 from unittest.mock import ANY, Mock, call, patch
@@ -10,6 +12,17 @@ from first_pick import GPIO, Trial
 
 
 class ReleaseTests(unittest.TestCase):
+    def test_state_response_is_indexed_once_at_the_http_boundary(self):
+        trial = Trial.__new__(Trial)
+        trial.opener = Mock()
+        body = dict(axes=[dict(node=1, position=-20), dict(node=3, position=50)])
+        response = io.BytesIO(json.dumps(body).encode())
+        trial.opener.open.return_value.__enter__ = Mock(return_value=response)
+        trial.opener.open.return_value.__exit__ = Mock(return_value=False)
+        state = trial.request('/api/state')
+        self.assertEqual(state['axes'][1]['position'], -20)
+        self.assertEqual(state['axes'][3]['position'], 50)
+
     @patch('first_pick.Path.read_text', return_value='{}')
     @patch('first_pick.build_opener')
     def test_control_key_accepts_readable_script_spacing(self, opener, _read):
@@ -63,7 +76,7 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(self.events.mock_calls, [
             call.xy(self.target),
             call.z(self.trial.release_height),
-            call.launch(ANY, stdout=ANY, stderr=ANY, creationflags=ANY),
+            call.launch(ANY, stdout=ANY, stderr=ANY),
             call.sample(),
             call.read_levels(),
             call.note('release_pulse', grid='e2', duration_ms=250, levels=[1, 0]),
@@ -103,7 +116,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_position_stops_when_feedback_is_stationary_at_goal(self):
         axis = dict(node=2, state=2, stationary=True, position=-50.506, target=-50.493)
-        state = {'axes': [axis]}
+        state = {'axes': {2: axis}}
         self.trial.at_rest = Mock(return_value=dict(position=-52.5, state=1, power=True))
         self.trial.begin = Mock()
         self.trial.end = Mock(return_value=state)

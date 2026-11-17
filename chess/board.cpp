@@ -4,8 +4,46 @@
 
 namespace chess
 {
+//---------初始化区---------
+//填写标准开局，行0为黑方底线
+void initialBoard(Board &board)
+{
+    const char *rows[] = {"rnbakabnr", ".........", ".c.....c.", "p.p.p.p.p", ".........",
+                          ".........", "P.P.P.P.P", ".C.....C.", ".........", "RNBAKABNR"};
+    //逐格复制字符，后续识别和棋局都使用同一个10×9数组
+    for (int row = 0; row < 10; ++row)
+        for (int col = 0; col < 9; ++col)
+            board[row][col] = rows[row][col];
+}
+
+//默认构造即建立标准局面，字段初值保存其余回合状态
+Game::Game()
+{
+    initialBoard(board);
+    fen(board, redToMove, 0, 1, baseFen);
+    positions = {baseFen};
+}
+
+//指定合法开局及双方身份，清除上一局的历史和待执行状态
+bool Game_reset(Game &game, const Board &board, bool redToMove, bool humanRed)
+{
+    if (!validBoard(board, game.error)) return false;
+    //局部对象使用默认回合状态，开局准备完成后统一替换
+    Game prepared;
+    //先复制调用者的盘面，支持把game.board自身作为新的开局输入
+    prepared.board = board;
+    prepared.redToMove = redToMove;
+    prepared.humanRed = humanRed;
+    fen(board, redToMove, 0, 1, prepared.baseFen);
+    prepared.positions = {prepared.baseFen};
+    game = prepared;
+    return true;
+}
+
+//---------搬子数据核对区---------
 namespace
 {
+//数组边界与棋子颜色在搬子、格式转换处共用
 bool inside(int row, int col)
 {
     return row >= 0 && row < 10 && col >= 0 && col < 9;
@@ -31,8 +69,6 @@ bool kingInPalace(char piece, int row, int col)
 // 盘面在入口已验证；一次搬子只需检查本次起点、终点与将帅位置。
 bool applyKnownBoard(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error)
 {
-    std::string moveText;
-    if (uci(move, moveText) == false) return reject(error, "走法坐标不合法");
     char piece = before[move.fromRow][move.fromCol];
     char target = before[move.toRow][move.toCol];
     if (piece == '.' || redPiece(piece) != redToMove || (target != '.' && redPiece(target) == redToMove))
@@ -46,23 +82,10 @@ bool applyKnownBoard(const Board &before, bool redToMove, const Move &move, Boar
     return true;
 }
 
-bool observed(const Observation &value, std::string &error)
-{
-    if (!value.valid) return reject(error, "盘面不完整、不稳定或检测重复，等待重新识别");
-    return validBoard(value.board, error);
-}
-
 } // namespace
 
-void initialBoard(Board &board)
-{
-    const char *rows[] = {"rnbakabnr", ".........", ".c.....c.", "p.p.p.p.p", ".........",
-                          ".........", "P.P.P.P.P", ".C.....C.", ".........", "RNBAKABNR"};
-    for (int row = 0; row < 10; ++row)
-        for (int col = 0; col < 9; ++col)
-            board[row][col] = rows[row][col];
-}
-
+//---------走法与盘面转换区---------
+//输入四字符UCI走法，输出黑方底线起算的数组行列
 bool parseMove(const std::string &text, Move &move)
 {
     bool filesValid, ranksValid;
@@ -71,7 +94,7 @@ bool parseMove(const std::string &text, Move &move)
     if (text.size() != 4) return false;
     filesValid = text[0] >= 'a' && text[0] <= 'i' && text[2] >= 'a' && text[2] <= 'i';
     ranksValid = text[1] >= '0' && text[1] <= '9' && text[3] >= '0' && text[3] <= '9';
-    if (!filesValid || !ranksValid || text.substr(0, 2) == text.substr(2, 2)) return false;
+    if (!filesValid || !ranksValid || (text[0] == text[2] && text[1] == text[3])) return false;
 
     // UCI从红方底线记作0；棋局数组从黑方底线记作第0行。
     move.fromRow = 9 - (text[1] - '0');
@@ -81,9 +104,11 @@ bool parseMove(const std::string &text, Move &move)
     return true;
 }
 
+//输入起点终点行列，输出引擎使用的四字符走法
 bool uci(const Move &move, std::string &text)
 {
     text.clear();
+    //格式转换入口统一核对下标，随后才能访问棋盘数组
     if (!inside(move.fromRow, move.fromCol) || !inside(move.toRow, move.toCol) ||
         (move.fromRow == move.toRow && move.fromCol == move.toCol))
         return false;
@@ -94,11 +119,13 @@ bool uci(const Move &move, std::string &text)
     return true;
 }
 
+//统计14类棋子并核对将帅，识别结果在进入棋局时调用
 bool validBoard(const Board &board, std::string &error)
 {
     error.clear();
     const std::string pieces = "KABNRCPkabnrcp";
     const int maximum[] = {1, 2, 2, 2, 2, 2, 5, 1, 2, 2, 2, 2, 2, 5};
+    //计数顺序与pieces字符串一致，黑红双方分别核对
     int counts[14] = {};
     for (int row = 0; row < 10; ++row)
         for (int col = 0; col < 9; ++col)
@@ -115,9 +142,11 @@ bool validBoard(const Board &board, std::string &error)
     return true;
 }
 
+//将已确认的90格压缩成FEN，附上行棋方与回合计数
 void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &result)
 {
     result.clear();
+    //FEN逐行输出，连续空格压缩为一个数字
     for (int row = 0; row < 10; ++row)
     {
         int empty = 0;
@@ -139,143 +168,83 @@ void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::s
         if (row != 9) result += '/';
     }
     result += redToMove ? " w - - " : " b - - ";
+    //引擎需要行棋方和计数；完整历史在请求时另外追加
     result += std::to_string(halfmoves);
     result += ' ';
     result += std::to_string(fullmove);
 }
 
+//对外的搬子入口核对盘面和坐标，输出移动后的90格
 bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error)
 {
+    std::string moveText;
     if (!validBoard(before, error)) return false;
+    if (!uci(move, moveText)) return reject(error, "走法坐标不合法");
     return applyKnownBoard(before, redToMove, move, after, error);
 }
 
+//从本次盘面变化直接得到起点和终点，再与引擎合法表核对
 bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
                Move &move, std::string &error)
 {
-    int matches = 0;
-    Move candidate;
-
     move = {};
-    if (!observed(after, error) || !validBoard(before, error)) return false;
-    for (size_t index = 0; index < legal.size(); ++index)
-    {
-        Move current;
-        Board predicted;
-        bool parsed = parseMove(legal[index], current);
-        // 只查当前走法之前的部分，防止同一走法被重复计数。
-        auto currentEntry = legal.begin() + index;
-        bool duplicate = std::find(legal.begin(), currentEntry, legal[index]) != currentEntry;
-        if (parsed == false || duplicate) return reject(error, "合法走法列表格式错误或重复");
-        if (!applyKnownBoard(before, redToMove, current, predicted, error)) return false;
-        if (predicted == after.board)
-        {
-            candidate = current;
-            ++matches;
-        }
-    }
-    if (matches != 1)
-        return reject(error, matches == 0 ? "盘面未对应唯一合法走法，请重新观察" : "多种走法匹配，等待人工核对");
+    if (!after.valid) return reject(error, "盘面不完整、不稳定或检测重复，等待重新识别");
+    Move candidate;
+    //起点变空，终点变成移动的棋子；最终整盘比较排除额外改动
+    for (int row = 0; row < 10; ++row)
+        for (int col = 0; col < 9; ++col)
+            if (before[row][col] != after.board[row][col])
+            {
+                if (after.board[row][col] == '.')
+                {
+                    candidate.fromRow = row;
+                    candidate.fromCol = col;
+                }
+                else
+                {
+                    candidate.toRow = row;
+                    candidate.toCol = col;
+                }
+            }
+    std::string text;
+    //合法表已由引擎接口解析；本次识别结果必须恰好对应其中一条
+    if (!uci(candidate, text) || std::count(legal.begin(), legal.end(), text) != 1)
+        return reject(error, "盘面未对应唯一合法走法，请重新观察");
+    //只推演这一条走法，确认90格的结果完整一致
+    Board expected;
+    if (!applyKnownBoard(before, redToMove, candidate, expected, error)) return false;
+    if (expected != after.board) return reject(error, "盘面未对应唯一合法走法，请重新观察");
     move = candidate;
     return true;
 }
 
-Game::Game()
-{
-    Board initial;
-    initialBoard(initial);
-    Game_reset(*this, initial);
-}
-
-bool Game_reset(Game &game, const Board &board, bool redToMove, bool humanRed)
-{
-    if (!validBoard(board, game.error)) return false;
-    game.board = board;
-    game.expected = board;
-    game.redToMove = redToMove;
-    game.humanRed = humanRed;
-    game.result = Result::Playing;
-    game.pending = false;
-    game.pendingMove = {};
-    fen(game.board, game.redToMove, 0, 1, game.baseFen);
-    game.history.clear();
-    game.moveCount = 0;
-    game.positions = {game.baseFen};
-    return true;
-}
-
-static bool canMove(Game &game)
-{
-    game.error.clear();
-    if (game.result != Result::Playing) return reject(game.error, "棋局已结束或等待人工裁定");
-    if (game.pending) return reject(game.error, "机械走法尚未确认，不能接受下一步");
-    if (game.moveCount >= 1024) return reject(game.error, "达到历史长度上限，请人工处理");
-    return true;
-}
-
-static void commit(Game &game, const Board &after, const Move &move)
+//---------回合交接区---------
+//落子已经确认后，更新权威盘面、完整历史和重复局面记录
+void Game_commit(Game &game, const Board &after, const Move &move)
 {
     std::string moveText, position;
 
     game.board = after;
+    //追加已确认的一步，再交换行棋方，供下一次引擎查询使用
     uci(move, moveText);
     if (!game.history.empty()) game.history += ' ';
     game.history += moveText;
     game.redToMove = !game.redToMove;
-    ++game.moveCount;
     fen(game.board, game.redToMove, 0, 1, position);
     game.positions.push_back(position);
-    game.pending = false;
+    //提交完成后清除上一手的棋局提示
     game.error.clear();
 }
 
-bool Game_acceptHuman(Game &game, const Observation &after, const std::vector<std::string> &legal, Move &move)
-{
-    move = {};
-    if (!canMove(game)) return false;
-    if (game.redToMove != game.humanRed) return reject(game.error, "当前是机械臂一方的回合");
-    if (!inferMove(game.board, after, game.redToMove, legal, move, game.error)) return false;
-    commit(game, after.board, move);
-    return true;
-}
-
-bool Game_prepareRobot(Game &game, const Observation &before, const std::string &choice,
-                       const std::vector<std::string> &legal, Move &move)
-{
-    move = {};
-    if (!canMove(game)) return false;
-    if (game.redToMove == game.humanRed) return reject(game.error, "当前是人类一方的回合");
-    if (!observed(before, game.error)) return false;
-    if (before.board != game.board) return reject(game.error, "执行前盘面已变化，取消本次动作");
-    if (std::find(legal.begin(), legal.end(), choice) == legal.end() || !parseMove(choice, move))
-        return reject(game.error, "引擎选择不在当前合法走法表内");
-    if (!applyKnownBoard(game.board, game.redToMove, move, game.expected, game.error)) return false;
-    game.pendingMove = move;
-    game.pending = true;
-    return true;
-}
-
-bool Game_confirmRobot(Game &game, const Observation &after, bool armSucceeded)
-{
-    game.error.clear();
-    if (!game.pending) return reject(game.error, "没有待确认的机械走法");
-    // 失败时保留待确认状态，禁止不清楚棋子位置就重发搬运或切换回合。
-    if (!armSucceeded) return reject(game.error, "机械执行未成功，棋局不提交，请停机核对");
-    if (!observed(after, game.error)) return false;
-    if (after.board != game.expected) return reject(game.error, "执行后盘面与计划不一致，棋局不提交");
-    commit(game, after.board, game.pendingMove);
-    return true;
-}
-
+//合法表为空时本方负，重复局面交人工裁定
 bool Game_judge(Game &game, const std::vector<std::string> &legal)
 {
     game.error.clear();
-    if (game.pending) return reject(game.error, "必须先确认机械动作，再判断下一回合");
     if (game.result != Result::Playing) return reject(game.error, "棋局已结束或等待人工裁定");
     if (legal.empty())
         game.result = game.redToMove ? Result::BlackWon : Result::RedWon;
     else if (std::count(game.positions.begin(), game.positions.end(), game.positions.back()) >= 3 ||
-             game.moveCount >= 1024)
+             game.positions.size() > 1024)
     {
         game.result = Result::ReviewRequired;
         game.error = "重复局面或历史达到上限，暂停人工裁定；未实现完整长将追逐裁判";
@@ -283,11 +252,12 @@ bool Game_judge(Game &game, const std::vector<std::string> &legal)
     return true;
 }
 
+//将认输或双方同意的和棋写入结果，保留已完成历史
 bool Game_finish(Game &game, Result outcome)
 {
     game.error.clear();
-    if (game.pending || (game.result != Result::Playing && game.result != Result::ReviewRequired))
-        return reject(game.error, "机械动作未确认或棋局已经结束");
+    if (game.result != Result::Playing && game.result != Result::ReviewRequired)
+        return reject(game.error, "棋局已经结束");
     if (outcome != Result::RedWon && outcome != Result::BlackWon && outcome != Result::Draw)
         return reject(game.error, "需要明确的胜负或和棋结果");
     game.result = outcome;

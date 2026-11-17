@@ -19,6 +19,8 @@ from telemetry import diagnostic
 
 
 class Bench(Session):
+    #---------初始化区---------
+    # 延用标定会话的通信，增加本次测试行程、速度和故障记录
     def __init__(self, serial, out, expected, acceleration=30, travel_budget=35, max_speed=30):
         super().__init__(serial, out)
         self.out = out
@@ -159,6 +161,8 @@ class Bench(Session):
         self.wait(lambda v: v['referenced'] and v['stationary'], 1, True)
         self.report('fault_cleared', evidence=str(file), status=self.status)
 
+    #---------定时试动区---------
+    # 按指定方向和时长试动，期间持续收反馈并记录保护触发条件
     def run_test(self, direction, seconds, speed=10, velocity_mode=False):
         if (
             direction not in (-1, 1)
@@ -250,6 +254,8 @@ class Bench(Session):
         self.control_queue.put(q)
         return False
 
+    #---------目标运动区---------
+    # 接收目标驱动角度，沿既有速度与制动规则接近并确认实际位置
     def travel(self, target, speed=10):
         if not 0 < speed <= self.max_speed or abs(target) > self.travel_budget - 5:
             raise ValueError('Long test requires reviewed speed and authorized travel envelope')

@@ -19,6 +19,9 @@ MODEL_SHA = 'c843fac9714d97ca3b478193fb98557fef3146ca4c216a98380295a87c693943'
 U32 = C.c_uint32
 
 
+
+#---------RKNN数据结构区---------
+# 字段顺序对应板端SDK的ARM32结构，保持ABI布局
 class Attr(C.Structure):
     _fields_ = [
         ('index', U32),
@@ -62,6 +65,8 @@ def info(a):
 
 
 class NPU:
+    #---------NPU初始化区---------
+    # 载入模型，核对输入输出布局，申请并绑定张量内存
     def __init__(self, path, expected_sha256=MODEL_SHA):
         assert C.sizeof(C.c_void_p) == 4 and C.sizeof(Attr) == 376, 'ARM32 ABI required'
         model_sha = hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -137,6 +142,8 @@ class NPU:
         self.check(self.api.rknn_set_io_mem(self.ctx, memory, C.byref(attr)))
         return address
 
+    #---------逐帧推理区---------
+    # RGB字节按输入步长写入NPU，结果按既有报文格式返回三个输出头
     def run(self, data, frame_id):
         if len(data) != 640 * 640 * 3:
             raise ValueError('Expected exactly 640x640 RGB bytes')
@@ -152,10 +159,12 @@ class NPU:
         elapsed = (time.monotonic() - start) * 1000
         blobs = [C.string_at(address, attr.n_elems) for attr, address in self.outputs]
         header = json.dumps(
-            dict(frame_id=frame_id, npu_ms=elapsed, outputs=[info(a) for a, _ in self.outputs])
+            dict(frame_id=frame_id, npu_ms=elapsed, outputs=self.description['outputs'])
         ).encode()
         return struct.pack('<I', len(header)) + header + b''.join(blobs)
 
+    #---------资源回收区---------
+    # 先释放张量内存，再销毁上下文，允许重复关闭
     def close(self):
         for memory in reversed(self.memories):
             self.api.rknn_destroy_mem(self.ctx, memory)

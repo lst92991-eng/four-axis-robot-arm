@@ -1,4 +1,4 @@
-"""Repeat two opening moves and their reverse, checking each placement."""
+"""按示教路线往返取放，每次用相机确认取子和落点。"""
 
 import argparse
 import json
@@ -11,9 +11,8 @@ import time
 import cv2
 import numpy as np
 
-from first_pick import Trial, CALIBRATION, PICK_PLAN
+from first_pick import CALIBRATION, PICK_PLAN, ROOT, RV1106_SERIAL, Trial
 
-ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'temp/yolo_live'))
 from host_preview import Capture
 
@@ -21,7 +20,6 @@ MOVES = (('h2', 'e2'), ('b9', 'c7'), ('c7', 'b9'), ('e2', 'h2'))
 START = {'h2': 'red', 'e2': None, 'b9': 'black', 'c7': None}
 PARK = 'c4'
 ANCHORS = ((375, 109, 65, 70), (900, 109, 60, 70))
-SERIAL = 'abc8f01242c327ec'
 
 
 def read(path):
@@ -62,43 +60,104 @@ def disk(frame, pixel):
 
 
 class Demo:
-    def __init__(self, work, adb, reference='initial', lift_extra_mm=0, cannon_only=False):
+    #---------初始化区---------
+    # 读取同一份交点和仿射系数，准备棋盘基准、走法及中断续做记录
+    def __init__(
+        self, work, adb, reference='initial', lift_extra_mm=0, cannon_only=False, *,
+        calibration=CALIBRATION, plan_file=PICK_PLAN,
+    ):
         self.work = work
-        self.adb = [adb, '-s', SERIAL]
-        self.grid = square_map(read(work / f'{reference}-grid.json'))
+        self.adb = [adb, '-s', RV1106_SERIAL]
+        layout = read(work / f'{reference}-grid.json')
+        self.grid = square_map(layout)
         self.reference = cv2.imdecode(
             np.frombuffer((work / f'{reference}.png').read_bytes(), np.uint8), cv2.IMREAD_COLOR
         )
-        calibration = CALIBRATION
-        # Use the same calibrated plane that produced the native grid report.
-        plane = cv2.FileStorage(
-            (calibration / 'plane-map.yml').read_text(encoding='utf-8'), cv2.FILE_STORAGE_READ | cv2.FILE_STORAGE_MEMORY
-        )
-        self.h = plane.getNode('pixel_to_base').mat()
-        plane.release()
-        plan = read(PICK_PLAN)
+        # 六个系数和90点来自同一份导出结果，启动时读入后保存在内存
+        if layout.get('schema_version') != 3 or layout.get('mapping_model') != 'affine':
+            raise ValueError('请用新布局重新导出schema 3棋盘坐标')
+        matrix = layout['pixel_to_base']
+        self.pixel_to_base = np.asarray(matrix['data'], dtype=float).reshape(matrix['rows'], matrix['cols'])
+        if self.pixel_to_base.shape != (2, 3) or not np.isfinite(self.pixel_to_base).all():
+            raise ValueError('仿射标定需要有限的2×3系数')
+        plan = read(plan_file)
         z = plan['z']
         rise = z['operator_estimated_rise_mm']
         z['travel_deg'] += (z['travel_deg'] - z['pickup_deg']) * lift_extra_mm / rise
         z['operator_estimated_rise_mm'] = rise + lift_extra_mm
-        self.trial = Trial(plan, adb, work / 'events.jsonl')
+        self.trial = Trial(plan, adb, work / 'events.jsonl', calibration=calibration)
         self.anchors = [
             (x, y, cv2.cvtColor(self.reference[y : y + h, x : x + w], cv2.COLOR_BGR2GRAY)) for x, y, w, h in ANCHORS
         ]
         self.moves = (('e2', 'h2'), ('h2', 'e2')) if cannon_only else MOVES
         self.expected = dict(START, h2=None, e2='red') if cannon_only else dict(START)
         self.cannon_only = cannon_only
+        self.checkpoint = work / ('cannon-checkpoint.json' if cannon_only else 'checkpoint.json')
         self.next = 0
         self.cycles = 0
         self.capture = None
         self.port = None
 
+    #---------演示流程区---------
+    def run(self, resume_held=False, resume=False, black_pick=None, black_release=None):
+        if resume or resume_held:
+            self.load_checkpoint()
+        carried = self.moves[self.next][0] if resume_held else None
+        self.check_initial(carried)
+        forwarded = subprocess.run(self.adb + ['forward', 'tcp:0', 'tcp:554'], capture_output=True, text=True, check=True)
+        self.port = int(forwarded.stdout.strip())
+        self.capture = Capture(f'rtsp://127.0.0.1:{self.port}/live/0')
+        self.trial.acquire()
+        self.trial.note(
+            'demo_travel_height', angle=self.trial.high, rise_mm=self.trial.span / self.trial.degrees_per_mm
+        )
+        park_target = self.target(PARK)
+        if not resume_held:
+            self.trial.xy(park_target)
+            seen, frame = self.fresh_view()
+            self.save_view(frame, 'verified-start.jpg')
+        while not self.cannon_only or self.cycles == 0:
+            source, dest = self.moves[self.next]
+            color = self.expected[source]
+            if resume_held:
+                self.trial.note('demo_resume_held', source=source, destination=dest, piece=color)
+                resume_held = False
+            else:
+                _, center = seen[source]
+                self.trial.note('demo_move', cycle=self.cycles + 1, source=source, destination=dest, piece=color)
+                pickup = self.target(source, center)
+                self.trial.pick_piece(pickup, black_pick if color == 'black' else None)
+            # 抬起并让开棋盘后，确认源格已经空出。
+            self.trial.xy(park_target)
+            self.expected[source] = None
+            _, lifted = self.fresh_view()
+            self.save_view(lifted, 'latest-pick-verified.jpg')
+            self.trial.note('demo_pick_verified', source=source, piece=color)
+            # 放子后再次让开棋盘，核对落点后推进进度。
+            self.trial.place_piece(self.target(dest), black_release if color == 'black' else None)
+            self.trial.xy(park_target)
+            self.expected[dest] = color
+            seen, frame = self.fresh_view()
+            self.trial.note('demo_verified', cycle=self.cycles + 1, source=source, destination=dest, piece=color)
+            self.save_view(frame, 'latest-verified.jpg')
+            if self.cycles == 0:
+                self.save_view(frame, f'first-{source}-{dest}.jpg')
+            self.next = (self.next + 1) % len(self.moves)
+            if self.next == 0:
+                self.cycles += 1
+                self.trial.note('demo_cycle', cycles=self.cycles)
+            self.checkpoint.write_text(
+                json.dumps(dict(expected=self.expected, next=self.next, cycles=self.cycles), indent=2) + '\n'
+            )
+
+    #---------坐标与盘面核对区---------
+    # 从格点或实拍中心取得基座XY，再沿用已示教参考换算J2/J3目标
     def target(self, square, pixel=None):
         if pixel is None:
             x, y = self.grid[square]['base_xy_mm']
         else:
-            X, Y, W = self.h @ np.array([*pixel, 1])
-            x, y = float(X / W), float(Y / W)
+            # 像素乘六个系数，直接得到基座毫米坐标
+            x, y = map(float, self.pixel_to_base @ np.array([*pixel, 1]))
         arm = self.trial.arm
         l1, l2 = arm['arm_lengths_mm']
         cosine = (x * x + y * y - l1 * l1 - l2 * l2) / (2 * l1 * l2)
@@ -115,6 +174,7 @@ class Demo:
         )
         return dict(grid_id=square, base_xy_mm=[x, y], j2_deg=j2, j3_motor_deg=j3)
 
+    # 先核对棋盘基准未移动，再返回指定格点的棋子颜色和像素中心
     def observe(self, frame, squares=START):
         if frame.shape != self.reference.shape:
             raise RuntimeError('相机分辨率变化')
@@ -141,14 +201,14 @@ class Demo:
                 self.expected[k] = colors[k]
         return {k: self.target(k, v[1] if v else None) for k, v in found.items() if k in START}
 
+    # 仅恢复演示进度，下一步仍重新核对实际盘面
     def load_checkpoint(self):
-        marker = self.work / ('cannon-checkpoint.json' if self.cannon_only else 'checkpoint.json')
-        if marker.exists():
-            state = read(marker)
+        if self.checkpoint.exists():
+            state = read(self.checkpoint)
             self.expected, self.next, self.cycles = state['expected'], state['next'], state['cycles']
 
     def fresh_view(self):
-        # Ignore frames captured while the arm was clearing the board.
+        # 等机械臂让开后采集的新帧。
         began = time.monotonic()
         end = began + 3
         last = None
@@ -183,53 +243,7 @@ class Demo:
         if ok:
             (self.work / name).write_bytes(data.tobytes())
 
-    def run(self, resume_held=False, resume=False, black_pick=None, black_release=None):
-        if resume or resume_held:
-            self.load_checkpoint()
-        self.check_initial(self.moves[self.next][0] if resume_held else None)
-        r = subprocess.run(self.adb + ['forward', 'tcp:0', 'tcp:554'], capture_output=True, text=True, check=True)
-        self.port = int(r.stdout.strip())
-        self.capture = Capture(f'rtsp://127.0.0.1:{self.port}/live/0')
-        self.trial.acquire()
-        self.trial.note(
-            'demo_travel_height', angle=self.trial.high, rise_mm=self.trial.span / self.trial.degrees_per_mm
-        )
-        if not resume_held:
-            self.trial.xy(self.target(PARK))
-            seen, frame = self.fresh_view()
-            self.save_view(frame, 'verified-start.jpg')
-        while not self.cannon_only or self.cycles == 0:
-            source, dest = self.moves[self.next]
-            color = self.expected[source]
-            if not resume_held:
-                _, center = seen[source]
-                self.trial.note('demo_move', cycle=self.cycles + 1, source=source, destination=dest, piece=color)
-                self.trial.pick_piece(self.target(source, center), black_pick if color == 'black' else None)
-            else:
-                self.trial.note('demo_resume_held', source=source, destination=dest, piece=color)
-                resume_held = False
-            self.trial.xy(self.target(PARK))
-            self.expected[source] = None
-            _, lifted = self.fresh_view()
-            self.save_view(lifted, 'latest-pick-verified.jpg')
-            self.trial.note('demo_pick_verified', source=source, piece=color)
-            self.trial.place_piece(self.target(dest), black_release if color == 'black' else None)
-            self.trial.xy(self.target(PARK))
-            self.expected[source], self.expected[dest] = None, color
-            seen, frame = self.fresh_view()
-            self.trial.note('demo_verified', cycle=self.cycles + 1, source=source, destination=dest, piece=color)
-            self.save_view(frame, 'latest-verified.jpg')
-            if self.cycles == 0:
-                self.save_view(frame, f'first-{source}-{dest}.jpg')
-            self.next = (self.next + 1) % len(self.moves)
-            if self.next == 0:
-                self.cycles += 1
-                self.trial.note('demo_cycle', cycles=self.cycles)
-            marker = 'cannon-checkpoint.json' if self.cannon_only else 'checkpoint.json'
-            (self.work / marker).write_text(
-                json.dumps(dict(expected=self.expected, next=self.next, cycles=self.cycles), indent=2) + '\n'
-            )
-
+    #---------收尾区---------
     def close(self):
         try:
             self.trial.stop()
@@ -244,6 +258,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('work', type=Path)
     p.add_argument('--adb', required=True)
+    p.add_argument('--calibration', type=Path, default=CALIBRATION)
+    p.add_argument('--plan-file', type=Path, default=PICK_PLAN)
     p.add_argument('--reference', default='initial')
     p.add_argument('--lift-extra-mm', type=float, default=0)
     p.add_argument('--cannon-only', action='store_true')
@@ -254,7 +270,10 @@ def main():
     p.add_argument('--black-release-deg', type=float)
     args = p.parse_args()
     cv2.setNumThreads(1)
-    demo = Demo(args.work, args.adb, args.reference, args.lift_extra_mm, args.cannon_only)
+    demo = Demo(
+        args.work, args.adb, args.reference, args.lift_extra_mm, args.cannon_only,
+        calibration=args.calibration, plan_file=args.plan_file,
+    )
     if not args.run:
         if args.resume or args.resume_held:
             demo.load_checkpoint()

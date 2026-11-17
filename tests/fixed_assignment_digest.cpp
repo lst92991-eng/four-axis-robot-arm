@@ -1,19 +1,16 @@
-#include "vision/geometry.hpp"
+#include "geometry_fixture.hpp"
+#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <limits>
 
 int main()
 {
-    scara::Board original;
-#ifdef SCARA_OLD_GEOMETRY_API
-    scara::Camera camera;
-    camera.id = "assignment-equivalence-only";
-    camera.imageSize = {1280, 720};
-    scara::boardFromCorners(camera, "frame", {{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
-#else
-    scara::boardFromCorners({{{130, 650}, {1120, 630}, {1040, 80}, {170, 100}}}, true, original);
-#endif
+    // 手写仿射关系独立生成输入，覆盖90交点、边界和识别异常
+    auto input = fixture::input();
+    double points[3][4] = {{100,600,10,60},{340,616,34,61.6},{145,330,14.5,33}};
+    input.points = cv::Mat(3,4,CV_64F,points).clone();
+    scara::Geometry original = fixture::geometry(input);
     uint64_t digest = 1469598103934665603ULL;
     int cases = 0;
     auto add = [&](uint64_t value)
@@ -25,13 +22,13 @@ int main()
         }
     };
     for (int cell = 0; cell < scara::Cells; ++cell)
-        for (double offset : {-.6, -.35, -.349999, 0., .349999, .35, .350001, .6})
+        for (double offset : {-.6, -.350001, -.349999, 0., .2, .349999, .350001, .6})
             for (int variation = 0; variation < 20; ++variation)
             {
                 auto board = original;
                 double rowOffset = variation % 2 == 0 ? offset / 3 : 0;
-                cv::Point2d center;
-                scara::project(board.gridToPixel, {cell % 9 + offset, cell / 9 + rowOffset}, center);
+                double column = cell % 9 + offset, row = cell / 9 + rowOffset;
+                cv::Point2d center(30 * column + 5 * row + 100, 2 * column - 30 * row + 600);
                 scara::Detection piece;
                 piece.classId = variation == 14 ? -1 : variation % 14;
                 piece.confidence = variation % 3 == 0 ? .499999 : variation % 3 == 1 ? .5 : .9;
@@ -39,21 +36,31 @@ int main()
                 piece.bbox = {center.x - 10, center.y - 10, 20, 20};
                 if (variation == 15) piece.confidence = std::numeric_limits<double>::quiet_NaN();
                 if (variation == 16) piece.bbox.x = std::numeric_limits<double>::infinity();
-                if (variation == 17) board.orientationValid = false;
+                if (variation == 17) board.ready = false;
                 if (variation == 18) piece.bbox.width = -1;
                 std::vector<scara::Detection> pieces{piece};
-                if (variation == 10 || variation == 11) pieces.push_back(piece);
+                bool duplicate = variation == 10 || variation == 11;
+                if (duplicate) pieces.push_back(piece);
                 const std::string frame = variation == 19 ? "" : "frame";
                 bool sceneClear = variation % 4 != 0;
                 scara::Observation result;
-#ifdef SCARA_OLD_GEOMETRY_API
-                scara::ImageTransform transform;
-                transform.sourceSize = camera.imageSize;
-                scara::assignPieces(camera, board, frame, pieces, transform, scara::DetectionSpace::Original,
-                                    sceneClear, {}, result);
-#else
-                scara::assignPieces(board, frame, pieces, sceneClear, result);
-#endif
+                for (int repeat = 0; repeat < 3; ++repeat)
+                    scara::Geometry_observe(board, frame.empty() ? frame : frame + std::to_string(repeat), pieces, sceneClear, result);
+                // 独立预期：合格检测位于0.35格内才占格，重叠标成未知
+                bool observed = (variation < 17 || variation == 18) && sceneClear;
+                bool detected = variation < 14 && variation % 3 != 0;
+                bool onCell = std::hypot(offset, rowOffset) <= .35;
+                std::array<int, scara::Cells> expected;
+                expected.fill(observed && sceneClear ? scara::Empty : scara::Unknown);
+                if (observed && detected && onCell)
+                    expected[cell] = duplicate ? scara::Unknown : piece.classId;
+                bool valid = observed && sceneClear && detected && onCell && !duplicate;
+                if (result.valid != valid || result.pieces != expected)
+                {
+                    std::cerr << "Assignment mismatch: cell=" << cell << " offset=" << offset
+                              << " variation=" << variation << '\n';
+                    return 1;
+                }
                 add(result.valid);
                 for (int i = 0; i < scara::Cells; ++i)
                 {
@@ -61,10 +68,6 @@ int main()
                 }
                 ++cases;
             }
-    std::cout << cases << " cases, digest " << std::hex << digest << '\n';
-#ifdef SCARA_EXPECTED_ASSIGNMENT_DIGEST
-    return digest == SCARA_EXPECTED_ASSIGNMENT_DIGEST ? 0 : 1;
-#else
+    std::cout << "PASS " << cases << " analytic affine cases, digest " << std::hex << digest << '\n';
     return 0;
-#endif
 }

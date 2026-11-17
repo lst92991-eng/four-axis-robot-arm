@@ -1,3 +1,4 @@
+//处理识别图像，解码模型输出，并生成棋子检测列表和预览图
 #include "yolo.hpp"
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
@@ -5,141 +6,212 @@
 
 namespace scara
 {
+//---------图像与模型参数区---------
+//相机原图尺寸，用于核对每帧输入
 static cv::Size FrameSize;
+//Roi是原图裁剪区域，InputArea是缩放图在640×640输入中的位置
 static cv::Rect Roi, InputArea;
+//裁剪图到模型输入的缩放比例，预处理和坐标还原共用
 static double Scale;
+//候选框最低得分，以及去重时使用的交并比阈值
 constexpr float ScoreThreshold = .50f, NmsThreshold = .45f;
+//中文标签宽度和得分背景高度，单位为像素
 constexpr int LabelWidth = 44, ScoreHeight = 16;
+//三路输出各自对应的锚框宽高，单位为模型输入图的像素
 static const cv::Size2f Anchors[YoloHeads][YoloAnchors] = {
     {{10, 13}, {16, 30}, {33, 23}},
     {{30, 61}, {62, 45}, {59, 119}},
     {{116, 90}, {156, 198}, {373, 326}},
 };
 
-static float dequantize(const YoloHead &head, int8_t value)
+//候选表的列顺序，前四列为位置编码，第五列为目标分数
+enum PredictionColumn
 {
-    return (int(value) - head.zeroPoint) * head.scale;
-}
+    CenterX,
+    CenterY,
+    WidthCode,
+    HeightCode,
+    ObjectScore,
+    ClassBegin
+};
 
-static bool higherScore(const Detection &a, const Detection &b)
-{
-    return a.confidence > b.confidence;
-}
+static void readCandidates(const YoloHead &head, int index, std::vector<Detection> &candidates);
+static void selectCandidates(std::vector<Detection> &candidates, std::vector<Detection> &selected);
+static bool restoreBox(cv::Rect2d &box);
 
-static void readCandidates(const YoloHead &head, int index, std::vector<Detection> &candidates)
-{
-    int size = YoloGrid[index];
-    int stride = YoloSize / size;
-    // INT8 最大值对应类别分数上界，不把量化后的上界假定为恰好 1。
-    float maximumClassScore = dequantize(head, 127);
-    // 每个网格点有 3 个候选框，每个框由 4 个位置数、1 个目标分数和 14 个类别分数组成。
-    for (int y = 0; y < size; ++y)
-    {
-        for (int x = 0; x < size; ++x)
-        {
-            for (int anchor = 0; anchor < YoloAnchors; ++anchor)
-            {
-                const int8_t *prediction = head.data + y * head.rowBytes + x * YoloChannels + anchor * YoloBoxValues;
-                float objectScore = dequantize(head, prediction[4]);
-                if (objectScore >= 0 && objectScore * maximumClassScore < ScoreThreshold) continue;
-                const int8_t *classScores = prediction + 5;
-                const int8_t *best = std::max_element(classScores, classScores + YoloClasses);
-                int classId = int(best - classScores);
-                float score = objectScore * dequantize(head, prediction[5 + classId]);
-                if (score < ScoreThreshold) continue;
-                // 先得到格内偏移，再加网格位置；与原实现保持相同的 float/double 顺序。
-                float offsetX = dequantize(head, prediction[0]) * 2 - .5f;
-                float offsetY = dequantize(head, prediction[1]) * 2 - .5f;
-                double centerX = (double(offsetX) + x) * stride;
-                double centerY = (double(offsetY) + y) * stride;
-                float widthFactor = dequantize(head, prediction[2]) * 2;
-                float heightFactor = dequantize(head, prediction[3]) * 2;
-                cv::Size2f anchorSize = Anchors[index][anchor];
-                float width = widthFactor * widthFactor * anchorSize.width;
-                float height = heightFactor * heightFactor * anchorSize.height;
-                candidates.push_back(
-                    {classId, score, cv::Rect2d(centerX - width / 2, centerY - height / 2, width, height)});
-            }
-        }
-    }
-}
-
-// 固定流程先设置一次参数，取帧时不再重新计算几何。
+//---------初始化区---------
 void Vision_setup(cv::Size frameSize, cv::Rect roi)
 {
+    //保存固定机位使用的原图尺寸和识别区域
     FrameSize = frameSize;
     Roi = roi;
+    //取宽高两个缩放比例中的较小值，使整块裁剪图放进640×640输入
     Scale = std::min(double(YoloSize) / roi.width, double(YoloSize) / roi.height);
-    cv::Size resized(cvRound(roi.width * Scale), cvRound(roi.height * Scale));
-    InputArea = {(YoloSize - resized.width) / 2, (YoloSize - resized.height) / 2, resized.width, resized.height};
+    //将缩放尺寸取整为实际像素数
+    InputArea.width = cvRound(roi.width * Scale);
+    InputArea.height = cvRound(roi.height * Scale);
+    //缩放图居中放置，剩余边缘作为填充区域
+    InputArea.x = (YoloSize - InputArea.width) / 2;
+    InputArea.y = (YoloSize - InputArea.height) / 2;
 }
 
+//---------图像预处理区---------
 void Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
 {
+    //核对8位三通道原图和固定分辨率
     if (bgr.type() != CV_8UC3 || bgr.size() != FrameSize) throw std::runtime_error("Unexpected camera frame");
+    //裁剪识别区域，并将OpenCV的BGR通道顺序转换为模型使用的RGB
     cv::Mat rgb;
     cv::cvtColor(bgr(Roi), rgb, cv::COLOR_BGR2RGB);
+    //创建640×640输入图，填充像素值114
     input = cv::Mat(YoloSize, YoloSize, CV_8UC3, cv::Scalar::all(114));
+    //取得有效画面区域的内存视图，缩放结果直接写入输入图
     cv::Mat picture = input(InputArea);
+    //用双线性插值缩放裁剪图，外侧区域保留填充值
     cv::resize(rgb, picture, InputArea.size(), 0, 0, cv::INTER_LINEAR);
 }
 
+//---------输出解码区---------
 void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &boxes)
 {
     boxes.clear();
+    //候选表和去重表中的位置均为640×640模型输入坐标
+    std::vector<Detection> candidates, selected;
+    //读取三路输出，合并达到得分阈值的候选框
     for (int i = 0; i < YoloHeads; ++i)
-        readCandidates(heads[i], i, boxes);
-    std::stable_sort(boxes.begin(), boxes.end(), higherScore);
-    // 保留高分框，删除后面与它重叠的框；同分维持原顺序。
-    for (size_t i = 0; i < boxes.size(); ++i)
-        for (size_t j = i + 1; j < boxes.size();)
-        {
-            cv::Rect2d a = boxes[i].bbox, b = boxes[j].bbox;
-            double overlap = (a & b).area();
-            double total = a.area() + b.area() - overlap;
-            if (overlap / std::max(total, 1e-9) > NmsThreshold)
-                boxes.erase(boxes.begin() + j);
-            else
-                ++j;
-        }
-    // 原地写回有效结果，先去重，再裁切并恢复原图坐标。
-    size_t count = 0;
-    for (Detection piece : boxes)
-    {
-        cv::Rect2d b = piece.bbox;
-        double x1 = std::clamp((b.x - InputArea.x) / Scale, 0.0, double(Roi.width));
-        double y1 = std::clamp((b.y - InputArea.y) / Scale, 0.0, double(Roi.height));
-        double x2 = std::clamp((b.x + b.width - InputArea.x) / Scale, 0.0, double(Roi.width));
-        double y2 = std::clamp((b.y + b.height - InputArea.y) / Scale, 0.0, double(Roi.height));
-        if (x2 > x1 && y2 > y1)
-        {
-            piece.bbox = {x1 + Roi.x, y1 + Roi.y, x2 - x1, y2 - y1};
-            boxes[count++] = piece;
-        }
-    }
-    boxes.resize(count);
+        readCandidates(heads[i], i, candidates);
+    //按得分从高到低选择，重叠框保留其中的高分结果
+    selectCandidates(candidates, selected);
+    //将保留框映射到原图，逐项写出本帧结果
+    for (Detection piece : selected)
+        if (restoreBox(piece.bbox)) boxes.push_back(piece);
 }
 
+//---------识别绘制区---------
 void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels, cv::Mat &result)
 {
+    //复制原尺寸画面，后续绘制写入预览图
     result = bgr.clone();
+    //绘图边界为整张原图
     cv::Rect bounds(0, 0, result.cols, result.rows);
     for (const Detection &piece : detections)
     {
+        //将检测框转换为整数像素，并裁切到可绘制区域
         cv::Rect box = cv::Rect(piece.bbox) & bounds;
         if (box.empty()) continue;
+        //按红黑双方选择显示颜色，画出检测框
         cv::Scalar color = piece.classId < 7 ? cv::Scalar(255, 180, 65) : cv::Scalar(65, 85, 245);
         cv::rectangle(result, box, color, 2);
+        //中文标签放在检测框上方，位置限制在图像范围内
         int x = std::clamp(box.x, 0, std::max(0, result.cols - LabelWidth));
         int y = std::clamp(box.y - LabelHeight - 1, 0, std::max(0, result.rows - LabelHeight));
         cv::Rect label = cv::Rect(x, y, LabelWidth, LabelHeight) & bounds;
+        //先绘制标签背景，再按字图中的非零像素绘制白色文字
         result(label).setTo(color);
-        result(label).setTo(cv::Scalar::all(255),
-                            labels(cv::Rect(0, piece.classId * LabelHeight, label.width, label.height)));
+        cv::Mat glyph = labels(cv::Rect(0, piece.classId * LabelHeight, label.width, label.height));
+        result(label).setTo(cv::Scalar::all(255), glyph);
+        //在检测框底部显示得分，保留两位小数
         int scoreY = std::clamp(box.y + box.height - ScoreHeight, 0, std::max(0, result.rows - ScoreHeight));
         cv::rectangle(result, {x, scoreY, LabelWidth, ScoreHeight}, color, cv::FILLED);
-        cv::putText(result, cv::format("%.2f", piece.confidence), {x + 3, scoreY + 12}, cv::FONT_HERSHEY_SIMPLEX, .4,
+        std::string score = cv::format("%.2f", piece.confidence);
+        cv::putText(result, score, {x + 3, scoreY + 12}, cv::FONT_HERSHEY_SIMPLEX, .4,
                     cv::Scalar::all(255), 1, cv::LINE_AA);
     }
+}
+
+//---------候选表解码区---------
+//将一路输出整理成候选表，解算达到阈值的行
+static void readCandidates(const YoloHead &head, int index, std::vector<Detection> &candidates)
+{
+    //本路输出的网格边长，分别为80、40或20
+    int size = YoloGrid[index];
+    //每个网格单元对应的输入图跨度，分别为8、16或32像素
+    int stride = YoloSize / size;
+    //按实际行跨度读取INT8内存，OpenCV转换后生成连续的浮点工作区
+    cv::Mat raw(size, size * YoloChannels, CV_8S, const_cast<int8_t *>(head.data), head.rowBytes);
+    cv::Mat values;
+    raw.convertTo(values, CV_32F);
+    //先减零点再乘系数，还原每个输出值
+    values -= head.zeroPoint;
+    values *= head.scale;
+    //每行整理为一个候选框，前5列是位置与目标分数，随后14列是类别分数
+    values = values.reshape(1, size * size * YoloAnchors);
+    for (int row = 0; row < values.rows; ++row)
+    {
+        const float *prediction = values.ptr<float>(row);
+        const float *classScores = prediction + ClassBegin;
+        const float *best = std::max_element(classScores, classScores + YoloClasses);
+        float score = prediction[ObjectScore] * *best;
+        if (score < ScoreThreshold) continue;
+
+        //每个网格点有3行候选，行号决定它的网格位置和锚框
+        int cell = row / YoloAnchors;
+        int x = cell % size, y = cell / size;
+        int anchor = row % YoloAnchors;
+        //中心位置由格内偏移和网格步长解算，单位为模型输入像素
+        float offsetX = prediction[CenterX] * 2 - .5f;
+        float offsetY = prediction[CenterY] * 2 - .5f;
+        double centerX = (double(offsetX) + x) * stride;
+        double centerY = (double(offsetY) + y) * stride;
+        //宽高由预测倍数和本路锚框尺寸解算
+        float widthFactor = prediction[WidthCode] * 2;
+        float heightFactor = prediction[HeightCode] * 2;
+        cv::Size2f anchorSize = Anchors[index][anchor];
+        float width = widthFactor * widthFactor * anchorSize.width;
+        float height = heightFactor * heightFactor * anchorSize.height;
+
+        //填写本候选框的类别、得分和位置
+        Detection candidate;
+        candidate.classId = int(best - classScores);
+        candidate.confidence = score;
+        candidate.bbox = cv::Rect2d(centerX - width / 2, centerY - height / 2, width, height);
+        candidates.push_back(candidate);
+    }
+}
+
+//---------候选框去重区---------
+static void selectCandidates(std::vector<Detection> &candidates, std::vector<Detection> &selected)
+{
+    //按得分降序处理，同分保持原读取顺序
+    std::stable_sort(candidates.begin(), candidates.end(), [](const Detection &a, const Detection &b)
+    {
+        return a.confidence > b.confidence;
+    });
+    selected.clear();
+    for (const Detection &candidate : candidates)
+    {
+        //逐个与已经保留的高分框比较
+        bool duplicate = false;
+        for (const Detection &kept : selected)
+        {
+            double overlap = (kept.bbox & candidate.bbox).area();
+            double total = kept.bbox.area() + candidate.bbox.area() - overlap;
+            if (overlap / std::max(total, 1e-9) > NmsThreshold)
+            {
+                duplicate = true;
+                break;
+            }
+        }
+        //通过检查后追加，原候选表始终按顺序读取
+        if (!duplicate) selected.push_back(candidate);
+    }
+}
+
+//---------坐标还原区---------
+static bool restoreBox(cv::Rect2d &box)
+{
+    //去除补边并撤销缩放，得到原裁剪区域中的四条边
+    double left = (box.x - InputArea.x) / Scale;
+    double top = (box.y - InputArea.y) / Scale;
+    double right = (box.x + box.width - InputArea.x) / Scale;
+    double bottom = (box.y + box.height - InputArea.y) / Scale;
+    //将边界限制在识别区域内，再加回原图偏移
+    left = std::clamp(left, 0.0, double(Roi.width));
+    top = std::clamp(top, 0.0, double(Roi.height));
+    right = std::clamp(right, 0.0, double(Roi.width));
+    bottom = std::clamp(bottom, 0.0, double(Roi.height));
+    box = {left + Roi.x, top + Roi.y, right - left, bottom - top};
+    //裁切后有面积的框进入最终结果
+    return right > left && bottom > top;
 }
 } // namespace scara

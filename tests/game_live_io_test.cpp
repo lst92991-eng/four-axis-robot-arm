@@ -8,6 +8,10 @@
 #include <poll.h>
 #include <cstring>
 #include <iostream>
+#ifdef __linux__
+#include <sys/syscall.h>
+extern "C" long syscall(long, ...) noexcept;
+#endif
 
 volatile std::sig_atomic_t scara::gameRunning = 1;
 namespace fake
@@ -18,6 +22,7 @@ int executions = 0, stops = 0;
 std::vector<scara::PickStep> receivedSteps;
 std::vector<std::string> events;
 std::string keyboard;
+bool eof = false;
 void check(bool value, const char *message)
 {
     if (!value) throw std::runtime_error(message);
@@ -50,7 +55,8 @@ bool Pikafish::close()
 
 namespace scara
 {
-void Motion_execute(const std::vector<PickStep> &steps, const volatile std::sig_atomic_t &running, bool &success)
+void Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &,
+                    const volatile std::sig_atomic_t &running, bool &success)
 {
     fake::check(!fake::camera && !fake::npu && !fake::engine, "Motion started before resource cleanup");
     success = false;
@@ -129,11 +135,16 @@ void Vision_draw(const cv::Mat &source, const std::vector<Detection> &, const cv
 } // namespace scara
 extern "C" int poll(pollfd *, unsigned long, int)
 {
+    if (fake::eof) return 1;
     if (fake::keyboard.empty()) scara::gameRunning = 0;
     return fake::keyboard.empty() ? 0 : 1;
 }
-extern "C" std::ptrdiff_t read(int, void *buffer, size_t)
+extern "C" std::ptrdiff_t read(int descriptor, void *buffer, size_t size)
 {
+#ifdef __linux__
+    //替身只接管键盘，文件读取交给系统，保持预览文件的真实验证
+    if (descriptor != 0) return syscall(SYS_read, descriptor, buffer, size);
+#endif
     if (fake::keyboard.empty()) return 0;
     *static_cast<char *>(buffer) = fake::keyboard.front();
     fake::keyboard.erase(0, 1);
@@ -161,7 +172,7 @@ int main()
                         std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode", "draw"},
                     "Live observation no longer follows the verified order");
         std::string bytes;
-        readBytes(Runtime_path("preview.jpg"), bytes);
+        readBytes(config.workDir + "/preview.jpg", bytes);
         auto preview = cv::imdecode(std::vector<unsigned char>(bytes.begin(), bytes.end()), cv::IMREAD_COLOR);
         fake::check(preview.cols == 2560 && preview.rows == 720, "Preview changed full-frame geometry");
         previous = frame;
@@ -173,9 +184,9 @@ int main()
         fake::check(frame != previous, "Observation identity was reused after search");
 
         PickStep lift, release;
-        lift.action = PickAction::MoveZ;
-        lift.zDeg = 123;
-        lift.speedDegS = 180;
+        lift.action = PickAction::Move;
+        lift.axes = ZAxis;
+        lift.target[0] = 123;
         release.action = PickAction::ReleasePulse;
         release.durationMs = 20;
         std::vector<PickStep> steps{lift, release};
@@ -183,7 +194,7 @@ int main()
         Robot_execute("move", "a3a4", steps, completed);
         fake::check(completed && fake::executions == 1 && fake::receivedSteps.size() == 2,
                     "Direct execution did not receive the action array or return completion");
-        fake::check(fake::receivedSteps[0].zDeg == 123 && fake::receivedSteps[0].speedDegS == 180 &&
+        fake::check(fake::receivedSteps[0].target[0] == 123 && fake::receivedSteps[0].axes == ZAxis &&
                         fake::receivedSteps[1].action == PickAction::ReleasePulse &&
                         fake::receivedSteps[1].durationMs == 20,
                     "Direct interface changed action units or pulse duration");
@@ -214,7 +225,7 @@ int main()
         fake::cancelMotion = false;
         gameRunning = 1;
         int stopped = fake::stops;
-        Runtime_stop();
+        Camera_stop();
         fake::check(fake::stops == stopped, "Signal callback performed blocking hardware I/O");
         fake::stopSuccess = false;
         fake::check(!Runtime_close(), "Failed stop was reported as confirmed");
@@ -249,7 +260,22 @@ int main()
         Command command;
         Operator_read("human", "fixture", command);
         fake::check(command == Command::Ready, "Console command parsing failed");
-        Runtime_stop();
+        //退出命令和EOF均由输入入口设置停止标志，机械收尾仍交给主程序
+        for (const char *input : {"quit\n", ""})
+        {
+            fake::keyboard = input;
+            fake::eof = fake::keyboard.empty();
+            gameRunning = 1;
+            bool ended = false;
+            int beforeStop = fake::stops;
+            try { Operator_read("human", "exit fixture", command); }
+            catch (const std::exception &) { ended = true; }
+            fake::check(ended && !gameRunning && fake::stops == beforeStop,
+                        "Quit/EOF did not leave through nonblocking input shutdown");
+        }
+        fake::eof = false;
+        gameRunning = 1;
+        Camera_stop();
         fake::check(Runtime_close(), "Live wrapper cleanup failed");
         std::cout
             << "PASS actual live wrapper: vision, engine, direct execution/result/cancellation/stop; external APIs mocked\n";

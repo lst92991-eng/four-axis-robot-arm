@@ -20,7 +20,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-FONT_PATH = Path('C:/Windows/Fonts/msyh.ttc')
+FONT_PATH = Path(os.environ.get('SCARA_CHINESE_FONT', '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'))
 CHINESE_FONT = ImageFont.truetype(str(FONT_PATH), 16) if FONT_PATH.exists() else None
 
 SYMBOLS = 'kabnrcpKABNRCP'
@@ -30,6 +30,9 @@ ANCHORS = np.array(
 ).reshape(3, 3, 2)
 
 
+
+#---------HTTP与图像输出区---------
+# 编码成功后写入图片，图像处理仍使用原始像素
 def write_image(path, image):
     ok, encoded = cv2.imencode(path.suffix, image)
     if not ok:
@@ -37,14 +40,17 @@ def write_image(path, image):
     path.write_bytes(encoded.tobytes())
 
 
-def request(board, path, data=None, frame_id=''):
+def request(board, path, data=None, frame_id='', headers=None):
     conn = http.client.HTTPConnection(board, 8088, timeout=10)
+    # 推理和预览共用HTTP收发，双画面的额外状态随请求头发送
+    request_headers = {'Content-Type': 'application/octet-stream', 'X-Frame-ID': str(frame_id)}
+    request_headers.update(headers or {})
     try:
         conn.request(
             'GET' if data is None else 'POST',
             path,
             body=data,
-            headers={'Content-Type': 'application/octet-stream', 'X-Frame-ID': str(frame_id)},
+            headers=request_headers,
         )
         reply = conn.getresponse()
         body = reply.read()
@@ -55,6 +61,9 @@ def request(board, path, data=None, frame_id=''):
         conn.close()
 
 
+
+#---------模型输入区---------
+# 保持已验证的RGB、640尺寸和114填充，返回还原坐标所需的缩放及边距
 def letterbox(bgr):
     h, w = bgr.shape[:2]
     ratio = min(640 / w, 640 / h)
@@ -69,6 +78,9 @@ def letterbox(bgr):
     return rgb.tobytes(), ratio, left, top
 
 
+
+#---------检测解码区---------
+# 按得分保留候选，重叠度沿用0.45，类别映射与阈值保持原值
 def nms(boxes, scores, iou_limit=0.45):
     order = np.argsort(-scores, kind='stable')
     keep = []
@@ -151,6 +163,9 @@ def transform(frame, roi, rotate):
     return frame.copy()
 
 
+
+#---------预览绘制区---------
+# 在显示图像副本画框和类别，模型输入裁剪由调用方单独准备
 def render(frame, detections, meta, fps, frame_id, roi, rotate, age):
     image = frame.copy()
     for d in detections:
@@ -192,6 +207,8 @@ def render(frame, detections, meta, fps, frame_id, roi, rotate, age):
 
 
 class Capture:
+    #---------取流初始化区---------
+    # 后台保存最新帧及时间，消费方取副本后再进行识别
     def __init__(self, url):
         self.lock, self.stopping = threading.Lock(), threading.Event()
         self.frame, self.timestamp, self.number, self.error = None, 0, 0, None
@@ -224,6 +241,8 @@ class Capture:
             self.cap.release()
 
 
+
+#---------单帧处理循环区---------
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--board', default='192.168.31.233')
@@ -243,7 +262,6 @@ def main():
     started = time.monotonic()
     processed = 0
     last_frame = -1
-    durations = []
     npu_times = []
     counts = []
     last_report = started
@@ -285,7 +303,6 @@ def main():
                 detections, meta = decode(response, ratio, left, top, frame.shape, frame_id)
                 age = (time.monotonic() - ts) * 1000
                 dt = time.monotonic() - begin
-                durations.append(dt)
                 npu_times.append(meta['npu_ms'])
                 counts.append(len(detections))
                 fps = 1 / (sum(intervals[-20:]) / len(intervals[-20:])) if intervals else 0

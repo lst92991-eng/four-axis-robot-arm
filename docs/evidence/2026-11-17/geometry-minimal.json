@@ -1,0 +1,172 @@
+{
+  "date": "2026-11-17",
+  "base": "5d4c31b plus comment-only working tree",
+  "hardware_tested": false,
+  "core_effective": 204,
+  "module_effective": 288,
+  "module_before": 664,
+  "cpp_files": 28,
+  "cpp_effective": 2257,
+  "cpp_before": 2648,
+  "checks": {
+    "linux_ctest_groups": 14,
+    "python_tests_windows": 64,
+    "geometry_assertions": 234,
+    "analytic_assignment_cases": 14400,
+    "cli_grid_points": 90,
+    "cli_max_coordinate_difference": 0.0,
+    "demo_import_passed": true
+  },
+  "match_comparison": {
+    "scenarios": 15,
+    "identical": true,
+    "differences": [],
+    "excluded_fields": [
+      "state.run_id",
+      "state.updated_at_ms"
+    ],
+    "scope": "Final states and every direct actuator step, using unchanged numerical samples in the two configuration formats; no hardware."
+  },
+  "sources": [
+    {
+      "file": "app/game.cpp",
+      "effective": 162,
+      "sha256": "8ca764db4a28516fb3b3cd96e9593d1f699a47535e11fbc7fe488379b35c109f"
+    },
+    {
+      "file": "app/game.hpp",
+      "effective": 42,
+      "sha256": "36e5fd01a99cc992e04c55c9652b62a5e19a9046a34d185a8fed190cb90a42ec"
+    },
+    {
+      "file": "app/game_config.cpp",
+      "effective": 60,
+      "sha256": "f4c8b358264675fd3d71d44f84a17c0fbf34d70f122235e4f4403919ea3bce74"
+    },
+    {
+      "file": "app/game_files.cpp",
+      "effective": 78,
+      "sha256": "7227b306c6a078cac95acd7f79b391b53619d1a40df86499e849fe579af99c90"
+    },
+    {
+      "file": "app/game_files.hpp",
+      "effective": 7,
+      "sha256": "58703d1163eb31ede0f9b4f666df233192802656a107217eab24b311c421de62"
+    },
+    {
+      "file": "app/game_live_io.cpp",
+      "effective": 126,
+      "sha256": "af9ca21f5f7fb2a39fe265f9655e2c108b3a0a45ba4e3b964d7503f34e005919"
+    },
+    {
+      "file": "app/game_main.cpp",
+      "effective": 63,
+      "sha256": "d03081ee83c581c77e90b476431b6e87e47509f671b982ac89f170b129701f37"
+    },
+    {
+      "file": "app/game_sim_io.cpp",
+      "effective": 110,
+      "sha256": "820ca7815dc079d4715fdf5e1c1932b713c897be00d18ff4db31aafe9dfe4e29"
+    },
+    {
+      "file": "app/geometry_tool.cpp",
+      "effective": 47,
+      "sha256": "a8abda1295e14409032371f90a92dfc1c1663cea47c4e43a3c1908467f0d9192"
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "effective": 64,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "chess/board.cpp",
+      "effective": 266,
+      "sha256": "016289ef6e0f03490625a4d8b5141e178294e4f74dadc5b45dc6b6e896586498"
+    },
+    {
+      "file": "chess/board.hpp",
+      "effective": 58,
+      "sha256": "fc6522115f2e27830ef02ff90ca7c160b0ab0bd72d2527e8b5b36f06cf7a14ec"
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "effective": 220,
+      "sha256": "eefe64d06d87bc9240de1ee12b249b104630d9583ea0a8c16736117814146ea5"
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "effective": 33,
+      "sha256": "994914063ade0779c9e2ee5d57efc9d187a7e03db2740ba48c6d73a66dab5099"
+    },
+    {
+      "file": "chess/session.cpp",
+      "effective": 79,
+      "sha256": "a9b17b5e595d05a264e91b258802b8160a0ce96123f6713412e4549a8f8806e9"
+    },
+    {
+      "file": "chess/session.hpp",
+      "effective": 24,
+      "sha256": "be80361397947594aec75ca0dffeb72ea60a8ad88f29caff41ec39f27873e7d0"
+    },
+    {
+      "file": "motion/execute.cpp",
+      "effective": 14,
+      "sha256": "a8c056293edae165223c1628316d061888196138dc81af92ab3b0eb968850a01"
+    },
+    {
+      "file": "motion/execute.hpp",
+      "effective": 7,
+      "sha256": "1e2e36ef37c8e6bfc9d9f91f1c1ab9e5c27501641d652a553d7605bffeb1b737"
+    },
+    {
+      "file": "motion/plan.cpp",
+      "effective": 137,
+      "sha256": "f815fb4806d719df3a235ff5f229018bc8f12a2b597248def208a449dc2d2875"
+    },
+    {
+      "file": "motion/plan.hpp",
+      "effective": 53,
+      "sha256": "f9ef544c27cc0e0144e79fbace905e03e3b866250401deceb70f8ec7ba983253"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "effective": 74,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "effective": 9,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/geometry.cpp",
+      "effective": 172,
+      "sha256": "a260283885418bf4e5de8f73483152510fc0502daa0bc4f7ba08aa364e1b339c"
+    },
+    {
+      "file": "vision/geometry.hpp",
+      "effective": 32,
+      "sha256": "736f574af01caf04a8c94365e68dd92e0eeedce1545daec48e2084343b2f86c5"
+    },
+    {
+      "file": "vision/io.hpp",
+      "effective": 37,
+      "sha256": "14e823a6c78bbc48806605ed18a4a1678f2dd895e9dd430af8151ca1184faace"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "effective": 153,
+      "sha256": "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "effective": 38,
+      "sha256": "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "effective": 92,
+      "sha256": "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b"
+    }
+  ]
+}

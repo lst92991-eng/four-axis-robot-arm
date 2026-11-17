@@ -1,0 +1,21 @@
+{
+  "note": "OFFLINE ONLY: clearance is a synthetic midpoint to exercise simultaneous Z/XY travel. It is not a taught hardware clearance.",
+  "z": {
+    "pickup_deg": -20286.41,
+    "travel_deg": -19353.34,
+    "pickup": {
+      "angle": -20286.41,
+      "counts": -61875,
+      "captured_at": "2026-11-11T15:43:20.1539702+08:00"
+    },
+    "travel": {
+      "angle": -19353.34,
+      "counts": -19410,
+      "captured_at": "2026-11-11T15:51:57.224238+08:00"
+    },
+    "operator_estimated_rise_mm": 20,
+    "release_offset_mm": 5,
+    "clearance_deg": -19819.875
+  },
+  "release_pulse_ms": 20
+}
