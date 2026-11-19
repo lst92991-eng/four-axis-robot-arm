@@ -163,7 +163,7 @@ static int handleCalibrate(const CanPacket *command,const motor_status_t *feedba
 static int handleTune(const CanPacket *command,const motor_status_t *feedback)
 {
   if(feedback->power || feedback->fault || !feedback->encoder_valid)return 0;
-  return Motor_setSpeedGains(command->values[0],command->values[1]);
+  return Motor_setTuning(command->values[0], command->values[1], command->values[2]);
 }
 static int handleReboot(const CanPacket *command,const motor_status_t *feedback)
 {
@@ -180,7 +180,14 @@ static int handleVelocity(const CanPacket *command,const motor_status_t *feedbac
 static int handleBrakeRate(const CanPacket *command,const motor_status_t *feedback)
 {
   if(feedback->fault || !feedback->encoder_valid || Calibration_active())return 0;
-  return Motion_setBrakeAcceleration(command->values[0]/1000.0f);
+  //旧上位机第二项为零，只修改制动；非零时同时配置两条斜率。
+  int32_t ki_scale = command->values[2];
+  if (ki_scale != 0 && (ki_scale < 250 || ki_scale > 1000))
+    return 0;
+  if (!Motion_setRamps(command->values[0] / 1000.0f, command->values[1] / 1000.0f))
+    return 0;
+  Joint.descent_brake_ki_permille = (uint16_t)ki_scale;
+  return 1;
 }
 
 //---------命令映射区---------
@@ -251,8 +258,14 @@ static int processFrame(const motor_status_t *feedback, uint32_t now, const uint
   reply.version = 3;
   reply.sequence = command.sequence;
   reply.result = !accepted;
-  if(accepted && command.kind==CMD_TUNE_SPEED)Motor_readSpeedGains(reply.values);
-  if(accepted && command.kind==CMD_BRAKE_RATE)reply.values[0]=(int32_t)lroundf(Motion_brakeAcceleration()*1000);
+  if (accepted && command.kind == CMD_TUNE_SPEED)
+    Motor_readTuning(reply.values);
+  if (accepted && command.kind == CMD_BRAKE_RATE)
+  {
+    reply.values[0] = (int32_t)lroundf(Motion_brakeAcceleration() * 1000);
+    reply.values[1] = (int32_t)lroundf(Motion_startAcceleration() * 1000);
+    reply.values[2] = Joint.descent_brake_ki_permille;
+  }
   memcpy(response, &reply, sizeof(reply));
   return 1;
 }

@@ -12,6 +12,7 @@
 #include <math.h>
 #include <limits.h>
 #include <stdlib.h>
+
 //---------运行数据区---------
 //采样和三环运行数据由本模块保存
 static struct
@@ -34,6 +35,7 @@ static struct
   speed_estimator_t speed_estimator;
   uint32_t last_speed_ms;
   float speed_kp, speed_ki;
+  int32_t voltage_limit_mv;
 } Drive;
 
 uint8_t motor_configured;
@@ -63,6 +65,7 @@ void Motor_initialize(void)
   Drive.control.current.q.KP = joint_config->current_kp;
   Drive.control.current.d.KI = joint_config->current_ki;
   Drive.control.current.q.KI = joint_config->current_ki;
+  Drive.voltage_limit_mv = joint_config->voltage_limit_mv;
   Drive.control.current.voltageLimit = joint_config->voltage_limit_mv;
 }
 
@@ -77,17 +80,37 @@ static int feedbackFresh(void)
   return now - Drive.last_adc_ms <= 2 && now - Drive.last_encoder_ms <= 2;
 }
 
-//命令受理和参考交付前，确认配置、反馈和供电条件
-int Motor_canRun(void)
+//J1运行中执行45 V过压停机，待机、标定和其他轴使用30 V。
+static int busInRange(uint32_t bus)
 {
-  uint32_t bus = current_sense_get_bus_mv();
+  uint32_t upper = joint_config->can_node == 1 && Drive.state.power && !Drive.calibrating
+                   ? 45000u : 30000u;
+  return bus >= 10000u && bus <= upper;
+}
+
+//命令受理和参考交付前，确认配置、反馈和供电条件
+static uint8_t referenceBlocker(void)
+{
   //配置和已有故障决定能否接受运动
   if (!motor_configured || Drive.state.fault || Calibration_active())
-    return 0;
+    return CONTROL_REFERENCE_STATE;
   //采样必须持续更新
   if (!feedbackFresh())
-    return 0;
-  return bus >= 10000 && bus <= 30000;
+    return CONTROL_REFERENCE_FEEDBACK;
+  uint32_t bus = current_sense_get_bus_mv();
+  return busInRange(bus) ? 0 : CONTROL_REFERENCE_BUS;
+}
+
+int Motor_canRun(void) { return referenceBlocker() == 0; }
+
+static void shutdownWithDetail(motor_fault_t reason, uint8_t detail)
+{
+  uint32_t irq = __get_PRIMASK();
+  __disable_irq();
+  if (Drive.state.fault == FAULT_NONE)
+    Drive.state.fault_detail = detail;
+  Motor_shutdown(reason);
+  __set_PRIMASK(irq);
 }
 
 //读取同一组反馈，并刷新主循环存活时刻
@@ -106,7 +129,6 @@ uint32_t Motor_readFeedback(motor_status_t *out)
   {
     out->trace_iq_ref = (int32_t)Drive.control.current.q.targetValue;
     out->trace_iq = (int32_t)Drive.control.current.q.currentValue;
-    out->trace_vq = (int32_t)Drive.control.current.q.out;
   }
   out->bus_mv = current_sense_get_bus_mv();
   out->id_counts = (int32_t)(Drive.control.current.d.currentValue * 819.0f / 3300.0f);
@@ -147,9 +169,10 @@ int Motor_applyReference(void)
   double tick = Motion_calculateMotorTarget();
   //目标计数需留在32位位置环的范围内
   int outside = tick < INT32_MIN + 1.0 || tick > INT32_MAX - 1.0;
-  if (!Motor_canRun() || outside)
+  uint8_t blocker = referenceBlocker();
+  if (blocker || outside)
   {
-    Motor_shutdown(FAULT_CONTROL);
+    shutdownWithDetail(FAULT_CONTROL, outside ? CONTROL_REFERENCE_RANGE : blocker);
     __set_PRIMASK(irq);
     return 0;
   }
@@ -161,8 +184,15 @@ int Motor_applyReference(void)
   {
     float following = joint_config->following_error_deg;
     position_speed_limits_t limits = position_speed_limits(Joint.speed_limit,
-      joint_config->max_speed_deg_s, joint_config->ratio, Drive.control.position.KP,
+      joint_config->max_speed_deg_s, J1_MOTOR_SPEED_LIMIT_DEG_S, joint_config->ratio, Drive.control.position.KP,
       following > 0 ? following : 2.5f);
+    if (state == MOTION_MOVE)
+    {
+      float tracking_error = (float)(Joint.ref_pos - Joint.status.position);
+      float remaining_travel = (float)(Joint.status.requested - Joint.ref_pos);
+      limits.correction = position_move_correction_limit(limits.correction, Joint.speed_limit,
+        tracking_error, remaining_travel, Joint.ref_vel, Motion_brakeAcceleration());
+    }
     Drive.control.position.limit = limits.correction * scale;
     speed_reference_limit = limits.total * scale;
   }
@@ -173,9 +203,18 @@ int Motor_applyReference(void)
   Drive.control.speed.targetValue=position_speed_reference(
     feedforward,Drive.control.position.out,speed_reference_limit);
   // 普通位置/速度环以主循环1kHz更新，电流环保持原6250Hz。
-  Drive.control.speed.KI=Drive.speed_ki/scale*((dt_ms>=1 && dt_ms<=3)?dt_ms:1)*0.001f;
+  float speed_ki = Drive.speed_ki * Motion_speedKiScale();
+  Drive.control.speed.KI=speed_ki/scale*((dt_ms>=1 && dt_ms<=3)?dt_ms:1)*0.001f;
   Common_Speed_Compute(&Drive.control.speed);
   Drive.control.current.q.targetValue=Drive.control.speed.out;
+  //上升、下降和制动都使用当前设置的输出限幅。
+  Drive.control.current.voltageLimit = Drive.voltage_limit_mv;
+  if (!Drive.state.power)
+  {
+    Drive.state.bus_peak_mv = 0;
+    Drive.state.phase_a_peak_counts = 0;
+    Drive.state.phase_b_peak_counts = 0;
+  }
   Drive.state.power = 1;
   __set_PRIMASK(irq);
   return 1;
@@ -200,10 +239,12 @@ int Motor_calibrationDrive(int enabled, int32_t angle_mdeg, int32_t current_ma)
   {
     Drive.calibration_angle=angle_mdeg*(6.28318530718f/360000.0f);
     Drive.calibration_ma=(float)current_ma;
+    Drive.control.current.voltageLimit = Drive.voltage_limit_mv > 8000
+                                         ? 6000 : Drive.voltage_limit_mv;
     Drive.calibrating=1;
     Drive.state.power=1;
   }
-  else Motor_shutdown(FAULT_CONTROL);
+  else shutdownWithDetail(FAULT_CONTROL, CONTROL_CALIBRATION);
   __set_PRIMASK(irq);
   return ok;
 }
@@ -216,14 +257,19 @@ void Motor_readCurrentFault(int32_t values[12])
   __set_PRIMASK(irq);
 }
 
-int Motor_setSpeedGains(int32_t kp_milli,int32_t ki_milli)
+int Motor_setTuning(int32_t kp_milli, int32_t ki_milli, int32_t voltage_mv)
 {
   if (joint_config->can_node < 1 || joint_config->can_node > 4 || kp_milli < 100 || kp_milli > 20000 ||
       ki_milli < 0 || ki_milli > 300000)
     return 0;
+  //仅J1可在线调整电压矢量限幅；零继续使用当前值。
+  if (voltage_mv && (joint_config->can_node != 1 || voltage_mv < 6000 ||
+                     voltage_mv > J1_MOTION_VOLTAGE_MAX_MV))
+    return 0;
   uint32_t irq=__get_PRIMASK();__disable_irq();
-  int ok=Joint.status.state==MOTION_OFF && !Drive.state.power && !Drive.state.fault &&
-         !Calibration_active() && feedbackFresh();
+  int healthy = voltage_mv ? Motor_canRun() :
+                           !Drive.state.fault && !Calibration_active() && feedbackFresh();
+  int ok = Joint.status.state == MOTION_OFF && !Drive.state.power && healthy;
   if(ok)
   {
     float scale=16384*joint_config->ratio/360;
@@ -231,14 +277,17 @@ int Motor_setSpeedGains(int32_t kp_milli,int32_t ki_milli)
     Drive.control.speed.KP=Drive.speed_kp/scale;
     Drive.control.speed.KI=Drive.speed_ki/scale*0.001f;
     Drive.control.speed.sumError=0;
+    if (voltage_mv)
+      Drive.voltage_limit_mv = voltage_mv;
   }
   __set_PRIMASK(irq);return ok;
 }
-void Motor_readSpeedGains(int32_t values[3])
+void Motor_readTuning(int32_t values[4])
 {
   values[0]=(int32_t)lroundf(Drive.speed_kp*1000);
   values[1]=(int32_t)lroundf(Drive.speed_ki*1000);
   values[2]=(int32_t)joint_config->current_limit_ma;
+  values[3]=Drive.voltage_limit_mv;
 }
 
 //---------采样中断区---------
@@ -262,15 +311,22 @@ void Motor_control_callback(int32_t a, int32_t b)
     int main_late = (TMR6->ists & TMR_OVF_FLAG) != 0;
     if (main_late)
     {
-      Motor_shutdown(FAULT_CONTROL);
+      shutdownWithDetail(FAULT_CONTROL, CONTROL_ADC_MAIN_GAP);
       return;
     }
     //先扩展到64位再取绝对值，覆盖负数最小值
-    int current_valid = llabs((long long)a) <= CURRENT_RUNTIME_PHASE_TRIP &&
-                        llabs((long long)b) <= CURRENT_RUNTIME_PHASE_TRIP;
+    int64_t a_abs = llabs((long long)a), b_abs = llabs((long long)b);
+    int current_valid = a_abs <= CURRENT_RUNTIME_PHASE_TRIP && b_abs <= CURRENT_RUNTIME_PHASE_TRIP;
+    //记录 J1 本次使能期间有效采样窗口内的相电流峰值。
+    if (joint_config->can_node == 1 && window)
+    {
+      if (a_abs > Drive.state.phase_a_peak_counts)
+        Drive.state.phase_a_peak_counts = a_abs > UINT16_MAX ? UINT16_MAX : (uint16_t)a_abs;
+      if (b_abs > Drive.state.phase_b_peak_counts)
+        Drive.state.phase_b_peak_counts = b_abs > UINT16_MAX ? UINT16_MAX : (uint16_t)b_abs;
+    }
     if (Drive.calibrating)
-      current_valid = current_valid && llabs((long long)a)<=CURRENT_CAL_PHASE_TRIP &&
-                                      llabs((long long)b)<=CURRENT_CAL_PHASE_TRIP;
+      current_valid = current_valid && a_abs<=CURRENT_CAL_PHASE_TRIP && b_abs<=CURRENT_CAL_PHASE_TRIP;
     if (!current_valid || !window)
     {
       if (!Drive.state.fault)
@@ -300,10 +356,11 @@ void Motor_control_callback(int32_t a, int32_t b)
   Drive.divider = 0;
   //读取编码器原始角度
   uint16_t raw;
-  if (!mt6816_read_angle(&raw))
+  uint8_t sensor_error = mt6816_read_angle_status(&raw);
+  if (sensor_error)
   {
+    shutdownWithDetail(FAULT_SENSOR, sensor_error);
     Drive.state.encoder_valid = 0;
-    Motor_shutdown(FAULT_SENSOR);
     return;
   }
   //跨越单圈边界时修正增量，展开为多圈位置
@@ -312,11 +369,18 @@ void Motor_control_callback(int32_t a, int32_t b)
     delta -= 16384;
   if (delta < -8192)
     delta += 16384;
-  if (Drive.state.encoder_valid && (abs(delta) > 4096 || system_ms - Drive.last_encoder_ms > 3))
+  if (Drive.state.encoder_valid)
   {
-    Drive.state.encoder_valid = 0;
-    Motor_shutdown(FAULT_SENSOR);
-    return;
+    if (abs(delta) > 4096)
+      sensor_error |= SENSOR_COUNT_JUMP;
+    if (system_ms - Drive.last_encoder_ms > 3)
+      sensor_error |= SENSOR_SAMPLE_GAP;
+    if (sensor_error)
+    {
+      shutdownWithDetail(FAULT_SENSOR, sensor_error);
+      Drive.state.encoder_valid = 0;
+      return;
+    }
   }
   //由计数增量计算速度，再进行一阶低通滤波
   Drive.state.encoder_counts = Drive.state.encoder_valid ? Drive.state.encoder_counts + delta : raw;
@@ -325,7 +389,7 @@ void Motor_control_callback(int32_t a, int32_t b)
   int64_t count = Drive.state.encoder_counts * Calibration_direction();
   if (count < INT32_MIN + 1LL || count > INT32_MAX - 1LL)
   {
-    Motor_shutdown(FAULT_SENSOR);
+    shutdownWithDetail(FAULT_SENSOR, SENSOR_COUNT_RANGE);
     return;
   }
   //按电角零点、方向和极对数计算电角度
@@ -340,8 +404,12 @@ void Motor_control_callback(int32_t a, int32_t b)
     return;
   }
   //母线电压有效后执行三环控制
-  if (bus < 10000 || bus > 30000)
+  if (bus > Drive.state.bus_peak_mv)
+    Drive.state.bus_peak_mv = (uint16_t)bus;
+  if (!busInRange(bus))
   {
+    if (Drive.state.fault == FAULT_NONE)
+      Drive.state.bus_trip_mv = (uint16_t)bus;
     Motor_shutdown(FAULT_VOLTAGE);
     return;
   }
@@ -359,10 +427,22 @@ void Motor_control_callback(int32_t a, int32_t b)
   float da = Drive.control.current.outA * CONTROL_PWM_TIMER_COUNTS / bus;
   float db = Drive.control.current.outB * CONTROL_PWM_TIMER_COUNTS / bus;
   float peak = fmaxf(fabsf(da), fabsf(db));
+  float pwm_scale = 1;
   if (peak > CONTROL_PWM_SAMPLE_SAFE_COMMAND)
   {
-    da *= CONTROL_PWM_SAMPLE_SAFE_COMMAND / peak;
-    db *= CONTROL_PWM_SAMPLE_SAFE_COMMAND / peak;
+    pwm_scale = CONTROL_PWM_SAMPLE_SAFE_COMMAND / peak;
+    da *= pwm_scale;
+    db *= pwm_scale;
+  }
+  if (joint_config->can_node == 1)
+  {
+    //记录进入PWM的电压矢量，保留原报文Vd的有符号16位范围。
+    float vd = Drive.control.current.d.out * pwm_scale;
+    Drive.state.trace_vd = (int16_t)fminf(INT16_MAX, fmaxf(INT16_MIN, vd));
+    Drive.state.trace_vq = (int32_t)(Drive.control.current.q.out * pwm_scale);
+    Drive.state.trace_voltage_clipped = Drive.control.current.voltageClipped || pwm_scale < 1;
+    if (!Drive.calibrating)
+      Common_Current_TrackOutput(&Drive.control.current, pwm_scale, (int32_t)bus);
   }
   pwm_output_set_signed_phase_duty((int16_t)lroundf(da), (int16_t)lroundf(db));
   pwm_output_pwm_update_service();
@@ -375,8 +455,10 @@ void SysTick_Handler(void)
   ++system_ms;
   if (!Drive.state.power)
     return;
-  if (!feedbackFresh() || system_ms - Drive.last_main_ms > 5)
-    Motor_shutdown(FAULT_CONTROL);
+  if (!feedbackFresh())
+    shutdownWithDetail(FAULT_CONTROL, CONTROL_TICK_FEEDBACK);
+  else if (system_ms - Drive.last_main_ms > 5)
+    shutdownWithDetail(FAULT_CONTROL, CONTROL_TICK_MAIN_GAP);
 }
 
 //---------关断收尾区---------
@@ -395,6 +477,10 @@ void Motor_shutdown(motor_fault_t reason)
   Drive.control.current.q.sumError = 0;
   Drive.control.speed.sumError = 0;
   Drive.control.current.d.out=Drive.control.current.q.out=0;
+  Drive.control.current.voltageClipped=0;
+  Drive.state.trace_vd=0;
+  Drive.state.trace_vq=0;
+  Drive.state.trace_voltage_clipped=0;
   Drive.control.current.outA=Drive.control.current.outB=0;
   pwm_output_disable();
   //失能后继续采样，供设零和恢复使用
@@ -410,10 +496,12 @@ int Motor_clearFault(void)
   //先确认功率关闭和反馈有效，再确认供电范围
   int ok = 0;
   if (!Drive.state.power && feedbackFresh())
-    ok = bus >= 10000 && bus <= 30000;
+    ok = busInRange(bus);
   if (ok)
   {
     Drive.state.fault = FAULT_NONE;
+    Drive.state.fault_detail = 0;
+    Drive.state.bus_trip_mv = Drive.state.bus_peak_mv = 0;
     for(unsigned i=0;i<12;i++)Drive.current_fault[i]=0;
     if (!Joint.status.referenced)
       Drive.state.encoder_valid = 0;
@@ -429,7 +517,7 @@ int Motor_clearFault(void)
 void HardFault_Handler(void)
 {
   //HardFault固定优先级高于普通中断，关断后停留
-  Motor_shutdown(FAULT_CONTROL);
+  shutdownWithDetail(FAULT_CONTROL, CONTROL_CPU);
   while (1)
   {
   }

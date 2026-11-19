@@ -1,0 +1,11 @@
+velocity: PASS (J1 ramps, cruise/brake, settled residual, interlock, following protection)
+endpoint: PASS (settling margin, actual position limit)
+j1_following_error: PASS (J1 diagnostic only; rotary trip and link-loss braking retained)
+headroom: PASS (both directions, terminal error, feedforward budget, low speed and motor cap)
+trajectory max numerical drift = 0.000000015 deg
+J1 smooth move: PASS (travel and return, full speed, short move, acceleration continuity)
+j1_ten_turn_motion: PASS (10 turns and return, speed/range/arrival)
+20/15 turns: PASS (90/180 deg/s, target, speed, bounds, final +5 turns)
+j1_speed_interval: PASS (1/5/10/30 deg/s, reverse, stop, one-count and gap)
+j1_protocol: PASS (ACK queue, duplicate protection, stopped tuning/reboot, optional voltage readback)
+j1_voltage_trace: PASS (d/q clipping, signed wire fields, both braking directions and PWM tracking)

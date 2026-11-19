@@ -23,7 +23,7 @@ static float limit_value(float value, float minimum, float maximum)
   return value;
 }
 
-static void limit_vector(float *d, float *q, float limit)
+static int limit_vector(float *d, float *q, float limit)
 {
   float length = sqrtf(*d * *d + *q * *q);
   if (length > limit)
@@ -31,7 +31,9 @@ static void limit_vector(float *d, float *q, float limit)
     float ratio = limit / length;
     *d = *d * ratio;
     *q = *q * ratio;
+    return 1;
   }
+  return 0;
 }
 
 //---------坐标变换区---------
@@ -73,6 +75,13 @@ void Common_Speed_Compute(Speed_Struct *speed)
 }
 
 //---------电流环区---------
+static float currentVoltageLimit(const Current_Struct *current, int32_t bus)
+{
+  if (current->voltageLimit <= 0 || current->voltageLimit > bus)
+    return bus;
+  return current->voltageLimit;
+}
+
 //电流误差经过PI和逆Park变换，得到两相电压
 void Common_Current_Compute(Current_Struct *current, float angle, int32_t bus)
 {
@@ -81,16 +90,14 @@ void Common_Current_Compute(Current_Struct *current, float angle, int32_t bus)
   current->d.sumError += errD * current->d.KI;
   current->q.sumError += errQ * current->q.KI;
 
-  float voltageLimit = current->voltageLimit;
-  if (current->voltageLimit <= 0 || current->voltageLimit > bus)
-    voltageLimit = bus;
+  float voltageLimit = currentVoltageLimit(current, bus);
   limit_vector(&current->d.sumError, &current->q.sumError, voltageLimit);
 
   float pD = current->d.KP * errD;
   float pQ = current->q.KP * errQ;
   current->d.out = pD + current->d.sumError;
   current->q.out = pQ + current->q.sumError;
-  limit_vector(&current->d.out, &current->q.out, voltageLimit);
+  current->voltageClipped = limit_vector(&current->d.out, &current->q.out, voltageLimit);
 
   float sine = arm_sin_f32(angle);
   float cosine = arm_cos_f32(angle);
@@ -98,4 +105,16 @@ void Common_Current_Compute(Current_Struct *current, float angle, int32_t bus)
   float phaseB = current->q.out * cosine + current->d.out * sine;
   current->outA = limit_value(phaseA, -bus, bus);
   current->outB = limit_value(phaseB, -bus, bus);
+}
+
+//输出受限时，用实际能施加的电压减去比例项，回算两个积分。
+void Common_Current_TrackOutput(Current_Struct *current, float pwm_scale, int32_t bus)
+{
+  if (!current->voltageClipped && pwm_scale == 1)
+    return;
+  float pD = current->d.KP * (current->d.targetValue - current->d.currentValue);
+  float pQ = current->q.KP * (current->q.targetValue - current->q.currentValue);
+  current->d.sumError = pwm_scale * current->d.out - pD;
+  current->q.sumError = pwm_scale * current->q.out - pQ;
+  limit_vector(&current->d.sumError, &current->q.sumError, currentVoltageLimit(current, bus));
 }

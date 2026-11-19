@@ -7,8 +7,10 @@
 
 namespace scara
 {
-static void observe(Session &session);
+static void observe(Session &session, const chess::Board *expected = nullptr);
+static void updateObservation(Session &session, const Observation &current, const chess::Board *expected = nullptr);
 static void waitBoard(Session &session, const chess::Board &expected, EventType event);
+static bool confirmPlacement(Session &session, const chess::Board &expected);
 static bool prepare(const GameConfig &config, Session &session);
 static void planMove(const Session &session, const chess::Move &move, std::vector<PickStep> &steps);
 
@@ -38,14 +40,25 @@ void Match_start(const GameConfig &config, Session &session)
 }
 
 //---------玩家回合区---------
-void Match_human(Session &session, const std::vector<std::string> &legal)
+void Match_human(const GameConfig &config, Session &session, const std::vector<std::string> &legal)
 {
     Command command;
     chess::Move move;
+    std::string selection;
     while (gameRunning)
     {
-        Match_publishStatus("wait_human", session);
-        Operator_read("human", "走棋并移开手后回车；resign认输，draw和棋，quit退出。", command);
+        Match_publishStatus("wait_human", session, &legal);
+        Operator_read("human", "在上位机选棋，或手动走棋后回车；resign认输，draw和棋，quit退出。", command, &selection);
+        if (command == Command::Move)
+        {
+            if (std::find(legal.begin(), legal.end(), selection) == legal.end())
+            {
+                Event_emit(EventType::IllegalMove, "这步不合法，请重新选棋。");
+                continue;
+            }
+            Match_executeMove(config, session, legal, selection);
+            return;
+        }
         if (command == Command::Draw || command == Command::Resign)
         {
             chess::Result result = command == Command::Draw ? chess::Result::Draw :
@@ -66,16 +79,16 @@ void Match_human(Session &session, const std::vector<std::string> &legal)
     }
 }
 
-//---------机器人回合区---------
-void Match_robot(const GameConfig &config, Session &session, const std::vector<std::string> &legal,
-                 const std::string &choice)
+//---------机械代走区---------
+void Match_executeMove(const GameConfig &config, Session &session, const std::vector<std::string> &legal,
+                       const std::string &choice)
 {
     chess::Move move;
     chess::Board expected;
-    //引擎走法只核对一次，预期盘面在本回合局部保存
+    //玩家选择和引擎应手使用同一合法表和取放流程
     if (!chess::parseMove(choice, move) || std::count(legal.begin(), legal.end(), choice) != 1 ||
         !chess::applyMove(session.game.board, session.game.redToMove, move, expected, session.game.error))
-        throw std::runtime_error("引擎走法未通过本局合法表核对");
+        throw std::runtime_error("走法未通过本局合法表核对");
     while (gameRunning)
     {
         //思考期间有人移动棋子时，先恢复已确认盘面，再执行这一手
@@ -93,15 +106,17 @@ void Match_robot(const GameConfig &config, Session &session, const std::vector<s
         catch (const std::exception &error) { Event_emit(EventType::Stop, error.what()); }
         if (completed)
         {
-            observe(session);
-            if (session.observed.board == expected)
+            if (confirmPlacement(session, expected))
             {
                 chess::Game_commit(session.game, expected, move);
                 session.pending = false;
                 Event_emit(EventType::Restored, "");
                 return;
             }
-            Event_emit(EventType::Placement, "落子结果未确认，请按提示处理现场。", &expected, &session.observed.board);
+            //操作员已确认恢复原局，下一轮重新核对盘面后再试
+            session.pending = false;
+            Event_emit(EventType::Restored, "原棋局已恢复，重新执行这一手。");
+            continue;
         }
         //执行异常先确认设备恢复；显示回调只提示，主流程才决定何时继续
         Command command;
@@ -117,10 +132,11 @@ void Match_robot(const GameConfig &config, Session &session, const std::vector<s
 }
 
 //---------观察与恢复区---------
-static void observe(Session &session)
+static void observe(Session &session, const chess::Board *expected)
 {
     session.layout.previous = {};
     session.layout.stableFrames = 0;
+    session.observed.valid = false;
     Observation current;
     //持续读取新图，取得连续稳定的盘面后才交付上层
     int frames = 0;
@@ -135,7 +151,9 @@ static void observe(Session &session)
             if (++frames % 3 == 0 && !current.valid)
             {
                 visualFault = true;
-                Event_emit(EventType::Vision, "盘面尚未看清，请移开遮挡并保持棋子稳定。");
+                updateObservation(session, current, expected);
+                Event_emit(EventType::Vision, "盘面尚未确认，请检查棋子是否偏离格点或被遮挡。",
+                           expected, &session.observed.board);
                 Match_publishStatus("observing", session);
             }
         }
@@ -156,15 +174,38 @@ static void observe(Session &session)
     }
     if (!gameRunning) throw std::runtime_error("对局已停止");
     if (visualFault) Event_emit(EventType::Restored, "视觉已恢复。");
+    updateObservation(session, current);
+    Match_publishStatus("observing", session);
+}
+
+static void updateObservation(Session &session, const Observation &current, const chess::Board *expected)
+{
     session.observed.valid = current.valid;
     for (int row = 0; row < Rows; ++row)
         for (int col = 0; col < Columns; ++col)
         {
             int piece = current.pieces[(Rows - 1 - row) * Columns + col];
-            session.observed.board[row][col] = piece >= 0 && piece < YoloClasses ? PieceSymbols[piece] :
-                                             (piece == Empty ? '.' : '?');
+            char cell = piece >= 0 && piece < YoloClasses ? PieceSymbols[piece] : (piece == Empty ? '.' : '?');
+            if (!current.valid && expected && cell == '.' && (*expected)[row][col] != '.') cell = '?';
+            session.observed.board[row][col] = cell;
         }
-    Match_publishStatus("observing", session);
+}
+
+static bool confirmPlacement(Session &session, const chess::Board &expected)
+{
+    bool confirmed = false;
+    while (gameRunning)
+    {
+        observe(session, &expected);
+        if (session.observed.board == expected) return true;
+        if (confirmed && session.observed.board == session.game.board) return false;
+        Event_emit(EventType::Placement, "机械臂已停稳，请按提示修正棋子。", &expected, &session.observed.board);
+        Match_publishStatus("placement_recovery", session);
+        Command command;
+        Operator_read("placement_recovery", "修正到落子后的盘面再按回车；也可恢复到落子前再按回车重试。", command);
+        confirmed = command == Command::Ready;
+    }
+    throw std::runtime_error("对局已停止");
 }
 
 static void waitBoard(Session &session, const chess::Board &expected, EventType event)
@@ -172,7 +213,7 @@ static void waitBoard(Session &session, const chess::Board &expected, EventType 
     bool waiting = false;
     while (gameRunning)
     {
-        observe(session);
+        observe(session, &expected);
         if (session.observed.board == expected)
         {
             if (waiting) Event_emit(EventType::Restored, "原棋局已恢复，继续下棋。");
@@ -216,10 +257,11 @@ static void planMove(const Session &session, const chess::Move &move, std::vecto
 }
 
 //---------事件说明与输入区---------
-bool Command_parse(const std::string &text, Command &command)
+bool Command_parse(const std::string &text, Command &command, std::string *move)
 {
     static const char *names[] = {"ready", "resign", "draw", "quit"};
     command = Command::Ready;
+    if (move) move->clear();
     if (text.empty()) return true;
     for (int i = 0; i < 4; ++i)
         if (text == names[i])
@@ -227,6 +269,13 @@ bool Command_parse(const std::string &text, Command &command)
             command = static_cast<Command>(i);
             return true;
         }
+    chess::Move selected;
+    if (move && chess::parseMove(text, selected))
+    {
+        command = Command::Move;
+        *move = text;
+        return true;
+    }
     command = Command::Quit;
     return false;
 }

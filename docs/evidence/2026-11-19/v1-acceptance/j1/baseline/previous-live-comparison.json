@@ -1,0 +1,107 @@
+[
+  {
+    "folder": "j1-up-kp-20261118-214952",
+    "build": "adaf95dd",
+    "direction": "up",
+    "active_brake_deg_s2": 3000,
+    "stroke_deg": 2005.982,
+    "seconds": 7.022,
+    "peak_deg_s": 2060.4,
+    "main_motion_s": 1.63,
+    "tail_s": 5.39,
+    "tail_speed_deg_s": 19.8,
+    "residue_deg": 92.4,
+    "peak_window_iq_range_ma": [
+      -478,
+      1725
+    ],
+    "clipped_samples": 19,
+    "mean_iq_mismatch_in_saturation_ma": 1015,
+    "around_peak_encoder_velocity_ripple_rms_deg_s": 156.4,
+    "bus_peak_v": 36.824
+  },
+  {
+    "folder": "j1-brake-pair-20261118-220933",
+    "build": "a5693d3f",
+    "direction": "up",
+    "active_brake_deg_s2": 3000,
+    "stroke_deg": 1679.4580000000024,
+    "seconds": 4.184,
+    "peak_deg_s": 2104.8,
+    "main_motion_s": 1.53,
+    "tail_s": 2.65,
+    "tail_speed_deg_s": 19.1,
+    "residue_deg": 38.39,
+    "peak_window_iq_range_ma": [
+      -445,
+      1638
+    ],
+    "clipped_samples": 13,
+    "mean_iq_mismatch_in_saturation_ma": 586,
+    "around_peak_encoder_velocity_ripple_rms_deg_s": 100.6,
+    "bus_peak_v": 36.85
+  },
+  {
+    "folder": "j1-brake-pair-20261118-220933",
+    "build": "a5693d3f",
+    "direction": "down",
+    "active_brake_deg_s2": 3000,
+    "stroke_deg": 1679.0649999999987,
+    "seconds": 4.686,
+    "peak_deg_s": 1908.1,
+    "main_motion_s": 1.53,
+    "tail_s": 3.16,
+    "tail_speed_deg_s": 19.6,
+    "residue_deg": 46.98,
+    "peak_window_iq_range_ma": [
+      -1336,
+      2626
+    ],
+    "clipped_samples": 5,
+    "mean_iq_mismatch_in_saturation_ma": 647,
+    "around_peak_encoder_velocity_ripple_rms_deg_s": 55.2,
+    "bus_peak_v": 36.811
+  },
+  {
+    "folder": "j1-brake-pair-20261118-221307",
+    "build": "a5693d3f",
+    "direction": "up",
+    "active_brake_deg_s2": 2000,
+    "stroke_deg": 1679.4140000000007,
+    "seconds": 4.841,
+    "peak_deg_s": 1888.5,
+    "main_motion_s": 1.77,
+    "tail_s": 3.07,
+    "tail_speed_deg_s": 19.3,
+    "residue_deg": 42.67,
+    "peak_window_iq_range_ma": [
+      -1035,
+      1838
+    ],
+    "clipped_samples": 9,
+    "mean_iq_mismatch_in_saturation_ma": 410,
+    "around_peak_encoder_velocity_ripple_rms_deg_s": 101.9,
+    "bus_peak_v": 36.837
+  },
+  {
+    "folder": "j1-brake-pair-20261118-221307",
+    "build": "a5693d3f",
+    "direction": "down",
+    "active_brake_deg_s2": 2000,
+    "stroke_deg": 1678.976999999999,
+    "seconds": 4.142,
+    "peak_deg_s": 1847.0,
+    "main_motion_s": 1.69,
+    "tail_s": 2.45,
+    "tail_speed_deg_s": 19.3,
+    "residue_deg": 28.32,
+    "peak_window_iq_range_ma": [
+      -722,
+      1770
+    ],
+    "clipped_samples": 8,
+    "mean_iq_mismatch_in_saturation_ma": 378,
+    "around_peak_encoder_velocity_ripple_rms_deg_s": 39.8,
+    "bus_peak_v": 36.811
+  }
+]

@@ -18,6 +18,15 @@ static uint32_t last_control_ms;
 static void Init_hardware(void);
 static void system_clock_config(void);
 
+static void tripMotor(const motor_status_t *motor)
+{
+  if (motor->fault && !Joint.status.fault)
+  {
+    Joint.status.fault_detail = motor->fault_detail;
+    Motion_trip(motor->fault);
+  }
+}
+
 //---------初始化区---------
 static void Init_hardware(void)
 {
@@ -66,23 +75,26 @@ int main(void)
   Init_hardware();
   CAN_protocol_setup();
 
+  //每个控制周期采一次；CAN空转轮询时沿用已有完整快照。
+  motor_status_t motor;
+  last_control_ms = Motor_readFeedback(&motor);
   while (1)
   {
-    //读取同一次位置、速度和故障反馈
-    motor_status_t motor;
-    uint32_t now = Motor_readFeedback(&motor);
-    if (motor.fault)
-      Motion_trip(motor.fault);
-
-    //每个系统毫秒更新一次运动，通信在每轮循环处理
-    uint32_t elapsed_ms = now - last_control_ms;
-    if (elapsed_ms)
+    uint32_t now = system_ms;
+    if (now != last_control_ms)
     {
+      now = Motor_readFeedback(&motor);
+      uint32_t elapsed_ms = now - last_control_ms;
       last_control_ms = now;
+      tripMotor(&motor);
       Calibration_process(&motor, now);
       //机械参考已建立时检查反馈是否有效
       if (Joint.status.referenced && !motor.encoder_valid)
+      {
+        if (!Joint.status.fault)
+          Joint.status.fault_detail = SENSOR_FEEDBACK_STALE;
         Motion_trip(FAULT_SENSOR);
+      }
       //将编码器速度换算为输出轴速度
       float velocity = joint_config->ratio > 0 ? motor.velocity_counts_s * 360 * joint_config->joint_direction /
                                              (16384 * joint_config->ratio) : 0;
@@ -91,7 +103,10 @@ int main(void)
       CAN_protocol_watchdog(now);
       //将参考交给中断，交付失败时撤销机械参考
       if (!Motor_applyReference())
-        Motion_trip(FAULT_CONTROL);
+      {
+        Motor_readFeedback(&motor);
+        tripMotor(&motor);
+      }
     }
     //接收命令并回复，命令从下一轮运动更新开始生效
     CAN_protocol_process(&motor, now);

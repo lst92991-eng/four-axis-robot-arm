@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-11-17T20:13:03.204037+08:00",
+  "mode": "e1-planar-old-encoder-phase",
+  "targets_mdeg": {
+    "2": -58539,
+    "3": -86068
+  },
+  "commands_sent": {
+    "2": "ZERO",
+    "3": "ZERO"
+  },
+  "acks": {
+    "2": 0,
+    "3": 0
+  },
+  "before": {
+    "4": {
+      "build": "41f870bf",
+      "state": 0,
+      "fault": 0,
+      "counts": -1090,
+      "angle_mdeg": 0,
+      "valid": true,
+      "configured": true,
+      "referenced": false,
+      "power": false,
+      "stationary": false,
+      "cal_state": 0
+    },
+    "2": {
+      "build": "41f870bf",
+      "state": 0,
+      "fault": 0,
+      "counts": -31006,
+      "angle_mdeg": 0,
+      "valid": true,
+      "configured": true,
+      "referenced": false,
+      "power": false,
+      "stationary": false,
+      "cal_state": 0
+    },
+    "1": {
+      "build": "d3b08bf8",
+      "state": 0,
+      "fault": 0,
+      "counts": 14806,
+      "angle_mdeg": 0,
+      "valid": true,
+      "configured": true,
+      "referenced": false,
+      "power": false,
+      "stationary": false,
+      "cal_state": 0
+    },
+    "3": {
+      "build": "41f870bf",
+      "state": 0,
+      "fault": 0,
+      "counts": 11867,
+      "angle_mdeg": 0,
+      "valid": true,
+      "configured": true,
+      "referenced": false,
+      "power": false,
+      "stationary": false,
+      "cal_state": 0
+    }
+  },
+  "after": {
+    "1": {
+      "build": "d3b08bf8",
+      "state": 0,
+      "fault": 0,
+      "counts": 14806,
+      "angle_mdeg": 0,
+      "valid": true,
+      "configured": true,
+      "referenced": false,
+      "power": false,
+      "stationary": false,
+      "cal_state": 0
+    },
+    "3": {
+      "build": "41f870bf",
+      "state": 0,
+      "fault": 0,
+      "counts": 11867,
+      "angle_mdeg": -86068,
+      "valid": true,
+      "configured": true,
+      "referenced": true,
+      "power": false,
+      "stationary": true,
+      "cal_state": 0
+    },
+    "4": {
+      "build": "41f870bf",
+      "state": 0,
+      "fault": 0,
+      "counts": -1090,
+      "angle_mdeg": 0,
+      "valid": true,
+      "configured": true,
+      "referenced": false,
+      "power": false,
+      "stationary": false,
+      "cal_state": 0
+    },
+    "2": {
+      "build": "41f870bf",
+      "state": 0,
+      "fault": 0,
+      "counts": -31006,
+      "angle_mdeg": -58539,
+      "valid": true,
+      "configured": true,
+      "referenced": true,
+      "power": false,
+      "stationary": true,
+      "cal_state": 0
+    }
+  },
+  "error": null
+}

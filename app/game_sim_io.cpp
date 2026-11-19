@@ -15,6 +15,7 @@ static EventType visibleEvent = EventType::Restored;
 static size_t restorationIndex = 0;
 static unsigned eventSerial = 0, consumedEvent = 0, restorationFrames = 0;
 static std::vector<bool> queryUsed;
+static std::string offGrid;
 //仿真驱动使用虚拟通信时钟，仍运行正式Motion_execute的联动调度
 static MotionLimits motionLimits;
 static JointReference driveReference;
@@ -118,6 +119,8 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
             if (world[row][col] != '.')
             {
                 center = layout.pixels[(9 - row) * Columns + col];
+                if (offGrid.size() == 2 && col == offGrid[0] - 'a' && 9 - row == offGrid[1] - '0')
+                    center += .53 * (layout.pixels[Columns + col] - layout.pixels[col]);
                 piece.classId = int(symbols.find(world[row][col]));
                 piece.confidence = .9;
                 piece.bbox.x = center.x - 10;
@@ -156,7 +159,7 @@ void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std:
 }
 
 //---------预置交互区---------
-void Operator_read(const std::string &phase, const std::string &, Command &result)
+void Operator_read(const std::string &phase, const std::string &, Command &result, std::string *move)
 {
     cv::FileNode commands = script["commands"];
     cv::FileNode command;
@@ -170,7 +173,7 @@ void Operator_read(const std::string &phase, const std::string &, Command &resul
         if ((std::string)command["phase"] != phase) throw std::runtime_error("仿真进入了意外的交互阶段：" + phase);
         if (!command["board"].empty()) readBoard(command["board"]);
         command["command"] >> name;
-        if (!Command_parse(name, result)) throw std::runtime_error("未知仿真命令");
+        if (!Command_parse(name, result, move)) throw std::runtime_error("未知仿真命令");
         //离线检查用交互记录确认实际进入的等待与恢复分支
         std::cout << "SIM_COMMAND " << phase << ' ' << name << '\n';
     }
@@ -207,6 +210,7 @@ void Robot_execute(const std::string &purpose, const std::string &move, const st
               << driveReference.position[2] << ' ' << referenceCount << '\n';
     //独立场景决定落子结果，不直接复制计划盘面
     if (!event["board"].empty()) readBoard(event["board"]);
+    offGrid = (std::string)event["off_grid"];
     result = int(event["success"]);
     if (result != 0 && result != 1) throw std::runtime_error("仿真执行结果必须是0或1");
     success = executed && result == 1;
@@ -216,6 +220,7 @@ void Robot_execute(const std::string &purpose, const std::string &move, const st
 //---------场景盘面读取区---------
 static void readBoard(const cv::FileNode &rows)
 {
+    offGrid.clear();
     if (rows.size() != 10) throw std::runtime_error("仿真盘面必须有10行");
     for (int row = 0; row < 10; ++row)
     {

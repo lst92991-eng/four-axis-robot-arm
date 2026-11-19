@@ -2,6 +2,7 @@
 import copy
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -51,11 +52,14 @@ def read_calls(output):
 
 def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
     global passed
-    with tempfile.TemporaryDirectory(prefix='scara_对弈_') as directory:
+    with tempfile.TemporaryDirectory(prefix='scara_match_') as directory:
         work = Path(directory)
         config = copy.deepcopy(TEMPLATE)
         for key in ('layout_file', 'arm_file', 'heights_file'):
-            config[key] = str((ROOT / 'tests/fixtures/game-app' / config[key]).resolve())
+            source = (ROOT / 'tests/fixtures/game-app' / config[key]).resolve()
+            fixture = work / f'{key}.json'
+            shutil.copyfile(source, fixture)
+            config[key] = str(fixture)
         config['work_directory'] = str(work / 'runtime')
         config['simulation_file'] = str(work / 'scenario.json')
         config.update(settings or {})
@@ -92,6 +96,20 @@ state, executions, output = run('two rounds with robot capture', BASE)
 assert state['board'] == BASE['expected_board'] and state['pending'] == 0
 assert [len(execution['steps']) for execution in executions] == [3, 9, 17]
 
+case = copy.deepcopy(BASE)
+after_human_capture = case['commands'][3]['board']
+case['commands'][2:4] = [
+    dict(phase='human', command='a3a2'),
+    dict(phase='human', command='a3a4'),
+    dict(phase='human', command='a4a5'),
+]
+case['executions'].insert(1, dict(purpose='move', move='a3a4', success=1, board=AFTER_HUMAN))
+case['executions'].insert(3, dict(purpose='move', move='a4a5', success=1, board=after_human_capture))
+state, executions, output = run('panel plays both sides, rejects illegal selection and handles a capture', case, calls=5)
+assert 'SIM_EVENT 2' in output and state['pending'] == 0
+assert [execution['move'] for execution in executions[1:]] == ['a3a4', 'a6a5', 'a4a5', 'a9a5']
+assert len(executions[3]['steps']) == 17
+
 # 事件回调只显示；相机输入按场景模拟人类恢复，恢复前不能下发新的搬棋动作。
 case = copy.deepcopy(BASE)
 swapped = AFTER_HUMAN.copy()
@@ -126,16 +144,40 @@ case['restorations']=[dict(event=2,after_frames=3,board=INITIAL)]
 _, _, output = run('illegal human change restores before next attempt',case)
 assert 'SIM_EVENT 2' in output
 
-for failure in ('returned_failure','wrong_placement'):
-    case=copy.deepcopy(BASE)
-    retry=copy.deepcopy(case['executions'][1])
-    case['executions'][1]['board']=AFTER_HUMAN
-    case['executions'][1]['success']=0 if failure=='returned_failure' else 1
-    case['executions'][2:2]=[dict(purpose='prepare',move='',success=1),retry]
-    case['commands'].insert(3,dict(phase='hardware_recovery',command='ready',board=AFTER_HUMAN))
-    _, _, output=run('hardware confirmation and restore: '+failure,case,calls=5)
-    assert 'SIM_COMMAND hardware_recovery ready' in output
-    assert output.count('SIM_CALL move a6a5')==2
+case = copy.deepcopy(BASE)
+retry = copy.deepcopy(case['executions'][1])
+case['executions'][1].update(success=0, board=AFTER_HUMAN)
+case['executions'][2:2] = [dict(purpose='prepare', move='', success=1), retry]
+case['commands'].insert(3, dict(phase='hardware_recovery', command='ready', board=AFTER_HUMAN))
+_, _, output = run('motion failure still requires hardware recovery', case, calls=5)
+assert 'SIM_COMMAND hardware_recovery ready' in output
+assert output.count('SIM_CALL move a6a5') == 2
+
+case = copy.deepcopy(BASE)
+retry = copy.deepcopy(case['executions'][1])
+case['executions'][1]['board'] = AFTER_HUMAN
+case['executions'].insert(2, retry)
+case['commands'].insert(3, dict(phase='placement_recovery', command='ready', board=AFTER_HUMAN))
+_, _, output = run('restored board retries without re-parking', case, calls=4)
+assert output.count('SIM_CALL prepare') == 1 and output.count('SIM_CALL move a6a5') == 2
+
+case = copy.deepcopy(BASE)
+case['executions'][1]['board'] = AFTER_HUMAN
+case['commands'].insert(3, dict(phase='placement_recovery', command='ready', board=AFTER_ROBOT))
+_, _, output = run('visually corrected placement commits without repeating movement', case)
+assert 'SIM_COMMAND placement_recovery ready' in output
+assert 'SIM_COMMAND hardware_recovery' not in output and output.count('SIM_CALL move a6a5') == 1
+
+case = copy.deepcopy(BASE)
+case['executions'][1]['off_grid'] = 'i0'
+case['restorations'] = [dict(event=0, after_frames=1, board=AFTER_ROBOT)]
+_, _, output = run('off-grid rook recheck continues once centered', case)
+assert 'i0 红车' in output and output.count('SIM_CALL move a6a5') == 1
+
+case.pop('restorations')
+case['cancel_after_frames'] = 18
+state, _, output = run('persistent off-grid rook cannot commit or restart movement', case, 'a3a4', calls=2)
+assert state['pending'] == 1 and state['observation_valid'] == 0 and state['observed'][9][8] == '?'
 
 case=copy.deepcopy(BASE)
 case['executions'][1].update(success=0,board=AFTER_HUMAN)

@@ -1,0 +1,30 @@
+{
+  "layout_file": "layout-live.json",
+  "arm_file": "arm-live.json",
+  "heights_file": "heights-live.json",
+  "camera_url": "rtsp://192.168.31.24/live/0",
+  "label_image": "labels.png",
+  "work_directory": "game-state",
+  "engine_directory": "/userdata/scara-live-match-20261117/engine",
+  "human_red": 1,
+  "red_to_move": 1,
+  "think_ms": 650,
+  "joint_velocity_deg_s": [
+    360,
+    22,
+    30
+  ],
+  "joint_acceleration_deg_s2": [
+    120,
+    30,
+    30
+  ],
+  "park_joints_deg": [
+    -18.741,
+    -119.049
+  ],
+  "capture_place_mm": [
+    147.00328814456057,
+    -367.38653477922674
+  ]
+}

@@ -6,9 +6,9 @@ const JointConfig four_axis_config[FOUR_AXIS_COUNT] = {
     .can_node = 1, .ratio = 1, .joint_direction = 1,
     .pole_pairs = 50, .encoder_direction = 1, .encoder_zero = -1,
     .minimum_deg = -3610, .maximum_deg = 7210,
-    .default_speed_deg_s = 10, .max_speed_deg_s = 500,
+    .default_speed_deg_s = 10, .max_speed_deg_s = 12000,
     .acceleration_deg_s2 = 60, .brake_deg_s2 = 360, .following_error_deg = 2.5f,
-    .current_limit_ma = 1400, .voltage_limit_mv = 6000,
+    .current_limit_ma = 2000, .voltage_limit_mv = J1_MOTION_VOLTAGE_DEFAULT_MV,
     .speed_kp = 1.6f, .speed_ki = 200, .position_kp = 8, .current_kp = 3, .current_ki = .7f,
   },
   { // J2，近端旋转

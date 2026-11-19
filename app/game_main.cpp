@@ -77,11 +77,11 @@ int main(int argc, char **argv)
             if (session.game.result == chess::Result::Playing)
             {
                 if (session.game.redToMove == session.game.humanRed)
-                    //等待人类确认走棋，识别盘面变化后更新棋局
-                    Match_human(session, legal);
+                    //玩家可在实体棋盘走棋，也可选择让机械臂代走
+                    Match_human(config, session, legal);
                 else
                     //执行机器人取放，用新画面确认落子后更新棋局
-                    Match_robot(config, session, legal, choice);
+                    Match_executeMove(config, session, legal, choice);
             }
             //出现胜负、和棋或待人工裁定时结束主循环
             if (session.game.result != chess::Result::Playing) gameRunning = 0;

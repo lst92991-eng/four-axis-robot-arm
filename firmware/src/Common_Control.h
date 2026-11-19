@@ -56,6 +56,8 @@ typedef struct
   PI_Struct q;
   //电压矢量上限，mV
   int32_t voltageLimit;
+  //本次d/q输出向量是否经过等比限幅
+  uint8_t voltageClipped;
   //两相输出电压，mV
   float outA;
   float outB;
@@ -78,5 +80,7 @@ void Common_Position_Compute(Position_Struct *position);
 void Common_Speed_Compute(Speed_Struct *speed);
 //电流反馈和给定电流生成两相电压，角度单位rad
 void Common_Current_Compute(Current_Struct *current, float angle, int32_t bus);
+//根据电压限幅和实际PWM缩放回算电流环积分
+void Common_Current_TrackOutput(Current_Struct *current, float pwm_scale, int32_t bus);
 
 #endif

@@ -37,7 +37,11 @@ typedef struct
   double ref_pos;
   float ref_vel;
   float manual_speed;
+  //J1运行斜率覆盖值，单位度/秒²；0表示使用板端配置。
+  float start_acceleration;
   float brake_acceleration;
+  //下降定位制动时的速度环 Ki 比例，0 使用正常增益。
+  uint16_t descent_brake_ki_permille;
   uint8_t manual_velocity;
   //机械零点对应的电机计数和输出轴角度
   int64_t zero_counts;
@@ -60,8 +64,10 @@ double Motion_calculateMotorTarget(void);
 //固定配置初始化有效后受理目标角度和速度
 int Motion_moveTo(float degrees, float speed);
 int Motion_runVelocity(float degrees_per_second);
-int Motion_setBrakeAcceleration(float degrees_per_second_squared);
+int Motion_setRamps(float brake_deg_s2, float start_deg_s2);
+float Motion_startAcceleration(void);
 float Motion_brakeAcceleration(void);
+float Motion_speedKiScale(void);
 int Motion_stop(int link_lost);
 void Motion_release(void);
 

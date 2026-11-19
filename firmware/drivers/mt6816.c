@@ -93,7 +93,7 @@ static confirm_state parity_ok(uint16_t data)
 }
 
 //---------角度读取区---------
-uint8_t mt6816_read_angle(uint16_t *raw_angle)
+uint8_t mt6816_read_angle_status(uint16_t *raw_angle)
 {
   uint16_t angle_data;
   confirm_state ok = TRUE;
@@ -105,7 +105,7 @@ uint8_t mt6816_read_angle(uint16_t *raw_angle)
   cs_delay();
   if (ok == FALSE)
   {
-    return FALSE;
+    return MT6816_SPI_HIGH;
   }
 
   gpio_bits_reset(GPIOB, GPIO_PINS_12);
@@ -114,11 +114,14 @@ uint8_t mt6816_read_angle(uint16_t *raw_angle)
   angle_data |= (uint16_t)(spi_transfer16(MT6816_READ_ANGLE_LOW, &ok) & 0x00FFU);
   gpio_bits_set(GPIOB, GPIO_PINS_12);
   cs_delay();
-  if ((ok == FALSE) || ((angle_data & 0x0002U) != 0U) || (parity_ok(angle_data) == FALSE))
-  {
-    return FALSE;
-  }
+  if (ok == FALSE)
+    return MT6816_SPI_LOW;
+  uint8_t error = (angle_data & 0x0002U) ? MT6816_FIELD : MT6816_OK;
+  if (parity_ok(angle_data) == FALSE)
+    error |= MT6816_PARITY;
+  if (error)
+    return error;
 
   *raw_angle = (uint16_t)(angle_data >> 2);
-  return TRUE;
+  return MT6816_OK;
 }

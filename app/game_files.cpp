@@ -63,7 +63,7 @@ static void writeBoard(cv::FileStorage &file, const char *key, const chess::Boar
 
 //---------状态发布区---------
 //将当前盘面、走棋历史和错误原因交给预览页面
-void Match_publishStatus(const std::string &phase, const Session &session)
+void Match_publishStatus(const std::string &phase, const Session &session, const std::vector<std::string> *legal)
 {
     const chess::Game &game = session.game;
     cv::FileStorage file;
@@ -84,6 +84,7 @@ void Match_publishStatus(const std::string &phase, const Session &session)
     file << "result" << int(game.result);
     file << "error" << eventMessage;
     file << "observation_valid" << int(session.observed.valid);
+    if (legal) file << "legal" << *legal;
     writeBoard(file, "board", game.board);
     writeBoard(file, "observed", session.observed.board);
     message = file.releaseAndGetString();

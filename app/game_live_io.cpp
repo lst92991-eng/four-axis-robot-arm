@@ -110,7 +110,7 @@ void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std:
 }
 
 //---------终端输入区---------
-void Operator_read(const std::string &, const std::string &prompt, Command &command)
+void Operator_read(const std::string &, const std::string &prompt, Command &command, std::string *move)
 {
     //按回车之前输入的命令文本
     std::string line;
@@ -133,7 +133,7 @@ void Operator_read(const std::string &, const std::string &prompt, Command &comm
             line += character;
             continue;
         }
-        if (Command_parse(line, command)) break;
+        if (Command_parse(line, command, move)) break;
         std::cout << "请输入提示中的命令。\n" << std::flush;
         line.clear();
     }

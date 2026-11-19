@@ -22,8 +22,8 @@ int Motor_applyReference(void);
 // 基本标定专用固定电角电流模式；不开放给正常运动命令。
 int Motor_calibrationDrive(int enabled, int32_t angle_mdeg, int32_t current_ma);
 void Motor_readCurrentFault(int32_t values[12]);
-int Motor_setSpeedGains(int32_t kp_milli, int32_t ki_milli);
-void Motor_readSpeedGains(int32_t values[3]);
+int Motor_setTuning(int32_t kp_milli, int32_t ki_milli, int32_t voltage_mv);
+void Motor_readTuning(int32_t values[4]);
 
 //---------采样回调区---------
 //电流采样驱动调用此入口

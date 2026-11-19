@@ -1,0 +1,41 @@
+{
+  "transport": "USB-CAN",
+  "commands_sent": "PING",
+  "ack_result": {
+    "1": 0,
+    "2": 0,
+    "3": 0
+  },
+  "axes": {
+    "2": {
+      "angle_deg": -58.539,
+      "referenced": true,
+      "stationary": true,
+      "encoder_valid": true,
+      "power": false,
+      "fault": 0,
+      "state": 0,
+      "build": "41f870bf"
+    },
+    "1": {
+      "angle_deg": -20041.548,
+      "referenced": true,
+      "stationary": true,
+      "encoder_valid": true,
+      "power": false,
+      "fault": 0,
+      "state": 0,
+      "build": "d3b08bf8"
+    },
+    "3": {
+      "angle_deg": -86.068,
+      "referenced": true,
+      "stationary": true,
+      "encoder_valid": true,
+      "power": false,
+      "fault": 0,
+      "state": 0,
+      "build": "41f870bf"
+    }
+  }
+}

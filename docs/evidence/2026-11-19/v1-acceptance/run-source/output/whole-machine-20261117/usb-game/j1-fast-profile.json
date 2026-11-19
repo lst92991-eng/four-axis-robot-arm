@@ -1,0 +1,9 @@
+{
+  "build_id": "2e5004d0",
+  "saved_travel_deg": -18420.27,
+  "acceleration_deg_s2": 120,
+  "brake_deg_s2": 360,
+  "running_bus_max_mv": 45000,
+  "speed_kp_milli": 1350,
+  "speed_ki_milli": 200000
+}

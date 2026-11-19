@@ -18,9 +18,11 @@ int main(void)
   Motion_update(10000+163840+2,1,0);
   assert(Joint.status.fault==0); // Two-count settling motion is not the hard boundary.
   Motion_update(10000+163840+200,1,0);
-  assert(Joint.status.fault==FAULT_MOTION && Joint.status.fault_detail==4);
+  assert(!Joint.status.fault); // J1 following error is diagnostic only.
+  Motion_update(10000+163840+512,1,0);
+  assert(Joint.status.fault==FAULT_MOTION && Joint.status.fault_detail==1);
   Motion_clearFault();Joint.status.stationary=1;
   assert(!Motion_moveTo(3611,10));
-  puts("endpoint: PASS (settling margin, unchanged 2.5-degree following protection)");
+  puts("endpoint: PASS (settling margin, actual position limit)");
   return 0;
 }

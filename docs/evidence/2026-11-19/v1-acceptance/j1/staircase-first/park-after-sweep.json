@@ -1,0 +1,64 @@
+{
+  "errors_deg": {
+    "1": -0.022,
+    "2": -0.005,
+    "3": 0.0
+  },
+  "final_axes": {
+    "1": {
+      "position": -18218.572,
+      "target": -18218.55,
+      "velocity": 0.0,
+      "counts": 32238,
+      "uptime": 1381050,
+      "build": "64d3a9e6",
+      "state": 0,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24253,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true
+    },
+    "3": {
+      "position": -128.761,
+      "target": -128.761,
+      "velocity": 0.0,
+      "counts": 9924,
+      "uptime": 4595900,
+      "build": "41f870bf",
+      "state": 1,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24059,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": true,
+      "stationary": true
+    },
+    "2": {
+      "position": -27.887,
+      "target": -27.882,
+      "velocity": 0.0,
+      "counts": 13279,
+      "uptime": 4595900,
+      "build": "41f870bf",
+      "state": 1,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24085,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": true,
+      "stationary": true
+    }
+  },
+  "recovered_folder": "j1-brake-pair-20261119-144922"
+}
