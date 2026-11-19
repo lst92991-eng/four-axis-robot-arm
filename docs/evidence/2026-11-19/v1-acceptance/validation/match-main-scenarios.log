@@ -1,0 +1,45 @@
+UpdateCTestConfiguration  from :C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/v1-acceptance-win/DartConfiguration.tcl
+Parse Config file:C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/v1-acceptance-win/DartConfiguration.tcl
+Test project C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/v1-acceptance-win
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: match_main_contracts
+
+1: Test command: C:\Users\shuto\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\arm4-tools\can-venv\Scripts\python.exe "C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/tests/run_match_program.py" "C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/v1-acceptance-win/scara_game_sim.exe"
+1: Working Directory: C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04
+1: Test timeout computed to be: 30
+1: PASS two rounds with robot capture
+1: PASS panel plays both sides, rejects illegal selection and handles a capture
+1: PASS swap while thinking restores before moving
+1: PASS missing king is a board event rather than victory
+1: PASS unrestored board never starts robot movement
+1: PASS illegal human change restores before next attempt
+1: PASS motion failure still requires hardware recovery
+1: PASS restored board retries without re-parking
+1: PASS visually corrected placement commits without repeating movement
+1: PASS off-grid rook recheck continues once centered
+1: PASS persistent off-grid rook cannot commit or restart movement
+1: PASS quit preserves the last confirmed history
+1: PASS engine failure is an event and retries the same turn
+1: PASS engine cannot be mistaken for an empty legal list
+1: PASS illegal engine choice issues no movement
+1: PASS terminal signal
+1: PASS preparation failure cannot start a game
+1: PASS human resignation
+1: PASS robot can play red first
+1: PASS changed initial board is confirmed again
+1: PASS repetition requires adjudication
+1: PASS 21 actual-main scenarios; scripted perception/engine/execution, no hardware.
+1/1 Test #1: match_main_contracts .............   Passed    2.37 sec
+
+The following tests passed:
+	match_main_contracts
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   2.38 sec

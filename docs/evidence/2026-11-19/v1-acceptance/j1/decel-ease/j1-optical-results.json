@@ -1,0 +1,97 @@
+{
+  "tool_roi": [
+    405,
+    92,
+    490,
+    176
+  ],
+  "fixed_roi": [
+    [
+      343,
+      183,
+      392,
+      254
+    ],
+    [
+      337,
+      86,
+      387,
+      177
+    ]
+  ],
+  "metric": "Image-plane motion normal to the endpoint axis; 5-frame centered moving-average residual during 5-95% of optical travel. Stationary RMS is estimated from nearly stationary edges. Times are host reception times. No depth or absolute Z measurement.",
+  "results": [
+    {
+      "image_travel_px": 9.772,
+      "ripple_rms_px": 0.294,
+      "ripple_p95_px": 0.467,
+      "measured_stationary_rms_px": 0.06,
+      "total_frames": 80,
+      "valid_frames": 80,
+      "stroke_samples": 28,
+      "stationary_samples": 15,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 89,
+      "median_frame_gap_ms": 33.3,
+      "max_frame_gap_ms": 48.6,
+      "trial": "up_2400_A1",
+      "folder": "j1-brake-pair-20261119-141702",
+      "direction": "up",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.093,
+      "ripple_rms_px": 0.274,
+      "ripple_p95_px": 0.494,
+      "measured_stationary_rms_px": 0.05,
+      "total_frames": 116,
+      "valid_frames": 116,
+      "stroke_samples": 27,
+      "stationary_samples": 18,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 69,
+      "median_frame_gap_ms": 33.3,
+      "max_frame_gap_ms": 66.8,
+      "trial": "down_2400_A1",
+      "folder": "j1-brake-pair-20261119-141702",
+      "direction": "down",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 10.127,
+      "ripple_rms_px": 0.296,
+      "ripple_p95_px": 0.542,
+      "measured_stationary_rms_px": 0.112,
+      "total_frames": 80,
+      "valid_frames": 80,
+      "stroke_samples": 29,
+      "stationary_samples": 16,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 79,
+      "median_frame_gap_ms": 33.3,
+      "max_frame_gap_ms": 66.8,
+      "trial": "up_2400_A2",
+      "folder": "j1-brake-pair-20261119-141702",
+      "direction": "up",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.542,
+      "ripple_rms_px": 0.251,
+      "ripple_p95_px": 0.426,
+      "measured_stationary_rms_px": 0.069,
+      "total_frames": 98,
+      "valid_frames": 98,
+      "stroke_samples": 30,
+      "stationary_samples": 20,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 70,
+      "median_frame_gap_ms": 33.3,
+      "max_frame_gap_ms": 65.3,
+      "trial": "down_2400_A2",
+      "folder": "j1-brake-pair-20261119-141702",
+      "direction": "down",
+      "slope": 3000
+    }
+  ]
+}

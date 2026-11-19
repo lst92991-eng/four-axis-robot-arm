@@ -1,0 +1,18 @@
+{
+  "requested": "ON_HOLD",
+  "gpio": "GPIO1_B0",
+  "physical_header": "U7.11",
+  "motor_commands": false,
+  "before": "0",
+  "high_readback_samples": [
+    "1",
+    "1",
+    "1"
+  ],
+  "result": "GPIO_HIGH_CONFIRMED",
+  "final_value": "1",
+  "auto_off": false,
+  "host_time": "2026-11-06T19:28:12.687701+08:00",
+  "context": "User replaced MOS module; confirmed normal wiring and no TRIG-to-GND short",
+  "physical_module_switching_confirmed": false
+}

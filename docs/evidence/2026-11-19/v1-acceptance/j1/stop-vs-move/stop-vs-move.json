@@ -1,0 +1,124 @@
+{
+  "run": "j1-brake-pair-20261119-143550",
+  "build": "64d3a9e6",
+  "returned": true,
+  "return_errors_deg": {
+    "3": 0.0,
+    "2": -0.004,
+    "1": 0.044
+  },
+  "analysis": "RMS of 20 ms Iq changes within a matched actual-speed band. Optical lateral RMS relative to the board in a window from 120 ms before 250 deg/s to 180 ms after sustained <5 deg/s. Camera arrival timing and top-view 30 fps limit inference about depth and fast vibration.",
+  "means": {
+    "MOVE": {
+      "seconds": 2.273,
+      "peak_deg_s": 2069.1333,
+      "cmd_current_step_rms_250_to_1100_ma": 96.6333,
+      "measured_current_step_rms_250_to_1100_ma": 93.4,
+      "optical_ripple_around_stop_rms_px": 0.2839,
+      "terminal_250_to_5_s": 0.1933,
+      "stop_error_mm": 0.0002,
+      "max_abs_stop_error_mm": 0.0005
+    },
+    "STOP": {
+      "seconds": 2.5417,
+      "peak_deg_s": 2081.0333,
+      "cmd_current_step_rms_250_to_1100_ma": 79.7333,
+      "measured_current_step_rms_250_to_1100_ma": 89.3333,
+      "optical_ripple_around_stop_rms_px": 0.317,
+      "terminal_250_to_5_s": 0.2133,
+      "stop_error_mm": -0.2466,
+      "max_abs_stop_error_mm": 0.6056
+    }
+  },
+  "trials": {
+    "MOVE": [
+      {
+        "name": "down_2100_MOVE1",
+        "stop_error_mm": 0.000492996238246814,
+        "trigger_lead_mm": null,
+        "trigger_speed_deg_s": null,
+        "seconds": 2.342,
+        "peak_deg_s": 2003.2,
+        "cmd_current_step_rms_250_to_1100_ma": 115.6,
+        "measured_current_step_rms_250_to_1100_ma": 95.5,
+        "optical_ripple_around_stop_rms_px": 0.2855,
+        "optical_frames_around_stop": 15,
+        "terminal_250_to_5_s": 0.2,
+        "voltage_clips_250_to_1100": 0
+      },
+      {
+        "name": "down_2100_MOVE2",
+        "stop_error_mm": 2.143461905759968e-05,
+        "trigger_lead_mm": null,
+        "trigger_speed_deg_s": null,
+        "seconds": 2.242,
+        "peak_deg_s": 2082.1,
+        "cmd_current_step_rms_250_to_1100_ma": 90.6,
+        "measured_current_step_rms_250_to_1100_ma": 92.3,
+        "optical_ripple_around_stop_rms_px": 0.2848,
+        "optical_frames_around_stop": 14,
+        "terminal_250_to_5_s": 0.18,
+        "voltage_clips_250_to_1100": 0
+      },
+      {
+        "name": "down_2100_MOVE3",
+        "stop_error_mm": 2.143461905759968e-05,
+        "trigger_lead_mm": null,
+        "trigger_speed_deg_s": null,
+        "seconds": 2.235,
+        "peak_deg_s": 2122.1,
+        "cmd_current_step_rms_250_to_1100_ma": 83.7,
+        "measured_current_step_rms_250_to_1100_ma": 92.4,
+        "optical_ripple_around_stop_rms_px": 0.2815,
+        "optical_frames_around_stop": 15,
+        "terminal_250_to_5_s": 0.2,
+        "voltage_clips_250_to_1100": 0
+      }
+    ],
+    "STOP": [
+      {
+        "name": "down_2100_STOP1",
+        "stop_error_mm": -0.06921238492287522,
+        "trigger_lead_mm": 15.845998123131205,
+        "trigger_speed_deg_s": -2131.34765625,
+        "seconds": 2.541,
+        "peak_deg_s": 2143.0,
+        "cmd_current_step_rms_250_to_1100_ma": 69.2,
+        "measured_current_step_rms_250_to_1100_ma": 66.7,
+        "optical_ripple_around_stop_rms_px": 0.3046,
+        "optical_frames_around_stop": 14,
+        "terminal_250_to_5_s": 0.18,
+        "voltage_clips_250_to_1100": 0
+      },
+      {
+        "name": "down_2100_STOP2",
+        "stop_error_mm": -0.6056351613491167,
+        "trigger_lead_mm": 15.658553384258404,
+        "trigger_speed_deg_s": -2079.7119140625,
+        "seconds": 2.492,
+        "peak_deg_s": 2059.1,
+        "cmd_current_step_rms_250_to_1100_ma": 79.4,
+        "measured_current_step_rms_250_to_1100_ma": 100.8,
+        "optical_ripple_around_stop_rms_px": 0.3346,
+        "optical_frames_around_stop": 18,
+        "terminal_250_to_5_s": 0.3,
+        "voltage_clips_250_to_1100": 0
+      },
+      {
+        "name": "down_2100_STOP3",
+        "stop_error_mm": -0.06496833035032826,
+        "trigger_lead_mm": 16.063594086590467,
+        "trigger_speed_deg_s": -2079.7119140625,
+        "seconds": 2.592,
+        "peak_deg_s": 2041.0,
+        "cmd_current_step_rms_250_to_1100_ma": 90.6,
+        "measured_current_step_rms_250_to_1100_ma": 100.5,
+        "optical_ripple_around_stop_rms_px": 0.3117,
+        "optical_frames_around_stop": 13,
+        "terminal_250_to_5_s": 0.16,
+        "voltage_clips_250_to_1100": 0
+      }
+    ]
+  },
+  "comparison_stopped": null
+}

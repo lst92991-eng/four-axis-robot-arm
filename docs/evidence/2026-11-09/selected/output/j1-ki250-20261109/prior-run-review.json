@@ -1,0 +1,267 @@
+[
+  {
+    "kp": 1.6,
+    "ki": 300,
+    "source": "output\\manual-control\\20261109-184517-177322-real.jsonl",
+    "runs": [
+      {
+        "command": {
+          "t": 1794221160.7954,
+          "time": "2026-11-09T18:46:00.795400+08:00",
+          "kind": 12,
+          "value": 400000
+        },
+        "steady": {
+          "n": 674,
+          "seconds": 13.46,
+          "mean_speed": 399.9921280065936,
+          "error_min": -1.287000000000262,
+          "error_max": 1.293999999999869,
+          "error_std": 0.7056352860367975,
+          "error_mean": 0.030854599406473948,
+          "iq_peak": 1226,
+          "iq_std": 380.57497498062787,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5287,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -8800,
+          -4000
+        ],
+        "matched": {
+          "n": 600,
+          "seconds": 11.98,
+          "mean_speed": 399.984878769303,
+          "error_min": -1.287000000000262,
+          "error_max": 1.293999999999869,
+          "error_std": 0.7075649222490122,
+          "error_mean": 0.033111666666593466,
+          "iq_peak": 1226,
+          "iq_std": 380.7076491511856,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5287,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      },
+      {
+        "command": {
+          "t": 1794221194.78598,
+          "time": "2026-11-09T18:46:34.785980+08:00",
+          "kind": 12,
+          "value": -400000
+        },
+        "steady": {
+          "n": 835,
+          "seconds": 16.68,
+          "mean_speed": -399.9998243592626,
+          "error_min": -1.8539999999993597,
+          "error_max": 1.4140000000006694,
+          "error_std": 0.7914257928067076,
+          "error_mean": -0.01853173652661082,
+          "iq_peak": 1232,
+          "iq_std": 431.21337132431097,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5356,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -12500,
+          -6500
+        ],
+        "matched": {
+          "n": 750,
+          "seconds": 14.98,
+          "mean_speed": -400.10329527912216,
+          "error_min": -1.8539999999993597,
+          "error_max": 1.4140000000006694,
+          "error_std": 0.792919764763671,
+          "error_mean": -0.019422666666328345,
+          "iq_peak": 1232,
+          "iq_std": 431.4498704518161,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5356,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      }
+    ],
+    "events": []
+  },
+  {
+    "kp": 1.4,
+    "ki": 300,
+    "source": "output\\manual-control\\20261109-184833-736187-real.jsonl",
+    "runs": [
+      {
+        "command": {
+          "t": 1794221394.554635,
+          "time": "2026-11-09T18:49:54.554635+08:00",
+          "kind": 12,
+          "value": 400000
+        },
+        "steady": {
+          "n": 802,
+          "seconds": 16.02,
+          "mean_speed": 399.9736657303371,
+          "error_min": -1.462999999999738,
+          "error_max": 1.3550000000013824,
+          "error_std": 0.7764174150708749,
+          "error_mean": -0.024187032418783252,
+          "iq_peak": 1222,
+          "iq_std": 369.14439427214774,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5359,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -8800,
+          -4000
+        ],
+        "matched": {
+          "n": 600,
+          "seconds": 11.98,
+          "mean_speed": 400.0417362270451,
+          "error_min": -1.4179999999996653,
+          "error_max": 1.3550000000013824,
+          "error_std": 0.7748393530632908,
+          "error_mean": -0.0058166666666412915,
+          "iq_peak": 1222,
+          "iq_std": 369.78314617789465,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5303,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      },
+      {
+        "command": {
+          "t": 1794221427.214718,
+          "time": "2026-11-09T18:50:27.214718+08:00",
+          "kind": 12,
+          "value": -400000
+        },
+        "steady": {
+          "n": 1114,
+          "seconds": 22.26,
+          "mean_speed": -399.9773627021563,
+          "error_min": -1.9290000000000873,
+          "error_max": 1.5190000000002328,
+          "error_std": 0.8197780553120356,
+          "error_mean": -0.02817773788094341,
+          "iq_peak": 1306,
+          "iq_std": 408.61256951061745,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5385,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -12500,
+          -6500
+        ],
+        "matched": {
+          "n": 750,
+          "seconds": 14.98,
+          "mean_speed": -399.89500975258676,
+          "error_min": -1.5,
+          "error_max": 1.5130000000008295,
+          "error_std": 0.8243429622578272,
+          "error_mean": -0.01997599999949792,
+          "iq_peak": 950,
+          "iq_std": 407.09591095738386,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5296,
+          "sample_gap_max_ms": 20
+        },
+        "fault": {
+          "time": "2026-11-09T18:51:03.383374+08:00",
+          "fault": 5,
+          "detail": 4
+        }
+      }
+    ],
+    "events": [
+      {
+        "wall_time": "2026-11-09T18:51:03.383416+08:00",
+        "simulated": false,
+        "time": "18:51:03",
+        "message": "J1 故障 5：运动跟随或行程保护",
+        "node": 1,
+        "fault": 5,
+        "position": -15310.986,
+        "target": -15313.927,
+        "velocity": -1.163,
+        "power": false
+      },
+      {
+        "wall_time": "2026-11-09T18:51:03.383494+08:00",
+        "simulated": false,
+        "time": "18:51:03",
+        "message": "J1 驱动已故障关断出力，不重复发 STOP"
+      },
+      {
+        "wall_time": "2026-11-09T18:51:03.383516+08:00",
+        "simulated": false,
+        "time": "18:51:03",
+        "message": "J1: 驱动故障 5：位置跟随误差超限"
+      }
+    ]
+  },
+  {
+    "kp": 1.2,
+    "ki": 300,
+    "source": "output\\manual-control\\20261109-185255-005763-real.jsonl",
+    "runs": [
+      {
+        "command": {
+          "t": 1794221632.233938,
+          "time": "2026-11-09T18:53:52.233938+08:00",
+          "kind": 12,
+          "value": 400000
+        },
+        "steady": {
+          "n": 1045,
+          "seconds": 20.88,
+          "mean_speed": 399.99179182381465,
+          "error_min": -1.5630000000001019,
+          "error_max": 1.4349999999994907,
+          "error_std": 0.789890920596942,
+          "error_mean": 0.07066315789441555,
+          "iq_peak": 1198,
+          "iq_std": 340.24483281414416,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5349,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -8800,
+          -4000
+        ],
+        "matched": {
+          "n": 589,
+          "seconds": 11.76,
+          "mean_speed": 400.0107122927296,
+          "error_min": -1.5630000000001019,
+          "error_max": 1.3029999999998836,
+          "error_std": 0.7978110464772651,
+          "error_mean": -0.08413412563664811,
+          "iq_peak": 1198,
+          "iq_std": 342.5568324310908,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5291,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      }
+    ],
+    "events": [
+      {
+        "wall_time": "2026-11-09T18:54:27.004837+08:00",
+        "simulated": false,
+        "time": "18:54:27",
+        "message": "控制器状态、协议错误、无法发送显性位、发送错误被动（ID=0xC，原始=0020080000008800）；检查各节点供电、CAN H/L、公共地、两端终端电阻及 500k/2M 位速率"
+      }
+    ]
+  }
+]

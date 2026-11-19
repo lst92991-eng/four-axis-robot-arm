@@ -1,0 +1,122 @@
+{
+  "objective": "把当前自有C++固定棋盘应用实际精简到约1500–1800有效行，保留首次像素/基座标定、识别、棋局/UCI、逆解和取放。",
+  "started_utc": "2026-11-13T22:24:44.727811+08:00",
+  "baseline_commit": "6bd2287",
+  "baseline_cpp_nloc": 2975,
+  "status": "complete",
+  "scope": "当前app/vision/chess/motion及需要同步的Python调用方；所有C++头文件与内部实现计数。",
+  "retained": [
+    "已认可的Camera和视觉主循环",
+    "已验证ROI/预处理/模型/阈值",
+    "首次采点标定与独立验误",
+    "四角确认和固定90点",
+    "已保存机械参考与示教Z",
+    "棋局/UCI完整历史",
+    "逆解/取放和落子确认"
+  ],
+  "removed": [
+    "逐帧自动找格线与边框",
+    "旋转判向/河界模板",
+    "多种检测坐标输入适配",
+    "无需重复运行的机械参考搜索工具"
+  ],
+  "limits": [
+    "机械参考从既有实测文件读取；不重新拟合/猜测关节参考",
+    "棋盘或相机移动须重新设置四角和映射",
+    "不接硬件；SPI-CAN与H桥尚未实现",
+    "旧版保存在Git和既有快照，不移动到其他产品文件掩盖行数"
+  ],
+  "stages": [
+    {
+      "name": "freeze_fixed_baseline",
+      "status": "complete"
+    },
+    {
+      "name": "remove_dynamic_geometry",
+      "status": "complete"
+    },
+    {
+      "name": "simplify_fixed_mapping",
+      "status": "complete"
+    },
+    {
+      "name": "connect_existing_consumers",
+      "status": "complete"
+    },
+    {
+      "name": "offline_verification_and_delivery",
+      "status": "complete"
+    }
+  ],
+  "completed_rounds": [
+    {
+      "round": 0,
+      "title": "固定流程精简前基线",
+      "cpp_nloc": 2975
+    },
+    {
+      "round": 1,
+      "title": "删除动态棋盘与机械参考搜索分支",
+      "cpp_nloc": 2257,
+      "checks": "13 CTest, 60 Python, fixed geometry and vision unchanged"
+    },
+    {
+      "round": 2,
+      "title": "统一原图坐标与采点输入",
+      "cpp_nloc": 2091,
+      "checks": "14 CTest, 60 Python, 14400 assignment cases and fixed outputs identical"
+    },
+    {
+      "round": 3,
+      "title": "合并标定入口和XY输出",
+      "cpp_nloc": 1979,
+      "checks": "14 CTest, 60 Python; retained outputs identical"
+    },
+    {
+      "round": 4,
+      "title": "固定相机配置与三帧稳定确认",
+      "cpp_nloc": 1930,
+      "checks": "14 CTest, 60 Python; 14400-case digest and all saved outputs identical"
+    },
+    {
+      "round": 5,
+      "title": "引擎直接读取已确认棋局",
+      "cpp_nloc": 1861,
+      "checks": "14 CTest, 60 Python; UCI command/history and all retained outputs unchanged"
+    },
+    {
+      "round": 6,
+      "title": "固定坐标与单一有效状态",
+      "cpp_nloc": 1799,
+      "checks": "14 CTest, 60 Python; fixed outputs and YOLO identical; old dynamic-frame assertion migrated with failure log retained"
+    },
+    {
+      "round": 7,
+      "title": "预览状态明确为固定布局",
+      "cpp_nloc": 1799,
+      "checks": "14 CTest, 60 Python; fixed XY, NPU replay and ONNX results unchanged"
+    },
+    {
+      "round": 8,
+      "title": "内部几何点集也用输出参数",
+      "cpp_nloc": 1800,
+      "checks": "14 CTest, 60 Python, all retained outputs identical"
+    }
+  ],
+  "finished_utc": "2026-11-13T16:07:21.735199+00:00",
+  "elapsed_minutes": 102.6,
+  "result": {
+    "cpp_nloc": 1800,
+    "cpp_removed": 1175,
+    "review_rounds": 8,
+    "cpp_suites": 14,
+    "python_checks": 60,
+    "source_commit": "63aebac",
+    "fresh_package_build_passed": true,
+    "hardware_actions": false,
+    "remote_push": false,
+    "cpp_text": "output/fixed-minimal-20261113/round-08/cpp-code.txt",
+    "cpp_zip": "output/fixed-minimal-20261113/round-08/cpp-code.zip",
+    "full_package": "output/fixed-minimal-20261113/fixed-application-source.zip"
+  }
+}

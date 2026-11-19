@@ -1,0 +1,639 @@
+{
+  "round": 4,
+  "title": "固定相机配置与三帧稳定确认",
+  "finding": "1280x720固定相机标识集中定义，读布局/标定文件时核对，删除每帧携带和比较多套相机对象。已保存真实相机字段、平面和90点输出不变。稳定器只累计三个不同有效帧；棋盘重新示教后显式reset，自动旋转检测已按范围删除。源文件没有更改ROI、YOLO、机械参数；旧版14400组对照再次得到同一摘要。",
+  "parent_commit": "73e0315cdb1e0f5218bc5746e345719fc8c82107",
+  "functions": [
+    {
+      "file": "app/vision_main.cpp",
+      "name": "requestStop",
+      "nloc": 5,
+      "complexity": 1
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "name": "savePreview",
+      "nloc": 5,
+      "complexity": 2
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "name": "main",
+      "nloc": 46,
+      "complexity": 7
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::receiveFrames",
+      "nloc": 26,
+      "complexity": 4
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_open",
+      "nloc": 6,
+      "complexity": 1
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_read",
+      "nloc": 9,
+      "complexity": 4
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_stop",
+      "nloc": 4,
+      "complexity": 1
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_close",
+      "nloc": 7,
+      "complexity": 2
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::dequantize",
+      "nloc": 4,
+      "complexity": 1
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::higherScore",
+      "nloc": 4,
+      "complexity": 1
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::readCandidates",
+      "nloc": 34,
+      "complexity": 7
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_setup",
+      "nloc": 8,
+      "complexity": 1
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_prepare",
+      "nloc": 9,
+      "complexity": 3
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_decode",
+      "nloc": 33,
+      "complexity": 8
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_draw",
+      "nloc": 22,
+      "complexity": 4
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::prepareTensor",
+      "nloc": 34,
+      "complexity": 19
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::Yolo_open",
+      "nloc": 13,
+      "complexity": 3
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::Yolo_run",
+      "nloc": 11,
+      "complexity": 5
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::Yolo_close",
+      "nloc": 7,
+      "complexity": 4
+    }
+  ],
+  "accuracy": {
+    "frames": 16,
+    "detections": 501,
+    "identical": true,
+    "visual_correct": 64,
+    "visual_total": 64,
+    "recorded_npu_correct": 32
+  },
+  "reference": "电机驱动板_最终完整代码_20260911.zip",
+  "production_files": [
+    {
+      "file": "app/vision_main.cpp",
+      "nloc": 64,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "nloc": 9,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "nloc": 74,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "nloc": 38,
+      "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "nloc": 131,
+      "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "nloc": 92,
+      "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+    }
+  ],
+  "nloc": 408,
+  "ctest_passed": true,
+  "checks": " C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify\n      Start  1: geometry_contracts\n 1/14 Test  #1: geometry_contracts ...............   Passed    0.13 sec\n      Start  2: fixed_assignment_equivalence\n 2/14 Test  #2: fixed_assignment_equivalence .....   Passed    0.09 sec\n      Start  3: game_geometry_contracts\n 3/14 Test  #3: game_geometry_contracts ..........   Passed    0.05 sec\n      Start  4: chess_contracts\n 4/14 Test  #4: chess_contracts ..................   Passed    0.03 sec\n      Start  5: chess_move_equivalence\n 5/14 Test  #5: chess_move_equivalence ...........   Passed    0.04 sec\n      Start  6: pikafish_protocol_contracts\n 6/14 Test  #6: pikafish_protocol_contracts ......   Passed    0.04 sec\n      Start  7: fixed_board_contracts\n 7/14 Test  #7: fixed_board_contracts ............   Passed    0.05 sec\n      Start  8: motion_plan_contracts\n 8/14 Test  #8: motion_plan_contracts ............   Passed    0.06 sec\n      Start  9: session_contracts\n 9/14 Test  #9: session_contracts ................   Passed    0.06 sec\n      Start 10: camera_retry_contracts\n10/14 Test #10: camera_retry_contracts ...........   Passed    6.14 sec\n      Start 11: saved_tensor_input_contracts\n11/14 Test #11: saved_tensor_input_contracts .....   Passed    0.76 sec\n      Start 12: vision_pipeline_contracts\n12/14 Test #12: vision_pipeline_contracts ........   Passed   13.40 sec\n      Start 13: rknn_adapter_contracts\n13/14 Test #13: rknn_adapter_contracts ...........   Passed    0.06 sec\n      Start 14: vision_entry_contracts\n14/14 Test #14: vision_entry_contracts ...........   Passed    1.86 sec\n\n100% tests passed, 0 tests failed out of 14\n\nTotal Test time (real) =  22.81 sec\n",
+  "cases": [
+    {
+      "id": "npu-yolo-expanded-v1-20261105",
+      "detections": 30,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.10690799999999999
+    },
+    {
+      "id": "npu-yolo-full-frame",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.029328
+    },
+    {
+      "id": "npu-yolo-live-20261104",
+      "detections": 16,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.038664000000000004
+    },
+    {
+      "id": "npu-yolo-live-active",
+      "detections": 16,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.037745
+    },
+    {
+      "id": "npu-reference",
+      "detections": 28,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.135907
+    },
+    {
+      "id": "npu-v3",
+      "detections": 32,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.1379
+    },
+    {
+      "id": "npu-diagnosis",
+      "detections": 30,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.107525
+    },
+    {
+      "id": "fixed-01",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-02",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-03",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-04",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-05",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-06",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-07",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-08",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-09",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 36.27,
+  "accuracy_scope": "Every round: saved NPU tensor replay, RGB and drawing byte equality, v3 ONNX CPU re-inference, 64-piece visual spot check. No real RV1106 run.",
+  "source_inventory": [
+    {
+      "file": "app/geometry_tool.cpp",
+      "group": "application_cpp",
+      "nloc": 143,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "436725a3695fbeae5c5ab26ce6e173c2cb2ce400b1f856e6aaceb270451dc323"
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "group": "application_cpp",
+      "nloc": 64,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "chess/board.cpp",
+      "group": "application_cpp",
+      "nloc": 326,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "90a6a5f9c00e0ec5efa1868691046f153722c42692b91e687cc5d86497824d14"
+    },
+    {
+      "file": "chess/board.hpp",
+      "group": "application_cpp",
+      "nloc": 59,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "cbc91100a8ef06445b544bf6e506f1cbea0e03f88306404c8ce0ae28414e66c6"
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "group": "application_cpp",
+      "nloc": 217,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "3adf3b414a91c853413bd2b22eaec14073bb757ce936bfb160dbc3bb6aac7ab4"
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "group": "application_cpp",
+      "nloc": 32,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "35ca211e8f76543085fb4fc0a4802f5c904e244cbfe9fc343ddb465c30eba178"
+    },
+    {
+      "file": "chess/session.cpp",
+      "group": "application_cpp",
+      "nloc": 53,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "67e253c58415b67d217330fc35ca07176d07dcc2b52f53c960ea2855379cd267"
+    },
+    {
+      "file": "chess/session.hpp",
+      "group": "application_cpp",
+      "nloc": 23,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "b99437a1ac17f5ea95c6ef43844dfcf87425818b285724630bb68da00368d3c3"
+    },
+    {
+      "file": "chess/vision_bridge.cpp",
+      "group": "application_cpp",
+      "nloc": 30,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "ab9f3f8e5349c628e55a5e7ef7757c9313361cb8e0802b7c738df2ab992bad99"
+    },
+    {
+      "file": "chess/vision_bridge.hpp",
+      "group": "application_cpp",
+      "nloc": 6,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "e1a06d165510baeb016ccfe04d58f685c5e94d1d0c67515c8e247abd477cf598"
+    },
+    {
+      "file": "manual_control/calibrate_j1.py",
+      "group": "commissioning_tools",
+      "nloc": 289,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "09c0484c6ba829e4a6a73924786954f627ea87fa6737750de155aa1420d30d11"
+    },
+    {
+      "file": "manual_control/chess_demo.py",
+      "group": "manual_and_demo",
+      "nloc": 248,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "ec2e4272e08317b1d91b7ab94a8dc4bb855c3c08b4e555d097d2cbd4e9e4e023"
+    },
+    {
+      "file": "manual_control/core.py",
+      "group": "manual_and_demo",
+      "nloc": 591,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "8cf7d397c6b609efabf1ef0dd0f06a12f7db99a67271fd9dc052fab2d2b7287b"
+    },
+    {
+      "file": "manual_control/first_pick.py",
+      "group": "manual_and_demo",
+      "nloc": 374,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "8ab83005a1eea47d34dc0141cf958411550517d8bfe4fbdcaceef4afa09f15bc"
+    },
+    {
+      "file": "manual_control/index.html",
+      "group": "manual_and_demo",
+      "nloc": 211,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 20,
+      "sha256": "d9330ca277d9702cf926ad7ae597f5294a6c3ee4644f816c5546663286a973ec"
+    },
+    {
+      "file": "manual_control/j1_bench.py",
+      "group": "commissioning_tools",
+      "nloc": 377,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "de78a2c987965d5d682439c8989748a964dd4e0c48c04f49ce55c94098e6b928"
+    },
+    {
+      "file": "manual_control/server.py",
+      "group": "manual_and_demo",
+      "nloc": 415,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "5f1a7c88b302302bd36ecaf709eef1c49024ee5f0fc5b7f04c63dc30a1931ede"
+    },
+    {
+      "file": "manual_control/software_update_j1.py",
+      "group": "commissioning_tools",
+      "nloc": 74,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "863486d630b8f2f2bb661670c1e2621d0511b4c4587034587447971ebc12f3f7"
+    },
+    {
+      "file": "manual_control/telemetry.py",
+      "group": "manual_and_demo",
+      "nloc": 47,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "e46642bd9a9094756399f3780e5e4ec453737302903a6589aa9190aef55a9ebe"
+    },
+    {
+      "file": "manual_control/tune_release.py",
+      "group": "manual_and_demo",
+      "nloc": 252,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "6995dfb0ce2bf14b9be385c5500f44a8192541192ade321d4a0c2416be1f3793"
+    },
+    {
+      "file": "motion/plan.cpp",
+      "group": "application_cpp",
+      "nloc": 108,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "7ca4dd3b737d25fc9d158ca6613a63328db2c054bf55f2b0aa313d6cd4f80a3d"
+    },
+    {
+      "file": "motion/plan.hpp",
+      "group": "application_cpp",
+      "nloc": 53,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "f9ef544c27cc0e0144e79fbace905e03e3b866250401deceb70f8ec7ba983253"
+    },
+    {
+      "file": "temp/transport/candle_bus.py",
+      "group": "usb_can_adapter_excluded",
+      "nloc": 21,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "096e8e394433c3ba61d7404e458dd481f10de912abcb353f5754cd8f125d1a73"
+    },
+    {
+      "file": "temp/transport/stepfoc_candlelight.py",
+      "group": "usb_can_adapter_excluded",
+      "nloc": 251,
+      "encoding": "gb18030",
+      "markup_nonblank_lines": 0,
+      "sha256": "d23b0fc24e808918e429950e5e07f40bc430982ec1c4b2a5442946bec8a5ddb0"
+    },
+    {
+      "file": "temp/transport/usb_owner.py",
+      "group": "usb_can_adapter_excluded",
+      "nloc": 30,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "2d3f79a3a90a2fe2419186505d4baffc38b36e2c404f53a75ae9014f24e4cdd8"
+    },
+    {
+      "file": "temp/yolo_live/board_npu.py",
+      "group": "legacy_live_vision",
+      "nloc": 280,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "7b084981f4ab762f607ace0121c4032df3ceab7a8329d9638218444046516076"
+    },
+    {
+      "file": "temp/yolo_live/dual_preview.py",
+      "group": "legacy_live_vision",
+      "nloc": 224,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "dc2465acab6ec1e6a660264bad77656938df0eb97857d07f4e86e0a39f1cee99"
+    },
+    {
+      "file": "temp/yolo_live/host_preview.py",
+      "group": "legacy_live_vision",
+      "nloc": 331,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "b23eb5d42ae789f05599b985d70a8fa138b6688a986e6dd8027837f695bebb91"
+    },
+    {
+      "file": "vision/board.cpp",
+      "group": "application_cpp",
+      "nloc": 49,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "c9cf1bee7d9a657dd572fd26156337891749c12e211c806b4a12418cc1dfead2"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "group": "application_cpp",
+      "nloc": 74,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "group": "application_cpp",
+      "nloc": 9,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/fixed_board.cpp",
+      "group": "application_cpp",
+      "nloc": 35,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "29e984766ce6218127f5ecb4c9fc11a8fb06fca54ec296777cd27062dfa99389"
+    },
+    {
+      "file": "vision/fixed_board.hpp",
+      "group": "application_cpp",
+      "nloc": 14,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "77a099137cf38bc4d79ac10531de1f60834262f7588cba0c1fd58290532dbda3"
+    },
+    {
+      "file": "vision/geometry.cpp",
+      "group": "application_cpp",
+      "nloc": 269,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "475b2744b0962b78ac8e3e135deaee538fdb2d5937a47225f575b03976783a06"
+    },
+    {
+      "file": "vision/geometry.hpp",
+      "group": "application_cpp",
+      "nloc": 73,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "1f82dab726dda4111dde01a412a346aa4a9394f7f4d1dba35b8f8c41708fe8d3"
+    },
+    {
+      "file": "vision/io.hpp",
+      "group": "application_cpp",
+      "nloc": 32,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "84c9167b1fb9d867b2f79ff14dab294083ed57ff13093b4d3d6edeb08c5d673f"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "group": "application_cpp",
+      "nloc": 131,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "group": "application_cpp",
+      "nloc": 38,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "group": "application_cpp",
+      "nloc": 92,
+      "encoding": "utf-8-sig",
+      "markup_nonblank_lines": 0,
+      "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+    }
+  ],
+  "group_nloc": {
+    "application_cpp": 1930,
+    "commissioning_tools": 740,
+    "manual_and_demo": 2138,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 835
+  },
+  "geometry_outputs": [
+    {
+      "file": "grid.json",
+      "sha256": "0d110081aec52f4c8392ddca3f56821f90546437f425fc42f1fd03d69c7c43db"
+    },
+    {
+      "file": "grid.json.png",
+      "sha256": "90e3613315de99681b18140472e3fde1b6f471b7444b363e6394129e3118f359"
+    },
+    {
+      "file": "grid.json.rectified.png",
+      "sha256": "f7dbc4802761454add59f20efad85c6dbe92fb298a531c0776b902273a82bf47"
+    },
+    {
+      "file": "plane.yml",
+      "sha256": "de19a6cc5719c42b1afcbd0b1bedde4cff319d92a59fb2b3a99366528a5517bc"
+    }
+  ],
+  "python_tests": "............................................................\n----------------------------------------------------------------------\nRan 60 tests in 1.877s\n\nOK\n",
+  "finished_utc": "2026-11-13T14:58:59.370386+00:00"
+}

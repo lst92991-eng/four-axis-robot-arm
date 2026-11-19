@@ -1,0 +1,16 @@
+{
+  "action": "OFF_HOLD",
+  "gpio": "GPIO1_B0",
+  "physical_pin": "U7.11",
+  "before": "1",
+  "readback_samples": [
+    "0",
+    "0",
+    "0"
+  ],
+  "automatic_reenable": false,
+  "motor_commands": false,
+  "host_time": "2026-11-06T19:31:12.979075+08:00",
+  "module": "replacement MOS module",
+  "physical_release_confirmed": false
+}

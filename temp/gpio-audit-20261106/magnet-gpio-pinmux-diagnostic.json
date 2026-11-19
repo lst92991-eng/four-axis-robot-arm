@@ -1,0 +1,25 @@
+{
+  "debugfs_preexisting": false,
+  "gpio": {
+    "direction": "out",
+    "value": "0",
+    "active_low": "0"
+  },
+  "pinctrl": {
+    "pinctrl-rockchip-pinctrl/pinmux-pins": [
+      "pin 40 (gpio1-8): (MUX UNCLAIMED) gpio1:40"
+    ],
+    "pinctrl-rockchip-pinctrl/pinconf-pins": [
+      "pin 40 (gpio1-8): input bias pull down (1 ohms), output drive strength (4 mA), input schmitt enabled, pin output (0 level)"
+    ],
+    "pinctrl-rockchip-pinctrl/pins": [
+      "pin 40 (gpio1-8) 8:gpio1 "
+    ],
+    "pinctrl-rockchip-pinctrl/gpio-ranges": []
+  },
+  "mount_status": 0,
+  "mount_error": "",
+  "debug_gpio": "gpiochip0: GPIOs 0-31, parent: platform/ff380000.gpio, gpio0:\n gpio-0   (                    |work                ) out hi ACTIVE LOW\n gpio-1   (                    |usb-mux-sel0        ) out lo \n\ngpiochip1: GPIOs 32-63, parent: platform/ff530000.gpio, gpio1:\n gpio-40  (                    |sysfs               ) out lo \n gpio-52  (                    |spi0 CS0            ) out hi ACTIVE LOW\n\ngpiochip2: GPIOs 64-95, parent: platform/ff540000.gpio, gpio2:\n gpio-64  (                    |reset               ) in  hi ACTIVE LOW\n\ngpiochip3: GPIOs 96-127, parent: platform/ff550000.gpio, gpio3:\n gpio-117 (                    |reset               ) out hi \n\ngpiochip4: GPIOs 128-151, parent: platform/ff560000.gpio, gpio4:\n",
+  "unmount_status": 0,
+  "host_time": "2026-11-06T18:43:07.406510+08:00"
+}

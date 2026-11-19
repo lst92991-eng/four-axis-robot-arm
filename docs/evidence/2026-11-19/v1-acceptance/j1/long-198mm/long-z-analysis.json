@@ -1,0 +1,160 @@
+{
+  "stroke_mm": 198,
+  "requested_deg_s": 4800,
+  "start_rate_deg_s2": 5050,
+  "returned": true,
+  "segments": [
+    {
+      "direction": "up",
+      "brake_deg_s2": 4400,
+      "down_ki_permille": 1000,
+      "seconds": 8.83913570002187,
+      "host_begin_s": 661605.640392,
+      "host_end_s": 661614.4795277,
+      "activation_pose_deg": -18218.594,
+      "goal_deg": -8981.201,
+      "settled_pose_deg": -8981.135,
+      "peak_deg_s": 2190.234375,
+      "applied_vector_peak_mv": 23116,
+      "clipped_samples": 119,
+      "phase_a_peak_ma": 1885.7142857142858,
+      "phase_b_peak_ma": 1962.2710622710622,
+      "bus_peak_mv": 36837,
+      "powered_samples": 445,
+      "peak_500ms_average_deg_s": 2118.0,
+      "nominal_cruise_s": 0.843,
+      "nominal_reference_end_s": 3.049,
+      "remaining_travel_when_reference_stops_mm": 72.899,
+      "rotary_position_range_deg": {
+        "J2": 0.002,
+        "J3": 0.154
+      },
+      "window_results": [
+        {
+          "window": "acceleration",
+          "median_actual_deg_s": 2021.9,
+          "min_actual_deg_s": 104.6,
+          "max_actual_deg_s": 2181.2,
+          "command_window_s": [
+            0,
+            1.01
+          ],
+          "voltage_clip_frames": 18,
+          "frame_count": 51
+        },
+        {
+          "window": "commanded_cruise",
+          "median_actual_deg_s": 2051.3,
+          "min_actual_deg_s": 2012.7,
+          "max_actual_deg_s": 2090.7,
+          "command_window_s": [
+            1.01,
+            1.854
+          ],
+          "voltage_clip_frames": 18,
+          "frame_count": 42
+        },
+        {
+          "window": "commanded_brake",
+          "median_actual_deg_s": 2074.0,
+          "min_actual_deg_s": 2029.2,
+          "max_actual_deg_s": 2119.7,
+          "command_window_s": [
+            1.854,
+            3.049
+          ],
+          "voltage_clip_frames": 34,
+          "frame_count": 60
+        },
+        {
+          "window": "after_reference_stop",
+          "median_actual_deg_s": 0.0,
+          "min_actual_deg_s": -0.2,
+          "max_actual_deg_s": 2190.2,
+          "command_window_s": [
+            3.049,
+            null
+          ],
+          "voltage_clip_frames": 49,
+          "frame_count": 292
+        }
+      ]
+    },
+    {
+      "direction": "down",
+      "brake_deg_s2": 4800,
+      "down_ki_permille": 950,
+      "seconds": 7.741465100087225,
+      "host_begin_s": 661615.7879096,
+      "host_end_s": 661623.5293747,
+      "activation_pose_deg": -8981.18,
+      "goal_deg": -18218.594,
+      "settled_pose_deg": -18218.594,
+      "peak_deg_s": 2877.978515625,
+      "applied_vector_peak_mv": 23268,
+      "clipped_samples": 82,
+      "phase_a_peak_ma": 2357.1428571428573,
+      "phase_b_peak_ma": 2409.5238095238096,
+      "bus_peak_mv": 37018,
+      "powered_samples": 390,
+      "peak_500ms_average_deg_s": 2770.2,
+      "nominal_cruise_s": 0.888,
+      "nominal_reference_end_s": 3.004,
+      "remaining_travel_when_reference_stops_mm": 38.948,
+      "rotary_position_range_deg": {
+        "J2": 0.007,
+        "J3": 0.154
+      },
+      "window_results": [
+        {
+          "window": "acceleration",
+          "median_actual_deg_s": 2453.9,
+          "min_actual_deg_s": 190.3,
+          "max_actual_deg_s": 2878.0,
+          "command_window_s": [
+            0,
+            1.01
+          ],
+          "voltage_clip_frames": 12,
+          "frame_count": 51
+        },
+        {
+          "window": "commanded_cruise",
+          "median_actual_deg_s": 2723.3,
+          "min_actual_deg_s": 2616.3,
+          "max_actual_deg_s": 2842.4,
+          "command_window_s": [
+            1.01,
+            1.899
+          ],
+          "voltage_clip_frames": 32,
+          "frame_count": 44
+        },
+        {
+          "window": "commanded_brake",
+          "median_actual_deg_s": 2695.2,
+          "min_actual_deg_s": 2551.2,
+          "max_actual_deg_s": 2841.9,
+          "command_window_s": [
+            1.899,
+            3.004
+          ],
+          "voltage_clip_frames": 24,
+          "frame_count": 56
+        },
+        {
+          "window": "after_reference_stop",
+          "median_actual_deg_s": 0.0,
+          "min_actual_deg_s": -0.7,
+          "max_actual_deg_s": 2801.5,
+          "command_window_s": [
+            3.004,
+            null
+          ],
+          "voltage_clip_frames": 14,
+          "frame_count": 239
+        }
+      ]
+    }
+  ]
+}

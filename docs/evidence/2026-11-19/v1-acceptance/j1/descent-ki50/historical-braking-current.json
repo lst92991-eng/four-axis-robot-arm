@@ -1,0 +1,355 @@
+{
+  "notes": "Archived J1 data only. Per-trial RMS of adjacent 20ms Iq changes, within the same actual-speed band on braking, then median across trials. The records include 60ms and 150ms terminal profiles and both 2100/2400 deg/s commands. Not vibration amplitude or experimental evidence for the new Ki.",
+  "statistics": {
+    "up": {
+      "250-1100": {
+        "trials": 9,
+        "median_command_step_rms_ma": 39.3,
+        "median_current_step_rms_ma": 50.4,
+        "voltage_clip_samples": 0
+      },
+      "5-250": {
+        "trials": 9,
+        "median_command_step_rms_ma": 29.0,
+        "median_current_step_rms_ma": 28.4,
+        "voltage_clip_samples": 0
+      }
+    },
+    "down": {
+      "250-1100": {
+        "trials": 7,
+        "median_command_step_rms_ma": 81.1,
+        "median_current_step_rms_ma": 84.6,
+        "voltage_clip_samples": 0
+      },
+      "5-250": {
+        "trials": 7,
+        "median_command_step_rms_ma": 22.7,
+        "median_current_step_rms_ma": 21.7,
+        "voltage_clip_samples": 0
+      }
+    }
+  },
+  "trials": [
+    {
+      "folder": "j1-brake-pair-20261119-135252",
+      "trial": "up_2400_A1",
+      "direction": "up",
+      "peak_deg_s": 2135.7421875,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 37.4,
+          "current_step_rms_ma": 50.4,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 10,
+          "current_command_step_rms_ma": 17.2,
+          "current_step_rms_ma": 18.0,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-135252",
+      "trial": "down_2400_A1",
+      "direction": "down",
+      "peak_deg_s": 2078.3935546875,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 72.6,
+          "current_step_rms_ma": 84.6,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 16.1,
+          "current_step_rms_ma": 10.9,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-135252",
+      "trial": "up_2400_A2",
+      "direction": "up",
+      "peak_deg_s": 2164.9658203125,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 73.1,
+          "current_step_rms_ma": 87.0,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 10,
+          "current_command_step_rms_ma": 23.1,
+          "current_step_rms_ma": 20.1,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-135252",
+      "trial": "down_2400_A2",
+      "direction": "down",
+      "peak_deg_s": 2025.87890625,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 85.6,
+          "current_step_rms_ma": 77.4,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 8,
+          "current_command_step_rms_ma": 15.5,
+          "current_step_rms_ma": 14.0,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141210",
+      "trial": "up_2400_D1",
+      "direction": "up",
+      "peak_deg_s": 2157.71484375,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 49.3,
+          "current_step_rms_ma": 38.1,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 28.7,
+          "current_step_rms_ma": 25.8,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141210",
+      "trial": "down_2400_D1",
+      "direction": "down",
+      "peak_deg_s": 2072.900390625,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 71.3,
+          "current_step_rms_ma": 89.2,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 10,
+          "current_command_step_rms_ma": 32.4,
+          "current_step_rms_ma": 34.0,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141702",
+      "trial": "up_2400_A1",
+      "direction": "up",
+      "peak_deg_s": 2167.6025390625,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 69.9,
+          "current_step_rms_ma": 89.6,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 10,
+          "current_command_step_rms_ma": 29.0,
+          "current_step_rms_ma": 30.7,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141702",
+      "trial": "down_2400_A1",
+      "direction": "down",
+      "peak_deg_s": 2155.95703125,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 94.6,
+          "current_step_rms_ma": 92.6,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 16.3,
+          "current_step_rms_ma": 15.6,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141702",
+      "trial": "up_2400_A2",
+      "direction": "up",
+      "peak_deg_s": 2150.0244140625,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 39.3,
+          "current_step_rms_ma": 50.4,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 37.4,
+          "current_step_rms_ma": 42.1,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141702",
+      "trial": "down_2400_A2",
+      "direction": "down",
+      "peak_deg_s": 2039.94140625,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 81.1,
+          "current_step_rms_ma": 75.0,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 8,
+          "current_command_step_rms_ma": 22.7,
+          "current_step_rms_ma": 27.6,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141901",
+      "trial": "up_2100_D1",
+      "direction": "up",
+      "peak_deg_s": 2130.908203125,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 25.3,
+          "current_step_rms_ma": 65.5,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 41.9,
+          "current_step_rms_ma": 46.1,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141901",
+      "trial": "down_2100_D1",
+      "direction": "down",
+      "peak_deg_s": 2131.1279296875,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 77.5,
+          "current_step_rms_ma": 76.2,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 13,
+          "current_command_step_rms_ma": 26.3,
+          "current_step_rms_ma": 21.7,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141901",
+      "trial": "up_2100_D2",
+      "direction": "up",
+      "peak_deg_s": 2136.181640625,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 37.8,
+          "current_step_rms_ma": 46.8,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 36.9,
+          "current_step_rms_ma": 35.3,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141901",
+      "trial": "down_2100_D2",
+      "direction": "down",
+      "peak_deg_s": 2046.7529296875,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 109.5,
+          "current_step_rms_ma": 122.1,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 16,
+          "current_command_step_rms_ma": 30.4,
+          "current_step_rms_ma": 29.3,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141901",
+      "trial": "up_2100_E1",
+      "direction": "up",
+      "peak_deg_s": 2119.04296875,
+      "bands": {
+        "250-1100": {
+          "samples": 15,
+          "current_command_step_rms_ma": 38.6,
+          "current_step_rms_ma": 41.4,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 12,
+          "current_command_step_rms_ma": 36.0,
+          "current_step_rms_ma": 26.0,
+          "voltage_clip_samples": 0
+        }
+      }
+    },
+    {
+      "folder": "j1-brake-pair-20261119-141901",
+      "trial": "up_2100_E2",
+      "direction": "up",
+      "peak_deg_s": 2120.80078125,
+      "bands": {
+        "250-1100": {
+          "samples": 14,
+          "current_command_step_rms_ma": 58.9,
+          "current_step_rms_ma": 47.8,
+          "voltage_clip_samples": 0
+        },
+        "5-250": {
+          "samples": 13,
+          "current_command_step_rms_ma": 25.9,
+          "current_step_rms_ma": 28.4,
+          "voltage_clip_samples": 0
+        }
+      }
+    }
+  ]
+}

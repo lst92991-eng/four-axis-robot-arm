@@ -1,0 +1,282 @@
+{
+  "round": 0,
+  "title": "输入输出参数改写前的已验证基线",
+  "finding": "SDK失败用false/null，取流结束用空图。保留两处跨边界异常处理；故障测试包含相机启动失败释放NPU，以及服务器保持连接15秒不送帧、消费者须在8秒内结束，排除依靠服务器主动断开而误通过。",
+  "parent_commit": "996154eae1d0941819dcee26bf0a89b6dd0ad6cd",
+  "functions": [
+    {
+      "file": "app/vision_main.cpp",
+      "name": "requestStop",
+      "nloc": 4,
+      "complexity": 1
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "name": "main",
+      "nloc": 37,
+      "complexity": 12
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::receiveFrames",
+      "nloc": 21,
+      "complexity": 5
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_open",
+      "nloc": 10,
+      "complexity": 2
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_read",
+      "nloc": 8,
+      "complexity": 3
+    },
+    {
+      "file": "vision/capture.cpp",
+      "name": "scara::Camera_close",
+      "nloc": 11,
+      "complexity": 2
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::dequantize",
+      "nloc": 4,
+      "complexity": 1
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::higherScore",
+      "nloc": 4,
+      "complexity": 1
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::readCandidates",
+      "nloc": 34,
+      "complexity": 7
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_setup",
+      "nloc": 8,
+      "complexity": 1
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_prepare",
+      "nloc": 9,
+      "complexity": 3
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_decode",
+      "nloc": 34,
+      "complexity": 8
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "name": "scara::Vision_draw",
+      "nloc": 23,
+      "complexity": 4
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::Yolo_open",
+      "nloc": 31,
+      "complexity": 26
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::Yolo_run",
+      "nloc": 8,
+      "complexity": 4
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "name": "scara::Yolo_close",
+      "nloc": 7,
+      "complexity": 4
+    }
+  ],
+  "accuracy": {
+    "frames": 16,
+    "detections": 501,
+    "identical": true,
+    "visual_correct": 64,
+    "visual_total": 64,
+    "recorded_npu_correct": 32
+  },
+  "reference": "电机驱动板_最终完整代码_20260911.zip",
+  "production_files": [
+    {
+      "file": "app/vision_main.cpp",
+      "nloc": 49,
+      "sha256": "7e5e182d61080550587cae327b16596b44400a6f164125bf8e5295028950e434"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "nloc": 8,
+      "sha256": "baab0b245727a6cff7d883c0e74046652d5ba40ec94dfb35a8e7d3526d07fce3"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "nloc": 64,
+      "sha256": "30a207706585b37ffcf7e8c795af607d9f104272e4c09e958f305bf742ec84bb"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "nloc": 37,
+      "sha256": "9327f949b7ec922fc987ddb236bacad2006b4686cc9f119b49697f1218c5cad7"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "nloc": 133,
+      "sha256": "79e5408a48f980348d18129341ce112f77d093c7cee01417b241e919e1c46c25"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "nloc": 59,
+      "sha256": "559579735dd572eda481a55c72d95b554eb642a5fc85ccea29227ad6e9d93157"
+    }
+  ],
+  "nloc": 350,
+  "ctest_passed": true,
+  "checks": " C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify\n    Start 1: geometry_contracts\n1/6 Test #1: geometry_contracts ...............   Passed    0.91 sec\n    Start 2: game_geometry_contracts\n2/6 Test #2: game_geometry_contracts ..........   Passed    0.05 sec\n    Start 3: saved_tensor_input_contracts\n3/6 Test #3: saved_tensor_input_contracts .....   Passed    0.53 sec\n    Start 4: vision_pipeline_contracts\n4/6 Test #4: vision_pipeline_contracts ........   Passed   12.01 sec\n    Start 5: rknn_adapter_contracts\n5/6 Test #5: rknn_adapter_contracts ...........   Passed    0.05 sec\n    Start 6: vision_entry_contracts\n6/6 Test #6: vision_entry_contracts ...........   Passed    1.06 sec\n\n100% tests passed, 0 tests failed out of 6\n\nTotal Test time (real) =  14.62 sec\n",
+  "cases": [
+    {
+      "id": "npu-yolo-expanded-v1-20261105",
+      "detections": 30,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.120003
+    },
+    {
+      "id": "npu-yolo-full-frame",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.030615999999999997
+    },
+    {
+      "id": "npu-yolo-live-20261104",
+      "detections": 16,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.042608
+    },
+    {
+      "id": "npu-yolo-live-active",
+      "detections": 16,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.045481999999999995
+    },
+    {
+      "id": "npu-reference",
+      "detections": 28,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.148276
+    },
+    {
+      "id": "npu-v3",
+      "detections": 32,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.20466499999999999
+    },
+    {
+      "id": "npu-diagnosis",
+      "detections": 30,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.12371499999999999
+    },
+    {
+      "id": "fixed-01",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-02",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-03",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-04",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-05",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-06",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-07",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-08",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-09",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 24.04,
+  "accuracy_scope": "Every round: saved NPU tensor replay, RGB and drawing byte equality, v3 ONNX CPU re-inference, 64-piece visual spot check. No real RV1106 run.",
+  "reused_from": "vision-lesson-flow-20261113/round-02",
+  "validation_reused": true
+}

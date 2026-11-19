@@ -1,0 +1,80 @@
+{
+  "formatter": "black",
+  "version": "25.9.0",
+  "line_length": 120,
+  "string_normalization": false,
+  "files": [
+    {
+      "file": "manual_control/calibrate_j1.py",
+      "before_sha256": "85102681b43cab1f72174a073c1c2d1940d39d1e3f29d65f8b98e8589215f564",
+      "after_sha256": "13d16b9d8960070d858df3b8eeaaaa256fdaf56f2dcc4d72d2811411e0663c3e",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/chess_demo.py",
+      "before_sha256": "a3899b967550b96084b43e3e78004e6d0d76688fef718dea20027874880962b0",
+      "after_sha256": "1faf37617d139822dca57d24334b03f1c3c8c5b2ffdc95fbd81fe5ec1379d095",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/core.py",
+      "before_sha256": "1daecf2c406383d108afe4de206a331440bebb3e930ba217cc3a62eb5a13255e",
+      "after_sha256": "cf0f82a260fdc78f07805e10495183e117d3e1508503d1fad7de3c09851f6c61",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/first_pick.py",
+      "before_sha256": "b5efea79e8d411e114ce63ff67f4c60b66dcd2c62d0fdf937bc7123331b157ec",
+      "after_sha256": "07bfb302814e4b659bf2af211df9648a45c105273e77763f4ec38f2d54f5b08e",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/j1_bench.py",
+      "before_sha256": "cc744cc84550eb5c39f8392dfc44bbeafb4d432ca1707b92c1484a1b441ef5f5",
+      "after_sha256": "e5781397d351eae2ca27d8e320f31834063931a67dc9cb37ec605ce88f94dcc2",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/server.py",
+      "before_sha256": "c205a22e05aefeb21a533c402900b51249a2eaa42416b7e840c91abc5bc2fcaa",
+      "after_sha256": "a071780879cd8718ff28ca4090deae8b9db45742563b7f5a993fd978ad8c8147",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/software_update_j1.py",
+      "before_sha256": "1b782642b56d114c93abf69407282faf72cd55c13722e3c9ddc75685dcd72a26",
+      "after_sha256": "b5788116ac9bcada5ca465916cea6878def87a3f33eb4e10143fc0190e8e43b8",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/telemetry.py",
+      "before_sha256": "ab0ee4f997ac4b95ef1e38b03b7185de12811750cda23540cbdaf4f3a9eef0f4",
+      "after_sha256": "bcb74c207cd67abbec12a143bbc107fb1a3feb65670597c0ceda95f4693deddc",
+      "ast_identical": true
+    },
+    {
+      "file": "manual_control/tune_release.py",
+      "before_sha256": "84248c02ec8ae1a7d06def6a7232613957de4603a96015a3b0dcd019acb69331",
+      "after_sha256": "06ac94ae5766be2ce426cd6cb9c557438d1397a2fd96404cd6e6a27dc94a5970",
+      "ast_identical": true
+    },
+    {
+      "file": "temp/yolo_live/board_npu.py",
+      "before_sha256": "22fcc5487c9cd7832b7e94756b66921be06cac8646c381255e7e171567fce138",
+      "after_sha256": "fcbf28033a22fc8424145d8fe1452f420e0192a234e777715aac72c168f5d415",
+      "ast_identical": true
+    },
+    {
+      "file": "temp/yolo_live/dual_preview.py",
+      "before_sha256": "594cb8cb8d22334120e720d75652b605af995695fd620202d1cf16d5ac3b5b57",
+      "after_sha256": "c7a0ad7ffd14ac0c579cc6d28767c5f656b79eb0baf41336e10a8626363fc202",
+      "ast_identical": true
+    },
+    {
+      "file": "temp/yolo_live/host_preview.py",
+      "before_sha256": "2229323516a6640a3c4be4c058d5dce251de34b128b5004ae2657ec5c92f7448",
+      "after_sha256": "f94548a651b8f1304fd0f9acdf95ba1002ada6e82092a29287b6124460f5a40d",
+      "ast_identical": true
+    }
+  ]
+}

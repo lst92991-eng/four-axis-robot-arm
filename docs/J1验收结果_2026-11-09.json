@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-09",
+  "build": "770cd75e",
+  "direction": "UI上升=>原始CAN负向；UI下降=>原始CAN正向；电角方向+1不变",
+  "j1_ratio": 1,
+  "j1_frame_mm": 42,
+  "speed_limit_deg_s": 180,
+  "acceleration_deg_s2": 10,
+  "speed_kp": 2,
+  "speed_ki": 300,
+  "current_command_limit_ma": 1000,
+  "following_error_deg": 2.5,
+  "tests": [
+    {
+      "file": "output\\j1-bench-20261109\\20261109-155104-travel-02.json",
+      "sha256": "6c4855cf884e5a9b7aca0665c00392e5ee2d5ae7096ba086f131ffb2473fd5be",
+      "physical_direction": "下降",
+      "command_speed_deg_s": 90,
+      "turns": 20.0,
+      "elapsed_s": 90.756,
+      "completed": true,
+      "fault": 0,
+      "cruise_encoder_deg_s": 89.99455939448028,
+      "observer_sample_mean_deg_s": 94.12315185079008,
+      "iq_command_peak_ma": 820,
+      "iq_actual_peak_ma": 832,
+      "saturation_samples": 0,
+      "final_raw_position_deg": 7200.0
+    },
+    {
+      "file": "output\\j1-bench-20261109\\20261109-155104-travel-03.json",
+      "sha256": "b456a8010cb1ad4ddc1556e2c0aab84c5599502710e0c7f0e597bdaa397d1b2f",
+      "physical_direction": "上升",
+      "command_speed_deg_s": 180,
+      "turns": -15.0,
+      "elapsed_s": 50.701,
+      "completed": true,
+      "fault": 0,
+      "cruise_encoder_deg_s": -179.89616929170842,
+      "observer_sample_mean_deg_s": -177.60953482441658,
+      "iq_command_peak_ma": 686,
+      "iq_actual_peak_ma": 666,
+      "saturation_samples": 0,
+      "final_raw_position_deg": 1800.0
+    }
+  ],
+  "final_net_down_turns": 5,
+  "lead_mm_per_rev": null
+}

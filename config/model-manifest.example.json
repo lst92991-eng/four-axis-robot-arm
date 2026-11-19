@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "model_intake_template",
+  "source": "user_existing_model",
+  "training_allowed": false,
+  "fine_tuning_allowed": false,
+  "file_path": null,
+  "file_sha256": null,
+  "format": null,
+  "family_and_version": null,
+  "task": null,
+  "reference_code_path": null,
+  "export_code_or_command": null,
+  "input": {
+    "names": null,
+    "shape": null,
+    "layout": null,
+    "color_order": null,
+    "dtype": null,
+    "normalization": null,
+    "resize_letterbox_crop": null
+  },
+  "output": {
+    "tensor_names_and_shapes": null,
+    "decoded_or_raw": null,
+    "bbox_coordinate_space": null,
+    "class_id_to_piece_type": null,
+    "anchors_and_strides_if_required": null,
+    "nms_in_graph": null,
+    "reference_confidence_threshold": null,
+    "reference_nms_iou_threshold": null
+  },
+  "deployment": {
+    "target_platform": "rv1106",
+    "conversion_status": "not_run",
+    "toolkit_version": null,
+    "runtime_abi_version": null,
+    "existing_runtime_sha256": "d6259f5f8537acc15b0c3686010109bf4182e654281aad180a44bfd73ce929cc",
+    "quantization": null,
+    "quantization_calibration_samples": null,
+    "exported_model_path": null,
+    "exported_model_sha256": null
+  },
+  "verification": {
+    "reference_images": null,
+    "reference_outputs": null,
+    "class_mapping_verified": false,
+    "preprocessing_verified": false,
+    "board_inference_verified": false,
+    "pc_vs_board_differences": null,
+    "latency_ms": null,
+    "peak_memory_mib": null
+  }
+}

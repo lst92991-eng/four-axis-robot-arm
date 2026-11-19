@@ -1,0 +1,37 @@
+{
+  "arm_lengths_mm": [
+    275.0,
+    275.0
+  ],
+  "j2_reference_deg": -53.23,
+  "j3_reference_motor_deg": -76.971,
+  "j2_scale": 0.8,
+  "j3_ratio": 3.0,
+  "j2_sign": 1,
+  "j3_sign": -1,
+  "j2_origin_board_mm": [
+    113.12350284254181,
+    448.8343433133419
+  ],
+  "shoulder_ref_rad": -0.812579750641072,
+  "elbow_ref_rad": -1.513770027184262,
+  "fit_rms_mm": 1.5995371511723524,
+  "fit_errors_mm": [
+    1.876816710132293,
+    2.030821643976059,
+    0.1699405215605415
+  ],
+  "check_errors_mm": [
+    0.8748014394928378
+  ],
+  "fit_grid": [
+    "e1",
+    "c4",
+    "g4"
+  ],
+  "check_grid": [
+    "e2"
+  ],
+  "controller_build": "41f870bf",
+  "angle_scale_basis": "Calibrated against operator touches and camera registration"
+}

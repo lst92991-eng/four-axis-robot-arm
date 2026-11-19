@@ -1,0 +1,224 @@
+{
+  "source": "output\\manual-control\\20261109-172157-659514-real.jsonl",
+  "runs": [
+    {
+      "command": {
+        "time": "2026-11-09T17:23:19.185222+08:00",
+        "kind": 12,
+        "value": 90000,
+        "seq": 2147483687
+      },
+      "moving_s": 21.28,
+      "all": {
+        "samples": 1065,
+        "encoder_speed": 57.608009281015036,
+        "ref_speed": 57.60765977443607,
+        "observer_mean": 67.2904101161791,
+        "observer_min": -3.077000007033348,
+        "observer_max": 172.8719973564148,
+        "error_first": 0.0,
+        "error_last": -0.007,
+        "error_min": -0.298,
+        "error_max": 0.924,
+        "iq_set_min": 0,
+        "iq_set_max": 865,
+        "iq_peak": 836,
+        "vq_peak": 2579,
+        "saturation_fraction": 0.0,
+        "bus_min": 24098,
+        "bus_max": 24227
+      },
+      "last2s": {
+        "samples": 101,
+        "encoder_speed": 0.0,
+        "ref_speed": 0.0,
+        "observer_mean": 0.0,
+        "observer_min": 0.0,
+        "observer_max": 0.0,
+        "error_first": -0.007,
+        "error_last": -0.007,
+        "error_min": -0.029,
+        "error_max": -0.007,
+        "iq_set_min": 745,
+        "iq_set_max": 748,
+        "iq_peak": 755,
+        "vq_peak": 1766,
+        "saturation_fraction": 0.0,
+        "bus_min": 24111,
+        "bus_max": 24162
+      },
+      "stable_speed": {
+        "samples": 810,
+        "encoder_speed": 61.02233056821694,
+        "ref_speed": 61.014215080346055,
+        "observer_mean": 74.49482551364174,
+        "observer_min": -3.077000007033348,
+        "observer_max": 172.8719973564148,
+        "error_first": 0.124,
+        "error_last": -0.007,
+        "error_min": -0.291,
+        "error_max": 0.924,
+        "iq_set_min": 386,
+        "iq_set_max": 865,
+        "iq_peak": 836,
+        "vq_peak": 2579,
+        "saturation_fraction": 0.0,
+        "bus_min": 24098,
+        "bus_max": 24188
+      }
+    },
+    {
+      "command": {
+        "time": "2026-11-09T17:23:40.470444+08:00",
+        "kind": 12,
+        "value": 180000,
+        "seq": 2147483894
+      },
+      "moving_s": 13.1,
+      "all": {
+        "samples": 656,
+        "encoder_speed": 118.23972745706108,
+        "ref_speed": 118.3858778625954,
+        "observer_mean": 118.30609442176377,
+        "observer_min": 0.0,
+        "observer_max": 305.1539969444275,
+        "error_first": -0.004,
+        "error_last": 1.91,
+        "error_min": -0.534,
+        "error_max": 2.181,
+        "iq_set_min": 232,
+        "iq_set_max": 962,
+        "iq_peak": 933,
+        "vq_peak": 3445,
+        "saturation_fraction": 0.003048780487804878,
+        "bus_min": 24072,
+        "bus_max": 24175
+      },
+      "last2s": {
+        "samples": 101,
+        "encoder_speed": 179.681396484375,
+        "ref_speed": 180.0,
+        "observer_mean": 178.59427969644565,
+        "observer_min": 64.94399964809418,
+        "observer_max": 305.1539969444275,
+        "error_first": 1.272,
+        "error_last": 1.91,
+        "error_min": -0.113,
+        "error_max": 2.181,
+        "iq_set_min": 232,
+        "iq_set_max": 947,
+        "iq_peak": 933,
+        "vq_peak": 3331,
+        "saturation_fraction": 0.0,
+        "bus_min": 24085,
+        "bus_max": 24175
+      },
+      "stable_speed": {
+        "samples": 176,
+        "encoder_speed": 179.62332589285714,
+        "ref_speed": 180.0,
+        "observer_mean": 176.25190532342955,
+        "observer_min": 64.09799873828888,
+        "observer_max": 305.1539969444275,
+        "error_first": 0.056,
+        "error_last": 1.374,
+        "error_min": -0.268,
+        "error_max": 1.374,
+        "iq_set_min": 232,
+        "iq_set_max": 962,
+        "iq_peak": 933,
+        "vq_peak": 3445,
+        "saturation_fraction": 0.005681818181818182,
+        "bus_min": 24085,
+        "bus_max": 24175
+      }
+    }
+  ],
+  "commands": [
+    {
+      "time": "2026-11-09T17:23:19.185222+08:00",
+      "kind": 12,
+      "value": 90000,
+      "seq": 2147483687
+    },
+    {
+      "time": "2026-11-09T17:23:34.930071+08:00",
+      "kind": 4,
+      "value": 0,
+      "seq": 2147483840
+    },
+    {
+      "time": "2026-11-09T17:23:40.470444+08:00",
+      "kind": 12,
+      "value": 180000,
+      "seq": 2147483894
+    }
+  ],
+  "first_fault": [
+    {
+      "time": "2026-11-09T17:23:53.600198+08:00",
+      "ms": 118550,
+      "state": 4,
+      "fault": 5,
+      "detail": 4,
+      "interlocked": false,
+      "power": false,
+      "position": -8286.635,
+      "ref": -8283.768
+    }
+  ],
+  "can_errors": [
+    {
+      "wall_time": "2026-11-09T17:22:08.699898+08:00",
+      "simulated": false,
+      "event": "can_error",
+      "id": 4,
+      "data": "0001000000080000"
+    },
+    {
+      "wall_time": "2026-11-09T17:22:44.811144+08:00",
+      "simulated": false,
+      "event": "can_error",
+      "id": 4,
+      "data": "0001000000080000"
+    },
+    {
+      "wall_time": "2026-11-09T17:24:27.435826+08:00",
+      "simulated": false,
+      "event": "can_error",
+      "id": 4,
+      "data": "0001000000080000"
+    },
+    {
+      "wall_time": "2026-11-09T17:24:50.346157+08:00",
+      "simulated": false,
+      "event": "can_error",
+      "id": 4,
+      "data": "0001000000080000"
+    }
+  ],
+  "corrected_plateau_metrics": [
+    {
+      "requested_deg_s": 90.0,
+      "plateau_seconds": 10.62,
+      "reference_deg_s": 89.99990583804136,
+      "encoder_deg_s": 90.00720007944916,
+      "error_first_deg": 0.124,
+      "error_last_deg": 0.046,
+      "error_min_deg": -0.291,
+      "error_max_deg": 0.924,
+      "positive_error_fraction": 0.8890977443609023
+    },
+    {
+      "requested_deg_s": 180.0,
+      "plateau_seconds": 3.5,
+      "reference_deg_s": 180.0,
+      "encoder_deg_s": 179.62332589285714,
+      "error_first_deg": 0.056,
+      "error_last_deg": 1.374,
+      "error_min_deg": -0.268,
+      "error_max_deg": 1.374,
+      "positive_error_fraction": 0.9034090909090909
+    }
+  ]
+}

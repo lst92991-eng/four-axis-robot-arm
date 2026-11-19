@@ -1,0 +1,17 @@
+{
+  "layout_file": "site/layout.json",
+  "arm_file": "site/arm-registration.json",
+  "heights_file": "site/trial-plan.json",
+  "camera_url": "rtsp://127.0.0.1/live/0",
+  "label_image": "vision/chinese-labels.png",
+  "engine_directory": "../engine/pikafish-2023-03-05",
+  "work_directory": "/tmp/scara-game",
+  "human_red": 1,
+  "red_to_move": 1,
+  "think_ms": 1000,
+  "joint_velocity_deg_s": [null, null, null],
+  "joint_acceleration_deg_s2": [null, null, null],
+  "park_joints_deg": [null, null],
+  "capture_place_mm": [null, null],
+  "note": "填写观察位、吃子区和J1/J2/J3速度/加速度上限；J4保持原姿态。heights_file中的clearance_deg为可开始横移的示教高度，缺省沿用travel_deg。null需要补成现场数值。"
+}

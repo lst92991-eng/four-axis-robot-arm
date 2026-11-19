@@ -1,0 +1,318 @@
+{
+  "date": "2026-11-17",
+  "scope": "Five remaining modules; accepted geometry and vision unchanged; no hardware, commit or push.",
+  "cpp_before": 2419,
+  "cpp_after": 2369,
+  "python_before": 3812,
+  "python_after": 3762,
+  "cpp_files": 30,
+  "python_files": 15,
+  "unchanged": [
+    "vision/geometry.cpp",
+    "vision/geometry.hpp",
+    "app/geometry_tool.cpp",
+    "config/vision/geometry.example.json",
+    "vision/yolo.cpp",
+    "vision/yolo_npu.cpp",
+    "vision/capture.cpp",
+    "temp/transport/stepfoc_candlelight.py"
+  ],
+  "checks": {
+    "ctest_linux": 14,
+    "python_linux_passed": 68,
+    "python_windows_passed": 67,
+    "python_windows_skipped_linux_only": 1,
+    "pikafish_protocol_mock": "passed on Linux",
+    "live_io_mock": "passed on Linux; quit/EOF, preview and cleanup",
+    "real_linux_live_io_compile": "passed"
+  },
+  "comparison": {
+    "scenarios": 15,
+    "identical": true,
+    "differences": [],
+    "retired_output_fields": [
+      "run_id",
+      "base_fen",
+      "red_to_move",
+      "human_red",
+      "expected"
+    ],
+    "excluded_nondeterministic_fields": [
+      "state.updated_at_ms",
+      "executions[].reference_count"
+    ],
+    "scope": "Remaining status fields, confirmed histories, full action arguments and end joint positions. No hardware."
+  },
+  "files": [
+    {
+      "file": "app/game.cpp",
+      "before": 162,
+      "after": 150,
+      "sha256": "19e1aa5d5535c3bad7afddb0876cf07e550915aa2e948ba368a5c27ad0e943d0"
+    },
+    {
+      "file": "app/game.hpp",
+      "before": 43,
+      "after": 42,
+      "sha256": "f317c4a26fc9c5f91092421ac205a116190a34030ebbb5636d559c6809423050"
+    },
+    {
+      "file": "app/game_config.cpp",
+      "before": 70,
+      "after": 67,
+      "sha256": "71b8706eb8557e9de91ee69136d0784124e599d03be726518352595de4adf815"
+    },
+    {
+      "file": "app/game_files.cpp",
+      "before": 78,
+      "after": 62,
+      "sha256": "54df61a54ff111574524c43672361bb3ec54e3644d21eebcd3cb224daf7c2eb5"
+    },
+    {
+      "file": "app/game_files.hpp",
+      "before": 7,
+      "after": 6,
+      "sha256": "60e26e422d42ab1acc015576cadd33364807849f8b70f0008efd2a73e6d05cc7"
+    },
+    {
+      "file": "app/game_live_io.cpp",
+      "before": 126,
+      "after": 122,
+      "sha256": "dd1ee480c4f1112e2c1852ce4e4ea887be1dfba79f5ebdfacb873852398c6c2e"
+    },
+    {
+      "file": "app/game_main.cpp",
+      "before": 63,
+      "after": 64,
+      "sha256": "417e964c17a38372155d8d6246cc5cd5638545770acd63d33235d580e94122fc"
+    },
+    {
+      "file": "app/game_sim_io.cpp",
+      "before": 149,
+      "after": 156,
+      "sha256": "ebfa889e395bca87d9afccc312c5c7e51ad31eb8886f8c76c352e9d499d257c6"
+    },
+    {
+      "file": "app/geometry_tool.cpp",
+      "before": 46,
+      "after": 46,
+      "sha256": "a3a7c1623cdedfc569741462e984ba67d2b6ce630d728e45c7f822b08f23a89b"
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "before": 64,
+      "after": 64,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "chess/board.cpp",
+      "before": 266,
+      "after": 261,
+      "sha256": "e32131a5234a9d9cff40550a8f4931eb661bdf4624dc420bc057f69bf5dd8a75"
+    },
+    {
+      "file": "chess/board.hpp",
+      "before": 58,
+      "after": 57,
+      "sha256": "642d926630b55c66f3221340db5666ed5bb9f1668989f60d40f22e6e9de40339"
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "before": 220,
+      "after": 219,
+      "sha256": "571df3ab77c416c18912e666751bee246b2b8086ad9f593e0977dc5a4a92f519"
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "before": 33,
+      "after": 33,
+      "sha256": "e6dbfc07781dc2d70f84197b6a0452a152de09da1aaabc6372179dd0a9ed1076"
+    },
+    {
+      "file": "chess/session.cpp",
+      "before": 79,
+      "after": 77,
+      "sha256": "0af411e2d15729c374bc0d08507ea699c153e5ceab0667d4c96898a800bd40b9"
+    },
+    {
+      "file": "chess/session.hpp",
+      "before": 24,
+      "after": 24,
+      "sha256": "369277950c09b21f111f4c8a76d5eec36b0196887909d92e51dbbd307f21f881"
+    },
+    {
+      "file": "motion/device.cpp",
+      "before": 21,
+      "after": 21,
+      "sha256": "5047322f9bfe9c99318d5b3bcdb736d6b3601140856be09c17a388774f58fe13"
+    },
+    {
+      "file": "motion/device.hpp",
+      "before": 15,
+      "after": 14,
+      "sha256": "67ef43f29a677475c9abb183d9628b4d729a4f2cae99b6a6b2a9c0dc664805cf"
+    },
+    {
+      "file": "motion/execute.cpp",
+      "before": 101,
+      "after": 92,
+      "sha256": "0235fefe7265de0f0091721cb81853e99d285998280d5e1001b0668f4b1918fd"
+    },
+    {
+      "file": "motion/execute.hpp",
+      "before": 8,
+      "after": 8,
+      "sha256": "022f268c120f4d4128d7b5b0e5da848bc5f18171342da6f449932eb38f91b156"
+    },
+    {
+      "file": "motion/plan.cpp",
+      "before": 173,
+      "after": 171,
+      "sha256": "7d664b1b6a99ca386bd96a54fdf18c45d3c45a4f0de522b2c2a708988904cd63"
+    },
+    {
+      "file": "motion/plan.hpp",
+      "before": 70,
+      "after": 70,
+      "sha256": "a6c4a3c83d3a76512547ec0e6150b3a7a4219bcc304ff4b6d1af1232585e7719"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "before": 74,
+      "after": 74,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "before": 9,
+      "after": 9,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/geometry.cpp",
+      "before": 110,
+      "after": 110,
+      "sha256": "6b0898f28ebc3666f7a702e5c7ade62fa764841eb48bb897409e2ed5ba661392"
+    },
+    {
+      "file": "vision/geometry.hpp",
+      "before": 30,
+      "after": 30,
+      "sha256": "15724a61feaf4dcb9f5e3cd2d624adc9c83f97a101df190f9658a61880581c96"
+    },
+    {
+      "file": "vision/io.hpp",
+      "before": 37,
+      "after": 37,
+      "sha256": "14e823a6c78bbc48806605ed18a4a1678f2dd895e9dd430af8151ca1184faace"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "before": 153,
+      "after": 153,
+      "sha256": "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "before": 38,
+      "after": 38,
+      "sha256": "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "before": 92,
+      "after": 92,
+      "sha256": "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b"
+    },
+    {
+      "file": "manual_control/calibrate_j1.py",
+      "before": 289,
+      "after": 289,
+      "sha256": "d34c19fd7acbb15db01b4e389d6e26dfea5760578ddc91600d1a4b4d494f5fd3"
+    },
+    {
+      "file": "manual_control/chess_demo.py",
+      "before": 256,
+      "after": 256,
+      "sha256": "b8a9fb99a6a547c207898fef9e86a400707bbf018777a15e63bbfe51b68555ef"
+    },
+    {
+      "file": "manual_control/core.py",
+      "before": 589,
+      "after": 586,
+      "sha256": "a8d8936d86fedb0ff371e6c33549d3410e3903043a2dee2109f82f9d3410883a"
+    },
+    {
+      "file": "manual_control/first_pick.py",
+      "before": 381,
+      "after": 380,
+      "sha256": "a1aea731d1fbfe9f78f2e9a40eb945e7de1e54679ddd7d24fa6c5e6cfbdeded6"
+    },
+    {
+      "file": "manual_control/j1_bench.py",
+      "before": 377,
+      "after": 377,
+      "sha256": "6e265620ac9e5d35f8f34ac5b4052ea74f5703796f92bb99886a6b2ca236ec49"
+    },
+    {
+      "file": "manual_control/server.py",
+      "before": 412,
+      "after": 405,
+      "sha256": "aef453104a232504e09dbb7343b8c4e93631b27946115db89cb8b662631ebfa3"
+    },
+    {
+      "file": "manual_control/software_update_j1.py",
+      "before": 74,
+      "after": 63,
+      "sha256": "f7f0afdea2b2956a9275893f7f6034984baa6901e155e423f2096fe6491e3154"
+    },
+    {
+      "file": "manual_control/telemetry.py",
+      "before": 47,
+      "after": 47,
+      "sha256": "bcb74c207cd67abbec12a143bbc107fb1a3feb65670597c0ceda95f4693deddc"
+    },
+    {
+      "file": "manual_control/tune_release.py",
+      "before": 252,
+      "after": 251,
+      "sha256": "bf3ebcf5b5de5f1a65e9d8a275ec6f029d45097e31e88f2099b53690ab395171"
+    },
+    {
+      "file": "temp/yolo_live/board_npu.py",
+      "before": 280,
+      "after": 280,
+      "sha256": "fe5d584470ce657f9914727f22078ee792394b9361fec65b1cec65f977512505"
+    },
+    {
+      "file": "temp/yolo_live/dual_preview.py",
+      "before": 222,
+      "after": 204,
+      "sha256": "dd4d0a29b3c275c6b050eb46b459fa3e8b0fa0d8a8ac942eed1da0dbe17f78f3"
+    },
+    {
+      "file": "temp/yolo_live/host_preview.py",
+      "before": 331,
+      "after": 331,
+      "sha256": "73c6e0e332b4d247a5bfda816534147b2ce98d2d6c175b4261eb782873863a81"
+    },
+    {
+      "file": "temp/transport/candle_bus.py",
+      "before": 21,
+      "after": 21,
+      "sha256": "26e430dec060d9e2870c88e792700b64e7c5276d5c9297a9790ab4ef9742b78d"
+    },
+    {
+      "file": "temp/transport/stepfoc_candlelight.py",
+      "before": 251,
+      "after": 251,
+      "sha256": "d23b0fc24e808918e429950e5e07f40bc430982ec1c4b2a5442946bec8a5ddb0"
+    },
+    {
+      "file": "temp/transport/usb_owner.py",
+      "before": 30,
+      "after": 21,
+      "sha256": "597a5953c9d4c4d9d6568c18629c1129ac00d92c42cde12a1ac12804418da752"
+    }
+  ]
+}

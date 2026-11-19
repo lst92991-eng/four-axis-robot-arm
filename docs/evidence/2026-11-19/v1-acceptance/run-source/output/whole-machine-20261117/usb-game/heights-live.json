@@ -1,0 +1,23 @@
+{
+  "z": {
+    "pickup_deg": -20426.3705,
+    "travel_deg": -18420.27,
+    "pickup": {
+      "angle": -20286.41,
+      "counts": -61875,
+      "captured_at": "2026-11-11T15:43:20.1539702+08:00"
+    },
+    "travel": {
+      "angle": -19353.34,
+      "counts": -19410,
+      "captured_at": "2026-11-11T15:51:57.224238+08:00"
+    },
+    "operator_estimated_rise_mm": 43,
+    "release_offset_mm": 5,
+    "board_release_lift_mm": 0.7,
+    "board_release_pulse_ms": 12,
+    "clearance_deg": -18420.27,
+    "capture_release_deg": -18886.805
+  },
+  "release_pulse_ms": 20
+}

@@ -1,0 +1,46 @@
+{
+  "move": "c3c4",
+  "physical_pick_confirmed": true,
+  "physical_release_confirmed": true,
+  "release_location": "above c4",
+  "operator_observation": "放下了，很好",
+  "first_release_supply_was_off": true,
+  "completed_with_separate_release_pulse": true,
+  "uninterrupted_automatic_cycle_verified": false,
+  "landing_center_measured": false,
+  "taught_heights": {
+    "pickup_deg": -20286.41,
+    "travel_deg": -19353.34,
+    "pickup": {
+      "angle": -20286.41,
+      "counts": -61875,
+      "captured_at": "2026-11-11T15:43:20.1539702+08:00"
+    },
+    "travel": {
+      "angle": -19353.34,
+      "counts": -19410,
+      "captured_at": "2026-11-11T15:51:57.2242380+08:00"
+    },
+    "operator_estimated_rise_mm": 20
+  },
+  "powered_release": {
+    "time": "2026-11-11T16:13:12.1338883+08:00",
+    "position": [
+      -19339.564,
+      -51.597,
+      -8.02,
+      6.393
+    ],
+    "levels": [
+      "1",
+      "",
+      "0",
+      ""
+    ],
+    "return_code": 0,
+    "duration_s": 1,
+    "operator_reopened_supply": true
+  },
+  "event_log": "trial-events.jsonl",
+  "camera_after_release": "after-powered-release.png"
+}

@@ -1,0 +1,1 @@
+trajectory max numerical drift = 0.000038458 deg

@@ -1,0 +1,223 @@
+[
+  {
+    "kp": 1.6,
+    "ki": 300,
+    "source": "output\\manual-control\\20261109-184517-177322-real.jsonl",
+    "runs": [
+      {
+        "command": {
+          "t": 1794221160.7954,
+          "time": "2026-11-09T18:46:00.795400+08:00",
+          "kind": 12,
+          "value": 400000
+        },
+        "steady": {
+          "n": 674,
+          "seconds": 13.46,
+          "mean_speed": 399.9921280065936,
+          "error_min": -1.287000000000262,
+          "error_max": 1.293999999999869,
+          "error_std": 0.7056352860367975,
+          "error_mean": 0.030854599406473948,
+          "iq_peak": 1226,
+          "iq_std": 380.57497498062787,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5287,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -7900,
+          -4000
+        ],
+        "matched": {
+          "n": 488,
+          "seconds": 9.74,
+          "mean_speed": 399.8617371984086,
+          "error_min": -1.287000000000262,
+          "error_max": 1.2719999999999345,
+          "error_std": 0.7085898130174286,
+          "error_mean": 0.024098360655556438,
+          "iq_peak": 1215,
+          "iq_std": 381.0054146258298,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5287,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      },
+      {
+        "command": {
+          "t": 1794221194.78598,
+          "time": "2026-11-09T18:46:34.785980+08:00",
+          "kind": 12,
+          "value": -400000
+        },
+        "steady": {
+          "n": 835,
+          "seconds": 16.68,
+          "mean_speed": -399.9998243592626,
+          "error_min": -1.8539999999993597,
+          "error_max": 1.4140000000006694,
+          "error_std": 0.7914257928067076,
+          "error_mean": -0.01853173652661082,
+          "iq_peak": 1232,
+          "iq_std": 431.21337132431097,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5356,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -10500,
+          -7000
+        ],
+        "matched": {
+          "n": 437,
+          "seconds": 8.72,
+          "mean_speed": -399.88722494982795,
+          "error_min": -1.5669999999990978,
+          "error_max": 1.404000000000451,
+          "error_std": 0.7867945649574863,
+          "error_mean": -0.016036613271990272,
+          "iq_peak": 1064,
+          "iq_std": 428.4345467796429,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5356,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      }
+    ],
+    "events": []
+  },
+  {
+    "kp": 1.6,
+    "ki": 250,
+    "source": "output\\manual-control\\20261109-185629-273559-real.jsonl",
+    "runs": [
+      {
+        "command": {
+          "t": 1794221851.64416,
+          "time": "2026-11-09T18:57:31.644160+08:00",
+          "kind": 12,
+          "value": -400000
+        },
+        "steady": {
+          "n": 526,
+          "seconds": 10.5,
+          "mean_speed": -400.0697544642857,
+          "error_min": -1.3869999999997162,
+          "error_max": 1.529000000000451,
+          "error_std": 0.7517287470192306,
+          "error_mean": -0.009965779467513248,
+          "iq_peak": 927,
+          "iq_std": 387.3123209890665,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5133,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -10500,
+          -7000
+        ],
+        "matched": {
+          "n": 438,
+          "seconds": 8.74,
+          "mean_speed": -400.1612892412757,
+          "error_min": -1.3869999999997162,
+          "error_max": 1.529000000000451,
+          "error_std": 0.7531290410367911,
+          "error_mean": -0.016584474885676836,
+          "iq_peak": 927,
+          "iq_std": 387.5294932181087,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5124,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      },
+      {
+        "command": {
+          "t": 1794221880.043629,
+          "time": "2026-11-09T18:58:00.043629+08:00",
+          "kind": 12,
+          "value": 400000
+        },
+        "steady": {
+          "n": 878,
+          "seconds": 17.54,
+          "mean_speed": 399.9223872220639,
+          "error_min": -1.238999999999578,
+          "error_max": 1.287000000000262,
+          "error_std": 0.6014508581127488,
+          "error_mean": 0.011028473804087271,
+          "iq_peak": 1141,
+          "iq_std": 307.4964732167302,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5268,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -7900,
+          -4000
+        ],
+        "matched": {
+          "n": 487,
+          "seconds": 9.72,
+          "mean_speed": 400.08770978009255,
+          "error_min": -1.238999999999578,
+          "error_max": 1.287000000000262,
+          "error_std": 0.5970109522031917,
+          "error_mean": 0.0034784394250353783,
+          "iq_peak": 1141,
+          "iq_std": 302.84724311863175,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5268,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      },
+      {
+        "command": {
+          "t": 1794221916.96419,
+          "time": "2026-11-09T18:58:36.964190+08:00",
+          "kind": 12,
+          "value": -400000
+        },
+        "steady": {
+          "n": 1556,
+          "seconds": 31.1,
+          "mean_speed": -399.9751149266479,
+          "error_min": -1.5679999999993015,
+          "error_max": 1.467000000000553,
+          "error_std": 0.7518903411197366,
+          "error_mean": -0.011541131105259398,
+          "iq_peak": 1163,
+          "iq_std": 391.9972084575537,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 5210,
+          "sample_gap_max_ms": 20
+        },
+        "matched_position_window": [
+          -10500,
+          -7000
+        ],
+        "matched": {
+          "n": 437,
+          "seconds": 8.72,
+          "mean_speed": -400.11148715237954,
+          "error_min": -1.4549999999999272,
+          "error_max": 1.4429999999993015,
+          "error_std": 0.7507027819940357,
+          "error_mean": -0.00982379862687665,
+          "iq_peak": 942,
+          "iq_std": 388.1570254404617,
+          "near_limit_fraction": 0.0,
+          "vq_peak": 4982,
+          "sample_gap_max_ms": 20
+        },
+        "fault": null
+      }
+    ],
+    "events": []
+  }
+]

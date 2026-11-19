@@ -1,0 +1,111 @@
+{
+  "meaning": "250→5 deg/s interval and speed regain from median-smoothed 20 ms encoder slope. Camera is 30 fps top-view lateral residual, host arrival times assumed. Depth/audio unobserved.",
+  "baseline": [],
+  "updated": [
+    {
+      "build": "df06bf27",
+      "trial": "down_2100_D1",
+      "direction": "down",
+      "brake_deg_s2": 3000,
+      "seconds": 2.54,
+      "peak_deg_s": 2131.1,
+      "time_below_250_s": 1.37,
+      "first_sustained_below_5_s": 1.61,
+      "interval_250_to_5_s": 0.24,
+      "max_accidental_regain_deg_s": 1.1,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -171,
+        -80
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2884,
+      "image_lateral_quiet_rms_px": 0.0042,
+      "valid_tracked_frames": 85,
+      "image_around_stop_samples": 17
+    },
+    {
+      "build": "df06bf27",
+      "trial": "down_2100_D2",
+      "direction": "down",
+      "brake_deg_s2": 3000,
+      "seconds": 2.641,
+      "peak_deg_s": 2046.8,
+      "time_below_250_s": 1.37,
+      "first_sustained_below_5_s": 1.67,
+      "interval_250_to_5_s": 0.3,
+      "max_accidental_regain_deg_s": 3.3,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -219,
+        -141
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2259,
+      "image_lateral_quiet_rms_px": 0.0032,
+      "valid_tracked_frames": 88,
+      "image_around_stop_samples": 18
+    },
+    {
+      "build": "df06bf27",
+      "trial": "down_2100_E1",
+      "direction": "down",
+      "brake_deg_s2": 2200,
+      "seconds": 2.584,
+      "peak_deg_s": 2032.0,
+      "time_below_250_s": 1.45,
+      "first_sustained_below_5_s": 1.63,
+      "interval_250_to_5_s": 0.18,
+      "max_accidental_regain_deg_s": 0,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -179,
+        -98
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2591,
+      "image_lateral_quiet_rms_px": 0.0035,
+      "valid_tracked_frames": 87,
+      "image_around_stop_samples": 15
+    },
+    {
+      "build": "df06bf27",
+      "trial": "down_2100_E2",
+      "direction": "down",
+      "brake_deg_s2": 2200,
+      "seconds": 2.334,
+      "peak_deg_s": 2000.0,
+      "time_below_250_s": 1.45,
+      "first_sustained_below_5_s": 1.61,
+      "interval_250_to_5_s": 0.16,
+      "max_accidental_regain_deg_s": 0,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -198,
+        -149
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2558,
+      "image_lateral_quiet_rms_px": 0.0158,
+      "valid_tracked_frames": 79,
+      "image_around_stop_samples": 14
+    }
+  ],
+  "operator_observation": "两组体感差不多，人眼难以区分。",
+  "descent_group_means": {
+    "3000": {
+      "seconds": 2.5905,
+      "peak_deg_s": 2088.95,
+      "interval_250_to_5_s": 0.27,
+      "image_lateral_ripple_around_stop_rms_px": 0.2571
+    },
+    "2200": {
+      "seconds": 2.459,
+      "peak_deg_s": 2016.0,
+      "interval_250_to_5_s": 0.17,
+      "image_lateral_ripple_around_stop_rms_px": 0.2575
+    }
+  },
+  "parked": true,
+  "park_position_errors_deg": {
+    "1": 0.044,
+    "3": 0.0,
+    "2": -0.002
+  }
+}

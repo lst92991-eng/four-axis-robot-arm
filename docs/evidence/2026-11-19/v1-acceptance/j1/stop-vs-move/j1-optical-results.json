@@ -1,0 +1,133 @@
+{
+  "tool_roi": [
+    405,
+    92,
+    490,
+    176
+  ],
+  "fixed_roi": [
+    [
+      343,
+      183,
+      392,
+      254
+    ],
+    [
+      337,
+      86,
+      387,
+      177
+    ]
+  ],
+  "metric": "Image-plane motion normal to the endpoint axis; 5-frame centered moving-average residual during 5-95% of optical travel. Stationary RMS is estimated from nearly stationary edges. Times are host reception times. No depth or absolute Z measurement.",
+  "results": [
+    {
+      "image_travel_px": 8.966,
+      "ripple_rms_px": 0.289,
+      "ripple_p95_px": 0.438,
+      "measured_stationary_rms_px": 0.08,
+      "total_frames": 83,
+      "valid_frames": 83,
+      "stroke_samples": 26,
+      "stationary_samples": 19,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 82,
+      "median_frame_gap_ms": 33.5,
+      "max_frame_gap_ms": 74.7,
+      "trial": "down_2100_MOVE1",
+      "folder": "j1-brake-pair-20261119-143550",
+      "direction": "down",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.361,
+      "ripple_rms_px": 0.255,
+      "ripple_p95_px": 0.521,
+      "measured_stationary_rms_px": 0.082,
+      "total_frames": 80,
+      "valid_frames": 80,
+      "stroke_samples": 28,
+      "stationary_samples": 16,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 100,
+      "median_frame_gap_ms": 33.5,
+      "max_frame_gap_ms": 35.6,
+      "trial": "down_2100_MOVE2",
+      "folder": "j1-brake-pair-20261119-143550",
+      "direction": "down",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.594,
+      "ripple_rms_px": 0.265,
+      "ripple_p95_px": 0.493,
+      "measured_stationary_rms_px": 0.086,
+      "total_frames": 80,
+      "valid_frames": 80,
+      "stroke_samples": 28,
+      "stationary_samples": 17,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 98,
+      "median_frame_gap_ms": 33.5,
+      "max_frame_gap_ms": 36.0,
+      "trial": "down_2100_MOVE3",
+      "folder": "j1-brake-pair-20261119-143550",
+      "direction": "down",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.228,
+      "ripple_rms_px": 0.279,
+      "ripple_p95_px": 0.502,
+      "measured_stationary_rms_px": 0.016,
+      "total_frames": 89,
+      "valid_frames": 89,
+      "stroke_samples": 27,
+      "stationary_samples": 20,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 88,
+      "median_frame_gap_ms": 33.4,
+      "max_frame_gap_ms": 53.4,
+      "trial": "down_2100_STOP1",
+      "folder": "j1-brake-pair-20261119-143550",
+      "direction": "down",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.391,
+      "ripple_rms_px": 0.329,
+      "ripple_p95_px": 0.517,
+      "measured_stationary_rms_px": 0.029,
+      "total_frames": 87,
+      "valid_frames": 87,
+      "stroke_samples": 24,
+      "stationary_samples": 19,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 94,
+      "median_frame_gap_ms": 33.5,
+      "max_frame_gap_ms": 68.9,
+      "trial": "down_2100_STOP2",
+      "folder": "j1-brake-pair-20261119-143550",
+      "direction": "down",
+      "slope": 3000
+    },
+    {
+      "image_travel_px": 9.277,
+      "ripple_rms_px": 0.284,
+      "ripple_p95_px": 0.498,
+      "measured_stationary_rms_px": 0.012,
+      "total_frames": 91,
+      "valid_frames": 91,
+      "stroke_samples": 28,
+      "stationary_samples": 20,
+      "median_tool_inliers": 55,
+      "median_fixed_inliers": 88,
+      "median_frame_gap_ms": 33.4,
+      "max_frame_gap_ms": 67.9,
+      "trial": "down_2100_STOP3",
+      "folder": "j1-brake-pair-20261119-143550",
+      "direction": "down",
+      "slope": 3000
+    }
+  ]
+}

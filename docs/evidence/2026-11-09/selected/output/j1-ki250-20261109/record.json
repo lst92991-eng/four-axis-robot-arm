@@ -1,0 +1,118 @@
+{
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 5,
+      "a": 0,
+      "b": 0,
+      "seq": 2
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 3
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 4
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 5
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 6
+    },
+    {
+      "kind": 10,
+      "a": 1600,
+      "b": 250000,
+      "seq": 7
+    },
+    {
+      "kind": 2,
+      "a": -3690065,
+      "b": 0,
+      "seq": 8
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 9
+    }
+  ],
+  "scope": "RAM; resets to firmware Kp=1.8 Ki=300 on reboot",
+  "comparison_baseline": "Kp=1.6 Ki=300; output/manual-control/20261109-184517-177322-real.jsonl",
+  "before": {
+    "build": "b06df529",
+    "uptime": 1160800,
+    "state": 1,
+    "fault": 0,
+    "power": true,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -3689.494,
+    "velocity": 0.0,
+    "target": -3689.491,
+    "stationary": true,
+    "interlocked": true,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 529629,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24162
+  },
+  "readback": [
+    1600,
+    250000,
+    1400
+  ],
+  "after": {
+    "build": "b06df529",
+    "uptime": 1161300,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -3690.065,
+    "velocity": 0.0,
+    "target": -3690.065,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 529603,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24266
+  },
+  "completed": true
+}

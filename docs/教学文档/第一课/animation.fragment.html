@@ -1,0 +1,98 @@
+<div id="stepper-current-rotor">
+  <style>
+    #stepper-current-rotor { color:var(--foreground); }
+    #stepper-current-rotor .lesson-heading { display:flex; flex-wrap:wrap; gap:calc(var(--font-size-base)*.5); align-items:baseline; padding-right:90px; }
+    #stepper-current-rotor .motor-stage { width:100%; }
+    #stepper-current-rotor svg { display:block; width:100%; overflow:visible; }
+    #stepper-current-rotor svg text { fill:var(--foreground); font:inherit; font-weight:400; }
+    #stepper-current-rotor .coil-a { stroke:var(--viz-series-1); }
+    #stepper-current-rotor .coil-b { stroke:var(--viz-series-2); }
+    #stepper-current-rotor .current-row { display:flex; gap:calc(var(--font-size-base)*1.5); flex-wrap:wrap; justify-content:center; margin-top:calc(var(--font-size-base)*.5); }
+    #stepper-current-rotor .phase-line { display:inline-block; width:18px; height:3px; margin-right:6px; vertical-align:middle; }
+    #stepper-current-rotor .sequence { display:flex; gap:calc(var(--font-size-base)*.5); align-items:center; flex-wrap:wrap; justify-content:center; margin-top:calc(var(--font-size-base)); }
+    #stepper-current-rotor .sequence [aria-current="step"] { font-weight:500; text-decoration:underline; text-underline-offset:4px; }
+    #stepper-current-rotor .status { text-align:center; margin:calc(var(--font-size-base)*.75) 0; min-height:1.5em; }
+    #stepper-current-rotor .controls { justify-content:center; }
+  </style>
+  <div class="lesson-heading"><h3>电流换一拍，转子转一步</h3><span class="text-small">两相单对极原理模型</span></div>
+  <div class="current-row tabular-nums"><span><i class="phase-line" style="background:var(--viz-series-1)"></i>A 相电流 <b id="lesson-ia">+I</b></span><span><i class="phase-line" style="background:var(--viz-series-2)"></i>B 相电流 <b id="lesson-ib">0</b></span></div>
+  <div class="motor-stage"><svg id="lesson-motor" role="img" aria-label="四个定子磁极围住永磁转子。A相和B相依次通电，N和S磁极随电流换向，转子跟随转动。"></svg></div>
+  <div class="sequence" aria-label="正转通电顺序"><span data-phase="0" aria-current="step">① A 正向</span><span class="text-muted seq-arrow">→</span><span data-phase="1">② B 正向</span><span class="text-muted seq-arrow">→</span><span data-phase="2">③ A 反向</span><span class="text-muted seq-arrow">→</span><span data-phase="3">④ B 反向</span><span class="text-muted seq-arrow">→ ①</span></div>
+  <div class="status" id="lesson-status" aria-live="polite">A 相通电，右侧变成 S 极，吸住转子的 N 极。</div>
+  <div class="viz-controls controls"><button type="button" class="btn btn-primary" id="lesson-play">播放</button><button type="button" class="btn" id="lesson-next">下一拍</button><button type="button" class="btn" id="lesson-reverse" aria-pressed="false">反转</button></div>
+  <script>
+    (() => {
+      const root = document.getElementById('stepper-current-rotor');
+      const svg = root.querySelector('#lesson-motor');
+      const iaNode = root.querySelector('#lesson-ia'), ibNode = root.querySelector('#lesson-ib');
+      const playBtn = root.querySelector('#lesson-play'), nextBtn = root.querySelector('#lesson-next'), reverseBtn = root.querySelector('#lesson-reverse');
+      const stateText = root.querySelector('#lesson-status');
+      const ns = 'http://www.w3.org/2000/svg';
+      const states = [{a:1,b:0,side:'右'},{a:0,b:1,side:'上'},{a:-1,b:0,side:'左'},{a:0,b:-1,side:'下'}];
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let phase=0, direction=1, angle=0, fromAngle=0, target=0, playing=false, moving=false, transitionStart=0, nextAt=0, frame=0, frozen=false;
+      const duration=850;
+      const nFill='color-mix(in srgb,var(--red) 23%,var(--background))';
+      const sFill='color-mix(in srgb,var(--blue) 23%,var(--background))';
+      const iron='color-mix(in srgb,var(--foreground) 9%,var(--background))';
+      const edge='color-mix(in srgb,var(--foreground) 42%,var(--background))';
+      function node(tag,attrs,parent=svg,text='') { const e=document.createElementNS(ns,tag); for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v); if(text)e.textContent=text;parent.append(e);return e; }
+      function text(x,y,value,parent=svg,attrs={}) { return node('text',{x,y,'text-anchor':'middle','dominant-baseline':'middle',...attrs},parent,value); }
+      function line(x1,y1,x2,y2,color=edge,width=1,parent=svg) { return node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':width},parent); }
+      function arrow(x1,y1,x2,y2,color,width=1.8,parent=svg){ line(x1,y1,x2,y2,color,width,parent); const a=Math.atan2(y2-y1,x2-x1),h=7;line(x2,y2,x2-h*Math.cos(a-.55),y2-h*Math.sin(a-.55),color,width,parent);line(x2,y2,x2-h*Math.cos(a+.55),y2-h*Math.sin(a+.55),color,width,parent); }
+      function format(i){return i===0?'0':i>0?'+I':'−I';}
+      function render(opts={}) {
+        const width=opts.width || Math.max(280,Math.round(root.querySelector('.motor-stage').getBoundingClientRect().width));
+        const radius=Math.min(150,(width-92)/2), cx=width/2, cy=radius+40, height=2*radius+80;
+        svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('height',height);svg.replaceChildren();
+        const title=node('title',{});title.textContent='两相步进电机的简化原理模型';
+        node('circle',{cx,cy,r:radius*1.01,fill:'none',stroke:iron,'stroke-width':radius*.19});
+        node('circle',{cx,cy,r:radius*.64,fill:'none',stroke:edge,'stroke-width':1});
+        const {a,b}=states[phase];
+        const poles=[{phi:0,v:-a,phase:'A',color:'var(--viz-series-1)'},{phi:Math.PI/2,v:-b,phase:'B',color:'var(--viz-series-2)'},{phi:Math.PI,v:a,phase:'A',color:'var(--viz-series-1)'},{phi:3*Math.PI/2,v:b,phase:'B',color:'var(--viz-series-2)'}];
+        for(const p of poles){
+          const g=node('g',{transform:`translate(${cx} ${cy}) rotate(${-p.phi*180/Math.PI})`});
+          const color=p.v===0?iron:p.v>0?nFill:sFill;
+          node('rect',{x:radius*.55,y:-radius*.22,width:radius*.17,height:radius*.44,rx:2,fill:color,stroke:edge,'stroke-width':1},g);
+          node('rect',{x:radius*.72,y:-radius*.12,width:radius*.29,height:radius*.24,fill:iron,stroke:edge,'stroke-width':1},g);
+          for(let j=0;j<6;j++)node('rect',{x:radius*(.75+j*.04),y:-radius*.19,width:radius*.035,height:radius*.38,rx:radius*.017,fill:'var(--background)',stroke:p.v===0?edge:p.color,'stroke-width':p.v===0?1:2},g);
+          text(cx+Math.cos(p.phi)*radius*.635,cy-Math.sin(p.phi)*radius*.635,p.v===0?'':p.v>0?'N':'S');
+          text(cx+Math.cos(p.phi)*(radius+27),cy-Math.sin(p.phi)*(radius+27),p.phase+' 相');
+        }
+        const rotor=node('g',{transform:`translate(${cx} ${cy}) rotate(${-angle*180/Math.PI})`,'data-angle':angle});
+        node('rect',{x:-radius*.45,y:-radius*.14,width:radius*.9,height:radius*.28,rx:radius*.09,fill:sFill,stroke:edge,'stroke-width':1},rotor);
+        node('path',{d:`M0 ${-radius*.14} H${radius*.36} Q${radius*.45} ${-radius*.14} ${radius*.45} ${-radius*.05} V${radius*.05} Q${radius*.45} ${radius*.14} ${radius*.36} ${radius*.14} H0 Z`,fill:nFill},rotor);
+        node('circle',{cx,cy,r:radius*.06,fill:'var(--background)',stroke:edge,'stroke-width':1.5});
+        text(cx+Math.cos(angle)*radius*.29,cy-Math.sin(angle)*radius*.29,'N');
+        text(cx-Math.cos(angle)*radius*.29,cy+Math.sin(angle)*radius*.29,'S');
+        if(moving || opts.showMotion){
+          const delta=target-angle;
+          const sign=delta>=0?1:-1, r=radius*.47, a0=angle+sign*.18,a1=angle+sign*.65;
+          const x0=cx+Math.cos(a0)*r,y0=cy-Math.sin(a0)*r,x1=cx+Math.cos(a1)*r,y1=cy-Math.sin(a1)*r;
+          node('path',{d:`M${x0} ${y0} A${r} ${r} 0 0 ${sign>0?0:1} ${x1} ${y1}`,fill:'none',stroke:'var(--foreground)','stroke-width':1.8});
+          const tangent=a1+sign*Math.PI/2;arrow(x1-Math.cos(tangent)*5,y1+Math.sin(tangent)*5,x1,y1,'var(--foreground)',1.8);
+        }
+        iaNode.textContent=format(a);ibNode.textContent=format(b);
+        for(const item of root.querySelectorAll('[data-phase]')){if(Number(item.dataset.phase)===phase)item.setAttribute('aria-current','step');else item.removeAttribute('aria-current');}
+        root.dataset.phase=phase;root.dataset.angle=angle;root.dataset.direction=direction;root.dataset.moving=String(moving);
+      }
+      function status(){const s=states[phase],label=s.a?'A':'B',sense=(s.a||s.b)>0?'正向':'反向';stateText.textContent=`${label} 相${sense}通电，${s.side}侧变成 S 极，转子的 N 极转向${s.side}侧。`;}
+      function save(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{phase,direction},privateContent:{playing}}).catch(()=>{});}
+      function advance(now=performance.now()) { angle=target;fromAngle=angle;target+=direction*Math.PI/2;phase=(phase+direction+4)%4;transitionStart=now;moving=!reduced;frozen=false;if(reduced)angle=target;nextAt=now+1600;status();render(); }
+      function tick(now){
+        if(!root.isConnected)return;
+        if(!frozen&&moving){const t=Math.min(1,(now-transitionStart)/duration),s=t*t*(3-2*t);angle=fromAngle+(target-fromAngle)*s;if(t>=1){moving=false;angle=target;}render();}
+        if(playing&&!moving&&now>=nextAt)advance(now);
+        frame=requestAnimationFrame(tick);
+      }
+      playBtn.addEventListener('click',()=>{playing=!playing;if(playing){if(frozen&&moving){const span=target-fromAngle;let p=0;if(span)p=(angle-fromAngle)/span;fromAngle=angle;transitionStart=performance.now();}frozen=false;nextAt=performance.now()+500;}else frozen=true;playBtn.textContent=playing?'暂停':'播放';save();});
+      nextBtn.addEventListener('click',()=>{playing=false;playBtn.textContent='播放';advance();save();});
+      reverseBtn.addEventListener('click',()=>{direction*=-1;reverseBtn.setAttribute('aria-pressed',String(direction<0));reverseBtn.textContent=direction<0?'恢复正转':'反转';for(const e of root.querySelectorAll('.seq-arrow'))e.textContent=e===root.querySelector('.seq-arrow:last-child')?(direction>0?'→ ①':'← ①'):(direction>0?'→':'←');save();});
+      function restore(snapshot){const m=snapshot?.modelContent;if(m&&Number.isInteger(m.phase)&&m.phase>=0&&m.phase<4){const restoredDirection=m.direction===-1?-1:1,restoredPlaying=!!snapshot?.privateContent?.playing;if(phase===m.phase&&direction===restoredDirection&&playing===restoredPlaying)return;phase=m.phase;direction=restoredDirection;angle=target=fromAngle=phase*Math.PI/2;moving=false;frozen=false;playing=restoredPlaying;nextAt=performance.now()+500;playBtn.textContent=playing?'暂停':'播放';reverseBtn.setAttribute('aria-pressed',String(direction<0));reverseBtn.textContent=direction<0?'恢复正转':'反转';for(const e of root.querySelectorAll('.seq-arrow'))e.textContent=e===root.querySelector('.seq-arrow:last-child')?(direction>0?'→ ①':'← ①'):(direction>0?'→':'←');status();render();}}
+      new ResizeObserver(()=>render()).observe(root.querySelector('.motor-stage'));
+      restore(window.openai?.widgetState);render();frame=requestAnimationFrame(tick);
+      window.addEventListener('openai:set_globals',e=>restore(e.detail?.globals?.widgetState));
+      root.lessonSnapshot=({phase:p=0,angle:a=p*Math.PI/2,width,showMotion=false}={})=>{playing=false;moving=false;frozen=true;phase=p;angle=fromAngle=a;target=p*Math.PI/2;status();render({width,showMotion});return svg.outerHTML;};
+    })();
+  </script>
+</div>

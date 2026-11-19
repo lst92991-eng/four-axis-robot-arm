@@ -1,0 +1,15 @@
+{
+  "frames": 1,
+  "elapsed_s": 0.455775799928233,
+  "error": null,
+  "npu_mean_ms": 83.77566499984823,
+  "npu_max_ms": 83.77566499984823,
+  "detections_min": 0,
+  "detections_max": 0,
+  "opencv_version": "4.13.0",
+  "pipeline": "PC preprocessing/postprocessing, real RV1106 NPU",
+  "training": false,
+  "motor_commands": false,
+  "roi": null,
+  "rotate_clockwise": 0
+}

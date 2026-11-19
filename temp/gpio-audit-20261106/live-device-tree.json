@@ -1,0 +1,184 @@
+{
+
+  "model": "Atguigu BoomPi Borad",
+
+  "voltage_domains": [],
+
+  "gpio_controllers": [
+
+    {
+
+      "node": "/pinctrl/gpio@ff530000",
+
+      "status": "okay",
+
+      "line_names": ""
+
+    },
+
+    {
+
+      "node": "/pinctrl/gpio@ff540000",
+
+      "status": "okay",
+
+      "line_names": ""
+
+    },
+
+    {
+
+      "node": "/pinctrl/gpio@ff550000",
+
+      "status": "okay",
+
+      "line_names": ""
+
+    },
+
+    {
+
+      "node": "/pinctrl/gpio@ff380000",
+
+      "status": "okay",
+
+      "line_names": ""
+
+    },
+
+    {
+
+      "node": "/pinctrl/gpio@ff560000",
+
+      "status": "okay",
+
+      "line_names": ""
+
+    }
+
+  ],
+
+  "active_consumers": [
+
+    {
+
+      "node": "/leds/work",
+
+      "properties": {
+
+        "gpios": [
+
+          57,
+
+          0,
+
+          1
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "node": "/i2c@ff460000/touchscreen@14",
+
+      "properties": {
+
+        "reset-gpios": [
+
+          58,
+
+          0,
+
+          1
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "node": "/i2c@ff470000/sc3336@30",
+
+      "properties": {
+
+        "reset-gpios": [
+
+          62,
+
+          21,
+
+          0
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "node": "/i2c@ff470000/mis5001@31",
+
+      "properties": {
+
+        "reset-gpios": [
+
+          62,
+
+          21,
+
+          0
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "node": "/spi@ff500000",
+
+      "properties": {
+
+        "cs-gpios": [
+
+          85,
+
+          20,
+
+          1
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "node": "/pinctrl/gpio@ff380000/usb-mux-sel0-hog",
+
+      "properties": {
+
+        "gpios": [
+
+          1,
+
+          0
+
+        ]
+
+      }
+
+    }
+
+  ]
+
+}
+

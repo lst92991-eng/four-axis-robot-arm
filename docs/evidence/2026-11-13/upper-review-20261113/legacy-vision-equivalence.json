@@ -1,0 +1,104 @@
+{
+  "baseline_commit": "2ce033d",
+  "baseline_sha256": "2229323516a6640a3c4be4c058d5dce251de34b128b5004ae2657ec5c92f7448",
+  "cases": [
+    {
+      "id": "npu-yolo-expanded-v1-20261105",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 30
+    },
+    {
+      "id": "npu-yolo-full-frame",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "npu-yolo-live-20261104",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 16
+    },
+    {
+      "id": "npu-yolo-live-active",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 16
+    },
+    {
+      "id": "npu-reference",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 28
+    },
+    {
+      "id": "npu-v3",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 32
+    },
+    {
+      "id": "npu-diagnosis",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 30
+    },
+    {
+      "id": "fixed-01",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-02",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-03",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-04",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-05",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-06",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-07",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-08",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    },
+    {
+      "id": "fixed-09",
+      "input_identical": true,
+      "detections_identical": true,
+      "detections": 0
+    }
+  ],
+  "synthetic_nms_cases": 30,
+  "scope": "Same saved frames/tensors, not new accuracy samples"
+}

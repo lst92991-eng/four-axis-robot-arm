@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-06",
+  "type": "passive_real_can_status",
+  "samples": 20,
+  "commands_sent": [],
+  "offline_tests_passed": 20,
+  "ui_simulation_checked": [
+    "J1 positive hold/release",
+    "J1 negative hold/release",
+    "J2 speed 2.5 deg/s",
+    "J3 positive hold/release",
+    "J4 positive hold/release",
+    "all stop then explicit jog again"
+  ],
+  "axes": [
+    {
+      "node": 1,
+      "build": "0bffcca9",
+      "configured": false,
+      "referenced": false,
+      "encoder_valid": true,
+      "fault": 0,
+      "power": false,
+      "max_sample_age_ms": 40,
+      "uptime_first": 727150,
+      "uptime_last": 729300
+    },
+    {
+      "node": 2,
+      "build": "17a105f6",
+      "configured": false,
+      "referenced": false,
+      "encoder_valid": true,
+      "fault": 0,
+      "power": false,
+      "max_sample_age_ms": 38,
+      "uptime_first": 727150,
+      "uptime_last": 729300
+    },
+    {
+      "node": 3,
+      "build": "e72bb310",
+      "configured": false,
+      "referenced": false,
+      "encoder_valid": true,
+      "fault": 0,
+      "power": false,
+      "max_sample_age_ms": 44,
+      "uptime_first": 727150,
+      "uptime_last": 729300
+    },
+    {
+      "node": 4,
+      "build": "cca804d2",
+      "configured": false,
+      "referenced": false,
+      "encoder_valid": true,
+      "fault": 0,
+      "power": false,
+      "max_sample_age_ms": 35,
+      "uptime_first": 727150,
+      "uptime_last": 729300
+    }
+  ],
+  "raw_log": "output\\manual-control\\20261106-213044-650273-real.jsonl",
+  "physical_motion_tested": false,
+  "magnet_gpio_changed": false,
+  "firmware_changed": false
+}

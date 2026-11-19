@@ -1,0 +1,7 @@
+{
+  "method": "Fit first half, predict second half; intercept plus 1/rev and 2/rev only",
+  "samples": 1210,
+  "heldout_variance_explained": 0.5603739062777188,
+  "first_half_1rev_amplitude_deg": 0.24611045615449784,
+  "caution": "Angle-related repeatability is evidence, not identification of a mechanical or encoder cause."
+}

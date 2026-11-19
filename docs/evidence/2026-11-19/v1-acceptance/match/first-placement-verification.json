@@ -1,0 +1,35 @@
+{
+    "updated_at_ms": 1794921492891.1772,
+    "frame_id": "18",
+    "simulated": 0,
+    "phase": "error",
+    "history": "h2f2",
+    "pending": 1,
+    "result": 0,
+    "error": "实拍开局盘面仍有差异：e7 c->. e6 p->. g6 p->. h4 .->p",
+    "observation_valid": 1,
+    "board": [
+        "rnbakabnr",
+        ".........",
+        ".c.....c.",
+        "p.p.p.p.p",
+        ".........",
+        ".........",
+        "P.P.P.P.P",
+        ".C...C...",
+        ".........",
+        "RNBAKABNR"
+    ],
+    "observed": [
+        "rnbakabnr",
+        ".........",
+        ".......c.",
+        "p.p.....p",
+        ".........",
+        ".......p.",
+        "P.P.P.P.P",
+        ".C...C...",
+        ".........",
+        "RNBAKABNR"
+    ]
+}

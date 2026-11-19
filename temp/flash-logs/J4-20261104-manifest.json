@@ -1,0 +1,11 @@
+{
+  "node": 4,
+  "profile": {
+    "RATIO": "1.0f",
+    "ENCODER_ZERO": "(-1)"
+  },
+  "source": "existing precompiled J4 image",
+  "app_bytes": 20056,
+  "app_crc32": "fc2ee008",
+  "hex_sha256": "f59f73648d894f446097974b80f09c0152664393cd93e98d38835371bb737c3c"
+}

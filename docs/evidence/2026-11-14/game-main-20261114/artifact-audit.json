@@ -1,0 +1,20 @@
+{
+  "verified_utc": "2026-11-13T17:34:44.389153+00:00",
+  "snapshots": [
+    {
+      "snapshot": 0,
+      "cpp_nloc": 2463,
+      "sha256": "1db780ddc0966fd7be52b799dc1facb53a2e8573a4414752fdd1851e5bfe3d64"
+    },
+    {
+      "snapshot": 1,
+      "cpp_nloc": 2467,
+      "sha256": "6486b7b015673fa43b90b5d1356eb1a290d54917ab0786aa8e97eb7b6fd5e364"
+    },
+    {
+      "snapshot": 2,
+      "cpp_nloc": 2472,
+      "sha256": "74fc8a56aceafe5d28b729a157d738cec4c64c8fbea1c14a1accecff37e5a9a6"
+    }
+  ]
+}

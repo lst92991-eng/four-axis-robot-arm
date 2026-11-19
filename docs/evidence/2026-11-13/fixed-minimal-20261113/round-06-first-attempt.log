@@ -1,0 +1,78 @@
+[0/1] Re-running CMake...
+-- Found OpenCV: C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build (found suitable exact version "5.0.0") found components: core imgproc imgcodecs geometry
+-- Found OpenCV: C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build (found suitable exact version "5.0.0") found components: core imgproc imgcodecs videoio
+-- Configuring done (0.8s)
+-- Generating done (0.2s)
+-- Build files have been written to: C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify
+[1/34] Building CXX object CMakeFiles\scara_chess_move_digest.dir\tests\chess_move_digest.cpp.obj
+[2/34] Building CXX object CMakeFiles\scara_pikafish_protocol_test.dir\chess\pikafish.cpp.obj
+[3/34] Building CXX object CMakeFiles\scara_chess.dir\chess\board.cpp.obj
+[4/34] Building CXX object CMakeFiles\scara_chess_test.dir\tests\chess_core_test.cpp.obj
+[5/34] Building CXX object CMakeFiles\scara_geometry.dir\vision\board.cpp.obj
+[6/34] Building CXX object CMakeFiles\scara_geometry.dir\vision\fixed_board.cpp.obj
+[7/34] Building CXX object CMakeFiles\scara_assignment_digest.dir\tests\fixed_assignment_digest.cpp.obj
+[8/34] Building CXX object CMakeFiles\scara_session.dir\chess\session.cpp.obj
+[9/34] Linking CXX static library scara_chess.lib
+[10/34] Building CXX object CMakeFiles\scara_pikafish_protocol_test.dir\tests\pikafish_protocol_test.cpp.obj
+[11/34] Building CXX object CMakeFiles\scara_game_geometry_test.dir\tests\game_geometry_test.cpp.obj
+[12/34] Building CXX object CMakeFiles\scara_fixed_board_test.dir\tests\fixed_board_test.cpp.obj
+[13/34] Building CXX object CMakeFiles\scara_session_test.dir\tests\session_test.cpp.obj
+[14/34] Linking CXX executable scara_camera_receive_test.exe
+[15/34] Linking CXX executable scara_vision_replay.exe
+[16/34] Linking CXX executable scara_vision_test.exe
+[17/34] Linking CXX executable scara_chess_test.exe
+[18/34] Linking CXX executable scara_chess_move_digest.exe
+[19/34] Building CXX object CMakeFiles\scara_geometry_test.dir\tests\geometry_test.cpp.obj
+[20/34] Linking CXX executable scara_rknn_test.exe
+[21/34] Building CXX object CMakeFiles\scara_geometry_tool.dir\app\geometry_tool.cpp.obj
+[22/34] Building CXX object CMakeFiles\scara_geometry.dir\vision\geometry.cpp.obj
+[23/34] Linking CXX executable scara_pikafish_protocol_test.exe
+[24/34] Linking CXX executable scara_vision_entry_test.exe
+[25/34] Linking CXX static library scara_geometry.lib
+[26/34] Linking CXX static library scara_session.lib
+[27/34] Linking CXX executable scara_geometry_tool.exe
+[28/34] Linking CXX executable scara_geometry_test.exe
+[29/34] Linking CXX executable scara_assignment_digest.exe
+[30/34] Linking CXX executable scara_motion_plan_test.exe
+[31/34] Linking CXX executable scara_game_geometry_test.exe
+[32/34] Linking CXX executable scara_fixed_board_test.exe
+[33/34] Linking CXX executable scara_session_test.exe
+Test project C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify
+      Start  1: geometry_contracts
+ 1/14 Test  #1: geometry_contracts ...............***Failed    0.06 sec
+FAIL after 22 checks: Mixed frames accepted
+
+      Start  2: fixed_assignment_equivalence
+ 2/14 Test  #2: fixed_assignment_equivalence .....   Passed    0.07 sec
+      Start  3: game_geometry_contracts
+ 3/14 Test  #3: game_geometry_contracts ..........   Passed    0.05 sec
+      Start  4: chess_contracts
+ 4/14 Test  #4: chess_contracts ..................   Passed    0.05 sec
+      Start  5: chess_move_equivalence
+ 5/14 Test  #5: chess_move_equivalence ...........   Passed    0.04 sec
+      Start  6: pikafish_protocol_contracts
+ 6/14 Test  #6: pikafish_protocol_contracts ......   Passed    0.05 sec
+      Start  7: fixed_board_contracts
+ 7/14 Test  #7: fixed_board_contracts ............   Passed    0.05 sec
+      Start  8: motion_plan_contracts
+ 8/14 Test  #8: motion_plan_contracts ............   Passed    0.06 sec
+      Start  9: session_contracts
+ 9/14 Test  #9: session_contracts ................   Passed    0.05 sec
+      Start 10: camera_retry_contracts
+10/14 Test #10: camera_retry_contracts ...........   Passed    5.48 sec
+      Start 11: saved_tensor_input_contracts
+11/14 Test #11: saved_tensor_input_contracts .....   Passed    0.62 sec
+      Start 12: vision_pipeline_contracts
+12/14 Test #12: vision_pipeline_contracts ........   Passed   13.19 sec
+      Start 13: rknn_adapter_contracts
+13/14 Test #13: rknn_adapter_contracts ...........   Passed    0.07 sec
+      Start 14: vision_entry_contracts
+14/14 Test #14: vision_entry_contracts ...........   Passed    1.89 sec
+
+93% tests passed, 1 tests failed out of 14
+
+Total Test time (real) =  21.75 sec
+
+The following tests FAILED:
+	  1 - geometry_contracts (Failed)
+Errors while running CTest

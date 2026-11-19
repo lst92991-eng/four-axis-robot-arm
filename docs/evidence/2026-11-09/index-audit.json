@@ -1,0 +1,12 @@
+{
+  "staged_files": 176,
+  "largest_staged_bytes": 1815740,
+  "credential_pattern_hits": [],
+  "archived_hashes_checked": 95,
+  "firmware_artifact_hashes_checked": 4,
+  "indexed_source_build_id": "d3b08bf8",
+  "deployed_build_id": "d3b08bf8",
+  "source_build_id_matches": true,
+  "firmware_index_equals_worktree_bytes": true,
+  "build_text_serialization": "Windows Python write_text default newline translation, as used for deployed build"
+}

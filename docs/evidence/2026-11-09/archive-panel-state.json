@@ -1,0 +1,291 @@
+{
+  "connected": true,
+  "armed": false,
+  "active": null,
+  "stopping": [],
+  "message": "已请求停止并保持位置",
+  "axes": [
+    {
+      "node": 1,
+      "label": "J1 · 丝杆升降",
+      "ratio": 1,
+      "minimum": -3600,
+      "maximum": 7200,
+      "builds": [
+        "d3b08bf8"
+      ],
+      "firmware_minimum": -3610,
+      "firmware_maximum": 7210,
+      "frame_size_mm": 42,
+      "max_speed_deg_s": 500,
+      "manual_direction": -1,
+      "positive_label": "↑ 上升",
+      "negative_label": "↓ 下降",
+      "direction_reference": "2026-11-09用户最终更正：原固件正向下降、反向上升；电角方向不变",
+      "acceleration_deg_s2": 60,
+      "manual_mode": "velocity",
+      "brake_deceleration_deg_s2": 360,
+      "speed_kp": 1.6,
+      "speed_ki": 200,
+      "current_limit_ma": 1400,
+      "speed_gain_scope": "Firmware defaults; Kp=1.6 Ki=200",
+      "received": 367128.4125748,
+      "uptime": 1479750,
+      "position": -7714.293,
+      "target": -7713.166,
+      "velocity": 0.0,
+      "state": 4,
+      "fault": 3,
+      "build": "d3b08bf8",
+      "calibration_extension": true,
+      "cal_state": 0,
+      "motion_fault_detail": 0,
+      "cal_error": 0,
+      "electrical_zero": 10088,
+      "encoder_direction": 1,
+      "calibration_saved": true,
+      "calibration_progress": 0,
+      "bus_mv": 24266,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true,
+      "age_ms": 30,
+      "display_position": 7714.293,
+      "display_velocity": -0.0,
+      "state_text": "故障",
+      "reason": "驱动故障 3：母线电压异常",
+      "ready": false
+    },
+    {
+      "node": 2,
+      "label": "J2 · 近端转轴",
+      "ratio": 25,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "17a105f6"
+      ],
+      "received": 367128.4203019,
+      "uptime": 2090650,
+      "position": 0.0,
+      "target": 0.0,
+      "velocity": 0.0,
+      "state": 0,
+      "fault": 0,
+      "build": "17a105f6",
+      "referenced": false,
+      "interlocked": false,
+      "configured": false,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": false,
+      "age_ms": 22,
+      "display_position": 0.0,
+      "display_velocity": 0.0,
+      "state_text": "未出力",
+      "reason": "电角配置未就绪（已烧录版本的电角零点为 -1）",
+      "ready": false
+    },
+    {
+      "node": 3,
+      "label": "J3 · 中间转轴",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "e72bb310"
+      ],
+      "received": 367128.4143248,
+      "uptime": 2090650,
+      "position": 0.0,
+      "target": 0.0,
+      "velocity": 0.0,
+      "state": 0,
+      "fault": 0,
+      "build": "e72bb310",
+      "referenced": false,
+      "interlocked": false,
+      "configured": false,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": false,
+      "age_ms": 28,
+      "display_position": 0.0,
+      "display_velocity": 0.0,
+      "state_text": "未出力",
+      "reason": "电角配置未就绪（已烧录版本的电角零点为 -1）",
+      "ready": false
+    },
+    {
+      "node": 4,
+      "label": "J4 · 末端旋转",
+      "ratio": 1,
+      "minimum": -180,
+      "maximum": 180,
+      "builds": [
+        "cca804d2"
+      ],
+      "received": 367128.4238864,
+      "uptime": 2090650,
+      "position": 0.0,
+      "target": 0.0,
+      "velocity": 0.0,
+      "state": 0,
+      "fault": 0,
+      "build": "cca804d2",
+      "referenced": false,
+      "interlocked": false,
+      "configured": false,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": false,
+      "age_ms": 18,
+      "display_position": 0.0,
+      "display_velocity": 0.0,
+      "state_text": "未出力",
+      "reason": "电角配置未就绪（已烧录版本的电角零点为 -1）",
+      "ready": false
+    }
+  ],
+  "tx_count": 529,
+  "events": [
+    {
+      "time": "19:45:35",
+      "message": "USB-CAN 已打开，只接收节点状态"
+    },
+    {
+      "time": "19:48:14",
+      "message": "手动控制已开启；按住按钮运动，松开减速保持"
+    },
+    {
+      "time": "19:48:14",
+      "message": "J1 序号同步完成（仅 PING）"
+    },
+    {
+      "time": "19:48:19",
+      "message": "已请求停止并保持位置"
+    },
+    {
+      "time": "19:48:31",
+      "message": "J1 发送 VELOCITY",
+      "node": 1,
+      "kind": 12,
+      "sequence": 1073741992,
+      "target_mdeg": 480000,
+      "speed_mdeg_s": 0
+    },
+    {
+      "time": "19:48:31",
+      "message": "J1 VELOCITY 已接受"
+    },
+    {
+      "time": "19:48:58",
+      "message": "已松开，减速并保持位置"
+    },
+    {
+      "time": "19:48:58",
+      "message": "J1 发送 STOP",
+      "node": 1,
+      "kind": 4,
+      "sequence": 1073742253,
+      "target_mdeg": 0,
+      "speed_mdeg_s": 0
+    },
+    {
+      "time": "19:48:58",
+      "message": "J1 STOP 已接受"
+    },
+    {
+      "time": "19:49:00",
+      "message": "J1 反馈确认停止",
+      "position": -5898.781,
+      "power": true
+    },
+    {
+      "time": "19:49:00",
+      "message": "J1 发送 VELOCITY",
+      "node": 1,
+      "kind": 12,
+      "sequence": 1073742277,
+      "target_mdeg": -480000,
+      "speed_mdeg_s": 0
+    },
+    {
+      "time": "19:49:00",
+      "message": "J1 VELOCITY 已接受"
+    },
+    {
+      "time": "19:49:08",
+      "message": "J1 故障 3：母线电压异常",
+      "node": 1,
+      "fault": 3,
+      "position": -7714.315,
+      "target": -7713.166,
+      "velocity": -0.173,
+      "power": false
+    },
+    {
+      "time": "19:49:08",
+      "message": "J1 驱动已故障关断出力，不重复发 STOP"
+    },
+    {
+      "time": "19:49:08",
+      "message": "J1: 驱动故障 3：母线电压异常"
+    },
+    {
+      "time": "19:49:08",
+      "message": "操作未完成：请先点击「开启手动控制」"
+    },
+    {
+      "time": "19:49:08",
+      "message": "已请求停止并保持位置"
+    },
+    {
+      "time": "19:49:21",
+      "message": "已请求停止并保持位置"
+    }
+  ],
+  "default_speed": 90,
+  "max_speed": 500,
+  "simulated": false,
+  "log_path": "output/manual-control/20261109-194534-610458-real.jsonl",
+  "diagnostics": {
+    "1": {
+      "trace": {
+        "board_ms": 1479760,
+        "encoder_counts": 444760,
+        "speed_counts_s": 0.0,
+        "position_deg": -7714.293,
+        "target_deg": -7713.166,
+        "iq_ref_ma": 0,
+        "iq_ma": 3,
+        "vq_request_mv": 0,
+        "bus_mv": 24253,
+        "power": false,
+        "fault": 3,
+        "encoder_valid": true,
+        "received": 367128.4226565,
+        "age_ms": 19
+      },
+      "current_fault": {
+        "cause": 0,
+        "board_ms": 0,
+        "phase_a_counts": 0,
+        "phase_b_counts": 0,
+        "calibrating": 0,
+        "reference_ma": 0,
+        "previous_id_ma": 0,
+        "previous_iq_ma": 0,
+        "previous_ua_mv": 0,
+        "previous_ub_mv": 0,
+        "encoder_counts": 0,
+        "sample_window_valid": 0,
+        "received": 367127.6632074,
+        "age_ms": 779
+      }
+    }
+  }
+}

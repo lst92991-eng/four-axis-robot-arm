@@ -1,0 +1,20 @@
+[
+  {
+    "source": "C:\\Users\\shuto\\Desktop\\六轴机械臂项目交接\\firmware\\StepFOC\\inc\\speed_estimator.h",
+    "source_sha256": "018fa32a2ecb7728bd344beebd5864e2954b2c111ebbf8a79c75c4e2a0342e73",
+    "destination": "firmware/src/speed_estimator.h",
+    "adaptation": "replace unrelated encoder_state header with identical 16384 counts/rev constant"
+  },
+  {
+    "source": "C:\\Users\\shuto\\Desktop\\六轴机械臂项目交接\\firmware\\StepFOC\\src\\speed_estimator.c",
+    "source_sha256": "6abcc63589e494aad8f237fd15a60b333e0fe84f862191498bf2c557d2e5b5ca",
+    "destination": "firmware/src/speed_estimator.c",
+    "adaptation": "replace unrelated encoder_state header with identical 16384 counts/rev constant"
+  },
+  {
+    "source": "C:\\Users\\shuto\\Desktop\\六轴机械臂项目交接\\firmware\\StepFOC\\tests\\speed_estimator_test.c",
+    "source_sha256": "1f2260938b41a0598fc63e252598bf8ec60728b94a50a5bce9ea458559cd9ab9",
+    "destination": "tests/speed_estimator_test.c",
+    "adaptation": "replace unrelated encoder_state header with identical 16384 counts/rev constant"
+  }
+]

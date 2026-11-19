@@ -1,0 +1,2272 @@
+{
+  "reference": "949118c application: clean-build executable from game-style-20261114",
+  "scenarios": 15,
+  "identical": true,
+  "compared": "Exit status, complete game state except run ID/timestamp; old request action content against new direct-call trace. Retired ticket and file transport intentionally excluded.",
+  "no_motion_exchange_files": true,
+  "results": [
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "24",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4 a6a5 a4a5 a9a5",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a9a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -87.85619336549715,
+              "j3_motor_deg": -10.760121140189781
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.51287564749886,
+              "j3_motor_deg": 76.58947519545072
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "27",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4 a6a5 a4a5 a9a5",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a9a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -87.85619336549715,
+              "j3_motor_deg": -10.760121140189781
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.51287564749886,
+              "j3_motor_deg": 76.58947519545072
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "30",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4 a6a5 a4a5 a9a5",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a9a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -87.85619336549715,
+              "j3_motor_deg": -10.760121140189781
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.51287564749886,
+              "j3_motor_deg": 76.58947519545072
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "24",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4 a6a5 a4a5 a9a5",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a9a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -87.85619336549715,
+              "j3_motor_deg": -10.760121140189781
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.51287564749886,
+              "j3_motor_deg": 76.58947519545072
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "30",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4 a6a5 a4a5 a9a5",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a9a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -87.85619336549715,
+              "j3_motor_deg": -10.760121140189781
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.51287564749886,
+              "j3_motor_deg": 76.58947519545072
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "27",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4 a6a5 a4a5 a9a5",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          ".nbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "r........",
+          ".........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a9a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -87.85619336549715,
+              "j3_motor_deg": -10.760121140189781
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.51287564749886,
+              "j3_motor_deg": 76.58947519545072
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 1,
+      "state": {
+        "frame_id": "9",
+        "simulated": 1,
+        "phase": "error",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4",
+        "red_to_move": 0,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "仿真引擎查询失败",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 1,
+      "state": {
+        "frame_id": "12",
+        "simulated": 1,
+        "phase": "error",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4",
+        "red_to_move": 0,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "引擎选择不在当前合法走法表内",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "6",
+        "simulated": 1,
+        "phase": "finished",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 2,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 1,
+      "state": {
+        "frame_id": "",
+        "simulated": 1,
+        "phase": "error",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 0,
+        "error": "执行器未准备好；没有开始对局",
+        "observation_valid": 0,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????",
+          "?????????"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "6",
+        "simulated": 1,
+        "phase": "finished",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 2,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "12",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4",
+        "red_to_move": 0,
+        "human_red": 0,
+        "pending": 0,
+        "result": 0,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a3a4",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -65.70964710943458,
+              "j3_motor_deg": -42.32138594672561
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -62.75689821481993,
+              "j3_motor_deg": -19.87855480832735
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "12",
+        "simulated": 1,
+        "phase": "stopped",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "a3a4",
+        "red_to_move": 0,
+        "human_red": 1,
+        "pending": 1,
+        "result": 0,
+        "error": "机械执行未成功，棋局不提交，请停机核对",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "..p.p.p.p",
+          "p........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "a6a5",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -58.61510290360657,
+              "j3_motor_deg": 21.533702353423664
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -60.37391745129711,
+              "j3_motor_deg": 1.3472360569800372
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "12",
+        "simulated": 1,
+        "phase": "finished",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/P8/2P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 2,
+        "error": "",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          "P........",
+          "..P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "exit_code": 0,
+      "state": {
+        "frame_id": "42",
+        "simulated": 1,
+        "phase": "review_required",
+        "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+        "history": "b0c2 b9c7 c2b0 c7b9 b0c2 b9c7 c2b0 c7b9",
+        "red_to_move": 1,
+        "human_red": 1,
+        "pending": 0,
+        "result": 4,
+        "error": "重复局面或历史达到上限，暂停人工裁定；未实现完整长将追逐裁判",
+        "observation_valid": 1,
+        "board": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "observed": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ],
+        "expected": [
+          "rnbakabnr",
+          ".........",
+          ".c.....c.",
+          "p.p.p.p.p",
+          ".........",
+          ".........",
+          "P.P.P.P.P",
+          ".C.....C.",
+          ".........",
+          "RNBAKABNR"
+        ]
+      },
+      "actions": [
+        {
+          "simulated": 1,
+          "purpose": "prepare",
+          "move": "",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "b9c7",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -46.37331219800233,
+              "j3_motor_deg": 85.55762047226287
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -37.66523418891042,
+              "j3_motor_deg": 52.90916629939903
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "c7b9",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -37.66523418891042,
+              "j3_motor_deg": 52.90916629939903
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -46.37331219800233,
+              "j3_motor_deg": 85.55762047226287
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "b9c7",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -46.37331219800233,
+              "j3_motor_deg": 85.55762047226287
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -37.66523418891042,
+              "j3_motor_deg": 52.90916629939903
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        },
+        {
+          "simulated": 1,
+          "purpose": "move",
+          "move": "c7b9",
+          "steps": [
+            {
+              "action": "hold"
+            },
+            {
+              "action": "xy",
+              "j2_deg": -37.66523418891042,
+              "j3_motor_deg": 52.90916629939903
+            },
+            {
+              "action": "z",
+              "j1_deg": -20286.41,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -46.37331219800233,
+              "j3_motor_deg": 85.55762047226287
+            },
+            {
+              "action": "z",
+              "j1_deg": -20053.1425,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "release",
+              "duration_ms": 20
+            },
+            {
+              "action": "z",
+              "j1_deg": -19353.34,
+              "speed_deg_s": 180.0
+            },
+            {
+              "action": "xy",
+              "j2_deg": -53.23,
+              "j3_motor_deg": -76.971
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "baseline_commit": "574fa5a",
+  "source_sha256": "a762611be9b723775fb41d30d0feeec3ee55dbc6b66e1b9f7f380c896ef5003a",
+  "passed": true,
+  "stdout": "PASS UCI handshake, partial I/O, full history, perft, bestmove, cancellation and cleanup; simulated POSIX\r\n",
+  "scope": "Actual interface compiled with simulated POSIX calls. No child process or real engine executed."
+}
