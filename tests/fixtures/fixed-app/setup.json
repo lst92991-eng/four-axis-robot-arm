@@ -1,0 +1,25 @@
+{
+  "note": "SYNTHETIC ONLY. a0/i0/a9 derived from the preceding offline affine grid; not real calibration.",
+  "points": {
+    "type_id": "opencv-matrix",
+    "rows": 3,
+    "cols": 4,
+    "dt": "d",
+    "data": [
+      384.7375884367774,
+      183.54275756292935,
+      -96.36929702542906,
+      -434.23172302942305,
+      403.11681153820666,
+      681.629693521354,
+      148.06088605622762,
+      -432.697207749099,
+      921.7767074892333,
+      161.8813968026232,
+      -96.24258141692992,
+      -170.75763428231494
+    ]
+  },
+  "image": "../upper-app/source.png",
+  "frame_id": "three-point-offline"
+}

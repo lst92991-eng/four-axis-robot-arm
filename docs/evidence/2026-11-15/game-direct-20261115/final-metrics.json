@@ -1,0 +1,275 @@
+{
+  "baseline_commit": "949118c",
+  "source_commit": "f8b729525b74357fb95cb149b691a691e50ba459",
+  "cpp_before": 2758,
+  "cpp_after": 2679,
+  "cpp_delta": -79,
+  "cpp_files": [
+    {
+      "file": "app/game.cpp",
+      "before": 161,
+      "after": 161,
+      "delta": 0,
+      "sha256": "c698488ae3b2476af25e85687389d38fa17e16f290417e7f9c930f2721fcef65"
+    },
+    {
+      "file": "app/game.hpp",
+      "before": 42,
+      "after": 42,
+      "delta": 0,
+      "sha256": "b79a6502cc96839154bda3432397e3adcdeb9c8a30050e0a8aca60f646a52869"
+    },
+    {
+      "file": "app/game_config.cpp",
+      "before": 74,
+      "after": 74,
+      "delta": 0,
+      "sha256": "89d59b9d9f88dc1683775d87673dd3582c0f837be43616728cc15225f084d1e5"
+    },
+    {
+      "file": "app/game_files.cpp",
+      "before": 174,
+      "after": 83,
+      "delta": -91,
+      "sha256": "813ebe89117193ceceb443453474b3e439e4be9438546ee78e6f3fda8b1de35a"
+    },
+    {
+      "file": "app/game_files.hpp",
+      "before": 11,
+      "after": 7,
+      "delta": -4,
+      "sha256": "58703d1163eb31ede0f9b4f666df233192802656a107217eab24b311c421de62"
+    },
+    {
+      "file": "app/game_live_io.cpp",
+      "before": 128,
+      "after": 126,
+      "delta": -2,
+      "sha256": "6f2866602dd1c035efd53c70edd527d912ec9687b4bd411e67cddf893c98433a"
+    },
+    {
+      "file": "app/game_main.cpp",
+      "before": 76,
+      "after": 76,
+      "delta": 0,
+      "sha256": "f6398bd794754a3756c867cc9457dc34938ab47272dbe6d351267ac0352f6645"
+    },
+    {
+      "file": "app/game_sim_io.cpp",
+      "before": 112,
+      "after": 109,
+      "delta": -3,
+      "sha256": "4450479f8faf61f70deedf144aa19bc1cd75e3ec5c1da10d587d7c140cddcd58"
+    },
+    {
+      "file": "app/geometry_tool.cpp",
+      "before": 168,
+      "after": 168,
+      "delta": 0,
+      "sha256": "f89ad02eca29a9ceaa3cdcbf99acace5d3af068fb816052763ab15a52d16d705"
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "before": 64,
+      "after": 64,
+      "delta": 0,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "chess/board.cpp",
+      "before": 266,
+      "after": 266,
+      "delta": 0,
+      "sha256": "016289ef6e0f03490625a4d8b5141e178294e4f74dadc5b45dc6b6e896586498"
+    },
+    {
+      "file": "chess/board.hpp",
+      "before": 58,
+      "after": 58,
+      "delta": 0,
+      "sha256": "fc6522115f2e27830ef02ff90ca7c160b0ab0bd72d2527e8b5b36f06cf7a14ec"
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "before": 220,
+      "after": 220,
+      "delta": 0,
+      "sha256": "eefe64d06d87bc9240de1ee12b249b104630d9583ea0a8c16736117814146ea5"
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "before": 33,
+      "after": 33,
+      "delta": 0,
+      "sha256": "994914063ade0779c9e2ee5d57efc9d187a7e03db2740ba48c6d73a66dab5099"
+    },
+    {
+      "file": "chess/session.cpp",
+      "before": 86,
+      "after": 86,
+      "delta": 0,
+      "sha256": "c78946013b946cb409233903a883dd55c3919e8ec4116ad7918c8ba66c0b6841"
+    },
+    {
+      "file": "chess/session.hpp",
+      "before": 25,
+      "after": 25,
+      "delta": 0,
+      "sha256": "beaaf50a97fa6d09d8c0cb2210f4d03f148f309b9bea1b789d4ef941948024bb"
+    },
+    {
+      "file": "motion/execute.cpp",
+      "before": 0,
+      "after": 14,
+      "delta": 14,
+      "sha256": "a8c056293edae165223c1628316d061888196138dc81af92ab3b0eb968850a01"
+    },
+    {
+      "file": "motion/execute.hpp",
+      "before": 0,
+      "after": 7,
+      "delta": 7,
+      "sha256": "1e2e36ef37c8e6bfc9d9f91f1c1ab9e5c27501641d652a553d7605bffeb1b737"
+    },
+    {
+      "file": "motion/plan.cpp",
+      "before": 141,
+      "after": 141,
+      "delta": 0,
+      "sha256": "3fc17cfe138df2a3dafb2377277524c3a1a2f7c39ebc2a0c2057dca45368e7bc"
+    },
+    {
+      "file": "motion/plan.hpp",
+      "before": 53,
+      "after": 53,
+      "delta": 0,
+      "sha256": "f9ef544c27cc0e0144e79fbace905e03e3b866250401deceb70f8ec7ba983253"
+    },
+    {
+      "file": "vision/board.cpp",
+      "before": 57,
+      "after": 57,
+      "delta": 0,
+      "sha256": "38daae0fd505557c1c04cdf97d67cc6066746afdffb7b949ce4fdd0d8b002b47"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "before": 74,
+      "after": 74,
+      "delta": 0,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "before": 9,
+      "after": 9,
+      "delta": 0,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/fixed_board.cpp",
+      "before": 29,
+      "after": 29,
+      "delta": 0,
+      "sha256": "4ac4d5585de2151876cf4253d1d920b9e381241a317924e072fd6fecba739fab"
+    },
+    {
+      "file": "vision/fixed_board.hpp",
+      "before": 12,
+      "after": 12,
+      "delta": 0,
+      "sha256": "8c567a05aa6db470811b202512a5acae982f18c8032c4164e1ba35b3161ed974"
+    },
+    {
+      "file": "vision/geometry.cpp",
+      "before": 318,
+      "after": 318,
+      "delta": 0,
+      "sha256": "ddbe586e9af165349b194af2cc925b818884f9238a75eb67b3bf24c23c21bfe3"
+    },
+    {
+      "file": "vision/geometry.hpp",
+      "before": 67,
+      "after": 67,
+      "delta": 0,
+      "sha256": "1d5056acaa3c3a1ad8309c7e9f3a735b84aeec2ce48e963cd6d39f0eeaa58b3a"
+    },
+    {
+      "file": "vision/io.hpp",
+      "before": 39,
+      "after": 39,
+      "delta": 0,
+      "sha256": "0317e5039dd1552a02d503afb6d7097a8f57cb0576774f9954a3d182112993f3"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "before": 131,
+      "after": 131,
+      "delta": 0,
+      "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "before": 38,
+      "after": 38,
+      "delta": 0,
+      "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "before": 92,
+      "after": 92,
+      "delta": 0,
+      "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+    }
+  ],
+  "groups": {
+    "application_cpp": 2679,
+    "commissioning_tools": 740,
+    "manual_and_demo": 2138,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 835
+  },
+  "unchanged_vision_files": [
+    {
+      "file": "app/vision_main.cpp",
+      "nloc": 64,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "nloc": 9,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "nloc": 74,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "nloc": 38,
+      "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "nloc": 131,
+      "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "nloc": 92,
+      "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+    }
+  ],
+  "checks": {
+    "ctest_suites": 17,
+    "python_tests": 60,
+    "program_comparison_scenarios": 15,
+    "geometry_files_byte_identical": 4,
+    "image_frames": 16,
+    "recorded_tensor_detections": 152,
+    "onnx_cpu_detections": 501
+  },
+  "scope": "Direct execution API with explicit unconnected hardware implementation; no real hardware actions."
+}

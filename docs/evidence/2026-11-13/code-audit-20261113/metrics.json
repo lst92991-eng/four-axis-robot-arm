@@ -1,0 +1,7322 @@
+{
+  "definition": "Named function/method definitions with executable bodies, including constructors, nested named helpers and inline accessors. Excludes declarations, anonymous lambdas/callbacks, empty pass stubs, tests, third-party libraries, motor firmware and archived copies. Runtime and selected maintenance launchers are counted separately. See per-file inventory for exact scope.",
+  "baseline_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+  "current": [
+    {
+      "path": "vision/board.cpp",
+      "group": "geometry",
+      "functions": [
+        {
+          "name": "require",
+          "line": 14,
+          "end": 14,
+          "language": "cpp"
+        },
+        {
+          "name": "gray",
+          "line": 15,
+          "end": 17,
+          "language": "cpp"
+        },
+        {
+          "name": "homography",
+          "line": 18,
+          "end": 22,
+          "language": "cpp"
+        },
+        {
+          "name": "boardWithMatrix",
+          "line": 23,
+          "end": 31,
+          "language": "cpp"
+        },
+        {
+          "name": "fitAxis",
+          "line": 33,
+          "end": 54,
+          "language": "cpp"
+        },
+        {
+          "name": "localLine",
+          "line": 55,
+          "end": 68,
+          "language": "cpp"
+        },
+        {
+          "name": "refineGrid",
+          "line": 69,
+          "end": 88,
+          "language": "cpp"
+        },
+        {
+          "name": "structureScore",
+          "line": 93,
+          "end": 116,
+          "language": "cpp"
+        },
+        {
+          "name": "boardFromCorners",
+          "line": 119,
+          "end": 129,
+          "language": "cpp"
+        },
+        {
+          "name": "locateBoard",
+          "line": 130,
+          "end": 214,
+          "language": "cpp"
+        },
+        {
+          "name": "confirmOrientation",
+          "line": 215,
+          "end": 220,
+          "language": "cpp"
+        },
+        {
+          "name": "rectifiedBoard",
+          "line": 221,
+          "end": 226,
+          "language": "cpp"
+        },
+        {
+          "name": "makeOrientationReference",
+          "line": 227,
+          "end": 233,
+          "language": "cpp"
+        },
+        {
+          "name": "orientByReference",
+          "line": 234,
+          "end": 248,
+          "language": "cpp"
+        },
+        {
+          "name": "saveOrientationReference",
+          "line": 249,
+          "end": 254,
+          "language": "cpp"
+        },
+        {
+          "name": "loadOrientationReference",
+          "line": 255,
+          "end": 261,
+          "language": "cpp"
+        }
+      ],
+      "count": 16,
+      "physical_lines": 262,
+      "nloc": 248,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::require( bool value , const char * message)",
+          "line": 14,
+          "end": 14,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "scara::gray( const cv :: Mat & image)",
+          "line": 15,
+          "end": 17,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "scara::homography( const std :: vector<cv::Point2f> & a , const std :: vector<cv::Point2f> & b)",
+          "line": 18,
+          "end": 22,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "scara::boardWithMatrix( const Camera & camera , const std :: string & frame , const cv :: Matx33d & h)",
+          "line": 23,
+          "end": 31,
+          "nloc": 9,
+          "complexity": 6
+        },
+        {
+          "name": "scara::fitAxis( const cv :: Mat & projection , int count)",
+          "line": 33,
+          "end": 54,
+          "nloc": 21,
+          "complexity": 12
+        },
+        {
+          "name": "scara::localLine( const cv :: Mat & mask , double position , bool vertical)",
+          "line": 55,
+          "end": 68,
+          "nloc": 14,
+          "complexity": 16
+        },
+        {
+          "name": "scara::refineGrid( const cv :: Mat & vertical , const cv :: Mat & horizontal , const AxisFit & x , const AxisFit & y)",
+          "line": 69,
+          "end": 88,
+          "nloc": 20,
+          "complexity": 13
+        },
+        {
+          "name": "scara::structureScore( const cv :: Mat & binary , const cv :: Mat & vertical , const cv :: Mat & horizontal , const cv :: Matx33d & gridToRect)",
+          "line": 93,
+          "end": 116,
+          "nloc": 24,
+          "complexity": 23
+        },
+        {
+          "name": "scara::boardFromCorners( const Camera & camera , const std :: string & frame , const std :: array<cv::Point2d,4> & raw , bool confirmed)",
+          "line": 119,
+          "end": 129,
+          "nloc": 11,
+          "complexity": 9
+        },
+        {
+          "name": "scara::locateBoard( const cv :: Mat & raw , const Camera & camera , const std :: string & frame , const LocateOptions & options)",
+          "line": 130,
+          "end": 214,
+          "nloc": 79,
+          "complexity": 38
+        },
+        {
+          "name": "scara::confirmOrientation( const Board & input , bool flip)",
+          "line": 215,
+          "end": 220,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "scara::rectifiedBoard( const cv :: Mat & image , const Board & b)",
+          "line": 221,
+          "end": 226,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "scara::makeOrientationReference( const cv :: Mat & raw , const Camera & camera , const Board & b , cv :: Rect patch)",
+          "line": 227,
+          "end": 233,
+          "nloc": 7,
+          "complexity": 5
+        },
+        {
+          "name": "scara::orientByReference( const cv :: Mat & raw , const Camera & camera , const Board & input , const OrientationReference & ref)",
+          "line": 234,
+          "end": 248,
+          "nloc": 15,
+          "complexity": 14
+        },
+        {
+          "name": "scara::saveOrientationReference( const std :: string & path , const OrientationReference & r)",
+          "line": 249,
+          "end": 254,
+          "nloc": 6,
+          "complexity": 1
+        },
+        {
+          "name": "scara::loadOrientationReference( const std :: string & path)",
+          "line": 255,
+          "end": 261,
+          "nloc": 7,
+          "complexity": 5
+        }
+      ]
+    },
+    {
+      "path": "vision/geometry.cpp",
+      "group": "geometry",
+      "functions": [
+        {
+          "name": "require",
+          "line": 13,
+          "end": 13,
+          "language": "cpp"
+        },
+        {
+          "name": "finite",
+          "line": 14,
+          "end": 14,
+          "language": "cpp"
+        },
+        {
+          "name": "matrix33",
+          "line": 15,
+          "end": 20,
+          "language": "cpp"
+        },
+        {
+          "name": "hull",
+          "line": 21,
+          "end": 25,
+          "language": "cpp"
+        },
+        {
+          "name": "contains",
+          "line": 26,
+          "end": 29,
+          "language": "cpp"
+        },
+        {
+          "name": "errorReport",
+          "line": 30,
+          "end": 35,
+          "language": "cpp"
+        },
+        {
+          "name": "writePairs",
+          "line": 36,
+          "end": 39,
+          "language": "cpp"
+        },
+        {
+          "name": "readPairs",
+          "line": 40,
+          "end": 47,
+          "language": "cpp"
+        },
+        {
+          "name": "project",
+          "line": 50,
+          "end": 54,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::validate",
+          "line": 55,
+          "end": 61,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::sameGeometry",
+          "line": 62,
+          "end": 68,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::geometricPixel",
+          "line": 69,
+          "end": 72,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::geometricImage",
+          "line": 73,
+          "end": 77,
+          "language": "cpp"
+        },
+        {
+          "name": "calibratePlane",
+          "line": 78,
+          "end": 100,
+          "language": "cpp"
+        },
+        {
+          "name": "saveCamera",
+          "line": 101,
+          "end": 104,
+          "language": "cpp"
+        },
+        {
+          "name": "readCamera",
+          "line": 105,
+          "end": 109,
+          "language": "cpp"
+        },
+        {
+          "name": "savePlane",
+          "line": 110,
+          "end": 120,
+          "language": "cpp"
+        },
+        {
+          "name": "loadPlane",
+          "line": 121,
+          "end": 131,
+          "language": "cpp"
+        },
+        {
+          "name": "ImageTransform::toOriginal",
+          "line": 133,
+          "end": 155,
+          "language": "cpp"
+        },
+        {
+          "name": "assignPieces",
+          "line": 156,
+          "end": 178,
+          "language": "cpp"
+        },
+        {
+          "name": "Stabilizer::Stabilizer",
+          "line": 179,
+          "end": 181,
+          "language": "cpp"
+        },
+        {
+          "name": "Stabilizer::reset",
+          "line": 182,
+          "end": 182,
+          "language": "cpp"
+        },
+        {
+          "name": "Stabilizer::update",
+          "line": 183,
+          "end": 191,
+          "language": "cpp"
+        },
+        {
+          "name": "gridTarget",
+          "line": 192,
+          "end": 196,
+          "language": "cpp"
+        },
+        {
+          "name": "drawBoard",
+          "line": 197,
+          "end": 207,
+          "language": "cpp"
+        }
+      ],
+      "count": 25,
+      "physical_lines": 208,
+      "nloc": 205,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::require( bool ok , const char * message)",
+          "line": 13,
+          "end": 13,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "scara::finite( cv :: Point2d p)",
+          "line": 14,
+          "end": 14,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "scara::matrix33( const cv :: Mat & input)",
+          "line": 15,
+          "end": 20,
+          "nloc": 6,
+          "complexity": 3
+        },
+        {
+          "name": "scara::hull( const std :: vector<cv::Point2d> & points)",
+          "line": 21,
+          "end": 25,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "scara::contains( const std :: vector<cv::Point2d> & h , cv :: Point2d p)",
+          "line": 26,
+          "end": 29,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "scara::errorReport( const Camera & camera , const cv :: Matx33d & h , const std :: vector<PointPair> & pairs)",
+          "line": 30,
+          "end": 35,
+          "nloc": 6,
+          "complexity": 2
+        },
+        {
+          "name": "scara::writePairs( cv :: FileStorage & fs , const char * key , const std :: vector<PointPair> & pairs)",
+          "line": 36,
+          "end": 39,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "scara::readPairs( const cv :: FileNode & node)",
+          "line": 40,
+          "end": 47,
+          "nloc": 8,
+          "complexity": 7
+        },
+        {
+          "name": "scara::project( const cv :: Matx33d & h , cv :: Point2d p)",
+          "line": 50,
+          "end": 54,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "scara::Camera::validate() const",
+          "line": 55,
+          "end": 61,
+          "nloc": 7,
+          "complexity": 9
+        },
+        {
+          "name": "scara::Camera::sameGeometry( const Camera & other) const",
+          "line": 62,
+          "end": 68,
+          "nloc": 7,
+          "complexity": 7
+        },
+        {
+          "name": "scara::Camera::geometricPixel( cv :: Point2d raw) const",
+          "line": 69,
+          "end": 72,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "scara::Camera::geometricImage( const cv :: Mat & raw) const",
+          "line": 73,
+          "end": 77,
+          "nloc": 5,
+          "complexity": 5
+        },
+        {
+          "name": "scara::calibratePlane( const Camera & camera , const std :: string & id , double z , double tolerance , const std :: vector<PointPair> & fit , const std :: vector<PointPair> & checks)",
+          "line": 78,
+          "end": 100,
+          "nloc": 23,
+          "complexity": 17
+        },
+        {
+          "name": "scara::saveCamera( cv :: FileStorage & fs , const Camera & c)",
+          "line": 101,
+          "end": 104,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "scara::readCamera( const cv :: FileNode & n)",
+          "line": 105,
+          "end": 109,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "scara::savePlane( const std :: string & path , const PlaneMap & m)",
+          "line": 110,
+          "end": 120,
+          "nloc": 11,
+          "complexity": 1
+        },
+        {
+          "name": "scara::loadPlane( const std :: string & path)",
+          "line": 121,
+          "end": 131,
+          "nloc": 11,
+          "complexity": 4
+        },
+        {
+          "name": "scara::ImageTransform::toOriginal( cv :: Point2d p , DetectionSpace space) const",
+          "line": 133,
+          "end": 155,
+          "nloc": 23,
+          "complexity": 26
+        },
+        {
+          "name": "scara::assignPieces( const Camera & camera , const Board & board , const std :: string & frameId , const std :: vector<Detection> & detections , const ImageTransform & transform , DetectionSpace space , bool clear , double minScore , double maxDistance)",
+          "line": 156,
+          "end": 178,
+          "nloc": 23,
+          "complexity": 27
+        },
+        {
+          "name": "scara::Stabilizer::Stabilizer( int frames , double tolerance)",
+          "line": 179,
+          "end": 181,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "scara::Stabilizer::reset()",
+          "line": 182,
+          "end": 182,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "scara::Stabilizer::update( const Board & board , const Observation & input)",
+          "line": 183,
+          "end": 191,
+          "nloc": 9,
+          "complexity": 13
+        },
+        {
+          "name": "scara::gridTarget( const PlaneMap & map , const Board & board , int c , int r , const std :: string & currentFrameId)",
+          "line": 192,
+          "end": 196,
+          "nloc": 5,
+          "complexity": 13
+        },
+        {
+          "name": "scara::drawBoard( const cv :: Mat & image , const Board & board , const Observation * o)",
+          "line": 197,
+          "end": 207,
+          "nloc": 11,
+          "complexity": 8
+        }
+      ]
+    },
+    {
+      "path": "vision/geometry.hpp",
+      "group": "geometry",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 127,
+      "nloc": 110,
+      "parse_errors": [
+        {
+          "line": 126,
+          "text": "*"
+        }
+      ],
+      "complex_functions": []
+    },
+    {
+      "path": "vision/io.hpp",
+      "group": "geometry",
+      "functions": [
+        {
+          "name": "readBytes",
+          "line": 11,
+          "end": 15,
+          "language": "cpp"
+        },
+        {
+          "name": "writeBytes",
+          "line": 16,
+          "end": 20,
+          "language": "cpp"
+        },
+        {
+          "name": "readStorage",
+          "line": 21,
+          "end": 24,
+          "language": "cpp"
+        },
+        {
+          "name": "memoryStorage",
+          "line": 25,
+          "end": 28,
+          "language": "cpp"
+        }
+      ],
+      "count": 4,
+      "physical_lines": 29,
+      "nloc": 26,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::readBytes( const std :: string & path)",
+          "line": 11,
+          "end": 15,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "scara::writeBytes( const std :: string & path , const std :: string & bytes)",
+          "line": 16,
+          "end": 20,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "scara::readStorage( const std :: string & path)",
+          "line": 21,
+          "end": 24,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "scara::memoryStorage( bool json = false)",
+          "line": 25,
+          "end": 28,
+          "nloc": 4,
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "path": "app/geometry_tool.cpp",
+      "group": "geometry_cli",
+      "functions": [
+        {
+          "name": "require",
+          "line": 12,
+          "end": 12,
+          "language": "cpp"
+        },
+        {
+          "name": "number",
+          "line": 13,
+          "end": 16,
+          "language": "cpp"
+        },
+        {
+          "name": "relativePath",
+          "line": 17,
+          "end": 20,
+          "language": "cpp"
+        },
+        {
+          "name": "pairs",
+          "line": 21,
+          "end": 24,
+          "language": "cpp"
+        },
+        {
+          "name": "armTouches",
+          "line": 30,
+          "end": 40,
+          "language": "cpp"
+        },
+        {
+          "name": "registerArm",
+          "line": 42,
+          "end": 131,
+          "language": "cpp"
+        },
+        {
+          "name": "imageFile",
+          "line": 132,
+          "end": 135,
+          "language": "cpp"
+        },
+        {
+          "name": "saveImage",
+          "line": 136,
+          "end": 138,
+          "language": "cpp"
+        },
+        {
+          "name": "getBoard",
+          "line": 139,
+          "end": 153,
+          "language": "cpp"
+        },
+        {
+          "name": "detectionsFile",
+          "line": 154,
+          "end": 171,
+          "language": "cpp"
+        },
+        {
+          "name": "inspect",
+          "line": 172,
+          "end": 192,
+          "language": "cpp"
+        },
+        {
+          "name": "runGeometryTool",
+          "line": 194,
+          "end": 217,
+          "language": "cpp"
+        },
+        {
+          "name": "wmain",
+          "line": 221,
+          "end": 226,
+          "language": "cpp"
+        },
+        {
+          "name": "main",
+          "line": 228,
+          "end": 228,
+          "language": "cpp"
+        }
+      ],
+      "count": 14,
+      "physical_lines": 229,
+      "nloc": 220,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "require( bool v , const char * s)",
+          "line": 12,
+          "end": 12,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "number( const cv :: FileNode & n)",
+          "line": 13,
+          "end": 16,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "relativePath( const std :: string & config , const std :: string & value)",
+          "line": 17,
+          "end": 20,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "pairs( const cv :: FileNode & node)",
+          "line": 21,
+          "end": 24,
+          "nloc": 4,
+          "complexity": 3
+        },
+        {
+          "name": "armTouches( const cv :: FileNode & node)",
+          "line": 30,
+          "end": 40,
+          "nloc": 11,
+          "complexity": 4
+        },
+        {
+          "name": "registerArm( const std :: string & config , const std :: string & output)",
+          "line": 42,
+          "end": 131,
+          "nloc": 90,
+          "complexity": 20
+        },
+        {
+          "name": "imageFile( const std :: string & path)",
+          "line": 132,
+          "end": 135,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "saveImage( const std :: string & path , const cv :: Mat & image)",
+          "line": 136,
+          "end": 138,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "getBoard( const cv :: FileStorage & fs , const cv :: Mat & image , const Camera & camera , const std :: string & frame , const std :: string & config)",
+          "line": 139,
+          "end": 153,
+          "nloc": 15,
+          "complexity": 11
+        },
+        {
+          "name": "detectionsFile( const std :: string & path , const Camera & camera , const Board & board , bool clear)",
+          "line": 154,
+          "end": 171,
+          "nloc": 17,
+          "complexity": 15
+        },
+        {
+          "name": "inspect( const std :: string & config , const std :: string & output)",
+          "line": 172,
+          "end": 192,
+          "nloc": 21,
+          "complexity": 14
+        },
+        {
+          "name": "runGeometryTool( int argc , char ** argv)",
+          "line": 194,
+          "end": 217,
+          "nloc": 24,
+          "complexity": 11
+        },
+        {
+          "name": "wmain( int argc , wchar_t ** argv)",
+          "line": 221,
+          "end": 226,
+          "nloc": 6,
+          "complexity": 3
+        },
+        {
+          "name": "main( int argc , char ** argv)",
+          "line": 228,
+          "end": 228,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "chess/board.cpp",
+      "group": "game_uci",
+      "functions": [
+        {
+          "name": "inside",
+          "line": 9,
+          "end": 9,
+          "language": "cpp"
+        },
+        {
+          "name": "redPiece",
+          "line": 10,
+          "end": 10,
+          "language": "cpp"
+        },
+        {
+          "name": "reject",
+          "line": 11,
+          "end": 11,
+          "language": "cpp"
+        },
+        {
+          "name": "observed",
+          "line": 13,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "legalList",
+          "line": 20,
+          "end": 32,
+          "language": "cpp"
+        },
+        {
+          "name": "number",
+          "line": 34,
+          "end": 39,
+          "language": "cpp"
+        },
+        {
+          "name": "initialBoard",
+          "line": 42,
+          "end": 50,
+          "language": "cpp"
+        },
+        {
+          "name": "parseMove",
+          "line": 52,
+          "end": 60,
+          "language": "cpp"
+        },
+        {
+          "name": "uci",
+          "line": 62,
+          "end": 68,
+          "language": "cpp"
+        },
+        {
+          "name": "validBoard",
+          "line": 70,
+          "end": 91,
+          "language": "cpp"
+        },
+        {
+          "name": "fen",
+          "line": 93,
+          "end": 110,
+          "language": "cpp"
+        },
+        {
+          "name": "parseFen",
+          "line": 112,
+          "end": 141,
+          "language": "cpp"
+        },
+        {
+          "name": "applyMove",
+          "line": 143,
+          "end": 160,
+          "language": "cpp"
+        },
+        {
+          "name": "inferMove",
+          "line": 162,
+          "end": 179,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::Game",
+          "line": 181,
+          "end": 181,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::fail",
+          "line": 182,
+          "end": 182,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::reset",
+          "line": 184,
+          "end": 193,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::canMove",
+          "line": 195,
+          "end": 202,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::commit",
+          "line": 204,
+          "end": 212,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::acceptHuman",
+          "line": 214,
+          "end": 222,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::prepareRobot",
+          "line": 224,
+          "end": 239,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::confirmRobot",
+          "line": 241,
+          "end": 251,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::judge",
+          "line": 253,
+          "end": 265,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::agreeDraw",
+          "line": 267,
+          "end": 274,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::resign",
+          "line": 276,
+          "end": 283,
+          "language": "cpp"
+        }
+      ],
+      "count": 25,
+      "physical_lines": 284,
+      "nloc": 260,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "chess::inside( int row , int col)",
+          "line": 9,
+          "end": 9,
+          "nloc": 1,
+          "complexity": 4
+        },
+        {
+          "name": "chess::redPiece( char piece)",
+          "line": 10,
+          "end": 10,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "chess::reject( std :: string & error , const std :: string & message)",
+          "line": 11,
+          "end": 11,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::observed( const Observation & value , std :: string & error)",
+          "line": 13,
+          "end": 18,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "chess::legalList( const Board & board , bool redToMove , const std :: vector<std::string> & legal , std :: string & error)",
+          "line": 20,
+          "end": 32,
+          "nloc": 13,
+          "complexity": 5
+        },
+        {
+          "name": "chess::number( const std :: string & text , int minimum , int & value)",
+          "line": 34,
+          "end": 39,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "chess::initialBoard()",
+          "line": 42,
+          "end": 50,
+          "nloc": 9,
+          "complexity": 3
+        },
+        {
+          "name": "chess::parseMove( const std :: string & text , Move & move)",
+          "line": 52,
+          "end": 60,
+          "nloc": 9,
+          "complexity": 11
+        },
+        {
+          "name": "chess::uci( const Move & move)",
+          "line": 62,
+          "end": 68,
+          "nloc": 7,
+          "complexity": 5
+        },
+        {
+          "name": "chess::validBoard( const Board & board , std :: string & error)",
+          "line": 70,
+          "end": 91,
+          "nloc": 22,
+          "complexity": 16
+        },
+        {
+          "name": "chess::fen( const Board & board , bool redToMove , int halfmoves , int fullmove)",
+          "line": 93,
+          "end": 110,
+          "nloc": 18,
+          "complexity": 11
+        },
+        {
+          "name": "chess::parseFen( const std :: string & text , Board & board , bool & redToMove , std :: string & error)",
+          "line": 112,
+          "end": 141,
+          "nloc": 30,
+          "complexity": 21
+        },
+        {
+          "name": "chess::applyMove( const Board & before , bool redToMove , const Move & move , Board & after , std :: string & error)",
+          "line": 143,
+          "end": 160,
+          "nloc": 18,
+          "complexity": 10
+        },
+        {
+          "name": "chess::inferMove( const Board & before , const Observation & after , bool redToMove , const std :: vector<std::string> & legal , Move & move , std :: string & error)",
+          "line": 162,
+          "end": 179,
+          "nloc": 18,
+          "complexity": 10
+        },
+        {
+          "name": "chess::Game::Game()",
+          "line": 181,
+          "end": 181,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::fail( const std :: string & message)",
+          "line": 182,
+          "end": 182,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::reset( const Board & board , bool redToMove , bool humanRed)",
+          "line": 184,
+          "end": 193,
+          "nloc": 10,
+          "complexity": 2
+        },
+        {
+          "name": "chess::Game::canMove()",
+          "line": 195,
+          "end": 202,
+          "nloc": 8,
+          "complexity": 4
+        },
+        {
+          "name": "chess::Game::commit( const Board & after , const Move & move)",
+          "line": 204,
+          "end": 212,
+          "nloc": 9,
+          "complexity": 2
+        },
+        {
+          "name": "chess::Game::acceptHuman( const Observation & after , const std :: vector<std::string> & legal , Move & move)",
+          "line": 214,
+          "end": 222,
+          "nloc": 9,
+          "complexity": 4
+        },
+        {
+          "name": "chess::Game::prepareRobot( const Observation & before , const std :: string & choice , const std :: vector<std::string> & legal , Move & move)",
+          "line": 224,
+          "end": 239,
+          "nloc": 16,
+          "complexity": 9
+        },
+        {
+          "name": "chess::Game::confirmRobot( const Observation & after , bool armSucceeded)",
+          "line": 241,
+          "end": 251,
+          "nloc": 10,
+          "complexity": 5
+        },
+        {
+          "name": "chess::Game::judge( const std :: vector<std::string> & legal)",
+          "line": 253,
+          "end": 265,
+          "nloc": 13,
+          "complexity": 8
+        },
+        {
+          "name": "chess::Game::agreeDraw()",
+          "line": 267,
+          "end": 274,
+          "nloc": 8,
+          "complexity": 4
+        },
+        {
+          "name": "chess::Game::resign( bool red)",
+          "line": 276,
+          "end": 283,
+          "nloc": 8,
+          "complexity": 5
+        }
+      ]
+    },
+    {
+      "path": "chess/board.hpp",
+      "group": "game_uci",
+      "functions": [
+        {
+          "name": "board",
+          "line": 46,
+          "end": 46,
+          "language": "cpp"
+        },
+        {
+          "name": "expectedBoard",
+          "line": 47,
+          "end": 47,
+          "language": "cpp"
+        },
+        {
+          "name": "baseFen",
+          "line": 48,
+          "end": 48,
+          "language": "cpp"
+        },
+        {
+          "name": "history",
+          "line": 49,
+          "end": 49,
+          "language": "cpp"
+        },
+        {
+          "name": "redToMove",
+          "line": 50,
+          "end": 50,
+          "language": "cpp"
+        },
+        {
+          "name": "pending",
+          "line": 51,
+          "end": 51,
+          "language": "cpp"
+        },
+        {
+          "name": "result",
+          "line": 52,
+          "end": 52,
+          "language": "cpp"
+        }
+      ],
+      "count": 7,
+      "physical_lines": 69,
+      "nloc": 55,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "chess::Game::board() const",
+          "line": 46,
+          "end": 46,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::expectedBoard() const",
+          "line": 47,
+          "end": 47,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::baseFen() const",
+          "line": 48,
+          "end": 48,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::history() const",
+          "line": 49,
+          "end": 49,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::redToMove() const",
+          "line": 50,
+          "end": 50,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::pending() const",
+          "line": 51,
+          "end": 51,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::result() const",
+          "line": 52,
+          "end": 52,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "chess/pikafish.cpp",
+      "group": "game_uci",
+      "functions": [
+        {
+          "name": "isMove",
+          "line": 15,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::fail",
+          "line": 20,
+          "end": 24,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::wait",
+          "line": 26,
+          "end": 41,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::send",
+          "line": 43,
+          "end": 53,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::readLine",
+          "line": 55,
+          "end": 74,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::start",
+          "line": 76,
+          "end": 113,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::position",
+          "line": 115,
+          "end": 133,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::legalMoves",
+          "line": 135,
+          "end": 137,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::legalMoves",
+          "line": 139,
+          "end": 159,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::think",
+          "line": 161,
+          "end": 163,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::think",
+          "line": 165,
+          "end": 179,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::close",
+          "line": 181,
+          "end": 203,
+          "language": "cpp"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 203,
+      "nloc": 186,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "isMove( const std :: string & s)",
+          "line": 15,
+          "end": 18,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::fail( const std :: string & message)",
+          "line": 20,
+          "end": 24,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::wait( short events)",
+          "line": 26,
+          "end": 41,
+          "nloc": 16,
+          "complexity": 12
+        },
+        {
+          "name": "Pikafish::send( const std :: string & text)",
+          "line": 43,
+          "end": 53,
+          "nloc": 11,
+          "complexity": 8
+        },
+        {
+          "name": "Pikafish::readLine( std :: string & line)",
+          "line": 55,
+          "end": 74,
+          "nloc": 20,
+          "complexity": 12
+        },
+        {
+          "name": "Pikafish::start( const char * engineDir)",
+          "line": 76,
+          "end": 113,
+          "nloc": 37,
+          "complexity": 25
+        },
+        {
+          "name": "Pikafish::position( const std :: string & baseFen , const std :: string & moves)",
+          "line": 115,
+          "end": 133,
+          "nloc": 18,
+          "complexity": 13
+        },
+        {
+          "name": "Pikafish::legalMoves( const std :: string & moves , std :: vector<std::string> & out)",
+          "line": 135,
+          "end": 137,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::legalMoves( const std :: string & baseFen , const std :: string & moves , std :: vector<std::string> & out)",
+          "line": 139,
+          "end": 159,
+          "nloc": 21,
+          "complexity": 14
+        },
+        {
+          "name": "Pikafish::think( const std :: string & moves , int timeMs , std :: string & best)",
+          "line": 161,
+          "end": 163,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::think( const std :: string & baseFen , const std :: string & moves , int timeMs , std :: string & best)",
+          "line": 165,
+          "end": 179,
+          "nloc": 15,
+          "complexity": 10
+        },
+        {
+          "name": "Pikafish::close()",
+          "line": 181,
+          "end": 203,
+          "nloc": 21,
+          "complexity": 9
+        }
+      ]
+    },
+    {
+      "path": "chess/pikafish.hpp",
+      "group": "game_uci",
+      "functions": [
+        {
+          "name": "~Pikafish",
+          "line": 12,
+          "end": 12,
+          "language": "cpp"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 39,
+      "nloc": 30,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "Pikafish::~Pikafish()",
+          "line": 12,
+          "end": 12,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "chess/vision_bridge.cpp",
+      "group": "game_uci",
+      "functions": [
+        {
+          "name": "chessObservation",
+          "line": 4,
+          "end": 25,
+          "language": "cpp"
+        },
+        {
+          "name": "chessMoveTargets",
+          "line": 27,
+          "end": 36,
+          "language": "cpp"
+        }
+      ],
+      "count": 2,
+      "physical_lines": 37,
+      "nloc": 35,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::chessObservation( const Board & grid , const Observation & source , bool stable)",
+          "line": 4,
+          "end": 25,
+          "nloc": 22,
+          "complexity": 17
+        },
+        {
+          "name": "scara::chessMoveTargets( const PlaneMap & plane , const Board & grid , const chess :: Move & move , const std :: string & currentFrameId)",
+          "line": 27,
+          "end": 36,
+          "nloc": 10,
+          "complexity": 4
+        }
+      ]
+    },
+    {
+      "path": "chess/vision_bridge.hpp",
+      "group": "game_uci",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 16,
+      "nloc": 8,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "manual_control/core.py",
+      "group": "manual_panel",
+      "functions": [
+        {
+          "name": "packet",
+          "line": 19,
+          "end": 20,
+          "language": "py"
+        },
+        {
+          "name": "Controller.__init__",
+          "line": 24,
+          "end": 66,
+          "language": "py"
+        },
+        {
+          "name": "Controller.log",
+          "line": 68,
+          "end": 71,
+          "language": "py"
+        },
+        {
+          "name": "Controller.commissioning_firmware",
+          "line": 73,
+          "end": 75,
+          "language": "py"
+        },
+        {
+          "name": "Controller.velocity_mode",
+          "line": 77,
+          "end": 78,
+          "language": "py"
+        },
+        {
+          "name": "Controller.can_recover",
+          "line": 80,
+          "end": 91,
+          "language": "py"
+        },
+        {
+          "name": "Controller.save_reference_restore",
+          "line": 93,
+          "end": 100,
+          "language": "py"
+        },
+        {
+          "name": "Controller.restore_legacy_reference",
+          "line": 102,
+          "end": 119,
+          "language": "py"
+        },
+        {
+          "name": "Controller.recovery_feedback",
+          "line": 121,
+          "end": 138,
+          "language": "py"
+        },
+        {
+          "name": "Controller.reason",
+          "line": 140,
+          "end": 167,
+          "language": "py"
+        },
+        {
+          "name": "Controller.transmit",
+          "line": 169,
+          "end": 177,
+          "language": "py"
+        },
+        {
+          "name": "Controller.receive",
+          "line": 179,
+          "end": 294,
+          "language": "py"
+        },
+        {
+          "name": "Controller.action",
+          "line": 296,
+          "end": 407,
+          "language": "py"
+        },
+        {
+          "name": "Controller.stop",
+          "line": 409,
+          "end": 443,
+          "language": "py"
+        },
+        {
+          "name": "Controller.fail",
+          "line": 445,
+          "end": 449,
+          "language": "py"
+        },
+        {
+          "name": "Controller.tick",
+          "line": 451,
+          "end": 492,
+          "language": "py"
+        },
+        {
+          "name": "Controller.snapshot",
+          "line": 494,
+          "end": 510,
+          "language": "py"
+        }
+      ],
+      "count": 17,
+      "physical_lines": 510,
+      "nloc": 480,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "packet( kind , node , seq , a = 0 , b = 0 )",
+          "line": 19,
+          "end": 20,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self , config , send , clock = time . monotonic , audit = None , reference_path = None )",
+          "line": 24,
+          "end": 66,
+          "nloc": 43,
+          "complexity": 17
+        },
+        {
+          "name": "log( self , message , ** extra )",
+          "line": 68,
+          "end": 71,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "commissioning_firmware( self , status )",
+          "line": 73,
+          "end": 75,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "velocity_mode( self , n )",
+          "line": 77,
+          "end": 78,
+          "nloc": 2,
+          "complexity": 2
+        },
+        {
+          "name": "can_recover( self , n )",
+          "line": 80,
+          "end": 91,
+          "nloc": 12,
+          "complexity": 24
+        },
+        {
+          "name": "save_reference_restore( self )",
+          "line": 93,
+          "end": 100,
+          "nloc": 8,
+          "complexity": 3
+        },
+        {
+          "name": "restore_legacy_reference( self , status )",
+          "line": 102,
+          "end": 119,
+          "nloc": 18,
+          "complexity": 9
+        },
+        {
+          "name": "recovery_feedback( self , status )",
+          "line": 121,
+          "end": 138,
+          "nloc": 18,
+          "complexity": 12
+        },
+        {
+          "name": "reason( self , n , require_still = True )",
+          "line": 140,
+          "end": 167,
+          "nloc": 28,
+          "complexity": 23
+        },
+        {
+          "name": "transmit( self , n , kind , a = 0 , b = 0 , syncing = False )",
+          "line": 169,
+          "end": 177,
+          "nloc": 9,
+          "complexity": 2
+        },
+        {
+          "name": "receive( self , identifier , data , received_at = None )",
+          "line": 179,
+          "end": 294,
+          "nloc": 114,
+          "complexity": 60
+        },
+        {
+          "name": "action( self , action , client = '' , order = 0 , ** args )",
+          "line": 296,
+          "end": 407,
+          "nloc": 109,
+          "complexity": 65
+        },
+        {
+          "name": "stop( self , reason , disarm = False )",
+          "line": 409,
+          "end": 443,
+          "nloc": 33,
+          "complexity": 17
+        },
+        {
+          "name": "fail( self , reason )",
+          "line": 445,
+          "end": 449,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "tick( self )",
+          "line": 451,
+          "end": 492,
+          "nloc": 40,
+          "complexity": 33
+        },
+        {
+          "name": "snapshot( self )",
+          "line": 494,
+          "end": 510,
+          "nloc": 17,
+          "complexity": 8
+        }
+      ]
+    },
+    {
+      "path": "manual_control/server.py",
+      "group": "manual_panel",
+      "functions": [
+        {
+          "name": "Simulator.__init__",
+          "line": 27,
+          "end": 34,
+          "language": "py"
+        },
+        {
+          "name": "Simulator.send_packet",
+          "line": 36,
+          "end": 60,
+          "language": "py"
+        },
+        {
+          "name": "Simulator.recv",
+          "line": 62,
+          "end": 92,
+          "language": "py"
+        },
+        {
+          "name": "Worker.__init__",
+          "line": 99,
+          "end": 120,
+          "language": "py"
+        },
+        {
+          "name": "Worker.audit",
+          "line": 122,
+          "end": 126,
+          "language": "py"
+        },
+        {
+          "name": "Worker.start_receiver",
+          "line": 128,
+          "end": 142,
+          "language": "py"
+        },
+        {
+          "name": "Worker.start_receiver.receive",
+          "line": 133,
+          "end": 140,
+          "language": "py"
+        },
+        {
+          "name": "Worker.read_frame",
+          "line": 144,
+          "end": 152,
+          "language": "py"
+        },
+        {
+          "name": "Worker.close_adapter",
+          "line": 154,
+          "end": 163,
+          "language": "py"
+        },
+        {
+          "name": "Worker.send",
+          "line": 165,
+          "end": 171,
+          "language": "py"
+        },
+        {
+          "name": "Worker.connect",
+          "line": 173,
+          "end": 188,
+          "language": "py"
+        },
+        {
+          "name": "Worker.submit",
+          "line": 190,
+          "end": 199,
+          "language": "py"
+        },
+        {
+          "name": "Worker.process",
+          "line": 201,
+          "end": 216,
+          "language": "py"
+        },
+        {
+          "name": "Worker.run",
+          "line": 218,
+          "end": 292,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 295,
+          "end": 374,
+          "language": "py"
+        },
+        {
+          "name": "main.Handler.reply",
+          "line": 311,
+          "end": 324,
+          "language": "py"
+        },
+        {
+          "name": "main.Handler.do_GET",
+          "line": 326,
+          "end": 341,
+          "language": "py"
+        },
+        {
+          "name": "main.Handler.do_POST",
+          "line": 343,
+          "end": 359,
+          "language": "py"
+        }
+      ],
+      "count": 18,
+      "physical_lines": 378,
+      "nloc": 347,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "__init__( self , config )",
+          "line": 27,
+          "end": 34,
+          "nloc": 8,
+          "complexity": 2
+        },
+        {
+          "name": "send_packet( self , n , data )",
+          "line": 36,
+          "end": 60,
+          "nloc": 25,
+          "complexity": 12
+        },
+        {
+          "name": "recv( self , timeout )",
+          "line": 62,
+          "end": 92,
+          "nloc": 31,
+          "complexity": 18
+        },
+        {
+          "name": "close( self )",
+          "line": 94,
+          "end": 95,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self , config , simulate , log_dir )",
+          "line": 99,
+          "end": 120,
+          "nloc": 22,
+          "complexity": 3
+        },
+        {
+          "name": "audit( self , event )",
+          "line": 122,
+          "end": 126,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "start_receiver.receive( )",
+          "line": 133,
+          "end": 140,
+          "nloc": 8,
+          "complexity": 4
+        },
+        {
+          "name": "start_receiver( self )",
+          "line": 128,
+          "end": 142,
+          "nloc": 8,
+          "complexity": 1
+        },
+        {
+          "name": "read_frame( self )",
+          "line": 144,
+          "end": 152,
+          "nloc": 9,
+          "complexity": 4
+        },
+        {
+          "name": "close_adapter( self )",
+          "line": 154,
+          "end": 163,
+          "nloc": 10,
+          "complexity": 4
+        },
+        {
+          "name": "send( self , node , data )",
+          "line": 165,
+          "end": 171,
+          "nloc": 7,
+          "complexity": 2
+        },
+        {
+          "name": "connect( self )",
+          "line": 173,
+          "end": 188,
+          "nloc": 16,
+          "complexity": 6
+        },
+        {
+          "name": "submit( self , body )",
+          "line": 190,
+          "end": 199,
+          "nloc": 10,
+          "complexity": 4
+        },
+        {
+          "name": "process( self , req )",
+          "line": 201,
+          "end": 216,
+          "nloc": 16,
+          "complexity": 7
+        },
+        {
+          "name": "run( self )",
+          "line": 218,
+          "end": 292,
+          "nloc": 72,
+          "complexity": 32
+        },
+        {
+          "name": "main.log_message( self , * args )",
+          "line": 308,
+          "end": 309,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "main.reply( self , status , data , mime = 'application/json; charset=utf-8' )",
+          "line": 311,
+          "end": 324,
+          "nloc": 14,
+          "complexity": 3
+        },
+        {
+          "name": "main.do_GET( self )",
+          "line": 326,
+          "end": 341,
+          "nloc": 16,
+          "complexity": 5
+        },
+        {
+          "name": "main.do_POST( self )",
+          "line": 343,
+          "end": 359,
+          "nloc": 17,
+          "complexity": 10
+        },
+        {
+          "name": "main( )",
+          "line": 295,
+          "end": 374,
+          "nloc": 30,
+          "complexity": 6
+        }
+      ]
+    },
+    {
+      "path": "manual_control/telemetry.py",
+      "group": "manual_panel",
+      "functions": [
+        {
+          "name": "diagnostic",
+          "line": 6,
+          "end": 25,
+          "language": "py"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 25,
+      "nloc": 22,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "diagnostic( identifier , data )",
+          "line": 6,
+          "end": 25,
+          "nloc": 20,
+          "complexity": 7
+        }
+      ]
+    },
+    {
+      "path": "manual_control/index.html",
+      "group": "manual_panel",
+      "functions": [
+        {
+          "name": "embedded_js_0.el",
+          "line": 23,
+          "end": 23,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.err",
+          "line": 23,
+          "end": 23,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.api",
+          "line": 24,
+          "end": 28,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.stop",
+          "line": 29,
+          "end": 34,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.release",
+          "line": 35,
+          "end": 39,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.build",
+          "line": 40,
+          "end": 69,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.render",
+          "line": 70,
+          "end": 100,
+          "language": "js"
+        }
+      ],
+      "count": 7,
+      "physical_lines": 120,
+      "nloc": 118,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "api( action , extra = { })",
+          "line": 24,
+          "end": 28,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "stop( reason = '' , beacon = false , disarm = false)",
+          "line": 29,
+          "end": 34,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "release( press)",
+          "line": 35,
+          "end": 39,
+          "nloc": 5,
+          "complexity": 4
+        },
+        {
+          "name": "build( s)",
+          "line": 40,
+          "end": 69,
+          "nloc": 30,
+          "complexity": 29
+        },
+        {
+          "name": "render( s)",
+          "line": 70,
+          "end": 100,
+          "nloc": 31,
+          "complexity": 47
+        }
+      ]
+    },
+    {
+      "path": "manual_control/first_pick.py",
+      "group": "pick_place",
+      "functions": [
+        {
+          "name": "Trial.__init__",
+          "line": 19,
+          "end": 48,
+          "language": "py"
+        },
+        {
+          "name": "Trial.note",
+          "line": 50,
+          "end": 54,
+          "language": "py"
+        },
+        {
+          "name": "Trial.request",
+          "line": 56,
+          "end": 67,
+          "language": "py"
+        },
+        {
+          "name": "Trial.action",
+          "line": 69,
+          "end": 72,
+          "language": "py"
+        },
+        {
+          "name": "Trial.axes",
+          "line": 74,
+          "end": 75,
+          "language": "py"
+        },
+        {
+          "name": "Trial.sample",
+          "line": 77,
+          "end": 91,
+          "language": "py"
+        },
+        {
+          "name": "Trial.wait",
+          "line": 93,
+          "end": 102,
+          "language": "py"
+        },
+        {
+          "name": "Trial.begin",
+          "line": 104,
+          "end": 117,
+          "language": "py"
+        },
+        {
+          "name": "Trial.end",
+          "line": 119,
+          "end": 123,
+          "language": "py"
+        },
+        {
+          "name": "Trial.at_rest",
+          "line": 125,
+          "end": 136,
+          "language": "py"
+        },
+        {
+          "name": "Trial.at_rest.settled",
+          "line": 127,
+          "end": 135,
+          "language": "py"
+        },
+        {
+          "name": "Trial.position",
+          "line": 138,
+          "end": 151,
+          "language": "py"
+        },
+        {
+          "name": "Trial.position.arrived",
+          "line": 144,
+          "end": 147,
+          "language": "py"
+        },
+        {
+          "name": "Trial.xy",
+          "line": 153,
+          "end": 171,
+          "language": "py"
+        },
+        {
+          "name": "Trial.trim_j3",
+          "line": 173,
+          "end": 186,
+          "language": "py"
+        },
+        {
+          "name": "Trial.trim_j3.close_enough",
+          "line": 181,
+          "end": 184,
+          "language": "py"
+        },
+        {
+          "name": "Trial.tip_error",
+          "line": 188,
+          "end": 194,
+          "language": "py"
+        },
+        {
+          "name": "Trial.approach_j3",
+          "line": 196,
+          "end": 212,
+          "language": "py"
+        },
+        {
+          "name": "Trial.approach_j3.close_enough",
+          "line": 204,
+          "end": 209,
+          "language": "py"
+        },
+        {
+          "name": "Trial.z",
+          "line": 214,
+          "end": 246,
+          "language": "py"
+        },
+        {
+          "name": "Trial.z.brake_now",
+          "line": 237,
+          "end": 240,
+          "language": "py"
+        },
+        {
+          "name": "Trial.gpio",
+          "line": 248,
+          "end": 262,
+          "language": "py"
+        },
+        {
+          "name": "Trial.release_piece",
+          "line": 264,
+          "end": 289,
+          "language": "py"
+        },
+        {
+          "name": "Trial.cancel_pulse",
+          "line": 291,
+          "end": 300,
+          "language": "py"
+        },
+        {
+          "name": "Trial.acquire",
+          "line": 302,
+          "end": 336,
+          "language": "py"
+        },
+        {
+          "name": "Trial.pick_piece",
+          "line": 338,
+          "end": 342,
+          "language": "py"
+        },
+        {
+          "name": "Trial.place_piece",
+          "line": 344,
+          "end": 347,
+          "language": "py"
+        },
+        {
+          "name": "Trial.run",
+          "line": 349,
+          "end": 356,
+          "language": "py"
+        },
+        {
+          "name": "Trial.stop",
+          "line": 358,
+          "end": 363,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 365,
+          "end": 382,
+          "language": "py"
+        }
+      ],
+      "count": 30,
+      "physical_lines": 386,
+      "nloc": 351,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "__init__( self , plan , adb , log , nodes = ( 1 , 2 , 3 ) )",
+          "line": 19,
+          "end": 48,
+          "nloc": 30,
+          "complexity": 9
+        },
+        {
+          "name": "note( self , step , ** data )",
+          "line": 50,
+          "end": 54,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "request( self , path , body = None )",
+          "line": 56,
+          "end": 67,
+          "nloc": 12,
+          "complexity": 5
+        },
+        {
+          "name": "action( self , action , ** args )",
+          "line": 69,
+          "end": 72,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "axes( self , state )",
+          "line": 74,
+          "end": 75,
+          "nloc": 2,
+          "complexity": 2
+        },
+        {
+          "name": "sample( self )",
+          "line": 77,
+          "end": 91,
+          "nloc": 15,
+          "complexity": 14
+        },
+        {
+          "name": "wait( self , predicate , seconds , watch_press = False )",
+          "line": 93,
+          "end": 102,
+          "nloc": 10,
+          "complexity": 6
+        },
+        {
+          "name": "begin( self , action , node , ** args )",
+          "line": 104,
+          "end": 117,
+          "nloc": 14,
+          "complexity": 6
+        },
+        {
+          "name": "end( self , node )",
+          "line": 119,
+          "end": 123,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "at_rest.settled( state )",
+          "line": 127,
+          "end": 135,
+          "nloc": 9,
+          "complexity": 4
+        },
+        {
+          "name": "at_rest( self , node )",
+          "line": 125,
+          "end": 136,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "position.arrived( s )",
+          "line": 144,
+          "end": 147,
+          "nloc": 4,
+          "complexity": 4
+        },
+        {
+          "name": "position( self , node , goal , speed )",
+          "line": 138,
+          "end": 151,
+          "nloc": 11,
+          "complexity": 4
+        },
+        {
+          "name": "xy( self , target )",
+          "line": 153,
+          "end": 171,
+          "nloc": 18,
+          "complexity": 7
+        },
+        {
+          "name": "trim_j3.close_enough( s )",
+          "line": 181,
+          "end": 184,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "trim_j3( self , goal )",
+          "line": 173,
+          "end": 186,
+          "nloc": 11,
+          "complexity": 3
+        },
+        {
+          "name": "tip_error( self , target , axes )",
+          "line": 188,
+          "end": 194,
+          "nloc": 7,
+          "complexity": 1
+        },
+        {
+          "name": "approach_j3.close_enough( s )",
+          "line": 204,
+          "end": 209,
+          "nloc": 6,
+          "complexity": 2
+        },
+        {
+          "name": "approach_j3( self , goal , brake_lead = . 55 )",
+          "line": 196,
+          "end": 212,
+          "nloc": 12,
+          "complexity": 3
+        },
+        {
+          "name": "z.brake_now( state )",
+          "line": 237,
+          "end": 240,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "z( self , target , speed_limit = None )",
+          "line": 214,
+          "end": 246,
+          "nloc": 27,
+          "complexity": 16
+        },
+        {
+          "name": "gpio( self , value , write = True )",
+          "line": 248,
+          "end": 262,
+          "nloc": 15,
+          "complexity": 7
+        },
+        {
+          "name": "release_piece( self , grid )",
+          "line": 264,
+          "end": 289,
+          "nloc": 25,
+          "complexity": 6
+        },
+        {
+          "name": "cancel_pulse( self )",
+          "line": 291,
+          "end": 300,
+          "nloc": 10,
+          "complexity": 4
+        },
+        {
+          "name": "acquire( self , require_raised = True )",
+          "line": 302,
+          "end": 336,
+          "nloc": 35,
+          "complexity": 23
+        },
+        {
+          "name": "pick_piece( self , target , height = None )",
+          "line": 338,
+          "end": 342,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "place_piece( self , target , height = None )",
+          "line": 344,
+          "end": 347,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "run( self , place_held = False )",
+          "line": 349,
+          "end": 356,
+          "nloc": 8,
+          "complexity": 3
+        },
+        {
+          "name": "stop( self )",
+          "line": 358,
+          "end": 363,
+          "nloc": 6,
+          "complexity": 3
+        },
+        {
+          "name": "main( )",
+          "line": 365,
+          "end": 382,
+          "nloc": 18,
+          "complexity": 4
+        }
+      ]
+    },
+    {
+      "path": "manual_control/chess_demo.py",
+      "group": "pick_place",
+      "functions": [
+        {
+          "name": "read",
+          "line": 26,
+          "end": 27,
+          "language": "py"
+        },
+        {
+          "name": "square_map",
+          "line": 30,
+          "end": 37,
+          "language": "py"
+        },
+        {
+          "name": "disk",
+          "line": 40,
+          "end": 59,
+          "language": "py"
+        },
+        {
+          "name": "Demo.__init__",
+          "line": 63,
+          "end": 88,
+          "language": "py"
+        },
+        {
+          "name": "Demo.target",
+          "line": 90,
+          "end": 105,
+          "language": "py"
+        },
+        {
+          "name": "Demo.observe",
+          "line": 107,
+          "end": 116,
+          "language": "py"
+        },
+        {
+          "name": "Demo.check_initial",
+          "line": 118,
+          "end": 131,
+          "language": "py"
+        },
+        {
+          "name": "Demo.load_checkpoint",
+          "line": 133,
+          "end": 137,
+          "language": "py"
+        },
+        {
+          "name": "Demo.fresh_view",
+          "line": 139,
+          "end": 168,
+          "language": "py"
+        },
+        {
+          "name": "Demo.save_view",
+          "line": 170,
+          "end": 173,
+          "language": "py"
+        },
+        {
+          "name": "Demo.run",
+          "line": 175,
+          "end": 218,
+          "language": "py"
+        },
+        {
+          "name": "Demo.close",
+          "line": 220,
+          "end": 227,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 230,
+          "end": 259,
+          "language": "py"
+        }
+      ],
+      "count": 13,
+      "physical_lines": 263,
+      "nloc": 236,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "read( path )",
+          "line": 26,
+          "end": 27,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "square_map( data )",
+          "line": 30,
+          "end": 37,
+          "nloc": 8,
+          "complexity": 6
+        },
+        {
+          "name": "disk( frame , pixel )",
+          "line": 40,
+          "end": 59,
+          "nloc": 20,
+          "complexity": 6
+        },
+        {
+          "name": "__init__( self , work , adb , reference = 'initial' , lift_extra_mm = 0 , cannon_only = False )",
+          "line": 63,
+          "end": 88,
+          "nloc": 25,
+          "complexity": 4
+        },
+        {
+          "name": "target( self , square , pixel = None )",
+          "line": 90,
+          "end": 105,
+          "nloc": 16,
+          "complexity": 3
+        },
+        {
+          "name": "observe( self , frame , squares = START )",
+          "line": 107,
+          "end": 116,
+          "nloc": 10,
+          "complexity": 6
+        },
+        {
+          "name": "check_initial( self , carried = None )",
+          "line": 118,
+          "end": 131,
+          "nloc": 14,
+          "complexity": 12
+        },
+        {
+          "name": "load_checkpoint( self )",
+          "line": 133,
+          "end": 137,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "fresh_view( self )",
+          "line": 139,
+          "end": 168,
+          "nloc": 29,
+          "complexity": 13
+        },
+        {
+          "name": "save_view( self , frame , name )",
+          "line": 170,
+          "end": 173,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "run( self , resume_held = False , resume = False , black_pick = None , black_release = None )",
+          "line": 175,
+          "end": 218,
+          "nloc": 44,
+          "complexity": 13
+        },
+        {
+          "name": "close( self )",
+          "line": 220,
+          "end": 227,
+          "nloc": 8,
+          "complexity": 4
+        },
+        {
+          "name": "main( )",
+          "line": 230,
+          "end": 259,
+          "nloc": 30,
+          "complexity": 8
+        }
+      ]
+    },
+    {
+      "path": "manual_control/tune_release.py",
+      "group": "pick_place",
+      "functions": [
+        {
+          "name": "board_transform",
+          "line": 17,
+          "end": 19,
+          "language": "py"
+        },
+        {
+          "name": "transform_point",
+          "line": 22,
+          "end": 24,
+          "language": "py"
+        },
+        {
+          "name": "moving_cannon",
+          "line": 27,
+          "end": 41,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.__init__",
+          "line": 45,
+          "end": 74,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.save",
+          "line": 76,
+          "end": 79,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.infer",
+          "line": 81,
+          "end": 94,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.frame",
+          "line": 96,
+          "end": 107,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.inspect",
+          "line": 109,
+          "end": 121,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.scene",
+          "line": 123,
+          "end": 162,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.park",
+          "line": 164,
+          "end": 169,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.run",
+          "line": 171,
+          "end": 255,
+          "language": "py"
+        },
+        {
+          "name": "Tuning.close",
+          "line": 257,
+          "end": 258,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 261,
+          "end": 294,
+          "language": "py"
+        }
+      ],
+      "count": 13,
+      "physical_lines": 298,
+      "nloc": 274,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "board_transform( grid )",
+          "line": 17,
+          "end": 19,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "transform_point( matrix , pixel )",
+          "line": 22,
+          "end": 24,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "moving_cannon( detections , matrix , fixed_board )",
+          "line": 27,
+          "end": 41,
+          "nloc": 15,
+          "complexity": 9
+        },
+        {
+          "name": "__init__( self , args )",
+          "line": 45,
+          "end": 74,
+          "nloc": 30,
+          "complexity": 7
+        },
+        {
+          "name": "save( self )",
+          "line": 76,
+          "end": 79,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "infer( self , frame , name )",
+          "line": 81,
+          "end": 94,
+          "nloc": 14,
+          "complexity": 5
+        },
+        {
+          "name": "frame( self )",
+          "line": 96,
+          "end": 107,
+          "nloc": 12,
+          "complexity": 7
+        },
+        {
+          "name": "inspect( self , config )",
+          "line": 109,
+          "end": 121,
+          "nloc": 13,
+          "complexity": 3
+        },
+        {
+          "name": "scene( self , label )",
+          "line": 123,
+          "end": 162,
+          "nloc": 40,
+          "complexity": 16
+        },
+        {
+          "name": "park( self )",
+          "line": 164,
+          "end": 169,
+          "nloc": 6,
+          "complexity": 1
+        },
+        {
+          "name": "run( self )",
+          "line": 171,
+          "end": 255,
+          "nloc": 84,
+          "complexity": 21
+        },
+        {
+          "name": "close( self )",
+          "line": 257,
+          "end": 258,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "main( )",
+          "line": 261,
+          "end": 294,
+          "nloc": 34,
+          "complexity": 11
+        }
+      ]
+    },
+    {
+      "path": "temp/yolo_live/host_preview.py",
+      "group": "yolo_preview",
+      "functions": [
+        {
+          "name": "write_image",
+          "line": 31,
+          "end": 35,
+          "language": "py"
+        },
+        {
+          "name": "request",
+          "line": 38,
+          "end": 49,
+          "language": "py"
+        },
+        {
+          "name": "letterbox",
+          "line": 52,
+          "end": 64,
+          "language": "py"
+        },
+        {
+          "name": "nms",
+          "line": 67,
+          "end": 82,
+          "language": "py"
+        },
+        {
+          "name": "decode",
+          "line": 85,
+          "end": 128,
+          "language": "py"
+        },
+        {
+          "name": "transform",
+          "line": 131,
+          "end": 140,
+          "language": "py"
+        },
+        {
+          "name": "render",
+          "line": 143,
+          "end": 170,
+          "language": "py"
+        },
+        {
+          "name": "Capture.__init__",
+          "line": 174,
+          "end": 182,
+          "language": "py"
+        },
+        {
+          "name": "Capture.read",
+          "line": 184,
+          "end": 191,
+          "language": "py"
+        },
+        {
+          "name": "Capture.latest",
+          "line": 193,
+          "end": 195,
+          "language": "py"
+        },
+        {
+          "name": "Capture.close",
+          "line": 197,
+          "end": 201,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 204,
+          "end": 284,
+          "language": "py"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 288,
+      "nloc": 257,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "write_image( path , image )",
+          "line": 31,
+          "end": 35,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "request( board , path , data = None , frame_id = '' )",
+          "line": 38,
+          "end": 49,
+          "nloc": 12,
+          "complexity": 4
+        },
+        {
+          "name": "letterbox( bgr )",
+          "line": 52,
+          "end": 64,
+          "nloc": 13,
+          "complexity": 2
+        },
+        {
+          "name": "nms( boxes , scores , iou_limit = . 45 )",
+          "line": 67,
+          "end": 82,
+          "nloc": 16,
+          "complexity": 3
+        },
+        {
+          "name": "decode( packet , ratio , left , top , shape , expected_frame_id )",
+          "line": 85,
+          "end": 128,
+          "nloc": 44,
+          "complexity": 10
+        },
+        {
+          "name": "transform( frame , roi , rotate )",
+          "line": 131,
+          "end": 140,
+          "nloc": 10,
+          "complexity": 7
+        },
+        {
+          "name": "render( frame , detections , meta , fps , frame_id , roi , rotate , age )",
+          "line": 143,
+          "end": 170,
+          "nloc": 28,
+          "complexity": 7
+        },
+        {
+          "name": "__init__( self , url )",
+          "line": 174,
+          "end": 182,
+          "nloc": 9,
+          "complexity": 2
+        },
+        {
+          "name": "read( self )",
+          "line": 184,
+          "end": 191,
+          "nloc": 8,
+          "complexity": 3
+        },
+        {
+          "name": "latest( self )",
+          "line": 193,
+          "end": 195,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "close( self )",
+          "line": 197,
+          "end": 201,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "main( )",
+          "line": 204,
+          "end": 284,
+          "nloc": 81,
+          "complexity": 29
+        }
+      ]
+    },
+    {
+      "path": "temp/yolo_live/board_npu.py",
+      "group": "yolo_preview",
+      "functions": [
+        {
+          "name": "info",
+          "line": 34,
+          "end": 39,
+          "language": "py"
+        },
+        {
+          "name": "NPU.__init__",
+          "line": 43,
+          "end": 89,
+          "language": "py"
+        },
+        {
+          "name": "NPU.check",
+          "line": 92,
+          "end": 94,
+          "language": "py"
+        },
+        {
+          "name": "NPU.query",
+          "line": 96,
+          "end": 97,
+          "language": "py"
+        },
+        {
+          "name": "NPU.allocate",
+          "line": 99,
+          "end": 111,
+          "language": "py"
+        },
+        {
+          "name": "NPU.run",
+          "line": 113,
+          "end": 129,
+          "language": "py"
+        },
+        {
+          "name": "NPU.close",
+          "line": 131,
+          "end": 137,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 160,
+          "end": 267,
+          "language": "py"
+        },
+        {
+          "name": "main.Handler.reply",
+          "line": 177,
+          "end": 183,
+          "language": "py"
+        },
+        {
+          "name": "main.Handler.do_GET",
+          "line": 185,
+          "end": 219,
+          "language": "py"
+        },
+        {
+          "name": "main.Handler.do_POST",
+          "line": 221,
+          "end": 253,
+          "language": "py"
+        },
+        {
+          "name": "main.stop",
+          "line": 257,
+          "end": 258,
+          "language": "py"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 271,
+      "nloc": 240,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "info( a )",
+          "line": 34,
+          "end": 39,
+          "nloc": 6,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self , path , expected_sha256 = MODEL_SHA )",
+          "line": 43,
+          "end": 89,
+          "nloc": 47,
+          "complexity": 11
+        },
+        {
+          "name": "check( result )",
+          "line": 92,
+          "end": 94,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "query( self , command , obj )",
+          "line": 96,
+          "end": 97,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "allocate( self , attr )",
+          "line": 99,
+          "end": 111,
+          "nloc": 13,
+          "complexity": 4
+        },
+        {
+          "name": "run( self , data , frame_id )",
+          "line": 113,
+          "end": 129,
+          "nloc": 17,
+          "complexity": 8
+        },
+        {
+          "name": "close( self )",
+          "line": 131,
+          "end": 137,
+          "nloc": 7,
+          "complexity": 3
+        },
+        {
+          "name": "main.log_message( self , * _ )",
+          "line": 174,
+          "end": 175,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "main.reply( self , body , kind = 'application/json' , code = 200 )",
+          "line": 177,
+          "end": 183,
+          "nloc": 7,
+          "complexity": 1
+        },
+        {
+          "name": "main.do_GET( self )",
+          "line": 185,
+          "end": 219,
+          "nloc": 35,
+          "complexity": 15
+        },
+        {
+          "name": "main.do_POST( self )",
+          "line": 221,
+          "end": 253,
+          "nloc": 33,
+          "complexity": 13
+        },
+        {
+          "name": "main.stop( * _ )",
+          "line": 257,
+          "end": 258,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "main( )",
+          "line": 160,
+          "end": 267,
+          "nloc": 29,
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "path": "temp/yolo_live/dual_preview.py",
+      "group": "yolo_preview",
+      "functions": [
+        {
+          "name": "publish_pair",
+          "line": 17,
+          "end": 26,
+          "language": "py"
+        },
+        {
+          "name": "inspect_geometry",
+          "line": 29,
+          "end": 48,
+          "language": "py"
+        },
+        {
+          "name": "display_detections",
+          "line": 51,
+          "end": 54,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 57,
+          "end": 135,
+          "language": "py"
+        }
+      ],
+      "count": 4,
+      "physical_lines": 138,
+      "nloc": 121,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "publish_pair( board , jpeg , frame_id , geometry )",
+          "line": 17,
+          "end": 26,
+          "nloc": 10,
+          "complexity": 3
+        },
+        {
+          "name": "inspect_geometry( exe , reference , out , source , frame_id )",
+          "line": 29,
+          "end": 48,
+          "nloc": 19,
+          "complexity": 6
+        },
+        {
+          "name": "display_detections( detections , inference_roi , display_roi )",
+          "line": 51,
+          "end": 54,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "main( )",
+          "line": 57,
+          "end": 135,
+          "nloc": 77,
+          "complexity": 35
+        }
+      ]
+    },
+    {
+      "path": "temp/transport/stepfoc_candlelight.py",
+      "group": "host_can_transport",
+      "functions": [
+        {
+          "name": "pack_frame",
+          "line": 25,
+          "end": 35,
+          "language": "py"
+        },
+        {
+          "name": "unpack_frame",
+          "line": 38,
+          "end": 48,
+          "language": "py"
+        },
+        {
+          "name": "is_candlelight_status_report",
+          "line": 53,
+          "end": 60,
+          "language": "py"
+        },
+        {
+          "name": "describe_bus_error",
+          "line": 63,
+          "end": 84,
+          "language": "py"
+        },
+        {
+          "name": "bit_timing",
+          "line": 88,
+          "end": 102,
+          "language": "py"
+        },
+        {
+          "name": "usb_backend",
+          "line": 105,
+          "end": 111,
+          "language": "py"
+        },
+        {
+          "name": "usb_identity",
+          "line": 114,
+          "end": 118,
+          "language": "py"
+        },
+        {
+          "name": "discover",
+          "line": 121,
+          "end": 132,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight.__init__",
+          "line": 136,
+          "end": 195,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight.drain_startup",
+          "line": 197,
+          "end": 209,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight._in",
+          "line": 211,
+          "end": 212,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight._out",
+          "line": 214,
+          "end": 220,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight.send",
+          "line": 222,
+          "end": 250,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight.recv",
+          "line": 252,
+          "end": 287,
+          "language": "py"
+        },
+        {
+          "name": "Candlelight.close",
+          "line": 289,
+          "end": 301,
+          "language": "py"
+        }
+      ],
+      "count": 15,
+      "physical_lines": 301,
+      "nloc": 251,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "pack_frame( frame , marker = 0 )",
+          "line": 25,
+          "end": 35,
+          "nloc": 11,
+          "complexity": 12
+        },
+        {
+          "name": "unpack_frame( raw )",
+          "line": 38,
+          "end": 48,
+          "nloc": 11,
+          "complexity": 9
+        },
+        {
+          "name": "is_candlelight_status_report( frame )",
+          "line": 53,
+          "end": 60,
+          "nloc": 6,
+          "complexity": 11
+        },
+        {
+          "name": "describe_bus_error( frame , bitrate_hint = \"500k/2M\" )",
+          "line": 63,
+          "end": 84,
+          "nloc": 21,
+          "complexity": 14
+        },
+        {
+          "name": "bit_timing( clock_hz , bitrate , limits , sample_point = 0 . 75 )",
+          "line": 88,
+          "end": 102,
+          "nloc": 15,
+          "complexity": 6
+        },
+        {
+          "name": "usb_backend( )",
+          "line": 105,
+          "end": 111,
+          "nloc": 7,
+          "complexity": 2
+        },
+        {
+          "name": "usb_identity( dev )",
+          "line": 114,
+          "end": 118,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "discover( )",
+          "line": 121,
+          "end": 132,
+          "nloc": 12,
+          "complexity": 4
+        },
+        {
+          "name": "__init__( self , serial = '' , fd = True , internal_loopback = False )",
+          "line": 136,
+          "end": 195,
+          "nloc": 60,
+          "complexity": 28
+        },
+        {
+          "name": "drain_startup( self )",
+          "line": 197,
+          "end": 209,
+          "nloc": 11,
+          "complexity": 4
+        },
+        {
+          "name": "_in( self , request , count )",
+          "line": 211,
+          "end": 212,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "_out( self , request , payload )",
+          "line": 214,
+          "end": 220,
+          "nloc": 6,
+          "complexity": 3
+        },
+        {
+          "name": "send( self , frame )",
+          "line": 222,
+          "end": 250,
+          "nloc": 26,
+          "complexity": 11
+        },
+        {
+          "name": "recv( self , timeout = 0 . 01 )",
+          "line": 252,
+          "end": 287,
+          "nloc": 32,
+          "complexity": 19
+        },
+        {
+          "name": "close( self )",
+          "line": 289,
+          "end": 301,
+          "nloc": 13,
+          "complexity": 5
+        }
+      ]
+    },
+    {
+      "path": "temp/transport/usb_owner.py",
+      "group": "host_can_transport",
+      "functions": [
+        {
+          "name": "UsbOwner.__init__",
+          "line": 9,
+          "end": 28,
+          "language": "py"
+        },
+        {
+          "name": "UsbOwner.close",
+          "line": 30,
+          "end": 34,
+          "language": "py"
+        }
+      ],
+      "count": 2,
+      "physical_lines": 34,
+      "nloc": 30,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "__init__( self , identity )",
+          "line": 9,
+          "end": 28,
+          "nloc": 20,
+          "complexity": 4
+        },
+        {
+          "name": "close( self )",
+          "line": 30,
+          "end": 34,
+          "nloc": 5,
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "path": "manual_control/calibrate_j1.py",
+      "group": "maintenance",
+      "functions": [
+        {
+          "name": "decode",
+          "line": 24,
+          "end": 35,
+          "language": "py"
+        },
+        {
+          "name": "Session.__init__",
+          "line": 39,
+          "end": 55,
+          "language": "py"
+        },
+        {
+          "name": "Session.receive",
+          "line": 57,
+          "end": 85,
+          "language": "py"
+        },
+        {
+          "name": "Session.command",
+          "line": 87,
+          "end": 103,
+          "language": "py"
+        },
+        {
+          "name": "Session.sync",
+          "line": 105,
+          "end": 109,
+          "language": "py"
+        },
+        {
+          "name": "Session.wait",
+          "line": 111,
+          "end": 118,
+          "language": "py"
+        },
+        {
+          "name": "Session.close",
+          "line": 120,
+          "end": 121,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 124,
+          "end": 202,
+          "language": "py"
+        }
+      ],
+      "count": 8,
+      "physical_lines": 205,
+      "nloc": 183,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "decode( data , node = 1 )",
+          "line": 24,
+          "end": 35,
+          "nloc": 12,
+          "complexity": 3
+        },
+        {
+          "name": "__init__( self , serial , out , node = 1 )",
+          "line": 39,
+          "end": 55,
+          "nloc": 17,
+          "complexity": 3
+        },
+        {
+          "name": "receive( self , timeout = . 01 )",
+          "line": 57,
+          "end": 85,
+          "nloc": 29,
+          "complexity": 19
+        },
+        {
+          "name": "command( self , kind , a = 0 , b = 0 , rejection_ok = False , timeout = . 35 )",
+          "line": 87,
+          "end": 103,
+          "nloc": 17,
+          "complexity": 7
+        },
+        {
+          "name": "sync( self )",
+          "line": 105,
+          "end": 109,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "wait( self , predicate , seconds , heartbeat = False )",
+          "line": 111,
+          "end": 118,
+          "nloc": 8,
+          "complexity": 7
+        },
+        {
+          "name": "close( self )",
+          "line": 120,
+          "end": 121,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "main( )",
+          "line": 124,
+          "end": 202,
+          "nloc": 78,
+          "complexity": 45
+        }
+      ]
+    },
+    {
+      "path": "manual_control/j1_bench.py",
+      "group": "maintenance",
+      "functions": [
+        {
+          "name": "Bench.__init__",
+          "line": 21,
+          "end": 67,
+          "language": "py"
+        },
+        {
+          "name": "Bench.__init__.receiver",
+          "line": 31,
+          "end": 36,
+          "language": "py"
+        },
+        {
+          "name": "Bench.__init__.tap",
+          "line": 39,
+          "end": 48,
+          "language": "py"
+        },
+        {
+          "name": "Bench.close",
+          "line": 69,
+          "end": 72,
+          "language": "py"
+        },
+        {
+          "name": "Bench.report",
+          "line": 74,
+          "end": 78,
+          "language": "py"
+        },
+        {
+          "name": "Bench.pump",
+          "line": 80,
+          "end": 96,
+          "language": "py"
+        },
+        {
+          "name": "Bench.recover",
+          "line": 98,
+          "end": 120,
+          "language": "py"
+        },
+        {
+          "name": "Bench.run_test",
+          "line": 122,
+          "end": 163,
+          "language": "py"
+        },
+        {
+          "name": "Bench.stop_requested",
+          "line": 165,
+          "end": 174,
+          "language": "py"
+        },
+        {
+          "name": "Bench.travel",
+          "line": 176,
+          "end": 222,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 225,
+          "end": 273,
+          "language": "py"
+        },
+        {
+          "name": "main.read_stdin",
+          "line": 233,
+          "end": 236,
+          "language": "py"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 276,
+      "nloc": 253,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "__init__.receiver( )",
+          "line": 31,
+          "end": 36,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "__init__.tap( timeout )",
+          "line": 39,
+          "end": 48,
+          "nloc": 10,
+          "complexity": 11
+        },
+        {
+          "name": "__init__( self , serial , out , expected , acceleration = 30 , travel_budget = 35 , max_speed = 30 )",
+          "line": 21,
+          "end": 67,
+          "nloc": 32,
+          "complexity": 11
+        },
+        {
+          "name": "close( self )",
+          "line": 69,
+          "end": 72,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "report( self , event , ** kw )",
+          "line": 74,
+          "end": 78,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "pump( self )",
+          "line": 80,
+          "end": 96,
+          "nloc": 17,
+          "complexity": 13
+        },
+        {
+          "name": "recover( self , tag )",
+          "line": 98,
+          "end": 120,
+          "nloc": 20,
+          "complexity": 10
+        },
+        {
+          "name": "run_test( self , direction , seconds , speed = 10 , velocity_mode = False )",
+          "line": 122,
+          "end": 163,
+          "nloc": 42,
+          "complexity": 29
+        },
+        {
+          "name": "stop_requested( self )",
+          "line": 165,
+          "end": 174,
+          "nloc": 10,
+          "complexity": 5
+        },
+        {
+          "name": "travel( self , target , speed = 10 )",
+          "line": 176,
+          "end": 222,
+          "nloc": 47,
+          "complexity": 28
+        },
+        {
+          "name": "main.read_stdin( )",
+          "line": 233,
+          "end": 236,
+          "nloc": 4,
+          "complexity": 3
+        },
+        {
+          "name": "main( )",
+          "line": 225,
+          "end": 273,
+          "nloc": 46,
+          "complexity": 22
+        }
+      ]
+    },
+    {
+      "path": "manual_control/software_update_j1.py",
+      "group": "maintenance",
+      "functions": [
+        {
+          "name": "main",
+          "line": 16,
+          "end": 57,
+          "language": "py"
+        },
+        {
+          "name": "main.send",
+          "line": 39,
+          "end": 39,
+          "language": "py"
+        },
+        {
+          "name": "main.recv",
+          "line": 40,
+          "end": 42,
+          "language": "py"
+        }
+      ],
+      "count": 3,
+      "physical_lines": 60,
+      "nloc": 54,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "main.recv( timeout )",
+          "line": 40,
+          "end": 42,
+          "nloc": 3,
+          "complexity": 3
+        },
+        {
+          "name": "main( )",
+          "line": 16,
+          "end": 57,
+          "nloc": 39,
+          "complexity": 16
+        }
+      ]
+    },
+    {
+      "path": "temp/transport/candle_bus.py",
+      "group": "maintenance",
+      "functions": [
+        {
+          "name": "CandleBus.__init__",
+          "line": 12,
+          "end": 13,
+          "language": "py"
+        },
+        {
+          "name": "CandleBus.__enter__",
+          "line": 15,
+          "end": 16,
+          "language": "py"
+        },
+        {
+          "name": "CandleBus.__exit__",
+          "line": 18,
+          "end": 19,
+          "language": "py"
+        },
+        {
+          "name": "CandleBus.send",
+          "line": 21,
+          "end": 22,
+          "language": "py"
+        },
+        {
+          "name": "CandleBus.recv",
+          "line": 24,
+          "end": 30,
+          "language": "py"
+        }
+      ],
+      "count": 5,
+      "physical_lines": 31,
+      "nloc": 21,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "__init__( self , serial )",
+          "line": 12,
+          "end": 13,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__enter__( self )",
+          "line": 15,
+          "end": 16,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__exit__( self , * _ )",
+          "line": 18,
+          "end": 19,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "send( self , message , timeout = None )",
+          "line": 21,
+          "end": 22,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "recv( self , timeout )",
+          "line": 24,
+          "end": 30,
+          "nloc": 7,
+          "complexity": 3
+        }
+      ]
+    }
+  ],
+  "baseline": [
+    {
+      "path": "algorithm/fk.cpp",
+      "group": "algorithm",
+      "functions": [
+        {
+          "name": "forward",
+          "line": 6,
+          "end": 16,
+          "language": "cpp"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 18,
+      "nloc": 15,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::forward( const Joints & joints)",
+          "line": 6,
+          "end": 16,
+          "nloc": 11,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "algorithm/fk.hpp",
+      "group": "algorithm",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 25,
+      "nloc": 12,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "algorithm/homography_ekf.cpp",
+      "group": "algorithm",
+      "functions": [
+        {
+          "name": "validTransform",
+          "line": 7,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "projectHomography",
+          "line": 22,
+          "end": 46,
+          "language": "cpp"
+        },
+        {
+          "name": "initializeHomography",
+          "line": 48,
+          "end": 62,
+          "language": "cpp"
+        },
+        {
+          "name": "predictHomography",
+          "line": 64,
+          "end": 75,
+          "language": "cpp"
+        },
+        {
+          "name": "updateHomography",
+          "line": 77,
+          "end": 149,
+          "language": "cpp"
+        },
+        {
+          "name": "updateHomography",
+          "line": 151,
+          "end": 159,
+          "language": "cpp"
+        },
+        {
+          "name": "homographyMatrix",
+          "line": 161,
+          "end": 167,
+          "language": "cpp"
+        }
+      ],
+      "count": 7,
+      "physical_lines": 169,
+      "nloc": 153,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::validTransform( const std :: array<double,8> & h)",
+          "line": 7,
+          "end": 18,
+          "nloc": 11,
+          "complexity": 7
+        },
+        {
+          "name": "scara::projectHomography( const std :: array<double,8> & h , double x , double y , std :: array<double,2> & image , std :: array<double,16> * jacobian)",
+          "line": 22,
+          "end": 46,
+          "nloc": 25,
+          "complexity": 12
+        },
+        {
+          "name": "scara::initializeHomography( HomographyEkf & filter , const std :: array<double,9> & matrix , double initialVariance)",
+          "line": 48,
+          "end": 62,
+          "nloc": 15,
+          "complexity": 7
+        },
+        {
+          "name": "scara::predictHomography( HomographyEkf & filter , double dt , double processVariance)",
+          "line": 64,
+          "end": 75,
+          "nloc": 12,
+          "complexity": 9
+        },
+        {
+          "name": "scara::updateHomography( HomographyEkf & filter , const HomographyObservation & point , double measurementVariance , double gateSquared)",
+          "line": 77,
+          "end": 149,
+          "nloc": 68,
+          "complexity": 35
+        },
+        {
+          "name": "scara::updateHomography( HomographyEkf & filter , const std :: vector<HomographyObservation> & points , double measurementVariance , double gateSquared)",
+          "line": 151,
+          "end": 159,
+          "nloc": 9,
+          "complexity": 3
+        },
+        {
+          "name": "scara::homographyMatrix( const HomographyEkf & filter , std :: array<double,9> & matrix)",
+          "line": 161,
+          "end": 167,
+          "nloc": 7,
+          "complexity": 4
+        }
+      ]
+    },
+    {
+      "path": "algorithm/homography_ekf.hpp",
+      "group": "algorithm",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 43,
+      "nloc": 24,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "algorithm/ik.cpp",
+      "group": "algorithm",
+      "functions": [
+        {
+          "name": "inverse",
+          "line": 7,
+          "end": 33,
+          "language": "cpp"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 35,
+      "nloc": 27,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::inverse( const Pose & target , bool positiveElbow , Joints & joints)",
+          "line": 7,
+          "end": 33,
+          "nloc": 22,
+          "complexity": 8
+        }
+      ]
+    },
+    {
+      "path": "algorithm/ik.hpp",
+      "group": "algorithm",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 12,
+      "nloc": 4,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "algorithm/motion_plan.cpp",
+      "group": "algorithm",
+      "functions": [
+        {
+          "name": "jointValues",
+          "line": 12,
+          "end": 15,
+          "language": "cpp"
+        },
+        {
+          "name": "validConfiguration",
+          "line": 17,
+          "end": 45,
+          "language": "cpp"
+        },
+        {
+          "name": "appendMove",
+          "line": 47,
+          "end": 130,
+          "language": "cpp"
+        },
+        {
+          "name": "planTrajectory",
+          "line": 134,
+          "end": 148,
+          "language": "cpp"
+        },
+        {
+          "name": "planPickPlace",
+          "line": 150,
+          "end": 180,
+          "language": "cpp"
+        }
+      ],
+      "count": 5,
+      "physical_lines": 182,
+      "nloc": 169,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "scara::jointValues( const Joints & joints)",
+          "line": 12,
+          "end": 15,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "scara::validConfiguration( const Joints & start , const MotionConfig & config , std :: string & error)",
+          "line": 17,
+          "end": 45,
+          "nloc": 29,
+          "complexity": 19
+        },
+        {
+          "name": "scara::appendMove( Joints & current , const Pose & target , const MotionConfig & config , std :: vector<PlanStep> & steps , std :: string & error)",
+          "line": 47,
+          "end": 130,
+          "nloc": 79,
+          "complexity": 24
+        },
+        {
+          "name": "scara::planTrajectory( const Joints & start , const std :: vector<Pose> & targets , const MotionConfig & config , MotionPlan & plan , std :: string & error)",
+          "line": 134,
+          "end": 148,
+          "nloc": 15,
+          "complexity": 4
+        },
+        {
+          "name": "scara::planPickPlace( const Joints & start , const Pose & pick , const Pose & place , const MotionConfig & config , MotionPlan & plan , std :: string & error)",
+          "line": 150,
+          "end": 180,
+          "nloc": 31,
+          "complexity": 13
+        }
+      ]
+    },
+    {
+      "path": "algorithm/motion_plan.hpp",
+      "group": "algorithm",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 48,
+      "nloc": 32,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "app/commands.hpp",
+      "group": "app",
+      "functions": [
+        {
+          "name": "InputCommands",
+          "line": 14,
+          "end": 17,
+          "language": "cpp"
+        },
+        {
+          "name": "~InputCommands",
+          "line": 18,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "poll",
+          "line": 22,
+          "end": 47,
+          "language": "cpp"
+        },
+        {
+          "name": "pop",
+          "line": 49,
+          "end": 62,
+          "language": "cpp"
+        },
+        {
+          "name": "eof",
+          "line": 63,
+          "end": 63,
+          "language": "cpp"
+        },
+        {
+          "name": "cancelled",
+          "line": 64,
+          "end": 71,
+          "language": "cpp"
+        }
+      ],
+      "count": 6,
+      "physical_lines": 80,
+      "nloc": 69,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "app::InputCommands::InputCommands( int fd = STDIN_FILENO)",
+          "line": 14,
+          "end": 17,
+          "nloc": 4,
+          "complexity": 3
+        },
+        {
+          "name": "app::InputCommands::~InputCommands()",
+          "line": 18,
+          "end": 18,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "app::InputCommands::poll()",
+          "line": 22,
+          "end": 47,
+          "nloc": 25,
+          "complexity": 13
+        },
+        {
+          "name": "app::InputCommands::pop( std :: string & line)",
+          "line": 49,
+          "end": 62,
+          "nloc": 13,
+          "complexity": 6
+        },
+        {
+          "name": "app::InputCommands::eof() const",
+          "line": 63,
+          "end": 63,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "app::InputCommands::cancelled() const",
+          "line": 64,
+          "end": 71,
+          "nloc": 8,
+          "complexity": 6
+        }
+      ]
+    },
+    {
+      "path": "app/config.hpp",
+      "group": "app",
+      "functions": [
+        {
+          "name": "squarePose",
+          "line": 20,
+          "end": 23,
+          "language": "cpp"
+        },
+        {
+          "name": "capturePose",
+          "line": 26,
+          "end": 30,
+          "language": "cpp"
+        },
+        {
+          "name": "simulationMotionConfig",
+          "line": 32,
+          "end": 46,
+          "language": "cpp"
+        }
+      ],
+      "count": 3,
+      "physical_lines": 47,
+      "nloc": 38,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "project::squarePose( int row , int col)",
+          "line": 20,
+          "end": 23,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "project::capturePose( bool red , int slot)",
+          "line": 26,
+          "end": 30,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "project::simulationMotionConfig()",
+          "line": 32,
+          "end": 46,
+          "nloc": 15,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "app/motor_test.cpp",
+      "group": "maintenance",
+      "functions": [
+        {
+          "name": "onSignal",
+          "line": 11,
+          "end": 11,
+          "language": "cpp"
+        },
+        {
+          "name": "integer",
+          "line": 12,
+          "end": 17,
+          "language": "cpp"
+        },
+        {
+          "name": "print",
+          "line": 18,
+          "end": 21,
+          "language": "cpp"
+        },
+        {
+          "name": "main",
+          "line": 24,
+          "end": 62,
+          "language": "cpp"
+        }
+      ],
+      "count": 4,
+      "physical_lines": 62,
+      "nloc": 59,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "onSignal( int)",
+          "line": 11,
+          "end": 11,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "integer( const char * text)",
+          "line": 12,
+          "end": 17,
+          "nloc": 6,
+          "complexity": 2
+        },
+        {
+          "name": "print( const robot :: MotorFeedback & state)",
+          "line": 18,
+          "end": 21,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "main( int argc , char ** argv)",
+          "line": 24,
+          "end": 62,
+          "nloc": 38,
+          "complexity": 19
+        }
+      ]
+    },
+    {
+      "path": "chess/board.cpp",
+      "group": "chess",
+      "functions": [
+        {
+          "name": "inside",
+          "line": 9,
+          "end": 9,
+          "language": "cpp"
+        },
+        {
+          "name": "redPiece",
+          "line": 10,
+          "end": 10,
+          "language": "cpp"
+        },
+        {
+          "name": "reject",
+          "line": 11,
+          "end": 11,
+          "language": "cpp"
+        },
+        {
+          "name": "observed",
+          "line": 13,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "legalList",
+          "line": 20,
+          "end": 32,
+          "language": "cpp"
+        },
+        {
+          "name": "number",
+          "line": 34,
+          "end": 39,
+          "language": "cpp"
+        },
+        {
+          "name": "initialBoard",
+          "line": 42,
+          "end": 50,
+          "language": "cpp"
+        },
+        {
+          "name": "parseMove",
+          "line": 52,
+          "end": 60,
+          "language": "cpp"
+        },
+        {
+          "name": "uci",
+          "line": 62,
+          "end": 68,
+          "language": "cpp"
+        },
+        {
+          "name": "validBoard",
+          "line": 70,
+          "end": 91,
+          "language": "cpp"
+        },
+        {
+          "name": "fen",
+          "line": 93,
+          "end": 110,
+          "language": "cpp"
+        },
+        {
+          "name": "parseFen",
+          "line": 112,
+          "end": 141,
+          "language": "cpp"
+        },
+        {
+          "name": "applyMove",
+          "line": 143,
+          "end": 160,
+          "language": "cpp"
+        },
+        {
+          "name": "inferMove",
+          "line": 162,
+          "end": 179,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::Game",
+          "line": 181,
+          "end": 181,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::fail",
+          "line": 182,
+          "end": 182,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::reset",
+          "line": 184,
+          "end": 193,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::canMove",
+          "line": 195,
+          "end": 202,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::commit",
+          "line": 204,
+          "end": 212,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::acceptHuman",
+          "line": 214,
+          "end": 222,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::prepareRobot",
+          "line": 224,
+          "end": 239,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::confirmRobot",
+          "line": 241,
+          "end": 251,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::judge",
+          "line": 253,
+          "end": 265,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::agreeDraw",
+          "line": 267,
+          "end": 274,
+          "language": "cpp"
+        },
+        {
+          "name": "Game::resign",
+          "line": 276,
+          "end": 283,
+          "language": "cpp"
+        }
+      ],
+      "count": 25,
+      "physical_lines": 284,
+      "nloc": 260,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "chess::inside( int row , int col)",
+          "line": 9,
+          "end": 9,
+          "nloc": 1,
+          "complexity": 4
+        },
+        {
+          "name": "chess::redPiece( char piece)",
+          "line": 10,
+          "end": 10,
+          "nloc": 1,
+          "complexity": 2
+        },
+        {
+          "name": "chess::reject( std :: string & error , const std :: string & message)",
+          "line": 11,
+          "end": 11,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::observed( const Observation & value , std :: string & error)",
+          "line": 13,
+          "end": 18,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "chess::legalList( const Board & board , bool redToMove , const std :: vector<std::string> & legal , std :: string & error)",
+          "line": 20,
+          "end": 32,
+          "nloc": 13,
+          "complexity": 5
+        },
+        {
+          "name": "chess::number( const std :: string & text , int minimum , int & value)",
+          "line": 34,
+          "end": 39,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "chess::initialBoard()",
+          "line": 42,
+          "end": 50,
+          "nloc": 9,
+          "complexity": 3
+        },
+        {
+          "name": "chess::parseMove( const std :: string & text , Move & move)",
+          "line": 52,
+          "end": 60,
+          "nloc": 9,
+          "complexity": 11
+        },
+        {
+          "name": "chess::uci( const Move & move)",
+          "line": 62,
+          "end": 68,
+          "nloc": 7,
+          "complexity": 5
+        },
+        {
+          "name": "chess::validBoard( const Board & board , std :: string & error)",
+          "line": 70,
+          "end": 91,
+          "nloc": 22,
+          "complexity": 16
+        },
+        {
+          "name": "chess::fen( const Board & board , bool redToMove , int halfmoves , int fullmove)",
+          "line": 93,
+          "end": 110,
+          "nloc": 18,
+          "complexity": 11
+        },
+        {
+          "name": "chess::parseFen( const std :: string & text , Board & board , bool & redToMove , std :: string & error)",
+          "line": 112,
+          "end": 141,
+          "nloc": 30,
+          "complexity": 21
+        },
+        {
+          "name": "chess::applyMove( const Board & before , bool redToMove , const Move & move , Board & after , std :: string & error)",
+          "line": 143,
+          "end": 160,
+          "nloc": 18,
+          "complexity": 10
+        },
+        {
+          "name": "chess::inferMove( const Board & before , const Observation & after , bool redToMove , const std :: vector<std::string> & legal , Move & move , std :: string & error)",
+          "line": 162,
+          "end": 179,
+          "nloc": 18,
+          "complexity": 10
+        },
+        {
+          "name": "chess::Game::Game()",
+          "line": 181,
+          "end": 181,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::fail( const std :: string & message)",
+          "line": 182,
+          "end": 182,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::reset( const Board & board , bool redToMove , bool humanRed)",
+          "line": 184,
+          "end": 193,
+          "nloc": 10,
+          "complexity": 2
+        },
+        {
+          "name": "chess::Game::canMove()",
+          "line": 195,
+          "end": 202,
+          "nloc": 8,
+          "complexity": 4
+        },
+        {
+          "name": "chess::Game::commit( const Board & after , const Move & move)",
+          "line": 204,
+          "end": 212,
+          "nloc": 9,
+          "complexity": 2
+        },
+        {
+          "name": "chess::Game::acceptHuman( const Observation & after , const std :: vector<std::string> & legal , Move & move)",
+          "line": 214,
+          "end": 222,
+          "nloc": 9,
+          "complexity": 4
+        },
+        {
+          "name": "chess::Game::prepareRobot( const Observation & before , const std :: string & choice , const std :: vector<std::string> & legal , Move & move)",
+          "line": 224,
+          "end": 239,
+          "nloc": 16,
+          "complexity": 9
+        },
+        {
+          "name": "chess::Game::confirmRobot( const Observation & after , bool armSucceeded)",
+          "line": 241,
+          "end": 251,
+          "nloc": 10,
+          "complexity": 5
+        },
+        {
+          "name": "chess::Game::judge( const std :: vector<std::string> & legal)",
+          "line": 253,
+          "end": 265,
+          "nloc": 13,
+          "complexity": 8
+        },
+        {
+          "name": "chess::Game::agreeDraw()",
+          "line": 267,
+          "end": 274,
+          "nloc": 8,
+          "complexity": 4
+        },
+        {
+          "name": "chess::Game::resign( bool red)",
+          "line": 276,
+          "end": 283,
+          "nloc": 8,
+          "complexity": 5
+        }
+      ]
+    },
+    {
+      "path": "chess/board.hpp",
+      "group": "chess",
+      "functions": [
+        {
+          "name": "board",
+          "line": 46,
+          "end": 46,
+          "language": "cpp"
+        },
+        {
+          "name": "expectedBoard",
+          "line": 47,
+          "end": 47,
+          "language": "cpp"
+        },
+        {
+          "name": "baseFen",
+          "line": 48,
+          "end": 48,
+          "language": "cpp"
+        },
+        {
+          "name": "history",
+          "line": 49,
+          "end": 49,
+          "language": "cpp"
+        },
+        {
+          "name": "redToMove",
+          "line": 50,
+          "end": 50,
+          "language": "cpp"
+        },
+        {
+          "name": "pending",
+          "line": 51,
+          "end": 51,
+          "language": "cpp"
+        },
+        {
+          "name": "result",
+          "line": 52,
+          "end": 52,
+          "language": "cpp"
+        }
+      ],
+      "count": 7,
+      "physical_lines": 69,
+      "nloc": 55,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "chess::Game::board() const",
+          "line": 46,
+          "end": 46,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::expectedBoard() const",
+          "line": 47,
+          "end": 47,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::baseFen() const",
+          "line": 48,
+          "end": 48,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::history() const",
+          "line": 49,
+          "end": 49,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::redToMove() const",
+          "line": 50,
+          "end": 50,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::pending() const",
+          "line": 51,
+          "end": 51,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "chess::Game::result() const",
+          "line": 52,
+          "end": 52,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "chess/pikafish.cpp",
+      "group": "chess",
+      "functions": [
+        {
+          "name": "isMove",
+          "line": 15,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::fail",
+          "line": 20,
+          "end": 24,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::wait",
+          "line": 26,
+          "end": 41,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::send",
+          "line": 43,
+          "end": 53,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::readLine",
+          "line": 55,
+          "end": 74,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::start",
+          "line": 76,
+          "end": 113,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::position",
+          "line": 115,
+          "end": 133,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::legalMoves",
+          "line": 135,
+          "end": 137,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::legalMoves",
+          "line": 139,
+          "end": 159,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::think",
+          "line": 161,
+          "end": 163,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::think",
+          "line": 165,
+          "end": 179,
+          "language": "cpp"
+        },
+        {
+          "name": "Pikafish::close",
+          "line": 181,
+          "end": 203,
+          "language": "cpp"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 203,
+      "nloc": 186,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "isMove( const std :: string & s)",
+          "line": 15,
+          "end": 18,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::fail( const std :: string & message)",
+          "line": 20,
+          "end": 24,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::wait( short events)",
+          "line": 26,
+          "end": 41,
+          "nloc": 16,
+          "complexity": 12
+        },
+        {
+          "name": "Pikafish::send( const std :: string & text)",
+          "line": 43,
+          "end": 53,
+          "nloc": 11,
+          "complexity": 8
+        },
+        {
+          "name": "Pikafish::readLine( std :: string & line)",
+          "line": 55,
+          "end": 74,
+          "nloc": 20,
+          "complexity": 12
+        },
+        {
+          "name": "Pikafish::start( const char * engineDir)",
+          "line": 76,
+          "end": 113,
+          "nloc": 37,
+          "complexity": 25
+        },
+        {
+          "name": "Pikafish::position( const std :: string & baseFen , const std :: string & moves)",
+          "line": 115,
+          "end": 133,
+          "nloc": 18,
+          "complexity": 13
+        },
+        {
+          "name": "Pikafish::legalMoves( const std :: string & moves , std :: vector<std::string> & out)",
+          "line": 135,
+          "end": 137,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::legalMoves( const std :: string & baseFen , const std :: string & moves , std :: vector<std::string> & out)",
+          "line": 139,
+          "end": 159,
+          "nloc": 21,
+          "complexity": 14
+        },
+        {
+          "name": "Pikafish::think( const std :: string & moves , int timeMs , std :: string & best)",
+          "line": 161,
+          "end": 163,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "Pikafish::think( const std :: string & baseFen , const std :: string & moves , int timeMs , std :: string & best)",
+          "line": 165,
+          "end": 179,
+          "nloc": 15,
+          "complexity": 10
+        },
+        {
+          "name": "Pikafish::close()",
+          "line": 181,
+          "end": 203,
+          "nloc": 21,
+          "complexity": 9
+        }
+      ]
+    },
+    {
+      "path": "chess/pikafish.hpp",
+      "group": "chess",
+      "functions": [
+        {
+          "name": "~Pikafish",
+          "line": 12,
+          "end": 12,
+          "language": "cpp"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 39,
+      "nloc": 30,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "Pikafish::~Pikafish()",
+          "line": 12,
+          "end": 12,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "main.cpp",
+      "group": "main.cpp",
+      "functions": [
+        {
+          "name": "onStop",
+          "line": 23,
+          "end": 23,
+          "language": "cpp"
+        },
+        {
+          "name": "virtualObservation",
+          "line": 31,
+          "end": 34,
+          "language": "cpp"
+        },
+        {
+          "name": "previewJpeg",
+          "line": 38,
+          "end": 56,
+          "language": "cpp"
+        },
+        {
+          "name": "show",
+          "line": 60,
+          "end": 100,
+          "language": "cpp"
+        },
+        {
+          "name": "scanBoard",
+          "line": 102,
+          "end": 144,
+          "language": "cpp"
+        },
+        {
+          "name": "main",
+          "line": 146,
+          "end": 305,
+          "language": "cpp"
+        }
+      ],
+      "count": 6,
+      "physical_lines": 305,
+      "nloc": 278,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "onStop( int)",
+          "line": 23,
+          "end": 23,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "virtualObservation( const chess :: Board & board)",
+          "line": 31,
+          "end": 34,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "previewJpeg( const cv :: Mat & image)",
+          "line": 38,
+          "end": 56,
+          "nloc": 19,
+          "complexity": 8
+        },
+        {
+          "name": "show( const chess :: Game & game , const robot :: Simulator & arm , const std :: string & phase , const std :: string & message , const std :: vector<std::string> & legal , const std :: string & move , const std :: string & source)",
+          "line": 60,
+          "end": 100,
+          "nloc": 38,
+          "complexity": 8
+        },
+        {
+          "name": "scanBoard( const Runtime & runtime , chess :: Observation & observation , const std :: function<bool()> & cancelled , bool & fatal , std :: string & error)",
+          "line": 102,
+          "end": 144,
+          "nloc": 39,
+          "complexity": 17
+        },
+        {
+          "name": "main( int argc , char * argv [ ])",
+          "line": 146,
+          "end": 305,
+          "nloc": 151,
+          "complexity": 92
+        }
+      ]
+    },
+    {
+      "path": "robot/can.cpp",
+      "group": "robot",
+      "functions": [
+        {
+          "name": "require",
+          "line": 17,
+          "end": 19,
+          "language": "cpp"
+        },
+        {
+          "name": "Can::Can",
+          "line": 22,
+          "end": 37,
+          "language": "cpp"
+        },
+        {
+          "name": "Can::~Can",
+          "line": 39,
+          "end": 39,
+          "language": "cpp"
+        },
+        {
+          "name": "Can::send",
+          "line": 41,
+          "end": 45,
+          "language": "cpp"
+        },
+        {
+          "name": "Can::receive",
+          "line": 47,
+          "end": 69,
+          "language": "cpp"
+        }
+      ],
+      "count": 5,
+      "physical_lines": 71,
+      "nloc": 64,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "robot::require( bool ok , const char * message)",
+          "line": 17,
+          "end": 19,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "robot::Can::Can( const char * interface)",
+          "line": 22,
+          "end": 37,
+          "nloc": 16,
+          "complexity": 4
+        },
+        {
+          "name": "robot::Can::~Can()",
+          "line": 39,
+          "end": 39,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Can::send( const can_frame & frame)",
+          "line": 41,
+          "end": 45,
+          "nloc": 5,
+          "complexity": 3
+        },
+        {
+          "name": "robot::Can::receive( can_frame & frame , int timeoutMs)",
+          "line": 47,
+          "end": 69,
+          "nloc": 22,
+          "complexity": 14
+        }
+      ]
+    },
+    {
+      "path": "robot/can.hpp",
+      "group": "robot",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 19,
+      "nloc": 14,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "robot/motor.cpp",
+      "group": "robot",
+      "functions": [
+        {
+          "name": "nowMs",
+          "line": 12,
+          "end": 15,
+          "language": "cpp"
+        },
+        {
+          "name": "require",
+          "line": 16,
+          "end": 18,
+          "language": "cpp"
+        },
+        {
+          "name": "number",
+          "line": 19,
+          "end": 23,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::Motor",
+          "line": 26,
+          "end": 28,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::~Motor",
+          "line": 30,
+          "end": 32,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::exchange",
+          "line": 34,
+          "end": 50,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::query",
+          "line": 52,
+          "end": 54,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::prepare",
+          "line": 56,
+          "end": 73,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::start",
+          "line": 75,
+          "end": 91,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::read",
+          "line": 93,
+          "end": 113,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::stop",
+          "line": 115,
+          "end": 127,
+          "language": "cpp"
+        },
+        {
+          "name": "Motor::stopOnFailure",
+          "line": 129,
+          "end": 131,
+          "language": "cpp"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 133,
+      "nloc": 120,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "robot::nowMs()",
+          "line": 12,
+          "end": 15,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "robot::require( bool ok , const char * message)",
+          "line": 16,
+          "end": 18,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "robot::number( const uint8_t * p , int count)",
+          "line": 19,
+          "end": 23,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "robot::Motor::Motor( Can & can , unsigned node)",
+          "line": 26,
+          "end": 28,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "robot::Motor::~Motor()",
+          "line": 30,
+          "end": 32,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "robot::Motor::exchange( std :: initializer_list<uint8_t> bytes , uint8_t replyLength)",
+          "line": 34,
+          "end": 50,
+          "nloc": 17,
+          "complexity": 8
+        },
+        {
+          "name": "robot::Motor::query( uint8_t code , uint8_t length)",
+          "line": 52,
+          "end": 54,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Motor::prepare()",
+          "line": 56,
+          "end": 73,
+          "nloc": 17,
+          "complexity": 3
+        },
+        {
+          "name": "robot::Motor::start( int signedRpm)",
+          "line": 75,
+          "end": 91,
+          "nloc": 17,
+          "complexity": 6
+        },
+        {
+          "name": "robot::Motor::read()",
+          "line": 93,
+          "end": 113,
+          "nloc": 21,
+          "complexity": 7
+        },
+        {
+          "name": "robot::Motor::stop()",
+          "line": 115,
+          "end": 127,
+          "nloc": 13,
+          "complexity": 5
+        },
+        {
+          "name": "robot::Motor::stopOnFailure()",
+          "line": 129,
+          "end": 131,
+          "nloc": 3,
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "path": "robot/motor.hpp",
+      "group": "robot",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 38,
+      "nloc": 30,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "robot/simulator.cpp",
+      "group": "robot",
+      "functions": [
+        {
+          "name": "Simulator::Simulator",
+          "line": 10,
+          "end": 10,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::Simulator",
+          "line": 12,
+          "end": 15,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::reset",
+          "line": 17,
+          "end": 41,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::start",
+          "line": 43,
+          "end": 91,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::observeHuman",
+          "line": 93,
+          "end": 120,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::applyTool",
+          "line": 122,
+          "end": 156,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::step",
+          "line": 158,
+          "end": 198,
+          "language": "cpp"
+        },
+        {
+          "name": "Simulator::stop",
+          "line": 200,
+          "end": 206,
+          "language": "cpp"
+        }
+      ],
+      "count": 8,
+      "physical_lines": 208,
+      "nloc": 193,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "robot::Simulator::Simulator()",
+          "line": 10,
+          "end": 10,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::Simulator( const scara :: MotionConfig & config)",
+          "line": 12,
+          "end": 15,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::reset( const chess :: Board & board)",
+          "line": 17,
+          "end": 41,
+          "nloc": 25,
+          "complexity": 5
+        },
+        {
+          "name": "robot::Simulator::start( const chess :: Board & confirmed , const chess :: Move & move)",
+          "line": 43,
+          "end": 91,
+          "nloc": 46,
+          "complexity": 14
+        },
+        {
+          "name": "robot::Simulator::observeHuman( const chess :: Board & before , const chess :: Move & move)",
+          "line": 93,
+          "end": 120,
+          "nloc": 27,
+          "complexity": 15
+        },
+        {
+          "name": "robot::Simulator::applyTool( scara :: ToolAction action)",
+          "line": 122,
+          "end": 156,
+          "nloc": 35,
+          "complexity": 19
+        },
+        {
+          "name": "robot::Simulator::step( double dt)",
+          "line": 158,
+          "end": 198,
+          "nloc": 40,
+          "complexity": 17
+        },
+        {
+          "name": "robot::Simulator::stop()",
+          "line": 200,
+          "end": 206,
+          "nloc": 7,
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "path": "robot/simulator.hpp",
+      "group": "robot",
+      "functions": [
+        {
+          "name": "board",
+          "line": 22,
+          "end": 22,
+          "language": "cpp"
+        },
+        {
+          "name": "joints",
+          "line": 23,
+          "end": 23,
+          "language": "cpp"
+        },
+        {
+          "name": "tcp",
+          "line": 24,
+          "end": 24,
+          "language": "cpp"
+        },
+        {
+          "name": "carried",
+          "line": 25,
+          "end": 25,
+          "language": "cpp"
+        },
+        {
+          "name": "vacuumOn",
+          "line": 26,
+          "end": 26,
+          "language": "cpp"
+        },
+        {
+          "name": "busy",
+          "line": 27,
+          "end": 27,
+          "language": "cpp"
+        },
+        {
+          "name": "succeeded",
+          "line": 28,
+          "end": 28,
+          "language": "cpp"
+        },
+        {
+          "name": "needsReset",
+          "line": 29,
+          "end": 29,
+          "language": "cpp"
+        },
+        {
+          "name": "error",
+          "line": 30,
+          "end": 30,
+          "language": "cpp"
+        },
+        {
+          "name": "plan",
+          "line": 31,
+          "end": 31,
+          "language": "cpp"
+        },
+        {
+          "name": "captureSlots",
+          "line": 32,
+          "end": 32,
+          "language": "cpp"
+        }
+      ],
+      "count": 11,
+      "physical_lines": 52,
+      "nloc": 42,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "robot::Simulator::board() const",
+          "line": 22,
+          "end": 22,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::joints() const",
+          "line": 23,
+          "end": 23,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::tcp() const",
+          "line": 24,
+          "end": 24,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::carried() const",
+          "line": 25,
+          "end": 25,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::vacuumOn() const",
+          "line": 26,
+          "end": 26,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::busy() const",
+          "line": 27,
+          "end": 27,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::succeeded() const",
+          "line": 28,
+          "end": 28,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::needsReset() const",
+          "line": 29,
+          "end": 29,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::error() const",
+          "line": 30,
+          "end": 30,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::plan() const",
+          "line": 31,
+          "end": 31,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "robot::Simulator::captureSlots( bool red) const",
+          "line": 32,
+          "end": 32,
+          "nloc": 1,
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "path": "tools/pikafish-viewer/index.html",
+      "group": "upper_ui_tools",
+      "functions": [
+        {
+          "name": "embedded_js_0.$",
+          "line": 130,
+          "end": 130,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.squareName",
+          "line": 133,
+          "end": 133,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.isRed",
+          "line": 134,
+          "end": 134,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.humanTurn",
+          "line": 135,
+          "end": 135,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.svgElement",
+          "line": 136,
+          "end": 142,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.renderBoard",
+          "line": 164,
+          "end": 191,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.render",
+          "line": 192,
+          "end": 241,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.accept",
+          "line": 242,
+          "end": 247,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.request",
+          "line": 248,
+          "end": 258,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.action",
+          "line": 259,
+          "end": 265,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.poll",
+          "line": 266,
+          "end": 271,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.choose",
+          "line": 272,
+          "end": 278,
+          "language": "js"
+        }
+      ],
+      "count": 12,
+      "physical_lines": 298,
+      "nloc": 296,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "tools/pikafish-viewer/server.py",
+      "group": "upper_ui_tools",
+      "functions": [
+        {
+          "name": "fresh_board",
+          "line": 19,
+          "end": 20,
+          "language": "py"
+        },
+        {
+          "name": "play",
+          "line": 23,
+          "end": 27,
+          "language": "py"
+        },
+        {
+          "name": "analysis",
+          "line": 30,
+          "end": 31,
+          "language": "py"
+        },
+        {
+          "name": "Engine.__init__",
+          "line": 35,
+          "end": 48,
+          "language": "py"
+        },
+        {
+          "name": "Engine.read",
+          "line": 50,
+          "end": 55,
+          "language": "py"
+        },
+        {
+          "name": "Engine.send",
+          "line": 57,
+          "end": 62,
+          "language": "py"
+        },
+        {
+          "name": "Engine.until",
+          "line": 64,
+          "end": 77,
+          "language": "py"
+        },
+        {
+          "name": "Engine.connect",
+          "line": 79,
+          "end": 85,
+          "language": "py"
+        },
+        {
+          "name": "Engine.position",
+          "line": 87,
+          "end": 88,
+          "language": "py"
+        },
+        {
+          "name": "Engine.legal",
+          "line": 90,
+          "end": 98,
+          "language": "py"
+        },
+        {
+          "name": "Engine.stop",
+          "line": 100,
+          "end": 104,
+          "language": "py"
+        },
+        {
+          "name": "Engine.close",
+          "line": 106,
+          "end": 112,
+          "language": "py"
+        },
+        {
+          "name": "Game.__init__",
+          "line": 116,
+          "end": 127,
+          "language": "py"
+        },
+        {
+          "name": "Game.position_key",
+          "line": 129,
+          "end": 130,
+          "language": "py"
+        },
+        {
+          "name": "Game.snapshot",
+          "line": 132,
+          "end": 134,
+          "language": "py"
+        },
+        {
+          "name": "Game.cancel",
+          "line": 136,
+          "end": 140,
+          "language": "py"
+        },
+        {
+          "name": "Game.commit",
+          "line": 142,
+          "end": 163,
+          "language": "py"
+        },
+        {
+          "name": "Game.action",
+          "line": 165,
+          "end": 221,
+          "language": "py"
+        },
+        {
+          "name": "Game.info",
+          "line": 223,
+          "end": 238,
+          "language": "py"
+        },
+        {
+          "name": "Game.run",
+          "line": 240,
+          "end": 295,
+          "language": "py"
+        },
+        {
+          "name": "Game.close",
+          "line": 297,
+          "end": 304,
+          "language": "py"
+        },
+        {
+          "name": "Handler.setup",
+          "line": 311,
+          "end": 313,
+          "language": "py"
+        },
+        {
+          "name": "Handler.reply",
+          "line": 315,
+          "end": 326,
+          "language": "py"
+        },
+        {
+          "name": "Handler.same_host",
+          "line": 328,
+          "end": 329,
+          "language": "py"
+        },
+        {
+          "name": "Handler.do_GET",
+          "line": 331,
+          "end": 341,
+          "language": "py"
+        },
+        {
+          "name": "Handler.do_POST",
+          "line": 343,
+          "end": 358,
+          "language": "py"
+        }
+      ],
+      "count": 26,
+      "physical_lines": 371,
+      "nloc": 333,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "fresh_board( )",
+          "line": 19,
+          "end": 20,
+          "nloc": 2,
+          "complexity": 4
+        },
+        {
+          "name": "play( board , move )",
+          "line": 23,
+          "end": 27,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "analysis( )",
+          "line": 30,
+          "end": 31,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self )",
+          "line": 35,
+          "end": 48,
+          "nloc": 14,
+          "complexity": 1
+        },
+        {
+          "name": "read( self )",
+          "line": 50,
+          "end": 55,
+          "nloc": 6,
+          "complexity": 3
+        },
+        {
+          "name": "send( self , command )",
+          "line": 57,
+          "end": 62,
+          "nloc": 6,
+          "complexity": 2
+        },
+        {
+          "name": "until( self , end , seconds , on_line = lambda line : None )",
+          "line": 64,
+          "end": 77,
+          "nloc": 14,
+          "complexity": 6
+        },
+        {
+          "name": "connect( self )",
+          "line": 79,
+          "end": 85,
+          "nloc": 7,
+          "complexity": 1
+        },
+        {
+          "name": "position( self , history )",
+          "line": 87,
+          "end": 88,
+          "nloc": 2,
+          "complexity": 2
+        },
+        {
+          "name": "legal( self , history )",
+          "line": 90,
+          "end": 98,
+          "nloc": 9,
+          "complexity": 3
+        },
+        {
+          "name": "stop( self )",
+          "line": 100,
+          "end": 104,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "close( self )",
+          "line": 106,
+          "end": 112,
+          "nloc": 7,
+          "complexity": 3
+        },
+        {
+          "name": "__init__( self )",
+          "line": 116,
+          "end": 127,
+          "nloc": 12,
+          "complexity": 1
+        },
+        {
+          "name": "position_key( self )",
+          "line": 129,
+          "end": 130,
+          "nloc": 2,
+          "complexity": 2
+        },
+        {
+          "name": "snapshot( self )",
+          "line": 132,
+          "end": 134,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "cancel( self )",
+          "line": 136,
+          "end": 140,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "commit( self , move , elapsed = 0 )",
+          "line": 142,
+          "end": 163,
+          "nloc": 22,
+          "complexity": 11
+        },
+        {
+          "name": "action( self , data )",
+          "line": 165,
+          "end": 221,
+          "nloc": 57,
+          "complexity": 38
+        },
+        {
+          "name": "info( self , line , revision )",
+          "line": 223,
+          "end": 238,
+          "nloc": 16,
+          "complexity": 9
+        },
+        {
+          "name": "run( self )",
+          "line": 240,
+          "end": 295,
+          "nloc": 55,
+          "complexity": 21
+        },
+        {
+          "name": "close( self )",
+          "line": 297,
+          "end": 304,
+          "nloc": 8,
+          "complexity": 3
+        },
+        {
+          "name": "log_message( self , * args )",
+          "line": 308,
+          "end": 309,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "setup( self )",
+          "line": 311,
+          "end": 313,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "reply( self , code , data , kind = \"application/json; charset=utf-8\" )",
+          "line": 315,
+          "end": 326,
+          "nloc": 12,
+          "complexity": 3
+        },
+        {
+          "name": "same_host( self )",
+          "line": 328,
+          "end": 329,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "do_GET( self )",
+          "line": 331,
+          "end": 341,
+          "nloc": 11,
+          "complexity": 5
+        },
+        {
+          "name": "do_POST( self )",
+          "line": 343,
+          "end": 358,
+          "nloc": 16,
+          "complexity": 12
+        }
+      ]
+    },
+    {
+      "path": "tools/robot-viewer/index.html",
+      "group": "upper_ui_tools",
+      "functions": [
+        {
+          "name": "embedded_js_0.$",
+          "line": 41,
+          "end": 41,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.red",
+          "line": 46,
+          "end": 46,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.square",
+          "line": 47,
+          "end": 47,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.at",
+          "line": 48,
+          "end": 48,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.svg",
+          "line": 49,
+          "end": 49,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.piece",
+          "line": 50,
+          "end": 50,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.canPlay",
+          "line": 51,
+          "end": 51,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.choose",
+          "line": 56,
+          "end": 62,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.drawBoard",
+          "line": 63,
+          "end": 74,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.drawArm",
+          "line": 75,
+          "end": 98,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.point",
+          "line": 76,
+          "end": 76,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.cell",
+          "line": 78,
+          "end": 78,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.render",
+          "line": 99,
+          "end": 117,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.send",
+          "line": 118,
+          "end": 122,
+          "language": "js"
+        },
+        {
+          "name": "embedded_js_0.poll",
+          "line": 124,
+          "end": 124,
+          "language": "js"
+        }
+      ],
+      "count": 15,
+      "physical_lines": 127,
+      "nloc": 126,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "tools/robot-viewer/server.py",
+      "group": "upper_ui_tools",
+      "functions": [
+        {
+          "name": "Bridge.__init__",
+          "line": 18,
+          "end": 33,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.failed",
+          "line": 35,
+          "end": 38,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.read",
+          "line": 40,
+          "end": 63,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.write",
+          "line": 65,
+          "end": 76,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.command",
+          "line": 78,
+          "end": 86,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.snapshot",
+          "line": 88,
+          "end": 92,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.image",
+          "line": 94,
+          "end": 96,
+          "language": "py"
+        },
+        {
+          "name": "Bridge.close",
+          "line": 98,
+          "end": 115,
+          "language": "py"
+        },
+        {
+          "name": "Handler.setup",
+          "line": 122,
+          "end": 124,
+          "language": "py"
+        },
+        {
+          "name": "Handler.reply",
+          "line": 126,
+          "end": 137,
+          "language": "py"
+        },
+        {
+          "name": "Handler.local",
+          "line": 139,
+          "end": 140,
+          "language": "py"
+        },
+        {
+          "name": "Handler.do_GET",
+          "line": 142,
+          "end": 153,
+          "language": "py"
+        },
+        {
+          "name": "Handler.do_POST",
+          "line": 155,
+          "end": 174,
+          "language": "py"
+        },
+        {
+          "name": "stop",
+          "line": 177,
+          "end": 178,
+          "language": "py"
+        }
+      ],
+      "count": 14,
+      "physical_lines": 197,
+      "nloc": 174,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "__init__( self , config )",
+          "line": 18,
+          "end": 33,
+          "nloc": 16,
+          "complexity": 9
+        },
+        {
+          "name": "failed( self , message )",
+          "line": 35,
+          "end": 38,
+          "nloc": 4,
+          "complexity": 2
+        },
+        {
+          "name": "read( self )",
+          "line": 40,
+          "end": 63,
+          "nloc": 24,
+          "complexity": 8
+        },
+        {
+          "name": "write( self )",
+          "line": 65,
+          "end": 76,
+          "nloc": 12,
+          "complexity": 6
+        },
+        {
+          "name": "command( self , text )",
+          "line": 78,
+          "end": 86,
+          "nloc": 9,
+          "complexity": 6
+        },
+        {
+          "name": "snapshot( self )",
+          "line": 88,
+          "end": 92,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "image( self , name )",
+          "line": 94,
+          "end": 96,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "close( self )",
+          "line": 98,
+          "end": 115,
+          "nloc": 17,
+          "complexity": 5
+        },
+        {
+          "name": "log_message( self , * args )",
+          "line": 119,
+          "end": 120,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "setup( self )",
+          "line": 122,
+          "end": 124,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "reply( self , status , value , kind = \"application/json; charset=utf-8\" )",
+          "line": 126,
+          "end": 137,
+          "nloc": 12,
+          "complexity": 3
+        },
+        {
+          "name": "local( self )",
+          "line": 139,
+          "end": 140,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "do_GET( self )",
+          "line": 142,
+          "end": 153,
+          "nloc": 12,
+          "complexity": 6
+        },
+        {
+          "name": "do_POST( self )",
+          "line": 155,
+          "end": 174,
+          "nloc": 20,
+          "complexity": 13
+        },
+        {
+          "name": "stop( signum , frame )",
+          "line": 177,
+          "end": 178,
+          "nloc": 2,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "tools/z-axis-panel/can_diagnostics.py",
+      "group": "upper_ui_tools",
+      "functions": [
+        {
+          "name": "append_diagnostic",
+          "line": 12,
+          "end": 18,
+          "language": "py"
+        },
+        {
+          "name": "describe_can_error",
+          "line": 21,
+          "end": 51,
+          "language": "py"
+        }
+      ],
+      "count": 2,
+      "physical_lines": 51,
+      "nloc": 43,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "append_diagnostic( level , message , ** details )",
+          "line": 12,
+          "end": 18,
+          "nloc": 7,
+          "complexity": 1
+        },
+        {
+          "name": "describe_can_error( can_id , data )",
+          "line": 21,
+          "end": 51,
+          "nloc": 29,
+          "complexity": 17
+        }
+      ]
+    },
+    {
+      "path": "tools/z-axis-panel/panel.py",
+      "group": "upper_ui_tools",
+      "functions": [
+        {
+          "name": "parse_rpm",
+          "line": 25,
+          "end": 29,
+          "language": "py"
+        },
+        {
+          "name": "motion_command",
+          "line": 32,
+          "end": 36,
+          "language": "py"
+        },
+        {
+          "name": "speed_command",
+          "line": 39,
+          "end": 43,
+          "language": "py"
+        },
+        {
+          "name": "watchdog_command",
+          "line": 46,
+          "end": 47,
+          "language": "py"
+        },
+        {
+          "name": "Intent.__init__",
+          "line": 51,
+          "end": 53,
+          "language": "py"
+        },
+        {
+          "name": "Intent.press",
+          "line": 55,
+          "end": 58,
+          "language": "py"
+        },
+        {
+          "name": "Intent.release",
+          "line": 60,
+          "end": 62,
+          "language": "py"
+        },
+        {
+          "name": "Intent.renew",
+          "line": 64,
+          "end": 66,
+          "language": "py"
+        },
+        {
+          "name": "Intent.snapshot",
+          "line": 68,
+          "end": 70,
+          "language": "py"
+        },
+        {
+          "name": "HoldGate.__init__",
+          "line": 75,
+          "end": 76,
+          "language": "py"
+        },
+        {
+          "name": "HoldGate.step",
+          "line": 78,
+          "end": 89,
+          "language": "py"
+        },
+        {
+          "name": "AutoSequence.__init__",
+          "line": 94,
+          "end": 96,
+          "language": "py"
+        },
+        {
+          "name": "AutoSequence.next",
+          "line": 98,
+          "end": 102,
+          "language": "py"
+        },
+        {
+          "name": "AutoSequence.complete",
+          "line": 104,
+          "end": 109,
+          "language": "py"
+        },
+        {
+          "name": "AutoSequence.cancel",
+          "line": 111,
+          "end": 112,
+          "language": "py"
+        },
+        {
+          "name": "Drive.__init__",
+          "line": 116,
+          "end": 159,
+          "language": "py"
+        },
+        {
+          "name": "Drive.record",
+          "line": 161,
+          "end": 163,
+          "language": "py"
+        },
+        {
+          "name": "Drive.send",
+          "line": 165,
+          "end": 177,
+          "language": "py"
+        },
+        {
+          "name": "Drive.check_error_frame",
+          "line": 179,
+          "end": 185,
+          "language": "py"
+        },
+        {
+          "name": "Drive.reply",
+          "line": 187,
+          "end": 209,
+          "language": "py"
+        },
+        {
+          "name": "Drive.query",
+          "line": 211,
+          "end": 216,
+          "language": "py"
+        },
+        {
+          "name": "Drive.validate",
+          "line": 218,
+          "end": 241,
+          "language": "py"
+        },
+        {
+          "name": "Drive.ensure_watchdog",
+          "line": 243,
+          "end": 255,
+          "language": "py"
+        },
+        {
+          "name": "Drive.sample",
+          "line": 257,
+          "end": 265,
+          "language": "py"
+        },
+        {
+          "name": "Drive.move",
+          "line": 267,
+          "end": 273,
+          "language": "py"
+        },
+        {
+          "name": "Drive.stop",
+          "line": 275,
+          "end": 285,
+          "language": "py"
+        },
+        {
+          "name": "Drive.close",
+          "line": 287,
+          "end": 293,
+          "language": "py"
+        },
+        {
+          "name": "monitor",
+          "line": 296,
+          "end": 322,
+          "language": "py"
+        },
+        {
+          "name": "worker",
+          "line": 325,
+          "end": 415,
+          "language": "py"
+        },
+        {
+          "name": "worker.emit",
+          "line": 329,
+          "end": 334,
+          "language": "py"
+        },
+        {
+          "name": "main",
+          "line": 418,
+          "end": 647,
+          "language": "py"
+        },
+        {
+          "name": "main.report",
+          "line": 442,
+          "end": 448,
+          "language": "py"
+        },
+        {
+          "name": "main.apply_speed",
+          "line": 471,
+          "end": 482,
+          "language": "py"
+        },
+        {
+          "name": "main.release",
+          "line": 493,
+          "end": 498,
+          "language": "py"
+        },
+        {
+          "name": "main.press",
+          "line": 500,
+          "end": 503,
+          "language": "py"
+        },
+        {
+          "name": "main.manual_release",
+          "line": 505,
+          "end": 508,
+          "language": "py"
+        },
+        {
+          "name": "main.reconnect",
+          "line": 524,
+          "end": 537,
+          "language": "py"
+        },
+        {
+          "name": "main.open_failure_log",
+          "line": 539,
+          "end": 541,
+          "language": "py"
+        },
+        {
+          "name": "main.close",
+          "line": 553,
+          "end": 557,
+          "language": "py"
+        },
+        {
+          "name": "main.tick",
+          "line": 559,
+          "end": 631,
+          "language": "py"
+        }
+      ],
+      "count": 40,
+      "physical_lines": 651,
+      "nloc": 584,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "parse_rpm( value )",
+          "line": 25,
+          "end": 29,
+          "nloc": 5,
+          "complexity": 4
+        },
+        {
+          "name": "motion_command( direction )",
+          "line": 32,
+          "end": 36,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "speed_command( direction )",
+          "line": 39,
+          "end": 43,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "watchdog_command( )",
+          "line": 46,
+          "end": 47,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self )",
+          "line": 51,
+          "end": 53,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "press( self , direction )",
+          "line": 55,
+          "end": 58,
+          "nloc": 4,
+          "complexity": 1
+        },
+        {
+          "name": "release( self )",
+          "line": 60,
+          "end": 62,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "renew( self )",
+          "line": 64,
+          "end": 66,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "snapshot( self )",
+          "line": 68,
+          "end": 70,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self )",
+          "line": 75,
+          "end": 76,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "step( self , now , snapshot )",
+          "line": 78,
+          "end": 89,
+          "nloc": 12,
+          "complexity": 9
+        },
+        {
+          "name": "__init__( self , enabled = False , legs = 6 )",
+          "line": 94,
+          "end": 96,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "next( self , now )",
+          "line": 98,
+          "end": 102,
+          "nloc": 5,
+          "complexity": 5
+        },
+        {
+          "name": "complete( self , now )",
+          "line": 104,
+          "end": 109,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "cancel( self )",
+          "line": 111,
+          "end": 112,
+          "nloc": 2,
+          "complexity": 1
+        },
+        {
+          "name": "__init__( self )",
+          "line": 116,
+          "end": 159,
+          "nloc": 42,
+          "complexity": 9
+        },
+        {
+          "name": "record( self , item )",
+          "line": 161,
+          "end": 163,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "send( self , data )",
+          "line": 165,
+          "end": 177,
+          "nloc": 13,
+          "complexity": 6
+        },
+        {
+          "name": "check_error_frame( self , frame , phase , fatal = True )",
+          "line": 179,
+          "end": 185,
+          "nloc": 7,
+          "complexity": 3
+        },
+        {
+          "name": "reply( self , code , timeout = 0 . 1 , packet = 0 )",
+          "line": 187,
+          "end": 209,
+          "nloc": 23,
+          "complexity": 15
+        },
+        {
+          "name": "query( self , code , length )",
+          "line": 211,
+          "end": 216,
+          "nloc": 6,
+          "complexity": 3
+        },
+        {
+          "name": "validate( self )",
+          "line": 218,
+          "end": 241,
+          "nloc": 24,
+          "complexity": 9
+        },
+        {
+          "name": "ensure_watchdog( self )",
+          "line": 243,
+          "end": 255,
+          "nloc": 13,
+          "complexity": 4
+        },
+        {
+          "name": "sample( self )",
+          "line": 257,
+          "end": 265,
+          "nloc": 9,
+          "complexity": 5
+        },
+        {
+          "name": "move( self , direction )",
+          "line": 267,
+          "end": 273,
+          "nloc": 7,
+          "complexity": 5
+        },
+        {
+          "name": "stop( self )",
+          "line": 275,
+          "end": 285,
+          "nloc": 11,
+          "complexity": 5
+        },
+        {
+          "name": "close( self )",
+          "line": 287,
+          "end": 293,
+          "nloc": 7,
+          "complexity": 2
+        },
+        {
+          "name": "monitor( sample , baseline , direction , elapsed , travel_limit = TRAVEL_DEG , manual = False )",
+          "line": 296,
+          "end": 322,
+          "nloc": 26,
+          "complexity": 15
+        },
+        {
+          "name": "worker.emit( kind , value )",
+          "line": 329,
+          "end": 334,
+          "nloc": 6,
+          "complexity": 4
+        },
+        {
+          "name": "worker( intent , closing , events , settings = None , recovery = False )",
+          "line": 325,
+          "end": 415,
+          "nloc": 84,
+          "complexity": 38
+        },
+        {
+          "name": "main.report( outcome )",
+          "line": 442,
+          "end": 448,
+          "nloc": 7,
+          "complexity": 2
+        },
+        {
+          "name": "main.apply_speed( )",
+          "line": 471,
+          "end": 482,
+          "nloc": 12,
+          "complexity": 7
+        },
+        {
+          "name": "main.release( event = None )",
+          "line": 493,
+          "end": 498,
+          "nloc": 6,
+          "complexity": 2
+        },
+        {
+          "name": "main.press( direction )",
+          "line": 500,
+          "end": 503,
+          "nloc": 4,
+          "complexity": 4
+        },
+        {
+          "name": "main.manual_release( event = None )",
+          "line": 505,
+          "end": 508,
+          "nloc": 3,
+          "complexity": 2
+        },
+        {
+          "name": "main.reconnect( )",
+          "line": 524,
+          "end": 537,
+          "nloc": 14,
+          "complexity": 5
+        },
+        {
+          "name": "main.open_failure_log( )",
+          "line": 539,
+          "end": 541,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "main.close( )",
+          "line": 553,
+          "end": 557,
+          "nloc": 5,
+          "complexity": 1
+        },
+        {
+          "name": "main.tick( )",
+          "line": 559,
+          "end": 631,
+          "nloc": 72,
+          "complexity": 41
+        },
+        {
+          "name": "main( )",
+          "line": 418,
+          "end": 647,
+          "nloc": 98,
+          "complexity": 20
+        }
+      ]
+    },
+    {
+      "path": "vision/board_vision.cpp",
+      "group": "vision",
+      "functions": [
+        {
+          "name": "BoardVision::BoardVision",
+          "line": 8,
+          "end": 15,
+          "language": "cpp"
+        },
+        {
+          "name": "BoardVision::reset",
+          "line": 17,
+          "end": 23,
+          "language": "cpp"
+        },
+        {
+          "name": "BoardVision::locate",
+          "line": 25,
+          "end": 127,
+          "language": "cpp"
+        },
+        {
+          "name": "BoardVision::interpret",
+          "line": 129,
+          "end": 163,
+          "language": "cpp"
+        }
+      ],
+      "count": 4,
+      "physical_lines": 163,
+      "nloc": 154,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "BoardVision::BoardVision()",
+          "line": 8,
+          "end": 15,
+          "nloc": 8,
+          "complexity": 1
+        },
+        {
+          "name": "BoardVision::reset()",
+          "line": 17,
+          "end": 23,
+          "nloc": 7,
+          "complexity": 1
+        },
+        {
+          "name": "BoardVision::locate( const cv :: Mat & bgr , cv :: Mat & rgb , std :: string & error)",
+          "line": 25,
+          "end": 127,
+          "nloc": 98,
+          "complexity": 28
+        },
+        {
+          "name": "BoardVision::interpret( const std :: vector<Detection> & pieces)",
+          "line": 129,
+          "end": 163,
+          "nloc": 35,
+          "complexity": 26
+        }
+      ]
+    },
+    {
+      "path": "vision/board_vision.hpp",
+      "group": "vision",
+      "functions": [
+        {
+          "name": "view",
+          "line": 14,
+          "end": 14,
+          "language": "cpp"
+        },
+        {
+          "name": "boardImage",
+          "line": 15,
+          "end": 15,
+          "language": "cpp"
+        },
+        {
+          "name": "markersFound",
+          "line": 16,
+          "end": 16,
+          "language": "cpp"
+        }
+      ],
+      "count": 3,
+      "physical_lines": 25,
+      "nloc": 22,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "BoardVision::view() const",
+          "line": 14,
+          "end": 14,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "BoardVision::boardImage() const",
+          "line": 15,
+          "end": 15,
+          "nloc": 1,
+          "complexity": 1
+        },
+        {
+          "name": "BoardVision::markersFound() const",
+          "line": 16,
+          "end": 16,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "vision/camera.cpp",
+      "group": "vision",
+      "functions": [
+        {
+          "name": "finish",
+          "line": 21,
+          "end": 39,
+          "language": "cpp"
+        },
+        {
+          "name": "redirectLog",
+          "line": 41,
+          "end": 45,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::start",
+          "line": 48,
+          "end": 90,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::read",
+          "line": 92,
+          "end": 121,
+          "language": "cpp"
+        },
+        {
+          "name": "Camera::stop",
+          "line": 123,
+          "end": 131,
+          "language": "cpp"
+        }
+      ],
+      "count": 5,
+      "physical_lines": 131,
+      "nloc": 123,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "finish( int & pid)",
+          "line": 21,
+          "end": 39,
+          "nloc": 19,
+          "complexity": 14
+        },
+        {
+          "name": "redirectLog()",
+          "line": 41,
+          "end": 45,
+          "nloc": 5,
+          "complexity": 2
+        },
+        {
+          "name": "Camera::start( const std :: string & script , std :: string & error)",
+          "line": 48,
+          "end": 90,
+          "nloc": 42,
+          "complexity": 22
+        },
+        {
+          "name": "Camera::read( cv :: Mat & bgr , std :: string & error)",
+          "line": 92,
+          "end": 121,
+          "nloc": 30,
+          "complexity": 18
+        },
+        {
+          "name": "Camera::stop()",
+          "line": 123,
+          "end": 131,
+          "nloc": 9,
+          "complexity": 5
+        }
+      ]
+    },
+    {
+      "path": "vision/camera.hpp",
+      "group": "vision",
+      "functions": [
+        {
+          "name": "~Camera",
+          "line": 10,
+          "end": 10,
+          "language": "cpp"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 21,
+      "nloc": 17,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "Camera::~Camera()",
+          "line": 10,
+          "end": 10,
+          "nloc": 1,
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "path": "vision/detector.cpp",
+      "group": "vision",
+      "functions": [
+        {
+          "name": "dequantize",
+          "line": 38,
+          "end": 40,
+          "language": "cpp"
+        },
+        {
+          "name": "intersectionOverUnion",
+          "line": 42,
+          "end": 49,
+          "language": "cpp"
+        },
+        {
+          "name": "detector_close",
+          "line": 61,
+          "end": 70,
+          "language": "cpp"
+        },
+        {
+          "name": "detector_load",
+          "line": 72,
+          "end": 167,
+          "language": "cpp"
+        },
+        {
+          "name": "detector_detect",
+          "line": 169,
+          "end": 260,
+          "language": "cpp"
+        }
+      ],
+      "count": 5,
+      "physical_lines": 260,
+      "nloc": 234,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "dequantize( int8_t value , const rknn_tensor_attr & attr)",
+          "line": 38,
+          "end": 40,
+          "nloc": 3,
+          "complexity": 1
+        },
+        {
+          "name": "intersectionOverUnion( const Detection & a , const Detection & b)",
+          "line": 42,
+          "end": 49,
+          "nloc": 8,
+          "complexity": 2
+        },
+        {
+          "name": "detector_close( Detector * detector)",
+          "line": 61,
+          "end": 70,
+          "nloc": 9,
+          "complexity": 6
+        },
+        {
+          "name": "detector_load( const char * modelPath , std :: string & error)",
+          "line": 72,
+          "end": 167,
+          "nloc": 88,
+          "complexity": 59
+        },
+        {
+          "name": "detector_detect( Detector * detector , const cv :: Mat & rgb , std :: vector<Detection> & result , std :: string & error)",
+          "line": 169,
+          "end": 260,
+          "nloc": 90,
+          "complexity": 24
+        }
+      ]
+    },
+    {
+      "path": "vision/detector.hpp",
+      "group": "vision",
+      "functions": [],
+      "count": 0,
+      "physical_lines": 23,
+      "nloc": 13,
+      "parse_errors": [],
+      "complex_functions": []
+    },
+    {
+      "path": "vision/main.cpp",
+      "group": "maintenance",
+      "functions": [
+        {
+          "name": "main",
+          "line": 7,
+          "end": 37,
+          "language": "cpp"
+        }
+      ],
+      "count": 1,
+      "physical_lines": 37,
+      "nloc": 26,
+      "parse_errors": [],
+      "complex_functions": [
+        {
+          "name": "main()",
+          "line": 7,
+          "end": 37,
+          "nloc": 22,
+          "complexity": 4
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+    "updated_at_ms": 1794988199401.6335,
+    "frame_id": "18",
+    "simulated": 0,
+    "phase": "error",
+    "history": "h2e2 h7e7 e2e6 d9e8 h0g2 h9g7 b2e2 g7e6",
+    "pending": 0,
+    "result": 0,
+    "error": "实拍开局盘面仍有差异：e6 n->.",
+    "observation_valid": 1,
+    "board": [
+        "rnb.kab.r",
+        "....a....",
+        ".c..c....",
+        "p.p.n.p.p",
+        ".........",
+        ".........",
+        "P.P.P.P.P",
+        "....C.N..",
+        ".........",
+        "RNBAKAB.R"
+    ],
+    "observed": [
+        "rnb.kab.r",
+        "....a....",
+        ".c..c....",
+        "p.p...p.p",
+        ".........",
+        ".........",
+        "P.P.P.P.P",
+        "....C.N..",
+        ".........",
+        "RNBAKAB.R"
+    ]
+}

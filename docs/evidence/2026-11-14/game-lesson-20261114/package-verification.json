@@ -1,0 +1,46 @@
+{
+  "verified_utc": "2026-11-13T20:11:55.757288+00:00",
+  "source_snapshot": "round-05",
+  "cpp_nloc": 2465,
+  "source_files": 45,
+  "clean_build": true,
+  "ctest_suites": 17,
+  "python_checks": 60,
+  "main_scenarios": 15,
+  "program_equivalence": true,
+  "build_log_sha256": "59833258c16288efd5b3d4048bea3aa2e01140ab106c080eb1575c9b9c701676",
+  "hardware_actions": false,
+  "interface": "Original file request/reply contract preserved; preference pending.",
+  "snapshots": [
+    {
+      "round": 0,
+      "cpp_nloc": 2472,
+      "sha256": "acfc6c62abc5f35690da58e80976954bae7a2ac7f938db31c28127470f629a10"
+    },
+    {
+      "round": 1,
+      "cpp_nloc": 2476,
+      "sha256": "f34dc6bfedaf55badba97b41f064fd26fda99cb5d9b2e54794faf2a31c748b2c"
+    },
+    {
+      "round": 2,
+      "cpp_nloc": 2477,
+      "sha256": "5e7c703b3015235f50149fb0b7ce78cbf9b2169e22b2209fe9f76ecc7f6cf886"
+    },
+    {
+      "round": 3,
+      "cpp_nloc": 2465,
+      "sha256": "5d5e2f3afb6aadd9c1c7cc46b1329231678b5e714d00e77cf294dc6d9d01bce0"
+    },
+    {
+      "round": 4,
+      "cpp_nloc": 2464,
+      "sha256": "52701e1a5530d359a103cd32972b8dde4a373575501d3d545ba7922048902872"
+    },
+    {
+      "round": 5,
+      "cpp_nloc": 2465,
+      "sha256": "1a45c27077c13f9b12cffe028f1cc88abdc066adcad66283c7b134c7cf4c29f8"
+    }
+  ]
+}

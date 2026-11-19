@@ -1,0 +1,50 @@
+{
+  "cycles": 10,
+  "estimated_stroke_mm": 43,
+  "relative_only": true,
+  "returned": true,
+  "direction_summary": {
+    "up": {
+      "legs": 10,
+      "times_s": [
+        4.161,
+        3.342,
+        3.089,
+        2.539,
+        4.24,
+        3.84,
+        2.54,
+        2.487,
+        2.489,
+        2.539
+      ],
+      "median_s": 2.815,
+      "peak_speed_range_deg_s": [
+        2173.3,
+        2356.1
+      ]
+    },
+    "down": {
+      "legs": 10,
+      "times_s": [
+        2.388,
+        2.24,
+        3.042,
+        2.24,
+        2.19,
+        5.439,
+        5.639,
+        5.241,
+        2.741,
+        5.339
+      ],
+      "median_s": 2.892,
+      "peak_speed_range_deg_s": [
+        2844.6,
+        3023.9
+      ]
+    }
+  },
+  "encoder_fault_before_resume": 8,
+  "return_angle_error": -0.1529999999984284
+}

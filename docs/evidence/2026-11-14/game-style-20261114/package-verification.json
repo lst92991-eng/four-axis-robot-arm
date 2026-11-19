@@ -1,0 +1,12 @@
+{
+  "source_snapshot": "round-03",
+  "archive_sha256": "80f1cd120faa406c3634ef4a13c7011cf742809717d4b2a36262055cc8eea3b3",
+  "source_hashes_verified": 306,
+  "fresh_directory": true,
+  "build_passed": true,
+  "ctest_suites": 17,
+  "python_tests": 60,
+  "log": "output/game-style-20261114/package-build.log",
+  "hardware_actions": false,
+  "limitation": "Windows C++17/OpenCV5 native build with ABI/POSIX substitutes; not ARM or real RKNN/engine validation."
+}

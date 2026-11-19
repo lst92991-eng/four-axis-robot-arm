@@ -1,0 +1,28 @@
+{
+  "objective": "按用户明确选择，将机械执行改为直接C++函数调用，保留执行和停止接口，删除动作JSON请求/回执/取消往返。",
+  "baseline_commit": "949118c",
+  "baseline_cpp_nloc": 2758,
+  "status": "direct_interface_verified",
+  "scope": [
+    "动作数据直接传入同步执行函数，退出通过停止函数收尾",
+    "删除Motion_request、Motion_wait、Motion_cancel、ticket及请求文件轮询",
+    "保留只读预览和棋局状态输出；仿真仅输出单向终端轨迹",
+    "真实SPI-CAN/H桥尚未提供，接口待接入实现返回失败，不假装硬件成功",
+    "保留既有视觉、固定坐标、棋局、逆解、取放顺序、执行后视觉确认和恢复逻辑"
+  ],
+  "verification": [
+    "保留原15种完整主程序场景，核对直接执行轨迹和棋局状态",
+    "直接调用接口的成功/失败/取消/停止、视觉资源释放和未接入实现检查",
+    "旧/新可执行程序的状态与有单位动作内容对照，旧文件协议本身不再作为需要保留的行为",
+    "原17组C++/60项Python及图像、张量、ONNX、固定几何离线对照",
+    "逐轮保存完整源码、哈希和有效行数，独立本地Git提交；不连接硬件"
+  ],
+  "finished_utc": "2026-11-14T19:37:25.373357+00:00",
+  "result": {
+    "cpp_nloc": 2679,
+    "cpp_delta": -79,
+    "hardware_actions": false,
+    "action_file_protocol_removed": true,
+    "real_hardware_backend_implemented": false
+  }
+}

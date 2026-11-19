@@ -1,0 +1,41 @@
+{
+    "physical_accuracy_validated": 0,
+    "cases": [
+        {
+            "rotation_degrees": 0,
+            "max_repeatability_px": 0.67479254735036653,
+            "rms_repeatability_px": 0.34414132213252568,
+            "orientation_confirmed": 0
+        },
+        {
+            "rotation_degrees": 10,
+            "max_repeatability_px": 0.62048321643903204,
+            "rms_repeatability_px": 0.29912192550358629,
+            "orientation_confirmed": 0
+        },
+        {
+            "rotation_degrees": -10,
+            "max_repeatability_px": 0.39851840408331785,
+            "rms_repeatability_px": 0.18273292827110374,
+            "orientation_confirmed": 0
+        },
+        {
+            "rotation_degrees": 90,
+            "max_repeatability_px": 0.38602742633800829,
+            "rms_repeatability_px": 0.18897812348996418,
+            "orientation_confirmed": 0
+        },
+        {
+            "rotation_degrees": 180,
+            "max_repeatability_px": 0.59532907492295606,
+            "rms_repeatability_px": 0.33307198287422762,
+            "orientation_confirmed": 0
+        },
+        {
+            "rotation_degrees": 270,
+            "max_repeatability_px": 0.89766731421850299,
+            "rms_repeatability_px": 0.36640055782874326,
+            "orientation_confirmed": 0
+        }
+    ]
+}

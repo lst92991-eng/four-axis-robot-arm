@@ -1,0 +1,1563 @@
+{
+  "generated_utc": "2026-11-13T17:36:04.776738+00:00",
+  "review": "game-main-20261114",
+  "tested_round": 2,
+  "group_nloc": {
+    "application_cpp": 2472,
+    "commissioning_tools": 740,
+    "manual_and_demo": 2138,
+    "usb_can_adapter_excluded": 302,
+    "legacy_live_vision": 835
+  },
+  "scope": "Own upper-application source, build files, offline tests, fixtures and frozen comparison outputs.",
+  "excluded": "Motor firmware, vendor SDK/runtime, engine binaries, model weights, deployment and live machine state.",
+  "build": "See README: C++17, OpenCV 5.0.0, Python test dependencies; optional actual RKNN header for ABI tests.",
+  "reproduction": "The review scripts use the existing local Windows environment. Configure build/commit-verify and provide the original v3 ONNX before a new round.",
+  "model": {
+    "onnx_path": "temp/model-v3-release/extracted/xiangqi14-local-v3.onnx",
+    "onnx_sha256": "fdf31b53da7bc2350936bb51fb6e53ddf0d5958aa36830a6493a187332458047",
+    "rknn_sha256": "ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2"
+  },
+  "files": [
+    {
+      "file": ".vscode/settings.json",
+      "bytes": 220,
+      "sha256": "39630fad21b2eaaaa43163672a12ee017ac181d729fda7c0654910a968bcb5ac"
+    },
+    {
+      "file": "AGENTS.md",
+      "bytes": 18286,
+      "sha256": "dcb18ff7e0f7a93df042385d73c578f3b75d4c51383e50e13c5676ce6ab647ab"
+    },
+    {
+      "file": "app/game.cpp",
+      "bytes": 5539,
+      "sha256": "4e5ba26cdb0f235e7ce9bb7ce650e8da678e13c76eade0068516793fbfdcc879"
+    },
+    {
+      "file": "app/game.hpp",
+      "bytes": 1588,
+      "sha256": "3e4dd977bf7824022be0b5fa46b96893874a071640f9a629abecfa2af47a5659"
+    },
+    {
+      "file": "app/game_config.cpp",
+      "bytes": 3265,
+      "sha256": "d6d4a19fd709397fea2664ffd864af774cd931a0d74ea17d4a9603843076caa9"
+    },
+    {
+      "file": "app/game_files.cpp",
+      "bytes": 5363,
+      "sha256": "cfe165c8c96cfd75f5ccddc0a25a52a81179969ed0699b32d81c42913768f799"
+    },
+    {
+      "file": "app/game_files.hpp",
+      "bytes": 420,
+      "sha256": "afc3aa1ee3c57f43092595bf4e034f5c7a08b473083b2652a26a590b35eddf58"
+    },
+    {
+      "file": "app/game_live_io.cpp",
+      "bytes": 4514,
+      "sha256": "3390fab0212eea8910250a959cb54798df2c6701d0f8cfcef37ef7ef358db23e"
+    },
+    {
+      "file": "app/game_main.cpp",
+      "bytes": 2673,
+      "sha256": "f63bf58efaa08c6f11bdde602d53f18caf58adf1d942e41b3a660d1dfd748f52"
+    },
+    {
+      "file": "app/game_sim_io.cpp",
+      "bytes": 4191,
+      "sha256": "dc1e3c9a14f05ece83e44cc7e8ac0ff516202236d5aed7dc4768bb484ed2e5b6"
+    },
+    {
+      "file": "app/geometry_tool.cpp",
+      "bytes": 5729,
+      "sha256": "b585236d9af653db16254973c560c652b6524723ff39ac920c1aa971639e421d"
+    },
+    {
+      "file": "app/vision_main.cpp",
+      "bytes": 2691,
+      "sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+    },
+    {
+      "file": "chess/board.cpp",
+      "bytes": 10499,
+      "sha256": "951635cba81b46b33716dab0c8cc13c7757f373f109015a816db27eed3a6dcab"
+    },
+    {
+      "file": "chess/board.hpp",
+      "bytes": 2817,
+      "sha256": "bdc8eb5b2b25f3bb8a3923a481f5089fa9d18f7baf1b6c8290d885617f0bb1fb"
+    },
+    {
+      "file": "chess/pikafish.cpp",
+      "bytes": 7518,
+      "sha256": "60fe225ebba6f6e694c61312ac6ba64e39d82e5f350029bff1ee8208ec0f7fb8"
+    },
+    {
+      "file": "chess/pikafish.hpp",
+      "bytes": 1451,
+      "sha256": "994914063ade0779c9e2ee5d57efc9d187a7e03db2740ba48c6d73a66dab5099"
+    },
+    {
+      "file": "chess/session.cpp",
+      "bytes": 3477,
+      "sha256": "75e66b2abd8196baafe6759957d29f5aaed90845d26394a5aa88ae9159424482"
+    },
+    {
+      "file": "chess/session.hpp",
+      "bytes": 1320,
+      "sha256": "5708908a3f7b592cc858f239cc96e9459ed5ae08627e828bc44d2e49dd7b14be"
+    },
+    {
+      "file": "cmake/rv1106.cmake",
+      "bytes": 830,
+      "sha256": "824217a8b570f3b0a29002ec56f9b8359707ad5c1818e8e2b01e8538bec5bfdf"
+    },
+    {
+      "file": "CMakeLists.txt",
+      "bytes": 11744,
+      "sha256": "410ee77272b7b6861c68485d4a1ff388d5f89fb6edff2204c212e927759dba09"
+    },
+    {
+      "file": "config/axis-hardware.json",
+      "bytes": 1857,
+      "sha256": "5c52fda0085da069978cf1cf9f3fc146c47ffa03888ae70197cfb8a21e5f3744"
+    },
+    {
+      "file": "config/board-points.template.csv",
+      "bytes": 1753,
+      "sha256": "9c40ede7815a89fe2e224a55e97c2042ce1201059ec3ada1d9e9e957d0f9df8a"
+    },
+    {
+      "file": "config/game.example.json",
+      "bytes": 571,
+      "sha256": "69acc743bc619786a0a851ed8998d2f142a3d934e4e18f275a894a2a2f194dab"
+    },
+    {
+      "file": "config/gripper-hardware.json",
+      "bytes": 3989,
+      "sha256": "481343a0fcf776c71b44164db46be20409611f532cb5e516219d4052b833e5cc"
+    },
+    {
+      "file": "config/manual-jog.json",
+      "bytes": 1565,
+      "sha256": "9e7173a278258bab2baa77b6db9b92d4d6d9fa5f9f615db0d39d464264d5ae17"
+    },
+    {
+      "file": "config/model-manifest-expanded-v1.json",
+      "bytes": 2772,
+      "sha256": "6aff63221482c5838999f86ab1a93fe7407780dac8667a905020a46fd348459f"
+    },
+    {
+      "file": "config/model-manifest-v3.json",
+      "bytes": 763,
+      "sha256": "fb559e40b8fdbfac326045097ce5dc90aaa6fee03492d5c74364232cd9b49a49"
+    },
+    {
+      "file": "config/model-manifest.example.json",
+      "bytes": 1564,
+      "sha256": "80a14d0648b8d341d0a2f6a46b805af1ed355fad914750426c1fdf234447cb25"
+    },
+    {
+      "file": "config/model-manifest.json",
+      "bytes": 7533,
+      "sha256": "10d1dbf5875d71d98e04b91a9df6b30ba67d63d6dcb8a2afa157ea35c9e8534f"
+    },
+    {
+      "file": "config/project.example.json",
+      "bytes": 5396,
+      "sha256": "67a947f940ef027c0076ac46aef2b9ba73bc6611883398f959d676ff8ca67a90"
+    },
+    {
+      "file": "config/robot-geometry.json",
+      "bytes": 2162,
+      "sha256": "c640d63f045708de28253c108d834f54d24db40707e9f51a26b9c19e0426fce0"
+    },
+    {
+      "file": "config/vision/calibration.example.yml",
+      "bytes": 671,
+      "sha256": "1784261436a5610f21809534cfa8e71bf2509aff148bb10a3fd79f45b47dfa88"
+    },
+    {
+      "file": "config/vision/chinese-labels.png",
+      "bytes": 1498,
+      "sha256": "aefed5b03a8a5f874a641670758d37b6a35d16b3fe1300ae0f6640c4e3c4ddbe"
+    },
+    {
+      "file": "config/vision/detections.example.json",
+      "bytes": 187,
+      "sha256": "a9b9944f6d1063b122ec440703ea24de3d110937289215e2316c1970971a2184"
+    },
+    {
+      "file": "config/vision/handwrite.clang-format",
+      "bytes": 362,
+      "sha256": "22e9e9a3717a44617ee66609f02dc3da49620a9d5cdefb6985853f46a7cbc2b1"
+    },
+    {
+      "file": "config/vision/inspect-auto.example.yml",
+      "bytes": 492,
+      "sha256": "718757ff9530608c8cca491d6d1c2962a76f6954d611e27878bbcbfc8279769c"
+    },
+    {
+      "file": "config/vision/inspect-manual.example.yml",
+      "bytes": 604,
+      "sha256": "bc5fff2d6148a93699e9cc47d7651bedbcb9b09eb6d0426b69b18380a18786dc"
+    },
+    {
+      "file": "config/vision/orientation-initial-board.yml",
+      "bytes": 17630,
+      "sha256": "7d18329f5c72d1f6c8104fbaca2ac46a53922331600910b1da6ea848d6c23d35"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/artifact-audit.json",
+      "bytes": 501,
+      "sha256": "1f84af8f82baa80b17a841f0fb4005c7fae687b9f36f920a4be6d3f6903b754f"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/baseline-comparison.json",
+      "bytes": 297,
+      "sha256": "7b88b5727edb0b601e1e1e09eec461c0967ddc4376c2db03523e82a6a6874f57"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/final-metrics.json",
+      "bytes": 11930,
+      "sha256": "992dcba711d5f6a86139955a4a9ae494a997db4267b8806bc491556d516be51b"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/package-verification.json",
+      "bytes": 1173,
+      "sha256": "0c247a50b9fa241f0472734343dd8c9eb1c6776bd51f28669a55ba7abe0f9bac"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/plan.json",
+      "bytes": 2126,
+      "sha256": "b4154e63873070a6bcec0238ddf8198dfc2b4d6094d88c7399243f752056d78b"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/round-00.json",
+      "bytes": 22638,
+      "sha256": "0f11dfe14df1947dc37a2bbcf8b186e19e77f4b8c179a6408b50474c39f3a079"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/round-01.json",
+      "bytes": 22523,
+      "sha256": "c88ae85581654f0101de270016424d515d70a0477d51c50704ccd8c34a168731"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/round-02.json",
+      "bytes": 22434,
+      "sha256": "d52dba7d52625d64d455bd9087ed37ea5e6794450d6b8d185b8dcc7f63dae17a"
+    },
+    {
+      "file": "docs/evidence/2026-11-14/game-main-20261114/self-review.json",
+      "bytes": 1492,
+      "sha256": "c95cd73ec14e8af18d72624c83e3d3d78d9d45027a347b100905d5e75e2ba471"
+    },
+    {
+      "file": "docs/棋局与视觉接口_2026-11-09.md",
+      "bytes": 14750,
+      "sha256": "5be5d74890f4fbbf465bbca89349a5ce02b11fa1f6c5544a6ab92a01aa8e068d"
+    },
+    {
+      "file": "docs/项目收敛与下棋闭环_2026-11-09.md",
+      "bytes": 56416,
+      "sha256": "50712e689966e3d1bb3525f5a97af15cb4037ea1ea53d1f4207ed36b75f08835"
+    },
+    {
+      "file": "manual_control/calibrate_j1.py",
+      "bytes": 12346,
+      "sha256": "09c0484c6ba829e4a6a73924786954f627ea87fa6737750de155aa1420d30d11"
+    },
+    {
+      "file": "manual_control/chess_demo.py",
+      "bytes": 12471,
+      "sha256": "ec2e4272e08317b1d91b7ab94a8dc4bb855c3c08b4e555d097d2cbd4e9e4e023"
+    },
+    {
+      "file": "manual_control/core.py",
+      "bytes": 29613,
+      "sha256": "8cf7d397c6b609efabf1ef0dd0f06a12f7db99a67271fd9dc052fab2d2b7287b"
+    },
+    {
+      "file": "manual_control/first_pick.py",
+      "bytes": 18412,
+      "sha256": "8ab83005a1eea47d34dc0141cf958411550517d8bfe4fbdcaceef4afa09f15bc"
+    },
+    {
+      "file": "manual_control/index.html",
+      "bytes": 14004,
+      "sha256": "d9330ca277d9702cf926ad7ae597f5294a6c3ee4644f816c5546663286a973ec"
+    },
+    {
+      "file": "manual_control/j1_bench.py",
+      "bytes": 17790,
+      "sha256": "de78a2c987965d5d682439c8989748a964dd4e0c48c04f49ce55c94098e6b928"
+    },
+    {
+      "file": "manual_control/server.py",
+      "bytes": 18554,
+      "sha256": "5f1a7c88b302302bd36ecaf709eef1c49024ee5f0fc5b7f04c63dc30a1931ede"
+    },
+    {
+      "file": "manual_control/software_update_j1.py",
+      "bytes": 3416,
+      "sha256": "863486d630b8f2f2bb661670c1e2621d0511b4c4587034587447971ebc12f3f7"
+    },
+    {
+      "file": "manual_control/telemetry.py",
+      "bytes": 1669,
+      "sha256": "e46642bd9a9094756399f3780e5e4ec453737302903a6589aa9190aef55a9ebe"
+    },
+    {
+      "file": "manual_control/tune_release.py",
+      "bytes": 12625,
+      "sha256": "6995dfb0ce2bf14b9be385c5500f44a8192541192ade321d4a0c2416be1f3793"
+    },
+    {
+      "file": "motion/plan.cpp",
+      "bytes": 5859,
+      "sha256": "7ca4dd3b737d25fc9d158ca6613a63328db2c054bf55f2b0aa313d6cd4f80a3d"
+    },
+    {
+      "file": "motion/plan.hpp",
+      "bytes": 1944,
+      "sha256": "f9ef544c27cc0e0144e79fbace905e03e3b866250401deceb70f8ec7ba983253"
+    },
+    {
+      "file": "output/game-main-20261114/check_vision.py",
+      "bytes": 6306,
+      "sha256": "eaafaeeeb57c7f289065a86a3647d54c0b41097c96bec1a88389c7dfe6c40f14"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/geometry/calibrate.log",
+      "bytes": 52,
+      "sha256": "dfe7577eb0da0337a90badec7d51c650472d1372b90edf87f391abf2e84fa12c"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/geometry/grid.json",
+      "bytes": 33062,
+      "sha256": "0d110081aec52f4c8392ddca3f56821f90546437f425fc42f1fd03d69c7c43db"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/geometry/grid.json.png",
+      "bytes": 1109621,
+      "sha256": "90e3613315de99681b18140472e3fde1b6f471b7444b363e6394129e3118f359"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/geometry/grid.json.rectified.png",
+      "bytes": 324957,
+      "sha256": "f7dbc4802761454add59f20efad85c6dbe92fb298a531c0776b902273a82bf47"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/geometry/inspect.log",
+      "bytes": 119,
+      "sha256": "ca2afd086070b1b1278df2115c916b79ce48f08bf65b5f3e25ae2810d7f1bcce"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/geometry/plane.yml",
+      "bytes": 2438,
+      "sha256": "de19a6cc5719c42b1afcbd0b1bedde4cff319d92a59fb2b3a99366528a5517bc"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-01.json",
+      "bytes": 74,
+      "sha256": "4081e87b08fb9089030507c87b0d4dc0b0fb4fe5cc9cc6cbd86f411cc1b21213"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-01.png",
+      "bytes": 1249164,
+      "sha256": "ebaae6ac5f2de710dcd865d3c896f1eb57f31916fcc5e042814c771ef67d4902"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-01.rgb",
+      "bytes": 1228800,
+      "sha256": "9f68c08bd1aad47472684ff95c3c6b8d6b75ab156ea10ed2f81203058f87e4e5"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-02.json",
+      "bytes": 74,
+      "sha256": "3bdc1c6724098910b508e1f4ed020df1863334757efade300fb9f747dc1eb935"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-02.png",
+      "bytes": 1030716,
+      "sha256": "00b401e2208873323819b8a2f151ea67b292867fe5c2170bfb2432ad29d717dd"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-02.rgb",
+      "bytes": 1228800,
+      "sha256": "9c4c430ddb6247f203a2c834cd35e2d0a65ae8afbd61f97334caabf4336ade89"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-03.json",
+      "bytes": 74,
+      "sha256": "4911d46c78180c3369265fb952a32728772c06bc20f1dc45e1a27b041ba52535"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-03.png",
+      "bytes": 1208106,
+      "sha256": "817f49b5f5715948685170eef5a890131b5a07a429c605a85da8de7a35ab9bf3"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-03.rgb",
+      "bytes": 1228800,
+      "sha256": "f6f0f64f1aae67977e61b5029fbc354df2bf935330614c16e829e4a796a25cf7"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-04.json",
+      "bytes": 74,
+      "sha256": "8a16d9c7430d75a7f7bb97eb82585300693fdfd7cc80b74d2ba374f8d668bc35"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-04.png",
+      "bytes": 1254399,
+      "sha256": "a47ac78c7a08d1c8df1d53d006389defd9e3c4f16ad513561a9c07ea34ff12b2"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-04.rgb",
+      "bytes": 1228800,
+      "sha256": "f0ff44c9747a34174e0b679f41787974abb88904da06f3d9342e92d7a73a9c51"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-05.json",
+      "bytes": 74,
+      "sha256": "c5a770669b1db8585e36ad6d7bf349608fce8773cdabb2cc20c769725b4d9884"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-05.png",
+      "bytes": 1247870,
+      "sha256": "48b921db2bd950a043284707aad3598c7559726511b0de13124bfd3fd2d6874c"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-05.rgb",
+      "bytes": 1228800,
+      "sha256": "3c3ad2ba6d5346b58c405d7b90a1d36604f490fa476c530ccc235e0c55632fe7"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-06.json",
+      "bytes": 74,
+      "sha256": "cb9573aa5d350706a3389bf519b24fbcf79153a6b0cfdc362f53fe4574c4ed14"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-06.png",
+      "bytes": 1058810,
+      "sha256": "1f0243897c2db9ecd65be7b15c4e62982a2a66fa8584f839182572cb4f5d0318"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-06.rgb",
+      "bytes": 1228800,
+      "sha256": "6201380639ad7e17e4543ab6c38bc52f819e089a8fb503457ee11b8dc96e1fe8"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-07.json",
+      "bytes": 74,
+      "sha256": "8fa146e1531cad11d5e3c140cde06a7ea595f497bfc8f85d96f3919561184858"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-07.png",
+      "bytes": 1235474,
+      "sha256": "0f9e8d45e9fce8c8bd3ecc888705a487f5a99edc63dc8abe5ebe9e598ff13d54"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-07.rgb",
+      "bytes": 1228800,
+      "sha256": "06d50f394e82ec1e1bb382ff6ed24a2e1e408667140cff4d9eb1a79ba357b445"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-08.json",
+      "bytes": 74,
+      "sha256": "22dd7e7f8f2b2bc4bf1b0517a934549baba11c776498006663b20ed0ff73cff1"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-08.png",
+      "bytes": 1246727,
+      "sha256": "72133b204cad6601b33c57355c60d7fa981f51247bf33f80e1119aee1b4d8dab"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-08.rgb",
+      "bytes": 1228800,
+      "sha256": "3f6fdd92d5e212b9989507f0d01a08711100af3bb75027748b4e2d2e9164e89a"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-09.json",
+      "bytes": 74,
+      "sha256": "f38c931b8f9af892c1fceccbdaab6c23f99d1eb27156ef7ce33837f0bf80a8e6"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-09.png",
+      "bytes": 1329836,
+      "sha256": "d2e400ffc018299ab1276443d75a1f2b625877c4315cd7afdc2920598e33629f"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/fixed-09.rgb",
+      "bytes": 1228800,
+      "sha256": "ef3805d80a641f9d0d34bec638d62de8c9dca5e062d68d78f5c91e9c0473679c"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-diagnosis.json",
+      "bytes": 8145,
+      "sha256": "b2de7cb74f2cf80285f30208cc41f7ef194840a22f7d60cfc4e399a3dbc10be3"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-diagnosis.png",
+      "bytes": 844114,
+      "sha256": "4f4e016dd6cc1ac54a45ed2699622265770f2c3397cec8c4cf08d0f966e3bce2"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-diagnosis.rgb",
+      "bytes": 1228800,
+      "sha256": "fc30f03346cc28e90a69d251dcaf37131c1126f4e0bad81996a6a3e3215f0fe9"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-reference.json",
+      "bytes": 7625,
+      "sha256": "3a2891c7a225e362ebae672ec9850ab2e6f9c89489101db1ad7db3471da056f5"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-reference.png",
+      "bytes": 430793,
+      "sha256": "da21076d363867928c51465f12366e01b58d2fb00181142ecfa2926ba5891625"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-reference.rgb",
+      "bytes": 1228800,
+      "sha256": "124aa3dad1d3c45b07d3ea2fcdc636f3f7eca36b3a2853d277556defc4bed108"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-v3.json",
+      "bytes": 8678,
+      "sha256": "7e0353bc2ad0d29402ee5a1a8ce9a99d8d861bfc4373d15e9a81601f1b9be34f"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-v3.png",
+      "bytes": 894562,
+      "sha256": "39ba4a83d70936ec75bf7a746e129b9ce7fca8753ace631d8b6b183bc136cfe6"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-v3.rgb",
+      "bytes": 1228800,
+      "sha256": "9944a7ae00f79d67a6839c167b6e387a63f6afd79a4c5d35f8d0351d357b0e00"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-expanded-v1-20261105.json",
+      "bytes": 8169,
+      "sha256": "a92644918e966b2cc4d50828562c9e88914da167f957a9662825e47d3db59689"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-expanded-v1-20261105.png",
+      "bytes": 862129,
+      "sha256": "fdd525c39110eff61dcedd9c3dec1ba94b659f4fde9c5a7fd87146b4f5145806"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-expanded-v1-20261105.rgb",
+      "bytes": 1228800,
+      "sha256": "b78ee48f49e618ce335e273aad95aa3acbf3cd3bdd989cedfd1d01b7a031383a"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-full-frame.json",
+      "bytes": 102,
+      "sha256": "2981dc3cecd798040f7c1fb4918f8ff74bd7d1048b910b984ac97b0ee6100d61"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-full-frame.png",
+      "bytes": 861568,
+      "sha256": "04c0fb3808ad7f2d35cbc19aa2301ddc53e50df921b612f333d999dc6654b48e"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-full-frame.rgb",
+      "bytes": 1228800,
+      "sha256": "3203c82a2f6a13e2a3050753bfd0432d2c61572463253b319cf0dba955e9a552"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-live-20261104.json",
+      "bytes": 4399,
+      "sha256": "8cbfc5c75a19184f9130ad59e89633f8bb3f3618a88cfce4013972aa854d0bdb"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-live-20261104.png",
+      "bytes": 860916,
+      "sha256": "92c6f923bba6b4e1e58d660c06776ed94132ffc4a68fa24442ba11301e966c41"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-live-20261104.rgb",
+      "bytes": 1228800,
+      "sha256": "60d881d768f5eec13a4658f5452404988897da3d7163be288712ce4b1434a102"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-live-active.json",
+      "bytes": 4405,
+      "sha256": "1593ab14c6d5bb30b9dfca7adb27c4a5be1cb0ac5759da55771ea60d661f6c65"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-live-active.png",
+      "bytes": 835986,
+      "sha256": "12df68e97504afec91de09de69dd8216d984fe3f970b15a11d28d334eff9734d"
+    },
+    {
+      "file": "output/game-main-20261114/round-00/replay/npu-yolo-live-active.rgb",
+      "bytes": 1228800,
+      "sha256": "c2c2188dae9679d4199e714c3db50c643ea4b36722374ce5536880559a3344b5"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/accuracy.log",
+      "bytes": 124,
+      "sha256": "6a4a6deeb8bcdc762d1f7cddb3db4839cbadf16020f582cbd7ae866e308d0efe"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/build-test.log",
+      "bytes": 2443,
+      "sha256": "1507bc5e81877c23524a6c09ecac5f80b363059ef5578018d2f864bac52c3633"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/code.txt",
+      "bytes": 319019,
+      "sha256": "ea51b72e84e679a48aec1deac34a1a06b04c67851909993056016a2f801a8354"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/cpp-code.txt",
+      "bytes": 115064,
+      "sha256": "e2a97eae5a7f01762eb622b6cf3a1c49f890734ffe2f89ed7072a795c216d263"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/cpp-code.zip",
+      "bytes": 45726,
+      "sha256": "0deebb25aec5ed811409269003c427d7f7f565522ef84f9f48ad7909f7cdc0cd"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/geometry/calibrate.log",
+      "bytes": 52,
+      "sha256": "dfe7577eb0da0337a90badec7d51c650472d1372b90edf87f391abf2e84fa12c"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/geometry/grid.json",
+      "bytes": 33062,
+      "sha256": "0d110081aec52f4c8392ddca3f56821f90546437f425fc42f1fd03d69c7c43db"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/geometry/grid.json.png",
+      "bytes": 1109621,
+      "sha256": "90e3613315de99681b18140472e3fde1b6f471b7444b363e6394129e3118f359"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/geometry/grid.json.rectified.png",
+      "bytes": 324957,
+      "sha256": "f7dbc4802761454add59f20efad85c6dbe92fb298a531c0776b902273a82bf47"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/geometry/inspect.log",
+      "bytes": 119,
+      "sha256": "b777a1cd52c9de30029edf63d89ec37d323ced87c7af235dac79305c1f9cbb95"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/geometry/plane.yml",
+      "bytes": 2438,
+      "sha256": "de19a6cc5719c42b1afcbd0b1bedde4cff319d92a59fb2b3a99366528a5517bc"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/python-tests.log",
+      "bytes": 164,
+      "sha256": "07d9a196c8d46add7384dc4331301b4ccf2dc7c9648f08ec7563a4bad5b7ba57"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-01.json",
+      "bytes": 74,
+      "sha256": "4081e87b08fb9089030507c87b0d4dc0b0fb4fe5cc9cc6cbd86f411cc1b21213"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-01.png",
+      "bytes": 1249164,
+      "sha256": "ebaae6ac5f2de710dcd865d3c896f1eb57f31916fcc5e042814c771ef67d4902"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-01.rgb",
+      "bytes": 1228800,
+      "sha256": "9f68c08bd1aad47472684ff95c3c6b8d6b75ab156ea10ed2f81203058f87e4e5"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-02.json",
+      "bytes": 74,
+      "sha256": "3bdc1c6724098910b508e1f4ed020df1863334757efade300fb9f747dc1eb935"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-02.png",
+      "bytes": 1030716,
+      "sha256": "00b401e2208873323819b8a2f151ea67b292867fe5c2170bfb2432ad29d717dd"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-02.rgb",
+      "bytes": 1228800,
+      "sha256": "9c4c430ddb6247f203a2c834cd35e2d0a65ae8afbd61f97334caabf4336ade89"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-03.json",
+      "bytes": 74,
+      "sha256": "4911d46c78180c3369265fb952a32728772c06bc20f1dc45e1a27b041ba52535"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-03.png",
+      "bytes": 1208106,
+      "sha256": "817f49b5f5715948685170eef5a890131b5a07a429c605a85da8de7a35ab9bf3"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-03.rgb",
+      "bytes": 1228800,
+      "sha256": "f6f0f64f1aae67977e61b5029fbc354df2bf935330614c16e829e4a796a25cf7"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-04.json",
+      "bytes": 74,
+      "sha256": "8a16d9c7430d75a7f7bb97eb82585300693fdfd7cc80b74d2ba374f8d668bc35"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-04.png",
+      "bytes": 1254399,
+      "sha256": "a47ac78c7a08d1c8df1d53d006389defd9e3c4f16ad513561a9c07ea34ff12b2"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-04.rgb",
+      "bytes": 1228800,
+      "sha256": "f0ff44c9747a34174e0b679f41787974abb88904da06f3d9342e92d7a73a9c51"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-05.json",
+      "bytes": 74,
+      "sha256": "c5a770669b1db8585e36ad6d7bf349608fce8773cdabb2cc20c769725b4d9884"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-05.png",
+      "bytes": 1247870,
+      "sha256": "48b921db2bd950a043284707aad3598c7559726511b0de13124bfd3fd2d6874c"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-05.rgb",
+      "bytes": 1228800,
+      "sha256": "3c3ad2ba6d5346b58c405d7b90a1d36604f490fa476c530ccc235e0c55632fe7"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-06.json",
+      "bytes": 74,
+      "sha256": "cb9573aa5d350706a3389bf519b24fbcf79153a6b0cfdc362f53fe4574c4ed14"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-06.png",
+      "bytes": 1058810,
+      "sha256": "1f0243897c2db9ecd65be7b15c4e62982a2a66fa8584f839182572cb4f5d0318"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-06.rgb",
+      "bytes": 1228800,
+      "sha256": "6201380639ad7e17e4543ab6c38bc52f819e089a8fb503457ee11b8dc96e1fe8"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-07.json",
+      "bytes": 74,
+      "sha256": "8fa146e1531cad11d5e3c140cde06a7ea595f497bfc8f85d96f3919561184858"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-07.png",
+      "bytes": 1235474,
+      "sha256": "0f9e8d45e9fce8c8bd3ecc888705a487f5a99edc63dc8abe5ebe9e598ff13d54"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-07.rgb",
+      "bytes": 1228800,
+      "sha256": "06d50f394e82ec1e1bb382ff6ed24a2e1e408667140cff4d9eb1a79ba357b445"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-08.json",
+      "bytes": 74,
+      "sha256": "22dd7e7f8f2b2bc4bf1b0517a934549baba11c776498006663b20ed0ff73cff1"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-08.png",
+      "bytes": 1246727,
+      "sha256": "72133b204cad6601b33c57355c60d7fa981f51247bf33f80e1119aee1b4d8dab"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-08.rgb",
+      "bytes": 1228800,
+      "sha256": "3f6fdd92d5e212b9989507f0d01a08711100af3bb75027748b4e2d2e9164e89a"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-09.json",
+      "bytes": 74,
+      "sha256": "f38c931b8f9af892c1fceccbdaab6c23f99d1eb27156ef7ce33837f0bf80a8e6"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-09.png",
+      "bytes": 1329836,
+      "sha256": "d2e400ffc018299ab1276443d75a1f2b625877c4315cd7afdc2920598e33629f"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/fixed-09.rgb",
+      "bytes": 1228800,
+      "sha256": "ef3805d80a641f9d0d34bec638d62de8c9dca5e062d68d78f5c91e9c0473679c"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-diagnosis.json",
+      "bytes": 8157,
+      "sha256": "325790f15903cebd7ed67efde6e5cbf80bba885c93b2ead0ad67b50f115ae925"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-diagnosis.png",
+      "bytes": 844114,
+      "sha256": "4f4e016dd6cc1ac54a45ed2699622265770f2c3397cec8c4cf08d0f966e3bce2"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-diagnosis.rgb",
+      "bytes": 1228800,
+      "sha256": "fc30f03346cc28e90a69d251dcaf37131c1126f4e0bad81996a6a3e3215f0fe9"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-reference.json",
+      "bytes": 7614,
+      "sha256": "df577546a5969883468b8ff98ac13ace5e22d7577709ebb007dffce560f4c117"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-reference.png",
+      "bytes": 430793,
+      "sha256": "da21076d363867928c51465f12366e01b58d2fb00181142ecfa2926ba5891625"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-reference.rgb",
+      "bytes": 1228800,
+      "sha256": "124aa3dad1d3c45b07d3ea2fcdc636f3f7eca36b3a2853d277556defc4bed108"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-v3.json",
+      "bytes": 8689,
+      "sha256": "ff7562227e79ffb7f60a399318fc1af3b7a0ce7578dd8fc3ab86a8c0c75d10ae"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-v3.png",
+      "bytes": 894562,
+      "sha256": "39ba4a83d70936ec75bf7a746e129b9ce7fca8753ace631d8b6b183bc136cfe6"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-v3.rgb",
+      "bytes": 1228800,
+      "sha256": "9944a7ae00f79d67a6839c167b6e387a63f6afd79a4c5d35f8d0351d357b0e00"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-expanded-v1-20261105.json",
+      "bytes": 8180,
+      "sha256": "94e6565754cabe9df0b249968c7719edc4ca5e60b5bc640f554f61b6d1869ffd"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-expanded-v1-20261105.png",
+      "bytes": 862129,
+      "sha256": "fdd525c39110eff61dcedd9c3dec1ba94b659f4fde9c5a7fd87146b4f5145806"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-expanded-v1-20261105.rgb",
+      "bytes": 1228800,
+      "sha256": "b78ee48f49e618ce335e273aad95aa3acbf3cd3bdd989cedfd1d01b7a031383a"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-full-frame.json",
+      "bytes": 90,
+      "sha256": "8a7e8e4d9d80eef1299428f98097860854edf85da78676e266281af164ff5e2a"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-full-frame.png",
+      "bytes": 861568,
+      "sha256": "04c0fb3808ad7f2d35cbc19aa2301ddc53e50df921b612f333d999dc6654b48e"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-full-frame.rgb",
+      "bytes": 1228800,
+      "sha256": "3203c82a2f6a13e2a3050753bfd0432d2c61572463253b319cf0dba955e9a552"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-live-20261104.json",
+      "bytes": 4399,
+      "sha256": "7d3abd498fe8f72fd95e45430f2ef3a3db97bd101f7c5197b504804204f201f1"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-live-20261104.png",
+      "bytes": 860916,
+      "sha256": "92c6f923bba6b4e1e58d660c06776ed94132ffc4a68fa24442ba11301e966c41"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-live-20261104.rgb",
+      "bytes": 1228800,
+      "sha256": "60d881d768f5eec13a4658f5452404988897da3d7163be288712ce4b1434a102"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-live-active.json",
+      "bytes": 4405,
+      "sha256": "e2ae27178d9695f7ab23eeaa9adf9e36b83cd527503489ad0d5120611bbfcd0f"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-live-active.png",
+      "bytes": 835986,
+      "sha256": "12df68e97504afec91de09de69dd8216d984fe3f970b15a11d28d334eff9734d"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/replay/npu-yolo-live-active.rgb",
+      "bytes": 1228800,
+      "sha256": "c2c2188dae9679d4199e714c3db50c643ea4b36722374ce5536880559a3344b5"
+    },
+    {
+      "file": "output/game-main-20261114/round-02/vision-code.txt",
+      "bytes": 20834,
+      "sha256": "22696fe2344addd308450a14456b901ac565c1c1740f096d81e08336462ff988"
+    },
+    {
+      "file": "README.md",
+      "bytes": 31255,
+      "sha256": "7b929393cf53a179f386667cc85109f7845988e0653a3db6afff380b939fd998"
+    },
+    {
+      "file": "temp/transport/candle_bus.py",
+      "bytes": 951,
+      "sha256": "096e8e394433c3ba61d7404e458dd481f10de912abcb353f5754cd8f125d1a73"
+    },
+    {
+      "file": "temp/transport/stepfoc_candlelight.py",
+      "bytes": 14517,
+      "sha256": "d23b0fc24e808918e429950e5e07f40bc430982ec1c4b2a5442946bec8a5ddb0"
+    },
+    {
+      "file": "temp/transport/usb_owner.py",
+      "bytes": 1456,
+      "sha256": "2d3f79a3a90a2fe2419186505d4baffc38b36e2c404f53a75ae9014f24e4cdd8"
+    },
+    {
+      "file": "temp/yolo_live/board_npu.py",
+      "bytes": 14979,
+      "sha256": "ef7f8e35e6054002d5a0f4d9fb2de2de8878e62b853ac162a20dd4978edbf9d4"
+    },
+    {
+      "file": "temp/yolo_live/dual_preview.py",
+      "bytes": 10896,
+      "sha256": "dc2465acab6ec1e6a660264bad77656938df0eb97857d07f4e86e0a39f1cee99"
+    },
+    {
+      "file": "temp/yolo_live/host_preview.py",
+      "bytes": 15692,
+      "sha256": "b23eb5d42ae789f05599b985d70a8fa138b6688a986e6dd8027837f695bebb91"
+    },
+    {
+      "file": "tests/calibration_adapter_test.c",
+      "bytes": 3290,
+      "sha256": "0a854d795d705cd676804ab8883631c7a2df19b51e96738af1e3a04b3aaef680"
+    },
+    {
+      "file": "tests/calibration_alignment_entry_test.c",
+      "bytes": 1528,
+      "sha256": "bf8ef34da9abba0498038cc08f313b140590af4922fe893493e79fbd99354c80"
+    },
+    {
+      "file": "tests/calibration_stubs/at32m412_416_conf.h",
+      "bytes": 522,
+      "sha256": "dcc3f6c1652e8cbd649d1cf5fb2ac3aec3326e0d042a3c5c163cd4e5f9fbefe5"
+    },
+    {
+      "file": "tests/camera_receive_test.cpp",
+      "bytes": 5276,
+      "sha256": "1fc716ba8a9ec359ac71b4ba7f7f40b09a4d9d6c760e3ede151dcaa09ba66734"
+    },
+    {
+      "file": "tests/chess_core_test.cpp",
+      "bytes": 2546,
+      "sha256": "ce96bdcb96ed3ddd253c82991cb28dd5184809180ccd1e745170624d943143b9"
+    },
+    {
+      "file": "tests/chess_move_digest.cpp",
+      "bytes": 1781,
+      "sha256": "139323718a0d852faeb7578f51079a0ca4cf3e1da517d589896a9f4a1b5ffb3c"
+    },
+    {
+      "file": "tests/evaluate_vision_replay.py",
+      "bytes": 6626,
+      "sha256": "38fe1785c083db2c9eddff6a7e655a3cd2372b5e27ce3c6ec2368a9ca0c25838"
+    },
+    {
+      "file": "tests/fixed_assignment_digest.cpp",
+      "bytes": 3002,
+      "sha256": "51a2c0275b246d46c00d46cdb01fb9ac53721c61d821ebdf098ac03b6e61689c"
+    },
+    {
+      "file": "tests/fixed_board_test.cpp",
+      "bytes": 3979,
+      "sha256": "6bc314d19286b415d1d80174e8bfb2040c7cd3b05954a5b52e93b0fa4417e1e3"
+    },
+    {
+      "file": "tests/fixtures/camera/0.jpg",
+      "bytes": 15027,
+      "sha256": "c82dfb8202037eab2dd962929add893a297284dd546a877d9d714e14f6e674d2"
+    },
+    {
+      "file": "tests/fixtures/camera/1.jpg",
+      "bytes": 15027,
+      "sha256": "9a0686ff375925e29b12eafbad251c0c0bfeb6fd17e5119f0188daffe34007bd"
+    },
+    {
+      "file": "tests/fixtures/camera/2.jpg",
+      "bytes": 15027,
+      "sha256": "e5db50556b097f4e268ab2cb437129cfde7e17e00dabbf31ee93fcb971897a96"
+    },
+    {
+      "file": "tests/fixtures/camera/3.jpg",
+      "bytes": 15027,
+      "sha256": "fe9c01325d59b4a01e2e5ec6523856c136c035a144debe863c6492c90f954c4a"
+    },
+    {
+      "file": "tests/fixtures/camera/4.jpg",
+      "bytes": 15027,
+      "sha256": "dbf7f3d7d9a462bb6a01dfc67d879bc6c2f602efdc45c1a852b206af37d7da55"
+    },
+    {
+      "file": "tests/fixtures/camera/5.jpg",
+      "bytes": 15027,
+      "sha256": "c60e5b021da0f4c213668afb964ba651730d298e6e794655e9f5abcf9e5b54c7"
+    },
+    {
+      "file": "tests/fixtures/camera/6.jpg",
+      "bytes": 15027,
+      "sha256": "536de83579e9b4f1bb94032b0eae4830938bc2bbdc2ba880c5b29cebebb7e17e"
+    },
+    {
+      "file": "tests/fixtures/camera/7.jpg",
+      "bytes": 15027,
+      "sha256": "8fed3134487b39e554d6c9213e20799eb0b7c56392b8e0e870092a59b23d8cee"
+    },
+    {
+      "file": "tests/fixtures/fixed-app/setup.json",
+      "bytes": 600,
+      "sha256": "52ea2d799854951220e7c927e021d912c14464dc033f022b52797af38bcae893"
+    },
+    {
+      "file": "tests/fixtures/game-app/simulation.json",
+      "bytes": 520,
+      "sha256": "517af42f1f77d3380f0db25b6ad11dc462102253eb756fbc1b30ed0e9610a1e3"
+    },
+    {
+      "file": "tests/fixtures/game-app/two-rounds.json",
+      "bytes": 3130,
+      "sha256": "39eec9f8cfa33f2fad12ed962c63d99e0a03b4f900daefb33379beae7b3c84f1"
+    },
+    {
+      "file": "tests/fixtures/upper-app/arm-registration.json",
+      "bytes": 768,
+      "sha256": "7dbd60fdd4c138447530b1ce77ae2e0bab5fb75474c9364148a733b7be93455f"
+    },
+    {
+      "file": "tests/fixtures/upper-app/arm-touches.json",
+      "bytes": 2822,
+      "sha256": "2374304d637b0b0e2f12f295b8f2e5a53abdd1f41af819e3cb6ddeea94dffd2b"
+    },
+    {
+      "file": "tests/fixtures/upper-app/inspect.json",
+      "bytes": 306,
+      "sha256": "316861b30ab786947c1fbfe75b8d84573a727879830ca24d328a479037869114"
+    },
+    {
+      "file": "tests/fixtures/upper-app/kinematic-reference.json",
+      "bytes": 19937,
+      "sha256": "f1a55cdce3ae41ce0112aa6d2b43076f77e3bc4d72b7255ab7156c6759a1525b"
+    },
+    {
+      "file": "tests/fixtures/upper-app/measured-pairs.json",
+      "bytes": 1921,
+      "sha256": "714fa5707288101f6c46e81348894fe7256fbb1bc8320a0054c084309a3c8dcb"
+    },
+    {
+      "file": "tests/fixtures/upper-app/missing-arm-reference.json",
+      "bytes": 82,
+      "sha256": "15610882c1890d4613e51539fe98810f37deb2bf844608de1f94585c2e17adac"
+    },
+    {
+      "file": "tests/fixtures/upper-app/missing-heights.json",
+      "bytes": 47,
+      "sha256": "4f0bacf3dc5dfc98e55982a2cf6e12d8cf998141701b23e2aa0b344d29ac3771"
+    },
+    {
+      "file": "tests/fixtures/upper-app/orientation.yml",
+      "bytes": 27558,
+      "sha256": "9455f20fba918b85d9c10e2836bf76e51f57a63a4139a241c3b15ff66d804cd1"
+    },
+    {
+      "file": "tests/fixtures/upper-app/pick-plan.json",
+      "bytes": 1077,
+      "sha256": "26af92aa63e31b472bc2572dce33761c9083da12840ef97fdba32db2fce55ade"
+    },
+    {
+      "file": "tests/fixtures/upper-app/plane-map.yml",
+      "bytes": 2438,
+      "sha256": "de19a6cc5719c42b1afcbd0b1bedde4cff319d92a59fb2b3a99366528a5517bc"
+    },
+    {
+      "file": "tests/fixtures/upper-app/reference.json",
+      "bytes": 294,
+      "sha256": "830fd68bd908d9d3d58ae172be70a4f7669b9d7640c58c11393a0e7772b34f66"
+    },
+    {
+      "file": "tests/fixtures/upper-app/source.png",
+      "bytes": 670809,
+      "sha256": "5de209e9959d35671c960e4dc1c6b5b3a1768668132a63db87118c51514ff9c4"
+    },
+    {
+      "file": "tests/fixtures/vision/expected.json",
+      "bytes": 8620,
+      "sha256": "b17e7bcecbb3ed3b52803627c31de008dab720a4a91bcfc792009ea17c833a1f"
+    },
+    {
+      "file": "tests/fixtures/vision/fixed-input.png",
+      "bytes": 479271,
+      "sha256": "addf2adf6ac818726eeb19877b60c008df05bfd9280d4e2da9efa52acb62d901"
+    },
+    {
+      "file": "tests/fixtures/vision/historical-input.png",
+      "bytes": 499380,
+      "sha256": "042e90483f073f10edd695989962306e954873caa66ce198382ea4b6933d4242"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-01.png",
+      "bytes": 1249164,
+      "sha256": "ebaae6ac5f2de710dcd865d3c896f1eb57f31916fcc5e042814c771ef67d4902"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-02.png",
+      "bytes": 1030716,
+      "sha256": "00b401e2208873323819b8a2f151ea67b292867fe5c2170bfb2432ad29d717dd"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-03.png",
+      "bytes": 1208106,
+      "sha256": "817f49b5f5715948685170eef5a890131b5a07a429c605a85da8de7a35ab9bf3"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-04.png",
+      "bytes": 1254399,
+      "sha256": "a47ac78c7a08d1c8df1d53d006389defd9e3c4f16ad513561a9c07ea34ff12b2"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-05.png",
+      "bytes": 1247870,
+      "sha256": "48b921db2bd950a043284707aad3598c7559726511b0de13124bfd3fd2d6874c"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-06.png",
+      "bytes": 1058810,
+      "sha256": "1f0243897c2db9ecd65be7b15c4e62982a2a66fa8584f839182572cb4f5d0318"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-07.png",
+      "bytes": 1235474,
+      "sha256": "0f9e8d45e9fce8c8bd3ecc888705a487f5a99edc63dc8abe5ebe9e598ff13d54"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-08.png",
+      "bytes": 1246727,
+      "sha256": "72133b204cad6601b33c57355c60d7fa981f51247bf33f80e1119aee1b4d8dab"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/fixed-09.png",
+      "bytes": 1329836,
+      "sha256": "d2e400ffc018299ab1276443d75a1f2b625877c4315cd7afdc2920598e33629f"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-diagnosis/output.bin",
+      "bytes": 479533,
+      "sha256": "4a9f10c03c6c5f87bdcb534746fa7ee0d2d9c4f7b067a1f8d8f4195645f7631d"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-diagnosis/source.png",
+      "bytes": 879852,
+      "sha256": "d11897aca372617e806243a99afb7ff95ea3e6e8e61d02394b2dcce821b35ee7"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-reference/output.bin",
+      "bytes": 479532,
+      "sha256": "c1de65c1e0658645d1ba55571d13cb1ca3a56f9c8b87e372653a2722f6239a23"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-reference/source.png",
+      "bytes": 498959,
+      "sha256": "969f05a8d94c44fe464b16edfd4a19ed67b9338b851c3df38f5ddfab4a09e21b"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-v3/output.bin",
+      "bytes": 479532,
+      "sha256": "407cb3122f5e0e481a6a16653406d8ed3ee2aab1f70fa1d27696266ed6d1a391"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-v3/source.png",
+      "bytes": 924403,
+      "sha256": "f7cccb042282c42b8c594d397d05ce335b436e2407b659cfacdc3733720bc8a0"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-expanded-v1-20261105/output.bin",
+      "bytes": 479532,
+      "sha256": "1fa2094e1acdcb7f4002fab7d3e7de08b32aa31f21d623d5ff5b7c47caf46fc3"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-expanded-v1-20261105/source.png",
+      "bytes": 896427,
+      "sha256": "0fcc0abc35d315488dff73668732b6e9bb6b41e371249d5024349603f0ebdf2e"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-full-frame/output.bin",
+      "bytes": 479532,
+      "sha256": "6b0fa3a9e2728a71fbdc92ec502dc8a2fc500dc1a80617738bcebd499bcd1cfa"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-full-frame/source.png",
+      "bytes": 861568,
+      "sha256": "04c0fb3808ad7f2d35cbc19aa2301ddc53e50df921b612f333d999dc6654b48e"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-live-20261104/output.bin",
+      "bytes": 479532,
+      "sha256": "c3a36f43edbaefb7a6f120b3bab0b1a16bb9a66275764d003bcff56519af7caa"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-live-20261104/source.png",
+      "bytes": 884274,
+      "sha256": "50a1fe1308d3d4cf98c4fe9d6cb5b7ef92fec5e10b7b4e88556c93da192278c6"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-live-active/output.bin",
+      "bytes": 479532,
+      "sha256": "5b59d9c477c9e38f0b22bd29eefda9b8652589ff34ec72778008a94b75d7a955"
+    },
+    {
+      "file": "tests/fixtures/vision/replay/npu-yolo-live-active/source.png",
+      "bytes": 859272,
+      "sha256": "93a211896888c2e67589e709435849c422ac3643196dd52149c5bb9b45995701"
+    },
+    {
+      "file": "tests/fixtures/vision/review-corpus.json",
+      "bytes": 56164,
+      "sha256": "95391da3a66cc5fcf81513bce52d22644d0380d562f79148610ab5a1de971a5a"
+    },
+    {
+      "file": "tests/fixtures/vision/rknn-output.bin",
+      "bytes": 479532,
+      "sha256": "407cb3122f5e0e481a6a16653406d8ed3ee2aab1f70fa1d27696266ed6d1a391"
+    },
+    {
+      "file": "tests/fixtures/vision/source.png",
+      "bytes": 924403,
+      "sha256": "f7cccb042282c42b8c594d397d05ce335b436e2407b659cfacdc3733720bc8a0"
+    },
+    {
+      "file": "tests/fixtures/vision/tiny-labels.pgm",
+      "bytes": 13,
+      "sha256": "fb497549cb6f218e02c61ef46d1b96906e50c8148153b42f481b18d9c48c415b"
+    },
+    {
+      "file": "tests/fixtures/vision/visual-checks.json",
+      "bytes": 1551,
+      "sha256": "550cfa163a640fba41603e18d477f846310782386755280ef5d677be0f4ecc2f"
+    },
+    {
+      "file": "tests/game_channel_test.cpp",
+      "bytes": 3556,
+      "sha256": "1e482904157a9540f9a1f186550de88a0c66f4d15add17615666f03c26d83e5f"
+    },
+    {
+      "file": "tests/game_geometry_test.cpp",
+      "bytes": 5635,
+      "sha256": "b95c2d33b048ef189549b70598f5852005e90dad4c8727d76da78f5d8059f2f1"
+    },
+    {
+      "file": "tests/game_live_io_test.cpp",
+      "bytes": 5852,
+      "sha256": "5a3319096261ea1ee7547b6012fbf2b9de3618aabf920102b3ee44e52d6f880c"
+    },
+    {
+      "file": "tests/geometry_test.cpp",
+      "bytes": 6586,
+      "sha256": "28440cf83a153ee1b48df0b353d2e8a175c0fe88462007c411e390d710e1820a"
+    },
+    {
+      "file": "tests/j1_20_15_turn_motion_test.c",
+      "bytes": 1186,
+      "sha256": "65c6fbf169a555d56acbf94e567aef6633fab543b226df6e81276424a23078b5"
+    },
+    {
+      "file": "tests/j1_endpoint_test.c",
+      "bytes": 1038,
+      "sha256": "bc42bd5e85993599d2da69c9ebf05cbc12c4b4ad2c37f1babae2403cf74dc5f3"
+    },
+    {
+      "file": "tests/j1_following_error_test.c",
+      "bytes": 953,
+      "sha256": "d1ff0216c5ff9237c420509049f2790854a07d1b41dd46cc75781f4cfef5b8fb"
+    },
+    {
+      "file": "tests/j1_position_headroom_test.c",
+      "bytes": 1150,
+      "sha256": "9c5592a2406bc2136d59f0f1b3c4ebe673b67119899deda6d57f371f9db671ae"
+    },
+    {
+      "file": "tests/j1_protocol_test.c",
+      "bytes": 3125,
+      "sha256": "2b0bc3309f308d8a3cc23e995aa696b02285af304906a39714840ade3b6374b0"
+    },
+    {
+      "file": "tests/j1_speed_interval_test.c",
+      "bytes": 1627,
+      "sha256": "2f1f44acbf610295ca2e9340485deccc209fe81eee23b7066e011e68b1045a82"
+    },
+    {
+      "file": "tests/j1_ten_turn_motion_test.c",
+      "bytes": 1182,
+      "sha256": "1ac38d85e6e4901bcc4478909dd25b93135d5f7a8681f5ca3fc5baf45675586f"
+    },
+    {
+      "file": "tests/j1_trajectory_drift_test.c",
+      "bytes": 1395,
+      "sha256": "7d8d488780c8860371f1c0096766ad8d31c930fce1eee3cb41848e8fa2a004b7"
+    },
+    {
+      "file": "tests/j1_velocity_mode_test.c",
+      "bytes": 1945,
+      "sha256": "a8646f80c5127716583509643eb0e384c0c1ac6e93e0d5bb22147ab8058a6814"
+    },
+    {
+      "file": "tests/joint_config_test.c",
+      "bytes": 1326,
+      "sha256": "8ee655da7d97dd9281fb1a2a2271deb72eeef70096ef5d6161358b1b837f6a3f"
+    },
+    {
+      "file": "tests/motion_plan_test.cpp",
+      "bytes": 4509,
+      "sha256": "3a9d057a163bafa16d40f376accc4f725841133c17a637ea82ad9a108ac95dda"
+    },
+    {
+      "file": "tests/motor_calibration_test.c",
+      "bytes": 7237,
+      "sha256": "ec4bd62d1577bde85f3e491ee43c93150ba4bc61019fa42074ae1a2b2fe4035a"
+    },
+    {
+      "file": "tests/pikafish_protocol_test.cpp",
+      "bytes": 7331,
+      "sha256": "e9d952e9edc51e39964cc79f0ca323783b85e68561ab3d0da6bb1cbee1873d86"
+    },
+    {
+      "file": "tests/posix_stubs/fcntl.h",
+      "bytes": 175,
+      "sha256": "908cfe7b38eda986f441c1b93644dee1d9097db7d7d9cbcb758c28d1e436b6f3"
+    },
+    {
+      "file": "tests/posix_stubs/poll.h",
+      "bytes": 192,
+      "sha256": "0bb54fa803fe4155a38e3019af4833f8a2859234fb1a92953a50bd79c56d096b"
+    },
+    {
+      "file": "tests/posix_stubs/sys/resource.h",
+      "bytes": 147,
+      "sha256": "7c73d5ccfcea9325dac282aa95dbd4193385d0607f1049489383117f50e79a5d"
+    },
+    {
+      "file": "tests/posix_stubs/sys/socket.h",
+      "bytes": 298,
+      "sha256": "f031b1c907bba868fc046674898c6b433e4b5ba2e77349f61a3e7bebd595b810"
+    },
+    {
+      "file": "tests/posix_stubs/sys/wait.h",
+      "bytes": 72,
+      "sha256": "d167f4eaedbbf559835617f0f0f1a9efe2554891c92361618bb8d84c9777dfae"
+    },
+    {
+      "file": "tests/posix_stubs/unistd.h",
+      "bytes": 464,
+      "sha256": "5a6c3f4b60ef9292739d3fadbefcd11c64665cc378ae8d7b0933c86dccc4b14f"
+    },
+    {
+      "file": "tests/protocol_stubs/at32m412_416_conf.h",
+      "bytes": 29,
+      "sha256": "e7f1568ac9f0269427454cd87091b252b90fdce84652c9bd74499b3bb1e95061"
+    },
+    {
+      "file": "tests/protocol_stubs/build_id.h",
+      "bytes": 35,
+      "sha256": "3eb761cbcc65ad1723d0fad414f9dc6bafae14d1f2279b299b8a27d613384233"
+    },
+    {
+      "file": "tests/rknn_runtime_test.cpp",
+      "bytes": 6299,
+      "sha256": "f991dbacebf49e5df60b00ddbfbb7ae41b596073089eb0f7b1f47d1a1120b49b"
+    },
+    {
+      "file": "tests/rotary_teaching_test.c",
+      "bytes": 1051,
+      "sha256": "9bd215e870ec2c55579f55a3398d4e20c2dcf297ee7dbebc189e9b87c2a4312a"
+    },
+    {
+      "file": "tests/run_match_program.py",
+      "bytes": 7855,
+      "sha256": "afe598faef82b3b7a75bb3e540427564304ca7bce43f5c5eff996dbbbf605d34"
+    },
+    {
+      "file": "tests/saved_tensor_input_test.py",
+      "bytes": 2064,
+      "sha256": "88ab7ba6578da4052ea6d8f570ea6d194528d152fe03eb2a337170f6bca895b7"
+    },
+    {
+      "file": "tests/session_test.cpp",
+      "bytes": 4669,
+      "sha256": "fef99c1759b0f650a9d19bfd6eba13437a31e58de35a704db4c8b46046caee55"
+    },
+    {
+      "file": "tests/speed_estimator_test.c",
+      "bytes": 3838,
+      "sha256": "65448d8997e0ad9d9e2f63be1b2a4cce161aa28192c013a54c7d2ed12e3f0751"
+    },
+    {
+      "file": "tests/test_can_stream.py",
+      "bytes": 1379,
+      "sha256": "4dbd781b8cbbd1eadf26677f025a77ec26704082685d388f4597c39ccb52028c"
+    },
+    {
+      "file": "tests/test_dual_preview.py",
+      "bytes": 6103,
+      "sha256": "2b2f76329f9f4e2b91b10284e362998b08833214fa47b07f625a8acbf04f8e0e"
+    },
+    {
+      "file": "tests/test_first_pick.py",
+      "bytes": 5148,
+      "sha256": "2c41ec9af1b43f0058f43603f3ebfb419b6958d40753597b0b7ff65511118a07"
+    },
+    {
+      "file": "tests/test_manual_control.py",
+      "bytes": 12894,
+      "sha256": "23785e43d53d66d0d1a2465ae6e5678e59c42eee0197dbf7ca6601b2e1715a00"
+    },
+    {
+      "file": "tests/test_manual_http.py",
+      "bytes": 4296,
+      "sha256": "b9b7b1ed74594184e7552f54705bf0df9fe1c9932ac24a5183830764b992eed1"
+    },
+    {
+      "file": "tests/test_manual_telemetry.py",
+      "bytes": 4727,
+      "sha256": "bddeed8e629aefc145d0f236160e5def4919974a37f3b2f77284656ddb2bbbc4"
+    },
+    {
+      "file": "tests/test_reference_recovery.py",
+      "bytes": 5209,
+      "sha256": "9cb3de77e704970e77b39bd96865601a2ae4649bbdae12e3222ce9b3e52a2141"
+    },
+    {
+      "file": "tests/test_release_tuning.py",
+      "bytes": 3601,
+      "sha256": "02bc7510d8b5b584dc2f7e0be7e746691903d95bf540cf2cc732118aab296b6b"
+    },
+    {
+      "file": "tests/vision_replay.cpp",
+      "bytes": 4389,
+      "sha256": "ac3a4abc6e521c7babd61b5c94a0414b5604bc0ba4bc742ed66553e1494a49c7"
+    },
+    {
+      "file": "tests/with_camera_stream.py",
+      "bytes": 4479,
+      "sha256": "1ced1c7275a5c16cba47bd510fa791d8497d987846ed3046e4590a35b3947072"
+    },
+    {
+      "file": "tests/yolo_pipeline_test.cpp",
+      "bytes": 8627,
+      "sha256": "56e9982ce6122edc27dc7751b91f5e935ec458051eccdab7169bdcd6f2513aa9"
+    },
+    {
+      "file": "tools/fixed_review.py",
+      "bytes": 4174,
+      "sha256": "fcea664cda3e653be4e8a0d4d9f79cc6311f87da0e5acfe9cac4f14e4fa7b303"
+    },
+    {
+      "file": "tools/game-preview.html",
+      "bytes": 4159,
+      "sha256": "fc9409272202eed6ba5c674dafc747865f47fcfa397b9292e9bf521e9416e070"
+    },
+    {
+      "file": "tools/game_review.py",
+      "bytes": 286,
+      "sha256": "3f466c8abd63fc500dbd0917adb082cedea6b91ea8ec60e14f96cd0b9f8f8ace"
+    },
+    {
+      "file": "tools/package_upper.py",
+      "bytes": 4842,
+      "sha256": "938c2e37bad024bb00675f89dbc0f06dfdfcd3e89862e0132d6ea8311a9bb096"
+    },
+    {
+      "file": "tools/run-game.sh",
+      "bytes": 501,
+      "sha256": "39e88175f65c1e31de00d7e42a6db1474fca7b2ae1c9d627148327b6779f5997"
+    },
+    {
+      "file": "tools/run-vision.sh",
+      "bytes": 664,
+      "sha256": "37e1fbf706fb86dbf67928f6925202632bfbbe4ac8852e972653ff75bc5b2ba1"
+    },
+    {
+      "file": "tools/upper_review.py",
+      "bytes": 7719,
+      "sha256": "fa23558220cb1d5bc62a9c99bad44b1a4428ec9ed368aca60d3c3960b02168cd"
+    },
+    {
+      "file": "vision/board.cpp",
+      "bytes": 1976,
+      "sha256": "01f19f4a9f14246311667a78b825e0bf79fce299c54d6904a27296fb397c39bb"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "bytes": 3296,
+      "sha256": "47b79d54694374283929ecad57f84f0a3dc9a960ba652a542a048c91335a59f1"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "bytes": 577,
+      "sha256": "238a7f605aaf45882e3f0b1071dff30048a02e83121192b2e50e7160b92f078a"
+    },
+    {
+      "file": "vision/fixed_board.cpp",
+      "bytes": 1204,
+      "sha256": "201cffc81500c9a93a399102273dfc5b4393c0b82226a073a09b6cf4fc7a59e5"
+    },
+    {
+      "file": "vision/fixed_board.hpp",
+      "bytes": 735,
+      "sha256": "289209bc2501c51e02e7b1e55b52f8ef47822ccf7f082562f05ed35625b7ccb3"
+    },
+    {
+      "file": "vision/geometry.cpp",
+      "bytes": 11328,
+      "sha256": "26d5b52d5f9a082e155c13e262cb4e3938bf31e3ce2e43d1043088dace21179c"
+    },
+    {
+      "file": "vision/geometry.hpp",
+      "bytes": 3268,
+      "sha256": "cca4143bf2a3d48a72223e59029d606b0e9e89807535da06fe85e5d9f02149ba"
+    },
+    {
+      "file": "vision/io.hpp",
+      "bytes": 1368,
+      "sha256": "84c9167b1fb9d867b2f79ff14dab294083ed57ff13093b4d3d6edeb08c5d673f"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "bytes": 6590,
+      "sha256": "be193a2b221bd2dc6dc62b5942e3b04b12073b93b4ae0b024efdb82498548faa"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "bytes": 2512,
+      "sha256": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "bytes": 3661,
+      "sha256": "45434c0968995ddbb6683fae174f94232d58a78971de8ece6e6b5e82bab0aacf"
+    }
+  ],
+  "archive": {
+    "file": "output/game-main-20261114/game-application-source.zip",
+    "bytes": 70497761,
+    "sha256": "fb8f80ac9d43684782a8f1ece5b33eff686d180daac94d1c24f42c65247babbf"
+  }
+}

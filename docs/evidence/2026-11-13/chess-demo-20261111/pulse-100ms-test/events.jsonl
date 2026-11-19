@@ -1,0 +1,48 @@
+{"step": "gpio", "time": "2026-11-11T17:39:06.962062+08:00", "value": 0}
+{"step": "demo_travel_height", "time": "2026-11-11T17:39:06.963451+08:00", "angle": -18653.5375, "rise_mm": 35.0}
+{"step": "xy", "time": "2026-11-11T17:39:07.180667+08:00", "grid": "c4", "angles": [-52.436, -25.95], "tip_error_mm": 0.7661841516995206}
+{"step": "demo_move", "time": "2026-11-11T17:39:07.490165+08:00", "cycle": 1, "source": "h2", "destination": "e2", "piece": "red"}
+{"step": "rotation", "time": "2026-11-11T17:39:10.040492+08:00", "axis": 2, "goal": -38.68107467175858, "position": -38.697}
+{"step": "j3_approach", "time": "2026-11-11T17:39:13.985173+08:00", "goal": -92.86725403957197, "position": -96.878}
+{"step": "xy", "time": "2026-11-11T17:39:16.038597+08:00", "grid": "h2", "angles": [-38.682, -92.417], "tip_error_mm": 0.7244406901434681}
+{"step": "z", "time": "2026-11-11T17:39:27.826036+08:00", "goal": -20286.41, "position": -20288.344}
+{"step": "pickup_height", "time": "2026-11-11T17:39:27.827066+08:00", "grid": "h2"}
+{"step": "z", "time": "2026-11-11T17:39:37.708346+08:00", "goal": -18653.5375, "position": -18634.13}
+{"step": "rotation", "time": "2026-11-11T17:39:40.203544+08:00", "axis": 2, "goal": -52.41147306908955, "position": -52.411}
+{"step": "j3_approach", "time": "2026-11-11T17:39:43.982757+08:00", "goal": -26.380516339849095, "position": -26.785}
+{"step": "xy", "time": "2026-11-11T17:39:44.017967+08:00", "grid": "c4", "angles": [-52.515, -26.785], "tip_error_mm": 0.5164767579300563}
+{"step": "demo_pick_verified", "time": "2026-11-11T17:39:44.321239+08:00", "source": "h2", "piece": "red"}
+{"step": "demo_stopped", "time": "2026-11-11T17:39:50.359656+08:00", "reason": "等待轴到位或停稳超时", "cycles": 0, "move_index": 1}
+{"step": "gpio", "time": "2026-11-11T17:41:43.018711+08:00", "value": 0}
+{"step": "demo_resume_held", "time": "2026-11-11T17:41:43.430841+08:00", "source": "h2", "destination": "e2", "release_offset_mm": 5, "release_goal": -20053.142499999998, "release_pulse_ms": 100}
+{"step": "j3_approach", "time": "2026-11-11T17:41:46.385266+08:00", "goal": -74.71132213250033, "position": -75.784}
+{"step": "xy", "time": "2026-11-11T17:41:46.454901+08:00", "grid": "e2", "angles": [-50.492, -75.806], "tip_error_mm": 1.7557390056846465}
+{"step": "z", "time": "2026-11-11T17:41:57.661849+08:00", "goal": -20053.142499999998, "position": -20055.786}
+{"step": "release_pulse", "time": "2026-11-11T17:41:57.923035+08:00", "grid": "e2", "duration_ms": 100, "levels": [1, 0]}
+{"step": "z", "time": "2026-11-11T17:42:07.228580+08:00", "goal": -18653.5375, "position": -18643.69}
+{"step": "j3_approach", "time": "2026-11-11T17:42:10.580037+08:00", "goal": -26.785, "position": -14.788}
+{"step": "demo_stopped", "time": "2026-11-11T17:42:13.627331+08:00", "error": "相机核对未通过，预期 {'h2': None, 'e2': 'red', 'b9': 'black', 'c7': None, 'h9': 'black'}，实拍 {'h2': None, 'e2': None, 'b9': 'black', 'c7': None, 'h9': 'black'}", "source": "h2", "destination": "e2"}
+{"step": "gpio", "time": "2026-11-11T17:44:20.951291+08:00", "value": 0}
+{"step": "demo_correct_cannon", "time": "2026-11-11T17:44:22.341103+08:00", "source_pixel": [476.5, 372.5], "destination": "e2", "release_offset_mm": 5, "release_pulse_ms": 20}
+{"step": "rotation", "time": "2026-11-11T17:44:23.664867+08:00", "axis": 2, "goal": -52.61415973057304, "position": -52.593}
+{"step": "j3_approach", "time": "2026-11-11T17:44:27.299706+08:00", "goal": -70.04992940452316, "position": -71.785}
+{"step": "demo_stopped", "time": "2026-11-11T17:44:27.692122+08:00", "error": "试走已停止", "destination": "e2", "pulse_ms": 20}
+{"step": "gpio", "time": "2026-11-11T17:45:27.028157+08:00", "value": 0}
+{"step": "demo_stopped", "time": "2026-11-11T17:45:30.085404+08:00", "error": "相机核对未通过，预期 {'h2': None, 'e2': None, 'b9': 'black', 'c7': None, 'h9': 'black'}，实拍 {'h2': None, 'e2': 'black', 'b9': 'black', 'c7': None, 'h9': 'black'}", "destination": "e2", "pulse_ms": 20}
+{"step": "gpio", "time": "2026-11-11T17:45:48.970290+08:00", "value": 0}
+{"step": "demo_correct_cannon", "time": "2026-11-11T17:45:49.352153+08:00", "source_pixel": [475.5, 369.5], "destination": "e2", "release_offset_mm": 5, "release_pulse_ms": 20}
+{"step": "rotation", "time": "2026-11-11T17:45:50.406112+08:00", "axis": 2, "goal": -52.96550272179808, "position": -52.951}
+{"step": "xy", "time": "2026-11-11T17:45:50.770138+08:00", "grid": "cannon", "angles": [-52.954, -71.609], "tip_error_mm": 1.9060656368265454}
+{"step": "z", "time": "2026-11-11T17:46:02.436083+08:00", "goal": -20286.41, "position": -20288.65}
+{"step": "pickup_height", "time": "2026-11-11T17:46:02.438212+08:00", "grid": "cannon"}
+{"step": "z", "time": "2026-11-11T17:46:12.875373+08:00", "goal": -18653.5375, "position": -18648.854}
+{"step": "j3_approach", "time": "2026-11-11T17:46:16.159306+08:00", "goal": -14.92, "position": -11.8}
+{"step": "demo_pick_verified", "time": "2026-11-11T17:46:16.475778+08:00", "source_pixel": [475.5, 369.5], "piece": "red"}
+{"step": "rotation", "time": "2026-11-11T17:46:17.805384+08:00", "axis": 2, "goal": -50.49308899304482, "position": -50.5}
+{"step": "j3_approach", "time": "2026-11-11T17:46:21.386237+08:00", "goal": -74.71132213250033, "position": -75.41}
+{"step": "xy", "time": "2026-11-11T17:46:21.431706+08:00", "grid": "e2", "angles": [-50.488, -75.41], "tip_error_mm": 1.1384080515641986}
+{"step": "demo_stopped", "time": "2026-11-11T17:46:21.741304+08:00", "error": "试走已停止", "destination": "e2", "pulse_ms": 20}
+{"step": "gpio", "time": "2026-11-11T17:46:49.001006+08:00", "value": 0}
+{"step": "demo_resume_held", "time": "2026-11-11T17:46:50.404087+08:00", "source": "h2", "destination": "e2", "release_offset_mm": 5, "release_goal": -20053.142499999998, "release_pulse_ms": 20}
+{"step": "xy", "time": "2026-11-11T17:46:50.647250+08:00", "grid": "e2", "angles": [-50.493, -75.389], "tip_error_mm": 1.084563477033951}
+{"step": "demo_stopped", "time": "2026-11-11T17:47:00.926491+08:00", "error": "试走已停止", "source": "h2", "destination": "e2"}

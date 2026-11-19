@@ -1,3 +1,29 @@
-# Preserve original bytes when moving the Windows/Linux teaching files.
-* -text
-hardware/camera_mount/v2/reference/rv1106_board.SLDPRT filter=lfs diff=lfs merge=lfs -text
+# Authored text uses LF; captured evidence and upstream model records retain their bytes.
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+tools/*.sh text eol=lf
+*.png binary
+*.jpg binary
+*.rknn binary
+temp/gpio-audit-20261106/** -text -whitespace
+temp/rv1106-logs/** -text -whitespace
+temp/grid-fix/** -text -whitespace
+models/** -text -whitespace
+docs/evidence/** -text -whitespace
+images/J1-20261109-d3b08bf8/** -text -whitespace
+images/common-20261111-41f870bf/** -text -whitespace
+hardware/motor-driver/netlist.enet -text -whitespace
+# Firmware build IDs hash source bytes; retain recorded line endings.
+firmware/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/*.c text eol=lf
+tests/**/*.h text eol=lf
+manual_control/*.html text eol=lf
+engine/pikafish-2023-03-05/pikafish -text
+engine/pikafish-2023-03-05/** -text -whitespace
+*.nnue binary
+*.tar.gz binary

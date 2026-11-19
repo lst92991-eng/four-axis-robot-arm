@@ -1,0 +1,51 @@
+{
+  "status": {
+    "build": "d3b08bf8",
+    "uptime": 750,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -6200.444,
+    "velocity": 0.0,
+    "target": -6200.444,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 5753,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "speed_kp": 1.6,
+  "speed_ki": 200.0,
+  "current_limit_ma": 1400,
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1073741825
+    },
+    {
+      "kind": 10,
+      "a": 1600,
+      "b": 200000,
+      "seq": 1073741826
+    }
+  ]
+}

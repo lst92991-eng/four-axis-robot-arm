@@ -1,0 +1,36 @@
+{
+  "authorization": "用户2026-11-15明确选择直接C++调用，保留执行和停止接口，删除动作文件往返，后续接SPI-CAN/H桥。",
+  "changes": [
+    "motion/execute.hpp只定义同步Motion_execute和Motion_stop；动作通过原PickStep数组传入，结果由bool输出参数写回。",
+    "app/game_live_io.cpp关闭视觉后直接调用Motion_execute；Runtime_close直接调用Motion_stop。",
+    "删除Motion_request、Motion_wait、Motion_cancel、activeTicket、requestNumber与轮询等待，不挪到其他实现中。",
+    "app/game_files只保留预览和棋局状态输出，不接受任何动作输入。",
+    "仿真根据独立场景直接返回结果，单向打印参数用于测试；没有新的动作请求/回执文件。",
+    "原文件通道测试随通道退役，新增未接入实现检查，并在真实IO包装检查中加入成功、失败、取消、停止失败和信号上下文检查。"
+  ],
+  "semantics_review": [
+    "success=true仍意味着完成并停稳；机器人必须随后观察新三帧并吻合expected，才提交历史。",
+    "停止请求通过已有gameRunning传入执行器；信号回调不做阻塞硬件IO。",
+    "返回false只表示未执行或已经停稳的失败；无法确认停止时，真实执行实现应抛出异常交主入口收尾。",
+    "Motion_stop必须支持初始化前和重复调用，并且仅在确实停稳时返回true；当前未接入实现返回false。",
+    "失败恢复仍只观察或由操作者明确accept/restored；没有新增自动重发或自动清故障。",
+    "普通3步准备、9步搬子、17步吃子（包括最终观察位）的动作、数值和顺序与旧版本一致。"
+  ],
+  "verification": {
+    "ctest_suites": 17,
+    "python_tests": 60,
+    "old_new_full_program_scenarios": 15,
+    "retired_protocol_excluded_from_equivalence": "ticket及传输文件按用户要求删除；比较棋局状态和动作实际内容。",
+    "new_program_writes_motion_exchange_files": false,
+    "saved_images": 16,
+    "recorded_npu_detections": 152,
+    "onnx_cpu_detections": 501,
+    "fixed_geometry_byte_equal_outputs": 4
+  },
+  "unchanged": ["六个已认可视觉文件", "原ROI、模型、预处理与阈值", "固定90点、标定与逆解", "原机械参考与示教Z", "底层驱动参数及保护"],
+  "limitations": [
+    "execute.cpp是明确失败的待接入实现，尚未提供SPI-CAN/H桥驱动，不能宣称已能实机下棋。",
+    "本轮全部离线；未连接CAN、ADB、GPIO或机械臂。",
+    "真实Linux引擎进程、ARM交叉构建、RV1106 NPU连续运行仍需单独验证。"
+  ]
+}

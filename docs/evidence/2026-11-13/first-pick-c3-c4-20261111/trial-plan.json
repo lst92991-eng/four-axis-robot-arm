@@ -1,0 +1,47 @@
+{
+  "source": {
+    "grid_id": "c3",
+    "pixel": [
+      578.1997912743641,
+      260.0326562818226
+    ],
+    "base_xy_mm": [
+      -56.71612065136789,
+      -340.7584007321117
+    ],
+    "j2_deg": -55.48154264171557,
+    "j3_motor_deg": -30.622245911647738
+  },
+  "destination": {
+    "grid_id": "c4",
+    "pixel": [
+      638.1872755539323,
+      260.3031437342762
+    ],
+    "base_xy_mm": [
+      -55.561103757675056,
+      -311.6828852839864
+    ],
+    "j2_deg": -51.59728212225952,
+    "j3_motor_deg": -8.031377170935059
+  },
+  "board_frame": "c3-c4-before",
+  "mode": "passive_pick_active_release",
+  "z": {
+    "pickup_deg": -20286.41,
+    "travel_deg": -19353.34,
+    "pickup": {
+      "angle": -20286.41,
+      "counts": -61875,
+      "captured_at": "2026-11-11T15:43:20.1539702+08:00"
+    },
+    "travel": {
+      "angle": -19353.34,
+      "counts": -19410,
+      "captured_at": "2026-11-11T15:51:57.224238+08:00"
+    },
+    "operator_estimated_rise_mm": 20,
+    "release_offset_mm": 5
+  },
+  "release_pulse_ms": 20
+}

@@ -1,0 +1,168 @@
+{
+  "tag": "workspace-handoff-20261116",
+  "source_commit": "07204da08dec863596ca1a669c38941f8a1e40c0",
+  "tracked_files": 844,
+  "extra_files": 7874,
+  "assets": [
+    {
+      "asset": "scara-refactor-kit.zip",
+      "group": "refactor-kit",
+      "bytes": 121250043,
+      "sha256": "b294d79e55a01a84c2a3f9bca10dfd4f01b7dd3598e6f20f80788aa7e31fea0a",
+      "files": 229,
+      "unpacked_bytes": 150854054
+    },
+    {
+      "asset": "scara-software-history-01.tar.gz",
+      "group": "software-history",
+      "bytes": 419280347,
+      "sha256": "f353bfe376096e041f260e9975d51c2880ac2e747f14cb100ace3744c78a9cde",
+      "files": 5228,
+      "unpacked_bytes": 3626872862
+    },
+    {
+      "asset": "scara-software-history-02.tar.gz",
+      "group": "software-history",
+      "bytes": 21839366,
+      "sha256": "89bef022453d6435d2ff3aff9d8d0e3c69d4bea19e8b96f9a5ddd84adb872887",
+      "files": 459,
+      "unpacked_bytes": 94003750
+    },
+    {
+      "asset": "scara-hardware-history-01.tar.gz",
+      "group": "hardware-history",
+      "bytes": 106819927,
+      "sha256": "c49711d388197bfc2ed900a477843eee4f3bf8d55cdda7b7e5d37d68c03aeffd",
+      "files": 708,
+      "unpacked_bytes": 171723890
+    },
+    {
+      "asset": "scara-hardware-records-01.tar.gz",
+      "group": "hardware-records",
+      "bytes": 27089694,
+      "sha256": "7cfbf73553657721c5c3588f8d56ad80b936315ee657f7118b165708e38831d0",
+      "files": 127,
+      "unpacked_bytes": 429021778
+    },
+    {
+      "asset": "scara-hardware-records-02.tar.gz",
+      "group": "hardware-records",
+      "bytes": 23812670,
+      "sha256": "08ddacf9177b8a3c1feaa4aa309e51fb5f165b6d4c6347a54acbd4f2b2926a73",
+      "files": 20,
+      "unpacked_bytes": 366438639
+    },
+    {
+      "asset": "scara-hardware-records-03.tar.gz",
+      "group": "hardware-records",
+      "bytes": 27571867,
+      "sha256": "86129b883fd0f5714363646382eec9dc64f89b60437b778ae99c2b27fe163f13",
+      "files": 14,
+      "unpacked_bytes": 431638983
+    },
+    {
+      "asset": "scara-hardware-records-04.tar.gz",
+      "group": "hardware-records",
+      "bytes": 10275655,
+      "sha256": "01be4f94693978ec51e9466072f4d790fc3c050536ee13683c4bcf0b54a9598e",
+      "files": 5,
+      "unpacked_bytes": 151262242
+    },
+    {
+      "asset": "scara-hardware-records-05.tar.gz",
+      "group": "hardware-records",
+      "bytes": 23228753,
+      "sha256": "ad09e4f31676e0ea6347e28d588622a837edd0f4da45bc8436828b1fb914a868",
+      "files": 9,
+      "unpacked_bytes": 344102866
+    },
+    {
+      "asset": "scara-hardware-records-06.tar.gz",
+      "group": "hardware-records",
+      "bytes": 81876872,
+      "sha256": "9607da2c70cf8f9cb13fd79d5148c40f97a8d034bb66ce7f6e7bd637d82999fa",
+      "files": 8,
+      "unpacked_bytes": 374133188
+    },
+    {
+      "asset": "scara-hardware-records-07.tar.gz",
+      "group": "hardware-records",
+      "bytes": 72510423,
+      "sha256": "91dd2ca281a6ef37d97d7888ac52056c328857245d044b34728d380ef8ae216d",
+      "files": 3,
+      "unpacked_bytes": 353578827
+    },
+    {
+      "asset": "scara-teaching-history-01.tar.gz",
+      "group": "teaching-history",
+      "bytes": 420420940,
+      "sha256": "ecdd7f7bdea71778bc586e6059a7bb38a64d4f6ef8df53f89b1d1a17649b5a1c",
+      "files": 740,
+      "unpacked_bytes": 699409335
+    },
+    {
+      "asset": "scara-teaching-history-02.tar.gz",
+      "group": "teaching-history",
+      "bytes": 252015311,
+      "sha256": "301198c9825a65c0fa2810f445f51eb8ed6e6cbd24d411f5f4a147ed48e5c0e8",
+      "files": 324,
+      "unpacked_bytes": 313140348
+    }
+  ],
+  "exclusions": {
+    "generated_build_or_cache": {
+      "files": 2936,
+      "bytes": 1801601254
+    },
+    "generated_compiler_output": {
+      "files": 95,
+      "bytes": 7635869
+    },
+    "credential_pattern": {
+      "files": 1,
+      "bytes": 582831
+    },
+    "local_runtime_selection_or_temp": {
+      "files": 2,
+      "bytes": 122
+    }
+  },
+  "existing_release": [
+    {
+      "path": "temp/model-v3-release/extracted/model-info.json",
+      "bytes": 5135,
+      "sha256": "0c28e26eb31cc885bd388f97e6c3a78b0d73acdad837c66ae46f3962d3a5e485",
+      "release": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04/releases/tag/v2026.11.05-model-v3"
+    },
+    {
+      "path": "temp/model-v3-release/extracted/xiangqi14-local-v3-rv1106.rknn",
+      "bytes": 7395907,
+      "sha256": "ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2",
+      "release": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04/releases/tag/v2026.11.05-model-v3"
+    },
+    {
+      "path": "temp/model-v3-release/extracted/xiangqi14-local-v3.onnx",
+      "bytes": 28221283,
+      "sha256": "fdf31b53da7bc2350936bb51fb6e53ddf0d5958aa36830a6493a187332458047",
+      "release": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04/releases/tag/v2026.11.05-model-v3"
+    },
+    {
+      "path": "temp/model-v3-release/extracted/xiangqi14-local-v3.pt",
+      "bytes": 28879811,
+      "sha256": "d6155e0d4048809a69b73860262e574ab22a25859a2a01f5b4265b5f7fd7fc2a",
+      "release": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04/releases/tag/v2026.11.05-model-v3"
+    },
+    {
+      "path": "temp/model-v3-release/model-info.json",
+      "bytes": 5135,
+      "sha256": "0c28e26eb31cc885bd388f97e6c3a78b0d73acdad837c66ae46f3962d3a5e485",
+      "release": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04/releases/tag/v2026.11.05-model-v3"
+    },
+    {
+      "path": "temp/model-v3-release/xiangqi-model-v3-20261105.zip",
+      "bytes": 47563174,
+      "sha256": "94e0af75e8c49d99ac51b11e62b77dea80ff4d276a1e4463b707cef730d4a7b6",
+      "release": "https://github.com/lst92991-eng/xiangqi-training-materials-2026-11-04/releases/tag/v2026.11.05-model-v3"
+    }
+  ]
+}

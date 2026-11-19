@@ -1,0 +1,8 @@
+{
+  "previous_commit": "52058b5",
+  "previous_cpp_nloc": 1800,
+  "current_cpp_nloc": 2463,
+  "vision_six_files_identical": true,
+  "retained_geometry_and_vision_outputs_identical": true,
+  "note": "Compared against the previous completed fixed-board version, not merely the new local baseline."
+}

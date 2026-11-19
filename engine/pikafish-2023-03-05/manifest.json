@@ -1,0 +1,37 @@
+{
+  "version": "Pikafish-2023-03-05",
+  "upstream_commit": "4762ca3c77c7f8ccbf204974cf23c5ca3e8c2783",
+  "repository_snapshot": "2604457771fb9f52945d71f5733ea73e71b70816",
+  "platform": "RV1106 ARMv7 NEON hard-float uClibc",
+  "network_is_predecompressed": true,
+  "threads": 1,
+  "hash_mib": 4,
+  "historic_validation": "2026-10-08 board-results.json; not a current full-system test",
+  "assets": {
+    "pikafish": {
+      "bytes": 430116,
+      "sha256": "d0491d5b1b76ffb1fdef0da25a49aaf52421533d4afd9585dcc0f11ac746045e",
+      "source_path": "output/rv1106/pikafish-validation/2023-03-05/pikafish"
+    },
+    "pikafish.nnue": {
+      "bytes": 36085723,
+      "sha256": "2e9280f355cd4f092fcb63c21477692100afaf9ba9868a10c9c8d5b8fc6d1d1f",
+      "source_path": "output/rv1106/pikafish-validation/2023-03-05/pikafish.nnue"
+    },
+    "Copying.txt": {
+      "bytes": 35821,
+      "sha256": "0b383d5a63da644f628d99c33976ea6487ed89aaa59f0b3257992deac1171e6b",
+      "source_path": "output/rv1106/pikafish-validation/2023-03-05/Copying.txt"
+    },
+    "source-4762ca3.tar.gz": {
+      "bytes": 317398,
+      "sha256": "686be90179a7cd7705595e1347b80f5a2e0483f0c8820950ee4fe9bfb59056f3",
+      "source_path": "output/rv1106/pikafish-validation/2023-03-05/source-4762ca3.tar.gz"
+    },
+    "board-results.json": {
+      "bytes": 3768,
+      "sha256": "6d5a6657e26b8506669978d624eeb358734a85b2fc23ff6464c94c56e72b0e4a",
+      "source_path": "output/rv1106/pikafish-validation/2023-03-05/board-results.json"
+    }
+  }
+}

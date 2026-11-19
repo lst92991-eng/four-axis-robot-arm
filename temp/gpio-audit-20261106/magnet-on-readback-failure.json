@@ -1,0 +1,19 @@
+{
+  "requested": "ON",
+  "on_readback_confirmed": false,
+  "fallback_requested": "OFF",
+  "before_fallback": {
+    "direction": "out",
+    "value": "0",
+    "active_low": "0"
+  },
+  "after_fallback": {
+    "direction": "out",
+    "value": "0",
+    "active_low": "0"
+  },
+  "flags": 3,
+  "consumer": "sysfs",
+  "motor_commands": false,
+  "host_time": "2026-11-06T18:40:48.824013+08:00"
+}

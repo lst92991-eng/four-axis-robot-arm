@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-11-13T14:41:02.684301+00:00",
+  "reference_commit": "b83ac93",
+  "reference_snapshot": "output/fixed-minimal-20261113/round-01/code.zip",
+  "reference_source_sha256": {
+    "vision/geometry.cpp": "17f642c9f4ab6267a9c90f2dce60a5fe6e82e4f13103269556a299a1c9718472",
+    "vision/geometry.hpp": "ef4ff775227fed2f60b29616f388b7d66a899b1a7156c723e835ef654d328fa9",
+    "vision/board.cpp": "a8a7383afcf6669f96ca559e632342034b10c9635e6cd2360ea35b14fb2d1bb2",
+    "vision/io.hpp": "84c9167b1fb9d867b2f79ff14dab294083ed57ff13093b4d3d6edeb08c5d673f",
+    "vision/yolo.hpp": "19b30f31d167c777dd7ad7244c8cb5164c84a97adc3b477636a059d8cb33ee96"
+  },
+  "driver_sha256": "51a2c0275b246d46c00d46cdb01fb9ac53721c61d821ebdf098ac03b6e61689c",
+  "cases": 14400,
+  "baseline_digest": "972399c77b6cf003",
+  "comparison": "Observation validity and all 90 piece identities; unused cell-confidence array and issue text retired. Detector scores remain in unchanged YOLO and visual replay.",
+  "scope": "Synthetic input equivalence, not additional accuracy or hardware samples.",
+  "driver_api_update": "Empty frame case replaces dynamic-board frame mismatch (retired for fixed XY); regenerated from old source and compared to current source.",
+  "previous_digest_with_cell_confidence": "25f76ca44edfd6eb"
+}

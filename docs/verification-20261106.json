@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-06",
+  "kind": "offline_pre_commit_verification",
+  "python_regression": {
+    "tests": 2,
+    "result": "PASS"
+  },
+  "cpp_ctest": "PASS",
+  "opencv": "5.0.0",
+  "build_directory": "build/commit-verify",
+  "image_cases": {
+    "fixture-old": {
+      "physical_accuracy_validated": 0,
+      "cases": [
+        {
+          "rotation_degrees": 0,
+          "max_repeatability_px": 0.516287506937526,
+          "rms_repeatability_px": 0.18704414894886728,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 10,
+          "max_repeatability_px": 1.0505557085882429,
+          "rms_repeatability_px": 0.36309390131145075,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": -10,
+          "max_repeatability_px": 0.6654606569088164,
+          "rms_repeatability_px": 0.22543420760859678,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 90,
+          "max_repeatability_px": 0.9047327682516004,
+          "rms_repeatability_px": 0.29229729032751817,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 180,
+          "max_repeatability_px": 0.9221387784619246,
+          "rms_repeatability_px": 0.3093898069293828,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 270,
+          "max_repeatability_px": 0.7821421387095759,
+          "rms_repeatability_px": 0.29758168265238255,
+          "orientation_confirmed": 0
+        }
+      ]
+    },
+    "fixture-v3": {
+      "physical_accuracy_validated": 0,
+      "cases": [
+        {
+          "rotation_degrees": 0,
+          "max_repeatability_px": 0.6706888605399552,
+          "rms_repeatability_px": 0.28000039470802124,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 10,
+          "max_repeatability_px": 0.5907521876443725,
+          "rms_repeatability_px": 0.25690788936316344,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": -10,
+          "max_repeatability_px": 0.9584357186727522,
+          "rms_repeatability_px": 0.4018041830393768,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 90,
+          "max_repeatability_px": 0.7614866670279821,
+          "rms_repeatability_px": 0.3637781735457935,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 180,
+          "max_repeatability_px": 1.1051167113976115,
+          "rms_repeatability_px": 0.3628858556578595,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 270,
+          "max_repeatability_px": 0.6773923322716464,
+          "rms_repeatability_px": 0.3146836399736476,
+          "orientation_confirmed": 0
+        }
+      ]
+    },
+    "fixture-current": {
+      "physical_accuracy_validated": 0,
+      "cases": [
+        {
+          "rotation_degrees": 0,
+          "max_repeatability_px": 0.6747925473503665,
+          "rms_repeatability_px": 0.3441413221325257,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 10,
+          "max_repeatability_px": 0.620483216439032,
+          "rms_repeatability_px": 0.2991219255035863,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": -10,
+          "max_repeatability_px": 0.39851840408331785,
+          "rms_repeatability_px": 0.18273292827110374,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 90,
+          "max_repeatability_px": 0.3860274263380083,
+          "rms_repeatability_px": 0.18897812348996418,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 180,
+          "max_repeatability_px": 0.5953290749229561,
+          "rms_repeatability_px": 0.3330719828742276,
+          "orientation_confirmed": 0
+        },
+        {
+          "rotation_degrees": 270,
+          "max_repeatability_px": 0.897667314218503,
+          "rms_repeatability_px": 0.36640055782874326,
+          "orientation_confirmed": 0
+        }
+      ]
+    }
+  },
+  "hardware_motion": false,
+  "magnet_final_command": "OFF_HOLD",
+  "magnet_physical_release": "operator_confirmed",
+  "off_current_a": null
+}

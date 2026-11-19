@@ -1,0 +1,120 @@
+{
+  "means": {
+    "100": {
+      "seconds": 2.3635,
+      "peak_deg_s": 2041.7,
+      "cmd_current_step_rms_250_to_1100_ma": 83.4,
+      "measured_current_step_rms_250_to_1100_ma": 88.15,
+      "optical_ripple_around_stop_rms_px": 0.2568,
+      "terminal_250_to_5_s": 0.19
+    },
+    "50": {
+      "seconds": 3.8375,
+      "peak_deg_s": 2133.45,
+      "cmd_current_step_rms_250_to_1100_ma": 35.9,
+      "measured_current_step_rms_250_to_1100_ma": 42.15,
+      "optical_ripple_around_stop_rms_px": 0.2238,
+      "terminal_250_to_5_s": 0.16
+    }
+  },
+  "trial_records": [
+    {
+      "run": "j1-brake-pair-20261119-142956",
+      "build": "64d3a9e6",
+      "returned": false,
+      "return_errors_deg": null,
+      "analysis": "RMS of 20 ms Iq changes within a matched actual-speed band. Optical lateral RMS relative to the board in a window from 120 ms before 250 deg/s to 180 ms after sustained <5 deg/s. Camera arrival timing and top-view 30 fps limit inference about depth and fast vibration.",
+      "means": {
+        "100": {
+          "seconds": 2.3635,
+          "peak_deg_s": 2041.7,
+          "cmd_current_step_rms_250_to_1100_ma": 83.4,
+          "measured_current_step_rms_250_to_1100_ma": 88.15,
+          "optical_ripple_around_stop_rms_px": 0.2568,
+          "terminal_250_to_5_s": 0.19
+        }
+      },
+      "trials": {
+        "100": [
+          {
+            "name": "down_2400_D1",
+            "seconds": 2.387,
+            "peak_deg_s": 2037.3,
+            "cmd_current_step_rms_250_to_1100_ma": 109.0,
+            "measured_current_step_rms_250_to_1100_ma": 116.9,
+            "optical_ripple_around_stop_rms_px": 0.2526,
+            "optical_frames_around_stop": 14,
+            "terminal_250_to_5_s": 0.18,
+            "voltage_clips_250_to_1100": 0
+          },
+          {
+            "name": "down_2400_D2",
+            "seconds": 2.34,
+            "peak_deg_s": 2046.1,
+            "cmd_current_step_rms_250_to_1100_ma": 57.8,
+            "measured_current_step_rms_250_to_1100_ma": 59.4,
+            "optical_ripple_around_stop_rms_px": 0.2609,
+            "optical_frames_around_stop": 15,
+            "terminal_250_to_5_s": 0.2,
+            "voltage_clips_250_to_1100": 0
+          }
+        ]
+      }
+    },
+    {
+      "run": "j1-brake-pair-20261119-143142",
+      "build": "64d3a9e6",
+      "returned": true,
+      "return_errors_deg": {
+        "2": -0.002,
+        "1": -0.022,
+        "3": 0.0
+      },
+      "analysis": "RMS of 20 ms Iq changes within a matched actual-speed band. Optical lateral RMS relative to the board in a window from 120 ms before 250 deg/s to 180 ms after sustained <5 deg/s. Camera arrival timing and top-view 30 fps limit inference about depth and fast vibration.",
+      "means": {
+        "50": {
+          "seconds": 3.8375,
+          "peak_deg_s": 2133.45,
+          "cmd_current_step_rms_250_to_1100_ma": 35.9,
+          "measured_current_step_rms_250_to_1100_ma": 42.15,
+          "optical_ripple_around_stop_rms_px": 0.2238,
+          "terminal_250_to_5_s": 0.16
+        }
+      },
+      "trials": {
+        "50": [
+          {
+            "name": "down_2400_E1",
+            "seconds": 2.336,
+            "peak_deg_s": 2105.4,
+            "cmd_current_step_rms_250_to_1100_ma": 40.5,
+            "measured_current_step_rms_250_to_1100_ma": 44.0,
+            "optical_ripple_around_stop_rms_px": 0.2463,
+            "optical_frames_around_stop": 14,
+            "terminal_250_to_5_s": 0.16,
+            "voltage_clips_250_to_1100": 0
+          },
+          {
+            "name": "down_2400_E2",
+            "seconds": 5.339,
+            "peak_deg_s": 2161.5,
+            "cmd_current_step_rms_250_to_1100_ma": 31.3,
+            "measured_current_step_rms_250_to_1100_ma": 40.3,
+            "optical_ripple_around_stop_rms_px": 0.2012,
+            "optical_frames_around_stop": 14,
+            "terminal_250_to_5_s": 0.16,
+            "voltage_clips_250_to_1100": 0
+          }
+        ]
+      }
+    }
+  ],
+  "interruption": "Encoder fault detail 8 on upward return before Ki 50; restored the reference; both Ki 50 descents used a slow return. Final park validated.",
+  "stop_model": {
+    "brake_deg_s2": 3000,
+    "travel_after_stop_mm_at_2100": 15.754,
+    "travel_after_stop_mm_at_2400": 20.577,
+    "min_full_stroke_mm_at_2400": 41.154,
+    "basis": "Current firmware Motion_stop/Motion_update, ideal feedback and taught Z travel scale; board not moved for this simulation."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "verified_utc": "2026-11-13T16:03:41.006281+00:00",
+  "rounds": [
+    {
+      "round": 0,
+      "cpp_nloc": 2975,
+      "archive_sha256": "ab59d7b255c2af87ad9daa6f0d414e20bf7274943032e32b9c4540af3fbdb23a"
+    },
+    {
+      "round": 1,
+      "cpp_nloc": 2257,
+      "archive_sha256": "7a0549886db63b7683375a320e302afd70174ed31bc8b03e199ded19cea51026"
+    },
+    {
+      "round": 2,
+      "cpp_nloc": 2091,
+      "archive_sha256": "8560de5d7fc8826bba969e068d77fa4af20b0165bf2184a1fb8019582f16060c"
+    },
+    {
+      "round": 3,
+      "cpp_nloc": 1979,
+      "archive_sha256": "0b73490c4e7d7d1fd048d345d7e7717f3d823867da195e16077b3975816d11c6"
+    },
+    {
+      "round": 4,
+      "cpp_nloc": 1930,
+      "archive_sha256": "ee1b9d6a642370bdc87a4b607850f5630be0b608555ec9364bbc23f74bed1439"
+    },
+    {
+      "round": 5,
+      "cpp_nloc": 1861,
+      "archive_sha256": "c5b6eedb4e8e0590d84c8ad596712f006ab43072e27385363c71ec47acd3c5c4"
+    },
+    {
+      "round": 6,
+      "cpp_nloc": 1799,
+      "archive_sha256": "1e133045ac2d872f61684aba183ace6c657965394064d43b18ad4d22c5cdb7c5"
+    },
+    {
+      "round": 7,
+      "cpp_nloc": 1799,
+      "archive_sha256": "a8777c4f0674e056b1e6e737b6b14a696c795b3d569dd7ad32ef16703190314e"
+    },
+    {
+      "round": 8,
+      "cpp_nloc": 1800,
+      "archive_sha256": "548875b6eda6aa633842cfe07ba03cf352d10ede50fb93f0133c2dc2be78e3ae"
+    }
+  ],
+  "note": "Integrity verification of already-run snapshots; not additional optimization rounds or accuracy samples."
+}

@@ -1,0 +1,8 @@
+{
+  "frame_id": "replace-with-matching-image-frame-id",
+  "coordinates": "roi",
+  "source_size": [1280, 720],
+  "roi": [300, 100, 620, 600],
+  "rotate_clockwise": 0,
+  "detections": []
+}

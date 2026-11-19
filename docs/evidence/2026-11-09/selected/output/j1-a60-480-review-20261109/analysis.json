@@ -1,0 +1,593 @@
+{
+  "source": "output\\manual-control\\20261109-194534-610458-real.jsonl",
+  "runs": [
+    {
+      "command": {
+        "t": 1794224911.68668,
+        "time": "2026-11-09T19:48:31.686680+08:00",
+        "kind": 12,
+        "value": 480000
+      },
+      "stop": {
+        "t": 1794224938.593516,
+        "time": "2026-11-09T19:48:58.593516+08:00",
+        "kind": 4,
+        "value": 0
+      },
+      "elapsed_until_end": 26.90683603286743,
+      "acceleration": {
+        "n": 400,
+        "seconds": 7.980000000000018,
+        "encoder_mean_speed": 239.53774817904082,
+        "reference_mean_speed": 239.5134085213026,
+        "error_min": -0.43299999999908323,
+        "error_max": 1.727999999999156,
+        "error_std": 0.30449512311361077,
+        "lag_mean": 0.044599999999959436,
+        "lag_trend_deg_s": -0.035823120769458115,
+        "iq_ref_min": 0,
+        "iq_ref_max": 955,
+        "iq_actual_peak": 912,
+        "near_current_limit_fraction": 0.0,
+        "iq_tracking_rms": 23.655707556528508,
+        "vq_peak": 4303,
+        "bus_min": 24033,
+        "bus_max": 24240,
+        "bus_over30v_samples": 0,
+        "opposite_iq_velocity_fraction": 0.0
+      },
+      "cruise": {
+        "n": 921,
+        "seconds": 18.399999999999977,
+        "encoder_mean_speed": 479.98909328294894,
+        "reference_mean_speed": 479.9999456521745,
+        "error_min": -0.625,
+        "error_max": 0.6630000000004657,
+        "error_std": 0.22766092050195436,
+        "lag_mean": 0.0254581976114344,
+        "lag_trend_deg_s": 6.203686436125321e-05,
+        "iq_ref_min": 349,
+        "iq_ref_max": 848,
+        "iq_actual_peak": 864,
+        "near_current_limit_fraction": 0.0,
+        "iq_tracking_rms": 28.059944364549,
+        "vq_peak": 4575,
+        "bus_min": 24033,
+        "bus_max": 24150,
+        "bus_over30v_samples": 0,
+        "opposite_iq_velocity_fraction": 0.0
+      },
+      "last1s": {
+        "n": 51,
+        "seconds": 1.0,
+        "encoder_mean_speed": 479.77294921875,
+        "reference_mean_speed": 480.0,
+        "error_min": -0.4210000000002765,
+        "error_max": 0.4579999999996289,
+        "error_std": 0.22033197664159546,
+        "lag_mean": -0.02223529411773651,
+        "lag_trend_deg_s": 0.05159276018081895,
+        "iq_ref_min": 349,
+        "iq_ref_max": 688,
+        "iq_actual_peak": 685,
+        "near_current_limit_fraction": 0.0,
+        "iq_tracking_rms": 26.8784482511948,
+        "vq_peak": 4404,
+        "bus_min": 24059,
+        "bus_max": 24137,
+        "bus_over30v_samples": 0,
+        "opposite_iq_velocity_fraction": 0.0
+      },
+      "fault": null
+    },
+    {
+      "command": {
+        "t": 1794224940.927088,
+        "time": "2026-11-09T19:49:00.927088+08:00",
+        "kind": 12,
+        "value": -480000
+      },
+      "stop": null,
+      "elapsed_until_end": 7.826081991195679,
+      "acceleration": {
+        "n": 389,
+        "seconds": 7.759999999999991,
+        "encoder_mean_speed": -232.93847152867295,
+        "reference_mean_speed": -232.91353092783527,
+        "error_min": -1.930000000000291,
+        "error_max": 1.542000000000371,
+        "error_std": 0.4057098408678739,
+        "lag_mean": 0.048760925449854706,
+        "lag_trend_deg_s": -0.045490215665140686,
+        "iq_ref_min": -796,
+        "iq_ref_max": 534,
+        "iq_actual_peak": 787,
+        "near_current_limit_fraction": 0.0,
+        "iq_tracking_rms": 31.249349607627725,
+        "vq_peak": 4940,
+        "bus_min": 24072,
+        "bus_max": 28508,
+        "bus_over30v_samples": 0,
+        "opposite_iq_velocity_fraction": 0.05398457583547558
+      },
+      "cruise": null,
+      "last1s": {
+        "n": 48,
+        "seconds": 0.9400000000000546,
+        "encoder_mean_speed": -437.2324842087512,
+        "reference_mean_speed": -437.50531914891087,
+        "error_min": -1.01299999999992,
+        "error_max": 1.542000000000371,
+        "error_std": 0.6576995261262185,
+        "lag_mean": -0.06700000000002622,
+        "lag_trend_deg_s": -0.402523881893175,
+        "iq_ref_min": -796,
+        "iq_ref_max": 374,
+        "iq_actual_peak": 787,
+        "near_current_limit_fraction": 0.0,
+        "iq_tracking_rms": 67.0497327859453,
+        "vq_peak": 4940,
+        "bus_min": 24072,
+        "bus_max": 28508,
+        "bus_over30v_samples": 0,
+        "opposite_iq_velocity_fraction": 0.22916666666666666
+      },
+      "fault": {
+        "build": "d3b08bf8",
+        "uptime": 545800,
+        "state": 4,
+        "fault": 3,
+        "power": false,
+        "encoder_valid": true,
+        "referenced": true,
+        "configured": true,
+        "position": -7714.315,
+        "velocity": -0.173,
+        "target": -7713.166,
+        "stationary": false,
+        "interlocked": false,
+        "cal_state": 0,
+        "cal_error": 0,
+        "ready": true,
+        "stored": true,
+        "motion_fault_detail": 0,
+        "counts": 444759,
+        "raw_zero": 10088,
+        "direction": 1,
+        "current_ma": 0,
+        "progress": 0,
+        "bus_mv": 24253,
+        "t": 1794224948.75317,
+        "time": "2026-11-09T19:49:08.753170+08:00"
+      },
+      "tail_brief": [
+        {
+          "time": "19:49:08.253",
+          "ms": 545300,
+          "bus_mv": 24188,
+          "iq_ref": -33,
+          "speed": -576.1,
+          "error": 0.547,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.273",
+          "ms": 545320,
+          "bus_mv": 24137,
+          "iq_ref": -211,
+          "speed": -415.12,
+          "error": 0.186,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.293",
+          "ms": 545340,
+          "bus_mv": 24124,
+          "iq_ref": -488,
+          "speed": -298.03,
+          "error": -0.374,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.313",
+          "ms": 545360,
+          "bus_mv": 24098,
+          "iq_ref": -718,
+          "speed": -276.73,
+          "error": -0.826,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.333",
+          "ms": 545380,
+          "bus_mv": 24098,
+          "iq_ref": -629,
+          "speed": -446.3,
+          "error": -0.665,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.353",
+          "ms": 545400,
+          "bus_mv": 24111,
+          "iq_ref": -323,
+          "speed": -605.15,
+          "error": -0.025,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.373",
+          "ms": 545420,
+          "bus_mv": 24175,
+          "iq_ref": -80,
+          "speed": -643.72,
+          "error": 0.506,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.394",
+          "ms": 545440,
+          "bus_mv": 24162,
+          "iq_ref": -70,
+          "speed": -502.91,
+          "error": 0.595,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.413",
+          "ms": 545460,
+          "bus_mv": 24098,
+          "iq_ref": -447,
+          "speed": -297.13,
+          "error": -0.154,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.433",
+          "ms": 545480,
+          "bus_mv": 24072,
+          "iq_ref": -749,
+          "speed": -236.97,
+          "error": -0.75,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.454",
+          "ms": 545500,
+          "bus_mv": 24085,
+          "iq_ref": -679,
+          "speed": -409.56,
+          "error": -0.513,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.473",
+          "ms": 545520,
+          "bus_mv": 24124,
+          "iq_ref": -248,
+          "speed": -638.81,
+          "error": 0.381,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.493",
+          "ms": 545540,
+          "bus_mv": 24240,
+          "iq_ref": 79,
+          "speed": -683.53,
+          "error": 1.052,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.513",
+          "ms": 545560,
+          "bus_mv": 24227,
+          "iq_ref": 69,
+          "speed": -543.0,
+          "error": 0.952,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.533",
+          "ms": 545580,
+          "bus_mv": 24150,
+          "iq_ref": -200,
+          "speed": -347.16,
+          "error": 0.457,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.553",
+          "ms": 545600,
+          "bus_mv": 24137,
+          "iq_ref": -566,
+          "speed": -210.89,
+          "error": -0.307,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.573",
+          "ms": 545620,
+          "bus_mv": 24098,
+          "iq_ref": -795,
+          "speed": -221.07,
+          "error": -0.764,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.593",
+          "ms": 545640,
+          "bus_mv": 24085,
+          "iq_ref": -688,
+          "speed": -400.78,
+          "error": -0.498,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.613",
+          "ms": 545660,
+          "bus_mv": 24124,
+          "iq_ref": -261,
+          "speed": -656.41,
+          "error": 0.272,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.633",
+          "ms": 545680,
+          "bus_mv": 24201,
+          "iq_ref": 178,
+          "speed": -768.46,
+          "error": 1.128,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.653",
+          "ms": 545700,
+          "bus_mv": 26251,
+          "iq_ref": 374,
+          "speed": -744.83,
+          "error": 1.542,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.673",
+          "ms": 545720,
+          "bus_mv": 28508,
+          "iq_ref": 221,
+          "speed": -526.54,
+          "error": 1.162,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.693",
+          "ms": 545740,
+          "bus_mv": 28263,
+          "iq_ref": -213,
+          "speed": -260.65,
+          "error": 0.21,
+          "power": true,
+          "fault": 0
+        },
+        {
+          "time": "19:49:08.713",
+          "ms": 545760,
+          "bus_mv": 29359,
+          "iq_ref": 0,
+          "speed": -54.33,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.733",
+          "ms": 545780,
+          "bus_mv": 26161,
+          "iq_ref": 0,
+          "speed": -1.83,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.754",
+          "ms": 545800,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": -0.17,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.773",
+          "ms": 545820,
+          "bus_mv": 24266,
+          "iq_ref": 0,
+          "speed": -0.08,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.793",
+          "ms": 545840,
+          "bus_mv": 24227,
+          "iq_ref": 0,
+          "speed": -0.12,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.813",
+          "ms": 545860,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": 0.97,
+          "error": 1.127,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.833",
+          "ms": 545880,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": -0.35,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.853",
+          "ms": 545900,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": -0.35,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.873",
+          "ms": 545920,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": 3.82,
+          "error": 1.127,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.893",
+          "ms": 545940,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": -4.78,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.913",
+          "ms": 545960,
+          "bus_mv": 24240,
+          "iq_ref": 0,
+          "speed": -0.0,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.934",
+          "ms": 545980,
+          "bus_mv": 24240,
+          "iq_ref": 0,
+          "speed": 0.0,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.953",
+          "ms": 546000,
+          "bus_mv": 24240,
+          "iq_ref": 0,
+          "speed": 0.0,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.973",
+          "ms": 546020,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": 0.0,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:08.993",
+          "ms": 546040,
+          "bus_mv": 24253,
+          "iq_ref": 0,
+          "speed": 0.07,
+          "error": 1.127,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:09.013",
+          "ms": 546060,
+          "bus_mv": 24266,
+          "iq_ref": 0,
+          "speed": -0.34,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        },
+        {
+          "time": "19:49:09.033",
+          "ms": 546080,
+          "bus_mv": 24240,
+          "iq_ref": 0,
+          "speed": 0.0,
+          "error": 1.148,
+          "power": false,
+          "fault": 3
+        }
+      ]
+    }
+  ],
+  "error_events": [
+    {
+      "wall_time": "2026-11-09T19:49:08.753293+08:00",
+      "simulated": false,
+      "time": "19:49:08",
+      "message": "J1 故障 3：母线电压异常",
+      "node": 1,
+      "fault": 3,
+      "position": -7714.315,
+      "target": -7713.166,
+      "velocity": -0.173,
+      "power": false
+    },
+    {
+      "wall_time": "2026-11-09T19:49:08.753549+08:00",
+      "simulated": false,
+      "time": "19:49:08",
+      "message": "J1 驱动已故障关断出力，不重复发 STOP"
+    },
+    {
+      "wall_time": "2026-11-09T19:49:08.753878+08:00",
+      "simulated": false,
+      "time": "19:49:08",
+      "message": "J1: 驱动故障 3：母线电压异常"
+    }
+  ]
+}

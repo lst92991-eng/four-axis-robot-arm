@@ -1,0 +1,211 @@
+{
+  "scope": "Supplied historical test split; not current camera accuracy",
+  "images": 22,
+  "tp": 277,
+  "fp": 0,
+  "fn": 0,
+  "score": 0.5,
+  "nms_iou": 0.45,
+  "matching_iou": 0.5,
+  "opencv": "4.13.0",
+  "rows": [
+    {
+      "image": "images/test/10.rf.ff23659fe5066195f4ea761aa3a37094.jpg",
+      "ground_truth": 28,
+      "detections": 28,
+      "tp": 28,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.92909599933773
+    },
+    {
+      "image": "images/test/104.rf.27a970a604945efe16ea2202ecc7dea9.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.78297200033558
+    },
+    {
+      "image": "images/test/111.rf.55dedf32fe1387b0c64f19190269f850.jpg",
+      "ground_truth": 2,
+      "detections": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.262934999766
+    },
+    {
+      "image": "images/test/118.rf.feaf4955fd6bc722cfe160b865539bd7.jpg",
+      "ground_truth": 8,
+      "detections": 8,
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 84.13442799974291
+    },
+    {
+      "image": "images/test/120.rf.2ee3cbbdbbf59e9cb2fc00ac0a05ee14.jpg",
+      "ground_truth": 9,
+      "detections": 9,
+      "tp": 9,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.6117649996595
+    },
+    {
+      "image": "images/test/124.rf.742e952eda52677ee12bd3f6e276f985.jpg",
+      "ground_truth": 7,
+      "detections": 7,
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.76693099944532
+    },
+    {
+      "image": "images/test/133.rf.ff6af3c82fbbe10d729f0018c4a21008.jpg",
+      "ground_truth": 13,
+      "detections": 13,
+      "tp": 13,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.91013800064684
+    },
+    {
+      "image": "images/test/143.rf.64a14b6211106f4d485bb7de986325f9.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.84043000023667
+    },
+    {
+      "image": "images/test/19.rf.f1f865903b13d2cd282d2dba62911a64.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.91247100007604
+    },
+    {
+      "image": "images/test/204.rf.ff2161d28bef31ff6e18199c33ced7ab.jpg",
+      "ground_truth": 32,
+      "detections": 32,
+      "tp": 32,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 84.37330099968676
+    },
+    {
+      "image": "images/test/208.rf.c7729718213da15470242a0b7bbb88f9.jpg",
+      "ground_truth": 32,
+      "detections": 32,
+      "tp": 32,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.69955600028334
+    },
+    {
+      "image": "images/test/222.rf.a99b5d4e2d21f43a7362b1fddc1afe93.jpg",
+      "ground_truth": 1,
+      "detections": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 84.0308869992441
+    },
+    {
+      "image": "images/test/311.rf.ff0da58bdc0e1dbdaf036b5d2dff8a05.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.51347400002851
+    },
+    {
+      "image": "images/test/318.rf.79912652f786f0c7c8fc479f147bfbdd.jpg",
+      "ground_truth": 32,
+      "detections": 32,
+      "tp": 32,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 84.54013399932592
+    },
+    {
+      "image": "images/test/320.rf.12d9cec51f0ba926a4cfe2a010fe71cf.jpg",
+      "ground_truth": 32,
+      "detections": 32,
+      "tp": 32,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 84.56638400002703
+    },
+    {
+      "image": "images/test/324.rf.87fd6887237e2b1d0ea2a05d433417d3.jpg",
+      "ground_truth": 32,
+      "detections": 32,
+      "tp": 32,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.97517899993545
+    },
+    {
+      "image": "images/test/42.rf.7b6eab93318c9cc38e0fb45d1d963178.jpg",
+      "ground_truth": 5,
+      "detections": 5,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.51959900028305
+    },
+    {
+      "image": "images/test/55.rf.d8bcea7a4b5eea667b6a40cefd097b43.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 84.01834599953872
+    },
+    {
+      "image": "images/test/58.rf.336f4a30f34ef5a16d7921998dad7ea8.jpg",
+      "ground_truth": 8,
+      "detections": 8,
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.74797299984493
+    },
+    {
+      "image": "images/test/59.rf.24fde9ffe4a40936f9bf9eb978e4356a.jpg",
+      "ground_truth": 8,
+      "detections": 8,
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.8477220004279
+    },
+    {
+      "image": "images/test/83.rf.8bf6a8e885c51b93445d91b0b5ff1e27.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.33439199941495
+    },
+    {
+      "image": "images/test/88.rf.3857e147eb2844ee8ca98970a6476d47.jpg",
+      "ground_truth": 4,
+      "detections": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "npu_ms": 83.07801899991318
+    }
+  ]
+}

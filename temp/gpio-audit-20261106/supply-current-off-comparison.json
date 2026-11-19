@@ -1,0 +1,18 @@
+{
+  "action": "OFF_HOLD",
+  "before": "1",
+  "after_samples": [
+    "0",
+    "0",
+    "0"
+  ],
+  "gpio": "GPIO1_B0",
+  "physical_pin": "U7.11",
+  "automatic_reenable": false,
+  "motor_commands": false,
+  "host_time": "2026-11-06T19:12:58.209392+08:00",
+  "user_supply_before": {
+    "voltage_v": 24,
+    "current_a": 0.074
+  }
+}

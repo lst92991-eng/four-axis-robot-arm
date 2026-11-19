@@ -1,0 +1,187 @@
+> uci
+uci
+
+Pikafish dev 2026-10-08 by the Pikafish developers (see AUTHORS file)
+
+id name Pikafish dev 2026-10-08
+
+id author the Pikafish developers (see AUTHORS file)
+
+
+
+option name Debug Log File type string default
+
+option name Threads type spin default 1 min 1 max 1024
+
+option name Hash type spin default 16 min 1 max 2048
+
+option name Clear Hash type button
+
+option name Ponder type check default false
+
+option name MultiPV type spin default 1 min 1 max 500
+
+option name Skill Level type spin default 20 min 0 max 20
+
+option name Move Overhead type spin default 10 min 0 max 5000
+
+option name Slow Mover type spin default 100 min 10 max 1000
+
+option name nodestime type spin default 0 min 0 max 10000
+
+option name Sixty Move Rule type check default true
+
+option name Mate Threat Depth type spin default 1 min 0 max 10
+
+option name Repetition Fold type combo default RootThreeFold var TwoFold var RootThreeFold var ThreeFold
+
+option name Repetition Rule type combo default AsianRule var AsianRule var ChineseRule
+
+option name UCI_LimitStrength type check default false
+
+option name UCI_Elo type spin default 1350 min 1350 max 2850
+
+option name UCI_WDLCentipawn type check default true
+
+option name UCI_ShowWDL type check default false
+
+option name EvalFile type string default pikafish.nnue
+
+uciok
+> setoption name Threads value 1
+> setoption name Hash value 4
+> isready
+
+setoption name Threads value 1
+
+setoption name Hash value 4
+
+isready
+
+readyok
+> position startpos moves a3a4
+> go perft 1
+
+position startpos moves a3a4
+
+go perft 1
+
+a9a7: 1
+
+a9a8: 1
+
+i9i7: 1
+
+i9i8: 1
+
+d9e8: 1
+
+f9e8: 1
+
+b7b0: 1
+
+b7b3: 1
+
+b7b4: 1
+
+b7b5: 1
+
+b7b6: 1
+
+b7a7: 1
+
+b7c7: 1
+
+b7d7: 1
+
+b7e7: 1
+
+b7f7: 1
+
+b7g7: 1
+
+b7b8: 1
+
+h7h0: 1
+
+h7h3: 1
+
+h7h4: 1
+
+h7h5: 1
+
+h7h6: 1
+
+h7c7: 1
+
+h7d7: 1
+
+h7e7: 1
+
+h7f7: 1
+
+h7g7: 1
+
+h7i7: 1
+
+h7h8: 1
+
+a6a5: 1
+
+c6c5: 1
+
+e6e5: 1
+
+g6g5: 1
+
+i6i5: 1
+
+b9a7: 1
+
+b9c7: 1
+
+h9g7: 1
+
+h9i7: 1
+
+c9a7: 1
+
+c9e7: 1
+
+g9e7: 1
+
+g9i7: 1
+
+e9e8: 1
+
+
+
+Nodes searched: 44
+> go movetime 400
+
+
+
+go movetime 400
+
+info string NNUE evaluation using pikafish.nnue enabled
+
+info depth 1 seldepth 1 multipv 1 score cp 0 nodes 83 nps 10375 hashfull 0 tbhits 0 time 8 pv h7e7
+
+info depth 2 seldepth 2 multipv 1 score cp 23 nodes 207 nps 13800 hashfull 1 tbhits 0 time 15 pv b7e7
+
+info depth 3 seldepth 2 multipv 1 score cp 29 nodes 328 nps 13120 hashfull 1 tbhits 0 time 25 pv h7e7
+
+info depth 4 seldepth 2 multipv 1 score cp 34 nodes 385 nps 13750 hashfull 1 tbhits 0 time 28 pv b7e7
+
+info depth 5 seldepth 2 multipv 1 score cp 160 nodes 432 nps 14896 hashfull 1 tbhits 0 time 29 pv b7e7
+
+info depth 6 seldepth 4 multipv 1 score cp 11 nodes 1059 nps 18258 hashfull 2 tbhits 0 time 58 pv b7e7 h2e2
+
+info depth 7 seldepth 7 multipv 1 score cp 27 nodes 1743 nps 17257 hashfull 2 tbhits 0 time 101 pv g6g5 b2e2 h9g7
+
+info depth 8 seldepth 8 multipv 1 score cp 11 nodes 6949 nps 17503 hashfull 9 tbhits 0 time 397 pv b7e7 h0g2 g6g5 b0a2 c6c5
+
+info depth 9 seldepth 7 multipv 1 score cp 7 upperbound nodes 7842 nps 17388 hashfull 11 tbhits 0 time 451 pv b7e7 h0g2
+
+bestmove b7e7 ponder h0g2
+> quit

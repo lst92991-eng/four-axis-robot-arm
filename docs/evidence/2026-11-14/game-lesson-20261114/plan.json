@@ -1,0 +1,72 @@
+{
+  "objective": "按用户已认可的手写风格，仔细精简完整主程序；保留整个对弈流程和所有既定参数。",
+  "started_utc": "2026-11-14T03:39:33.109333+08:00",
+  "baseline_commit": "45777cd",
+  "baseline_cpp_nloc": 2472,
+  "status": "compatible_refactor_complete",
+  "standards": [
+    "输入输出参数明确、变量先声明并标单位",
+    "顺序初始化与明确业务分支",
+    "重复判断/重复状态/重复命令解析实际合并",
+    "所有实现计入NLOC，不通过搬文件或挤行隐瞒规模"
+  ],
+  "reference_sha256": {
+    "Control/pid.c": "7b2c83eeb39f9698111783707fb8d3621bca97a21bb6ae182c5ca28b371179af",
+    "Control/wheel_control.c": "a522ee76c59b33f66c45fc7d8b2812c467519bb3403922b5d3950708b8eb624f",
+    "Board/motor_driver.c": "c72987da4ab41b8c6db893f1aa10b1fbfe2d70e6876830169a49d07fe9cfa07d"
+  },
+  "findings": [
+    "IO_command返回枚举，与已选输出参数形式不一致",
+    "实机和仿真重复维护命令解析",
+    "准备/开局/玩家/恢复分别重复处理退出",
+    "动作确认存在可合并的成功/失败分支"
+  ],
+  "pending_preference": "尚未收到执行接口偏好答复；本轮先保留现有文件协议兼容，不把未获答复当作同意删除接口。",
+  "scope_limits": [
+    "不触发硬件",
+    "六视觉文件及已验证ROI/模型不变",
+    "固件/既有机械参考/示教参数不改",
+    "保留全部对弈、吃子、确认、恢复和仿真场景"
+  ],
+  "completed_rounds": [
+    {
+      "round": 0,
+      "cpp_nloc": 2472
+    },
+    {
+      "round": 1,
+      "cpp_nloc": 2476,
+      "note": "命令统一为输出参数，合并解析和退出；此轮净增4行，未冒充压缩"
+    },
+    {
+      "round": 2,
+      "cpp_nloc": 2477,
+      "note": "职责命名与初始化明确，合并预览原子写入；此时总量未下降，继续删除无行为转发"
+    },
+    {
+      "round": 3,
+      "cpp_nloc": 2465,
+      "note": "删除无行为转发，全部既有回归通过"
+    },
+    {
+      "round": 4,
+      "cpp_nloc": 2464,
+      "note": "步骤先准备再锁定，旧/新15场景完整状态与动作请求对照一致"
+    },
+    {
+      "round": 5,
+      "cpp_nloc": 2465,
+      "note": "全部回归通过；旧/新程序15场景的完整状态与动作内容一致"
+    }
+  ],
+  "finished_utc": "2026-11-13T20:07:58.131206+00:00",
+  "result": {
+    "cpp_nloc": 2465,
+    "cpp_removed": 7,
+    "source_snapshot": "round-05",
+    "hardware_actions": false,
+    "interface_preference_pending": true,
+    "existing_file_protocol_preserved": true,
+    "clean_package_verified": true
+  }
+}

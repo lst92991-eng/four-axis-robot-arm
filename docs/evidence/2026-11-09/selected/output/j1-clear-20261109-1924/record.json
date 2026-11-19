@@ -1,0 +1,99 @@
+{
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 6,
+      "a": 0,
+      "b": 0,
+      "seq": 2
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 3
+    },
+    {
+      "kind": 10,
+      "a": 1600,
+      "b": 110000,
+      "seq": 4
+    },
+    {
+      "kind": 2,
+      "a": -19870336,
+      "b": 0,
+      "seq": 5
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 6
+    }
+  ],
+  "scope": "Clear fault, preserve runtime Kp=1.6 Ki=110 and logical position; no movement commands",
+  "before": {
+    "build": "b06df529",
+    "uptime": 2930879,
+    "state": 4,
+    "fault": 5,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -19870.336,
+    "velocity": 0.0,
+    "target": -19867.37,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 4,
+    "counts": 6213,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "readback": [
+    1600,
+    110000,
+    1400
+  ],
+  "after": {
+    "build": "b06df529",
+    "uptime": 2931079,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -19870.336,
+    "velocity": 0.0,
+    "target": -19870.336,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 6213,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24278
+  },
+  "completed": true
+}

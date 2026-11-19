@@ -1,0 +1,61 @@
+{
+  "position": -12861.2430078125,
+  "raw_count": 13912,
+  "board_fault_detail": 8,
+  "states": {
+    "3": {
+      "position": -128.761,
+      "target": -128.761,
+      "velocity": 0.0,
+      "counts": 9924,
+      "uptime": 5939250,
+      "build": "41f870bf",
+      "state": 1,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24021,
+      "referenced": true,
+      "interlocked": true,
+      "configured": true,
+      "encoder_valid": true,
+      "power": true,
+      "stationary": true
+    },
+    "2": {
+      "position": -27.882,
+      "target": -27.882,
+      "velocity": 0.0,
+      "counts": 13283,
+      "uptime": 5939250,
+      "build": "41f870bf",
+      "state": 1,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24072,
+      "referenced": true,
+      "interlocked": true,
+      "configured": true,
+      "encoder_valid": true,
+      "power": true,
+      "stationary": true
+    },
+    "1": {
+      "position": -12861.243,
+      "target": -12861.243,
+      "velocity": 0.0,
+      "counts": 13912,
+      "uptime": 36650,
+      "build": "a268d455",
+      "state": 0,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24253,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true
+    }
+  }
+}

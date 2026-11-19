@@ -1,0 +1,87 @@
+{
+  "current": {
+    "runtime_functions": 250,
+    "maintenance_functions": 28,
+    "files": 23,
+    "by_group": {
+      "geometry": 45,
+      "geometry_cli": 14,
+      "game_uci": 47,
+      "manual_panel": 43,
+      "pick_place": 56,
+      "yolo_preview": 28,
+      "host_can_transport": 17
+    },
+    "by_language": {
+      "cpp": 106,
+      "py": 137,
+      "js": 7
+    },
+    "effective_code_lines": {
+      "runtime": 4110,
+      "maintenance": 511,
+      "total": 4621,
+      "by_group": {
+        "geometry": 589,
+        "geometry_cli": 220,
+        "game_uci": 574,
+        "manual_panel": 967,
+        "pick_place": 861,
+        "yolo_preview": 618,
+        "host_can_transport": 281,
+        "maintenance": 511
+      }
+    }
+  },
+  "baseline": {
+    "runtime_functions": 237,
+    "maintenance_functions": 5,
+    "files": 33,
+    "by_group": {
+      "algorithm": 14,
+      "app": 9,
+      "chess": 45,
+      "main.cpp": 6,
+      "robot": 36,
+      "upper_ui_tools": 109,
+      "vision": 18
+    },
+    "by_language": {
+      "cpp": 128,
+      "js": 27,
+      "py": 82
+    },
+    "effective_code_lines": {
+      "runtime": 3934,
+      "maintenance": 85,
+      "total": 4019,
+      "by_group": {
+        "algorithm": 436,
+        "app": 107,
+        "maintenance": 85,
+        "chess": 531,
+        "main.cpp": 278,
+        "robot": 463,
+        "upper_ui_tools": 1556,
+        "vision": 563
+      }
+    }
+  },
+  "definition": "Named function/method definitions with executable bodies, including constructors, nested named helpers and inline accessors. Excludes declarations, anonymous lambdas/callbacks, empty pass stubs, tests, third-party libraries, motor firmware and archived copies. Runtime and selected maintenance launchers are counted separately. See per-file inventory for exact scope.",
+  "baseline_commit": "2604457771fb9f52945d71f5733ea73e71b70816",
+  "baseline_scope_note": "Original SCARA mainline. The first CAN handover commit 214fadc contains firmware and support tools, not a corresponding full upper application.",
+  "current_scope_note": "Working tree including uncommitted source. Named implemented definitions do not establish runtime coverage or completion of integration.",
+  "checks": {
+    "python_unittest_tests": 55,
+    "python_result": "passed",
+    "cmake_build": "no work to do",
+    "ctest_suites": 2,
+    "ctest_result": "passed"
+  },
+  "user_direction": {
+    "board_and_base": "User plans to rigidly fix the board to the robot base",
+    "subsequent_design": "Persist the 90 intersection base-XY positions and use the visual system for piece identity and result verification; no runtime behavior changed during this audit."
+  },
+  "parse_note": "One tree-sitter error is a pointer default argument in a declaration at vision/geometry.hpp:126. The header has no function bodies; named definition count manually checked.",
+  "line_count_definition": "Physical source lines containing code, excluding blank lines, comment-only lines and Python docstrings. HTML/CSS/JavaScript interface source is included. Multiple statements on one physical line count as one. Scope matches the listed upper-layer source files."
+}

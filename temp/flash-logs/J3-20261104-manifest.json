@@ -1,0 +1,11 @@
+{
+  "node": 3,
+  "profile": {
+    "RATIO": "1.0f",
+    "ENCODER_ZERO": "(-1)"
+  },
+  "source": "existing precompiled J3 image",
+  "app_bytes": 20056,
+  "app_crc32": "112cb44e",
+  "hex_sha256": "852d28e1ad9f98fb4a8c14883de2242e85344d4625e3f27c3867a8097d37dfc3"
+}

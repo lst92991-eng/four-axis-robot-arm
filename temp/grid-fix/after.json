@@ -1,0 +1,822 @@
+{
+    "motion_enabled": 0,
+    "single_frame_only": 1,
+    "camera_id": "sc3336-1280x720-fixed-focus-v1",
+    "frame_id": "new-board-offline",
+    "geometry_valid": 1,
+    "orientation_valid": 0,
+    "orientation_source": "natural_grid_unoriented",
+    "grid_score": 0.77696078431372562,
+    "points": [
+        {
+            "column": 0,
+            "row": 0,
+            "pixel_geometric": [
+                360.41145184781766,
+                125.44380235440138
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 0,
+            "pixel_geometric": [
+                359.47063752985002,
+                185.8264706870593
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 0,
+            "pixel_geometric": [
+                358.53038950201562,
+                246.17279379341392
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 0,
+            "pixel_geometric": [
+                357.59070725318065,
+                306.48280447869087
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 0,
+            "pixel_geometric": [
+                356.65159027282613,
+                366.75653550864746
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 0,
+            "pixel_geometric": [
+                355.71303805104719,
+                426.99401960963223
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 0,
+            "pixel_geometric": [
+                354.77505007855217,
+                487.1952894686446
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 0,
+            "pixel_geometric": [
+                353.83762584666135,
+                547.36037773339285
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 0,
+            "pixel_geometric": [
+                352.90076484730633,
+                607.48931701235415
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 1,
+            "pixel_geometric": [
+                417.93602244781601,
+                126.01606762672604
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 1,
+            "pixel_geometric": [
+                416.97688785364443,
+                186.46174966604968
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 1,
+            "pixel_geometric": [
+                416.01833118079247,
+                246.87101048926948
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 1,
+            "pixel_geometric": [
+                415.06035190708235,
+                307.24388300457883
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 1,
+            "pixel_geometric": [
+                414.10294951096529,
+                367.58040008053769
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 1,
+            "pixel_geometric": [
+                413.14612347152053,
+                427.88059454613233
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 1,
+            "pixel_geometric": [
+                412.18987326845416,
+                488.14449919083472
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 1,
+            "pixel_geometric": [
+                411.23419838209827,
+                548.37214676466169
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 1,
+            "pixel_geometric": [
+                410.27909829341036,
+                608.56356997823559
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 2,
+            "pixel_geometric": [
+                475.58114626918058,
+                126.58953218522242
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 2,
+            "pixel_geometric": [
+                474.60361664856464,
+                187.09835958628031
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 2,
+            "pixel_geometric": [
+                473.62667664990278,
+                247.57068954286828
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 2,
+            "pixel_geometric": [
+                472.65032573988742,
+                308.00655506657881
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 2,
+            "pixel_geometric": [
+                471.67456338585407,
+                368.40598912920507
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 2,
+            "pixel_geometric": [
+                470.69938905578027,
+                428.76902466280058
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 2,
+            "pixel_geometric": [
+                469.72480221828448,
+                489.09569455973877
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 2,
+            "pixel_geometric": [
+                468.75080234262543,
+                549.38603167277358
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 2,
+            "pixel_geometric": [
+                467.77738889870062,
+                609.64006881509806
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 3,
+            "pixel_geometric": [
+                533.34720267128841,
+                127.16419980382912
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 3,
+            "pixel_geometric": [
+                532.35120292426859,
+                187.73630463471989
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 3,
+            "pixel_geometric": [
+                531.35580456971479,
+                248.27183555320934
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 3,
+            "pixel_geometric": [
+                530.36100706310333,
+                308.77082567472297
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 3,
+            "pixel_geometric": [
+                529.36680986056729,
+                369.23330807471967
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 3,
+            "pixel_geometric": [
+                528.3732124188964,
+                429.65931578875205
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 3,
+            "pixel_geometric": [
+                527.38021419553536,
+                490.04888181252647
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 3,
+            "pixel_geometric": [
+                526.387814648583,
+                550.4020391019634
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 3,
+            "pixel_geometric": [
+                525.39601323679153,
+                610.71882057325695
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 4,
+            "pixel_geometric": [
+                591.23457260688917,
+                127.74007427233593
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 4,
+            "pixel_geometric": [
+                590.22002728183645,
+                188.37558901591763
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 4,
+            "pixel_geometric": [
+                589.20609519007201,
+                248.97445313859669
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 4,
+            "pixel_geometric": [
+                588.1927757757685,
+                309.5366998600673
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 4,
+            "pixel_geometric": [
+                587.1800684837699,
+                370.06236235988905
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 4,
+            "pixel_geometric": [
+                586.16797275959084,
+                430.55147377754804
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 4,
+            "pixel_geometric": [
+                585.1564880494152,
+                491.00406721251665
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 4,
+            "pixel_geometric": [
+                584.14561380009559,
+                551.42017572431428
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 4,
+            "pixel_geometric": [
+                583.13534945915217,
+                611.7998323325678
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 5,
+            "pixel_geometric": [
+                649.24363863047972,
+                128.31715939646705
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 5,
+            "pixel_geometric": [
+                648.21047192213268,
+                189.01621695209599
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 5,
+            "pixel_geometric": [
+                647.17793035864213,
+                249.67854693674053
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 5,
+            "pixel_geometric": [
+                646.14601337278907,
+                310.30418267480195
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 5,
+            "pixel_geometric": [
+                645.11472039804016,
+                370.89315745037806
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 5,
+            "pixel_geometric": [
+                644.08405086854748,
+                431.44550450732447
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 5,
+            "pixel_geometric": [
+                643.05400421914692,
+                491.96125704931524
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 5,
+            "pixel_geometric": [
+                642.02457988535718,
+                552.4404482399035
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 5,
+            "pixel_geometric": [
+                640.9957773033791,
+                612.88311120258254
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 6,
+            "pixel_geometric": [
+                707.37478490673084,
+                128.89545899796505
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 6,
+            "pixel_geometric": [
+                706.3229206542203,
+                189.65819268324319
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 6,
+            "pixel_geometric": [
+                705.27169352931855,
+                250.3841216048595
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 6,
+            "pixel_geometric": [
+                704.22110295332652,
+                311.07327919236263
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 6,
+            "pixel_geometric": [
+                703.17114834824542,
+                371.72569883482834
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 6,
+            "pixel_geometric": [
+                702.12182913677623,
+                432.34141388092058
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 6,
+            "pixel_geometric": [
+                701.0731447423185,
+                492.92045763895294
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 6,
+            "pixel_geometric": [
+                700.02509458896907,
+                553.46286337694926
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 6,
+            "pixel_geometric": [
+                698.97767810152141,
+                613.96866432270508
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 7,
+            "pixel_geometric": [
+                765.62839721896773,
+                129.47497691467524
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 7,
+            "pixel_geometric": [
+                764.55775890382745,
+                190.30152046720713
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 7,
+            "pixel_geometric": [
+                763.4877697706745,
+                251.09118181978317
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 7,
+            "pixel_geometric": [
+                762.41842922924002,
+                311.84399450754239
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 7,
+            "pixel_geometric": [
+                761.34973668997077,
+                372.55999202497998
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 7,
+            "pixel_geometric": [
+                760.28169156402771,
+                433.23920782600965
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 7,
+            "pixel_geometric": [
+                759.21429326328507,
+                493.88167532402451
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 7,
+            "pixel_geometric": [
+                758.14754120032921,
+                554.48742789195842
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 7,
+            "pixel_geometric": [
+                757.0814347884575,
+                615.05649886234755
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 8,
+            "pixel_geometric": [
+                824.00486297770487,
+                130.05571700063035
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 8,
+            "pixel_geometric": [
+                822.91537372187008,
+                190.94620457978925
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 8,
+            "pixel_geometric": [
+                821.82654577447147,
+                251.7997322780555
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 8,
+            "pixel_geometric": [
+                820.73837853358134,
+                312.61633373660351
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 8,
+            "pixel_geometric": [
+                819.65087139800141,
+                373.39604255579258
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 8,
+            "pixel_geometric": [
+                818.56402376726305,
+                434.13889229522903
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 8,
+            "pixel_geometric": [
+                817.47783504162601,
+                494.84491647382828
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 8,
+            "pixel_geometric": [
+                816.39230462207615,
+                555.5141485698756
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 8,
+            "pixel_geometric": [
+                815.30743191032604,
+                616.14662202108866
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 0,
+            "row": 9,
+            "pixel_geometric": [
+                882.50457122923319,
+                130.6376831261363
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 1,
+            "row": 9,
+            "pixel_geometric": [
+                881.39615379302529,
+                191.59224931483942
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 2,
+            "row": 9,
+            "pixel_geometric": [
+                880.28840986422131,
+                252.50977769603873
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 3,
+            "row": 9,
+            "pixel_geometric": [
+                879.18133882914321,
+                313.39030201739149
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 4,
+            "row": 9,
+            "pixel_geometric": [
+                878.07494007485775,
+                374.23385598556763
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 5,
+            "row": 9,
+            "pixel_geometric": [
+                876.96921298917641,
+                435.04047326631212
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 6,
+            "row": 9,
+            "pixel_geometric": [
+                875.86415696065365,
+                495.81018748450703
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 7,
+            "row": 9,
+            "pixel_geometric": [
+                874.75977137858547,
+                556.54303222423312
+            ],
+            "base_xy_valid": 0
+        },
+        {
+            "column": 8,
+            "row": 9,
+            "pixel_geometric": [
+                873.65605563300903,
+                617.2390410288325
+            ],
+            "base_xy_valid": 0
+        }
+    ]
+}

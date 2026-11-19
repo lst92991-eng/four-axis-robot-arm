@@ -1,0 +1,126 @@
+[
+  {
+    "ki": 200,
+    "source": "output\\manual-control\\20261109-190144-138161-real.jsonl",
+    "command": {
+      "t": 1794222324.662037,
+      "time": "2026-11-09T19:05:24.662037+08:00",
+      "speed": 400.0
+    },
+    "events": [],
+    "first_420ms": {
+      "start_position": -16427.768,
+      "last_position": -16426.625,
+      "actual_delta_deg": 1.142578125,
+      "reference_delta_deg": 2.4239999999990687,
+      "iq_ref_peak_ma": 694,
+      "last_error_deg": 1.2809999999990396
+    },
+    "powered_window": {
+      "elapsed_to_last_sample_s": 0.687129020690918,
+      "iq_ref_peak_ma": 749,
+      "iq_actual_peak_ma": 749,
+      "bus_range_mv": [
+        24137,
+        24253
+      ]
+    },
+    "first_fault_trace": null
+  },
+  {
+    "ki": 160,
+    "source": "output\\manual-control\\20261109-190833-503785-real.jsonl",
+    "command": {
+      "t": 1794222676.443769,
+      "time": "2026-11-09T19:11:16.443769+08:00",
+      "speed": 400.0
+    },
+    "events": [],
+    "first_420ms": {
+      "start_position": -16892.73,
+      "last_position": -16892.136,
+      "actual_delta_deg": 0.59326171875,
+      "reference_delta_deg": 2.381999999997788,
+      "iq_ref_peak_ma": 667,
+      "last_error_deg": 1.79399999999805
+    },
+    "powered_window": {
+      "elapsed_to_last_sample_s": 0.6845309734344482,
+      "iq_ref_peak_ma": 741,
+      "iq_actual_peak_ma": 737,
+      "bus_range_mv": [
+        24137,
+        24240
+      ]
+    },
+    "first_fault_trace": null
+  },
+  {
+    "ki": 110,
+    "source": "output\\manual-control\\20261109-193118-517273-real.jsonl",
+    "command": {
+      "t": 1794223945.71043,
+      "time": "2026-11-09T19:32:25.710430+08:00",
+      "speed": 90.0
+    },
+    "events": [
+      {
+        "wall_time": "2026-11-09T19:32:26.183696+08:00",
+        "simulated": false,
+        "time": "19:32:26",
+        "message": "J1 故障 5：运动跟随或行程保护",
+        "node": 1,
+        "fault": 5,
+        "position": -19867.678,
+        "target": -19864.62,
+        "velocity": -0.29,
+        "power": false
+      },
+      {
+        "wall_time": "2026-11-09T19:32:26.183930+08:00",
+        "simulated": false,
+        "time": "19:32:26",
+        "message": "J1 驱动已故障关断出力，不重复发 STOP"
+      },
+      {
+        "wall_time": "2026-11-09T19:32:26.183969+08:00",
+        "simulated": false,
+        "time": "19:32:26",
+        "message": "J1: 驱动故障 5：位置跟随误差超限"
+      }
+    ],
+    "first_420ms": {
+      "start_position": -19867.59,
+      "last_position": -19867.304,
+      "actual_delta_deg": 0.28564453125,
+      "reference_delta_deg": 2.360000000000582,
+      "iq_ref_peak_ma": 518,
+      "last_error_deg": 2.0780000000013388
+    },
+    "powered_window": {
+      "elapsed_to_last_sample_s": 0.44361019134521484,
+      "iq_ref_peak_ma": 643,
+      "iq_actual_peak_ma": 655,
+      "bus_range_mv": [
+        24137,
+        24227
+      ]
+    },
+    "first_fault_trace": {
+      "board_ms": 154040,
+      "encoder_counts": 6333,
+      "speed_counts_s": -185.41226196289062,
+      "position_deg": -19867.7,
+      "target_deg": -19864.62,
+      "iq_ref_ma": 0,
+      "iq_ma": -3,
+      "vq_request_mv": 0,
+      "bus_mv": 26380,
+      "power": false,
+      "fault": 5,
+      "encoder_valid": true,
+      "time": "2026-11-09T19:32:26.173901+08:00",
+      "t": 1794223946.173901
+    }
+  }
+]

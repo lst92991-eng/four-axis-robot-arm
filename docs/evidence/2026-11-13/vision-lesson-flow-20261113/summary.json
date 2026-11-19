@@ -1,0 +1,52 @@
+{
+  "baseline_commit": "996154e",
+  "before_nloc": 450,
+  "after_nloc": 350,
+  "cpp_nloc": 305,
+  "header_nloc": 45,
+  "target_approximately": 330,
+  "target_exactly_achieved": false,
+  "ctest_suites": 6,
+  "ctest_passed": true,
+  "accuracy": {
+    "frames": 16,
+    "detections": 501,
+    "identical": true,
+    "visual_correct": 64,
+    "visual_total": 64,
+    "recorded_npu_correct": 32
+  },
+  "synthetic": {
+    "seed": 20261113,
+    "cases": 30,
+    "detections": 2520,
+    "identical": true,
+    "purpose": "Synthetic tensor edge coverage; never used as training or real-piece accuracy data.",
+    "coverage": [
+      "zero/tiny/large boxes",
+      "border cells",
+      "five ROI aspect ratios",
+      "equal scores",
+      "three output heads"
+    ]
+  },
+  "camera_stall_wait_seconds": 6.12806,
+  "changes": [
+    "startup-only geometry",
+    "one detection list",
+    "four unified NPU buffers",
+    "SDK result returns",
+    "empty image for capture end",
+    "two exception boundaries"
+  ],
+  "assumptions": [
+    "One camera and one validated model",
+    "Configure valid geometry before the loop",
+    "Inference RGB comes from Vision_prepare",
+    "Caller closes Camera and Yolo on all exits"
+  ],
+  "limitations": [
+    "Offline and simulated SDK tests only; ARM/RV1106 validation pending",
+    "Same recorded images reused; no new accuracy population"
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "meaning": "250→5 deg/s interval and speed regain from median-smoothed 20 ms encoder slope. Camera is 30 fps top-view lateral residual, host arrival times assumed. Depth/audio unobserved.",
+  "baseline": [
+    {
+      "build": "dba00fa2",
+      "trial": "up_2400_D1",
+      "direction": "up",
+      "seconds": 2.182,
+      "peak_deg_s": 2157.7,
+      "time_below_250_s": 1.43,
+      "first_sustained_below_5_s": 1.65,
+      "interval_250_to_5_s": 0.22,
+      "max_accidental_regain_deg_s": 7.7,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        443,
+        550
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.3639,
+      "image_lateral_quiet_rms_px": null,
+      "valid_tracked_frames": 74,
+      "image_around_stop_samples": 16
+    },
+    {
+      "build": "dba00fa2",
+      "trial": "down_2400_D1",
+      "direction": "down",
+      "seconds": 2.39,
+      "peak_deg_s": 2072.9,
+      "time_below_250_s": 1.43,
+      "first_sustained_below_5_s": 1.63,
+      "interval_250_to_5_s": 0.2,
+      "max_accidental_regain_deg_s": 0,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -229,
+        -127
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2724,
+      "image_lateral_quiet_rms_px": 0.0114,
+      "valid_tracked_frames": 81,
+      "image_around_stop_samples": 15
+    }
+  ],
+  "updated": [
+    {
+      "build": "df06bf27",
+      "trial": "up_2400_A1",
+      "direction": "up",
+      "seconds": 2.236,
+      "peak_deg_s": 2167.6,
+      "time_below_250_s": 1.43,
+      "first_sustained_below_5_s": 1.63,
+      "interval_250_to_5_s": 0.2,
+      "max_accidental_regain_deg_s": 0,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        443,
+        514
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.3205,
+      "image_lateral_quiet_rms_px": 0.1345,
+      "valid_tracked_frames": 76,
+      "image_around_stop_samples": 15
+    },
+    {
+      "build": "df06bf27",
+      "trial": "down_2400_A1",
+      "direction": "down",
+      "seconds": 3.443,
+      "peak_deg_s": 2156.0,
+      "time_below_250_s": 1.43,
+      "first_sustained_below_5_s": 1.67,
+      "interval_250_to_5_s": 0.24,
+      "max_accidental_regain_deg_s": 0,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -205,
+        -152
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2641,
+      "image_lateral_quiet_rms_px": 0.0008,
+      "valid_tracked_frames": 113,
+      "image_around_stop_samples": 16
+    },
+    {
+      "build": "df06bf27",
+      "trial": "up_2400_A2",
+      "direction": "up",
+      "seconds": 2.243,
+      "peak_deg_s": 2150.0,
+      "time_below_250_s": 1.45,
+      "first_sustained_below_5_s": 1.67,
+      "interval_250_to_5_s": 0.22,
+      "max_accidental_regain_deg_s": 2.2,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        453,
+        560
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.3406,
+      "image_lateral_quiet_rms_px": 0.2046,
+      "valid_tracked_frames": 76,
+      "image_around_stop_samples": 16
+    },
+    {
+      "build": "df06bf27",
+      "trial": "down_2400_A2",
+      "direction": "down",
+      "seconds": 2.842,
+      "peak_deg_s": 2039.9,
+      "time_below_250_s": 1.45,
+      "first_sustained_below_5_s": 1.59,
+      "interval_250_to_5_s": 0.14,
+      "max_accidental_regain_deg_s": 0,
+      "terminal_voltage_clip_count": 0,
+      "terminal_current_reference_range_ma": [
+        -173,
+        -117
+      ],
+      "image_lateral_ripple_around_stop_rms_px": 0.2884,
+      "image_lateral_quiet_rms_px": 0.0026,
+      "valid_tracked_frames": 94,
+      "image_around_stop_samples": 14
+    }
+  ],
+  "operator_observation": "上升抖动可接受，下降从高速减到零仍明显，体感和原来差不多。"
+}

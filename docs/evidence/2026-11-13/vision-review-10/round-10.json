@@ -1,0 +1,173 @@
+{
+  "round": 10,
+  "title": "识别结果的定义放回识别接口",
+  "finding": "YOLO头文件直接定义供棋盘模块使用的Detection，显式声明自身依赖；阅读视觉代码无需先穿过完整坐标标定头文件，已有几何接口和数据布局不变。",
+  "parent_commit": "45bb8858b4399648fe35385d9f0af44c2dc51d96",
+  "production_files": [
+    {
+      "file": "app/vision_main.cpp",
+      "nloc": 57,
+      "sha256": "b93057e764cd5079d684b715b53863c0dbfea346a6aaed35f53d309ad708d5ee"
+    },
+    {
+      "file": "vision/capture.hpp",
+      "nloc": 7,
+      "sha256": "be5b5f58cbdac0ab098ef1fc4210b08a9eee2db468ec5ffa62ae7807e861cdf7"
+    },
+    {
+      "file": "vision/capture.cpp",
+      "nloc": 80,
+      "sha256": "0407325b9e35146e48ce170bb022a6a14e116ca5ba9f64bd27a7f3ab6f8917d0"
+    },
+    {
+      "file": "vision/yolo.hpp",
+      "nloc": 46,
+      "sha256": "a03e73c4d7ff486cc4e6399c1149d740ce709c2343c3fad69a8aea35c1aae98d"
+    },
+    {
+      "file": "vision/yolo.cpp",
+      "nloc": 144,
+      "sha256": "81c22c1c7f943b3e444f82b93c101768f6d26cdab0f7d8b5a986bfb16e1fab47"
+    },
+    {
+      "file": "vision/yolo_npu.cpp",
+      "nloc": 94,
+      "sha256": "a95a6fa75d166ea86d5845591e30ba11fe22f0f8ef18e559c6e9c2dc6c27a942"
+    }
+  ],
+  "nloc": 428,
+  "ctest_passed": true,
+  "checks": " C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/build/commit-verify\n    Start 1: geometry_contracts\n1/5 Test #1: geometry_contracts ...............   Passed    0.85 sec\n    Start 2: game_geometry_contracts\n2/5 Test #2: game_geometry_contracts ..........   Passed    0.06 sec\n    Start 3: vision_pipeline_contracts\n3/5 Test #3: vision_pipeline_contracts ........   Passed    5.72 sec\n    Start 4: rknn_adapter_contracts\n4/5 Test #4: rknn_adapter_contracts ...........   Passed    0.07 sec\n    Start 5: vision_entry_contracts\n5/5 Test #5: vision_entry_contracts ...........   Passed    0.85 sec\n\n100% tests passed, 0 tests failed out of 5\n\nTotal Test time (real) =   7.61 sec\n",
+  "cases": [
+    {
+      "id": "npu-yolo-expanded-v1-20261105",
+      "detections": 30,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.063226
+    },
+    {
+      "id": "npu-yolo-full-frame",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.029647999999999997
+    },
+    {
+      "id": "npu-yolo-live-20261104",
+      "detections": 16,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.039798
+    },
+    {
+      "id": "npu-yolo-live-active",
+      "detections": 16,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.037355
+    },
+    {
+      "id": "npu-reference",
+      "detections": 28,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.066941
+    },
+    {
+      "id": "npu-v3",
+      "detections": 32,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.068176
+    },
+    {
+      "id": "npu-diagnosis",
+      "detections": 30,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.059521
+    },
+    {
+      "id": "fixed-01",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-02",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-03",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-04",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-05",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-06",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-07",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-08",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    },
+    {
+      "id": "fixed-09",
+      "detections": 0,
+      "input_identical": true,
+      "max_box_difference_px": 0,
+      "max_score_difference": 0,
+      "decode_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 15.93,
+  "accuracy_scope": "Recorded tensor parity and preprocessing equality, not full NPU re-inference or ground-truth accuracy."
+}

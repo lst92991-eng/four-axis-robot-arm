@@ -1,0 +1,197 @@
+{
+  "objective": "按用户已确认的课堂手写风格整理整个自有上层应用，保留已验证功能和实际数据流",
+  "started_utc": "2026-11-13T11:15:00Z",
+  "review_until_utc": "2026-11-13T14:45:00Z",
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "2ce033d",
+  "status": "complete",
+  "current_stage": "delivered",
+  "scope": [
+    "app",
+    "vision",
+    "chess",
+    "motion",
+    "manual_control",
+    "temp/yolo_live"
+  ],
+  "separate_counts": [
+    "temp/transport USB-CAN",
+    "调参/标定/升级工具",
+    "测试与离线审查工具",
+    "第三方引擎和模型"
+  ],
+  "constraints": [
+    "保持C++17和OpenCV5.0.0，不训练、更换或转换YOLO模型",
+    "保持已验证的ROI、颜色、letterbox、阈值、坐标和方向关系",
+    "不修改底层固件，不连接硬件或运行实机动作",
+    "输入输出参数明确，主流程顺序调用，变量注明用途与单位",
+    "无限循环使用while，常规失败按既有状态流表达，避免重复检查和异常包装",
+    "不通过隐藏代码、合并多条语句到一行或移出统计来声称精简",
+    "每轮自查后运行相应离线验证，保留完整源码、哈希、有效行数和本地Git版本"
+  ],
+  "stages": [
+    {
+      "id": "baseline",
+      "task": "全量范围、冻结输入输出、统一离线harness",
+      "status": "complete"
+    },
+    {
+      "id": "vision",
+      "task": "视觉/NPU命名、参数及顺序接口审查",
+      "status": "complete"
+    },
+    {
+      "id": "geometry",
+      "task": "标定、定位、90点与棋子分配的输入输出接口和固定棋盘路径",
+      "status": "complete"
+    },
+    {
+      "id": "chess",
+      "task": "棋局/FEN/走法/结果确认和UCI调用",
+      "status": "complete"
+    },
+    {
+      "id": "motion",
+      "task": "已验证FK/IK、两层Z、取放、磁铁和演示流程",
+      "status": "complete"
+    },
+    {
+      "id": "host",
+      "task": "现有上位机/实时服务及诊断代码按职责整理",
+      "status": "complete"
+    },
+    {
+      "id": "integration",
+      "task": "跨模块离线走棋、复核日志和源码交付",
+      "status": "complete"
+    }
+  ],
+  "completed_rounds": [
+    {
+      "round": 0,
+      "title": "全量离线基线",
+      "record": "round-00.json"
+    },
+    {
+      "round": 1,
+      "title": "几何标定与图像输出参数",
+      "record": "round-01.json",
+      "checks": "7 CTest + 55 Python + 13 geometry outputs + visual replay"
+    },
+    {
+      "round": 2,
+      "title": "棋盘与棋局坐标的显式数据流",
+      "record": "round-02.json",
+      "checks": "7 CTest + 55 Python + identical geometry and vision outputs"
+    },
+    {
+      "round": 3,
+      "title": "棋盘定位按图像步骤展开",
+      "record": "round-03.json",
+      "checks": "all outputs identical"
+    },
+    {
+      "round": 4,
+      "title": "固定棋盘的90点缓存与识别接口",
+      "record": "round-04.json"
+    },
+    {
+      "round": 5,
+      "title": "NPU配置表与初始化状态流",
+      "record": "round-05.json"
+    },
+    {
+      "round": 6,
+      "title": "棋局显式状态与参数式接口",
+      "record": "round-06.json"
+    },
+    {
+      "round": 7,
+      "title": "棋局重复校验合并与48600组等价对照",
+      "record": "round-07.json"
+    },
+    {
+      "round": 8,
+      "title": "UCI完整上下文与顺序握手",
+      "record": "round-08.json"
+    },
+    {
+      "round": 9,
+      "title": "已验证运动学与取放规划接口",
+      "record": "round-09.json"
+    },
+    {
+      "round": 10,
+      "title": "Python上层语法树等价排版",
+      "record": "round-10.json"
+    },
+    {
+      "round": 11,
+      "title": "上位机每轮流程与取放重试",
+      "record": "round-11.json"
+    },
+    {
+      "round": 12,
+      "title": "视觉棋局与取放规划的事务连接",
+      "record": "round-12.json"
+    },
+    {
+      "round": 13,
+      "title": "界面脚本与旧预览循环整理",
+      "record": "round-13.json"
+    },
+    {
+      "round": 14,
+      "title": "标定求解与协议接收按职责展开",
+      "record": "round-14.json"
+    },
+    {
+      "round": 15,
+      "title": "控制分发与双画面处理步骤",
+      "record": "round-15.json"
+    },
+    {
+      "round": 16,
+      "title": "未示教输入与失败输出复核",
+      "record": "round-16.json"
+    },
+    {
+      "round": 17,
+      "title": "模拟上位机完整HTTP操作验证",
+      "record": "round-17.json"
+    },
+    {
+      "round": 18,
+      "title": "接口单位与初始化停止请求自审",
+      "record": "round-18.json"
+    },
+    {
+      "round": 19,
+      "title": "最终构建与源码阅读配置",
+      "record": "round-19.json"
+    }
+  ],
+  "known_limits": [
+    "尚未连接RV1106，没有ARM交叉构建、真实NPU连续运行或整机运动验收。",
+    "Linux真实Pikafish进程待验证；现有协议检查使用真实适配实现和POSIX替身。",
+    "正式SPI-CAN执行端与H桥硬件仍需后续接入；现有Python实机入口保留。",
+    "本轮是流程与可读性整理，总NLOC增加，用户仍需逐文件确认教学手写体验。"
+  ],
+  "finished_utc": "2026-11-13T14:15:13.156297+00:00",
+  "elapsed_minutes": 180.2,
+  "result": {
+    "completed_review_rounds": 19,
+    "baseline_rounds": 1,
+    "source_files": 39,
+    "ctest_suites": 13,
+    "python_checks": 59,
+    "vision_nloc": 408,
+    "cpp_application_nloc": 2975,
+    "native_code_commit": "04287a5",
+    "source_text": "output/upper-review-20261113/round-19/code.txt",
+    "source_package": "output/upper-review-20261113/upper-application-source.zip",
+    "fresh_archive_build_and_replay_passed": true,
+    "hardware_actions": false,
+    "remote_push": false
+  }
+}

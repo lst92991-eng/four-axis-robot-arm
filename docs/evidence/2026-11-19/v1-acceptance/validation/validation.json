@@ -1,0 +1,25 @@
+{
+  "user_acceptance_date": "2026-11-19",
+  "windows_ctest": {
+    "passed": 12,
+    "failed": 0,
+    "opencv": "5.0.0",
+    "main_scenarios": 21,
+    "includes_hardware": false,
+    "note": "The first Windows run could not read fixtures through the non-ASCII repo path. Match scenario inputs are now copied into the temporary test workspace."
+  },
+  "j1_native_c": {
+    "passed": 10,
+    "failed": 0
+  },
+  "j1_rebuild": {
+    "build_id": "2e5004d0",
+    "sha256": "5439c3dc679e863aca262e324cf7dce35bc28d70e4cae9cbe9b925208c4c5edb",
+    "identical_to_archived_package": true
+  },
+  "usb_bridge": {
+    "configure_and_build_exit_code": 0,
+    "build_log": "usb-bridge-build.log"
+  },
+  "archived_python_syntax_checked": true
+}

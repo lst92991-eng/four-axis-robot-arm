@@ -1,0 +1,112 @@
+{
+  "build": "fc4e4679",
+  "location": "off-board observation position",
+  "requested_deg_s": 4800,
+  "estimated_stroke_mm": 36,
+  "rounds_completed": 4,
+  "rounds_at_4800": 0,
+  "results": [
+    {
+      "rate_deg_s2": 4200,
+      "planned_peak_deg_s": 2530.3,
+      "up": {
+        "name": "up_4800_P1",
+        "seconds": 6.778938599978574,
+        "speed_peak_deg_s": 2038.18359375,
+        "clipped_samples": 15,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 57.123222072988845,
+        "bus_peak_mv": 36708,
+        "max_following_mdeg": 32764
+      },
+      "down": {
+        "name": "down_4800_P1",
+        "seconds": 5.6857135000173,
+        "speed_peak_deg_s": 2496.7529296875,
+        "clipped_samples": 6,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 145.98493072916807,
+        "bus_peak_mv": 36953,
+        "max_following_mdeg": 10072
+      }
+    },
+    {
+      "rate_deg_s2": 4800,
+      "planned_peak_deg_s": 2695.8,
+      "up": {
+        "name": "up_4800_P2",
+        "seconds": 6.380922699929215,
+        "speed_peak_deg_s": 2074.4384765625,
+        "clipped_samples": 18,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 54.57449037783129,
+        "bus_peak_mv": 36734,
+        "max_following_mdeg": 32764
+      },
+      "down": {
+        "name": "down_4800_P2",
+        "seconds": 5.381096599972807,
+        "speed_peak_deg_s": 2572.119140625,
+        "clipped_samples": 13,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 163.87190119114382,
+        "bus_peak_mv": 36927,
+        "max_following_mdeg": 29776
+      }
+    },
+    {
+      "rate_deg_s2": 5400,
+      "planned_peak_deg_s": 2850.1,
+      "up": {
+        "name": "up_4800_P3",
+        "seconds": 3.9302688000025228,
+        "speed_peak_deg_s": 2041.0400390625,
+        "clipped_samples": 19,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 44.024992901759795,
+        "bus_peak_mv": 36747,
+        "max_following_mdeg": 32764
+      },
+      "down": {
+        "name": "down_4800_P3",
+        "seconds": 5.393245400045998,
+        "speed_peak_deg_s": 2685.9375,
+        "clipped_samples": 17,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 152.61585762953993,
+        "bus_peak_mv": 36953,
+        "max_following_mdeg": 32768
+      }
+    },
+    {
+      "rate_deg_s2": 6000,
+      "planned_peak_deg_s": 2995.1,
+      "up": {
+        "name": "up_4800_P4",
+        "seconds": 2.0865540999220684,
+        "speed_peak_deg_s": 2016.650390625,
+        "clipped_samples": 20,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 62.63385665915839,
+        "bus_peak_mv": 36773,
+        "max_following_mdeg": 32764
+      },
+      "down": {
+        "name": "down_4800_P4",
+        "seconds": 5.777662700042129,
+        "speed_peak_deg_s": 2556.9580078125,
+        "clipped_samples": 13,
+        "voltage_vector_peak_mv": 20000,
+        "braking_iq_step_rms_ma": 180.63650089211055,
+        "bus_peak_mv": 36953,
+        "max_following_mdeg": 32768
+      }
+    }
+  ],
+  "return_errors_deg": {
+    "3": 0.0,
+    "2": 0.0,
+    "1": 0.0
+  },
+  "raw_run": "j1-brake-pair-20261119-145512"
+}

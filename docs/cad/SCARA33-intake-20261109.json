@@ -1,0 +1,70 @@
+{
+  "archive_name": "SCARA_old-new_33mm_chess_2026-10-13.zip",
+  "archive_sha256": "38b0da9257d2162fb9a380510ecea83f5e234bbd8d27476b6daefd3bc0515d21",
+  "checked_members": 211,
+  "unlisted_members": [],
+  "variants": {
+    "old": {
+      "links_mm": [
+        195.00000000000006,
+        275.0
+      ],
+      "joint_axes_cad_mm": {
+        "shoulder": [
+          0.5081230034509976,
+          -155.21586575797676
+        ],
+        "elbow": [
+          0.5081230033373458,
+          -350.2158657579768
+        ],
+        "wrist": [
+          0.5081230033381978,
+          -625.2158657579799
+        ]
+      },
+      "top_components": 38,
+      "all_components": 195,
+      "chess_piece_count": 32,
+      "piece_diameter_mm": 33,
+      "native_screw_head_height_mm": 6,
+      "outside_stored_references": [],
+      "outside_runtime_references": []
+    },
+    "long": {
+      "links_mm": [
+        275.0000000000001,
+        275.00000000000006
+      ],
+      "joint_axes_cad_mm": {
+        "shoulder": [
+          0.5081230034509875,
+          -155.21586575797696
+        ],
+        "elbow": [
+          0.5081230033373559,
+          -430.21586575797704
+        ],
+        "wrist": [
+          0.5081230033381978,
+          -705.2158657579803
+        ]
+      },
+      "top_components": 38,
+      "all_components": 195,
+      "chess_piece_count": 32,
+      "piece_diameter_mm": 33,
+      "native_screw_head_height_mm": 6,
+      "outside_stored_references": [],
+      "outside_runtime_references": []
+    }
+  },
+  "selected_variant": "long",
+  "selection_basis": "User confirmed 275+275mm on 2026-11-09",
+  "validation_scope": "Package checksum and stored CAD measurement evidence; no fresh native SolidWorks measurement or physical calibration in this turn",
+  "lead_mm_per_rev": null,
+  "tcp_offset_mm": null,
+  "j2_reduction_ratio": 25,
+  "j3_total_transmission_ratio": null,
+  "aruco_used": false
+}

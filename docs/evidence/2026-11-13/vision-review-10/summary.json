@@ -1,0 +1,141 @@
+{
+  "baseline_commit": "e86f26f",
+  "rounds": [
+    {
+      "round": 1,
+      "title": "固定模型参数具名化",
+      "parent_commit": "e86f26fd0462e53a67d22a40a6d69992a7656477",
+      "source_files_changed": [
+        "vision/yolo.hpp",
+        "vision/yolo.cpp",
+        "vision/yolo_npu.cpp"
+      ],
+      "nloc_before": 395,
+      "nloc_after": 400,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 2,
+      "title": "预处理直接写入输入区",
+      "parent_commit": "f12ea12744163603387f8238f3cb16b936ed5902",
+      "source_files_changed": [
+        "vision/yolo.cpp"
+      ],
+      "nloc_before": 400,
+      "nloc_after": 401,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 3,
+      "title": "提前排除不可能达标的候选框",
+      "parent_commit": "d749a2e2a35a6c0bca6660ba9ec20d2e9977b748",
+      "source_files_changed": [
+        "vision/yolo.cpp"
+      ],
+      "nloc_before": 401,
+      "nloc_after": 404,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 4,
+      "title": "相机交接帧避免整图复制",
+      "parent_commit": "5ed54e997afd1d4799ee7309be98b8fd0fee3357",
+      "source_files_changed": [
+        "vision/capture.cpp"
+      ],
+      "nloc_before": 404,
+      "nloc_after": 406,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 5,
+      "title": "相机状态统一由互斥锁管理",
+      "parent_commit": "dddb38ca937f2c5e1bb1bf218933b3018fc2789a",
+      "source_files_changed": [
+        "vision/capture.cpp"
+      ],
+      "nloc_before": 406,
+      "nloc_after": 409,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 6,
+      "title": "NPU错误直接保留接口名和状态码",
+      "parent_commit": "5fd382a70a32bb893d1ebb65a3010f4dc4cdcaea",
+      "source_files_changed": [
+        "vision/yolo_npu.cpp"
+      ],
+      "nloc_before": 409,
+      "nloc_after": 409,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 7,
+      "title": "入口先准备再进入循环",
+      "parent_commit": "1c268875ac2d71de6fc884875737222ff5486ca4",
+      "source_files_changed": [
+        "app/vision_main.cpp"
+      ],
+      "nloc_before": 409,
+      "nloc_after": 413,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 8,
+      "title": "绘制时只操作图像内的区域",
+      "parent_commit": "31e080b1f641e36dbfd920a3e3f1a26a7bdc3305",
+      "source_files_changed": [
+        "vision/yolo.cpp"
+      ],
+      "nloc_before": 413,
+      "nloc_after": 416,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 9,
+      "title": "解码按三个步骤展开",
+      "parent_commit": "6cd637089120ec8ad871e4e9e6f744a595961120",
+      "source_files_changed": [
+        "vision/yolo.cpp"
+      ],
+      "nloc_before": 416,
+      "nloc_after": 419,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    },
+    {
+      "round": 10,
+      "title": "识别结果的定义放回识别接口",
+      "parent_commit": "45bb8858b4399648fe35385d9f0af44c2dc51d96",
+      "source_files_changed": [
+        "vision/capture.hpp",
+        "vision/yolo.hpp"
+      ],
+      "nloc_before": 419,
+      "nloc_after": 428,
+      "previous_version_inputs_identical": 16,
+      "previous_version_detections_identical": 152,
+      "ctest_passed": true
+    }
+  ],
+  "all_ten_passed": true,
+  "model_rknn_sha256": "ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2",
+  "note": "All comparisons are offline; CPU ONNX accuracy spot checks are recorded separately in accuracy.json."
+}

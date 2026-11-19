@@ -1,0 +1,16 @@
+-- OpenCV ARCH: x64
+-- OpenCV RUNTIME: vc16
+-- OpenCV STATIC: OFF
+-- Found OpenCV: C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build (found suitable exact version "5.0.0") found components: core imgproc imgcodecs geometry
+-- Found OpenCV 5.0.0 in C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build/x64/vc16/lib
+-- You might need to add C:\Users\shuto\.cache\scara-geometry\sdk\opencv\build\x64\vc16\bin to your PATH to be able to run your applications.
+-- OpenCV ARCH: x64
+-- OpenCV RUNTIME: vc16
+-- OpenCV STATIC: OFF
+-- Found OpenCV: C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build (found suitable exact version "5.0.0") found components: core imgproc imgcodecs videoio
+-- Found OpenCV 5.0.0 in C:/Users/shuto/.cache/scara-geometry/sdk/opencv/build/x64/vc16/lib
+-- You might need to add C:\Users\shuto\.cache\scara-geometry\sdk\opencv\build\x64\vc16\bin to your PATH to be able to run your applications.
+-- Configuring done (0.4s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/shuto/Desktop/四轴机械臂-CANFD升级交接-2026-11-04/output/whole-machine-20261117/usb-game/build
+ninja: no work to do.

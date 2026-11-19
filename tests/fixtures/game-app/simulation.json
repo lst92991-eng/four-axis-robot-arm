@@ -1,0 +1,29 @@
+{
+  "layout_file": "../fixed-app/setup.json",
+  "arm_file": "../upper-app/arm-registration.json",
+  "heights_file": "work-heights.json",
+  "work_directory": "../../../output/game-main-simulation",
+  "simulation_file": "two-rounds.json",
+  "human_red": 1,
+  "red_to_move": 1,
+  "think_ms": 100,
+  "park_joints_deg": [
+    -53.23,
+    -76.971
+  ],
+  "capture_place_mm": [
+    -200,
+    -250
+  ],
+  "note": "Simulation fixture only. These values are not a taught camera-clear parking pose or real capture bin.",
+  "joint_velocity_deg_s": [
+    180,
+    8,
+    8
+  ],
+  "joint_acceleration_deg_s2": [
+    60,
+    30,
+    30
+  ]
+}

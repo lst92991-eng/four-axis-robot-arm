@@ -1,0 +1,11 @@
+等待节点 1 的引导程序，请复位该板。
+Traceback (most recent call last):
+  File "C:\Users\shuto\Desktop\四轴机械臂-CANFD升级交接-2026-11-04\temp\ota.py", line 130, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\shuto\Desktop\四轴机械臂-CANFD升级交接-2026-11-04\temp\ota.py", line 124, in main
+    send_image(bus, can, node, crc, image, args.wait_reset_seconds)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shuto\Desktop\四轴机械臂-CANFD升级交接-2026-11-04\temp\ota.py", line 57, in send_image
+    raise TimeoutError("引导无应答，未发擦除命令")
+TimeoutError: 引导无应答，未发擦除命令

@@ -1,0 +1,96 @@
+{
+  "classes": [
+    "k",
+    "a",
+    "b",
+    "n",
+    "r",
+    "c",
+    "p",
+    "K",
+    "A",
+    "B",
+    "N",
+    "R",
+    "C",
+    "P"
+  ],
+  "class_names": [
+    "黑将",
+    "黑士",
+    "黑象",
+    "黑马",
+    "黑车",
+    "黑炮",
+    "黑卒",
+    "红帅",
+    "红仕",
+    "红相",
+    "红马",
+    "红车",
+    "红炮",
+    "红兵"
+  ],
+  "input_size": [
+    640,
+    640
+  ],
+  "input_color": "RGB",
+  "letterbox_fill": 114,
+  "score_threshold": 0.5,
+  "class_agnostic_nms_iou": 0.45,
+  "architecture": "YOLOv5s/ReLU, pinned airockchip rk_opt@v6.2.1",
+  "rknn_target": "rv1106",
+  "rknn_toolkit": "1.6.0",
+  "anchors": [
+    [
+      10,
+      13,
+      16,
+      30,
+      33,
+      23
+    ],
+    [
+      30,
+      61,
+      62,
+      45,
+      59,
+      119
+    ],
+    [
+      116,
+      90,
+      156,
+      198,
+      373,
+      326
+    ]
+  ],
+  "strides": [
+    8,
+    16,
+    32
+  ],
+  "onnx_output": "3 sigmoid probability heads, 57 channels; coordinate decoding and NMS required",
+  "rknn_output": "INT8 native NHWC; respect queried quantization scale and zero point",
+  "physical_board_tested": false,
+  "files": [
+    {
+      "name": "xiangqi14-expanded-v1.pt",
+      "bytes": 28925095,
+      "sha256": "22bc1816983e1b16f0a4f3f776efcd670aeb490a109babfbdc941b153d012914"
+    },
+    {
+      "name": "xiangqi14-expanded-v1.onnx",
+      "bytes": 28221283,
+      "sha256": "4af3a3356c5010179836fc62264e3ee8e5af276d49e59138ddc57d035b3a9a04"
+    },
+    {
+      "name": "xiangqi14-expanded-v1-rv1106.rknn",
+      "bytes": 7395847,
+      "sha256": "79ae2cb8dadbba7e9b6128ca40f1311ab17ffaa1baa8b4abc9c7c1cd8dadd9fd"
+    }
+  ]
+}

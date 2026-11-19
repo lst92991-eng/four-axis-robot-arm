@@ -1,0 +1,17 @@
+%YAML:1.0
+---
+camera:
+  id: "sc3336-1280x720-fixed-focus-v1"
+  width: 1280
+  height: 720
+image: "../../temp/rv1106-logs/board-focused.png"
+frame_id: "offline-board-focused"
+mode: "auto"
+# Natural grid alone cannot establish the canonical red/black end.
+# After inspecting the overlay: manual_keep / manual_flip.
+# Or use reference with an explicitly chosen asymmetric printed-board patch.
+orientation: "unconfirmed"
+orientation_reference: ""
+plane_file: ""
+detections_file: ""
+scene_clear: 0

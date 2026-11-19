@@ -1,0 +1,163 @@
+{
+  "note": "Explicit scripted engine replies and independent scene boards. No real engine or hardware; moves are normal pawn moves and a rook capture.",
+  "initial_board": [
+    "rnbakabnr",
+    ".........",
+    ".c.....c.",
+    "p.p.p.p.p",
+    ".........",
+    ".........",
+    "P.P.P.P.P",
+    ".C.....C.",
+    ".........",
+    "RNBAKABNR"
+  ],
+  "commands": [
+    {
+      "phase": "prepare",
+      "command": "ready"
+    },
+    {
+      "phase": "confirm_start",
+      "command": "ready"
+    },
+    {
+      "phase": "human",
+      "command": "ready",
+      "board": [
+        "rnbakabnr",
+        ".........",
+        ".c.....c.",
+        "p.p.p.p.p",
+        ".........",
+        "P........",
+        "..P.P.P.P",
+        ".C.....C.",
+        ".........",
+        "RNBAKABNR"
+      ]
+    },
+    {
+      "phase": "human",
+      "command": "ready",
+      "board": [
+        "rnbakabnr",
+        ".........",
+        ".c.....c.",
+        "..p.p.p.p",
+        "P........",
+        ".........",
+        "..P.P.P.P",
+        ".C.....C.",
+        ".........",
+        "RNBAKABNR"
+      ]
+    },
+    {
+      "phase": "human",
+      "command": "quit"
+    }
+  ],
+  "queries": [
+    {
+      "history": "",
+      "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "legal": [
+        "a3a4",
+        "c3c4"
+      ]
+    },
+    {
+      "history": "a3a4",
+      "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "legal": [
+        "a6a5",
+        "c6c5"
+      ],
+      "choice": "a6a5"
+    },
+    {
+      "history": "a3a4 a6a5",
+      "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "legal": [
+        "a4a5",
+        "c3c4"
+      ]
+    },
+    {
+      "history": "a3a4 a6a5 a4a5",
+      "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "legal": [
+        "a9a5",
+        "c6c5"
+      ],
+      "choice": "a9a5"
+    },
+    {
+      "history": "a3a4 a6a5 a4a5 a9a5",
+      "base_fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "legal": [
+        "c3c4"
+      ]
+    }
+  ],
+  "executions": [
+    {
+      "purpose": "prepare",
+      "move": "",
+      "success": 1
+    },
+    {
+      "purpose": "move",
+      "move": "a6a5",
+      "success": 1,
+      "board": [
+        "rnbakabnr",
+        ".........",
+        ".c.....c.",
+        "..p.p.p.p",
+        "p........",
+        "P........",
+        "..P.P.P.P",
+        ".C.....C.",
+        ".........",
+        "RNBAKABNR"
+      ]
+    },
+    {
+      "purpose": "move",
+      "move": "a9a5",
+      "success": 1,
+      "board": [
+        ".nbakabnr",
+        ".........",
+        ".c.....c.",
+        "..p.p.p.p",
+        "r........",
+        ".........",
+        "..P.P.P.P",
+        ".C.....C.",
+        ".........",
+        "RNBAKABNR"
+      ]
+    }
+  ],
+  "expected_history": "a3a4 a6a5 a4a5 a9a5",
+  "expected_board": [
+    ".nbakabnr",
+    ".........",
+    ".c.....c.",
+    "..p.p.p.p",
+    "r........",
+    ".........",
+    "..P.P.P.P",
+    ".C.....C.",
+    ".........",
+    "RNBAKABNR"
+  ],
+  "initial_joints_deg": [
+    -19353.34,
+    -53.23,
+    -76.971
+  ]
+}

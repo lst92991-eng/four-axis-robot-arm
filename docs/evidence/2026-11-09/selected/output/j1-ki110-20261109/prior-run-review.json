@@ -1,0 +1,133 @@
+{
+  "source": "output\\manual-control\\20261109-191958-582601-real.jsonl",
+  "kp": 1.6,
+  "ki": 130,
+  "runs": [
+    {
+      "command": {
+        "t": 1794223215.901649,
+        "time": "2026-11-09T19:20:15.901649+08:00",
+        "kind": 12,
+        "value": -400000
+      },
+      "stop": {
+        "t": 1794223257.156498,
+        "time": "2026-11-09T19:20:57.156498+08:00",
+        "kind": 4,
+        "value": 0
+      },
+      "steady": {
+        "n": 1369,
+        "seconds": 27.36,
+        "mean_speed": -399.98185007195724,
+        "error_range": [
+          -1.3980000000010477,
+          0.9279999999998836
+        ],
+        "error_std": 0.3700925514694772,
+        "iq_peak": 782,
+        "iq_std": 102.13962931008155,
+        "position_range": [
+          -19371.07,
+          -8427.568
+        ],
+        "estimated_speed_range": [
+          -496.8299961090088,
+          -304.02000188827515
+        ],
+        "stationary_sample_fraction": 0.0
+      },
+      "post_stop_fault": null
+    },
+    {
+      "command": {
+        "t": 1794223274.767538,
+        "time": "2026-11-09T19:21:14.767538+08:00",
+        "kind": 12,
+        "value": -400000
+      },
+      "stop": {
+        "t": 1794223278.723833,
+        "time": "2026-11-09T19:21:18.723833+08:00",
+        "kind": 4,
+        "value": 0
+      },
+      "steady": null,
+      "post_stop_fault": {
+        "build": "b06df529",
+        "uptime": 2653579,
+        "state": 4,
+        "fault": 5,
+        "power": false,
+        "encoder_valid": true,
+        "referenced": true,
+        "configured": true,
+        "position": -19870.464,
+        "velocity": 0.0,
+        "target": -19870.464,
+        "stationary": true,
+        "interlocked": false,
+        "cal_state": 0,
+        "cal_error": 0,
+        "ready": true,
+        "stored": true,
+        "motion_fault_detail": 3,
+        "counts": -206785,
+        "raw_zero": 10088,
+        "direction": 1,
+        "current_ma": 0,
+        "progress": 0,
+        "bus_mv": 24253,
+        "t": 1794223281.103241,
+        "time": "2026-11-09T19:21:21.103241+08:00"
+      },
+      "last_powered_second": {
+        "n": 48,
+        "seconds": 0.94,
+        "mean_speed": 0.07012549867021277,
+        "error_range": [
+          0.15599999999903957,
+          0.2220000000015716
+        ],
+        "error_std": 0.021543882865593108,
+        "iq_peak": 381,
+        "iq_std": 50.12525976657544,
+        "position_range": [
+          -19870.686,
+          -19870.62
+        ],
+        "estimated_speed_range": [
+          0.0,
+          5.1009999588131905
+        ],
+        "stationary_sample_fraction": 0.9375
+      }
+    }
+  ],
+  "error_events": [
+    {
+      "wall_time": "2026-11-09T19:21:21.103284+08:00",
+      "simulated": false,
+      "time": "19:21:21",
+      "message": "J1 故障 5：运动跟随或行程保护",
+      "node": 1,
+      "fault": 5,
+      "position": -19870.464,
+      "target": -19870.464,
+      "velocity": 0.0,
+      "power": false
+    },
+    {
+      "wall_time": "2026-11-09T19:21:21.103357+08:00",
+      "simulated": false,
+      "time": "19:21:21",
+      "message": "J1 故障已关断出力；未据此判定机械停稳"
+    },
+    {
+      "wall_time": "2026-11-09T19:21:21.103386+08:00",
+      "simulated": false,
+      "time": "19:21:21",
+      "message": "J1: 驱动故障 5：轨迹超时"
+    }
+  ]
+}

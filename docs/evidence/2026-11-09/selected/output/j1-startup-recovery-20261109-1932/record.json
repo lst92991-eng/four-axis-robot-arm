@@ -1,0 +1,113 @@
+{
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1073741825
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483649
+    },
+    {
+      "kind": 6,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483650
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483651
+    },
+    {
+      "kind": 10,
+      "a": 1600,
+      "b": 200000,
+      "seq": 2147483652
+    },
+    {
+      "kind": 2,
+      "a": -19867678,
+      "b": 0,
+      "seq": 2147483653
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 2147483654
+    }
+  ],
+  "scope": "Restore previously tested Kp=1.6 Ki=200; other parameters and 2.5-degree protection unchanged; no motion",
+  "comparison_baseline": "output/manual-control/20261109-190144-138161-real.jsonl",
+  "persistence": "RAM; boot defaults remain Kp=1.8 Ki=300",
+  "before": {
+    "build": "b06df529",
+    "uptime": 317350,
+    "state": 4,
+    "fault": 5,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -19867.678,
+    "velocity": 0.0,
+    "target": -19864.62,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 4,
+    "counts": 6334,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24253
+  },
+  "readback": [
+    1600,
+    200000,
+    1400
+  ],
+  "after": {
+    "build": "b06df529",
+    "uptime": 317550,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": true,
+    "configured": true,
+    "position": -19867.678,
+    "velocity": 0.0,
+    "target": -19867.678,
+    "stationary": true,
+    "interlocked": false,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": true,
+    "stored": true,
+    "motion_fault_detail": 0,
+    "counts": 6334,
+    "raw_zero": 10088,
+    "direction": 1,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24227
+  },
+  "completed": true
+}

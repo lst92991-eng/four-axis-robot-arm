@@ -1,0 +1,298 @@
+{
+  "completed": false,
+  "run": true,
+  "commands": [
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 1
+    },
+    {
+      "kind": 9,
+      "a": 1,
+      "b": 300,
+      "seq": 2
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 3
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 4
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 5
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 6
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 7
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 8
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 9
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 10
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 11
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 12
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 13
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 14
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 15
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 16
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 17
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 18
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 19
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 20
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 21
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 22
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 23
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 24
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 25
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 26
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 27
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 28
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 29
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 30
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 31
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 32
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 33
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 34
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 35
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 36
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 37
+    },
+    {
+      "kind": 7,
+      "a": 0,
+      "b": 0,
+      "seq": 38
+    },
+    {
+      "kind": 9,
+      "a": 2,
+      "b": 0,
+      "seq": 39
+    }
+  ],
+  "raw_log": "C:\\Users\\shuto\\Desktop\\\u56db\u8f74\u673a\u68b0\u81c2-CANFD\u5347\u7ea7\u4ea4\u63a5-2026-11-04\\output\\manual-control\\20261106-220620-j1-calibration.jsonl",
+  "initial": {
+    "build": "d26b98f4",
+    "uptime": 19300,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": false,
+    "position": 0.0,
+    "cal_state": 0,
+    "cal_error": 0,
+    "ready": false,
+    "stored": false,
+    "counts": 10070,
+    "raw_zero": -1,
+    "direction": 0,
+    "current_ma": 0,
+    "progress": 0,
+    "bus_mv": 24266
+  },
+  "error": "Calibration failed: no_motion",
+  "last_status": {
+    "build": "d26b98f4",
+    "uptime": 23450,
+    "state": 0,
+    "fault": 0,
+    "power": false,
+    "encoder_valid": true,
+    "referenced": false,
+    "configured": false,
+    "position": 0.0,
+    "cal_state": 8,
+    "cal_error": 6,
+    "ready": false,
+    "stored": false,
+    "counts": 10006,
+    "raw_zero": -1,
+    "direction": 0,
+    "current_ma": 298,
+    "progress": 28,
+    "bus_mv": 24253
+  },
+  "fault_evidence": {
+    "cause": 0,
+    "board_ms": 0,
+    "phase_a_counts": 0,
+    "phase_b_counts": 0,
+    "calibrating": 0,
+    "reference_ma": 0,
+    "previous_id_ma": 0,
+    "previous_iq_ma": 0,
+    "previous_ua_mv": 0,
+    "previous_ub_mv": 0,
+    "encoder_counts": 0,
+    "sample_window_valid": 0
+  }
+}
