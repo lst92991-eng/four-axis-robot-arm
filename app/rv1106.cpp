@@ -13,7 +13,7 @@ namespace scara
 //---------板端运行数据区---------
 static GameConfig settings;
 static std::string model;
-// 首次观察时打开相机和模型。每次成功生成双画面后递增帧号。
+// 首次观察时打开相机和模型。每次完成识别递增帧号。
 static bool visionOpen = false;
 static unsigned frameNumber = 0;
 
@@ -38,20 +38,13 @@ bool Runtime_close()
 }
 
 //---------取流识别区---------
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces, cv::Mat &preview)
+void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detection> &pieces)
 {
-    //新收到的1280x720 BGR原图
-    cv::Mat source;
-    //原有固定ROI生成的640x640 RGB输入
-    cv::Mat input;
-    //左侧：棋子检测框、类别和分数
-    cv::Mat detected;
-    //右侧：固定90个交点
-    cv::Mat grid;
-    // heads 的三项分别指向三种尺度的 NPU 输出。
+    cv::Mat source;   // 1280×720 BGR 原图
+    cv::Mat input;    // 640×640 RGB 模型输入
     YoloHead heads[YoloHeads];
 
-    if (!gameRunning) throw std::runtime_error("对局已停止");
+    if (!gameRunning) return;
     // 开局第一次观察或上次关闭视觉后，在此重新建立取流和推理。
     if (!visionOpen)
     {
@@ -61,22 +54,16 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
     }
     try
     {
-        // 新 BGR 帧经裁剪和缩放后送入 NPU，随即把输出解码为原图上的框。
         Camera_read(source);
         Vision_prepare(source, input);
         Yolo_run(input, heads);
         Vision_decode(heads, pieces);
-        // 识别框和标定交点分别画在原图副本上，拼接成同一帧的左右预览。
-        Vision_draw(source, pieces, detected);
-        Geometry_draw(source, layout, grid);
     }
     catch (...)
     {
         closeVision();
         throw;
     }
-    //固定双画面尺寸，和识别ROI分别处理
-    cv::hconcat(detected, grid, preview);
     ++frameNumber;
     frameId = std::to_string(frameNumber);
 }
@@ -86,7 +73,7 @@ void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &
 {
     // 搜索前释放相机和 NPU 缓冲，为 RV1106 上的引擎和权重腾出内存。
     closeVision();
-    if (!Pikafish_query(settings.engineDir.c_str(), game, settings.thinkMs, gameRunning, legal, choice))
+    if (!Pikafish_query(settings.engineDir.c_str(), game, settings.thinkMs, gameRunning, legal, choice) && gameRunning)
         throw std::runtime_error("皮卡鱼查询失败，请检查引擎和配套权重。");
 }
 
@@ -131,12 +118,7 @@ void Operator_read(const std::string &, const std::string &prompt, Command &comm
         }
         else if (character != '\r') line += character;
     }
-    //退出、EOF或停止信号在输入入口结束当前流程
-    if (command == Command::Quit)
-    {
-        gameRunning = 0;
-        throw std::runtime_error("对局已停止");
-    }
+    if (command == Command::Quit) gameRunning = 0;
 }
 
 //---------机械执行区---------
@@ -144,9 +126,7 @@ bool Robot_execute(const std::string &, const chess::Move &, const std::vector<P
 {
     // 关闭视觉后按 steps 执行三轴与磁铁动作，执行期间继续检查停止标志。
     closeVision();
-    bool completed = Motion_execute(steps, settings.motion, gameRunning);
-    if (!gameRunning) throw std::runtime_error("对局已停止");
-    return completed;
+    return Motion_execute(steps, settings.motion, gameRunning);
 }
 //---------视觉资源收尾区---------
 static void closeVision()

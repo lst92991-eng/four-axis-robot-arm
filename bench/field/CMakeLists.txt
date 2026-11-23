@@ -10,6 +10,7 @@ set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
 set(SCARA_WITH_RKNN OFF CACHE BOOL "" FORCE)
 # 从主工程取得同一套棋盘、运动和视觉实现，再构建台架调用的工具。
 add_subdirectory(../.. scara-core)
+add_subdirectory(.. scara-tools)
 add_executable(scara_bench_points ../points.cpp)
 target_link_libraries(scara_bench_points PRIVATE scara_match scara_legacy_site)
 add_executable(scara_bench_vision ../../tests/vision_replay.cpp)

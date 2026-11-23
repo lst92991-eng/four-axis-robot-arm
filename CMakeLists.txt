@@ -42,8 +42,6 @@ if(MSVC)
 else()
   target_compile_options(scara_geometry PRIVATE -Wall -Wextra -Wpedantic)
 endif()
-add_executable(scara_geometry_tool tools/geometry_tool.cpp)
-target_link_libraries(scara_geometry_tool PRIVATE scara_legacy_site)
 add_library(scara_chess chess/board.cpp)
 target_include_directories(scara_chess PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 if(MSVC)
@@ -53,13 +51,8 @@ else()
 endif()
 add_library(scara_motion motion/plan.cpp motion/execute.cpp)
 target_link_libraries(scara_motion PUBLIC scara_geometry)
-add_library(scara_legacy_site bench/legacy_site.cpp)
-target_link_libraries(scara_legacy_site PUBLIC scara_motion)
 add_library(scara_match app/game.cpp)
 target_link_libraries(scara_match PUBLIC scara_chess scara_motion)
-# 离线入口用场景代码提供相机、引擎和驱动接口。
-add_executable(scara_game_sim tests/game_sim_io.cpp)
-target_link_libraries(scara_game_sim PRIVATE scara_match scara_legacy_site)
 
 # ---------相机与 NPU 目标区---------
 # OpenCV 负责图像处理，启用 RKNN 后再加入模型运行库。
@@ -110,8 +103,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 # ---------离线回归区---------
 # 按模块核对正常流程和失败恢复，含 Windows 下替代 POSIX 接口的测试。
+if(SCARA_WITH_RKNN)
+  option(BUILD_TESTING "Build offline tests" OFF)
+endif()
 include(CTest)
 if(BUILD_TESTING)
+  add_subdirectory(bench)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
   add_test(NAME match_main_contracts COMMAND ${Python3_EXECUTABLE}
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/run_match_program.py $<TARGET_FILE:scara_game_sim>)
@@ -188,7 +185,7 @@ if(BUILD_TESTING)
 endif()
 # 将 Windows 测试可执行文件需要的 OpenCV 动态库复制到各自输出目录。
 if(WIN32 AND TARGET opencv_world)
-  foreach(app scara_game_sim scara_motion_backend_test scara_rv1106_test scara_geometry_tool scara_geometry_test scara_assignment_digest scara_motion_plan_test scara_vision_test scara_camera_receive_test scara_vision_replay scara_rknn_test scara_vision_entry_test)
+  foreach(app scara_motion_backend_test scara_rv1106_test scara_geometry_test scara_assignment_digest scara_motion_plan_test scara_vision_test scara_camera_receive_test scara_vision_replay scara_rknn_test scara_vision_entry_test)
     if(TARGET ${app})
       add_custom_command(TARGET ${app} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:opencv_world> $<TARGET_FILE_DIR:${app}>)

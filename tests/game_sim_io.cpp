@@ -111,12 +111,12 @@ bool Drive_stop()
 }
 
 //---------场景观察区---------
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces, cv::Mat &)
+void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces)
 {
     if (!script["cancel_after_frames"].empty() && frameNumber >= unsigned(int(script["cancel_after_frames"])))
     {
         gameRunning = 0;
-        throw std::runtime_error("仿真取消");
+        return;
     }
     //模拟人看到事件提示后恢复棋盘，应用仍需三张新图才能确认
     cv::FileNode restorations = script["restorations"];
@@ -216,16 +216,13 @@ void Operator_read(const std::string &phase, const std::string &, Command &resul
         //离线检查用交互记录确认实际进入的等待与恢复分支
         std::cout << "SIM_COMMAND " << phase << ' ' << name << '\n';
     }
-    if (result == Command::Quit)
-    {
-        gameRunning = 0;
-        throw std::runtime_error("对局已停止");
-    }
+    if (result == Command::Quit) gameRunning = 0;
 }
 
 //---------仿真机械执行区---------
 bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps)
 {
+    if (!gameRunning) return false;
     cv::FileNode events = script["executions"];
     cv::FileNode event;
     int result;

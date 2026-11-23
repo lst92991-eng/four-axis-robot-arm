@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-23",
+  "reference": {
+    "repository": "lst92991-eng/bms",
+    "commit": "42fff3c7f9fe5b3482e6850cd9009621eca48c8d",
+    "local_zip_sha256": "3d50fc7f4a921a3ec59a128c65b4113cd0c124752be34cf97610b02e3a664fde"
+  },
+  "scara_baseline": "4bf40f84566c21c4d1e7018e503d192a4e72ca4d",
+  "scope": "Classroom C++ entry and build on Windows x64 with OpenCV 5.0.0. RV1106-facing APIs covered by fakes.",
+  "code_counts": {
+    "measure": "Lizard 1.17.10; explicit C++ throw statements by token",
+    "before": {
+      "files": 21,
+      "nloc": 1829,
+      "explicit_throws": 25,
+      "stop_message_throws": 7
+    },
+    "after": {
+      "files": 21,
+      "nloc": 1825,
+      "explicit_throws": 15,
+      "stop_message_throws": 0
+    }
+  },
+  "ctest": {
+    "passed": 14,
+    "failed": 0
+  },
+  "bench_tests": {
+    "passed": 6,
+    "failed": 0,
+    "covered_input": [
+      "quit",
+      "EOF",
+      "keyboard interrupt"
+    ]
+  },
+  "match": {
+    "scenarios": 26,
+    "traces_equal": true,
+    "events": {
+      "SIM_COMMAND": 104,
+      "SIM_CALL": 61,
+      "SIM_STEP": 459,
+      "SIM_POSE": 61,
+      "SIM_RETURN": 61,
+      "SIM_RESULT": 26,
+      "SIM_NOTICE": 30
+    },
+    "trace_sha256": "1f4efb5ac40ce4fe03c0f2ce3989ea727a4f99c2e1db2b3262ed88ee1104e8e3"
+  },
+  "vision": {
+    "frames": 16,
+    "detections": 152,
+    "identical": [
+      "RGB input",
+      "detections",
+      "PNG preview"
+    ]
+  },
+  "grid": {
+    "targets_equal": 90,
+    "calibration_fixture": "historical measurements",
+    "plans": {
+      "grid": {
+        "points": 90,
+        "xy_segments": 93
+      },
+      "pick": {
+        "points": 90,
+        "xy_segments": 94
+      }
+    }
+  },
+  "production_graph": {
+    "build_testing": false,
+    "built": true,
+    "absent": [
+      "scara_game_sim",
+      "scara_legacy_site",
+      "scara_geometry_tool"
+    ]
+  },
+  "source_lf_sha256": {
+    "app/game.cpp": "4d4cb6e52c946773df92d0f8680f5a46714cf391ea91ee74b7fa31de7a676884",
+    "app/game.hpp": "c20cf46b89378b7a28844cbab1933a73d2fe0f13f178ac6a8a7824a5529ab0c1",
+    "app/game_main.cpp": "dfeaec2feecd43daf02ef27e8ee2683f9748f8fe3a9a50340ad9aba41833b71f",
+    "app/installation.hpp": "5738623894ce938055dc7763c4bddcfa74231d3dcd69a8a1f783495c9bc4cedf",
+    "app/rv1106.cpp": "4bcda608f8c6a2205a49d094ff504d0cf6379cc551b30fd64dc7e65bbdba025b",
+    "app/vision_main.cpp": "a282baac666936b4e6f046879032193cd4bb18a61dd039f910daed7d3921ac50",
+    "chess/board.cpp": "b38786a4a7a8115e90084d3fd677aaab2c9e6de1336b07fa4f24dffe6bb9ac5b",
+    "chess/board.hpp": "272f777c576f36f1e14789f70f317a98502fc2a16d13637e7fbb07943fb2c9d2",
+    "chess/pikafish.cpp": "182e88e99c28db80a9c41e64233a1068f157ef30390d96123d0c688547c1c9c6",
+    "chess/pikafish.hpp": "8c4f903afda64d2f2bcebc0627cc3370cb9065a9440f30f7c719c4648cbd5c02",
+    "motion/execute.cpp": "73e6b5ffa7ddd11fa165bcbd5f87cc9aee7eab873e42d0bef85308c3809a6a3b",
+    "motion/execute.hpp": "d7f80fe746c932835cdae5ca50e26b0f504f4c0d09da79d28e2768c8fd10a3ea",
+    "motion/plan.cpp": "885ab34f96d4398a7b6a545116ca798bd2d4b1637142b080be75e92143fac0bb",
+    "motion/plan.hpp": "66fa27ca529936dbeacd53862a51977fa4d5b38e7fa928a54a2eb71e8f583a87",
+    "vision/capture.cpp": "f995b1fc89100681a204ec9cf8ce54bf57a9315389af5fb35f56f265fc876097",
+    "vision/capture.hpp": "75443302a972c501fd6174637f4fa79e319f5ec69a2601ed5ede6d1d805fc52e",
+    "vision/geometry.cpp": "3160d9a13e055f28177d6d86d9f37323de74423f6a774b245063111ae9e23426",
+    "vision/geometry.hpp": "11513f3fa4382cf761ec6cb8bb71b989ac3ef27526446e20d6f294f573b37925",
+    "vision/yolo.cpp": "63bb3bbb579af979f8d77ded25fb26b2074fb0b42dcdd9475c29bd397945623c",
+    "vision/yolo.hpp": "aac3a45b313bfefd67d99d85a46e0b7c221179b0b0d4ec8dc6319ec986bd6dad",
+    "vision/yolo_npu.cpp": "de03c4753eb47af278a98779e8966e38ca0036cbc377df11950e09603f9f2cdc"
+  }
+}

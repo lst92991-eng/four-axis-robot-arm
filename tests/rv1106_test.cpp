@@ -116,11 +116,6 @@ void Vision_decode(const YoloHead[YoloHeads], std::vector<Detection> &pieces)
     pieces = {{13, .9, {100, 100, 20, 20}}};
     fake::events.push_back("decode");
 }
-void Vision_draw(const cv::Mat &source, const std::vector<Detection> &, cv::Mat &preview)
-{
-    preview = source.clone();
-    fake::events.push_back("draw");
-}
 } // namespace scara
 extern "C" int poll(pollfd *, unsigned long, int)
 {
@@ -131,7 +126,7 @@ extern "C" int poll(pollfd *, unsigned long, int)
 extern "C" std::ptrdiff_t read(int descriptor, void *buffer, size_t size)
 {
 #ifdef __linux__
-    //替身只接管键盘，文件读取交给系统，保持预览文件的真实验证
+    // 只替换终端输入，其余读取仍交给系统。
     if (descriptor != 0) return syscall(SYS_read, descriptor, buffer, size);
 #endif
     if (fake::keyboard.empty()) return 0;
@@ -155,18 +150,19 @@ int main()
         chess::Move choice;
         std::vector<Detection> pieces;
         chess::MoveList legal;
-        Vision_observe(session.layout, frame, pieces, session.preview);
+        Vision_observe(session.layout, frame, pieces);
         fake::check(fake::events ==
-                        std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode", "draw"},
+                        std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode"},
                     "Live observation no longer follows the verified order");
-        fake::check(session.preview.cols == 2560 && session.preview.rows == 720, "Preview changed full-frame geometry");
+        fake::check(!frame.empty() && pieces.size() == 1 && pieces[0].classId == 13,
+                    "Live observation did not return the new frame and detections");
         previous = frame;
         session.game.humanRed = false;
         Engine_query(session.game, legal, choice);
         fake::check(choice == chess::Move{6,0,5,0} && !fake::camera && !fake::npu && !fake::engine,
                     "Search retained overlapping resources");
         fake::check(legal == chess::MoveList{{6,0,5,0}}, "GUI selected a different numeric move");
-        Vision_observe(session.layout, frame, pieces, session.preview);
+        Vision_observe(session.layout, frame, pieces);
         fake::check(frame != previous, "Observation identity was reused after search");
 
         PickStep lift, release;
@@ -189,24 +185,10 @@ int main()
         fake::check(!completed, "Failed direct execution became success");
         fake::motionSuccess = true;
         fake::cancelMotion = true;
-        bool cancelled = false;
-        try
-        {
-            completed = Robot_execute("move", {6,0,5,0}, steps);
-        }
-        catch (const std::exception &)
-        {
-            cancelled = true;
-        }
-        fake::check(cancelled && !completed && fake::stops == 1, "Cancellation did not stop and leave execution");
+        completed = Robot_execute("move", {6,0,5,0}, steps);
+        fake::check(!gameRunning && !completed && fake::stops == 1, "Cancellation did not stop and leave execution");
         int executed = fake::executions;
-        try
-        {
-            completed = Robot_execute("move", {6,0,5,0}, steps);
-        }
-        catch (const std::exception &)
-        {
-        }
+        completed = Robot_execute("move", {6,0,5,0}, steps);
         fake::check(!completed && fake::executions == executed, "A stopped run started another move");
         fake::cancelMotion = false;
         gameRunning = 1;
@@ -234,7 +216,7 @@ int main()
         failed = false;
         try
         {
-            Vision_observe(session.layout, frame, pieces, session.preview);
+            Vision_observe(session.layout, frame, pieces);
         }
         catch (const std::exception &)
         {
@@ -252,11 +234,9 @@ int main()
             fake::keyboard = input;
             fake::eof = fake::keyboard.empty();
             gameRunning = 1;
-            bool ended = false;
             int beforeStop = fake::stops;
-            try { Operator_read("human", "exit fixture", command); }
-            catch (const std::exception &) { ended = true; }
-            fake::check(ended && !gameRunning && fake::stops == beforeStop,
+            Operator_read("human", "exit fixture", command);
+            fake::check(command == Command::Quit && !gameRunning && fake::stops == beforeStop,
                         "Quit/EOF did not leave through nonblocking input shutdown");
         }
         fake::eof = false;

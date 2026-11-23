@@ -44,12 +44,16 @@ class Entries(unittest.TestCase):
                 run = dll.run_usb_game
                 run.argtypes = ctypes.py_object, ctypes.c_char_p
                 run.restype = ctypes.c_int
-                for history, code in [('', 0), ('a3a4', 0), ('a3a4 xxxx', 1), ('', 0)]:
-                    with self.subTest(history=history):
+                for history, code, interrupted in [
+                    ('', 0, None), ('a3a4', 0, None), ('a3a4 xxxx', 1, None),
+                    ('a3a4', 0, EOFError), ('a3a4', 0, KeyboardInterrupt), ('', 0, None),
+                ]:
+                    with self.subTest(history=history, interrupted=interrupted):
                         field = MagicMock()
                         field.resume_history.return_value = history
                         field.resume_board.return_value = opening
                         field.command.return_value = 'quit'
+                        field.command.side_effect = interrupted
                         field.close.return_value = True
                         self.assertEqual(run(field, b'mock-model'), code)
                         field.execute.assert_not_called()

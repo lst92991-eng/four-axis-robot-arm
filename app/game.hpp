@@ -21,7 +21,6 @@ struct Session
     // 相机读回的盘面，与 game 中已经记谱的盘面分开保存。
     chess::Observation observed;
     chess::MoveList legal;           // 本回合引擎给出的合法走法。
-    cv::Mat preview;                 // 棋子识别与格点的双画面，直接交给显示端。
     // 观察环节比较帧号，统计连续相同的新画面。
     std::string lastFrameId;
     // 被吃棋子的盘外放置点，使用机械臂基座 XY，单位毫米。
@@ -66,13 +65,13 @@ int Match_run(const GameConfig &config, Session &session, const std::string &mod
 void Runtime_open(const GameConfig &config, const std::string &modelPath, Session &session);
 // 结束本次运行，回报停车及资源回收是否成功。
 bool Runtime_close();
-// 从同一帧产生原图检测框和双画面，并用 frameId 标识这张图。
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces, cv::Mat &preview);
+// 交付本帧的检测框与帧号。显示由需要画面的设备入口处理。
+void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces);
 // 用起始 FEN 和已确认历史查询合法表，电脑行棋时还要选出应手。
 void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &choice);
 // 读取命令成功时写入 command。传入 move 可接收选中的走法。
 bool Command_parse(const std::string &text, Command &command, chess::Move *move = nullptr);
-//正常输入写入command；退出或EOF设置停止标志，转入主程序统一收尾
+// 普通输入写入 command。quit 或输入结束时返回 Quit，由主程序统一收尾。
 void Operator_read(const std::string &phase, const std::string &prompt, Command &command, chess::Move *move = nullptr);
 // 执行排好的动作表，返回本次执行结果。落点由调用方另行核盘。
 bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps);

@@ -141,9 +141,9 @@ static void readHistory(const GameConfig &config, chess::Game &game)
 }
 
 //---------取帧、推理与预览区---------
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces, cv::Mat &preview)
+void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces)
 {
-    if (!gameRunning) throw std::runtime_error("对局已停止");
+    if (!gameRunning) return;
     if (!cameraOpen)
     {
         Camera_open(streamUrl);
@@ -160,12 +160,12 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         }
         catch (const std::runtime_error &)
         {
-            if (!gameRunning) throw;
+            if (!gameRunning) return;
             std::cout << "相机取帧超时，正在重新连接。" << std::endl;
             Camera_open(streamUrl);
             Camera_read(source, 5500);
         }
-        if (!gameRunning) throw std::runtime_error("对局已停止");
+        if (!gameRunning) return;
         // 给本帧分配标识，把 RGB 缓冲和帧号一起送给板端推理。
         Vision_prepare(source, input);
         frameId = std::to_string(++frameNumber);
@@ -209,7 +209,7 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         if (offset != size_t(size)) throw std::runtime_error("NPU回复有多余数据");
         // 三个尺度的框在原图上解码。左图画类别与分数，右图画固定格点。
         Vision_decode(heads, pieces);
-        cv::Mat predicted, grid;
+        cv::Mat predicted, grid, preview;
         Vision_draw(source, pieces, predicted);
         Geometry_draw(source, layout, grid);
         cv::hconcat(predicted, grid, preview);
@@ -289,21 +289,25 @@ void Operator_show(const char *phase, const Session &s, const std::string &messa
 
 void Operator_read(const std::string &phase, const std::string &prompt, Command &command, chess::Move *move)
 {
-    // 按当前阶段读取操作者输入，再交给对局共用的命令解析函数。
-    auto answer = require(PyObject_CallMethod(field, "command", "ss", phase.c_str(), prompt.c_str()));
+    PyObject *value = PyObject_CallMethod(field, "command", "ss", phase.c_str(), prompt.c_str());
+    if (!value && (PyErr_ExceptionMatches(PyExc_EOFError) || PyErr_ExceptionMatches(PyExc_KeyboardInterrupt)))
+    {
+        PyErr_Clear();
+        command = Command::Quit;
+        gameRunning = 0;
+        return;
+    }
+    auto answer = require(value);
     const char *text = PyUnicode_AsUTF8(answer.get());
     if (!text) require(nullptr);
     if (!Command_parse(text, command, move)) throw std::runtime_error("未识别的终端命令");
-    if (command == Command::Quit)
-    {
-        gameRunning = 0;
-        throw std::runtime_error("对局已停止");
-    }
+    if (command == Command::Quit) gameRunning = 0;
 }
 
 //---------USB-CAN 动作执行区---------
 bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps)
 {
+    if (!gameRunning) return false;
     // 按计划顺序传出动作类型、轴掩码、三个驱动角（度）和停留时间（毫秒）。
     auto actions = require(PyList_New(steps.size()));
     for (size_t i = 0; i < steps.size(); ++i)
