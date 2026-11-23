@@ -1,5 +1,6 @@
+#include "bench/legacy_site.hpp"
 #include "motion/plan.hpp"
-#include "vision/io.hpp"
+#include <opencv2/core.hpp>
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
@@ -20,7 +21,7 @@ int main()
         check(arm.upperMm == 275 && arm.forearmMm == 275 && arm.j2Scale == .8 && arm.j3Ratio == 3,
               "Saved arm scales were replaced");
         cv::FileStorage reference;
-        scara::readStorage("tests/fixtures/upper-app/kinematic-reference.json", reference);
+        reference.open("tests/fixtures/upper-app/kinematic-reference.json", cv::FileStorage::READ);
         int count = 0;
         for (const auto &item : reference["cases"])
         {
@@ -41,39 +42,63 @@ int main()
             ++count;
         }
         cv::FileStorage plan;
-        scara::readStorage("tests/fixtures/upper-app/pick-plan.json", plan);
+        plan.open("tests/fixtures/upper-app/pick-plan.json", cv::FileStorage::READ);
         auto from = plan["source"]["base_xy_mm"], to = plan["destination"]["base_xy_mm"];
         cv::Point2d source{double(from[0]), double(from[1])};
         cv::Point2d destination{double(to[0]), double(to[1])};
         std::vector<scara::PickStep> steps;
-        check(scara::Pick_plan(arm, heights, source, destination, false, steps) && steps.size() == 8,
+        scara::Plan_pick(arm, heights, source, steps);
+        scara::Plan_place(arm, heights, destination, steps);
+        check(steps.size() == 8,
               "Pick/place plan is incomplete");
         using Action = scara::PickAction;
-        check(steps[0].action == Action::Hold && steps[1].action == Action::Move &&
-                  steps[2].action == Action::Move && steps[2].target[0] == heights.pickupDeg &&
+        check(steps[0].action == Action::Move && steps[1].action == Action::Move && steps[1].target[0] == heights.pickupDeg &&
+                  steps[2].action == Action::Grip && steps[2].durationMs == heights.gripDwellMs &&
                   steps[3].target[0] == heights.clearanceDeg && steps[4].action == Action::Move &&
-                  steps[5].target[0] == heights.releaseDeg && steps[6].action == Action::ReleasePulse &&
-                  steps[6].durationMs == heights.releasePulseMs && steps[7].target[0] == heights.clearanceDeg,
+                  steps[5].target[0] == heights.releaseDeg && steps[6].action == Action::Release &&
+                  steps[6].durationMs == 0 && steps[7].target[0] == heights.clearanceDeg,
               "Release must be at placement height and complete before lifting");
+        steps.clear();
+        scara::Plan_pick(arm, heights, source, steps);
+        scara::Plan_discard(arm, heights, destination, steps);
+        check(steps.size() == 6 && steps[4].target[0] == heights.travelDeg &&
+                  steps[5].action == Action::ReleaseOffBoard && steps[5].durationMs == 0,
+              "The captured piece must be expelled at the transport height");
         check(heights.clearanceDeg == heights.travelDeg, "Untaught clearance was guessed");
         scara::WorkHeights overlap;
         check(scara::WorkHeights_load("tests/fixtures/game-app/work-heights.json", overlap), "Overlap fixture failed");
-        check(scara::Pick_plan(arm, overlap, source, destination, false, steps), "Overlap plan failed");
+        steps.clear();
+        scara::Plan_pick(arm, overlap, source, steps);
+        scara::Plan_place(arm, overlap, destination, steps);
         check(steps[3].target[0] == overlap.clearanceDeg && steps[4].target[0] == overlap.travelDeg &&
                   steps[3].target[0] != steps[4].target[0] && steps[4].axes == scara::AllAxes &&
                   steps[3].target[1] != steps[4].target[1] && steps[3].target[2] != steps[4].target[2],
               "Travel segment does not move all three axes together");
-        check(std::abs(heights.releaseDeg - (-20053.1425)) < 1e-7 && heights.releasePulseMs == 20,
+        check(std::abs(heights.releaseDeg - (-20053.1425)) < 1e-7 && heights.gripDwellMs == 420,
               "Taught height or stored pulse was changed");
-        check(scara::Pick_plan(arm, heights, {1000, 1000}, destination, true, steps) && steps.size() == 5,
+        // 手里已有棋子时，维持吸合后直接放，计划中没有取子点。
+        steps = {{Action::Grip}};
+        scara::Plan_place(arm, heights, destination, steps);
+        check(steps.size() == 5 &&
+              steps[0].durationMs == 0 && steps[1].target[0] == heights.travelDeg && steps[3].action == Action::Release,
               "Held-piece resume tried to pick from a source again");
-        check(!scara::Pick_plan(arm, heights, source, {1000, 1000}, false, steps) && steps.empty(),
-              "Unreachable destination retained an old plan");
+        auto requireEmptyOnError = [&](auto plan, const char *message)
+        {
+            bool failed = false;
+            try { plan(); } catch (const std::runtime_error &) { failed = true; }
+            check(failed && steps.empty(), message);
+        };
+        scara::Plan_pick(arm, heights, source, steps);
+        requireEmptyOnError([&] { scara::Plan_place(arm, heights, {1000, 1000}, steps); },
+                            "Unreachable destination retained an old plan");
+        scara::Plan_pick(arm, heights, source, steps);
+        requireEmptyOnError([&] { scara::Plan_discard(arm, heights, {1000, 1000}, steps); },
+                            "Unreachable discard retained the pick-up steps");
         scara::WorkHeights missingHeights = heights;
         check(!scara::WorkHeights_load("tests/fixtures/upper-app/missing-heights.json", missingHeights),
               "Missing taught pickup height was silently replaced by zero");
-        check(!scara::Pick_plan(arm, missingHeights, source, destination, false, steps) && steps.empty(),
-              "Unconfigured work heights generated a movement plan");
+        requireEmptyOnError([&] { scara::Plan_pick(arm, missingHeights, source, steps); },
+                            "Unconfigured work heights generated a movement plan");
         scara::ArmGeometry missingArm = arm;
         check(!scara::Arm_load("tests/fixtures/upper-app/missing-arm-reference.json", missingArm),
               "Missing mechanical reference was silently replaced by zero");
@@ -123,6 +148,9 @@ int main()
         scara::JointTrajectory zero;
         scara::MotionLimits limits{{60,60,60},{100,100,100}};
         check(scara::Trajectory_plan(start, start, limits, zero) && zero.seconds == 0, "Zero-distance path failed");
+        scara::JointReference rest;
+        scara::Trajectory_sample(zero, 0, rest);
+        check(rest.position == start && rest.velocity == scara::AxisValues{}, "Zero-distance path must hold position");
         limits.velocity[1] = 0;
         check(!scara::Trajectory_plan(start, goal, limits, zero), "Zero speed cap accepted");
         std::cout << "PASS " << count

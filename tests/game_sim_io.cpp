@@ -1,5 +1,7 @@
-#include "game_files.hpp"
-#include "vision/io.hpp"
+// 离线对局后端。场景提供相机、引擎和驱动反馈，运行与实机共用的对局主流程。
+#include "app/game.hpp"
+#include "bench/legacy_site.hpp"
+#include <filesystem>
 #include "motion/execute.hpp"
 #include <algorithm>
 #include <iostream>
@@ -7,11 +9,14 @@
 
 namespace scara
 {
+//---------场景、盘面与虚拟驱动状态区---------
 static cv::FileStorage script;
+// world 是场景中相机能看到的棋盘。session.game.board 由正式对局在确认后更新。
 static chess::Board world;
 static size_t commandIndex = 0, executionIndex = 0;
 static unsigned frameNumber = 0;
-static EventType visibleEvent = EventType::Restored;
+static std::string visiblePhase;
+// 记录上一条可见提示和恢复所经过的帧数，决定何时更换场景中的实盘。
 static size_t restorationIndex = 0;
 static unsigned eventSerial = 0, consumedEvent = 0, restorationFrames = 0;
 static std::vector<bool> queryUsed;
@@ -22,17 +27,24 @@ static JointReference driveReference;
 static uint64_t driveMs = 0, referenceCount = 0;
 
 static void readBoard(const cv::FileNode &rows);
-static void screenEvent(const AppEvent &event);
 
 //---------仿真初始化与收尾区---------
-void Runtime_open(const GameConfig &config, const std::string &)
+void Runtime_open(const GameConfig &config, const std::string &, Session &session)
 {
-    Files_open(config.workDir, true);
-    for (size_t i = 0; i < size_t(EventType::Count); ++i) Event_on(static_cast<EventType>(i), screenEvent);
-    readStorage(config.scenarioPath, script);
     readBoard(script["initial_board"]);
+    // 续局先在内存棋局中重放既有走法，随后由主流程核对 world 中的实盘。
+    if (!script["resume_moves"].empty())
+    {
+        chess::Game &game = session.game;
+        chess::Game_reset(game, game.board, config.redToMove, config.humanRed);
+        for (const auto &item : script["resume_moves"])
+        {
+            if (!chess::Game_replay(game, std::string(item))) throw std::runtime_error("无效的仿真续局走法");
+        }
+    }
     queryUsed.assign(script["queries"].size(), false);
     motionLimits = config.motion;
+    // 按 J1、J2、J3 装入虚拟驱动的初始角度，再从零速度、零时刻开始。
     cv::FileNode initial = script["initial_joints_deg"];
     if (initial.size() != 3) throw std::runtime_error("仿真需要三个初始驱动角度");
     for (int axis = 0; axis < 3; ++axis) driveReference.position[axis] = double(initial[axis]);
@@ -41,13 +53,24 @@ void Runtime_open(const GameConfig &config, const std::string &)
     std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
 }
 
-//回调仅记录模拟屏幕显示；场景中的人类恢复在下一次相机输入中发生
-static void screenEvent(const AppEvent &event)
+// 测试端观察同一份内存盘面。只在进程退出时把最终结果送到测试管道。
+void Operator_show(const char *phase, const Session &s, const std::string &message)
 {
-    Files_event(event);
-    visibleEvent = event.type;
-    ++eventSerial;
-    std::cout << "SIM_EVENT " << int(event.type) << ' ' << event.message << '\n';
+    std::string name = phase;
+    if (!message.empty() || name == "restored")
+    {
+        visiblePhase = name;
+        ++eventSerial;
+        std::cout << "SIM_NOTICE " << phase << ' ' << message << '\n';
+    }
+    if (name != "finished" && name != "stopped" && name != "error" && name != "review_required") return;
+    std::cout << "SIM_RESULT\t" << name << '\t' << int(s.game.result) << '\t' << s.pending
+              << '\t' << s.observed.valid << '\t' << s.lastFrameId << '\t' << s.game.history << '\t';
+    // 先输出记谱盘面，再输出最后一次观察，回归程序分别核对这两个结果。
+    for (const auto &row : s.game.board) std::cout.write(row.data(), row.size());
+    std::cout << '\t';
+    for (const auto &row : s.observed.board) std::cout.write(row.data(), row.size());
+    std::cout << '\t' << message << '\n';
 }
 
 //仿真没有相机，主入口停止回调仍使用相同的Camera_stop接口
@@ -69,13 +92,15 @@ bool Drive_read(DriveFeedback &feedback)
     feedback.timeMs = driveMs;
     return true;
 }
+// 保存本周期参考供下一次读取，referenceCount 用来对照实际下发次数。
 bool Drive_write(const JointReference &reference)
 {
     driveReference = reference;
     ++referenceCount;
     return true;
 }
-bool Drive_release(int)
+// 仿真接收磁铁开关命令，棋子落在哪里由场景指定。
+bool Drive_magnet(bool)
 {
     return true;
 }
@@ -86,7 +111,7 @@ bool Drive_stop()
 }
 
 //---------场景观察区---------
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces)
+void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces, cv::Mat &)
 {
     if (!script["cancel_after_frames"].empty() && frameNumber >= unsigned(int(script["cancel_after_frames"])))
     {
@@ -98,7 +123,7 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
     if (restorationIndex < restorations.size() && eventSerial != consumedEvent)
     {
         cv::FileNode item = restorations[int(restorationIndex)];
-        if (int(item["event"]) == int(visibleEvent) && ++restorationFrames >= unsigned(int(item["after_frames"])))
+        if (std::string(item["phase"]) == visiblePhase && ++restorationFrames >= unsigned(int(item["after_frames"])))
         {
             readBoard(item["board"]);
             ++restorationIndex;
@@ -106,21 +131,24 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
             restorationFrames = 0;
         }
     }
-    std::string symbols = PieceSymbols;
+    const std::string &symbols = chess::PieceSymbols;
     //场景中的棋子中心，原图像素
     cv::Point2d center;
     Detection piece;
 
+    // 通常每帧使用递增编号。场景也能提供重复或空帧号，检查三帧确认流程。
     ++frameNumber;
-    frameId = std::to_string(frameNumber);
+    auto ids = script["frame_ids"];
+    frameId = frameNumber <= ids.size() ? std::string(ids[int(frameNumber-1)]) : std::to_string(frameNumber);
     pieces.clear();
     for (int row = 0; row < 10; ++row)
         for (int col = 0; col < 9; ++col)
             if (world[row][col] != '.')
             {
-                center = layout.pixels[(9 - row) * Columns + col];
+                // 从格点像素生成模拟检测框，指定偏位时沿行方向移开 0.53 格。
+                center = layout.cell[row][col].pixel;
                 if (offGrid.size() == 2 && col == offGrid[0] - 'a' && 9 - row == offGrid[1] - '0')
-                    center += .53 * (layout.pixels[Columns + col] - layout.pixels[col]);
+                    center -= .53 * layout.rowStep.pixel;
                 piece.classId = int(symbols.find(world[row][col]));
                 piece.confidence = .9;
                 piece.bbox.x = center.x - 10;
@@ -132,9 +160,10 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
 }
 
 //---------预置引擎回复区---------
-void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std::string &choice)
+void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &choice)
 {
     int index = 0;
+    // 用已完成的完整棋谱选取对应的引擎回合，输出数字合法表和应手。
     for (const cv::FileNode &query : script["queries"])
     {
         if ((std::string)query["history"] == game.history)
@@ -147,8 +176,17 @@ void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std:
             }
             if (!query["base_fen"].empty() && (std::string)query["base_fen"] != game.baseFen)
                 throw std::runtime_error("仿真起始FEN不匹配");
-            query["legal"] >> legal;
-            choice = (std::string)query["choice"];
+            legal.clear();
+            for (const auto &item : query["legal"])
+            {
+                chess::Move move;
+                if (!chess::parseMove(std::string(item), move)) throw std::runtime_error("仿真合法走法格式错误");
+                legal.push_back(move);
+            }
+            choice = {};
+            std::string reply = query["choice"];
+            if (!reply.empty() && !chess::parseMove(reply, choice)) throw std::runtime_error("仿真应手格式错误");
+            // 场景可在思考结束时改动实盘，从而检验机械臂搬子前是否重新核盘。
             if (!queryUsed[index] && !query["board_after_think"].empty()) readBoard(query["board_after_think"]);
             queryUsed[index] = true;
             return;
@@ -159,7 +197,7 @@ void Engine_query(const chess::Game &game, std::vector<std::string> &legal, std:
 }
 
 //---------预置交互区---------
-void Operator_read(const std::string &phase, const std::string &, Command &result, std::string *move)
+void Operator_read(const std::string &phase, const std::string &, Command &result, chess::Move *move)
 {
     cv::FileNode commands = script["commands"];
     cv::FileNode command;
@@ -168,6 +206,7 @@ void Operator_read(const std::string &phase, const std::string &, Command &resul
     result = Command::Quit;
     if (commandIndex < commands.size())
     {
+        // 依次消费预置输入，核对当前等待阶段，再解析命令或应用人工摆盘。
         command = commands[int(commandIndex)];
         ++commandIndex;
         if ((std::string)command["phase"] != phase) throw std::runtime_error("仿真进入了意外的交互阶段：" + phase);
@@ -185,27 +224,27 @@ void Operator_read(const std::string &phase, const std::string &, Command &resul
 }
 
 //---------仿真机械执行区---------
-void Robot_execute(const std::string &purpose, const std::string &move, const std::vector<PickStep> &steps,
-                   bool &success)
+bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps)
 {
     cv::FileNode events = script["executions"];
     cv::FileNode event;
     int result;
 
-    success = false;
     if (!gameRunning) throw std::runtime_error("对局已停止");
     if (executionIndex >= events.size()) throw std::runtime_error("仿真出现了额外的机械执行请求");
     event = events[int(executionIndex)];
     ++executionIndex;
-    if ((std::string)event["purpose"] != purpose || (std::string)event["move"] != move)
+    std::string moveText;
+    chess::uci(move, moveText);
+    // 先核对动作所属阶段与走法，再让三轴参考按真实执行流程采样。
+    if ((std::string)event["purpose"] != purpose || (std::string)event["move"] != moveText)
         throw std::runtime_error("仿真动作与预定场景不符");
     //单向打印调用参数，供离线核对动作顺序和数值
-    std::cout << "SIM_CALL " << purpose << ' ' << (move.empty() ? "-" : move) << '\n' << std::setprecision(17);
+    std::cout << "SIM_CALL " << purpose << ' ' << (moveText.empty() ? "-" : moveText) << '\n' << std::setprecision(17);
     for (const PickStep &step : steps)
         std::cout << "SIM_STEP " << int(step.action) << ' ' << step.axes << ' ' << step.target[0] << ' '
                   << step.target[1] << ' ' << step.target[2] << ' ' << step.durationMs << '\n';
-    bool executed = false;
-    Motion_execute(steps, motionLimits, gameRunning, executed);
+    bool executed = Motion_execute(steps, motionLimits, gameRunning);
     std::cout << "SIM_POSE " << driveReference.position[0] << ' ' << driveReference.position[1] << ' '
               << driveReference.position[2] << ' ' << referenceCount << '\n';
     //独立场景决定落子结果，不直接复制计划盘面
@@ -213,9 +252,10 @@ void Robot_execute(const std::string &purpose, const std::string &move, const st
     offGrid = (std::string)event["off_grid"];
     result = int(event["success"]);
     if (result != 0 && result != 1) throw std::runtime_error("仿真执行结果必须是0或1");
-    success = executed && result == 1;
-    if (!success) Event_emit(EventType::Motion, "执行结果未确认，请处理设备并恢复原棋局。");
+    // 轨迹执行成功且场景回报成功，这次动作才向对局报告完成。
+    bool success = executed && result == 1;
     std::cout << "SIM_RETURN " << int(success) << '\n';
+    return success;
 }
 //---------场景盘面读取区---------
 static void readBoard(const cv::FileNode &rows)
@@ -231,3 +271,26 @@ static void readBoard(const cv::FileNode &rows)
 }
 
 } // namespace scara
+
+//---------离线场景入口区---------
+// 载入几何和场景脚本后，把同一份 Session 交给正式对局入口。
+int main(int argc, char **argv)
+{
+    if (argc != 2) return 2;
+    try
+    {
+        scara::GameConfig config;
+        scara::Session session;
+        scara::Bench_load(argv[1], config, session);
+        cv::FileStorage input(argv[1], cv::FileStorage::READ);
+        auto dir = std::filesystem::u8path(argv[1]).parent_path();
+        auto file = dir / std::filesystem::u8path(std::string(input["simulation_file"]));
+        if (!scara::script.open(file.u8string(), cv::FileStorage::READ)) return 2;
+        return scara::Match_run(config, session, "");
+    }
+    catch (const std::exception &error)
+    {
+        std::cerr << error.what() << '\n';
+        return 1;
+    }
+}

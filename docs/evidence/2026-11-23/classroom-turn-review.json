@@ -1,0 +1,258 @@
+{
+  "date": "2026-11-23",
+  "scope": "Compared with the immediate preceding working tree, including its uncommitted changes. Windows x64 offline replay. External I/O mocked; no real motion, flash or NPU run.",
+  "same_scope_classroom_counts": {
+    "all": {
+      "before": {
+        "files": 22,
+        "lizard_nloc": 2165,
+        "lizard_sum_CCN_minus_one": 473
+      },
+      "after": {
+        "files": 21,
+        "lizard_nloc": 2167,
+        "lizard_sum_CCN_minus_one": 459
+      }
+    },
+    "application_and_display": {
+      "before": {
+        "files": 7,
+        "lizard_nloc": 821,
+        "lizard_sum_CCN_minus_one": 157
+      },
+      "after": {
+        "files": 6,
+        "lizard_nloc": 811,
+        "lizard_sum_CCN_minus_one": 157
+      }
+    },
+    "motion": {
+      "before": {
+        "files": 4,
+        "lizard_nloc": 294,
+        "lizard_sum_CCN_minus_one": 73
+      },
+      "after": {
+        "files": 4,
+        "lizard_nloc": 317,
+        "lizard_sum_CCN_minus_one": 64
+      }
+    },
+    "chess": {
+      "before": {
+        "files": 4,
+        "lizard_nloc": 536,
+        "lizard_sum_CCN_minus_one": 154
+      },
+      "after": {
+        "files": 4,
+        "lizard_nloc": 525,
+        "lizard_sum_CCN_minus_one": 149
+      }
+    },
+    "vision": {
+      "before": {
+        "files": 7,
+        "lizard_nloc": 514,
+        "lizard_sum_CCN_minus_one": 89
+      },
+      "after": {
+        "files": 7,
+        "lizard_nloc": 514,
+        "lizard_sum_CCN_minus_one": 89
+      }
+    }
+  },
+  "changed_classroom_sources": [
+    "app/game.cpp",
+    "app/game.hpp",
+    "app/game_live_io.cpp",
+    "app/game_main.cpp",
+    "app/runtime.cpp",
+    "chess/board.cpp",
+    "chess/board.hpp",
+    "common/events.hpp",
+    "motion/execute.cpp",
+    "motion/execute.hpp",
+    "motion/plan.cpp",
+    "motion/plan.hpp"
+  ],
+  "classroom_patch": {
+    "path": "output/classroom-turn-20261123.patch",
+    "sha256": "613eb3f0f48686c1ba20d31f7411b7ee61c5ffa58c04c2b805ca94f7d1ab6237",
+    "from_to_source_sha256": {
+      "app/game.cpp": [
+        "23ac8af353277c0bbbd7bcd90831a67eab38dcce6873203de14ee2705c8ea78c",
+        "4b4f09637087b53fbf94a789603e6ca2d512b0c70d0073a46b426406882b0cbf"
+      ],
+      "app/game.hpp": [
+        "611df128be0243f4709e959597529d8951f77450ea4291c354d4478669eeae09",
+        "7f2ad550d78449f1b85a8bc7cbd9415ab163387cfc6cab2cb13b2bf275edf972"
+      ],
+      "app/game_live_io.cpp": [
+        "ecbda63721adedfe6d02c5c14ecef8e687f242719bc34e358ae4ebe0322535e1",
+        "e16c2fc961573d348d9366e30c1202d556e31eda8c85203e244ecdb8427477b0"
+      ],
+      "app/game_main.cpp": [
+        "0a8795d3832a11474fcf1755c8ff70a04da9c6b8b1c5348fbc49dea63e827fba",
+        "05763feb4c8839941e8f7d5e490fa2b3b8709f1285a8c3a49fd27afbab396fb2"
+      ],
+      "app/runtime.cpp": [
+        "9bc8dc4d8c8f3733decffc7166a17c1fed3e4084faadb452a340f95e14ed9387",
+        "4f87ba35b68ca798556fd0631cc4555a4e1b275b31e3c5d4cfce0ea56e18d490"
+      ],
+      "app/vision_main.cpp": [
+        "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075",
+        "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+      ],
+      "chess/board.cpp": [
+        "2a4341e01d763e6e84f2a63332d655d1a57166f9ce49591ee1b2edc3ad4bf9fa",
+        "543788b2dff9bd7ed48d737aa1fe0f778f647e68464de9c784c20749c2344d81"
+      ],
+      "chess/board.hpp": [
+        "87b322ff766b8ce8dbf3b8cf347441396bc9f6877bab79560a02cbc1b953e093",
+        "f6a97099a97cb7dea28351473e016c6812118fb89810e532ac530fca9d549b95"
+      ],
+      "chess/pikafish.cpp": [
+        "ab6a1e75ef8faecee9fcda64f39ff51c398979e6b7ab6a97eed5ae10771fdfc7",
+        "ab6a1e75ef8faecee9fcda64f39ff51c398979e6b7ab6a97eed5ae10771fdfc7"
+      ],
+      "chess/pikafish.hpp": [
+        "c1cbd2263cdbcf86d4e27b6efc129feada0a8b9b7ce770f93c084e90ead0a2a4",
+        "c1cbd2263cdbcf86d4e27b6efc129feada0a8b9b7ce770f93c084e90ead0a2a4"
+      ],
+      "common/events.hpp": [
+        "7752233429dd47d75a6009ae8b6d5c1d39faf9f4ba4a8cfa32d5588da0c257f8",
+        null
+      ],
+      "motion/execute.cpp": [
+        "a1379e5775421ab2f7ed598428ac46998fad64b96aba4a2a47c9d8e9d84773be",
+        "6a3ad692325aeee68665ea02daa6f3b757ebc820c194f741560398ecec5840bf"
+      ],
+      "motion/execute.hpp": [
+        "4eb6650a15b12263148d8dbdc62e50f124e2bb9c60857a448487dfd094f168e0",
+        "ef20db08de317ddad954a3c179646b7adc9e3211f8a61c5bf45937b770b8ebd7"
+      ],
+      "motion/plan.cpp": [
+        "748daa96fd05c85eae342d05c74efe550d37265e3a5fb81818041dfe7085acc7",
+        "633676281fcc90a83838d8f31505098a5c56ab29d47bdfaa1d721b9e4e97dfa2"
+      ],
+      "motion/plan.hpp": [
+        "8c3d6090216716bee0ab4046d3e3f4c5383f18ce03f15ac733c6d0e196373ea5",
+        "74371cd2b6046f7829e75790a0a64a20bd40f678e3165c880b0706c046093c28"
+      ],
+      "vision/capture.cpp": [
+        "5ace4131ee899ca02acae537996f7408c33e207355d84575f4f8ef1d0b8f9cf8",
+        "5ace4131ee899ca02acae537996f7408c33e207355d84575f4f8ef1d0b8f9cf8"
+      ],
+      "vision/capture.hpp": [
+        "97c113b3b8a057ffacdf0227b6e2ba8d1c9b1777fb48aeaf122e0b2e46499ecd",
+        "97c113b3b8a057ffacdf0227b6e2ba8d1c9b1777fb48aeaf122e0b2e46499ecd"
+      ],
+      "vision/geometry.cpp": [
+        "8f45bf3955d5df4edf68396f75cb7705c5a14c1c7535cfb019fcddd93d5f3460",
+        "8f45bf3955d5df4edf68396f75cb7705c5a14c1c7535cfb019fcddd93d5f3460"
+      ],
+      "vision/geometry.hpp": [
+        "5f7ede3096a903be64cfd3ca21c9fcbf6adb7aaeb47e433bc74d0e55f605cf76",
+        "5f7ede3096a903be64cfd3ca21c9fcbf6adb7aaeb47e433bc74d0e55f605cf76"
+      ],
+      "vision/yolo.cpp": [
+        "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45",
+        "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45"
+      ],
+      "vision/yolo.hpp": [
+        "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97",
+        "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97"
+      ],
+      "vision/yolo_npu.cpp": [
+        "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b",
+        "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b"
+      ]
+    }
+  },
+  "verified": {
+    "ctest": {
+      "passed": 14,
+      "failed": 0
+    },
+    "python_unittest": {
+      "ran": 74,
+      "passed": 73,
+      "skipped": 1
+    },
+    "full_program": {
+      "names": [
+        "two rounds with robot capture",
+        "ordinary pickup, capture and placement use the same grid targets",
+        "panel plays both sides, rejects illegal selection and handles a capture",
+        "swap while thinking restores before moving",
+        "missing king is a board event rather than victory",
+        "unrestored board never starts robot movement",
+        "illegal human change restores before next attempt",
+        "motion failure still requires hardware recovery",
+        "restored board retries without re-parking",
+        "visually corrected placement commits without repeating movement",
+        "off-grid rook recheck continues once centered",
+        "persistent off-grid rook cannot commit or restart movement",
+        "quit preserves the last confirmed history",
+        "engine failure is an event and retries the same turn",
+        "engine cannot be mistaken for an empty legal list",
+        "illegal engine choice issues no movement",
+        "terminal signal",
+        "preparation failure cannot start a game",
+        "human resignation",
+        "robot can play red first",
+        "changed initial board is confirmed again",
+        "repetition requires adjudication",
+        "resume preserves black turn and appends the reply",
+        "resume mismatch preserves history and sends no chess move"
+      ],
+      "previous_scenarios_compared": 22,
+      "identical_motion_trace_lines": 606,
+      "identical_operator_and_display_lines": 189,
+      "final_status_all_fields_except_timestamp_identical": true,
+      "new_resume_scenarios": [
+        "resume preserves black turn and appends the reply",
+        "resume mismatch preserves history and sends no chess move"
+      ]
+    },
+    "windows_dll_in_memory_test": [
+      "new game",
+      "replay saved history",
+      "corrupt history",
+      "new game after error",
+      "missing setup preserves previous report",
+      "stop failure visible in status",
+      "PNG label with Chinese absolute path"
+    ],
+    "targets_and_ik_identical": 90,
+    "bench_commands": [
+      "20-grid90.cmd --plan",
+      "21-pick90.cmd --plan --start 3 4",
+      "30-vision-replay.cmd",
+      "40-game-sim.cmd --all"
+    ],
+    "vision_replay": {
+      "frames": 16,
+      "detections": 152
+    },
+    "recognition_of_manual_moves": {
+      "cases": 10248,
+      "old_new_acceptance_and_move_digest": "8531175047280086471",
+      "compiler": "MSVC x64 /O2",
+      "samples_per_candidate_count": 20000,
+      "candidate_data": "deterministic coordinate transfers from test boards, not engine perft",
+      "timing_us_per_confirmed_human_move": {
+        "44": {
+          "before": 0.05189,
+          "after": 0.524185
+        },
+        "256": {
+          "before": 0.139295,
+          "after": 1.96932
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "date": "2026-11-23T18:14:36.173474+08:00",
+  "basis": "Windows build/test of classroom source and USB field adapter; Linux real motor interface not connected",
+  "verified": {
+    "ctest_groups": 14,
+    "ctest_failed": 0,
+    "actual_main_scripted_match_cases": 22,
+    "python_tests_run": 73,
+    "python_skipped": 1,
+    "vision_replay_frames": 16,
+    "vision_replay_detections": 152,
+    "field_ui_mock_history_rc": [
+      [
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ],
+      [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          4
+        ]
+      ]
+    ],
+    "all_90_numeric_board_xy_vs_nov23_sweep_max_mm": 6.431098710768743e-13,
+    "station_worksheet_roundtrip": "isolated station file, unequal pickup/release heights and both offline sweep plans",
+    "can_status_read_only": {
+      "2": {
+        "build": "9fc6a5de",
+        "fault": 0,
+        "referenced": false,
+        "power": false,
+        "bus_mv": 24162
+      },
+      "3": {
+        "build": "9fc6a5de",
+        "fault": 0,
+        "referenced": false,
+        "power": false,
+        "bus_mv": 24111
+      },
+      "1": {
+        "build": "9fc6a5de",
+        "fault": 0,
+        "referenced": false,
+        "power": false,
+        "bus_mv": 24304
+      },
+      "4": {
+        "build": "41f870bf",
+        "fault": 0,
+        "referenced": false,
+        "power": false,
+        "bus_mv": 24227
+      }
+    },
+    "sweeps": {
+      "20": {
+        "log": "output/bench/runs/20261123-181238-f22e2c-20-grid90/result.jsonl",
+        "cell_count": 90,
+        "magnet_on_commands": 0,
+        "actual_motion": false
+      },
+      "21": {
+        "log": "output/bench/runs/20261123-181239-069f64-21-pick90/result.jsonl",
+        "cell_count": 90,
+        "magnet_on_commands": 90,
+        "actual_motion": false
+      }
+    },
+    "new_swd_writes": 0,
+    "new_motor_movements": 0
+  },
+  "cleanup": {
+    "relocated_directories": 11,
+    "relocated_files": 2835,
+    "relocated_bytes": 1557024137,
+    "storage": "reversible local move; archive SHA-256 and each file were verified"
+  },
+  "code": {
+    "comparison_commit": "1d87805661a826487b9e7eb94f00e8bf56e51a46",
+    "measurement": "Lizard NLOC per listed .cpp vs committed baseline, excludes support files from per-file counts",
+    "files": {
+      "vision/geometry.cpp": {
+        "base": 110,
+        "current": 103
+      },
+      "motion/plan.cpp": {
+        "base": 171,
+        "current": 102
+      },
+      "motion/execute.cpp": {
+        "base": 93,
+        "current": 97
+      },
+      "chess/board.cpp": {
+        "base": 215,
+        "current": 228
+      },
+      "chess/pikafish.cpp": {
+        "base": 219,
+        "current": 211
+      }
+    },
+    "legacy_json_adapter_cpp_nloc": 169,
+    "frozen_yolo_sha256": {
+      "vision/yolo.cpp": "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45",
+      "vision/yolo.hpp": "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97",
+      "vision/yolo_npu.cpp": "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b"
+    }
+  }
+}

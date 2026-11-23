@@ -24,8 +24,8 @@ STATES = ['未出力', '保持位置', '运动中', '减速中', '故障', '速�
 FAULTS = {1: '编码器反馈异常', 2: '电流或采样保护', 3: '母线电压异常', 4: '控制时序异常', 5: '运动跟随或行程保护'}
 
 
-def packet(kind, node, seq, a=0, b=0):
-    return PACKET.pack(kind, node, 0, 3, seq, a, b, *([0] * 12))
+def packet(kind, node, seq, a=0, b=0, c=0, d=0):
+    return PACKET.pack(kind, node, 0, 3, seq, a, b, c, d, *([0] * 10))
 
 
 class Controller:

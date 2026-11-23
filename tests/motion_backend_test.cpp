@@ -9,6 +9,8 @@ namespace fake
 bool connected=false, healthy=true, frozen=false, stale=false, stopWorks=true;
 int reads=0, writes=0, failWrite=0, failRead=0, stops=0, cancelWrite=0;
 uint64_t clockMs=0;
+uint64_t disturbedAt=0;
+int holdFrames=0, disturbMode=0;
 scara::JointReference command;
 std::vector<scara::JointReference> samples;
 std::vector<std::pair<uint64_t,int>> pulses;
@@ -17,7 +19,7 @@ void reset()
 {
     connected=true; healthy=true; frozen=false; stale=false; stopWorks=true;
     reads=writes=failWrite=failRead=stops=cancelWrite=0;
-    clockMs=0; command={}; samples.clear(); pulses.clear(); running=1;
+    clockMs=0; disturbedAt=0; holdFrames=disturbMode=0; command={}; samples.clear(); pulses.clear(); running=1;
 }
 void check(bool value,const char *message)
 {
@@ -36,6 +38,13 @@ bool Drive_read(DriveFeedback &feedback)
     feedback.position=fake::frozen ? AxisValues{} : fake::command.position;
     feedback.velocity=fake::frozen ? AxisValues{} : fake::command.velocity;
     feedback.timeMs=fake::clockMs;
+    if (fake::disturbMode && fake::command.position == AxisValues{12,-8,24} &&
+        fake::command.velocity == AxisValues{} && ++fake::holdFrames == 10)
+    {
+        fake::disturbedAt = feedback.timeMs;
+        if (fake::disturbMode == 1) feedback.position[2] += .18;
+        else feedback.velocity[2] = .06;
+    }
     return true;
 }
 bool Drive_write(const JointReference &reference)
@@ -47,9 +56,9 @@ bool Drive_write(const JointReference &reference)
     if(fake::cancelWrite && fake::writes==fake::cancelWrite) fake::running=0;
     return fake::connected;
 }
-bool Drive_release(int milliseconds)
+bool Drive_magnet(bool enabled)
 {
-    fake::pulses.push_back({fake::clockMs,milliseconds});
+    fake::pulses.push_back({fake::clockMs,int(enabled)});
     return fake::connected;
 }
 bool Drive_stop()
@@ -70,13 +79,13 @@ int main()
         PickStep move;
         move.action=PickAction::Move;
         move.target={12,-8,24};
-        bool success=true;
+        bool success;
         fake::reset(); fake::connected=false;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && !Motion_stop() && fake::samples.empty(),"Disconnected drive claimed success");
 
         fake::reset();
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(success && fake::stops==0 && fake::samples.size()>20,"Group move failed");
         bool intermediate=false;
         for(const auto &sample:fake::samples)
@@ -90,53 +99,62 @@ int main()
         }
         check(intermediate && fake::command.position==move.target && fake::command.velocity==AxisValues{},
               "Final reference or coordinated intermediate samples missing");
+        for (int mode : {1, 2})
+        {
+            fake::reset();
+            fake::disturbMode = mode;
+            check(Motion_execute({move}, limits, fake::running), "Did not settle again after the perturbation");
+            check(fake::disturbedAt && fake::clockMs == fake::disturbedAt + 10 + 250 && fake::stops == 0,
+                  "All three axes must remain in tolerance for 250 ms after the first good sample");
+        }
 
         fake::reset(); fake::command.position={3,4,5};
         auto vertical=move; vertical.axes=ZAxis; vertical.target={13,999,999};
-        Motion_execute({vertical},limits,fake::running,success);
+        success = Motion_execute({vertical},limits,fake::running);
         check(success,"Selected-axis move failed");
         for(const auto &sample:fake::samples)
             check(sample.position[1]==4 && sample.position[2]==5,"Unselected axes were moved");
 
         fake::reset(); fake::failWrite=4;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && fake::stops==1 && fake::writes==4,"Group write failure was retried or not stopped");
         fake::reset(); fake::failRead=5;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && fake::stops==1,"Feedback loss did not stop whole group");
         fake::reset(); fake::stale=true;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && fake::stops==1 && fake::samples.empty(),"Repeated feedback clock was accepted");
         fake::reset(); fake::frozen=true;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && fake::stops==1,"Elapsed trajectory time was mistaken for physical arrival");
 
         fake::reset(); fake::cancelWrite=3;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && fake::stops==1 && fake::writes==3,"Cancellation sent more trajectory references");
         fake::reset(); fake::running=0;
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(!success && fake::writes==0 && fake::reads==0,"Stopped input started a move");
 
-        PickStep pulse;
-        pulse.action=PickAction::ReleasePulse; pulse.durationMs=40;
+        PickStep grip, release;
+        grip.action=PickAction::Grip; grip.durationMs=40;
+        release.action=PickAction::Release;
         fake::reset();
-        Motion_execute({pulse,move},limits,fake::running,success);
-        check(success && fake::pulses.size()==2 && fake::pulses[0].second==40 &&
+        success = Motion_execute({grip,move,release},limits,fake::running);
+        check(success && fake::pulses.size()==2 && fake::pulses[0].second==1 &&
               fake::pulses[1].second==0 && fake::pulses[1].first-fake::pulses[0].first>=40,
-              "Release did not finish before the next movement");
+              "Grip was not held through transport and switched off at the destination");
         fake::reset(); fake::cancelWrite=2;
-        Motion_execute({pulse,move},limits,fake::running,success);
+        success = Motion_execute({grip,move},limits,fake::running);
         check(!success && fake::stops==1 && fake::pulses.back().second==0 && fake::writes==2,
-              "Cancelled release continued into movement or left pulse active");
+              "Cancelled grip continued into movement or left the magnet on");
 
         fake::reset(); fake::failWrite=2; fake::stopWorks=false;
         bool threw=false;
-        try { Motion_execute({move},limits,fake::running,success); }
+        try { success = Motion_execute({move},limits,fake::running); }
         catch(const std::exception &) { threw=true; }
-        check(threw && !success && fake::stops==1,"Unconfirmed stop was hidden");
+        check(threw && fake::stops==1,"Unconfirmed stop was hidden");
         fake::reset(); move.target={};
-        Motion_execute({move},limits,fake::running,success);
+        success = Motion_execute({move},limits,fake::running);
         check(success && fake::samples.empty(),"No-op target issued needless movement");
         std::cout<<"PASS shared progress, limits, selective hold, group stop, feedback loss, cancellation, release ordering and unconnected state; fake drives only\n";
         return 0;

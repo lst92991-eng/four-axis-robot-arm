@@ -1,0 +1,38 @@
+{
+  "build_id": "9fc6a5de",
+  "saved_travel_deg": -18420.27,
+  "acceleration_deg_s2": 5050,
+  "brake_deg_s2": 4400,
+  "running_bus_max_mv": 40000,
+  "speed_kp_milli": 1480,
+  "speed_ki_milli": 100000,
+  "rotary_build_ids": {
+    "2": "9fc6a5de",
+    "3": "9fc6a5de"
+  },
+  "rotary_arrival_deg": {
+    "3": 0.65,
+    "2": 0.15
+  },
+  "position_hold_start": true,
+  "game_speed_deg_s": 4800,
+  "voltage_limit_mv": 40000,
+  "descent_brake_deg_s2": 4800,
+  "descent_brake_ki_permille": 950,
+  "release_acceleration_deg_s2": 5050,
+  "synchronize_xy": true,
+  "j3_speed_gains": [
+    1000,
+    14000
+  ],
+  "rotary_ramps": {
+    "2": {
+      "acceleration_deg_s2": 110,
+      "brake_deg_s2": 75
+    },
+    "3": {
+      "acceleration_deg_s2": 180,
+      "brake_deg_s2": 125
+    }
+  }
+}

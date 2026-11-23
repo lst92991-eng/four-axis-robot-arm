@@ -1,13 +1,11 @@
 #!/bin/sh
 set -eu
+# ---------对局程序启动区---------
+# 由安装目录确定默认 RKNN 模型，也可以用第一个参数指定模型。
 root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-config=${1:?需要对局配置JSON}
-model=${2:-/userdata/scara-yolo-v3/xiangqi14-local-v3-rv1106.rknn}
-expected=ce9c91f4668cb0ec58f836432546b7eb2aebfc675ba696ce9788968560dcbdd2
-actual=$(sha256sum "$model")
-if [ "${actual%% *}" != "$expected" ]; then
-  printf '%s\n' '模型SHA256与已验证v3模型不一致' >&2
-  exit 1
-fi
+model=${1:-"$root/models/xiangqi14-local-v3-rv1106.rknn"}
+case "$model" in /*) ;; *) model="$PWD/$model" ;; esac
 export OPENCV_FFMPEG_CAPTURE_OPTIONS=rtsp_transport\;tcp
-exec "$root/bin/scara_game" "$config" "$model"
+# 进入安装根目录，使引擎和权重的相对路径能在板端解析。
+cd "$root"
+exec "$root/bin/scara_game" "$model"

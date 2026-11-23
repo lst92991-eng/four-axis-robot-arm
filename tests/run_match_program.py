@@ -36,8 +36,8 @@ def read_calls(output):
             elif action == 1:
                 step = dict(action='move', axes=axes, target_deg=target)
             else:
-                assert action == 2
-                step = dict(action='release', duration_ms=duration)
+                assert action in (2,3)
+                step = dict(action='discard' if action == 3 else 'release', duration_ms=duration)
             current['steps'].append(step)
         elif line.startswith('SIM_POSE '):
             current['end_joint_deg'] = list(map(float, fields[1:4]))
@@ -50,7 +50,7 @@ def read_calls(output):
     return calls
 
 
-def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
+def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, placement_offsets=None):
     global passed
     with tempfile.TemporaryDirectory(prefix='scara_match_') as directory:
         work = Path(directory)
@@ -60,6 +60,11 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
             fixture = work / f'{key}.json'
             shutil.copyfile(source, fixture)
             config[key] = str(fixture)
+        if placement_offsets is not None:
+            layout_file = Path(config['layout_file'])
+            layout = json.loads(layout_file.read_text(encoding='utf-8'))
+            layout['placement_offsets_mm'] = placement_offsets
+            layout_file.write_text(json.dumps(layout), encoding='utf-8')
         config['work_directory'] = str(work / 'runtime')
         config['simulation_file'] = str(work / 'scenario.json')
         config.update(settings or {})
@@ -68,7 +73,12 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
         result = subprocess.run([str(EXE), str(work / 'config.json')], cwd=ROOT,
                                 capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=8)
         assert result.returncode == exit_code, (name, result.returncode, result.stdout[-2000:], result.stderr)
-        state = json.loads((work / 'runtime/status.json').read_text(encoding='utf-8'))
+        line = next(line for line in result.stdout.splitlines() if line.startswith('SIM_RESULT\t'))
+        _, phase, outcome, pending, valid, frame, moves, board, seen, message = line.split('\t', 9)
+        assert len(board) == len(seen) == 90 and not (work/'runtime').exists()
+        rows = lambda value: [value[i:i+9] for i in range(0,90,9)]
+        state = dict(simulated=1, phase=phase, result=int(outcome), pending=int(pending), observation_valid=int(valid),
+                     frame_id=frame, history=moves, board=rows(board), observed=rows(seen), error=message)
         assert state['simulated'] == 1, name
         assert state['history'] == (BASE['expected_history'] if history is None else history), (name, state)
         executions = read_calls(result.stdout)
@@ -76,13 +86,17 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
         assert not list((work / 'runtime').glob('motion-*.json')), 'Retired motion protocol is still active'
         assert not list((work / 'runtime').glob('request-*.json')), 'Simulation still uses request files'
         assert all(execution['simulated'] == 1 for execution in executions)
-        assert [step['action'] for step in executions[0]['steps']] == ['hold', 'move', 'move']
+        assert [step['action'] for step in executions[0]['steps']] == ['release', 'move', 'move']
         assert executions[0]['steps'][1]['axes'] == 1
         heights = json.loads(Path(config['heights_file']).read_text(encoding='utf-8'))['z']
         park = [heights['travel_deg'], *config['park_joints_deg']]
         for execution in executions[1:]:
             assert execution['steps'][-1] == dict(action='move', axes=7, target_deg=park)
             assert execution['end_joint_deg'] == park
+            if execution['purpose'] == 'prepare':
+                assert [s['action'] for s in execution['steps']] == ['release', 'move', 'move']
+                assert execution['steps'][1]['axes'] == 1 and execution['steps'][1]['target_deg'][0] == heights['travel_deg']
+                continue
             for i, step in enumerate(execution['steps']):
                 if step['action'] == 'release':
                     assert execution['steps'][i + 1]['action'] == 'move', name
@@ -94,21 +108,29 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
 
 state, executions, output = run('two rounds with robot capture', BASE)
 assert state['board'] == BASE['expected_board'] and state['pending'] == 0
-assert [len(execution['steps']) for execution in executions] == [3, 9, 17]
+assert [len(execution['steps']) for execution in executions] == [3, 9, 15]
+assert executions[2]['steps'][5]['action'] == 'discard'
+
+_, compensated, _ = run('ordinary pickup, capture and placement use the same grid targets', BASE,
+                         placement_offsets=[[0, 5, 2., -1.5], [0, 6, 2., -1.5], [0, 9, 2., -1.5]])
+ordinary, capture = (e['steps'] for e in compensated[1:])
+assert ordinary[4]['target_deg'][1:] == capture[1]['target_deg'][1:] == capture[10]['target_deg'][1:]
+assert ordinary[1] != executions[1]['steps'][1]
+assert capture[7] != executions[2]['steps'][7]
 
 case = copy.deepcopy(BASE)
 after_human_capture = case['commands'][3]['board']
 case['commands'][2:4] = [
     dict(phase='human', command='a3a2'),
-    dict(phase='human', command='a3a4'),
+    dict(phase='human', command='6,0 5,0'),
     dict(phase='human', command='a4a5'),
 ]
 case['executions'].insert(1, dict(purpose='move', move='a3a4', success=1, board=AFTER_HUMAN))
 case['executions'].insert(3, dict(purpose='move', move='a4a5', success=1, board=after_human_capture))
 state, executions, output = run('panel plays both sides, rejects illegal selection and handles a capture', case, calls=5)
-assert 'SIM_EVENT 2' in output and state['pending'] == 0
+assert 'SIM_NOTICE illegal_move' in output and state['pending'] == 0
 assert [execution['move'] for execution in executions[1:]] == ['a3a4', 'a6a5', 'a4a5', 'a9a5']
-assert len(executions[3]['steps']) == 17
+assert len(executions[3]['steps']) == 15
 
 # 事件回调只显示；相机输入按场景模拟人类恢复，恢复前不能下发新的搬棋动作。
 case = copy.deepcopy(BASE)
@@ -117,19 +139,19 @@ rows = [list(row) for row in swapped]
 rows[7][1], rows[9][1] = rows[9][1], rows[7][1]
 swapped = [''.join(row) for row in rows]
 case['queries'][1]['board_after_think'] = swapped
-case['restorations'] = [dict(event=1, after_frames=6, board=AFTER_HUMAN)]
+case['restorations'] = [dict(phase='restore_board', after_frames=6, board=AFTER_HUMAN)]
 _, _, output = run('swap while thinking restores before moving', case)
-assert '棋子位置互换' in output and '红马' in output and '红炮' in output
-event_at = output.index('SIM_EVENT 1')
-assert output.index('SIM_EVENT 7', event_at) < output.index('SIM_CALL move a6a5', event_at)
+assert '(7,1)' in output and '(9,1)' in output
+event_at = output.index('SIM_NOTICE restore_board')
+assert output.index('SIM_NOTICE restored', event_at) < output.index('SIM_CALL move a6a5', event_at)
 
 case = copy.deepcopy(BASE)
 missing = AFTER_HUMAN.copy()
 row = list(missing[9]); row[4] = '.'; missing[9] = ''.join(row)
 case['queries'][1]['board_after_think'] = missing
-case['restorations'] = [dict(event=1, after_frames=3, board=AFTER_HUMAN)]
+case['restorations'] = [dict(phase='restore_board', after_frames=3, board=AFTER_HUMAN)]
 _, _, output = run('missing king is a board event rather than victory', case)
-assert '棋子缺失' in output and 'e0 红帅' in output
+assert '(9,4)' in output
 
 case = copy.deepcopy(BASE)
 case['queries'][1]['board_after_think'] = swapped
@@ -140,9 +162,9 @@ assert state['pending'] == 0 and state['phase'] == 'stopped'
 case = copy.deepcopy(BASE)
 case['commands'][2]['board'] = swapped
 case['commands'].insert(3,dict(phase='human',command='ready',board=AFTER_HUMAN))
-case['restorations']=[dict(event=2,after_frames=3,board=INITIAL)]
+case['restorations']=[dict(phase='illegal_move',after_frames=3,board=INITIAL)]
 _, _, output = run('illegal human change restores before next attempt',case)
-assert 'SIM_EVENT 2' in output
+assert 'SIM_NOTICE illegal_move' in output
 
 case = copy.deepcopy(BASE)
 retry = copy.deepcopy(case['executions'][1])
@@ -170,9 +192,9 @@ assert 'SIM_COMMAND hardware_recovery' not in output and output.count('SIM_CALL 
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['off_grid'] = 'i0'
-case['restorations'] = [dict(event=0, after_frames=1, board=AFTER_ROBOT)]
+case['restorations'] = [dict(phase='unclear', after_frames=1, board=AFTER_ROBOT)]
 _, _, output = run('off-grid rook recheck continues once centered', case)
-assert 'i0 红车' in output and output.count('SIM_CALL move a6a5') == 1
+assert '(9,8)' in output and output.count('SIM_CALL move a6a5') == 1
 
 case.pop('restorations')
 case['cancel_after_frames'] = 18
@@ -189,7 +211,7 @@ case=copy.deepcopy(BASE)
 case['queries'][1]['fail_once']=1
 case['commands'].insert(3,dict(phase='engine_recovery',command='ready'))
 _,_,output=run('engine failure is an event and retries the same turn',case)
-assert 'SIM_EVENT 5' in output
+assert 'SIM_NOTICE engine_recovery' in output
 
 case=copy.deepcopy(BASE)
 case['queries'][1]['fail']=1
@@ -257,5 +279,30 @@ for index, move in enumerate(moves):
 case['queries'].append(dict(history=' '.join(moves), legal=['b0c2']))
 state, _, _ = run('repetition requires adjudication', case, ' '.join(moves), calls=5)
 assert state['result'] == 4 and state['phase'] == 'review_required'
+
+# A saved position is confirmed against the camera without clearing its turn or history.
+case = copy.deepcopy(BASE)
+case['resume_moves'] = ['a3a4']
+case['initial_board'] = AFTER_HUMAN
+case['commands'] = case['commands'][:2] + [dict(phase='human', command='quit')]
+case['executions'] = case['executions'][:2]
+case['queries'] = [dict(history='a3a4', legal=['a6a5'], choice='a6a5'),
+                   dict(history='a3a4 a6a5', legal=['a4a5'])]
+state, _, _ = run('resume preserves black turn and appends the reply', case, 'a3a4 a6a5', calls=2)
+assert state['board'] == AFTER_ROBOT
+case['initial_board'] = INITIAL
+state, _, _ = run('resume mismatch preserves history and sends no chess move', case, 'a3a4', exit_code=1, calls=1)
+assert state['board'] == AFTER_HUMAN and state['pending'] == 0 and state['phase'] == 'error'
+
+# Three distinct consecutive frames belong to observation, independently of the fixed grid.
+for name, ids in [('repeated camera frames', ['1','1','2','2']),
+                  ('missing frame resets confirmation', ['1','2','','3','4'])]:
+    case = copy.deepcopy(BASE)
+    case['frame_ids'] = ids
+    case['cancel_after_frames'] = len(ids)
+    case['commands'] = case['commands'][:1]
+    case['executions'] = case['executions'][:1]
+    state, _, output = run(name, case, '', calls=1)
+    assert state['observation_valid'] == 0 and 'SIM_COMMAND confirm_start' not in output
 
 print(f'PASS {passed} actual-main scenarios; scripted perception/engine/execution, no hardware.')

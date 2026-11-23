@@ -1,6 +1,6 @@
 #include "vision/yolo.hpp"
 #include "vision/capture.hpp"
-#include "vision/io.hpp"
+#include "fixture_bytes.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/videoio.hpp>
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     const std::string fixture = "tests/fixtures/vision/";
     auto source = image(fixture+"source.png");
     cv::FileStorage expected;
-    scara::readStorage(fixture+"expected.json", expected);
+    expected.open(fixture+"expected.json", cv::FileStorage::READ);
     auto roi = expected["roi"];
     cv::Rect historical = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
     sameInput(source, historical, fixture+"historical-input.png");
@@ -149,21 +149,38 @@ int main(int argc, char **argv)
                           std::abs(b.x+b.width-double(box[2])),std::abs(b.y+b.height-double(box[3]))});
     }
     check(maximum<.0001, "Original-image bounding boxes changed");
-    auto labels = image("config/vision/chinese-labels.png", cv::IMREAD_GRAYSCALE);
     cv::Mat preview, drawing;
     auto originalSource = source.clone();
-    scara::Vision_draw(source,pieces,labels,preview);
+    scara::Vision_draw(source,pieces,preview);
     check(cv::norm(source,originalSource,cv::NORM_INF)==0, "Drawing modified the source image");
     check(preview.size()==source.size(), "Drawing changed the display field of view");
-    scara::Vision_draw(source,{},labels,drawing);
+    scara::Vision_draw(source,{},drawing);
     check(cv::norm(drawing, source, cv::NORM_INF)==0, "Empty detection altered frame");
-    scara::Vision_draw(source,{{0,.9,{-100,-100,10,10}}},labels,drawing);
+    scara::Vision_draw(source,{{0,.9,{-100,-100,10,10}}},drawing);
     check(cv::norm(drawing,source,cv::NORM_INF)==0,
           "Off-image detection drew a false label at the image origin");
     cv::Mat tiny(12,20,CV_8UC3,cv::Scalar::all(0));
-    scara::Vision_draw(tiny,{{12,.9,{0,0,5,5}}},labels,drawing);
+    scara::Vision_draw(tiny,{{12,.9,{0,0,5,5}}},drawing);
     check(drawing.size()==tiny.size(),
           "Clipped Chinese label changed the image size");
+    const char *names[] = {"黑将","黑士","黑象","黑马","黑车","黑炮","黑卒","红帅","红仕","红相","红马","红车","红炮","红兵"};
+    cv::FontFace font("uni");
+    cv::Mat blank(120,160,CV_8UC3,cv::Scalar::all(0));
+    std::vector<cv::Mat> masks;
+    for (int id=0; id<scara::YoloClasses; ++id)
+    {
+        scara::Vision_draw(blank,{{id,.93,{30,40,50,45}}},drawing);
+        cv::Mat label=drawing(cv::Rect(30,15,44,24)), expected=label.clone();
+        expected.setTo(id<7 ? cv::Scalar(255,180,65) : cv::Scalar(65,85,245));
+        cv::putText(expected,names[id],{2,19},cv::Scalar::all(255),font,18);
+        check(cv::norm(label,expected,cv::NORM_INF)==0,"Incorrect Chinese class name");
+        cv::Mat white;
+        cv::inRange(label,cv::Scalar::all(255),cv::Scalar::all(255),white);
+        check(cv::countNonZero(white)>0,"Missing Chinese class text");
+        for (const auto &mask : masks)
+            check(cv::norm(white,mask,cv::NORM_INF)>0,"Two Chinese class names rendered as the same glyphs");
+        masks.push_back(white);
+    }
     std::filesystem::create_directories("output/vision-stage-verify");
     std::vector<uint8_t> encoded;
     cv::imencode(".png", preview, encoded);

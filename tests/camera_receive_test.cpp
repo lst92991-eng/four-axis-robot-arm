@@ -102,7 +102,16 @@ int main()
     check(std::chrono::steady_clock::now()-stop<std::chrono::seconds(2),
           "Explicit close failed to stop the retry loop promptly");
 
+    scara::Camera_open("scripted");
+    bool timedOut = false;
+    try { scara::Camera_read(frame, 60); }
+    catch (const std::runtime_error&) { timedOut = frame.empty(); }
     mock::alwaysFail = false;
+    scara::Camera_open("scripted");
+    scara::Camera_read(frame, 1000);
+    check(timedOut && !frame.empty(), "Bounded read did not time out and recover after a reopen");
+    scara::Camera_close();
+
     mock::pauseRead = true;
     scara::Camera_open("scripted");
     for (int i=0; i<1000 && mock::activeReads==0; ++i)

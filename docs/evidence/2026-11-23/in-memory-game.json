@@ -1,0 +1,143 @@
+{
+  "date": "2026-11-23",
+  "basis": "Working source immediately before the removal of runtime files; Windows MSVC / C++17 / OpenCV 5 offline, no physical actuation.",
+  "scope": "Application, chess, motion, vision, installation C++ value example and compiled-label template. Generated PNG and CAD data bytes and the USB Python adapter are separate.",
+  "prior": {
+    "files": 21,
+    "nloc": 2167,
+    "by_file": {
+      "app/game.cpp": 339,
+      "app/game.hpp": 57,
+      "app/game_live_io.cpp": 192,
+      "app/game_main.cpp": 7,
+      "app/runtime.cpp": 152,
+      "app/vision_main.cpp": 64,
+      "chess/board.cpp": 224,
+      "chess/board.hpp": 56,
+      "chess/pikafish.cpp": 211,
+      "chess/pikafish.hpp": 34,
+      "motion/execute.cpp": 102,
+      "motion/execute.hpp": 18,
+      "motion/plan.cpp": 126,
+      "motion/plan.hpp": 71,
+      "vision/capture.cpp": 75,
+      "vision/capture.hpp": 9,
+      "vision/geometry.cpp": 112,
+      "vision/geometry.hpp": 35,
+      "vision/yolo.cpp": 153,
+      "vision/yolo.hpp": 38,
+      "vision/yolo_npu.cpp": 92
+    },
+    "filesystem_lines": 18,
+    "reject_calls": 13,
+    "fail_calls": 19
+  },
+  "current": {
+    "files": 22,
+    "nloc": 1955,
+    "by_file": {
+      "app/game.cpp": 327,
+      "app/game.hpp": 48,
+      "app/game_live_io.cpp": 143,
+      "app/game_main.cpp": 15,
+      "app/installation.hpp": 31,
+      "app/vision_main.cpp": 62,
+      "chess/board.cpp": 200,
+      "chess/board.hpp": 56,
+      "chess/pikafish.cpp": 207,
+      "chess/pikafish.hpp": 33,
+      "motion/execute.cpp": 96,
+      "motion/execute.hpp": 18,
+      "motion/plan.cpp": 126,
+      "motion/plan.hpp": 70,
+      "vision/capture.cpp": 75,
+      "vision/capture.hpp": 9,
+      "vision/geometry.cpp": 112,
+      "vision/geometry.hpp": 35,
+      "vision/labels.hpp.in": 9,
+      "vision/yolo.cpp": 153,
+      "vision/yolo.hpp": 38,
+      "vision/yolo_npu.cpp": 92
+    },
+    "filesystem_lines": 0,
+    "reject_calls": 0,
+    "fail_calls": 0
+  },
+  "match_comparison": {
+    "scenarios": 24,
+    "identical_action_trace_lines": 630,
+    "identical_exit_board_history_frame_result_pending": true,
+    "operator_wording_differences": [
+      {
+        "case": 6,
+        "old_notice": "检测到棋子位置互换：(7,1) 红炮 → 红马；(9,1) 红马 → 红炮；请恢复原棋局，恢复后继续。",
+        "new_notice": ""
+      },
+      {
+        "case": 12,
+        "old_notice": "棋盘发生变化：(9,8) 红车 → 未识别；盘面尚未确认，请检查棋子是否偏离格点或被遮挡。",
+        "new_notice": ""
+      },
+      {
+        "case": 13,
+        "old_notice": "执行结果未确认，请处理设备并恢复原棋局。",
+        "new_notice": ""
+      },
+      {
+        "case": 15,
+        "old_notice": "仿真引擎查询失败",
+        "new_notice": ""
+      },
+      {
+        "case": 18,
+        "old_notice": "执行结果未确认，请处理设备并恢复原棋局。",
+        "new_notice": ""
+      }
+    ]
+  },
+  "channels": {
+    "native_wrapper_empty_workdir_files": 0,
+    "embedded_label_bytes": 1498,
+    "embedded_label_sha256": "aefed5b03a8a5f874a641670758d37b6a35d16b3fe1300ae0f6640c4e3c4ddbe",
+    "vision_source_files_byte_identical": [
+      "vision/yolo.cpp",
+      "vision/yolo.hpp",
+      "vision/yolo_npu.cpp",
+      "vision/capture.cpp",
+      "vision/capture.hpp",
+      "vision/geometry.cpp",
+      "vision/geometry.hpp"
+    ],
+    "identical_90_xy_and_joint_rows": 90
+  },
+  "installation_fixture": {
+    "temporary_test_site": true,
+    "installed": 1,
+    "z_deg": [
+      -20225.7605,
+      -18219.66,
+      -20210.0
+    ],
+    "park_deg": [
+      0.404,
+      -23.939
+    ],
+    "cad_bytes": 972,
+    "grip_ms": 420,
+    "native_entry_compiled": true
+  },
+  "checks": {
+    "ctest_pass": 14,
+    "python_tests": 75,
+    "python_pass": 74,
+    "python_skipped": 1,
+    "raw_transfer_cases": 48600,
+    "acceptance_and_board_digest_without_retired_message_bytes": "e924eb6e9e21b1cb",
+    "vision_frames": 16,
+    "vision_detections": 152,
+    "panel_http": "numeric turns, resume in same process, JPEG byte-exact, empty workdir",
+    "drive_profile_matches_record": true,
+    "game_launcher_diagnostic_directory_created": false
+  },
+  "runtime": "C++ configuration is compiled; live state and previews are in memory/over pipes. The RKNN SDK and Pikafish still load their model/weights, and real driver interfaces remain external. Closing the panel loses its in-memory checkpoint."
+}

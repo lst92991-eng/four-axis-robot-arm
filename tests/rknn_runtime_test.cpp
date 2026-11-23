@@ -137,7 +137,7 @@ int rknn_destroy(rknn_context)
 {
   contextOpen = false;
 #ifdef RKNN_MOCK_ENTRY
-  std::cout << "TEST cleanup: allocations=" << alive << " runs=" << runs << '\n';
+  std::cerr << "TEST cleanup: allocations=" << alive << " runs=" << runs << '\n';
 #endif
   return 0;
 }

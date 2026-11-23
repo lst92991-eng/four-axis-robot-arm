@@ -1,0 +1,92 @@
+{
+  "scope": "C++17 classroom source, including the previous compiled-label template. Windows x64 OpenCV 5.0.0. No physical movement or board deployment.",
+  "nloc": {
+    "all": {
+      "before": 1955,
+      "after": 1822
+    },
+    "geometry": {
+      "before": 147,
+      "after": 93
+    },
+    "engine": {
+      "before": 240,
+      "after": 176
+    },
+    "motion_execute": {
+      "before": 96,
+      "after": 101
+    },
+    "game_cpp": {
+      "before": 327,
+      "after": 331
+    }
+  },
+  "geometry": {
+    "identical_points_and_joint_outputs": 90,
+    "max_delta": {
+      "pixel_geometric": 0.0,
+      "base_xy_mm": 0.0,
+      "target_xy_mm": 0.0
+    },
+    "identical_overlay_png": true,
+    "original_pixel_to_base_coefficients_unchanged": true
+  },
+  "single_frame_assignment": {
+    "cases": 14400,
+    "prior_and_current_digest": "c666b208efec5823"
+  },
+  "match": {
+    "old_scenarios_unchanged": 24,
+    "identical_action_pose_trace_lines": 630,
+    "identical_final_status_and_frame_ids": true,
+    "additional_camera_scenarios": [
+      "repeated frame does not advance confirmation",
+      "missing frame resets the three-frame confirmation"
+    ]
+  },
+  "vision": {
+    "frames": 16,
+    "unchanged_detections_and_scores": 152,
+    "rgb_inputs_byte_identical": true,
+    "changed_label_pixels": 64723,
+    "changed_pixels_outside_label_backgrounds": 0
+  },
+  "verified_fonts": "The OpenCV uni font rendered all 13 distinct characters in the 14 class names. All 14 full names were checked in actual Vision_draw.",
+  "engine": {
+    "source_edition": "2023-03-05; archive in this project; compiled for Windows x64 for this test",
+    "original_nnue_sha256": "2e9280f355cd4f092fcb63c21477692100afaf9ba9868a10c9c8d5b8fc6d1d1f",
+    "opening_legal": 44,
+    "black_legal_after_a3a4": 44,
+    "new_reply": "h7e7",
+    "two_position_control_reply": "h7e7",
+    "new_position_messages": 1,
+    "matching_legal_lists": true
+  },
+  "native_uci_transport": "Simulated POSIX calls; fragmented data, interrupts, failed start, cancellation, malformed replies and EOF. The vendored engine and actual NNUE were independently exercised on the host.",
+  "motion": "A single position or speed miss on J3 restarts the full 250 ms hold from the next in-tolerance feedback.",
+  "launch": {
+    "native_main_compiled_without_site_flag": true,
+    "previous_generated_station_compiles": true,
+    "compiled_fixture_park_deg": [
+      0.404,
+      -23.939
+    ],
+    "compiled_fixture_z_deg": [
+      -20225.7605,
+      -18219.66,
+      -20225.7605
+    ],
+    "new_teaching_table_uses_named_points": true,
+    "hardware_motion": false
+  },
+  "ctest": {
+    "passed": 14,
+    "failed": 0
+  },
+  "python": {
+    "ran": 75,
+    "passed": 74,
+    "skipped": 1
+  }
+}

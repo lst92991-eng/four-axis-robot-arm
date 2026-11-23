@@ -133,7 +133,7 @@ def discover():
 
 
 class Candlelight:
-    def __init__(self, serial='', fd=True, internal_loopback=False):
+    def __init__(self, serial='', fd=True, internal_loopback=False, *, owner_factory=None):
         import usb.util
         devices = discover()
         selected = [(d, label) for d, label in devices if not serial or serial in label]
@@ -143,9 +143,10 @@ class Candlelight:
         if len(selected) != 1:
             raise RuntimeError('\u8bf7\u8fde\u63a5\u4e00\u4e2a Candlelight\uff0c\u6216\u586b\u5199\u5e8f\u5217\u53f7\u9009\u62e9\u8bbe\u5907')
         self.dev, self.label = selected[0]
-        from usb_owner import UsbOwner
+        if owner_factory is None:
+            from usb_owner import UsbOwner as owner_factory
         try:
-            self.owner = UsbOwner(usb_identity(self.dev))
+            self.owner = owner_factory(usb_identity(self.dev))
         except Exception:
             usb.util.dispose_resources(self.dev)
             raise

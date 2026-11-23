@@ -3,7 +3,6 @@
   "arm_file": "site/arm-registration.json",
   "heights_file": "site/trial-plan.json",
   "camera_url": "rtsp://127.0.0.1/live/0",
-  "label_image": "vision/chinese-labels.png",
   "engine_directory": "../engine/pikafish-2023-03-05",
   "work_directory": "/tmp/scara-game",
   "human_red": 1,

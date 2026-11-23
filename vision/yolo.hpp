@@ -15,6 +15,7 @@ constexpr int YoloSize = 640;
 constexpr int YoloClasses = 14;
 //每个网格点使用3个锚框，模型共有3路不同尺度的输出
 constexpr int YoloAnchors = 3;
+// 模型分别输出 80、40、20 三种网格尺度。
 constexpr int YoloHeads = 3;
 //每个候选框保存4个位置数、1个目标分数和14个类别分数
 constexpr int YoloBoxValues = 5 + YoloClasses;
@@ -22,9 +23,6 @@ constexpr int YoloBoxValues = 5 + YoloClasses;
 constexpr int YoloChannels = YoloAnchors * YoloBoxValues;
 //三路输出的网格边长，对应输入图中的8、16、32像素步长
 constexpr int YoloGrid[YoloHeads] = {80, 40, 20};
-//中文标签字图的宽度，以及单个类别文字占用的高度，单位为像素
-constexpr int AtlasWidth = 64;
-constexpr int LabelHeight = 24;
 
 //---------识别数据区---------
 //单个棋子的识别结果，供棋盘归格和画面绘制使用
@@ -32,7 +30,7 @@ struct Detection
 {
     //类别编号，0～6为黑方、7～13为红方，顺序与模型一致
     int classId = -1;
-    //最终得分，由目标分数乘以该类别分数得到
+    // 目标分数乘以最高类别分数，得到该框的最终置信度。
     double confidence = 0;
     //对外结果中的原图左上角位置及宽高，单位为像素
     cv::Rect2d bbox;
@@ -61,9 +59,7 @@ void Vision_prepare(const cv::Mat &bgr, cv::Mat &rgb640);
 //离线回放由文件读取入口检查张量边界与格式
 void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &pieces);
 //复制原图并画出检测框、类别和得分，生成原尺寸预览
-//字图为随程序提供的64×336灰度图，按类别顺序竖向排列
-void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces, const cv::Mat &chineseLabels,
-                 cv::Mat &preview);
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces, cv::Mat &preview);
 
 //---------NPU接口区---------
 //加载一个模型并准备输入输出缓冲，返回初始化结果

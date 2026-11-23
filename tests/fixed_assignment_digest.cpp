@@ -27,7 +27,7 @@ int main()
             {
                 auto board = original;
                 double rowOffset = variation % 2 == 0 ? offset / 3 : 0;
-                double column = cell % 9 + offset, row = cell / 9 + rowOffset;
+                double column = cell % 9 + offset, row = 9 - cell / 9 - rowOffset;
                 cv::Point2d center(30 * column + 5 * row + 100, 2 * column - 30 * row + 600);
                 scara::Detection piece;
                 piece.classId = variation == 14 ? -1 : variation % 14;
@@ -43,28 +43,33 @@ int main()
                 if (duplicate) pieces.push_back(piece);
                 const std::string frame = variation == 19 ? "" : "frame";
                 bool sceneClear = variation % 4 != 0;
-                scara::Observation result;
-                for (int repeat = 0; repeat < 3; ++repeat)
-                    scara::Geometry_observe(board, frame.empty() ? frame : frame + std::to_string(repeat), pieces, sceneClear, result);
+                chess::Observation result;
+                scara::Geometry_assign(board, pieces, result, sceneClear && !frame.empty());
                 // 独立预期：合格检测位于0.35格内才占格，重叠标成未知
                 bool observed = (variation < 17 || variation == 18) && sceneClear;
                 bool detected = variation < 14 && variation % 3 != 0;
                 bool onCell = std::hypot(offset, rowOffset) <= .35;
                 std::array<int, scara::Cells> expected;
-                expected.fill(observed && sceneClear ? scara::Empty : scara::Unknown);
+                expected.fill(observed && sceneClear ? -1 : -2);
                 if (observed && detected && onCell)
-                    expected[cell] = duplicate ? scara::Unknown : piece.classId;
+                    expected[cell] = duplicate ? -2 : piece.classId;
                 bool valid = observed && sceneClear && detected && onCell && !duplicate;
-                if (result.valid != valid || result.pieces != expected)
-                {
-                    std::cerr << "Assignment mismatch: cell=" << cell << " offset=" << offset
-                              << " variation=" << variation << '\n';
-                    return 1;
-                }
+                if (result.valid != valid) return 1;
                 add(result.valid);
+                // Convert the shared board to the original digest's class IDs, including empty and unknown.
+                const std::string symbols = "kabnrcpKABNRCP";
                 for (int i = 0; i < scara::Cells; ++i)
                 {
-                    add(static_cast<uint64_t>(result.pieces[i]));
+                    char symbol = result.board[i/scara::Columns][i%scara::Columns];
+                    size_t index = symbols.find(symbol);
+                    if (symbol != '.' && symbol != '?' && index == std::string::npos) return 1;
+                    int id = symbol == '.' ? -1 : symbol == '?' ? -2 : int(index);
+                    if (id != expected[i])
+                    {
+                        std::cerr << "Assignment mismatch: cell=" << cell << " variation=" << variation << '\n';
+                        return 1;
+                    }
+                    add(static_cast<uint64_t>(id));
                 }
                 ++cases;
             }

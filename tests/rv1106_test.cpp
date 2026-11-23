@@ -1,9 +1,9 @@
-// Compile the actual live wrapper, replacing only its external devices/process API.
-#include "app/game_files.hpp"
+// 在桌面测试 RV1106 对接代码，用替身提供相机、NPU、引擎和驱动反馈。
+#include "app/game.hpp"
 #include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
-#include "vision/io.hpp"
+#include <installation.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <poll.h>
 #include <cstring>
@@ -13,7 +13,6 @@
 extern "C" long syscall(long, ...) noexcept;
 #endif
 
-volatile std::sig_atomic_t scara::gameRunning = 1;
 namespace fake
 {
 bool camera = false, npu = false, engine = false, failSearch = false, failModel = false;
@@ -29,25 +28,16 @@ void check(bool value, const char *message)
 }
 } // namespace fake
 
-bool Pikafish::start(const char *)
+bool Pikafish_query(const char *, const chess::Game &, int, const volatile std::sig_atomic_t &,
+                    chess::MoveList &legal, chess::Move &choice)
 {
     fake::check(!fake::camera && !fake::npu, "Engine started while vision still held resources");
-    fake::engine = true;
     fake::events.push_back("engine-open");
-    return true;
-}
-bool Pikafish::legalMoves(const chess::Game &, std::vector<std::string> &out)
-{
-    out = {"a3a4"};
-    error = fake::failSearch ? "fixture error" : "";
+    legal = {{6,0,5,0}};
+    choice = {6,0,5,0};
     return !fake::failSearch;
 }
-bool Pikafish::think(const chess::Game &, int, std::string &out)
-{
-    out = "a3a4";
-    return true;
-}
-bool Pikafish::close()
+bool Pikafish_close()
 {
     fake::engine = false;
     return true;
@@ -55,21 +45,20 @@ bool Pikafish::close()
 
 namespace scara
 {
-void Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &,
-                    const volatile std::sig_atomic_t &running, bool &success)
+bool Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &,
+                    const volatile std::sig_atomic_t &running)
 {
     fake::check(!fake::camera && !fake::npu && !fake::engine, "Motion started before resource cleanup");
-    success = false;
-    if (!running) return;
+    if (!running) return false;
     ++fake::executions;
     fake::receivedSteps = steps;
     if (fake::cancelMotion)
     {
         gameRunning = 0; // 模拟执行过程中收到停止信号，不发送实际命令。
         Motion_stop();
-        return;
+        return false;
     }
-    success = fake::motionSuccess;
+    return fake::motionSuccess;
 }
 bool Motion_stop()
 {
@@ -81,7 +70,7 @@ void Camera_open(const std::string &)
     fake::camera = true;
     fake::events.push_back("camera-open");
 }
-void Camera_read(cv::Mat &image)
+void Camera_read(cv::Mat &image, int)
 {
     fake::check(fake::camera, "Read without camera");
     image = cv::Mat(720, 1280, CV_8UC3, cv::Scalar(100, 100, 100));
@@ -127,7 +116,7 @@ void Vision_decode(const YoloHead[YoloHeads], std::vector<Detection> &pieces)
     pieces = {{13, .9, {100, 100, 20, 20}}};
     fake::events.push_back("decode");
 }
-void Vision_draw(const cv::Mat &source, const std::vector<Detection> &, const cv::Mat &, cv::Mat &preview)
+void Vision_draw(const cv::Mat &source, const std::vector<Detection> &, cv::Mat &preview)
 {
     preview = source.clone();
     fake::events.push_back("draw");
@@ -158,55 +147,52 @@ int main()
         using namespace scara;
         GameConfig config;
         Session session;
-        Match_load("tests/fixtures/game-app/simulation.json", config, session);
+        Setup_game(config, session);
         config.cameraUrl = "fake-stream";
-        config.labelPath = "config/vision/chinese-labels.png";
         config.engineDir = "fake-engine";
-        config.workDir = "output/game-direct-live-wrapper-test";
-        Runtime_open(config, "fake-model");
-        std::string frame, previous, choice;
+        Runtime_open(config, "fake-model", session);
+        std::string frame, previous;
+        chess::Move choice;
         std::vector<Detection> pieces;
-        std::vector<std::string> legal;
-        Vision_observe(session.layout, frame, pieces);
+        chess::MoveList legal;
+        Vision_observe(session.layout, frame, pieces, session.preview);
         fake::check(fake::events ==
                         std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode", "draw"},
                     "Live observation no longer follows the verified order");
-        std::string bytes;
-        readBytes(config.workDir + "/preview.jpg", bytes);
-        auto preview = cv::imdecode(std::vector<unsigned char>(bytes.begin(), bytes.end()), cv::IMREAD_COLOR);
-        fake::check(preview.cols == 2560 && preview.rows == 720, "Preview changed full-frame geometry");
+        fake::check(session.preview.cols == 2560 && session.preview.rows == 720, "Preview changed full-frame geometry");
         previous = frame;
         session.game.humanRed = false;
         Engine_query(session.game, legal, choice);
-        fake::check(choice == "a3a4" && !fake::camera && !fake::npu && !fake::engine,
+        fake::check(choice == chess::Move{6,0,5,0} && !fake::camera && !fake::npu && !fake::engine,
                     "Search retained overlapping resources");
-        Vision_observe(session.layout, frame, pieces);
+        fake::check(legal == chess::MoveList{{6,0,5,0}}, "GUI selected a different numeric move");
+        Vision_observe(session.layout, frame, pieces, session.preview);
         fake::check(frame != previous, "Observation identity was reused after search");
 
         PickStep lift, release;
         lift.action = PickAction::Move;
         lift.axes = ZAxis;
         lift.target[0] = 123;
-        release.action = PickAction::ReleasePulse;
-        release.durationMs = 20;
+        release.action = PickAction::Release;
+        release.durationMs = 0;
         std::vector<PickStep> steps{lift, release};
         bool completed = false;
-        Robot_execute("move", "a3a4", steps, completed);
+        completed = Robot_execute("move", {6,0,5,0}, steps);
         fake::check(completed && fake::executions == 1 && fake::receivedSteps.size() == 2,
                     "Direct execution did not receive the action array or return completion");
         fake::check(fake::receivedSteps[0].target[0] == 123 && fake::receivedSteps[0].axes == ZAxis &&
-                        fake::receivedSteps[1].action == PickAction::ReleasePulse &&
-                        fake::receivedSteps[1].durationMs == 20,
+                        fake::receivedSteps[1].action == PickAction::Release &&
+                        fake::receivedSteps[1].durationMs == 0,
                     "Direct interface changed action units or pulse duration");
         fake::motionSuccess = false;
-        Robot_execute("move", "a3a4", steps, completed);
+        completed = Robot_execute("move", {6,0,5,0}, steps);
         fake::check(!completed, "Failed direct execution became success");
         fake::motionSuccess = true;
         fake::cancelMotion = true;
         bool cancelled = false;
         try
         {
-            Robot_execute("move", "a3a4", steps, completed);
+            completed = Robot_execute("move", {6,0,5,0}, steps);
         }
         catch (const std::exception &)
         {
@@ -216,7 +202,7 @@ int main()
         int executed = fake::executions;
         try
         {
-            Robot_execute("move", "a3a4", steps, completed);
+            completed = Robot_execute("move", {6,0,5,0}, steps);
         }
         catch (const std::exception &)
         {
@@ -248,7 +234,7 @@ int main()
         failed = false;
         try
         {
-            Vision_observe(session.layout, frame, pieces);
+            Vision_observe(session.layout, frame, pieces, session.preview);
         }
         catch (const std::exception &)
         {

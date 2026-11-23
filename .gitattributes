@@ -17,6 +17,8 @@ models/** -text -whitespace
 docs/evidence/** -text -whitespace
 images/J1-20261109-d3b08bf8/** -text -whitespace
 images/common-20261111-41f870bf/** -text -whitespace
+images/common-20261123-9fc6a5de/** -text -whitespace
+bench/*.cmd text eol=crlf
 hardware/motor-driver/netlist.enet -text -whitespace
 # Firmware build IDs hash source bytes; retain recorded line endings.
 firmware/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

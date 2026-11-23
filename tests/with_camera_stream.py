@@ -5,6 +5,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import subprocess
 import threading
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,35 +53,27 @@ def main():
     url = f'http://127.0.0.1:{server.server_port}/stream.mjpg'
     command = [args.executable, url]
     if args.entry:
-        command = [args.executable, 'mock.rknn', url, 'config/vision/chinese-labels.png',
-                   'output/vision-stage-verify/entry.jpg']
+        command = [args.executable, 'mock.rknn', url]
     try:
         if args.entry:
-            # The teaching entry assumes the bundled atlas. Exercise actual draw
-            # failure after inference, rather than its removed startup size gate.
-            for labels in ('missing-labels.png','tests/fixtures/vision/tiny-labels.pgm'):
-                invalid = command.copy()
-                invalid[3] = labels
-                result = subprocess.run(invalid,cwd=ROOT,capture_output=True,text=True,timeout=10)
-                if result.returncode!=1 or 'TEST cleanup: allocations=0 runs=1' not in result.stdout:
-                    raise RuntimeError('Label drawing failure did not release resources: '+result.stderr+result.stdout)
-            unavailable = command.copy()
-            unavailable[2] = url+'/not-a-stream'
-            result = subprocess.run(unavailable,cwd=ROOT,capture_output=True,text=True,timeout=15)
-            if result.returncode!=1 or 'TEST cleanup: allocations=0 runs=0' not in result.stdout:
-                raise RuntimeError('Camera-open failure did not release the model: '+result.stderr+result.stdout)
-            for stage in ('query','allocate','bind','run'):
-                env = dict(os.environ, SCARA_MOCK_FAILURE=stage)
-                result = subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)
-                if result.returncode!=1 or 'TEST cleanup: allocations=0' not in result.stdout:
-                    raise RuntimeError('Application did not release resources after '+stage+': '+result.stderr+result.stdout)
-            result = subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=30)
-            if result.returncode!=0 or 'TEST cleanup: allocations=0 runs=3' not in result.stdout:
-                raise RuntimeError('Continuous entry did not stop cleanly: '+result.stderr+result.stdout)
-            env = dict(os.environ, SCARA_MOCK_CANCEL_INIT='1')
-            result = subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)
-            if result.returncode!=0 or 'TEST cleanup: allocations=0 runs=0' not in result.stdout:
-                raise RuntimeError('Initialization overwrote stop request: '+result.stderr+result.stdout)
+            # 在空目录中运行，只从管道接收 JPEG，故障时仍回收 SDK 资源。
+            with tempfile.TemporaryDirectory() as cwd:
+                def entry(cmd, code, runs, env=None):
+                    result = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, timeout=20)
+                    expected = f'TEST cleanup: allocations=0 runs={runs}'.encode()
+                    if result.returncode != code or expected not in result.stderr:
+                        raise AssertionError((result.returncode, result.stderr[-600:]))
+                    assert not list(Path(cwd).iterdir()), 'Vision wrote files in the working directory'
+                    return result.stdout
+                entry([command[0], command[1], url+'/not-a-stream'], 1, 0)
+                for stage in ('query','allocate','bind','run'):
+                    env = dict(os.environ, SCARA_MOCK_FAILURE=stage)
+                    result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, timeout=15)
+                    assert result.returncode == 1 and b'TEST cleanup: allocations=0' in result.stderr, stage
+                frames = entry(command, 0, 3)
+                assert frames.startswith(b'\xff\xd8') and frames.endswith(b'\xff\xd9')
+                assert frames.count(b'\xff\xd8') == frames.count(b'\xff\xd9') == 3
+                entry(command, 0, 0, dict(os.environ, SCARA_MOCK_CANCEL_INIT='1'))
             return 0
         return subprocess.run(command, cwd=ROOT, timeout=30).returncode
     finally:

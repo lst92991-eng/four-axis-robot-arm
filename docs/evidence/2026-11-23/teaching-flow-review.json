@@ -1,0 +1,265 @@
+{
+  "date": "2026-11-23",
+  "baseline": "Snapshot of the working tree immediately before this teaching-style revision (includes earlier uncommitted changes).",
+  "style_reference": {
+    "path": "docs/evidence/2026-11-13/vision-review-15/reference.json",
+    "nested_archive_sha256": "84b8b1c2fd0b4cdfbdd5d5a5233b4aae37f9a7682cdbe9e205cb894eabc0c1a4"
+  },
+  "classroom_source_nloc": {
+    "files": 22,
+    "before": 2132,
+    "after": 2165,
+    "per_file": [
+      {
+        "path": "app/game.cpp",
+        "before": 284,
+        "after": 287,
+        "before_sha256": "e11f58717b22f4f68ca477d4ea68823b339913517914987cc37d5b115a7981a1",
+        "after_sha256": "23ac8af353277c0bbbd7bcd90831a67eab38dcce6873203de14ee2705c8ea78c"
+      },
+      {
+        "path": "app/game.hpp",
+        "before": 58,
+        "after": 59,
+        "before_sha256": "b37e3976c53aed0ad3d638a1003e08bcad442384683d4f85fdf26fc4d959e458",
+        "after_sha256": "611df128be0243f4709e959597529d8951f77450ea4291c354d4478669eeae09"
+      },
+      {
+        "path": "app/game_live_io.cpp",
+        "before": 189,
+        "after": 189,
+        "before_sha256": "705f2e1319ef2893cab50c209d778c4f52b1a2b4a08fd0ae1ed237c974f1f797",
+        "after_sha256": "ecbda63721adedfe6d02c5c14ecef8e687f242719bc34e358ae4ebe0322535e1"
+      },
+      {
+        "path": "app/game_main.cpp",
+        "before": 79,
+        "after": 66,
+        "before_sha256": "af926ac66f46bb64cfd44f2f22859edc7a65a7b20ed42a0c24e90fb43113d7ec",
+        "after_sha256": "0a8795d3832a11474fcf1755c8ff70a04da9c6b8b1c5348fbc49dea63e827fba"
+      },
+      {
+        "path": "app/runtime.cpp",
+        "before": 111,
+        "after": 123,
+        "before_sha256": "75670067859a4d142f4b47591cafc9ab2827ebdd1208a6e9f45c4e25cd26a8ca",
+        "after_sha256": "9bc8dc4d8c8f3733decffc7166a17c1fed3e4084faadb452a340f95e14ed9387"
+      },
+      {
+        "path": "app/vision_main.cpp",
+        "before": 64,
+        "after": 64,
+        "before_sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075",
+        "after_sha256": "35855a59389daa35aaa54c8e7b956c322c4f99b1253651bcc236b018b8a54075"
+      },
+      {
+        "path": "chess/board.cpp",
+        "before": 228,
+        "after": 235,
+        "before_sha256": "d7b5f6eef41f2696c1c7344ee6301ab3b59e3f2ef8dbff7bc8d2494404d01f29",
+        "after_sha256": "2a4341e01d763e6e84f2a63332d655d1a57166f9ce49591ee1b2edc3ad4bf9fa"
+      },
+      {
+        "path": "chess/board.hpp",
+        "before": 51,
+        "after": 56,
+        "before_sha256": "08237b77204cf66c98f711e03a6606f1305719b16c0cce1c77e9979c48c56e5f",
+        "after_sha256": "87b322ff766b8ce8dbf3b8cf347441396bc9f6877bab79560a02cbc1b953e093"
+      },
+      {
+        "path": "chess/pikafish.cpp",
+        "before": 211,
+        "after": 211,
+        "before_sha256": "e4b6c87ea4f6de3697d69f3a57f241b9f87dc872e57117183fa9e508f0d4a8bb",
+        "after_sha256": "ab6a1e75ef8faecee9fcda64f39ff51c398979e6b7ab6a97eed5ae10771fdfc7"
+      },
+      {
+        "path": "chess/pikafish.hpp",
+        "before": 34,
+        "after": 34,
+        "before_sha256": "36861cc506b91aea3ec49bbeac455ccac59fe7f47c5c5c005ff8c3495eb53ebb",
+        "after_sha256": "c1cbd2263cdbcf86d4e27b6efc129feada0a8b9b7ce770f93c084e90ead0a2a4"
+      },
+      {
+        "path": "common/events.hpp",
+        "before": 33,
+        "after": 33,
+        "before_sha256": "7752233429dd47d75a6009ae8b6d5c1d39faf9f4ba4a8cfa32d5588da0c257f8",
+        "after_sha256": "7752233429dd47d75a6009ae8b6d5c1d39faf9f4ba4a8cfa32d5588da0c257f8"
+      },
+      {
+        "path": "motion/execute.cpp",
+        "before": 97,
+        "after": 99,
+        "before_sha256": "e3927534f8beed7cda5fdf029dba68f90f8399e961b117cec17d3c06c268543c",
+        "after_sha256": "a1379e5775421ab2f7ed598428ac46998fad64b96aba4a2a47c9d8e9d84773be"
+      },
+      {
+        "path": "motion/execute.hpp",
+        "before": 18,
+        "after": 18,
+        "before_sha256": "4eb6650a15b12263148d8dbdc62e50f124e2bb9c60857a448487dfd094f168e0",
+        "after_sha256": "4eb6650a15b12263148d8dbdc62e50f124e2bb9c60857a448487dfd094f168e0"
+      },
+      {
+        "path": "motion/plan.cpp",
+        "before": 102,
+        "after": 108,
+        "before_sha256": "53c811e7eefd9cf20aaf2256499e91c3cead720aed9be9914e185cb155be3e5a",
+        "after_sha256": "748daa96fd05c85eae342d05c74efe550d37265e3a5fb81818041dfe7085acc7"
+      },
+      {
+        "path": "motion/plan.hpp",
+        "before": 69,
+        "after": 69,
+        "before_sha256": "8c3d6090216716bee0ab4046d3e3f4c5383f18ce03f15ac733c6d0e196373ea5",
+        "after_sha256": "8c3d6090216716bee0ab4046d3e3f4c5383f18ce03f15ac733c6d0e196373ea5"
+      },
+      {
+        "path": "vision/capture.cpp",
+        "before": 75,
+        "after": 75,
+        "before_sha256": "5ace4131ee899ca02acae537996f7408c33e207355d84575f4f8ef1d0b8f9cf8",
+        "after_sha256": "5ace4131ee899ca02acae537996f7408c33e207355d84575f4f8ef1d0b8f9cf8"
+      },
+      {
+        "path": "vision/capture.hpp",
+        "before": 9,
+        "after": 9,
+        "before_sha256": "97c113b3b8a057ffacdf0227b6e2ba8d1c9b1777fb48aeaf122e0b2e46499ecd",
+        "after_sha256": "97c113b3b8a057ffacdf0227b6e2ba8d1c9b1777fb48aeaf122e0b2e46499ecd"
+      },
+      {
+        "path": "vision/geometry.cpp",
+        "before": 103,
+        "after": 112,
+        "before_sha256": "5fe5b7b04a4e53a1bed7c14bcaca17decd3749d80ffb512cbda35d4b693a8f2f",
+        "after_sha256": "8f45bf3955d5df4edf68396f75cb7705c5a14c1c7535cfb019fcddd93d5f3460"
+      },
+      {
+        "path": "vision/geometry.hpp",
+        "before": 34,
+        "after": 35,
+        "before_sha256": "709deb6cc04ca6cc2e69684ac53e223c457f4452386fec947fbce4ad2620526f",
+        "after_sha256": "5f7ede3096a903be64cfd3ca21c9fcbf6adb7aaeb47e433bc74d0e55f605cf76"
+      },
+      {
+        "path": "vision/yolo.cpp",
+        "before": 153,
+        "after": 153,
+        "before_sha256": "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45",
+        "after_sha256": "224c53f1d63c718349be52824baca44f98000e91b84f268c6e591de6bc9bec45"
+      },
+      {
+        "path": "vision/yolo.hpp",
+        "before": 38,
+        "after": 38,
+        "before_sha256": "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97",
+        "after_sha256": "300a5560ce14e8d00da10d01fe23fb4b58758db628f7566a1e2c18279d655d97"
+      },
+      {
+        "path": "vision/yolo_npu.cpp",
+        "before": 92,
+        "after": 92,
+        "before_sha256": "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b",
+        "after_sha256": "c64f2ec1703f3b173d76d21c71377e38710459eefb4a7101a8d51b5702fe431b"
+      }
+    ],
+    "unchanged_yolo": true
+  },
+  "verified": {
+    "build": "Windows x64 MSVC, C++17, OpenCV 5.0.0. Classroom executables and USB-CAN field adapter built. Hardware I/O was not exercised.",
+    "ctest": {
+      "passed": 14,
+      "failed": 0,
+      "analytic_affine_cases": 14400,
+      "saved_kinematics_cases": 98
+    },
+    "match_versus_working_baseline": {
+      "scenarios": 22,
+      "identical_action_trace_lines": 606,
+      "all_exit_codes_boards_history_pending_results_and_other_final_status_equal": true,
+      "timestamps_excluded": true,
+      "frame_id_differences": [
+        {
+          "scenario": "motion failure still requires hardware recovery",
+          "old_frame": "30",
+          "new_frame": "27"
+        },
+        {
+          "scenario": "restored board retries without re-parking",
+          "old_frame": "33",
+          "new_frame": "30"
+        }
+      ]
+    },
+    "geometry_and_inverse_kinematics": {
+      "targets": 90,
+      "max_difference_per_output_column_X_mm_Y_mm_J2_deg_J3_deg": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_distance": {
+        "pixel_geometric": 0.0,
+        "base_xy_mm": 0.0,
+        "target_xy_mm": 0.0,
+        "pixel_to_base_max_abs": 0.0
+      },
+      "modified_targets_in_old_layout": [
+        [
+          9,
+          0
+        ]
+      ],
+      "overlay_png_identical": true,
+      "overlay_sha256": "4b7fa23f649df80be459336106c0630b09f634da20c84e45382386e7cc9ed3e8"
+    },
+    "panel": {
+      "simulated": true,
+      "legal_move_http_status": 200,
+      "illegal_move_http_status": 409,
+      "current_and_legacy_status_sent_numeric_stdin": true,
+      "moves_rc": [
+        [
+          [
+            6,
+            0
+          ],
+          [
+            5,
+            0
+          ]
+        ],
+        [
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            4
+          ]
+        ]
+      ],
+      "history": "a3a4 b7e7"
+    },
+    "python": {
+      "run": 73,
+      "passed": 72,
+      "skipped": 1
+    },
+    "vision_replay": {
+      "frames": 16,
+      "detections": 152,
+      "new_accuracy_measurement": false
+    },
+    "bench_offline": [
+      "20-grid90.cmd --plan",
+      "21-pick90.cmd --plan --start 3 4",
+      "30-vision-replay.cmd"
+    ]
+  },
+  "current_status_contract": "legal_rc contains two [row,column] cells per legal move. The panel can import older legal UCI lists. Confirmed history is still recorded in UCI."
+}

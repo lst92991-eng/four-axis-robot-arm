@@ -1,261 +1,217 @@
+// RV1106 通过 UCI 查询皮卡鱼。一轮查询使用同一局面取得合法表和电脑应手。
 #include "pikafish.hpp"
-
 #include <algorithm>
 #include <cerrno>
-#include <charconv>
-#include <csignal>
-#include <fcntl.h>
+#include <chrono>
 #include <poll.h>
+#include <sstream>
 #include <sys/resource.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-//---------引擎初始化区---------
-//启动唯一子进程，完成UCI握手并设置板端线程数和Hash大小
-bool Pikafish::start(const char *engineDir)
+namespace
 {
-    int pair[2]; // 主程序和引擎各持有一端的双向管道。
-    int flags, nullfd;
-    rlimit memory;
-    std::string line;
-    bool ready;
+//---------引擎进程与通信数据区---------
+using Clock = std::chrono::steady_clock;
+// engineFd 是主程序持有的通信端，enginePid 用于退出时回收子进程。
+int engineFd = -1, enginePid = -1;
+// 一次查询共用运行标志、当前阶段的截止时间和未读完的回复文本。
+struct Uci
+{
+    const volatile std::sig_atomic_t &running;
+    Clock::time_point deadline;
+    std::string buffer;
+};
+bool openEngine(const char *directory);
+bool writeText(Uci &io, const std::string &text);
+bool readLine(Uci &io, std::string &line);
+bool handshake(Uci &io, const char *command, const char *reply);
+bool readLegal(Uci &io, chess::MoveList &legal);
 
-    if (!close()) return false;
-    error.clear();
-    if (cancelled && cancelled())
-    {
-        error = "用户取消";
+bool askEngine(Uci &io, const chess::Game &game, int thinkMs, chess::MoveList &legal, chess::Move &best);
+} // namespace
+
+//---------查询入口与结果交接区---------
+bool Pikafish_query(const char *directory, const chess::Game &game, int thinkMs,
+                    const volatile std::sig_atomic_t &running, chess::MoveList &legal, chess::Move &best)
+{
+    legal.clear();
+    best = {};
+    // 先回收上次的引擎进程，再检查 FEN 和历史中的换行符，保证 position 是一条命令。
+    if (!Pikafish_close() || !running || !directory || !*directory) return false;
+    if (game.baseFen.empty() || game.baseFen.find_first_of("\r\n") != std::string::npos ||
+        game.history.find_first_of("\r\n") != std::string::npos) return false;
+    Uci io{running, Clock::now() + std::chrono::seconds(5), {}};
+    bool ok = openEngine(directory) && askEngine(io, game, thinkMs, legal, best);
+    // 子进程已回收且查询成功，合法表和应手才交给对局。
+    if (Pikafish_close() && ok) return true;
+    legal.clear();
+    best = {};
+    return false;
+}
+
+namespace
+{
+//---------一手棋与引擎的对话---------
+bool askEngine(Uci &io, const chess::Game &game, int thinkMs, chess::MoveList &legal, chess::Move &best)
+{
+    // 先用 uciok 确认协议，再设为单线程、4 MiB 哈希表，等引擎回复 readyok。
+    if (!handshake(io, "uci\n", "uciok")) return false;
+    if (!handshake(io, "setoption name Threads value 1\nsetoption name Hash value 4\nisready\n", "readyok"))
         return false;
-    }
-    if (!engineDir || !*engineDir) return fail("引擎目录为空");
-    //主程序保留pair[0]，子进程用pair[1]收命令并返回结果
-    if (socketpair(AF_UNIX, SOCK_STREAM, 0, pair) < 0) return fail("无法创建引擎管道");
-    pid_ = fork();
-    if (pid_ == 0)
+
+    // 局面由起始 FEN 和已确认棋谱组成，本回合只发一次。
+    std::string position = "position fen " + game.baseFen;
+    if (!game.history.empty()) position += " moves " + game.history;
+    io.deadline = Clock::now() + std::chrono::seconds(3);
+    // go perft 1 列出当前所有合法走法，readLegal 把各行转成数字起终点。
+    if (!writeText(io, position + "\ngo perft 1\n") || !readLegal(io, legal)) return false;
+    // 玩家回合只需要高亮可走位置。合法表为空时，交给棋局判负。
+    if (legal.empty() || game.redToMove == game.humanRed) return true;
+
+    // 轮到电脑，读取 bestmove 后的起点和终点。
+    if (thinkMs < 1 || thinkMs > 60000) return false;
+    // 等待 bestmove 的时限包含指定的思考时间和 2 秒通信余量。
+    io.deadline = Clock::now() + std::chrono::milliseconds(thinkMs + 2000);
+    if (!writeText(io, "go movetime " + std::to_string(thinkMs) + "\n")) return false;
+    std::string line;
+    while (readLine(io, line))
     {
-        ::close(pair[0]);
-        // 只限制引擎地址空间，防止板上剩余内存不足时拖垮客户端。
-        memory.rlim_cur = 140000UL * 1024;
-        memory.rlim_max = 140000UL * 1024;
-        if (setrlimit(RLIMIT_AS, &memory) < 0) _exit(126);
-        if (chdir(engineDir) < 0) _exit(126);
-        //引擎按标准输入输出使用UCI，目录中的NNUE随进程加载
-        if (dup2(pair[1], STDIN_FILENO) < 0) _exit(126);
-        if (dup2(pair[1], STDOUT_FILENO) < 0) _exit(126);
-        if (pair[1] > STDERR_FILENO) ::close(pair[1]);
-        nullfd = open("/dev/null", O_WRONLY);
-        if (nullfd < 0 || dup2(nullfd, STDERR_FILENO) < 0) _exit(126);
-        if (nullfd > STDERR_FILENO) ::close(nullfd);
+        std::istringstream reply(line);
+        std::string kind, move;
+        // 回复的第一个词是消息类型，bestmove 后面的第一个走法就是应手。
+        reply >> kind >> move;
+        if (kind == "bestmove") return chess::parseMove(move, best);
+        if (!kind.empty() && kind != "info") return false;
+    }
+    return false;
+}
+
+//---------合法表与握手回复区---------
+// perft 1 为每一手输出一行，例如 a3a4: 1，末行给出总数。
+bool readLegal(Uci &io, chess::MoveList &legal)
+{
+    std::string line;
+    while (readLine(io, line))
+    {
+        if (line.empty()) continue;
+        // 末行的节点总数必须等于前面收到的走法条数。
+        if (line.front() == 'N') return line == "Nodes searched: " + std::to_string(legal.size());
+        chess::Move move;
+        if (line.size() != 7 || line.substr(4) != ": 1" || !chess::parseMove(line.substr(0, 4), move))
+            return false;
+        if (legal.size() == 256 || std::find(legal.begin(), legal.end(), move) != legal.end()) return false;
+        legal.push_back(move);
+    }
+    return false;
+}
+
+// 发送握手命令，逐行跳过引擎自述，直到看到这一步约定的回复。
+bool handshake(Uci &io, const char *command, const char *reply)
+{
+    if (!writeText(io, command)) return false;
+    std::string line;
+    while (readLine(io, line))
+        if (line == reply) return true;
+    return false;
+}
+
+//---------启动进程，与标准输入输出相连---------
+bool openEngine(const char *directory)
+{
+    int ends[2];
+    // 通信对的一端留在主程序，另一端接到引擎的标准输入和输出。
+    if (socketpair(AF_UNIX, SOCK_STREAM, 0, ends) < 0) return false;
+    enginePid = fork();
+    if (enginePid == 0)
+    {
+        ::close(ends[0]);
+        // 在子进程限制地址空间并切到权重目录，再启动该目录中的引擎。
+        rlimit memory{140000UL * 1024, 140000UL * 1024};
+        if (setrlimit(RLIMIT_AS, &memory) < 0 || chdir(directory) < 0) _exit(126);
+        if (dup2(ends[1], STDIN_FILENO) < 0 || dup2(ends[1], STDOUT_FILENO) < 0) _exit(126);
+        if (ends[1] > STDERR_FILENO) ::close(ends[1]);
         execl("./pikafish", "pikafish", static_cast<char *>(nullptr));
         _exit(127);
     }
-    ::close(pair[1]);
-    fd_ = pair[0];
-    if (pid_ < 0) return fail("无法创建引擎子进程");
-    flags = fcntl(fd_, F_GETFL);
-    if (flags < 0 || fcntl(fd_, F_SETFL, flags | O_NONBLOCK) < 0) return fail("无法设置非阻塞管道");
-    deadline_ = Clock::now() + std::chrono::seconds(5);
-    //先收到uciok，再设置资源参数并等待readyok
-    ready = send("uci\n");
-    while (ready && line != "uciok")
-        ready = readLine(line);
-    if (ready) ready = send("setoption name Threads value 1\nsetoption name Hash value 4\nisready\n");
-    line.clear();
-    while (ready && line != "readyok")
-        ready = readLine(line);
-    return ready;
+    // 父进程关闭子进程使用的一端，保留自己的通信描述符。
+    ::close(ends[1]);
+    engineFd = ends[0];
+    // 引擎沉默时每 100 ms 回到主程序，检查取消与本次查询的总时限。
+    timeval tick{0, 100000};
+    return enginePid > 0 && setsockopt(engineFd, SOL_SOCKET, SO_RCVTIMEO, &tick, sizeof(tick)) == 0 &&
+           setsockopt(engineFd, SOL_SOCKET, SO_SNDTIMEO, &tick, sizeof(tick)) == 0;
 }
 
-//---------局面查询区---------
-//发送起始FEN和完整历史，读取当前所有合法走法
-bool Pikafish::legalMoves(const chess::Game &game, std::vector<std::string> &out)
+//---------命令写全，回复逐行读出---------
+// 系统中断或暂时没有数据时，允许在本阶段的截止时间内重试。
+bool retryIO()
 {
-    out.clear();
-    deadline_ = Clock::now() + std::chrono::seconds(3);
-    if (!request(game, "go perft 1")) return false;
-    std::string line;
-    while (readLine(line))
-    {
-        if (line.empty()) continue;
-        if (line.compare(0, 16, "Nodes searched: ") == 0)
-        {
-            //perft深度1的节点数应等于已经读取的合法走法数
-            unsigned count = 0;
-            const char *first = line.data() + 16;
-            const char *last = line.data() + line.size();
-            std::from_chars_result result;
-            result = std::from_chars(first, last, count);
-            if (result.ec != std::errc() || result.ptr != last || count != out.size())
-                return fail("引擎合法走法计数不一致");
-            return true;
-        }
-        std::string move = line.substr(0, 4);
-        chess::Move parsed;
-        //只在引擎数据入口检查格式、数量与重复，棋局直接使用此列表
-        if (line.size() != 7 || line.compare(4, 3, ": 1") != 0 || !chess::parseMove(move, parsed) || out.size() >= 256 ||
-            std::find(out.begin(), out.end(), move) != out.end())
-            return fail("引擎合法走法格式不合法");
-        out.push_back(move);
-    }
-    return false;
+    return errno == EINTR || errno == EAGAIN || errno == EWOULDBLOCK;
 }
 
-//按指定毫秒数搜索，读取bestmove返回的一步走法
-bool Pikafish::think(const chess::Game &game, int timeMs, std::string &best)
+bool writeText(Uci &io, const std::string &text)
 {
-    best.clear();
-    if (timeMs < 1 || timeMs > 60000) return fail("思考时间应为1到60000毫秒");
-    deadline_ = Clock::now() + std::chrono::milliseconds(timeMs + 2000);
-    //保留通信收尾余量，搜索本身的时间仍由movetime指定
-    if (!request(game, "go movetime " + std::to_string(timeMs))) return false;
-    std::string line;
-    while (readLine(line))
-    {
-        if (line.compare(0, 9, "bestmove ") == 0)
-        {
-            //bestmove后的第一个字段是结果，后续ponder字段不参与本回合
-            best = line.substr(9, line.find(' ', 9) - 9);
-            chess::Move parsed;
-            if (!chess::parseMove(best, parsed)) return fail("引擎未返回有效走法");
-            return true;
-        }
-        if (!line.empty() && line.compare(0, 5, "info ") != 0) return fail("引擎搜索输出格式不合法");
-    }
-    return false;
-}
-
-//---------进程收尾区---------
-//请求退出并回收子进程，未回收时保留PID阻止再次启动
-bool Pikafish::close()
-{
-    if (fd_ >= 0)
-    {
-        // 清理不检查取消标志；即使Ctrl-C已经生效，也必须回收唯一引擎。
-        ::send(fd_, "stop\nquit\n", 10, MSG_NOSIGNAL | MSG_DONTWAIT);
-        ::close(fd_);
-        fd_ = -1;
-    }
-    pending_.clear();
-    if (pid_ < 0) return true;
-    for (int attempt = 0; attempt < 80; ++attempt)
-    {
-        //先给quit退出机会，再依次请求终止和强制结束，始终等待进程回收
-        int result = waitpid(pid_, nullptr, WNOHANG);
-        if (result == pid_ || (result < 0 && errno == ECHILD))
-        {
-            pid_ = -1;
-            return true;
-        }
-        if (attempt == 10) kill(pid_, SIGTERM);
-        if (attempt == 30) kill(pid_, SIGKILL);
-        poll(nullptr, 0, 10);
-    }
-    // 保留PID并禁止再次启动，避免未回收时出现两个引擎。
-    error += "；引擎未能及时退出";
-    return false;
-}
-
-//---------命令组装区---------
-//把局面与查询命令连续写入管道，两行使用同一次截止时间
-bool Pikafish::request(const chess::Game &game, const std::string &query)
-{
-    // FEN与历史已经由Game生成；此处只防止破坏UCI的单行命令。
-    if (game.baseFen.empty() || game.baseFen.find_first_of("\r\n") != std::string::npos ||
-        game.history.find_first_of("\r\n") != std::string::npos)
-        return fail("棋局命令为空或包含换行");
-    std::string command = "position fen " + game.baseFen;
-    //以固定起始FEN加完整走法历史描述当前局面，保留重复局面信息
-    if (!game.history.empty()) command += " moves " + game.history;
-    command += '\n';
-    command += query;
-    command += '\n';
-    return send(command);
-}
-
-//---------管道读写区---------
-//处理短写和中断，直至整条命令发送完成
-bool Pikafish::send(const std::string &text)
-{
+    // 一次发送可能只写出部分字节，从 sent 处接着发剩余命令。
     size_t sent = 0;
-    ssize_t written; // 本次实际写出的字节数；小于请求量时继续写剩余部分。
-    while (sent < text.size())
+    while (sent < text.size() && io.running && Clock::now() < io.deadline)
     {
-        if (!wait(POLLOUT)) return false;
-        written = ::send(fd_, text.data() + sent, text.size() - sent, MSG_NOSIGNAL);
-        if (written > 0)
-            sent += size_t(written);
-        else if (written == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
-            return fail("无法向引擎写入命令");
+        ssize_t n = ::send(engineFd, text.data() + sent, text.size() - sent, MSG_NOSIGNAL);
+        if (n > 0) sent += size_t(n);
+        else if (n == 0 || !retryIO()) return false;
     }
-    return true;
+    return sent == text.size();
 }
 
-//保留未取走的字符，每次返回一条完整输出行
-bool Pikafish::readLine(std::string &line)
+bool readLine(Uci &io, std::string &line)
 {
-    size_t end;
-    char buffer[2048];
-    ssize_t received; // 这次读取到的字节数，不一定刚好是一行。
-
-    while (true)
+    char packet[2048];
+    while (io.running && Clock::now() < io.deadline)
     {
-        if (!wait(POLLIN)) return false;
-        end = pending_.find('\n');
+        // 先从缓冲区取一行，换行符后已收到的内容留给下一次读取。
+        size_t end = io.buffer.find('\n');
         if (end != std::string::npos)
         {
-            //取走一行，粘包中剩余的内容留到下一次读取
-            line = pending_.substr(0, end);
-            pending_.erase(0, end + 1);
+            line = io.buffer.substr(0, end);
+            io.buffer.erase(0, end + 1);
             if (!line.empty() && line.back() == '\r') line.pop_back();
             return true;
         }
-        received = recv(fd_, buffer, sizeof(buffer), 0);
-        if (received > 0)
-        {
-            if (pending_.size() + size_t(received) > 16384) return fail("引擎输出行过长");
-            pending_.append(buffer, size_t(received));
-        }
-        else if (received == 0 || (errno != EINTR && errno != EAGAIN && errno != EWOULDBLOCK))
-        {
-            return fail("引擎输出已中断，请检查NNUE和可用内存");
-        }
+        // 还没收齐一行时继续接收，引擎退出或缓冲超限时结束本次读取。
+        ssize_t n = recv(engineFd, packet, sizeof(packet), 0);
+        if (n < 0 && retryIO()) continue;
+        if (n <= 0 || io.buffer.size() + size_t(n) > 16384) return false;
+        io.buffer.append(packet, size_t(n));
     }
+    return false;
 }
+} // namespace
 
-//按单调时钟分段等待，期间响应取消、超时和管道退出
-bool Pikafish::wait(short events)
+//---------引擎退出与回收区---------
+bool Pikafish_close()
 {
-    std::chrono::milliseconds remaining; // 查询截止之前剩余的毫秒数。
-    int waitMs, result;
-    pollfd pipe{};
-
-    while (true)
+    if (engineFd >= 0)
     {
-        //每次等待都核对取消和同一查询的总截止时间
-        if (cancelled && cancelled()) return fail("用户取消");
-        if (fd_ < 0) return fail("引擎尚未启动");
-        remaining = std::chrono::duration_cast<std::chrono::milliseconds>(deadline_ - Clock::now());
-        if (remaining.count() <= 0) return fail("等待引擎超时");
-        if (events == POLLIN && pending_.find('\n') != std::string::npos) return true;
-        waitMs = 100; // 分段等待，让取消请求也有机会被处理。
-        if (remaining.count() < waitMs) waitMs = int(remaining.count());
-        pipe.fd = fd_;
-        pipe.events = events;
-        result = poll(&pipe, 1, waitMs);
-        if (result < 0 && errno != EINTR) return fail("引擎管道轮询失败");
-        if (result > 0)
-        {
-            if (pipe.revents & events) return true;
-            return fail("引擎已退出，请检查程序目录、NNUE和可用内存");
-        }
+        // 发送停止搜索和退出命令，再释放主程序的通信端。
+        ::send(engineFd, "stop\nquit\n", 10, MSG_NOSIGNAL | MSG_DONTWAIT);
+        ::close(engineFd);
+        engineFd = -1;
     }
-}
-
-//记录失败原因并回收进程，调用者收到false后结束本次查询
-bool Pikafish::fail(const std::string &message)
-{
-    error = message;
-    close();
+    if (enginePid < 0) return true;
+    // 先等待子进程自行退出，仍在运行时依次发送终止信号和强制退出信号。
+    for (int attempt = 0; attempt < 80; ++attempt)
+    {
+        int done = waitpid(enginePid, nullptr, WNOHANG);
+        if (done == enginePid || (done < 0 && errno == ECHILD))
+        {
+            enginePid = -1;
+            return true;
+        }
+        if (attempt == 10) kill(enginePid, SIGTERM);
+        if (attempt == 30) kill(enginePid, SIGKILL);
+        poll(nullptr, 0, 10);
+    }
     return false;
 }

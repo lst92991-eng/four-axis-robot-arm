@@ -1,0 +1,38 @@
+# ---------Windows USB-CAN 台架构建区---------
+cmake_minimum_required(VERSION 3.20)
+project(scara_usb_bench LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+find_package(Python3 3.13 COMPONENTS Interpreter Development REQUIRED)
+find_package(OpenCV 5.0.0 EXACT REQUIRED COMPONENTS core imgproc imgcodecs videoio geometry)
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+set(SCARA_WITH_RKNN OFF CACHE BOOL "" FORCE)
+# 从主工程取得同一套棋盘、运动和视觉实现，再构建台架调用的工具。
+add_subdirectory(../.. scara-core)
+add_executable(scara_bench_points ../points.cpp)
+target_link_libraries(scara_bench_points PRIVATE scara_match scara_legacy_site)
+add_executable(scara_bench_vision ../../tests/vision_replay.cpp)
+target_link_libraries(scara_bench_vision PRIVATE scara_vision_core)
+set(cad "${CMAKE_CURRENT_SOURCE_DIR}/../reference/workspace.npz")
+# 把 CAD 采样数据编入 DLL，运行时可直接交给 Python 选择横移路线。
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${cad}")
+file(READ "${cad}" bytes HEX)
+string(REGEX REPLACE "(..)" "0x\\1," bytes "${bytes}")
+file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/scara_cad.hpp" CONTENT "static const unsigned char cadSamples[] = {@bytes@};" @ONLY)
+# USB 对局 DLL 同时链接 C++ 对局、视觉和 Python 回调接口。
+add_library(scara_usb_game SHARED usb_io.cpp)
+target_include_directories(scara_usb_game PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(scara_usb_game PRIVATE scara_match scara_vision_core Python3::Python)
+if(WIN32 AND TARGET opencv_world)
+  foreach(tool scara_usb_game scara_bench_points scara_bench_vision)
+    add_custom_command(TARGET ${tool} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      $<TARGET_FILE:opencv_world> $<TARGET_FILE_DIR:${tool}>)
+  endforeach()
+  get_target_property(world_dll opencv_world IMPORTED_LOCATION_RELEASE)
+  get_filename_component(opencv_bin "${world_dll}" DIRECTORY)
+  if(EXISTS "${opencv_bin}/opencv_videoio_ffmpeg500_64.dll")
+    add_custom_command(TARGET scara_usb_game POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${opencv_bin}/opencv_videoio_ffmpeg500_64.dll" $<TARGET_FILE_DIR:scara_usb_game>)
+  endif()
+endif()

@@ -33,15 +33,17 @@ int main()
                 {
                     chess::Move move{from / 9, from % 9, to / 9, to % 9};
                     chess::Board after;
-                    std::string error;
-                    bool accepted = chess::applyMove(board, red, move, after, error);
+                    bool accepted = chess::validTransfer(board, red, move);
+                    if (accepted)
+                    {
+                        after = board;
+                        chess::movePiece(after, move);
+                    }
                     feed(accepted);
                     if (accepted)
                         for (const auto &row : after)
                             for (char piece : row)
                                 feed(piece);
-                    for (char value : error)
-                        feed(static_cast<unsigned char>(value));
                     feed(0);
                 }
     std::cout << std::hex << digest << '\n';

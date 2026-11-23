@@ -1,3 +1,5 @@
+# ---------RV1106 交叉编译区---------
+# 目标是 Linux ARM，编译命令在开发机上执行。
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
@@ -5,6 +7,7 @@ list(APPEND CMAKE_TRY_COMPILE_PLATFORM_VARIABLES SCARA_TOOLCHAIN_ROOT)
 set(SCARA_PREFIX arm-rockchip830-linux-uclibcgnueabihf)
 set(CMAKE_C_COMPILER "${SCARA_TOOLCHAIN_ROOT}/bin/${SCARA_PREFIX}-gcc")
 set(CMAKE_CXX_COMPILER "${SCARA_TOOLCHAIN_ROOT}/bin/${SCARA_PREFIX}-g++")
+# 头文件和库从板端 sysroot 取，构建工具从开发机环境取。
 set(CMAKE_SYSROOT "${SCARA_TOOLCHAIN_ROOT}/${SCARA_PREFIX}/sysroot")
 set(CMAKE_FIND_ROOT_PATH "${CMAKE_SYSROOT}")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
@@ -12,5 +15,6 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+# 按 Cortex-A7、NEON 和硬浮点 ABI 生成与板端运行环境匹配的目标代码。
 set(CMAKE_C_FLAGS_INIT "-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard")
 set(CMAKE_CXX_FLAGS_INIT "-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard")

@@ -1,0 +1,32 @@
+{
+  "build_id": "9fc6a5de",
+  "app_bytes": 38092,
+  "app_crc32": "7917bf6d",
+  "targets": {
+    "1": {
+      "installed_bytes": 38108,
+      "installed_crc32": "cec4bf12"
+    },
+    "2": {
+      "installed_bytes": 38108,
+      "installed_crc32": "52fe171f"
+    },
+    "3": {
+      "installed_bytes": 38108,
+      "installed_crc32": "26e870e4"
+    },
+    "4": {
+      "installed_bytes": 38108,
+      "installed_crc32": "b1fa4144"
+    }
+  },
+  "parameter_source": "firmware/src/config.c",
+  "files": {
+    "joint-app.elf": "6a6b6ac070334024dd0a580fcf10b56b75905cd9e8887e88965edcd6c8b493d3",
+    "joint-app.ota": "d26b34720fdf9e0d47af73eaa15ad264506890b55614c8ba99919d9b188fe34f",
+    "J1-first-install.hex": "2bdd61a32e09986e5b4b24a4c278e1a1dc82d93945566163244d55390b859211",
+    "J2-first-install.hex": "cfb95dc0f2a065bfff53d5db156f654198f412b29dcd36e2c6cef82c70d299a6",
+    "J3-first-install.hex": "7935b349f3c3cce273ba7d268f3e548d64242db8b58ebf1914f32202d4b77748",
+    "J4-first-install.hex": "f3608aad9a172560437fcc24ba46493df91c9af3d8c77ed89050c786e91090ed"
+  }
+}

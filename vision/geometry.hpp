@@ -1,40 +1,36 @@
-//固定棋盘的初始化、识别归格、目标坐标和检查图
+// 交点用 (行,列) 索引。pixel 为原图像素，xy 为基座毫米。
 #pragma once
+#include "chess/board.hpp"
 #include "yolo.hpp"
-#include <opencv2/core.hpp>
-#include <array>
-#include <string>
 
 namespace scara
 {
-constexpr int Columns = 9, Rows = 10, Cells = Columns * Rows;
+//---------棋盘尺寸与交点数据区---------
+using chess::Rows;
+using chess::Columns;
+constexpr int Cells = Rows * Columns;
 constexpr int ImageWidth = 1280, ImageHeight = 720;
-//类别0～13对应黑方小写、红方大写；另外保留空格与未知格
-constexpr char PieceSymbols[] = "kabnrcpKABNRCP";
-constexpr int Empty = -1, Unknown = -2;
-struct Observation
-{
-    //帧编号、90格类别和连续帧确认结果
-    std::string frameId;
-    std::array<int, Cells> pieces{};
-    bool valid = false;
-};
+
+// 同一印刷交点在相机中的位置和在机械臂基座平面中的位置成对保存。
+struct BoardPoint { cv::Point2d pixel, xy; };
 struct Geometry
 {
-    //像素到基座毫米、像素到逻辑行列的六系数矩阵
-    cv::Matx23d pixelToBase{}, pixelToGrid{};
-    //90个交点的原图像素及基座XY，下标均为行号乘9加列号
-    std::array<cv::Point2d, Cells> pixels{}, targets{};
-    //上一张有效观察及连续相同盘面的帧数
-    Observation previous;
-    int stableFrames = 0;
-    //初始化完成后，90个交点可供识别与走棋使用
+    // 固定后的 90 个交点都按 cell[行][列] 查找。
+    BoardPoint cell[Rows][Columns]{};
+    BoardPoint origin, rowStep, columnStep; // 三点确定的原点、每行位移、每列位移。
+    double assignmentTolerance = .35;      // 允许棋子中心偏离交点的格数。
+    // 两个平面均能确定行列方向且整张表填好后，ready 才置为 true。
     bool ready = false;
 };
-//初始化读一次配置，之后识别和走棋只访问内存
-void Geometry_init(const cv::FileNode &config, Geometry &geometry);
-void Geometry_observe(Geometry &geometry, const std::string &frameId, const std::vector<Detection> &pieces,
-                      bool sceneClear, Observation &result);
-bool Geometry_target(const Geometry &geometry, int column, int row, cv::Point2d &baseMm);
-void Geometry_draw(const cv::Mat &source, const Geometry &geometry, cv::Mat &image);
+
+//---------标定、归格与预览接口区---------
+// 按红左、红右、黑左传入三个实测交点，输出整张坐标表。
+void Geometry_calibrate(BoardPoint redLeft, BoardPoint redRight, BoardPoint blackLeft, Geometry &board);
+// 把同一平面上的位移换算为行、列，保持小数，供归格与盘外位置核对。
+void Geometry_rowCol(cv::Point2d offset, cv::Point2d rowStep, cv::Point2d columnStep, double &row, double &col);
+// 把本帧的检测框归到交点，seen.valid 在此表示这一帧的归格结果可用。
+void Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces, chess::Observation &seen,
+                     bool visible = true);
+// 在 source 的副本上绘制像素交点和行列号，结果写入 image。
+void Geometry_draw(const cv::Mat &source, const Geometry &board, cv::Mat &image);
 } // namespace scara

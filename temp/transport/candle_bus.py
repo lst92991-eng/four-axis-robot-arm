@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+import os
 import sys
 from pathlib import Path
 
@@ -11,7 +12,10 @@ from stepfoc_candlelight import Candlelight, Frame
 class CandleBus:
     # 标定会话已有适配器时直接复用，否则按序列号打开
     def __init__(self, serial='', *, adapter=None):
-        self.adapter = adapter if adapter is not None else Candlelight(serial=serial, fd=True)
+        owner = None
+        if os.name == 'nt':
+            from windows_owner import UsbOwner as owner
+        self.adapter = adapter if adapter is not None else Candlelight(serial=serial, fd=True, owner_factory=owner)
 
     def __enter__(self):
         return self

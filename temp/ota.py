@@ -218,7 +218,7 @@ def main():
         connection = can.Bus(interface="socketcan", channel=args.channel, fd=True)
     with connection as bus:
         if args.action == "update":
-            send_image(bus, can, node, crc, image, args.wait_reset_seconds)
+            send_image(bus, can, *images[0], args.wait_reset_seconds)
         elif args.action == "update-group":
             send_images(bus, can, images, args.wait_reset_seconds)
         else:

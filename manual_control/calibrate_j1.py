@@ -8,6 +8,7 @@ a separate operation.
 import argparse
 from datetime import datetime
 import json
+import os
 from pathlib import Path
 import struct
 import sys
@@ -92,7 +93,10 @@ class Session:
         self.path = out / (self.stamp + f'-j{node}-calibration.jsonl')
         self.log = self.path.open('x', encoding='utf-8', buffering=1)
         try:
-            self.adapter = Candlelight(serial=serial, fd=True)
+            owner = None
+            if os.name == 'nt':
+                from windows_owner import UsbOwner as owner
+            self.adapter = Candlelight(serial=serial, fd=True, owner_factory=owner)
         except BaseException:
             self.log.close()
             raise
@@ -213,6 +217,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--node', type=int, choices=range(1, 5), default=1)
     p.add_argument('--run', action='store_true')
+    p.add_argument('--electrical-only', action='store_true', help='只保存电角记录，结束后不另行写 J1 机械零位')
     p.add_argument('--zero-only', action='store_true', help='仅使用已经保存的电角标定，将当前位置记为机械0度')
     p.add_argument('--current-ma', type=int, default=300)
     p.add_argument('--serial', default='37813482333551062')
@@ -287,7 +292,7 @@ def main():
             2,
             True,
         )
-        if args.node == 1:
+        if args.node == 1 and not args.electrical_only:
             s.command(2, 0)  # Preserve J1's existing mechanical-reference workflow.
             final = s.wait(
                 lambda v: v['configured'] and v['referenced'] and not v['power'] and abs(v['position']) <= 0.1, 2, True

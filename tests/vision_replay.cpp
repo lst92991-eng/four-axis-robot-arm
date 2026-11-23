@@ -1,6 +1,6 @@
-// Offline comparison tool. Recorded tensors are replayed; no NPU or motor is opened.
+// 离线回放保存的原图和 NPU 张量，用正式视觉代码对照 RGB 输入、检测结果与预览图。
 #include "vision/yolo.hpp"
-#include "vision/io.hpp"
+#include "fixture_bytes.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <chrono>
 #include <cmath>
@@ -11,21 +11,18 @@ int main(int argc, char **argv)
 {
   try
   {
+    //---------加载回放清单区---------
     if (argc!=3) throw std::runtime_error("Usage: replay manifest.json output-directory");
     cv::FileStorage manifest;
-    scara::readStorage(argv[1], manifest);
+    manifest.open(argv[1], cv::FileStorage::READ);
     std::filesystem::create_directories(std::filesystem::u8path(argv[2]));
     cv::setNumThreads(1);
-    std::string labelBytes;
-    scara::readBytes("config/vision/chinese-labels.png", labelBytes);
-    auto labels = cv::imdecode(std::vector<uint8_t>(labelBytes.begin(),labelBytes.end()), cv::IMREAD_GRAYSCALE);
-    if (labels.cols!=scara::AtlasWidth || labels.rows!=scara::YoloClasses*scara::LabelHeight)
-      throw std::runtime_error("Invalid label atlas");
     for (auto item : manifest["cases"])
     {
       std::string id = item["id"], imagePath = item["image"], packetPath = item["packet"];
       std::string prefix = std::string(argv[2])+"/"+id;
       std::string bytes;
+      // 按每个样本记录的原图尺寸和 ROI 重建模型输入，再保存 RGB 字节供逐像素对照。
       scara::readBytes(imagePath, bytes);
       auto source = cv::imdecode(std::vector<uint8_t>(bytes.begin(),bytes.end()), cv::IMREAD_COLOR);
       if (source.empty()) throw std::runtime_error("Cannot decode replay image");
@@ -37,17 +34,20 @@ int main(int argc, char **argv)
       scara::writeBytes(prefix+".rgb", {reinterpret_cast<const char *>(input.data), input.total()*input.elemSize()});
       std::vector<scara::Detection> detections;
       double decodeMs = 0;
+      // 带张量包的样本继续解码，只有原图的样本仍可核对预处理结果。
       if (!packetPath.empty())
       {
         std::string packet;
         scara::readBytes(packetPath, packet);
         if (packet.size()<4) throw std::runtime_error("Missing tensor header");
+        // 包首的 4 字节给出元数据长度，随后连续存放三个尺度的输出。
         uint32_t headerSize;
         std::memcpy(&headerSize, packet.data(), 4);
         if (headerSize>packet.size()-4) throw std::runtime_error("Truncated tensor header");
         cv::FileStorage meta(packet.substr(4,headerSize), cv::FileStorage::READ|cv::FileStorage::MEMORY);
         scara::YoloHead heads[3];
         size_t offset = 4+headerSize;
+        //---------三路张量还原区---------
         for (int i=0; i<3; ++i)
         {
           int size = 80 >> i;
@@ -55,10 +55,12 @@ int main(int argc, char **argv)
           auto dims = attr["dims"];
           float scale = attr["scale"];
           int widthStride = attr["w_stride"];
+          // 每路应为单批 NHWC、57 通道、INT8，并带有正的量化比例。
           if (dims.size()!=4 || int(dims[0])!=1 || int(dims[1])!=size || int(dims[2])!=size || int(dims[3])!=57 ||
               int(attr["type"])!=2 || int(attr["fmt"])!=1 || (widthStride!=0 && widthStride!=size) ||
               !std::isfinite(scale) || scale<=0)
             throw std::runtime_error("Unexpected recorded tensor layout");
+          // 按行字节数切出这一段数据，heads 直接引用当前样本的 packet。
           size_t rowBytes = size*57, length = rowBytes*size;
           if (offset+length>packet.size()) throw std::runtime_error("Truncated tensor data");
           heads[i] = {reinterpret_cast<const int8_t *>(packet.data()+offset), rowBytes,
@@ -67,12 +69,15 @@ int main(int argc, char **argv)
         }
         if (offset!=packet.size()) throw std::runtime_error("Unexpected tensor tail");
         scara::Vision_decode(heads,detections);
+        // 在同一份数据上重复解码 100 次，只用来计算平均耗时。
         auto start = std::chrono::steady_clock::now();
         for (int i=0; i<100; ++i) scara::Vision_decode(heads,detections);
         decodeMs = std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()/100;
       }
+      //---------结果与预览导出区---------
+      // 按样本保存类别、得分和原图框四条边，再用同一检测列表绘制预览。
       cv::FileStorage result;
-      scara::memoryStorage(true, result);
+      result.open("memory.json", cv::FileStorage::WRITE | cv::FileStorage::MEMORY | cv::FileStorage::FORMAT_JSON);
       result << "id" << id << "decode_ms" << decodeMs << "detections" << "[";
       for (const auto& d : detections)
         result << "{" << "class_id" << d.classId << "score" << d.confidence << "bbox" << "["
@@ -80,7 +85,7 @@ int main(int argc, char **argv)
       result << "]";
       scara::writeBytes(prefix+".json", result.releaseAndGetString());
       cv::Mat preview;
-      scara::Vision_draw(source,detections,labels,preview);
+      scara::Vision_draw(source,detections,preview);
       std::vector<uint8_t> png;
       cv::imencode(".png", preview, png);
       scara::writeBytes(prefix+".png", {png.begin(),png.end()});

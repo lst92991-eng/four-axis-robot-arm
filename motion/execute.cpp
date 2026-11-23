@@ -1,105 +1,139 @@
-//按动作顺序执行：吸持、释放脉冲、整组三轴运动
+// 按动作表控制三轴和电磁铁，用实测位置与速度确认每段运动完成。
 #include "execute.hpp"
-#include "common/events.hpp"
 #include <cmath>
-#include <iostream>
 #include <stdexcept>
 
 namespace scara
 {
+//---------执行数据区---------
+constexpr double PositionToleranceDeg = .12;
+constexpr double StoppedSpeedDegS = .05;
+
+static bool moveAxes(const PickStep &step, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
+                     DriveFeedback &feedback, AxisValues &commanded);
+static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running,
+                      DriveFeedback &feedback, const AxisValues &position);
+static bool onTarget(const DriveFeedback &feedback, const AxisValues &target);
+
 //---------动作执行区---------
-void Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limits,
-                    const volatile std::sig_atomic_t &running, bool &success)
+bool Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limits,
+                    const volatile std::sig_atomic_t &running)
 {
-    success = false;
+    // 动作表从第一组反馈位置起步，此后用已完成段的 commanded 接续。
     DriveFeedback feedback;
-    if (!running || !Drive_read(feedback)) return;
-    //第一段从反馈起步，后续段沿用上一命令终点，保持参考连续
+    if (!running || !Drive_read(feedback)) return false;
     AxisValues commanded = feedback.position;
+    bool done = true;
     try
     {
         for (const PickStep &step : steps)
         {
-            if (!running || !Drive_read(feedback)) throw std::runtime_error("执行取消或驱动反馈中断");
-            if (step.action == PickAction::Hold)
-            {
-                if (!Drive_release(0)) throw std::runtime_error("吸持状态未确认");
-                continue;
-            }
-            //释放期间保持原位置，驱动端负责脉冲截止，主机等待结束或取消
-            if (step.action == PickAction::ReleasePulse)
-            {
-                if (step.durationMs <= 0 || !Drive_release(step.durationMs) || !Drive_read(feedback))
-                    throw std::runtime_error("释放脉冲未接受或反馈中断");
-                uint64_t startMs = feedback.timeMs;
-                JointReference hold;
-                hold.position = commanded;
-                while (feedback.timeMs - startMs < unsigned(step.durationMs))
-                    if (!running || !Drive_write(hold) || !Drive_read(feedback))
-                        throw std::runtime_error("释放已取消或驱动通信中断");
-                if (!running || !Drive_release(0)) throw std::runtime_error("释放脉冲未结束");
-                continue;
-            }
-            //其余合法动作均为运动；只改选中轴的目标，其余轴继续保持
-            if (step.action != PickAction::Move || !step.axes || (step.axes & ~AllAxes))
-                throw std::runtime_error("联动动作或轴选择无效");
-            AxisValues target = commanded;
-            bool alreadyThere = true;
-            for (int axis = 0; axis < 3; ++axis)
-            {
-                if (std::abs(feedback.velocity[axis]) > .05) throw std::runtime_error("整组尚未停稳");
-                if (step.axes & (1u << axis)) target[axis] = step.target[axis];
-                alreadyThere = alreadyThere && std::abs(feedback.position[axis] - target[axis]) <= .12;
-            }
-            JointTrajectory trajectory;
-            if (!Trajectory_plan(commanded, target, limits, trajectory))
-                throw std::runtime_error("联动目标或限幅无效");
-            if (trajectory.seconds == 0 && alreadyThere) continue;
-
-            //同一时钟生成整组参考，三轴真实到位后累计250ms停稳时间
-            uint64_t startMs = feedback.timeMs, settledSince = 0;
-            bool settling = false;
-            while (true)
-            {
-                if (!running) throw std::runtime_error("联动已取消");
-                double elapsed = (feedback.timeMs - startMs) * .001;
-                if (elapsed > trajectory.seconds + 5) throw std::runtime_error("整组到位超时");
-                JointReference reference;
-                Trajectory_sample(trajectory, elapsed, reference);
-                if (!Drive_write(reference)) throw std::runtime_error("整组三轴参考未接受");
-                bool atGoal = elapsed >= trajectory.seconds;
-                for (int axis = 0; axis < 3; ++axis)
-                    atGoal = atGoal && std::abs(feedback.position[axis] - target[axis]) <= .12 &&
-                             std::abs(feedback.velocity[axis]) <= .05;
-                if (!atGoal) settling = false;
-                if (atGoal && !settling)
-                {
-                    settledSince = feedback.timeMs;
-                    settling = true;
-                }
-                if (settling && feedback.timeMs - settledSince >= 250) break;
-                if (!Drive_read(feedback)) throw std::runtime_error("联动反馈中断");
-            }
-            commanded = target;
+            done = running && Drive_read(feedback);
+            if (!done) break;
+            // Move 运行轨迹，Grip 原地吸持，两种释放动作都关断磁铁。
+            if (step.action == PickAction::Move)
+                done = moveAxes(step, limits, running, feedback, commanded);
+            else if (step.action == PickAction::Grip)
+                done = gripPiece(step.durationMs, running, feedback, commanded);
+            else
+                done = (step.action == PickAction::Release || step.action == PickAction::ReleaseOffBoard) && Drive_magnet(false);
+            if (!done) break;
         }
-        if (!running) throw std::runtime_error("联动已取消");
-        success = true;
     }
-    catch (const std::exception &error)
-    {
-        //先停止整组，再通知显示；回调不会接管控制流程
-        bool stopped = Motion_stop();
-        Event_emit(stopped ? EventType::Motion : EventType::Stop, error.what());
-        if (!stopped) throw std::runtime_error("联动失败且尚未确认整组停止");
-    }
+    catch (const std::exception &) { done = false; }
+    if (done && running) return true;
+    // 任一步中断，都经过同一处关磁铁和停车。只有无法确认停车才向上层报告异常。
+    if (!Motion_stop()) throw std::runtime_error("机械臂停稳未确认");
+    return false;
 }
 
 //---------停止收尾区---------
 bool Motion_stop()
 {
-    //两项均执行，结束释放脉冲并确认J1/J2/J3减速保持
-    bool gripper = Drive_release(0);
+    // 分别请求关断磁铁和减速保持，只有两项都得到确认才返回成功。
+    bool gripper = Drive_magnet(false);
     bool motors = Drive_stop();
     return gripper && motors;
 }
+//---------轨迹执行与终点保持区---------
+static bool moveAxes(const PickStep &step, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
+                     DriveFeedback &feedback, AxisValues &commanded)
+{
+    if (!step.axes || (step.axes & ~AllAxes)) return false;
+    // 沿用上段的命令终点，用本步目标替换选中的轴。
+    AxisValues target = commanded;
+    for (int axis = 0; axis < 3; ++axis)
+    {
+        if (std::abs(feedback.velocity[axis]) > StoppedSpeedDegS) return false;
+        if (step.axes & (1u << axis)) target[axis] = step.target[axis];
+    }
+    // 从上段目标规划到本步目标。零行程且反馈已经到位时直接完成。
+    JointTrajectory trajectory;
+    if (!Trajectory_plan(commanded, target, limits, trajectory)) return false;
+    if (trajectory.seconds == 0 && onTarget(feedback, target)) return true;
+
+    // 走轨迹。按本段已用时间生成三轴参考，一次下发，再取下一周期反馈。
+    uint64_t start = feedback.timeMs;
+    double elapsed = 0;
+    JointReference reference;
+    while (running && elapsed < trajectory.seconds)
+    {
+        Trajectory_sample(trajectory, elapsed, reference);
+        if (!Drive_write(reference) || !Drive_read(feedback)) return false;
+        // 驱动时钟用毫秒，轨迹采样用秒。
+        elapsed = (feedback.timeMs - start) * .001;
+    }
+
+    // 保持目标角。三轴都到位并连续停稳 250 ms 后交给下一步。
+    JointReference hold;
+    hold.position = target;
+    // stableSince 记录连续合格样本的起始时刻，任一轴偏离都会重新计时。
+    uint64_t stableSince = feedback.timeMs;
+    const double holdDeadline = trajectory.seconds + 5;
+    while (running && (feedback.timeMs - start) * .001 <= holdDeadline)
+    {
+        if (!Drive_write(hold)) return false;
+        bool there = onTarget(feedback, target);
+        if (there && feedback.timeMs - stableSince >= 250)
+        {
+            // 反馈已经连续停稳，才把本段终点交给下一段作为起点。
+            commanded = target;
+            return true;
+        }
+        if (!Drive_read(feedback)) return false;
+        // 上个样本有轴偏离，连续停稳从这个新样本起重新计时。
+        if (!there) stableSince = feedback.timeMs;
+    }
+    return false;
+}
+
+//---------定点吸持区---------
+// 吸合后先在原处停留，持续吸持到落点。释放只需关断 H 桥。
+static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running,
+                      DriveFeedback &feedback, const AxisValues &position)
+{
+    if (dwellMs < 0 || !Drive_magnet(true)) return false;
+    // 以驱动反馈的毫秒时间计时，停留期间持续发送当前位置和零速度。
+    const uint64_t start = feedback.timeMs;
+    JointReference hold;
+    hold.position = position;
+    while (feedback.timeMs - start < unsigned(dwellMs))
+        if (!running || !Drive_write(hold) || !Drive_read(feedback))
+            return false;
+    return true;
+}
+
+//---------到位判定区---------
+// 每一轴都要同时满足位置误差与剩余速度要求。
+static bool onTarget(const DriveFeedback &feedback, const AxisValues &target)
+{
+    for (int axis = 0; axis < 3; ++axis)
+    {
+        double error = std::abs(feedback.position[axis] - target[axis]);
+        double speed = std::abs(feedback.velocity[axis]);
+        if (!(error <= PositionToleranceDeg && speed <= StoppedSpeedDegS)) return false;
+    }
+    return true;
+}
+
 } // namespace scara

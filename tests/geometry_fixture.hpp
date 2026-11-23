@@ -1,3 +1,4 @@
+#include "bench/legacy_site.hpp"
 #pragma once
 #include "vision/geometry.hpp"
 
@@ -29,7 +30,7 @@ inline void initialize(const Input &input,scara::Geometry &geometry)
 {
     cv::FileStorage file;
     storage(input,file);
-    scara::Geometry_init(file.root(),geometry);
+    scara::Bench_geometry(file.root(),geometry);
 }
 inline scara::Geometry geometry(const Input &input=fixture::input())
 {

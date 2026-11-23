@@ -1,3 +1,4 @@
+// 执行器接收取放计划，通过驱动读反馈、发三轴参考并控制电磁铁。
 #pragma once
 #include "plan.hpp"
 #include <csignal>
@@ -5,13 +6,12 @@
 
 namespace scara
 {
-// 同步执行动作数组；全部完成且停稳后，才把success写成true。
-// running变0时停止执行并返回false；不得继续下一步或重发整个数组。
-// 正常返回false表示未执行或已停稳的失败；无法确认停止时抛出异常，由主入口收尾。
-void Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limits,
-                    const volatile std::sig_atomic_t &running, bool &success);
+//---------动作执行与停车接口区---------
+// 全部动作完成且停稳才返回 true。运动中断时关断磁铁并停车，停车无法确认时交给上层恢复。
+bool Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limits,
+                    const volatile std::sig_atomic_t &running);
 
-// 普通函数上下文调用，不能放进信号回调；真实确认停稳才返回true。
+// 停车会等待驱动确认，应从普通控制流程调用。
 // 允许初始化前和重复调用，供正常退出及异常清理使用。
 bool Motion_stop();
 
@@ -19,7 +19,7 @@ bool Motion_stop();
 //本结构由实机IO或仿真IO填写，执行器按同一份数据推进动作
 struct DriveFeedback
 {
-    //同一通信周期的J1/J2/J3实际位置和速度
+    // 同一周期的三轴实际角度与角速度，单位为度和度/秒。
     AxisValues position{}, velocity{};
     //主机单调毫秒时间，新反馈对应的新周期
     uint64_t timeMs = 0;
@@ -28,8 +28,8 @@ struct DriveFeedback
 bool Drive_read(DriveFeedback &feedback);
 //整组交付三轴参考，全部接受后返回true
 bool Drive_write(const JointReference &reference);
-//非零值开始指定毫秒的释放脉冲，0结束脉冲并恢复吸持
-bool Drive_release(int durationMs);
+// 正向通电吸持；断电放子。
+bool Drive_magnet(bool on);
 //请求三轴减速保持，确认实际停稳后返回true，超时返回false
 bool Drive_stop();
 } // namespace scara

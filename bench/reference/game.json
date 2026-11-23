@@ -1,0 +1,170 @@
+{
+  "camera_url": "rtsp://192.168.31.123/live/0",
+  "work_directory": "../../output/bench/game-state",
+  "engine_directory": "/userdata/scara-live-match-20261117/engine",
+  "human_red": 1,
+  "red_to_move": 1,
+  "think_ms": 650,
+  "joint_velocity_deg_s": [
+    4800,
+    42,
+    106
+  ],
+  "joint_acceleration_deg_s2": [
+    5700,
+    110,
+    180
+  ],
+  "park_joints_deg": [
+    0.404,
+    -23.939
+  ],
+  "capture_place_mm": [
+    165.15406706485533,
+    -245.16524414593607
+  ],
+  "vision_roi": [
+    370,
+    28,
+    650,
+    600
+  ],
+  "motion_tuning_joints_deg": {
+    "e6": [
+      -23.73473946040691,
+      47.507510521541775
+    ],
+    "g7": [
+      -1.368256496585893,
+      58.71656700868172
+    ],
+    "discard": [
+      6.785348047157399,
+      7.764803488042588
+    ]
+  },
+  "pickup_at_rest_ms": 420,
+  "pickup_recenter_ms": 420,
+  "cad_workspace": {
+    "samples": "workspace.npz",
+    "neutral_shoulder_deg": -92.0,
+    "registration_uncertainty_deg": 2.5,
+    "transfer_shoulder_deg": -85.0,
+    "transfer_speed_deg_s": [
+      18,
+      60
+    ]
+  },
+  "motion_tuning": {
+    "base": [
+      1.65,
+      18,
+      42,
+      106,
+      110,
+      180,
+      75,
+      125,
+      true,
+      0,
+      0,
+      16
+    ],
+    "legs": {
+      "discard_to_g7": [
+        1.65,
+        18,
+        42,
+        110,
+        110,
+        185,
+        75,
+        132,
+        true,
+        0,
+        0,
+        16
+      ],
+      "g7_to_e6": [
+        1.65,
+        18,
+        42,
+        88,
+        110,
+        135,
+        75,
+        100,
+        false,
+        0,
+        0,
+        16
+      ]
+    },
+    "z": {
+      "game_speed_deg_s": 4800,
+      "speed_kp_milli": 1480,
+      "speed_ki_milli": 100000,
+      "voltage_limit_mv": 40000,
+      "acceleration_deg_s2": 5700,
+      "brake_deg_s2": 5200,
+      "descent_brake_deg_s2": 5000,
+      "descent_brake_ki_permille": 950,
+      "release_acceleration_deg_s2": 5700,
+      "z_settle_gain_milli": 24000
+    },
+    "overlap_pickup": true
+  },
+  "points": {
+    "type_id": "opencv-matrix",
+    "rows": 3,
+    "cols": 4,
+    "dt": "d",
+    "data": [
+      447.09289980014006,
+      55.57567622139173,
+      -173.8023129975593,
+      -387.5925717144836,
+      408.1932172990374,
+      553.9950271059687,
+      65.78688259030096,
+      -424.91897760487274,
+      982.6774964405543,
+      96.55278255369922,
+      -134.82560508806856,
+      -133.70063738059653
+    ]
+  },
+  "placement_offsets_mm": [
+    [
+      0,
+      0,
+      1.036,
+      3.044
+    ]
+  ],
+  "frame_id": "shim43-edge-calibration-20261120",
+  "image": "board.jpg",
+  "arm_lengths_mm": [
+    275.0,
+    275.0
+  ],
+  "j2_reference_deg": -53.23,
+  "j3_reference_motor_deg": -76.971,
+  "j2_scale": 0.8,
+  "j3_ratio": 3.0,
+  "j2_sign": 1,
+  "j3_sign": -1,
+  "shoulder_ref_rad": -0.812579750641072,
+  "elbow_ref_rad": -1.513770027184262,
+  "z": {
+    "pickup_deg": -20225.7605,
+    "travel_deg": -18219.66,
+    "operator_estimated_rise_mm": 43,
+    "pickup_gap_mm": 0.2,
+    "release_offset_mm": 0,
+    "clearance_deg": -18219.66,
+    "capture_release_deg": -18686.195
+  },
+  "release_pulse_ms": 20,
+  "note": "2026-11-23 扫描姿态的离线样例。安装实物后使用该台设备的测量值。"
+}

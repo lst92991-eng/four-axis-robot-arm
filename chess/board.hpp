@@ -1,3 +1,4 @@
+// 棋局的数据类型与规则接口，供视觉归格、引擎查询和回合管理共用。
 #pragma once
 
 #include <array>
@@ -7,8 +8,14 @@
 namespace chess
 {
 
-// row=0 是黑方底线；col=0 是红方视角最左列。空位为 '.'，未知为 '?'。
-using Board = std::array<std::array<char, 9>, 10>;
+//---------盘面与走法数据区---------
+// 所有业务坐标都按 (行,列)。行 0 是黑方底线，行 9 是红方底线；列 0–8 从红方视角左到右。
+// 空位为 '.'，未知为 '?'。仅在 UCI 协议与历史棋谱入口使用字母格号。
+constexpr int Rows = 10, Columns = 9;
+// 模型的顺序为将、士、象、马、车、炮、卒。小写是黑方，大写是红方。
+inline const std::string PieceSymbols = "kabnrcpKABNRCP";
+using Board = std::array<std::array<char, Columns>, Rows>;
+// 一手走法由起点和终点两个交点组成，默认的 -1 表示尚未选择。
 struct Move
 {
     int fromRow = -1; // 起点行，从黑方底线起算。
@@ -16,25 +23,32 @@ struct Move
     int toRow = -1;
     int toCol = -1;
 };
+// 合法表按起点和终点的四个下标查找选中的走法。
+bool operator==(const Move &left, const Move &right);
+bool validSquares(const Move &move);
+using MoveList = std::vector<Move>;
+// 一次观测保留 90 格识别结果，供对局与已确认盘面逐格核对。
 struct Observation
 {
     Board board{};
-    //已完成识别归格和不同帧稳定确认，棋局变化由合法走法核对
+    // 归格后表示本帧可用，observe 返回时表示三张不同的新帧已确认相同盘面。
     bool valid = false;
 };
 
+//---------盘面操作区---------
+// 把 32 枚棋子按标准开局写入 board。
 void initialBoard(Board &board);
-bool parseMove(const std::string &text, Move &move);
-bool uci(const Move &move, std::string &text);
-bool validBoard(const Board &board, std::string &error);
-//已确认盘面生成FEN，供引擎读取行棋方和棋子布局
-void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
-//按已经查过合法表的走法更新起点和终点，并核对搬子数据
-bool applyMove(const Board &before, bool redToMove, const Move &move, Board &after, std::string &error);
-//before为已确认盘面，legal来自成功的Pikafish查询；按变化的两格识别人类走法
-bool inferMove(const Board &before, const Observation &after, bool redToMove, const std::vector<std::string> &legal,
-               Move &move, std::string &error);
+// 开局时核对棋子编码、数量上限以及将帅所在的九宫。
+bool validBoard(const Board &board);
+// 外部走法先核对坐标、起点和目标。已确认的走法直接在数组上搬一枚棋子。
+bool validTransfer(const Board &board, bool redToMove, const Move &move);
+void movePiece(Board &board, const Move &move);
+// 用合法走法推演盘面，唯一匹配实盘的一手就是玩家的走法。
+bool inferMove(const Board &before, const Observation &after, const MoveList &legal,
+               Move &move);
 
+//---------棋局结果与历史区---------
+// ReviewRequired 表示暂停并交人工裁定，程序在此结束本轮对弈。
 enum class Result
 {
     Playing,
@@ -54,17 +68,24 @@ struct Game
     Result result = Result::Playing;
     std::string baseFen; // 起始局面，供引擎重放完整历史。
     std::string history; // 已完成走法，按UCI格式保留完整顺序。
-    std::string error;
     //保存每一步完成后的局面，含开局；步数为size()-1，用于重复局面裁定
-    std::vector<std::string> positions;
+    std::vector<Board> positions;
 };
 
+// 核对起始盘面后，保存双方身份并开始一份空棋谱。
 bool Game_reset(Game &game, const Board &board, bool redToMove = true, bool humanRed = true);
 //调用者已确认走法和实际盘面，在这里统一写入历史并换边
-void Game_commit(Game &game, const Board &after, const Move &move);
-// legal须来自成功的Pikafish::legalMoves；无合法走法即负，复杂重复局面交人工裁定。
-bool Game_judge(Game &game, const std::vector<std::string> &legal);
-//上层在允许认输或和棋的阶段提交结果
-bool Game_finish(Game &game, Result outcome);
+void Game_commit(Game &game, const Move &move);
+// 从已确认的上一局面重放棋谱中的一手 UCI 走法。
+bool Game_replay(Game &game, const std::string &text);
+// 无合法走法则本方负，复杂重复局面交人工裁定。
+void Game_judge(Game &game, const MoveList &legal);
+
+//---------引擎和棋谱的格式转换区---------
+// 在 UCI 的四字符走法与两个数字交点之间转换。
+bool parseMove(const std::string &text, Move &move);
+bool uci(const Move &move, std::string &text);
+// 从已确认盘面生成 FEN，供引擎读取行棋方和棋子布局。
+void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
 
 } // namespace chess

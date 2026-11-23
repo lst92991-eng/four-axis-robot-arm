@@ -1,0 +1,153 @@
+{
+  "date": "2026-11-23",
+  "source_base": "1d87805 with the previously verified working-tree teaching refactor",
+  "profile": "Windows x64; C++17; OpenCV 5.0.0; simulation and saved tensors",
+  "scope": "All classroom C++ in app, vision, chess and motion. Bench entries and station generation checked separately.",
+  "effective_lines": {
+    "before": 1824,
+    "after": 1829
+  },
+  "line_counter": "Lizard 1.17.10",
+  "by_directory": {
+    "app": {
+      "files": 6,
+      "counts": {
+        "before": 611,
+        "after": 613
+      },
+      "changed": [
+        "game.cpp",
+        "game_main.cpp",
+        "installation.hpp",
+        "rv1106.cpp",
+        "vision_main.cpp"
+      ]
+    },
+    "vision": {
+      "files": 7,
+      "counts": {
+        "before": 466,
+        "after": 459
+      },
+      "changed": [
+        "capture.cpp",
+        "geometry.hpp",
+        "yolo.cpp",
+        "yolo_npu.cpp"
+      ]
+    },
+    "chess": {
+      "files": 4,
+      "counts": {
+        "before": 432,
+        "after": 433
+      },
+      "changed": [
+        "board.cpp",
+        "board.hpp",
+        "pikafish.cpp"
+      ]
+    },
+    "motion": {
+      "files": 4,
+      "counts": {
+        "before": 315,
+        "after": 324
+      },
+      "changed": [
+        "execute.cpp",
+        "plan.cpp",
+        "plan.hpp"
+      ]
+    }
+  },
+  "ctest": {
+    "passed": 14,
+    "failed": 0
+  },
+  "bench_entries": {
+    "passed": 6,
+    "failed": 0
+  },
+  "match": {
+    "scenarios": 26,
+    "stdout_stderr_exit_codes_identical": true,
+    "trace_events": {
+      "SIM_COMMAND": 104,
+      "SIM_CALL": 61,
+      "SIM_STEP": 459,
+      "SIM_POSE": 61,
+      "SIM_RETURN": 61,
+      "SIM_RESULT": 26,
+      "SIM_NOTICE": 30
+    },
+    "trace_sha256": "1f4efb5ac40ce4fe03c0f2ce3989ea727a4f99c2e1db2b3262ed88ee1104e8e3"
+  },
+  "vision": {
+    "frames": 16,
+    "saved_tensor_frames": 7,
+    "result_count": 152,
+    "identical": [
+      "RGB input",
+      "PNG preview",
+      "classes, scores, boxes"
+    ]
+  },
+  "calibration": {
+    "identical_joint_targets": 90,
+    "plans": {
+      "20-grid90.cmd": {
+        "cells": 90,
+        "horizontal_segments": 93,
+        "park": [
+          0.404,
+          -23.939
+        ]
+      },
+      "21-pick90.cmd": {
+        "cells": 90,
+        "horizontal_segments": 94,
+        "park": [
+          0.404,
+          -23.939
+        ]
+      }
+    }
+  },
+  "site_fixture": "Previously measured historical data, not a newly mounted R13 site",
+  "classroom_lf_sha256": {
+    "app/game.cpp": "92406137dc255e2116a1a6e9aba3713e51160c29626b9fb72f6a6172350b38ca",
+    "app/game.hpp": "900196b8d4a80bc04cf51a2c5ecd019a4260a3950b4e5cb8446537f2234e33d3",
+    "app/game_main.cpp": "dfeaec2feecd43daf02ef27e8ee2683f9748f8fe3a9a50340ad9aba41833b71f",
+    "app/installation.hpp": "5738623894ce938055dc7763c4bddcfa74231d3dcd69a8a1f783495c9bc4cedf",
+    "app/rv1106.cpp": "8feebe1349a231246017f6ed5ddf7cfe2895980d5a224d56b53f9c0434155108",
+    "app/vision_main.cpp": "a282baac666936b4e6f046879032193cd4bb18a61dd039f910daed7d3921ac50",
+    "chess/board.cpp": "b38786a4a7a8115e90084d3fd677aaab2c9e6de1336b07fa4f24dffe6bb9ac5b",
+    "chess/board.hpp": "272f777c576f36f1e14789f70f317a98502fc2a16d13637e7fbb07943fb2c9d2",
+    "chess/pikafish.cpp": "182e88e99c28db80a9c41e64233a1068f157ef30390d96123d0c688547c1c9c6",
+    "chess/pikafish.hpp": "8c4f903afda64d2f2bcebc0627cc3370cb9065a9440f30f7c719c4648cbd5c02",
+    "motion/execute.cpp": "73e6b5ffa7ddd11fa165bcbd5f87cc9aee7eab873e42d0bef85308c3809a6a3b",
+    "motion/execute.hpp": "d7f80fe746c932835cdae5ca50e26b0f504f4c0d09da79d28e2768c8fd10a3ea",
+    "motion/plan.cpp": "885ab34f96d4398a7b6a545116ca798bd2d4b1637142b080be75e92143fac0bb",
+    "motion/plan.hpp": "66fa27ca529936dbeacd53862a51977fa4d5b38e7fa928a54a2eb71e8f583a87",
+    "vision/capture.cpp": "f995b1fc89100681a204ec9cf8ce54bf57a9315389af5fb35f56f265fc876097",
+    "vision/capture.hpp": "75443302a972c501fd6174637f4fa79e319f5ec69a2601ed5ede6d1d805fc52e",
+    "vision/geometry.cpp": "3160d9a13e055f28177d6d86d9f37323de74423f6a774b245063111ae9e23426",
+    "vision/geometry.hpp": "11513f3fa4382cf761ec6cb8bb71b989ac3ef27526446e20d6f294f573b37925",
+    "vision/yolo.cpp": "63bb3bbb579af979f8d77ded25fb26b2074fb0b42dcdd9475c29bd397945623c",
+    "vision/yolo.hpp": "aac3a45b313bfefd67d99d85a46e0b7c221179b0b0d4ec8dc6319ec986bd6dad",
+    "vision/yolo_npu.cpp": "de03c4753eb47af278a98779e8966e38ca0036cbc377df11950e09603f9f2cdc"
+  },
+  "clean_checkout": {
+    "bench_build": true,
+    "generated_installation_header_build": true,
+    "ctest_passed": 14,
+    "bench_entries_passed": 6,
+    "commands": [
+      "15-site",
+      "20-grid90 --plan",
+      "21-pick90 --plan",
+      "30-vision-replay"
+    ]
+  }
+}

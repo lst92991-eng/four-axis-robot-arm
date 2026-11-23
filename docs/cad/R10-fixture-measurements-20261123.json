@@ -1,0 +1,149 @@
+{
+  "source": {
+    "filename": "R10_棋盘固定装配_SolidWorks.zip",
+    "sha256": "53242e765e0eefd32325e43bfce219a8d083716164fe5aef8cc0882740be1ec1",
+    "previous_arm_package": "SCARA_old-new_33mm_chess_2026-10-13.zip",
+    "previous_arm_sha256": "38b0da9257d2162fb9a380510ecea83f5e234bbd8d27476b6daefd3bc0515d21",
+    "configuration": "默认",
+    "rigid_instances_source": "swXmlContents/COMPINSTANCETREE",
+    "geometry_source": "Saved display-mesh vertices and straight edges; old base hole circles fitted from 24 vertices each",
+    "reader": "https://github.com/XRTC5/sldprt-export/tree/31d3b5a9b115d9cbfc19bbf10906fcc29e8e3c57"
+  },
+  "unit": "mm",
+  "frame": "R10 top-level CAD axes. For J2-relative XY, +X is across the frame, +Y is from the board toward the four mounting sleeves; the displayed J2 point is an axis projection.",
+  "zip_members": 12,
+  "part_instances": 54,
+  "part_counts": {
+    "R10_2020_290": 5,
+    "R10_2020_690": 2,
+    "R10_ANGLE_2020_CAST": 14,
+    "R10_ARM_M5X20_WITH_WASHER": 4,
+    "R10_ARM_POSITIONING_SLEEVE": 4,
+    "R10_BOARD_300x300x5": 1,
+    "R10_CLIP_M5X10_WITH_WASHER": 8,
+    "R10_CORNER_CLIP_L": 2,
+    "R10_CORNER_CLIP_R": 2,
+    "R10_M5_TNUT_SLOT6": 12
+  },
+  "frame_outer_length_width_mm": [
+    690.0,
+    330.0
+  ],
+  "board": {
+    "outline_xy_mm": [
+      300.0,
+      300.0
+    ],
+    "body_thickness_mm": 5.0,
+    "highest_mark_above_face_mm": 0.0321,
+    "board_face_center_assembly_xyz_mm": [
+      0.508,
+      -435.216,
+      991.0
+    ],
+    "support_z_assembly_mm": 986.0,
+    "board_face_above_support_mm": 5.0,
+    "file_centerlines_board_x_mm": [
+      -133.333,
+      -100.0,
+      -66.667,
+      -33.333,
+      0.0,
+      33.333,
+      66.667,
+      100.0,
+      133.333
+    ],
+    "rank_centerlines_board_y_mm": [
+      -135.0,
+      -105.0,
+      -75.0,
+      -45.0,
+      -15.0,
+      15.0,
+      45.0,
+      75.0,
+      105.0,
+      135.0
+    ],
+    "file_rank_pitch_mm": [
+      33.3333,
+      30.0
+    ],
+    "printed_grid_extents_mm": [
+      266.667,
+      270.0
+    ]
+  },
+  "corner_clips": {
+    "inside_stop_opening_xy_mm": [
+      300.5,
+      300.5
+    ],
+    "underside_of_lips_above_support_mm": [
+      5.4,
+      5.4,
+      5.4,
+      5.4
+    ],
+    "face_to_lip_clearance_mm": 0.4
+  },
+  "registration": {
+    "j2_axis_assembly_xy_mm": [
+      0.508123,
+      -155.215866
+    ],
+    "mount_group_center_assembly_xy_mm": [
+      0.508,
+      -21.216
+    ],
+    "mount_rectangle_xy_mm": [
+      80.0,
+      120.0
+    ],
+    "sleeve_outer_diameter_mm": 7.8,
+    "sleeve_bore_diameter_mm": 5.3,
+    "old_base_z_min_max_mm": [
+      986.0,
+      1000.0
+    ],
+    "old_base_hole_diameters_mm": [
+      8.0,
+      8.0,
+      8.0,
+      8.0
+    ],
+    "old_hole_to_sleeve_max_xy_error_mm": 6e-06,
+    "board_center_from_j2_xy_mm": [
+      0.0,
+      -280.0
+    ],
+    "mount_center_from_j2_xy_mm": [
+      0.0,
+      134.0
+    ],
+    "board_center_to_mount_group_mm": 414.0,
+    "old_arm_link_lengths_mm": [
+      275.0,
+      275.0
+    ],
+    "grid_radius_from_j2_min_max_mm": [
+      145.0,
+      435.893
+    ]
+  },
+  "comparison": {
+    "previous_sweep_span_8_files_9_ranks_mm": [
+      242.479,
+      256.866
+    ],
+    "previous_product_outer_8files_9ranks_mm": [
+      275,
+      295
+    ],
+    "short_span_mm_if_both_edges_to_grid_centers_are_15_5_mm": 244.0,
+    "r10_minus_that_short_span_mm": 22.667,
+    "as_installed_dimensions": "pending",
+    "field_red_side": "pending"
+  }
+}

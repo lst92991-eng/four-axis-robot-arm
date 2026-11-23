@@ -32,7 +32,7 @@ def main():
         'docs/项目收敛与下棋闭环_2026-11-09.md', 'docs/棋局与视觉接口_2026-11-09.md'))
     files.add(review / 'check_vision.py')
     if args.review.startswith('game-'):
-        files.update(Path(name) for name in ('tools/game_review.py', 'tools/run-game.sh', 'tools/game-preview.html'))
+        files.update(Path(name) for name in ('tools/game_review.py', 'tools/run-game.sh',))
     for folder in (Path('config'), Path('tests'), evidence, review/'round-00/replay',
                    review/'round-00/geometry', current/'replay', current/'geometry'):
         for path in (ROOT / folder).rglob('*'):

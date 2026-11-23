@@ -15,8 +15,8 @@ static cv::Rect Roi, InputArea;
 static double Scale;
 //候选框最低得分，以及去重时使用的交并比阈值
 constexpr float ScoreThreshold = .50f, NmsThreshold = .45f;
-//中文标签宽度和得分背景高度，单位为像素
-constexpr int LabelWidth = 44, ScoreHeight = 16;
+// 类别标签的背景宽高和得分背景的高度，单位像素。
+constexpr int LabelWidth = 44, LabelHeight = 24, ScoreHeight = 16;
 //三路输出各自对应的锚框宽高，单位为模型输入图的像素
 static const cv::Size2f Anchors[YoloHeads][YoloAnchors] = {
     {{10, 13}, {16, 30}, {33, 23}},
@@ -75,21 +75,29 @@ void Vision_prepare(const cv::Mat &bgr, cv::Mat &input)
 void Vision_decode(const YoloHead heads[YoloHeads], std::vector<Detection> &boxes)
 {
     boxes.clear();
-    //候选表和去重表中的位置均为640×640模型输入坐标
-    std::vector<Detection> candidates, selected;
-    //读取三路输出，合并达到得分阈值的候选框
+    // 第一步，从三路输出读出模型坐标下的候选框。
+    std::vector<Detection> candidates;
     for (int i = 0; i < YoloHeads; ++i)
         readCandidates(heads[i], i, candidates);
-    //按得分从高到低选择，重叠框保留其中的高分结果
+
+    // 第二步，按得分保留高分框，同分沿用读取顺序。
+    std::vector<Detection> selected;
     selectCandidates(candidates, selected);
-    //将保留框映射到原图，逐项写出本帧结果
+
+    // 第三步，还原到原图像素坐标，裁掉落在补边里的框。
     for (Detection piece : selected)
         if (restoreBox(piece.bbox)) boxes.push_back(piece);
 }
 
 //---------识别绘制区---------
-void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, const cv::Mat &labels, cv::Mat &result)
+void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, cv::Mat &result)
 {
+    static cv::FontFace font("uni"); // OpenCV 5 内置的中文字体。
+    // 名字按模型的类别编号排列，供预览直接取出相应棋名。
+    static const char *const names[YoloClasses] = {
+        "黑将", "黑士", "黑象", "黑马", "黑车", "黑炮", "黑卒",
+        "红帅", "红仕", "红相", "红马", "红车", "红炮", "红兵"
+    };
     //复制原尺寸画面，后续绘制写入预览图
     result = bgr.clone();
     //绘图边界为整张原图
@@ -98,18 +106,15 @@ void Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &detections, c
     {
         //将检测框转换为整数像素，并裁切到可绘制区域
         cv::Rect box = cv::Rect(piece.bbox) & bounds;
-        if (box.empty()) continue;
+        if (box.empty() || piece.classId < 0 || piece.classId >= YoloClasses) continue;
         //按红黑双方选择显示颜色，画出检测框
         cv::Scalar color = piece.classId < 7 ? cv::Scalar(255, 180, 65) : cv::Scalar(65, 85, 245);
         cv::rectangle(result, box, color, 2);
         //中文标签放在检测框上方，位置限制在图像范围内
         int x = std::clamp(box.x, 0, std::max(0, result.cols - LabelWidth));
         int y = std::clamp(box.y - LabelHeight - 1, 0, std::max(0, result.rows - LabelHeight));
-        cv::Rect label = cv::Rect(x, y, LabelWidth, LabelHeight) & bounds;
-        //先绘制标签背景，再按字图中的非零像素绘制白色文字
-        result(label).setTo(color);
-        cv::Mat glyph = labels(cv::Rect(0, piece.classId * LabelHeight, label.width, label.height));
-        result(label).setTo(cv::Scalar::all(255), glyph);
+        cv::rectangle(result, {x, y, LabelWidth, LabelHeight}, color, cv::FILLED);
+        cv::putText(result, names[piece.classId], {x + 2, y + 19}, cv::Scalar::all(255), font, 18);
         //在检测框底部显示得分，保留两位小数
         int scoreY = std::clamp(box.y + box.height - ScoreHeight, 0, std::max(0, result.rows - ScoreHeight));
         cv::rectangle(result, {x, scoreY, LabelWidth, ScoreHeight}, color, cv::FILLED);
@@ -139,6 +144,7 @@ static void readCandidates(const YoloHead &head, int index, std::vector<Detectio
     for (int row = 0; row < values.rows; ++row)
     {
         const float *prediction = values.ptr<float>(row);
+        // 每行先在 14 类中选最大类别分数，再乘同一行的目标分数，得到最终置信度。
         const float *classScores = prediction + ClassBegin;
         const float *best = std::max_element(classScores, classScores + YoloClasses);
         float score = prediction[ObjectScore] * *best;
@@ -177,7 +183,6 @@ static void selectCandidates(std::vector<Detection> &candidates, std::vector<Det
     {
         return a.confidence > b.confidence;
     });
-    selected.clear();
     for (const Detection &candidate : candidates)
     {
         //逐个与已经保留的高分框比较
@@ -186,6 +191,7 @@ static void selectCandidates(std::vector<Detection> &candidates, std::vector<Det
         {
             double overlap = (kept.bbox & candidate.bbox).area();
             double total = kept.bbox.area() + candidate.bbox.area() - overlap;
+            // 交叠面积除以并集面积就是 IoU。超过阈值时，当前候选让位给已保留的高分框。
             if (overlap / std::max(total, 1e-9) > NmsThreshold)
             {
                 duplicate = true;
