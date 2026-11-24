@@ -14,15 +14,12 @@
   ],
   "commands": [
     {
-      "phase": "prepare",
       "command": "ready"
     },
     {
-      "phase": "confirm_start",
       "command": "ready"
     },
     {
-      "phase": "human",
       "command": "ready",
       "board": [
         "rnbakabnr",
@@ -38,7 +35,6 @@
       ]
     },
     {
-      "phase": "human",
       "command": "ready",
       "board": [
         "rnbakabnr",
@@ -54,7 +50,6 @@
       ]
     },
     {
-      "phase": "human",
       "command": "quit"
     }
   ],
@@ -174,7 +169,7 @@
   ],
   "restorations": [
     {
-      "event": 1,
+      "notice": "请恢复原棋局 (",
       "after_frames": 6,
       "board": [
         "rnbakabnr",

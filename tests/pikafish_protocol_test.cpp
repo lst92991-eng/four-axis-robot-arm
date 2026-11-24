@@ -190,12 +190,9 @@ int main()
 {
     try
     {
-        chess::Board board;
-        chess::initialBoard(board);
-        std::string fen;
         chess::Move best;
-        chess::fen(board, true, 0, 1, fen);
         chess::Game game;
+        const std::string fen = game.baseFen;
         chess::MoveList legal;
         mock::reset();
         mock::interruptSend = true;
@@ -203,11 +200,9 @@ int main()
         check(Pikafish_query("fixture", game, 120, mock::running, legal, best) && legal == chess::MoveList{{6,0,5,0},{6,2,5,2}},
               "Perft decode failed");
         chess::Move human;
-        chess::Observation observed;
         chess::parseMove("a3a4", human);
-        observed.board = game.board;
-        chess::movePiece(observed.board, human);
-        observed.valid = true;
+        chess::Board observed = game.board;
+        chess::movePiece(observed, human);
         check(chess::inferMove(game.board, observed, {{6,0,5,0}}, human) == chess::InferredMove::Legal,
               "Fixture move confirmation failed");
         chess::Game_commit(game, human);

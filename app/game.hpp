@@ -18,9 +18,9 @@ struct Session
     ArmGeometry arm;
     WorkHeights heights;
     JointTarget park;           // 观察位的 J2 反馈角和 J3 电机角，单位度。
-    // 最近一帧的归格盘面。valid 表示连续三张不同的有效画面确认了同一盘面。
-    chess::Observation observed;
-    chess::MoveList legal;           // 本回合引擎给出的合法走法。
+    // 最近一次归格的盘面。连续三张不同的有效帧相同，盘面才算确认。
+    chess::Board observed{};
+    bool observationStable = false;
     // 观察环节比较帧号，统计连续相同的新画面。
     std::string lastFrameId;
     // 被吃棋子的盘外放置点，使用机械臂基座 XY，单位毫米。
@@ -71,10 +71,13 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
 void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &choice);
 // 读取命令成功时写入 command。传入 move 可接收选中的走法。
 bool Command_parse(const std::string &text, Command &command, chess::Move *move = nullptr);
-// 普通输入写入 command。quit 或输入结束时返回 Quit，由主程序统一收尾。
-void Operator_read(const std::string &phase, const std::string &prompt, Command &command, chess::Move *move = nullptr);
+// 确认可进入观察位，再核对相机读到的开局盘面。
+bool Operator_prepare();
+bool Operator_confirmOpening(const chess::Board &initial);
+// 读取输入。传入 move 时，也可接收上位机选中的走法。
+void Operator_read(const std::string &prompt, Command &command, chess::Move *move = nullptr);
 // 执行排好的动作表，返回本次执行结果。落点由调用方另行核盘。
 bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps);
-// 显示端直接读取本次会话，message 只在操作员需要处理问题时填写。
-void Operator_show(const char *phase, const Session &session, const std::string &message = {});
+// 显示盘面和操作提示。只在请玩家选棋时提供可选走法。
+void Operator_show(const Session &session, const std::string &message = {}, const chess::MoveList *choices = nullptr);
 } // namespace scara

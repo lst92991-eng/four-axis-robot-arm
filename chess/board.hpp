@@ -27,13 +27,6 @@ struct Move
 bool operator==(const Move &left, const Move &right);
 bool validSquares(const Move &move);
 using MoveList = std::vector<Move>;
-// 一次观测保留 90 格识别结果，供对局与已确认盘面逐格核对。
-struct Observation
-{
-    Board board{};
-    bool valid = false;
-};
-
 //---------盘面操作区---------
 // 把 32 枚棋子按标准开局写入 board。
 void initialBoard(Board &board);
@@ -48,9 +41,8 @@ enum class InferredMove
     Legal,
     Invalid
 };
-// 用实盘的两处变化确定起终点，找到唯一的合法走法时写入 move。
-InferredMove inferMove(const Board &before, const Observation &after, const MoveList &legal,
-                       Move &move);
+// 用已确认盘面的两处变化确定起终点，找到唯一的合法走法时写入 move。
+InferredMove inferMove(const Board &before, const Board &after, const MoveList &legal, Move &move);
 
 //---------棋局结果与历史区---------
 // ReviewRequired 表示暂停并交人工裁定，程序在此结束本轮对弈。
@@ -90,7 +82,5 @@ void Game_judge(Game &game, const MoveList &legal);
 // 在 UCI 的四字符走法与两个数字交点之间转换。
 bool parseMove(const std::string &text, Move &move);
 bool uci(const Move &move, std::string &text);
-// 从已确认盘面生成 FEN，供引擎读取行棋方和棋子布局。
-void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &text);
 
 } // namespace chess

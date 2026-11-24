@@ -20,8 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BENCH = Path(os.environ.get("SCARA_FIELD_DIR", ROOT / "bench/field")).resolve()
 OPENING = ["rnbakabnr", ".........", ".c.....c.", "p.p.p.p.p", ".........",
            ".........", "P.P.P.P.P", ".C.....C.", ".........", "RNBAKABNR"]
-RECOVERY = {"confirm_start", "vision_recovery", "engine_recovery", "hardware_recovery",
-            "placement_recovery", "restore_board", "human_retry"}
+INPUT_PROMPTS = {"OPENING": "opening", "HUMAN_TURN": "human", "CONFIRM": "confirm"}
 MOVE = re.compile(r"[a-i][0-9][a-i][0-9]")
 
 
@@ -103,10 +102,8 @@ class Match:
                 with self.lock:
                     if line.startswith("MATCH_STATE "):
                         self.update_state(json.loads(line.partition(" ")[2]))
-                        if self.state.get("history") and self.state.get("initial_board"):
-                            self.saved = dict(self.state)
-                        elif self.state.get("phase") == "thinking":
-                            self.saved = None
+                        if self.state.get("initial_board"):
+                            self.saved = dict(self.state) if self.state.get("history") else None
                         if self.state.get("error"):
                             self.detail = self.state["error"]
                         continue
@@ -114,9 +111,8 @@ class Match:
                         self.preview = base64.b64decode(line.partition(" ")[2], validate=True)
                         continue
                     prefix, _, text = line.partition(" ")
-                    key = "human" if prefix == "HUMAN_TURN" else prefix.lower()
-                    if key == "human" or key in RECOVERY:
-                        self.prompt = key
+                    if prefix in INPUT_PROMPTS:
+                        self.prompt = INPUT_PROMPTS[prefix]
                         if self.stopping:
                             try:
                                 self.send("quit")
@@ -131,8 +127,7 @@ class Match:
             self.proc, self.prompt, self.stopping = None, "", False
             if code:
                 self.detail = f"对局已退出（{code}）。{self.detail}"
-            if self.state.get("phase") not in ("finished", "review_required", "error", "stopped"):
-                self.state["phase"] = "error" if code else "stopped"
+                self.state["error"] = self.state.get("error") or self.detail
         proc.stdin.close()
 
     def snapshot(self):
@@ -148,7 +143,7 @@ class Match:
 
     # 玩家点选的两个交点必须属于当前合法表，再以数字行列送进 C++。
     def move(self, source, target):
-        if not self.proc or self.stopping or self.prompt != "human" or self.state.get("phase") != "wait_human":
+        if not self.proc or self.stopping or self.prompt != "human":
             raise ValueError("请等到轮到红方。")
         for cell in (source, target):
             if not isinstance(cell, list) or len(cell) != 2 or any(type(v) is not int for v in cell):
@@ -161,7 +156,7 @@ class Match:
         self.detail = f"已提交红方走法 {tuple(source)} → {tuple(target)}"
 
     def resume(self):
-        if not self.proc or self.stopping or self.prompt not in RECOVERY:
+        if not self.proc or self.stopping or self.prompt not in ("opening", "confirm"):
             raise ValueError("程序没有在等待确认。")
         self.send("")
         self.detail = "正在重新读取实盘。"
@@ -190,14 +185,14 @@ PAGE = """<!doctype html>
 <style>
 *{box-sizing:border-box} body{margin:0;background:#f8f4eb;color:#32241a;font:16px "Microsoft YaHei",sans-serif}
 main{max-width:560px;margin:auto;padding:19px} h1{margin:0 0 5px;font-size:25px}
-#phase{color:#185c36;font-weight:bold} #detail{height:3em;overflow:auto}
+#status{color:#185c36;font-weight:bold} #detail{height:3em;overflow:auto}
 svg{width:100%;display:block;background:#f0d3a2;border-radius:9px;border:1px solid #ad7b4c;touch-action:manipulation}
 .controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
 button{font:inherit;border:1px solid #a67957;background:#fffaf2;color:#30231b;border-radius:6px;padding:7px 12px;cursor:pointer}
 button:disabled{opacity:.42;cursor:default} input{vertical-align:middle} #start{background:#21603d;color:white}
 #history{font:14px Consolas,monospace;overflow-wrap:anywhere} #message{color:#a02b1a;min-height:1.2em}
 </style>
-<main><h1>机械臂象棋 <small id="mock"></small></h1><div id="phase">等待开局</div>
+<main><h1>机械臂象棋 <small id="mock"></small></h1><div id="status">等待开局</div>
 <div id="detail">开局后机械臂会退到观察位。</div>
 <svg id="board" viewBox="0 0 444 491" aria-label="象棋棋盘"></svg>
 <div class="controls">
@@ -207,10 +202,7 @@ button:disabled{opacity:.42;cursor:default} input{vertical-align:middle} #start{
 <script>
 const token = "__TOKEN__";
 const opening = __OPENING__;
-const words = {observing:"正在识别棋盘",thinking:"皮卡鱼正在思考",wait_human:"轮到红方",
- executing:"机械臂正在落子",restore_board:"请复位棋子",placement_recovery:"请检查落子结果",
- vision_recovery:"请恢复相机画面",hardware_recovery:"请检查机械臂",engine_recovery:"请检查引擎",
- finished:"对局已结束",review_required:"等待裁定",error:"对局已中止",stopped:"对局已结束"};
+const results = ["", "红方胜", "黑方胜", "和棋", "等待裁定"];
 const by = id => document.getElementById(id);
 const board = by("board"), glyph = Object.fromEntries(Array.from("kabnrcpKABNRCP",
  (p,i)=>[p,"將士象馬車砲卒帥仕相馬車炮兵"[i]]));
@@ -224,9 +216,9 @@ function node(tag, attrs, text) {
 const sx=c=>34+47*c, sy=r=>34+47*r;
 const sq=(r,c)=>r+","+c;
 const moveText=move=>move.map(p=>"("+p.join(",")+")").join(" → ");
-const ready=()=>state.active && !state.stopping && state.prompt==="human" && state.phase==="wait_human";
+const ready=()=>state.active && !state.stopping && state.prompt==="human";
 function draw() {
- const pieces=state.prompt==="confirm_start" && state.observation_valid ? state.observed : state.board;
+ const pieces=state.prompt==="opening" && state.observation_valid ? state.observed : state.board;
  const rows=Array.isArray(pieces) && pieces.length===10 ? pieces : opening;
  const last=(state.moves_rc||[]).slice(-1).flat().map(p=>p.join(","));
  const goals=(state.legal_rc||[]).filter(m=>m[0].join(",")===selected).map(m=>m[1].join(","));
@@ -258,8 +250,16 @@ function draw() {
 function render() {
  if(!ready()) selected="";
  by("mock").textContent=state.mock?"· 离线": "";
- by("phase").textContent=state.stopping?"正在结束":state.prompt==="confirm_start"?"核对当前盘面":
-   words[state.phase] || (state.active ? "对局启动中" : "等待开局");
+ let status="等待开局";
+ if(state.stopping) status="正在结束";
+ else if(state.prompt==="opening") status="核对当前盘面";
+ else if(state.prompt==="confirm") status="等待操作确认";
+ else if(ready()) status="轮到红方";
+ else if(results[state.result]) status=results[state.result];
+ else if(state.active) status=state.pending?"正在执行或核对落点":"对局运行中";
+ else if(state.error) status="对局已中止";
+ else if(state.board) status="对局已结束";
+ by("status").textContent=status;
  by("detail").textContent=ready() ? (selected
    ? "点击绿色标出的目标格。机械臂会先走红方，再替黑方应手。"
    : "点击要走的红棋，再选绿色目标格。红黑双方都由机械臂落子。")
@@ -273,7 +273,7 @@ function render() {
  } else if(!state.has_preview && image.hasAttribute("src")) {image.removeAttribute("src");delete image.dataset.frame;}
  by("current").disabled=posting||state.active;
  by("resume").disabled=posting||state.stopping||!state.active||!state.prompt||state.prompt==="human";
- by("resume").textContent=state.prompt==="confirm_start"?"确认当前盘面":"恢复后继续";
+ by("resume").textContent=state.prompt==="opening"?"确认当前盘面":"恢复后继续";
  by("stop").disabled=posting||state.stopping||!state.active;
  draw();
 }
@@ -407,14 +407,13 @@ def mock_driver(current):
     if saved:
         board, history = [list(row) for row in saved["board"]], saved["history"].split()
     if current and not saved:
-        print("MATCH_STATE " + json.dumps(dict(simulated=1, phase="observing", observed=OPENING,
-                                             observation_valid=1)), flush=True)
-        print("CONFIRM_START 请确认当前盘面。", flush=True)
+        print("MATCH_STATE " + json.dumps(dict(simulated=1, observed=OPENING, observation_valid=1)), flush=True)
+        print("OPENING 请确认当前盘面。", flush=True)
         if sys.stdin.readline().strip() == "quit":
             return
     while True:
         legal = ["h2f2", "a3a4"] if not history else ["c3c4"]
-        state = dict(simulated=1, board=["".join(row) for row in board], phase="wait_human",
+        state = dict(simulated=1, board=["".join(row) for row in board],
                      history=" ".join(history), initial_board=OPENING, legal_rc=[move_cells(m) for m in legal])
         print("MATCH_STATE " + json.dumps(state), flush=True)
         print("HUMAN_TURN 离线演示", flush=True)

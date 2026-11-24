@@ -16,10 +16,10 @@ static cv::FileStorage script;
 static chess::Board world;
 static size_t commandIndex = 0, executionIndex = 0;
 static unsigned frameNumber = 0;
-static std::string visiblePhase;
-// 记录上一条可见提示和恢复所经过的帧数，决定何时更换场景中的实盘。
+static std::string lastMessage;
+// 人看到提示后，场景在指定帧数之后更新实盘。
 static size_t restorationIndex = 0;
-static unsigned eventSerial = 0, consumedEvent = 0, restorationFrames = 0;
+static int restorationFrames = 0;
 static std::vector<bool> queryUsed;
 static std::string offGrid;
 //仿真驱动使用虚拟通信时钟，仍运行正式Motion_execute的联动调度
@@ -54,24 +54,30 @@ void Runtime_open(const GameConfig &config, const std::string &, Session &sessio
     std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
 }
 
-// 测试端观察同一份内存盘面。只在进程退出时把最终结果送到测试管道。
-void Operator_show(const char *phase, const Session &s, const std::string &message)
+// 记录实际提示。场景可以指定看到哪条提示后动手复位。
+void Operator_show(const Session &, const std::string &message, const chess::MoveList *)
 {
-    std::string name = phase;
-    if (!message.empty() || name == "restored")
-    {
-        visiblePhase = name;
-        ++eventSerial;
-        std::cout << "SIM_NOTICE " << phase << ' ' << message << '\n';
-    }
-    if (name != "finished" && name != "stopped" && name != "error" && name != "review_required") return;
-    std::cout << "SIM_RESULT\t" << name << '\t' << int(s.game.result) << '\t' << s.pending
-              << '\t' << s.observed.valid << '\t' << s.lastFrameId << '\t' << s.game.history << '\t';
-    // 先输出记谱盘面，再输出最后一次观察，回归程序分别核对这两个结果。
-    for (const auto &row : s.game.board) std::cout.write(row.data(), row.size());
+    lastMessage = message;
+    if (message.empty()) return;
+    std::cout << "SIM_NOTICE " << message << '\n';
+
+    auto restorations = script["restorations"];
+    if (restorationFrames || restorationIndex >= restorations.size()) return;
+    auto restoration = restorations[int(restorationIndex)];
+    std::string notice = restoration["notice"];
+    if (!notice.empty() && message.compare(0, notice.size(), notice) == 0)
+        restorationFrames = int(restoration["after_frames"]);
+}
+
+// 对局完全退出后，核对记谱盘面、观察盘面以及最后的提示。
+static void printResult(const Session &session)
+{
+    std::cout << "SIM_RESULT\t" << int(session.game.result) << '\t' << session.pending
+              << '\t' << session.observationStable << '\t' << session.lastFrameId << '\t' << session.game.history << '\t';
+    for (const auto &row : session.game.board) std::cout.write(row.data(), row.size());
     std::cout << '\t';
-    for (const auto &row : s.observed.board) std::cout.write(row.data(), row.size());
-    std::cout << '\t' << message << '\n';
+    for (const auto &row : session.observed) std::cout.write(row.data(), row.size());
+    std::cout << '\t' << lastMessage << '\n';
 }
 
 //仿真没有相机，主入口停止回调仍使用相同的Camera_stop接口
@@ -119,18 +125,11 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         gameRunning = 0;
         return;
     }
-    //模拟人看到事件提示后恢复棋盘，应用仍需三张新图才能确认
-    cv::FileNode restorations = script["restorations"];
-    if (restorationIndex < restorations.size() && eventSerial != consumedEvent)
+    // 更新相机看到的棋子，正式对局仍需连续新帧确认。
+    if (restorationFrames > 0 && --restorationFrames == 0)
     {
-        cv::FileNode item = restorations[int(restorationIndex)];
-        if (std::string(item["phase"]) == visiblePhase && ++restorationFrames >= unsigned(int(item["after_frames"])))
-        {
-            readBoard(item["board"]);
-            ++restorationIndex;
-            consumedEvent = eventSerial;
-            restorationFrames = 0;
-        }
+        readBoard(script["restorations"][int(restorationIndex)]["board"]);
+        ++restorationIndex;
     }
     const std::string &symbols = chess::PieceSymbols;
     //场景中的棋子中心，原图像素
@@ -198,7 +197,7 @@ void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &
 }
 
 //---------预置交互区---------
-void Operator_read(const std::string &phase, const std::string &, Command &result, chess::Move *move)
+void Operator_read(const std::string &prompt, Command &result, chess::Move *move)
 {
     cv::FileNode commands = script["commands"];
     cv::FileNode command;
@@ -207,17 +206,33 @@ void Operator_read(const std::string &phase, const std::string &, Command &resul
     result = Command::Quit;
     if (commandIndex < commands.size())
     {
-        // 依次消费预置输入，核对当前等待阶段，再解析命令或应用人工摆盘。
+        // 依次消费预置输入。有摆盘操作时先更新相机看到的棋子。
         command = commands[int(commandIndex)];
         ++commandIndex;
-        if ((std::string)command["phase"] != phase) throw std::runtime_error("仿真进入了意外的交互阶段：" + phase);
         if (!command["board"].empty()) readBoard(command["board"]);
         command["command"] >> name;
         if (!Command_parse(name, result, move)) throw std::runtime_error("未知仿真命令");
-        //离线检查用交互记录确认实际进入的等待与恢复分支
-        std::cout << "SIM_COMMAND " << phase << ' ' << name << '\n';
+        std::cout << "SIM_COMMAND\t" << prompt << '\t' << name << '\n';
     }
     if (result == Command::Quit) gameRunning = 0;
+}
+
+bool Operator_prepare()
+{
+    while (gameRunning)
+    {
+        Command command;
+        Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。", command);
+        if (command == Command::Ready) return gameRunning;
+    }
+    return false;
+}
+
+bool Operator_confirmOpening(const chess::Board &)
+{
+    Command command;
+    Operator_read("核对开局盘面，回车确认。输入 quit 退出。", command);
+    return command == Command::Ready;
 }
 
 //---------仿真机械执行区---------
@@ -293,7 +308,9 @@ int main(int argc, char **argv)
             scenario = (dir / std::filesystem::u8path(std::string(input["simulation_file"]))).u8string();
         }
         if (!scara::script.open(scenario, cv::FileStorage::READ)) return 2;
-        return scara::Match_run(config, session, "");
+        int result = scara::Match_run(config, session, "");
+        scara::printResult(session);
+        return result;
     }
     catch (const std::exception &error)
     {

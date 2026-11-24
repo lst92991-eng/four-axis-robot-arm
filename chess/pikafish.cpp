@@ -72,7 +72,6 @@ bool askEngine(Uci &io, const chess::Game &game, int thinkMs, chess::MoveList &l
     if (legal.empty() || game.redToMove == game.humanRed) return true;
 
     // 轮到电脑，读取 bestmove 后的起点和终点。
-    if (thinkMs < 1 || thinkMs > 60000) return false;
     // 等待 bestmove 的时限包含指定的思考时间和 2 秒通信余量。
     io.deadline = Clock::now() + std::chrono::milliseconds(thinkMs + 2000);
     if (!writeText(io, "go movetime " + std::to_string(thinkMs) + "\n")) return false;

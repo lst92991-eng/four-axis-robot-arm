@@ -226,8 +226,16 @@ int main()
         fake::check(failed && !fake::camera && !fake::npu, "Partially opened model was not released");
         fake::keyboard = "unknown\nready\n";
         Command command;
-        Operator_read("human", "fixture", command);
+        Operator_read("fixture", command);
         fake::check(command == Command::Ready, "Console command parsing failed");
+        fake::keyboard = "draw\nready\n";
+        fake::check(Operator_prepare(), "Console preparation did not wait for confirmation");
+        fake::keyboard = "ready\n";
+        fake::check(Operator_confirmOpening(session.observed), "Console opening confirmation did not read the operator input");
+        fake::keyboard = "draw\n";
+        fake::check(!Operator_confirmOpening(session.observed) && gameRunning, "Draw approved the opening");
+        fake::keyboard = "quit\n";
+        fake::check(!Operator_confirmOpening(session.observed) && !gameRunning, "Opening quit did not stop the game");
         //退出命令和EOF均由输入入口设置停止标志，机械收尾仍交给主程序
         for (const char *input : {"quit\n", ""})
         {
@@ -235,7 +243,7 @@ int main()
             fake::eof = fake::keyboard.empty();
             gameRunning = 1;
             int beforeStop = fake::stops;
-            Operator_read("human", "exit fixture", command);
+            Operator_read("exit fixture", command);
             fake::check(command == Command::Quit && !gameRunning && fake::stops == beforeStop,
                         "Quit/EOF did not leave through nonblocking input shutdown");
         }

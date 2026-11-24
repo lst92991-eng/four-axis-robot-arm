@@ -5,6 +5,8 @@
 
 namespace chess
 {
+static void startFen(const Board &board, bool redToMove, std::string &result);
+
 //---------初始化区---------
 //填写标准开局，行0为黑方底线
 void initialBoard(Board &board)
@@ -32,7 +34,7 @@ void initialBoard(Board &board)
 Game::Game()
 {
     initialBoard(board);
-    fen(board, redToMove, 0, 1, baseFen);
+    startFen(board, redToMove, baseFen);
     positions = {board};
 }
 
@@ -46,7 +48,7 @@ bool Game_reset(Game &game, const Board &board, bool redToMove, bool humanRed)
     game.result = Result::Playing;
     game.history.clear();
     // 起始 FEN 留给引擎回放，positions 的第一项是这局的起始盘面。
-    fen(game.board, redToMove, 0, 1, game.baseFen);
+    startFen(game.board, redToMove, game.baseFen);
     game.positions = {board};
     return true;
 }
@@ -131,17 +133,15 @@ void movePiece(Board &board, const Move &move)
 }
 
 // 实盘只有起点变空、终点变为所走棋子时，才能推断出一手棋。
-InferredMove inferMove(const Board &before, const Observation &after, const MoveList &legal,
-                       Move &move)
+InferredMove inferMove(const Board &before, const Board &after, const MoveList &legal, Move &move)
 {
     move = {};
-    if (!after.valid) return InferredMove::Invalid;
 
     Move candidate;
     for (int row = 0; row < Rows; ++row)
         for (int col = 0; col < Columns; ++col)
         {
-            char piece = after.board[row][col];
+            char piece = after[row][col];
             if (before[row][col] == piece) continue;
             if (piece == '.')
             {
@@ -161,8 +161,7 @@ InferredMove inferMove(const Board &before, const Observation &after, const Move
 
     // 吃子时终点原有棋子被覆盖，观察到的新棋子仍须与起点原棋子一致。
     char piece = before[candidate.fromRow][candidate.fromCol];
-    if (PieceSymbols.find(piece) == std::string::npos || after.board[candidate.toRow][candidate.toCol] != piece)
-        return InferredMove::Invalid;
+    if (after[candidate.toRow][candidate.toCol] != piece) return InferredMove::Invalid;
     if (std::count(legal.begin(), legal.end(), candidate) != 1) return InferredMove::Invalid;
 
     move = candidate;
@@ -243,8 +242,8 @@ bool uci(const Move &move, std::string &text)
     return true;
 }
 
-//将已确认的90格压缩成FEN，附上行棋方与回合计数
-void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::string &result)
+// 开局 FEN 只记录起始盘面和行棋方，随后由 UCI moves 交付棋谱。
+static void startFen(const Board &board, bool redToMove, std::string &result)
 {
     result.clear();
     //FEN逐行输出，连续空格压缩为一个数字
@@ -270,11 +269,7 @@ void fen(const Board &board, bool redToMove, int halfmoves, int fullmove, std::s
         if (empty) result += char('0' + empty);
         if (row + 1 < Rows) result += '/';
     }
-    result += redToMove ? " w - - " : " b - - ";
-    //引擎需要行棋方和计数；完整历史在请求时另外追加
-    result += std::to_string(halfmoves);
-    result += ' ';
-    result += std::to_string(fullmove);
+    result += redToMove ? " w - - 0 1" : " b - - 0 1";
 }
 
 } // namespace chess

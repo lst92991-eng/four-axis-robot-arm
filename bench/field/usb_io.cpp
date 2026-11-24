@@ -264,40 +264,66 @@ void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &
 }
 
 //---------面板输出与输入区---------
-// Python 直接取得两张盘面和数字走法。图像走独立的字节回调。
-void Operator_show(const char *phase, const Session &s, const std::string &message)
+// 盘面按行展开为 90 个字符，交给 Python 显示或核对。
+static std::string boardText(const chess::Board &board)
 {
-    std::string board, observed;
-    // 正式盘面和观测盘面都按行展开，各用 90 个字符交给显示端。
-    for (int row = 0; row < Rows; ++row)
-    {
-        board.append(s.game.board[row].data(), Columns);
-        observed.append(s.observed.board[row].data(), Columns);
-    }
-    auto legal = require(PyList_New(0));
-    // 等待玩家选棋时，把每手合法走法写成两组（行,列），供面板高亮目标。
-    if (std::strcmp(phase, "wait_human") == 0)
-        for (const chess::Move &m : s.legal)
-        {
-            auto item = require(Py_BuildValue("((ii)(ii))", m.fromRow, m.fromCol, m.toRow, m.toCol));
-            if (PyList_Append(legal.get(), item.get()) < 0) require(nullptr);
-        }
-    require(PyObject_CallMethod(field, "state", "ssssssiiiO", phase, message.c_str(), s.lastFrameId.c_str(),
-                                s.game.history.c_str(), board.c_str(), observed.c_str(), int(s.game.result),
-                                int(s.pending), int(s.observed.valid), legal.get()));
+    std::string text;
+    for (const auto &row : board) text.append(row.data(), Columns);
+    return text;
 }
 
-void Operator_read(const std::string &phase, const std::string &prompt, Command &command, chess::Move *move)
+// Python 直接取得盘面。玩家选棋时再交付数字合法表。
+void Operator_show(const Session &s, const std::string &message, const chess::MoveList *choices)
 {
-    PyObject *value = PyObject_CallMethod(field, "command", "ss", phase.c_str(), prompt.c_str());
+    std::string board = boardText(s.game.board);
+    std::string observed = boardText(s.observed);
+    auto legal = require(PyList_New(choices ? choices->size() : 0));
+    if (choices)
+        for (size_t i = 0; i < choices->size(); ++i)
+        {
+            const chess::Move &m = (*choices)[i];
+            auto item = require(Py_BuildValue("((ii)(ii))", m.fromRow, m.fromCol, m.toRow, m.toCol));
+            PyList_SET_ITEM(legal.get(), i, item.release());
+        }
+    require(PyObject_CallMethod(field, "state", "sssssiiiO", message.c_str(), s.lastFrameId.c_str(),
+                                s.game.history.c_str(), board.c_str(), observed.c_str(), int(s.game.result),
+                                int(s.pending), int(s.observationStable), legal.get()));
+}
+
+// 输入结束或被打断时，由对局统一收尾。
+static Ref operatorReply(PyObject *value)
+{
     if (!value && (PyErr_ExceptionMatches(PyExc_EOFError) || PyErr_ExceptionMatches(PyExc_KeyboardInterrupt)))
     {
         PyErr_Clear();
-        command = Command::Quit;
         gameRunning = 0;
+        return {};
+    }
+    return require(value);
+}
+
+bool Operator_prepare()
+{
+    // Windows 台架开局由操作者从面板或命令行启动。
+    return gameRunning;
+}
+
+bool Operator_confirmOpening(const chess::Board &initial)
+{
+    std::string observed = boardText(initial);
+    auto answer = operatorReply(PyObject_CallMethod(field, "confirm_opening", "s", observed.c_str()));
+    if (answer.get() == Py_None) gameRunning = 0;
+    return answer.get() == Py_True;
+}
+
+void Operator_read(const std::string &prompt, Command &command, chess::Move *move)
+{
+    auto answer = operatorReply(PyObject_CallMethod(field, "command", "si", prompt.c_str(), int(move != nullptr)));
+    if (!answer)
+    {
+        command = Command::Quit;
         return;
     }
-    auto answer = require(value);
     const char *text = PyUnicode_AsUTF8(answer.get());
     if (!text) require(nullptr);
     if (!Command_parse(text, command, move)) throw std::runtime_error("未识别的终端命令");

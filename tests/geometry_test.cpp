@@ -18,7 +18,7 @@ void rejects(const fixture::Input &input)
     bool failed = false;
     try { fixture::initialize(input, geometry); }
     catch (const std::exception &) { failed = true; }
-    check(failed && !geometry.ready, "Invalid initialization kept a usable layout");
+    check(failed, "Invalid calibration did not stop initialization");
     check(geometry.cell[0][0].xy == cv::Point2d(), "Failed setup reused an old target");
 }
 void calibrationTests()
@@ -29,7 +29,6 @@ void calibrationTests()
     cv::FileStorage legacy;
     fixture::storage(fixture::input(model),legacy);
     Bench_geometry(legacy.root(),geometry,&legacyMatrix);
-    check(geometry.ready,"Three-point initialization failed");
     check(cv::norm(legacyMatrix-model,cv::NORM_INF)<1e-10,"Six coefficients differ");
     auto bad=fixture::input(); bad.points=bad.points.rowRange(0,2).clone(); rejects(bad);
     bad=fixture::input(); bad.points=bad.points.colRange(0,3).clone(); rejects(bad);
@@ -68,19 +67,18 @@ void observationTests()
     cv::Point2d center = geometry.cell[4][3].pixel + cv::Point2d(5,-3);
     cv::Point2d fixedTarget = geometry.cell[4][3].xy;
     Detection piece{12,.9,{center.x-12,center.y-12,24,24}};
-    chess::Observation result;
-    Geometry_assign(geometry, {piece}, result);
-    check(result.valid && result.board[4][3]=='C' && result.board[0][0]=='.', "Single frame assignment failed");
+    chess::Board result;
+    bool valid = Geometry_assign(geometry, {piece}, result);
+    check(valid && result[4][3]=='C' && result[0][0]=='.', "Single frame assignment failed");
     check(geometry.cell[4][3].xy == fixedTarget, "Off-center piece changed the fixed target");
-    Geometry_assign(geometry, {piece,piece}, result);
-    check(!result.valid && result.board[4][3]=='?', "Duplicate detection accepted");
-    Geometry_assign(geometry, {piece}, result, false);
-    check(!result.valid && result.board[4][3]=='?', "Occlusion exposed a usable observation");
+    valid = Geometry_assign(geometry, {piece,piece}, result);
+    check(!valid && result[4][3]=='?', "Duplicate detection accepted");
+    valid = Geometry_assign(geometry, {piece}, result, false);
+    check(!valid && result[4][3]=='?', "Occlusion exposed a usable observation");
     piece.bbox.x += 48;
-    Geometry_assign(geometry, {piece}, result);
-    check(!result.valid, "Off-grid center accepted");
-    Geometry_assign(geometry, {}, result);
-    check(result.valid && result.board[4][3]=='.', "Empty board retained stale pieces");
+    check(!Geometry_assign(geometry, {piece}, result), "Off-grid center accepted");
+    valid = Geometry_assign(geometry, {}, result);
+    check(valid && result[4][3]=='.', "Empty board retained stale pieces");
 }
 void placementOffsetTests()
 {

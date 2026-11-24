@@ -139,7 +139,7 @@ void Bench_load(const std::string &path, GameConfig &config, Session &session)
     std::filesystem::path configDirectory;
     std::string layoutPath, armPath, heightsPath;
 
-    for (auto &row : session.observed.board)
+    for (auto &row : session.observed)
         row.fill('?');
     if (!file.open(path, cv::FileStorage::READ)) throw std::runtime_error("无法打开现场配置 " + path);
     configDirectory = std::filesystem::u8path(path).parent_path();

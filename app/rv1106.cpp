@@ -3,7 +3,6 @@
 #include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
-#include <cstring>
 #include <iostream>
 #include <poll.h>
 #include <unistd.h>
@@ -78,20 +77,37 @@ void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &
 }
 
 //---------终端显示区---------
-void Operator_show(const char *phase, const Session &session, const std::string &message)
+static void printBoard(const chess::Board &board)
+{
+    for (const auto &row : board) std::cout << std::string(row.begin(), row.end()) << '\n';
+}
+
+void Operator_show(const Session &session, const std::string &message, const chess::MoveList *choices)
 {
     if (!message.empty()) std::cout << message << '\n';
-    bool opening = std::strcmp(phase, "confirm_start") == 0;
-    if (opening || std::strcmp(phase, "wait_human") == 0 || std::strcmp(phase, "finished") == 0)
-    {
-        // 确认开局时看相机刚读到的盘面，选棋和终局时看已确认的棋局。
-        const chess::Board &board = opening ? session.observed.board : session.game.board;
-        for (const auto &row : board) std::cout << std::string(row.begin(), row.end()) << '\n';
-    }
+    if (choices || session.game.result != chess::Result::Playing) printBoard(session.game.board);
 }
 
 //---------终端输入区---------
-void Operator_read(const std::string &, const std::string &prompt, Command &command, chess::Move *move)
+bool Operator_prepare()
+{
+    Command command;
+    do
+    {
+        Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。", command);
+    } while (gameRunning && command != Command::Ready);
+    return gameRunning;
+}
+
+bool Operator_confirmOpening(const chess::Board &initial)
+{
+    printBoard(initial);
+    Command command;
+    Operator_read("核对开局盘面，回车确认。输入 quit 退出。", command);
+    return command == Command::Ready;
+}
+
+void Operator_read(const std::string &prompt, Command &command, chess::Move *move)
 {
     //按回车之前输入的命令文本
     std::string line;

@@ -19,8 +19,6 @@ struct Geometry
     BoardPoint cell[Rows][Columns]{};
     BoardPoint origin, rowStep, columnStep; // 三点确定的原点、每行位移、每列位移。
     double assignmentTolerance = .35;      // 允许棋子中心偏离交点的格数。
-    // 两个平面均能确定行列方向且整张表填好后，ready 才置为 true。
-    bool ready = false;
 };
 
 //---------标定、归格与预览接口区---------
@@ -28,8 +26,8 @@ struct Geometry
 void Geometry_calibrate(BoardPoint redLeft, BoardPoint redRight, BoardPoint blackLeft, Geometry &board);
 // 把同一平面上的位移换算为行、列，保持小数，供归格与盘外位置核对。
 void Geometry_rowCol(cv::Point2d offset, cv::Point2d rowStep, cv::Point2d columnStep, double &row, double &col);
-// 把本帧的检测框归到交点，seen.valid 在此表示这一帧的归格结果可用。
-void Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces, chess::Observation &seen,
+// 标定成功后将本帧归格到 seen，返回这一帧的归格结果是否可用。
+bool Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces, chess::Board &seen,
                      bool visible = true);
 // 在 source 的副本上绘制像素交点和行列号，结果写入 image。
 void Geometry_draw(const cv::Mat &source, const Geometry &board, cv::Mat &image);

@@ -273,7 +273,6 @@ def compiled_config(site):
 class Bench:
     def __init__(self, config, current_position=False, checkpoint=None, self_play=0):
         self.config = config
-        self.latest = {}
         self.initial_board = (checkpoint or {}).get('initial_board')
         cad = self.config.get('cad_workspace')
         self.workspace = None
@@ -315,15 +314,13 @@ class Bench:
         self.expected = self.saved['board'] if self.saved else self.config.get('starting_board', START_BOARD)
 
     # 把 C++ 传来的两串 90 格拆成十行，连同帧号、棋谱、走法和执行状态推给面板。
-    def state(self, phase, message, frame, history, board, observed, result, pending, valid, legal):
+    def state(self, message, frame, history, board, observed, result, pending, valid, legal):
         rows = [board[i:i+9] for i in range(0,90,9)]
         seen = [observed[i:i+9] for i in range(0,90,9)]
-        if self.initial_board is None and phase == 'thinking' and not history:
-            self.initial_board = rows
-        self.latest = dict(phase=phase, error=message, frame_id=frame, history=history, board=rows,
-                           observed=seen, result=result, pending=pending, observation_valid=valid,
-                           simulated=0, legal_rc=legal, initial_board=self.initial_board)
-        print('MATCH_STATE ' + json.dumps(self.latest, ensure_ascii=False), flush=True)
+        state = dict(error=message, frame_id=frame, history=history, board=rows,
+                     observed=seen, result=result, pending=pending, observation_valid=valid,
+                     simulated=0, legal_rc=legal, initial_board=self.initial_board)
+        print('MATCH_STATE ' + json.dumps(state, ensure_ascii=False), flush=True)
 
     def preview(self, jpeg):
         print('MATCH_PREVIEW ' + base64.b64encode(jpeg).decode('ascii'), flush=True)
@@ -407,6 +404,10 @@ class Bench:
 
     # ---------皮卡鱼与操作员输入区---------
     def engine(self, fen, history, search):
+        # 引擎收到的 FEN 来自已确认的开局。面板接续本局时需要还原这十行。
+        if self.initial_board is None:
+            self.initial_board = [''.join('.' * int(piece) if piece.isdigit() else piece for piece in row)
+                                  for row in fen.split(' ', 1)[0].split('/')]
         try:
             if self.self_play:
                 plies = len(history.split())
@@ -478,38 +479,35 @@ class Bench:
             finally:
                 engine.close()
 
-    # 根据 C++ 正在等待的阶段，决定核对开局、返回面板输入还是使用自对弈应手。
-    def command(self, phase, prompt):
-        if phase == 'prepare':
-            return ''
-        if phase == 'confirm_start':
-            if self.current_position:
-                print('CONFIRM_START 核对上位机盘面与实体棋盘一致，再确认开局。', flush=True)
-                return input().strip().lower()
-            observed = self.latest['observed']
-            self.start_checks += 1
-            expected = self.expected
-            if observed == expected:
-                print('BOARD_CONFIRMED ' + (self.resume_history() or 'opening 32'), flush=True)
-                return ''
-            changed = [f'({r},{c}) {piece}->{observed[r][c]}'
-                       for r, row in enumerate(expected) for c, piece in enumerate(row) if observed[r][c] != piece]
-            print('OPENING_DIFFERENCE ' + ' '.join(changed), flush=True)
-            if self.start_checks >= 6:
-                raise RuntimeError('实拍开局盘面仍有差异：' + ' '.join(changed))
-            return 'draw'  # Match_start reads another observation for any non-Ready result.
-        if phase == 'human':
-            if self.self_play:
-                return self.auto_choice or 'quit'
-            print('HUMAN_TURN ' + prompt, flush=True)
-        else:
-            print(phase.upper() + ' ' + prompt, flush=True)
-            if self.self_play:
-                return 'quit'
-        try:
-            return input().strip().lower()
-        except EOFError:
-            return 'quit'
+    # 当前盘面由用户核对。标准开局和续局对照本次要求的棋盘。
+    def confirm_opening(self, observed):
+        if self.current_position:
+            print('OPENING 核对上位机盘面与实体棋盘一致，再确认开局。', flush=True)
+            answer = input().strip().lower()
+            if answer == 'quit':
+                return None
+            if answer in ('', 'ready'):
+                return True
+            if answer in ('resign', 'draw'):
+                return False
+            raise RuntimeError('未识别的终端命令')
+        seen = [observed[i:i+9] for i in range(0,90,9)]
+        self.start_checks += 1
+        if seen == self.expected:
+            print('BOARD_CONFIRMED ' + (self.resume_history() or 'opening 32'), flush=True)
+            return True
+        changed = [f'({r},{c}) {piece}->{seen[r][c]}'
+                   for r, row in enumerate(self.expected) for c, piece in enumerate(row) if seen[r][c] != piece]
+        print('OPENING_DIFFERENCE ' + ' '.join(changed), flush=True)
+        if self.start_checks >= 6:
+            raise RuntimeError('实拍开局盘面仍有差异：' + ' '.join(changed))
+        return False
+
+    def command(self, prompt, choosing_move):
+        if self.self_play:
+            return (self.auto_choice or 'quit') if choosing_move else 'quit'
+        print(('HUMAN_TURN ' if choosing_move else 'CONFIRM ') + prompt, flush=True)
+        return input().strip().lower()
 
     # ---------吸持与反馈区---------
     def poll_bridge(self):

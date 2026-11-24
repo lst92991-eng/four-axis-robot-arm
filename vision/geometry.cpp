@@ -31,7 +31,6 @@ void Geometry_calibrate(BoardPoint redLeft, BoardPoint redRight, BoardPoint blac
             point.pixel = blackLeft.pixel + row * board.rowStep.pixel + col * board.columnStep.pixel;
             point.xy = blackLeft.xy + row * board.rowStep.xy + col * board.columnStep.xy;
         }
-    board.ready = true;
 }
 
 //---------把相对原点的位移换算成行、列---------
@@ -44,13 +43,13 @@ void Geometry_rowCol(cv::Point2d offset, cv::Point2d rowStep, cv::Point2d column
 }
 
 //---------将这一帧的棋子填进棋盘---------
-void Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces, chess::Observation &seen, bool visible)
+bool Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces, chess::Board &seen, bool visible)
 {
-    // 清空上一帧的观测。可读时先把各格置空，标定无效或画面不可见时全盘记为未知。
-    seen.valid = board.ready && visible;
-    for (auto &rank : seen.board) rank.fill(seen.valid ? '.' : '?');
-    if (!seen.valid) return;
+    // 可读时先把各格置空，画面不可见时全盘记为未知。
+    for (auto &rank : seen) rank.fill(visible ? '.' : '?');
+    if (!visible) return false;
 
+    bool valid = true;
     cv::Rect2d image(0, 0, ImageWidth, ImageHeight), grid(0, 0, Columns, Rows);
     for (const Detection &piece : pieces)
     {
@@ -68,18 +67,19 @@ void Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces
         double distance = std::hypot(row - nearest.y, col - nearest.x);
         if (!detected || !grid.contains(nearest) || distance > board.assignmentTolerance)
         {
-            seen.valid = false;
+            valid = false;
             continue;
         }
         // 一个交点只能放一枚棋子。两个检测落到同一格时，该格记为未知。
-        char &square = seen.board[int(nearest.y)][int(nearest.x)];
+        char &square = seen[int(nearest.y)][int(nearest.x)];
         if (square == '.') square = chess::PieceSymbols[piece.classId];
         else
         {
             square = '?';
-            seen.valid = false;
+            valid = false;
         }
     }
+    return valid;
 }
 
 //---------在原图上画出交点---------
@@ -87,7 +87,6 @@ void Geometry_draw(const cv::Mat &source, const Geometry &board, cv::Mat &image)
 {
     // 在原图副本上画标记，识别所用的原图仍可继续使用。
     image = source.clone();
-    if (!board.ready) return;
     for (int row = 0; row < Rows; ++row)
         for (int col = 0; col < Columns; ++col)
         {

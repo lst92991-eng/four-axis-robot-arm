@@ -67,10 +67,10 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, place
                                 capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=8)
         assert result.returncode == exit_code, (name, result.returncode, result.stdout[-2000:], result.stderr)
         line = next(line for line in result.stdout.splitlines() if line.startswith('SIM_RESULT\t'))
-        _, phase, outcome, pending, valid, frame, moves, board, seen, message = line.split('\t', 9)
+        _, outcome, pending, valid, frame, moves, board, seen, message = line.split('\t', 8)
         assert len(board) == len(seen) == 90 and not (work/'runtime').exists()
         rows = lambda value: [value[i:i+9] for i in range(0,90,9)]
-        state = dict(simulated=1, phase=phase, result=int(outcome), pending=int(pending), observation_valid=int(valid),
+        state = dict(simulated=1, result=int(outcome), pending=int(pending), observation_valid=int(valid),
                      frame_id=frame, history=moves, board=rows(board), observed=rows(seen), error=message)
         assert state['simulated'] == 1, name
         assert state['history'] == (BASE['expected_history'] if history is None else history), (name, state)
@@ -114,14 +114,14 @@ assert capture[7] != executions[2]['steps'][7]
 case = copy.deepcopy(BASE)
 after_human_capture = case['commands'][3]['board']
 case['commands'][2:4] = [
-    dict(phase='human', command='a3a2'),
-    dict(phase='human', command='6,0 5,0'),
-    dict(phase='human', command='a4a5'),
+    dict(command='a3a2'),
+    dict(command='6,0 5,0'),
+    dict(command='a4a5'),
 ]
 case['executions'].insert(1, dict(purpose='move', move='a3a4', success=1, board=AFTER_HUMAN))
 case['executions'].insert(3, dict(purpose='move', move='a4a5', success=1, board=after_human_capture))
 state, executions, output = run('panel plays both sides, rejects illegal selection and handles a capture', case, calls=5)
-assert 'SIM_NOTICE illegal_move' in output and state['pending'] == 0
+assert 'SIM_NOTICE 这步不合法，请重新选棋。' in output and state['pending'] == 0
 assert [execution['move'] for execution in executions[1:]] == ['a3a4', 'a6a5', 'a4a5', 'a9a5']
 assert len(executions[3]['steps']) == 15
 
@@ -132,17 +132,17 @@ rows = [list(row) for row in swapped]
 rows[7][1], rows[9][1] = rows[9][1], rows[7][1]
 swapped = [''.join(row) for row in rows]
 case['queries'][1]['board_after_think'] = swapped
-case['restorations'] = [dict(phase='restore_board', after_frames=6, board=AFTER_HUMAN)]
+case['restorations'] = [dict(notice='请恢复原棋局 (', after_frames=6, board=AFTER_HUMAN)]
 _, _, output = run('swap while thinking restores before moving', case)
 assert '(7,1)' in output and '(9,1)' in output
-event_at = output.index('SIM_NOTICE restore_board')
-assert output.index('SIM_NOTICE restored', event_at) < output.index('SIM_CALL move a6a5', event_at)
+event_at = output.index('SIM_NOTICE 请恢复原棋局')
+assert output.index('SIM_NOTICE 原棋局已恢复。', event_at) < output.index('SIM_CALL move a6a5', event_at)
 
 case = copy.deepcopy(BASE)
 missing = AFTER_HUMAN.copy()
 row = list(missing[9]); row[4] = '.'; missing[9] = ''.join(row)
 case['queries'][1]['board_after_think'] = missing
-case['restorations'] = [dict(phase='restore_board', after_frames=3, board=AFTER_HUMAN)]
+case['restorations'] = [dict(notice='请恢复原棋局 (', after_frames=3, board=AFTER_HUMAN)]
 _, _, output = run('missing king is a board event rather than victory', case)
 assert '(9,4)' in output
 
@@ -150,49 +150,49 @@ case = copy.deepcopy(BASE)
 case['queries'][1]['board_after_think'] = swapped
 case['cancel_after_frames'] = 30
 state, _, _ = run('unrestored board never starts robot movement', case, 'a3a4', calls=1)
-assert state['pending'] == 0 and state['phase'] == 'stopped'
+assert state['pending'] == 0 and state['result'] == 0 and not state['error']
 
 case = copy.deepcopy(BASE)
 case['commands'][2]['board'] = swapped
-case['commands'].insert(3,dict(phase='human',command='ready',board=AFTER_HUMAN))
-case['restorations']=[dict(phase='illegal_move',after_frames=3,board=INITIAL)]
+case['commands'].insert(3,dict(command='ready',board=AFTER_HUMAN))
+case['restorations']=[dict(notice='请恢复原棋局后重新走棋。',after_frames=3,board=INITIAL)]
 _, _, output = run('illegal human change restores before next attempt',case)
-assert 'SIM_NOTICE illegal_move' in output
+assert 'SIM_NOTICE 请恢复原棋局后重新走棋。' in output
 
 case = copy.deepcopy(BASE)
 retry = copy.deepcopy(case['executions'][1])
 case['executions'][1].update(success=0, board=AFTER_HUMAN)
 case['executions'][2:2] = [dict(purpose='prepare', move='', success=1), retry]
-case['commands'].insert(3, dict(phase='hardware_recovery', command='ready', board=AFTER_HUMAN))
+case['commands'].insert(3, dict(command='ready', board=AFTER_HUMAN))
 _, _, output = run('motion failure still requires hardware recovery', case, calls=5)
-assert 'SIM_COMMAND hardware_recovery ready' in output
+assert 'SIM_COMMAND\t处理报错、清空吸头并恢复驱动后回车。程序将回观察位并核对原棋局。\tready' in output
 assert output.count('SIM_CALL move a6a5') == 2
 
 case = copy.deepcopy(BASE)
 retry = copy.deepcopy(case['executions'][1])
 case['executions'][1]['board'] = AFTER_HUMAN
 case['executions'].insert(2, retry)
-case['commands'].insert(3, dict(phase='placement_recovery', command='ready', board=AFTER_HUMAN))
+case['commands'].insert(3, dict(command='ready', board=AFTER_HUMAN))
 _, _, output = run('restored board retries without re-parking', case, calls=4)
 assert output.count('SIM_CALL prepare') == 1 and output.count('SIM_CALL move a6a5') == 2
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['board'] = AFTER_HUMAN
-case['commands'].insert(3, dict(phase='placement_recovery', command='ready', board=AFTER_ROBOT))
+case['commands'].insert(3, dict(command='ready', board=AFTER_ROBOT))
 _, _, output = run('visually corrected placement commits without repeating movement', case)
-assert 'SIM_COMMAND placement_recovery ready' in output
-assert 'SIM_COMMAND hardware_recovery' not in output and output.count('SIM_CALL move a6a5') == 1
+assert 'SIM_COMMAND\t修正落点后回车。若摆回走棋前的局面，回车后重走。\tready' in output
+assert output.count('SIM_CALL prepare') == 1 and output.count('SIM_CALL move a6a5') == 1
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['board'] = AFTER_HUMAN
-case['commands'].insert(3, dict(phase='placement_recovery', command='quit'))
+case['commands'].insert(3, dict(command='quit'))
 state, _, output = run('quit during placement recovery does not retry the move', case, 'a3a4', calls=2)
-assert state['pending'] == 1 and state['phase'] == 'stopped'
-assert 'SIM_NOTICE restored' not in output
+assert state['pending'] == 1 and state['result'] == 0 and not state['error']
+assert 'SIM_NOTICE 原棋局已恢复' not in output
 
 case = copy.deepcopy(BASE)
 case['executions'][1]['off_grid'] = 'i0'
-case['restorations'] = [dict(phase='unclear', after_frames=1, board=AFTER_ROBOT)]
+case['restorations'] = [dict(notice='棋子偏离格点或受遮挡，请检查实盘。', after_frames=1, board=AFTER_ROBOT)]
 _, _, output = run('off-grid rook recheck continues once centered', case)
 assert '(9,8)' in output and output.count('SIM_CALL move a6a5') == 1
 
@@ -201,23 +201,23 @@ case['cancel_after_frames'] = 18
 state, _, output = run('persistent off-grid rook cannot commit or restart movement', case, 'a3a4', calls=2)
 # 归格未检测到该棋子，显示保持原帧的空位，并用稳定状态区分未经确认的观察。
 assert state['pending'] == 1 and state['observation_valid'] == 0 and state['observed'][9][8] == '.'
-assert 'SIM_NOTICE unclear 棋子偏离格点或受遮挡，请检查实盘。 (9,8)' in output
+assert 'SIM_NOTICE 棋子偏离格点或受遮挡，请检查实盘。 (9,8)' in output
 
 case=copy.deepcopy(BASE)
 case['executions'][1].update(success=0,board=AFTER_HUMAN)
-case['commands'].insert(3,dict(phase='hardware_recovery',command='quit'))
+case['commands'].insert(3,dict(command='quit'))
 state,_,_=run('quit preserves the last confirmed history',case,'a3a4',calls=2)
 assert state['pending']==1
 
 case=copy.deepcopy(BASE)
 case['queries'][1]['fail_once']=1
-case['commands'].insert(3,dict(phase='engine_recovery',command='ready'))
+case['commands'].insert(3,dict(command='ready'))
 _,_,output=run('engine failure is an event and retries the same turn',case)
-assert 'SIM_NOTICE engine_recovery' in output
+assert 'SIM_NOTICE 仿真引擎暂时不可用' in output
 
 case=copy.deepcopy(BASE)
 case['queries'][1]['fail']=1
-case['commands'].insert(3,dict(phase='engine_recovery',command='quit'))
+case['commands'].insert(3,dict(command='quit'))
 state,_,_=run('engine cannot be mistaken for an empty legal list',case,'a3a4',calls=1)
 assert state['result']==0
 
@@ -233,25 +233,25 @@ assert state['result']==2
 
 case=copy.deepcopy(BASE)
 case['executions'][0]['success']=0
-case['commands'].insert(1,dict(phase='hardware_recovery',command='quit'))
+case['commands'].insert(1,dict(command='quit'))
 run('preparation failure cannot start a game',case,'',calls=1)
 
 case=copy.deepcopy(BASE)
-case['commands'][2]=dict(phase='human',command='resign')
+case['commands'][2]=dict(command='resign')
 state,_,_=run('human resignation',case,'',calls=1)
 assert state['result']==2
 
 case=copy.deepcopy(BASE)
-case['commands']=case['commands'][:2]+[dict(phase='human',command='quit')]
+case['commands']=case['commands'][:2]+[dict(command='quit')]
 case['queries'][0]['choice']='a3a4';case['queries'][1]['choice']=''
 case['executions']=[case['executions'][0],dict(purpose='move',move='a3a4',success=1,board=AFTER_HUMAN)]
 run('robot can play red first',case,'a3a4',calls=2,settings={'human_red':0})
 
 case=copy.deepcopy(BASE)
-case['commands']=[dict(phase='prepare',command='ready'),dict(phase='confirm_start',command='ready',board=AFTER_HUMAN),dict(phase='confirm_start',command='ready')]
+case['commands']=[dict(command='ready'),dict(command='ready',board=AFTER_HUMAN),dict(command='ready')]
 case['queries']=[dict(history='',legal=[])]
 state,_,output=run('changed initial board is confirmed again',case,'',calls=1)
-assert output.count('SIM_COMMAND confirm_start ready')==2
+assert output.count('SIM_COMMAND\t核对开局盘面，回车确认。输入 quit 退出。\tready')==2
 
 # Two legal knight cycles return to the initial position three times. The app
 # must request human adjudication, not announce a draw or a winner.
@@ -276,17 +276,17 @@ for index, move in enumerate(moves):
         query['choice'] = move
         case['executions'].append(dict(purpose='move', move=move, success=1, board=boards[index]))
     else:
-        case['commands'].append(dict(phase='human', command='ready', board=boards[index]))
+        case['commands'].append(dict(command='ready', board=boards[index]))
     case['queries'].append(query)
 case['queries'].append(dict(history=' '.join(moves), legal=['b0c2']))
 state, _, _ = run('repetition requires adjudication', case, ' '.join(moves), calls=5)
-assert state['result'] == 4 and state['phase'] == 'review_required'
+assert state['result'] == 4
 
 # A saved position is confirmed against the camera without clearing its turn or history.
 case = copy.deepcopy(BASE)
 case['resume_moves'] = ['a3a4']
 case['initial_board'] = AFTER_HUMAN
-case['commands'] = case['commands'][:2] + [dict(phase='human', command='quit')]
+case['commands'] = case['commands'][:2] + [dict(command='quit')]
 case['executions'] = case['executions'][:2]
 case['queries'] = [dict(history='a3a4', legal=['a6a5'], choice='a6a5'),
                    dict(history='a3a4 a6a5', legal=['a4a5'])]
@@ -294,7 +294,7 @@ state, _, _ = run('resume preserves black turn and appends the reply', case, 'a3
 assert state['board'] == AFTER_ROBOT
 case['initial_board'] = INITIAL
 state, _, _ = run('resume mismatch preserves history and sends no chess move', case, 'a3a4', exit_code=1, calls=1)
-assert state['board'] == AFTER_HUMAN and state['pending'] == 0 and state['phase'] == 'error'
+assert state['board'] == AFTER_HUMAN and state['pending'] == 0 and '实拍盘面与已走历史不符' in state['error']
 
 # Three distinct consecutive frames belong to observation, independently of the fixed grid.
 for name, ids in [('repeated camera frames', ['1','1','2','2']),
@@ -305,6 +305,6 @@ for name, ids in [('repeated camera frames', ['1','1','2','2']),
     case['commands'] = case['commands'][:1]
     case['executions'] = case['executions'][:1]
     state, _, output = run(name, case, '', calls=1)
-    assert state['observation_valid'] == 0 and 'SIM_COMMAND confirm_start' not in output
+    assert state['observation_valid'] == 0 and 'SIM_COMMAND\t核对开局盘面' not in output
 
 print(f'PASS {passed} actual-main scenarios; scripted perception/engine/execution, no hardware.')

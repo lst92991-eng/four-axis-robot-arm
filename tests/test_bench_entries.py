@@ -54,25 +54,52 @@ class Entries(unittest.TestCase):
                         field = MagicMock()
                         field.resume_history.return_value = history
                         field.resume_board.return_value = opening
+                        field.execute.return_value = False
                         field.command.return_value = 'quit'
                         field.command.side_effect = interrupted
                         field.close.return_value = True
                         self.assertEqual(run(field, b'mock-model', site, len(site)), code)
-                        field.execute.assert_not_called()
+                        if code:
+                            field.execute.assert_not_called()
+                        else:
+                            field.execute.assert_called_once()
+                            self.assertEqual(field.execute.call_args.args[0], 'prepare')
                         field.infer.assert_not_called()
                         field.close.assert_called_once()
-                        phase, message, _, confirmed, board, _, _, pending, _, _ = field.state.call_args.args
-                        self.assertEqual((phase, confirmed, pending), ('error' if code else 'stopped', '' if code else history, 0))
+                        message, _, confirmed, board, _, result, pending, _, _ = field.state.call_args.args
+                        self.assertEqual((confirmed, result, pending), ('' if code else history, 0, 0))
                         if history == 'a3a4':
                             self.assertEqual((board[6*9],board[5*9]), ('.','P'))
                         if code:
                             self.assertIn('xxxx',message)
                 field.close.return_value = False
                 self.assertEqual(run(field, b'mock-model', site, len(site)), 1)
-                self.assertIn('机械停止', field.state.call_args.args[1])
+                self.assertIn('机械停止', field.state.call_args.args[0])
                 self.assertEqual(list(Path(tmp).iterdir()), [])
             finally:
                 os.chdir(previous)
+
+    def test_opening_returns_approval_without_chess_commands(self):
+        bench = run_game.Bench.__new__(run_game.Bench)
+        bench.expected = match_panel.OPENING
+        bench.current_position = False
+        bench.start_checks = 0
+        bench.saved = None
+        opening = ''.join(bench.expected)
+        mismatch = '.' + opening[1:]
+        with redirect_stdout(io.StringIO()):
+            for _ in range(5):
+                self.assertIs(bench.confirm_opening(mismatch), False)
+            with self.assertRaisesRegex(RuntimeError, '实拍开局盘面仍有差异'):
+                bench.confirm_opening(mismatch)
+            self.assertIs(bench.confirm_opening(opening), True)
+
+            bench.current_position = True
+            with patch('builtins.input', side_effect=['', 'READY', 'draw', 'resign', 'quit', 'unknown']):
+                for expected in (True, True, False, False, None):
+                    self.assertIs(bench.confirm_opening(opening), expected)
+                with self.assertRaisesRegex(RuntimeError, '未识别的终端命令'):
+                    bench.confirm_opening(opening)
 
     def test_state_and_camera_use_the_panel_pipe(self):
         fixture = run_game.Bench.__new__(run_game.Bench)
@@ -82,7 +109,7 @@ class Entries(unittest.TestCase):
         picture = (ROOT/'tests/fixtures/camera/0.jpg').read_bytes()
         transport = io.StringIO()
         with redirect_stdout(transport):
-            fixture.state('wait_human', '', '12', 'a3a4 b7e7', flat, flat, 0, 0, 1, legal)
+            fixture.state('', '12', 'a3a4 b7e7', flat, flat, 0, 0, 1, legal)
             fixture.preview(picture)
         panel = match_panel.Match(False)
         proc = MagicMock()
