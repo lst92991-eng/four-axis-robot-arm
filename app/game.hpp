@@ -18,7 +18,7 @@ struct Session
     ArmGeometry arm;
     WorkHeights heights;
     JointTarget park;           // 观察位的 J2 反馈角和 J3 电机角，单位度。
-    // 相机读回的盘面，与 game 中已经记谱的盘面分开保存。
+    // 最近一帧的归格盘面。valid 表示连续三张不同的有效画面确认了同一盘面。
     chess::Observation observed;
     chess::MoveList legal;           // 本回合引擎给出的合法走法。
     // 观察环节比较帧号，统计连续相同的新画面。

@@ -46,58 +46,80 @@ int main()
         auto from = plan["source"]["base_xy_mm"], to = plan["destination"]["base_xy_mm"];
         cv::Point2d source{double(from[0]), double(from[1])};
         cv::Point2d destination{double(to[0]), double(to[1])};
+        const scara::JointTarget park{12, 34};
+        const cv::Point2d discard{300, 0};
         std::vector<scara::PickStep> steps;
-        scara::Plan_pick(arm, heights, source, steps);
-        scara::Plan_place(arm, heights, destination, steps);
-        check(steps.size() == 8,
-              "Pick/place plan is incomplete");
         using Action = scara::PickAction;
-        check(steps[0].action == Action::Move && steps[1].action == Action::Move && steps[1].target[0] == heights.pickupDeg &&
+        scara::Plan_turn(arm, heights, source, destination, nullptr, park, steps);
+        check(steps.size() == 9, "Pick/place/park plan is incomplete");
+        check(steps[0].action == Action::Move && steps[0].target[0] == heights.travelDeg &&
+                  std::abs(steps[0].target[1] - double(plan["source"]["j2_deg"])) < 1e-9 &&
+                  std::abs(steps[0].target[2] - double(plan["source"]["j3_motor_deg"])) < 1e-9 &&
+                  steps[1].action == Action::Move && steps[1].target[0] == heights.pickupDeg &&
                   steps[2].action == Action::Grip && steps[2].durationMs == heights.gripDwellMs &&
-                  steps[3].target[0] == heights.clearanceDeg && steps[4].action == Action::Move &&
-                  steps[5].target[0] == heights.releaseDeg && steps[6].action == Action::Release &&
-                  steps[6].durationMs == 0 && steps[7].target[0] == heights.clearanceDeg,
+                  steps[3].target[0] == heights.clearanceDeg,
+              "Pick-up must approach, lower, hold and lift");
+        // 棋子已在吸头上，放子段从搬运层直接移到目标格，不再次取子。
+        check(steps[4].action == Action::Move && steps[4].target[0] == heights.travelDeg &&
+                  std::abs(steps[4].target[1] - double(plan["destination"]["j2_deg"])) < 1e-9 &&
+                  std::abs(steps[4].target[2] - double(plan["destination"]["j3_motor_deg"])) < 1e-9 &&
+                  steps[5].action == Action::Move && steps[5].target[0] == heights.releaseDeg &&
+                  steps[6].action == Action::Release && steps[6].durationMs == 0 &&
+                  steps[7].action == Action::Move && steps[7].target[0] == heights.clearanceDeg,
               "Release must be at placement height and complete before lifting");
-        steps.clear();
-        scara::Plan_pick(arm, heights, source, steps);
-        scara::Plan_discard(arm, heights, destination, steps);
-        check(steps.size() == 6 && steps[4].target[0] == heights.travelDeg &&
+        const scara::AxisValues parkAtTravel{heights.travelDeg, park.j2Deg, park.j3MotorDeg};
+        check(steps[8].action == Action::Move && steps[8].target == parkAtTravel && steps[8].axes == scara::AllAxes,
+              "Ordinary move did not finish at the observation pose");
+
+        const auto ordinary = steps;
+        scara::Plan_turn(arm, heights, source, destination, &discard, park, steps);
+        check(steps.size() == 15, "Capture did not rebuild a complete plan");
+        check(steps[0].target == steps[10].target && steps[1].target[0] == heights.pickupDeg &&
+                  steps[2].action == Action::Grip && steps[2].durationMs == heights.gripDwellMs &&
+                  steps[3].target[0] == heights.clearanceDeg && steps[4].target[0] == heights.travelDeg &&
                   steps[5].action == Action::ReleaseOffBoard && steps[5].durationMs == 0,
-              "The captured piece must be expelled at the transport height");
+              "Capture must pick on the destination pose and release off board at transport height");
+        cv::Point2d discarding;
+        scara::Arm_forward(arm, {steps[4].target[1], steps[4].target[2]}, discarding);
+        check(cv::norm(discarding - discard) < 1e-8, "Discard used the wrong XY waypoint");
+        for (size_t i = 0; i < ordinary.size(); ++i)
+        {
+            const auto &normal = ordinary[i];
+            const auto &capture = steps[6 + i];
+            check(capture.action == normal.action && capture.target == normal.target &&
+                      capture.axes == normal.axes && capture.durationMs == normal.durationMs,
+                  "Capture changed the attacking piece transfer or observation park");
+        }
+
         check(heights.clearanceDeg == heights.travelDeg, "Untaught clearance was guessed");
         scara::WorkHeights overlap;
         check(scara::WorkHeights_load("tests/fixtures/game-app/work-heights.json", overlap), "Overlap fixture failed");
-        steps.clear();
-        scara::Plan_pick(arm, overlap, source, steps);
-        scara::Plan_place(arm, overlap, destination, steps);
+        scara::Plan_turn(arm, overlap, source, destination, nullptr, park, steps);
         check(steps[3].target[0] == overlap.clearanceDeg && steps[4].target[0] == overlap.travelDeg &&
                   steps[3].target[0] != steps[4].target[0] && steps[4].axes == scara::AllAxes &&
                   steps[3].target[1] != steps[4].target[1] && steps[3].target[2] != steps[4].target[2],
               "Travel segment does not move all three axes together");
         check(std::abs(heights.releaseDeg - (-20053.1425)) < 1e-7 && heights.gripDwellMs == 420,
               "Taught height or stored pulse was changed");
-        // 手里已有棋子时，维持吸合后直接放，计划中没有取子点。
-        steps = {{Action::Grip}};
-        scara::Plan_place(arm, heights, destination, steps);
-        check(steps.size() == 5 &&
-              steps[0].durationMs == 0 && steps[1].target[0] == heights.travelDeg && steps[3].action == Action::Release,
-              "Held-piece resume tried to pick from a source again");
+
         auto requireEmptyOnError = [&](auto plan, const char *message)
         {
+            steps = ordinary;
             bool failed = false;
             try { plan(); } catch (const std::runtime_error &) { failed = true; }
             check(failed && steps.empty(), message);
         };
-        scara::Plan_pick(arm, heights, source, steps);
-        requireEmptyOnError([&] { scara::Plan_place(arm, heights, {1000, 1000}, steps); },
+        const cv::Point2d unreachable{1000, 1000};
+        requireEmptyOnError([&] { scara::Plan_turn(arm, heights, unreachable, destination, &discard, park, steps); },
+                            "Unreachable attacker retained a capture plan");
+        requireEmptyOnError([&] { scara::Plan_turn(arm, heights, source, unreachable, nullptr, park, steps); },
                             "Unreachable destination retained an old plan");
-        scara::Plan_pick(arm, heights, source, steps);
-        requireEmptyOnError([&] { scara::Plan_discard(arm, heights, {1000, 1000}, steps); },
+        requireEmptyOnError([&] { scara::Plan_turn(arm, heights, source, destination, &unreachable, park, steps); },
                             "Unreachable discard retained the pick-up steps");
         scara::WorkHeights missingHeights = heights;
         check(!scara::WorkHeights_load("tests/fixtures/upper-app/missing-heights.json", missingHeights),
               "Missing taught pickup height was silently replaced by zero");
-        requireEmptyOnError([&] { scara::Plan_pick(arm, missingHeights, source, steps); },
+        requireEmptyOnError([&] { scara::Plan_turn(arm, missingHeights, source, destination, nullptr, park, steps); },
                             "Unconfigured work heights generated a movement plan");
         scara::ArmGeometry missingArm = arm;
         check(!scara::Arm_load("tests/fixtures/upper-app/missing-arm-reference.json", missingArm),
@@ -154,7 +176,7 @@ int main()
         limits.velocity[1] = 0;
         check(!scara::Trajectory_plan(start, goal, limits, zero), "Zero speed cap accepted");
         std::cout << "PASS " << count
-                  << " saved kinematic cases, taught heights, release order and held-piece resume; no I/O\n";
+                  << " saved kinematic cases, taught heights, ordinary/capture plans and unreachable targets\n";
         return 0;
     }
     catch (const std::exception &error)

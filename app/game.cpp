@@ -14,12 +14,16 @@ static void Match_turn(Session &session);
 static bool parkForObservation(Session &session);
 static bool readEngine(Session &session, chess::Move &move);
 static bool selectMove(Session &session, chess::Move &move, bool &moveByRobot);
-static bool carry(Session &session, const chess::Move &move);
+static bool discardIsOffBoard(const Session &session);
+enum class Execution { Completed, Failed, Exited };
+static Execution executeMove(Session &session, const chess::Move &move, const std::vector<PickStep> &steps);
 
-// 观察实盘、核对整盘和确认落点。
+// 观察结果决定记谱、按原计划重走，或结束对局。
+enum class Placement { Confirmed, OriginalRestored, Exited };
 static bool observe(Session &session, const chess::Board *expected = nullptr);
 static bool waitBoard(Session &session, const chess::Board &expected);
-static bool confirmPlacement(Session &session, const chess::Board &expected);
+static Placement confirmPlacement(Session &session, const chess::Board &before, const chess::Board &expected);
+static Placement restoreAfterDriveFailure(Session &session, const chess::Board &before);
 // 主程序、取流和执行器共用这个停止标志。
 volatile std::sig_atomic_t gameRunning = 1;
 
@@ -37,6 +41,7 @@ int Match_run(const GameConfig &config, Session &session, const std::string &mod
     std::string failure;
     // 第一帧到来前，90 个交点都记为未知。
     for (auto &row : session.observed.board) row.fill('?');
+    session.observed.valid = false;
     gameRunning = 1;
     auto oldInterrupt = std::signal(SIGINT, requestStop);
     auto oldTerminate = std::signal(SIGTERM, requestStop);
@@ -125,9 +130,44 @@ static void Match_turn(Session &session)
     bool moveByRobot;
     if (!selectMove(session, move, moveByRobot)) return;
 
-    // 机械臂代走时，实际落点确认后才记谱。
-    if (moveByRobot && !carry(session, move)) return;
+    if (moveByRobot)
+    {
+        const chess::Board &before = game.board;
+        if (!waitBoard(session, before)) return;
+        chess::Board expected = before;
+        chess::movePiece(expected, move);
 
+        // 从标定表取基座 XY（毫米）。吃子还要核对弃子点是否离开棋盘。
+        cv::Point2d source = session.layout.cell[move.fromRow][move.fromCol].xy;
+        cv::Point2d target = session.layout.cell[move.toRow][move.toCol].xy;
+        const cv::Point2d *discard = nullptr;
+        if (before[move.toRow][move.toCol] != '.')
+        {
+            if (!discardIsOffBoard(session)) throw std::runtime_error("弃子点必须在棋盘外");
+            discard = &session.capturePlaceMm;
+        }
+        // 取、放、弃子和回观察位都排好以后，才下发这一手。
+        std::vector<PickStep> steps;
+        Plan_turn(session.arm, session.heights, source, target, discard, session.park, steps);
+
+        while (gameRunning)
+        {
+            Execution execution = executeMove(session, move, steps);
+            if (execution == Execution::Exited) return;
+
+            Placement result;
+            if (execution == Execution::Completed) result = confirmPlacement(session, before, expected);
+            else result = restoreAfterDriveFailure(session, before);
+            if (result == Placement::Exited) return;
+            if (result == Placement::Confirmed) break;
+
+            session.pending = false;
+            Operator_show("restored", session, "原棋局已恢复，重新执行这一手。");
+        }
+    }
+
+    // 人工走棋已核对合法。机械臂代走须确认实盘已到目标局面。
+    if (!gameRunning) return;
     chess::Game_commit(game, move);
     session.pending = false;
     Operator_show("confirmed", session);
@@ -169,8 +209,9 @@ static bool selectMove(Session &session, chess::Move &move, bool &moveByRobot)
 
         // 回车后从新盘面找出唯一合法的走法。原盘没变化时继续等待。
         if (!observe(session)) return false;
-        if (session.observed.board == game.board) continue;
-        if (chess::inferMove(game.board, session.observed, legal, move)) return true;
+        chess::InferredMove inferred = chess::inferMove(game.board, session.observed, legal, move);
+        if (inferred == chess::InferredMove::Unchanged) continue;
+        if (inferred == chess::InferredMove::Legal) return true;
         Operator_show("illegal_move", session, "请恢复原棋局后重新走棋。");
         if (!waitBoard(session, game.board)) return false;
     }
@@ -189,67 +230,25 @@ static bool discardIsOffBoard(const Session &session)
     return column < -.5 || column > Columns - .5 || row < -.5 || row > Rows - .5;
 }
 
-//---------机械搬棋区---------
-static bool carry(Session &session, const chess::Move &move)
+//---------机械执行区---------
+static Execution executeMove(Session &session, const chess::Move &move, const std::vector<PickStep> &steps)
 {
-    const chess::Board &before = session.game.board;
-    if (!waitBoard(session, before)) return false;
-    // 在盘面副本上先走一步，取放后按这张盘面确认落点。
-    chess::Board expected = before;
-    chess::movePiece(expected, move);
+    // 从下发到落点确认期间，pending 告诉上位机这手棋仍待核实。
+    session.pending = true;
+    Operator_show("executing", session);
+    if (!gameRunning) return Execution::Exited;
 
-    const ArmGeometry &arm = session.arm;
-    const WorkHeights &z = session.heights;
-    // 从标定表取起点和终点的基座 XY，单位为毫米。steps 按执行先后存动作。
-    cv::Point2d source = session.layout.cell[move.fromRow][move.fromCol].xy;
-    cv::Point2d target = session.layout.cell[move.toRow][move.toCol].xy;
-    std::vector<PickStep> steps;
-
-    // 吃子时先腾出目标格。普通走子从后面的取起点开始。
-    if (before[move.toRow][move.toCol] != '.')
+    bool completed = false;
+    try
     {
-        if (!discardIsOffBoard(session)) throw std::runtime_error("弃子点必须在棋盘外");
-        Plan_pick(arm, z, target, steps);
-        Plan_discard(arm, z, session.capturePlaceMm, steps);
+        completed = Robot_execute("move", move, steps);
     }
-    // 目标格腾空后，把进攻子从起点搬到终点，再回观察位核盘。
-    Plan_pick(arm, z, source, steps);
-    Plan_place(arm, z, target, steps);
-    Plan_move(session.park, z.travelDeg, steps);
-
-    while (gameRunning)
+    catch (const std::exception &error)
     {
-        // 从下发到落点确认期间，pending 告诉上位机这手棋仍待核实。
-        session.pending = true;
-        Operator_show("executing", session);
-        bool completed = false;
-        try
-        {
-            completed = Robot_execute("move", move, steps);
-        }
-        catch (const std::exception &error)
-        {
-            if (!gameRunning) return false;
-            Operator_show("hardware_recovery", session, error.what());
-        }
-        // 驱动报完成后还要用相机核对这手棋。
-        if (completed && confirmPlacement(session, expected)) return true;
-        if (!gameRunning) return false;
-        if (!completed)
-        {
-            // 设备中断后先等人工处理，再停车、回观察位，并确认已恢复走棋前的盘面。
-            do
-            {
-                Operator_show("hardware_recovery", session);
-                if (!waitReady("hardware_recovery", "处理报错、清空吸头并恢复驱动后回车。程序将回观察位并核对原棋局。"))
-                    return false;
-            } while (!Motion_stop() || !parkForObservation(session));
-            if (!waitBoard(session, before)) return false;
-        }
-        session.pending = false;
-        Operator_show("restored", session, "原棋局已恢复，重新执行这一手。");
+        if (gameRunning) Operator_show("hardware_recovery", session, error.what());
     }
-    return false;
+    if (!gameRunning) return Execution::Exited;
+    return completed ? Execution::Completed : Execution::Failed;
 }
 
 //---------引擎与恢复区---------
@@ -277,18 +276,14 @@ static bool readEngine(Session &session, chess::Move &move)
     return false;
 }
 
-// 把有差别的格号写进提示。未看清的空位显示为问号。
-static void reportBoard(Session &session, const chess::Board *expected, const char *phase, std::string message)
+// 把需要核对的格号写进提示，保留相机实际交付的盘面。
+static void reportBoard(const Session &session, const chess::Board *expected, const char *phase, std::string message)
 {
     if (expected)
         for (int row = 0; row < Rows; ++row)
             for (int col = 0; col < Columns; ++col)
-            {
-                char &seen = session.observed.board[row][col];
-                if ((*expected)[row][col] == seen) continue;
-                if (!session.observed.valid && seen == '.') seen = '?';
-                message += " (" + std::to_string(row) + "," + std::to_string(col) + ")";
-            }
+                if ((*expected)[row][col] != session.observed.board[row][col])
+                    message += " (" + std::to_string(row) + "," + std::to_string(col) + ")";
     Operator_show(phase, session, message);
 }
 
@@ -319,16 +314,17 @@ static bool observe(Session &session, const chess::Board *expected)
             continue;
         }
         if (!gameRunning) return false;
-        Geometry_assign(session.layout, pieces, session.observed, !session.lastFrameId.empty());
+        chess::Observation frame;
+        Geometry_assign(session.layout, pieces, frame, !session.lastFrameId.empty());
         // 归格只看一帧。在这里用帧号排除重复，再确认三张新图的盘面相同。
-        if (!session.observed.valid) same = 0;
-        else if (session.lastFrameId != previousFrame)
+        if (frame.valid && session.lastFrameId != previousFrame)
         {
-            same = session.observed.board == previous ? same + 1 : 1;
-            previous = session.observed.board;
+            same = frame.board == previous ? same + 1 : 1;
+            previous = frame.board;
         }
-        // 进入棋局前，把单帧归格的 valid 更新为三帧确认的结果。
-        previousFrame = session.observed.valid ? session.lastFrameId : "";
+        if (!frame.valid) same = 0;
+        previousFrame = frame.valid ? session.lastFrameId : "";
+        session.observed.board = frame.board;
         session.observed.valid = same == 3;
         if (++frames % 3 == 0 && !session.observed.valid)
             reportBoard(session, expected, "unclear", "棋子偏离格点或受遮挡，请检查实盘。");
@@ -338,18 +334,32 @@ static bool observe(Session &session, const chess::Board *expected)
     return true;
 }
 
-// true 表示棋子已落对。退出或恢复原局面时，把结果交给搬棋流程。
-static bool confirmPlacement(Session &session, const chess::Board &expected)
+static Placement confirmPlacement(Session &session, const chess::Board &before, const chess::Board &expected)
 {
-    if (!observe(session, &expected)) return false;
+    if (!observe(session, &expected)) return Placement::Exited;
     while (session.observed.board != expected)
     {
         reportBoard(session, &expected, "placement_recovery", "请核对落点");
-        if (!waitReady("placement_recovery", "修正落点后回车。若摆回走棋前的局面，回车后重走。")) return false;
-        if (!observe(session, &expected)) return false;
-        if (session.observed.board == session.game.board) return false;
+        if (!waitReady("placement_recovery", "修正落点后回车。若摆回走棋前的局面，回车后重走。"))
+            return Placement::Exited;
+        if (!observe(session, &expected)) return Placement::Exited;
+        if (session.observed.board == before) return Placement::OriginalRestored;
     }
-    return true;
+    return Placement::Confirmed;
+}
+
+static Placement restoreAfterDriveFailure(Session &session, const chess::Board &before)
+{
+    // 驱动中断后先处理吸头和故障。停车得到确认，才回观察位核对原棋局。
+    do
+    {
+        Operator_show("hardware_recovery", session);
+        if (!waitReady("hardware_recovery", "处理报错、清空吸头并恢复驱动后回车。程序将回观察位并核对原棋局。"))
+            return Placement::Exited;
+    } while (!Motion_stop() || !parkForObservation(session));
+
+    if (!waitBoard(session, before)) return Placement::Exited;
+    return Placement::OriginalRestored;
 }
 
 // 只有相机看到的整张盘面与 expected 相同，后续动作才继续。

@@ -184,6 +184,13 @@ assert 'SIM_COMMAND placement_recovery ready' in output
 assert 'SIM_COMMAND hardware_recovery' not in output and output.count('SIM_CALL move a6a5') == 1
 
 case = copy.deepcopy(BASE)
+case['executions'][1]['board'] = AFTER_HUMAN
+case['commands'].insert(3, dict(phase='placement_recovery', command='quit'))
+state, _, output = run('quit during placement recovery does not retry the move', case, 'a3a4', calls=2)
+assert state['pending'] == 1 and state['phase'] == 'stopped'
+assert 'SIM_NOTICE restored' not in output
+
+case = copy.deepcopy(BASE)
 case['executions'][1]['off_grid'] = 'i0'
 case['restorations'] = [dict(phase='unclear', after_frames=1, board=AFTER_ROBOT)]
 _, _, output = run('off-grid rook recheck continues once centered', case)
@@ -192,7 +199,9 @@ assert '(9,8)' in output and output.count('SIM_CALL move a6a5') == 1
 case.pop('restorations')
 case['cancel_after_frames'] = 18
 state, _, output = run('persistent off-grid rook cannot commit or restart movement', case, 'a3a4', calls=2)
-assert state['pending'] == 1 and state['observation_valid'] == 0 and state['observed'][9][8] == '?'
+# 归格未检测到该棋子，显示保持原帧的空位，并用稳定状态区分未经确认的观察。
+assert state['pending'] == 1 and state['observation_valid'] == 0 and state['observed'][9][8] == '.'
+assert 'SIM_NOTICE unclear 棋子偏离格点或受遮挡，请检查实盘。 (9,8)' in output
 
 case=copy.deepcopy(BASE)
 case['executions'][1].update(success=0,board=AFTER_HUMAN)

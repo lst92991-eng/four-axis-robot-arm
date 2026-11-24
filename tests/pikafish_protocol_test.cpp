@@ -208,7 +208,8 @@ int main()
         observed.board = game.board;
         chess::movePiece(observed.board, human);
         observed.valid = true;
-        check(chess::inferMove(game.board, observed, {{6,0,5,0}}, human), "Fixture move confirmation failed");
+        check(chess::inferMove(game.board, observed, {{6,0,5,0}}, human) == chess::InferredMove::Legal,
+              "Fixture move confirmation failed");
         chess::Game_commit(game, human);
         check(Pikafish_query("fixture", game, 120, mock::running, legal, best) && best == chess::Move{3,0,4,0}, "Best move decode failed");
         check(mock::position == "position fen " + fen + " moves a3a4", "Full FEN/history was not sent");

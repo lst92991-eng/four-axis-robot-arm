@@ -87,12 +87,9 @@ struct PickStep
 //---------取放动作接口区---------
 // 向本手的动作表追加一个关节目标。
 void Plan_move(JointTarget xy, double zDeg, std::vector<PickStep> &steps);
-// 先定位和下降，再吸合，最后抬到净空层。目标无效时撤销整张动作表。
-void Plan_pick(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, std::vector<PickStep> &steps);
-// 在目标格下降并关断磁铁，再抬离棋子。
-void Plan_place(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d targetMm, std::vector<PickStep> &steps);
-// 在盘外搬运高度释放被吃子。
-void Plan_discard(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d binMm, std::vector<PickStep> &steps);
+// 先求整手关节目标，再排取放和回观察位。普通走子的弃子点传 nullptr。
+void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, cv::Point2d targetMm,
+               const cv::Point2d *discardMm, const JointTarget &park, std::vector<PickStep> &steps);
 
 //---------坐标与轨迹接口区---------
 // 用驱动角算吸头的基座 XY 毫米，供示教采点核对。

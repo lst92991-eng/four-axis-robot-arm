@@ -27,18 +27,41 @@ int main()
         chess::movePiece(after, move);
         check(after[6][0] == '.' && after[5][0] == 'P',
               "Move changed the wrong squares");
-        //盘面差分仅推演匹配走法，完整90格比较仍需排除额外移动与错认
-        chess::Observation seen{after,true};
-        check(chess::inferMove(initial,seen,{{6,0,5,0},{6,2,5,2}},move) && move.fromCol==0 && move.toRow==5,
+        // 只接受起点、终点和实际棋子都吻合的唯一合法走法。
+        using chess::InferredMove;
+        const chess::Move pawnMove{6, 0, 5, 0};
+        const chess::MoveList legal{pawnMove, {6, 2, 5, 2}};
+        chess::Observation seen{after, true};
+        check(chess::inferMove(initial, seen, legal, move) == InferredMove::Legal && move == pawnMove,
               "Board difference did not identify the moved piece");
-        seen.board[6][2]='.';
-        seen.board[5][2]='P';
-        check(!chess::inferMove(initial,seen,{{6,0,5,0},{6,2,5,2}},move),"Two moved pieces became one move");
-        seen.board=after;
-        seen.board[5][0]='C';
-        check(!chess::inferMove(initial,seen,{{6,0,5,0}},move),"Changed piece identity accepted");
-        seen.board=after;
-        check(!chess::inferMove(initial,seen,{{6,0,5,0},{6,0,5,0}},move),"Repeated matching move accepted");
+        seen.board[6][2] = '.';
+        seen.board[5][2] = 'P';
+        check(chess::inferMove(initial, seen, legal, move) == InferredMove::Invalid,
+              "Two moved pieces became one move");
+        seen.board = after;
+        seen.board[5][0] = 'C';
+        check(chess::inferMove(initial, seen, legal, move) == InferredMove::Invalid,
+              "Changed piece identity accepted");
+        seen.board = after;
+        check(chess::inferMove(initial, seen, {pawnMove, pawnMove}, move) == InferredMove::Invalid,
+              "Repeated matching move accepted");
+        check(chess::inferMove(initial, seen, {{6, 2, 5, 2}}, move) == InferredMove::Invalid,
+              "Observed move absent from the legal list was accepted");
+        seen.valid = false;
+        check(chess::inferMove(initial, seen, legal, move) == InferredMove::Invalid,
+              "Unconfirmed observation was used as a move");
+        seen = {initial, true};
+        check(chess::inferMove(initial, seen, legal, move) == InferredMove::Unchanged &&
+                  !chess::validSquares(move),
+              "Unchanged board did not clear the output move");
+        chess::Board beforeCapture = initial;
+        beforeCapture[3][0] = '.';
+        beforeCapture[5][0] = 'p';
+        seen = {beforeCapture, true};
+        seen.board[5][0] = 'P';
+        seen.board[6][0] = '.';
+        check(chess::inferMove(beforeCapture, seen, legal, move) == InferredMove::Legal && move == pawnMove,
+              "The landing piece was not matched when it covered a captured piece");
         chess::Board invalid = initial;
         invalid[0][0] = '?';
         check(!chess::validBoard(invalid), "Invalid board was accepted at the input boundary");

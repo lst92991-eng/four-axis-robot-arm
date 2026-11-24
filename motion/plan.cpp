@@ -10,9 +10,6 @@ namespace scara
 constexpr double RadiansPerDegree = CV_PI / 180.0;
 constexpr double DegreesPerRadian = 180.0 / CV_PI;
 
-static void targetJoints(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d pointMm,
-                         JointTarget &joints, std::vector<PickStep> &steps);
-
 //---------取放步骤区---------
 // 把一个目标姿态追加到 steps。三个位置依次是 J1、J2 和 J3 驱动角。
 void Plan_move(JointTarget xy, double zDeg, std::vector<PickStep> &steps)
@@ -24,10 +21,8 @@ void Plan_move(JointTarget xy, double zDeg, std::vector<PickStep> &steps)
 }
 
 // 取子先到棋子上方，再竖直下降吸合，最后抬到允许横移的高度。
-void Plan_pick(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, std::vector<PickStep> &steps)
+static void Plan_pick(const WorkHeights &z, const JointTarget &source, std::vector<PickStep> &steps)
 {
-    JointTarget source;
-    targetJoints(arm, z, sourceMm, source, steps);
     Plan_move(source, z.travelDeg, steps);
     Plan_move(source, z.pickupDeg, steps);
     // 吸头停在取子高度通电，gripDwellMs 留出棋子贴合的时间。
@@ -39,10 +34,8 @@ void Plan_pick(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceM
 }
 
 // 落子先到目标格上方，下降到释放高度，关断磁铁后抬起。
-void Plan_place(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d targetMm, std::vector<PickStep> &steps)
+static void Plan_place(const WorkHeights &z, const JointTarget &target, std::vector<PickStep> &steps)
 {
-    JointTarget target;
-    targetJoints(arm, z, targetMm, target, steps);
     Plan_move(target, z.travelDeg, steps);
     Plan_move(target, z.releaseDeg, steps);
     steps.push_back({PickAction::Release});
@@ -50,29 +43,31 @@ void Plan_place(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d target
 }
 
 // 弃子点在盘外，计划在搬运高度关断磁铁。
-void Plan_discard(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d binMm, std::vector<PickStep> &steps)
+static void Plan_discard(const WorkHeights &z, const JointTarget &bin, std::vector<PickStep> &steps)
 {
-    JointTarget bin;
-    targetJoints(arm, z, binMm, bin, steps);
     Plan_move(bin, z.travelDeg, steps);
     steps.push_back({PickAction::ReleaseOffBoard});
 }
 
-// 每次追加取放动作前先核对工作高度并求逆解，失败时撤销本手已排的动作。
-static void targetJoints(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d pointMm,
-                         JointTarget &joints, std::vector<PickStep> &steps)
+void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, cv::Point2d targetMm,
+               const cv::Point2d *discardMm, const JointTarget &park, std::vector<PickStep> &steps)
 {
-    if (z.pickupDeg == z.travelDeg)
-    {
-        steps.clear();
-        throw std::runtime_error("吸取和搬运高度尚未示教");
-    }
-    if (!Arm_inverse(arm, pointMm, joints))
-    {
-        // 一个目标不可达就撤销整手，前面已经排好的动作也不能执行。
-        steps.clear();
+    steps.clear();
+    if (z.pickupDeg == z.travelDeg) throw std::runtime_error("吸取和搬运高度尚未示教");
+    JointTarget source, target, bin;
+    if (!Arm_inverse(arm, sourceMm, source) || !Arm_inverse(arm, targetMm, target) ||
+        (discardMm && !Arm_inverse(arm, *discardMm, bin)))
         throw std::runtime_error("取放目标不可达");
+
+    // 目标全部有效后再排动作。吃子先腾空目标格，落子时复用它的关节角。
+    if (discardMm)
+    {
+        Plan_pick(z, target, steps);
+        Plan_discard(z, bin, steps);
     }
+    Plan_pick(z, source, steps);
+    Plan_place(z, target, steps);
+    Plan_move(park, z.travelDeg, steps);
 }
 
 //---------坐标正逆解区---------

@@ -31,7 +31,6 @@ using MoveList = std::vector<Move>;
 struct Observation
 {
     Board board{};
-    // 归格后表示本帧可用，observe 返回时表示三张不同的新帧已确认相同盘面。
     bool valid = false;
 };
 
@@ -43,9 +42,15 @@ bool validBoard(const Board &board);
 // 外部走法先核对坐标、起点和目标。已确认的走法直接在数组上搬一枚棋子。
 bool validTransfer(const Board &board, bool redToMove, const Move &move);
 void movePiece(Board &board, const Move &move);
-// 用合法走法推演盘面，唯一匹配实盘的一手就是玩家的走法。
-bool inferMove(const Board &before, const Observation &after, const MoveList &legal,
-               Move &move);
+enum class InferredMove
+{
+    Unchanged,
+    Legal,
+    Invalid
+};
+// 用实盘的两处变化确定起终点，找到唯一的合法走法时写入 move。
+InferredMove inferMove(const Board &before, const Observation &after, const MoveList &legal,
+                       Move &move);
 
 //---------棋局结果与历史区---------
 // ReviewRequired 表示暂停并交人工裁定，程序在此结束本轮对弈。

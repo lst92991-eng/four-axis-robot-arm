@@ -130,28 +130,43 @@ void movePiece(Board &board, const Move &move)
     board[move.fromRow][move.fromCol] = '.';
 }
 
-// 玩家亲手搬棋后，把引擎给出的每一手在内存中走一遍，找出与实盘相同的一手。
-bool inferMove(const Board &before, const Observation &after, const MoveList &legal,
-               Move &move)
+// 实盘只有起点变空、终点变为所走棋子时，才能推断出一手棋。
+InferredMove inferMove(const Board &before, const Observation &after, const MoveList &legal,
+                       Move &move)
 {
     move = {};
-    if (!after.valid) return false;
-    int matches = 0;
-    Move matched;
-    for (const Move &candidate : legal)
-    {
-        // 在每个候选走法自己的盘面副本上推演，再与整张实拍盘面比较。
-        if (!validSquares(candidate)) continue;
-        Board next = before;
-        movePiece(next, candidate);
-        if (next != after.board) continue;
-        matched = candidate;
-        ++matches;
-    }
-    // 恰好匹配一条合法走法，才能确定玩家刚下了哪一手。
-    if (matches != 1) return false;
-    move = matched;
-    return true;
+    if (!after.valid) return InferredMove::Invalid;
+
+    Move candidate;
+    for (int row = 0; row < Rows; ++row)
+        for (int col = 0; col < Columns; ++col)
+        {
+            char piece = after.board[row][col];
+            if (before[row][col] == piece) continue;
+            if (piece == '.')
+            {
+                if (candidate.fromRow >= 0) return InferredMove::Invalid;
+                candidate.fromRow = row;
+                candidate.fromCol = col;
+            }
+            else
+            {
+                if (candidate.toRow >= 0) return InferredMove::Invalid;
+                candidate.toRow = row;
+                candidate.toCol = col;
+            }
+        }
+    if (candidate.fromRow < 0 && candidate.toRow < 0) return InferredMove::Unchanged;
+    if (candidate.fromRow < 0 || candidate.toRow < 0) return InferredMove::Invalid;
+
+    // 吃子时终点原有棋子被覆盖，观察到的新棋子仍须与起点原棋子一致。
+    char piece = before[candidate.fromRow][candidate.fromCol];
+    if (PieceSymbols.find(piece) == std::string::npos || after.board[candidate.toRow][candidate.toCol] != piece)
+        return InferredMove::Invalid;
+    if (std::count(legal.begin(), legal.end(), candidate) != 1) return InferredMove::Invalid;
+
+    move = candidate;
+    return InferredMove::Legal;
 }
 
 //---------回合交接区---------
