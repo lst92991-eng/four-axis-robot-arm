@@ -9,6 +9,9 @@ import numpy as np
 class Workspace:
     def __init__(self, arm, settings):
         self.arm = arm
+        self.units = arm.get('joint_per_drive')
+        if self.units is None:  # 历史 JSON 在入口合并方向和比例。
+            self.units = (arm['j2_scale']*arm['j2_sign'], arm['j3_sign']/arm['j3_ratio'])
         self.front = settings['neutral_shoulder_deg']
         self.margin = settings['registration_uncertainty_deg']
         self.straight = (settings['transfer_shoulder_deg'] - self.front, 0.)
@@ -22,8 +25,8 @@ class Workspace:
     # 把驱动读数换成采样表使用的姿态角。大臂角相对 front，肘角相对大臂，单位为度。
     def angles_of(self, joints):
         a = self.arm
-        shoulder = math.degrees(a['shoulder_ref_rad']) + (joints[0] - a['j2_reference_deg'])*a['j2_scale']*a['j2_sign']
-        elbow = math.degrees(a['elbow_ref_rad']) + (joints[1] - a['j3_reference_motor_deg'])*a['j3_sign']/a['j3_ratio']
+        shoulder = math.degrees(a['shoulder_ref_rad']) + (joints[0] - a['j2_reference_deg'])*self.units[0]
+        elbow = math.degrees(a['elbow_ref_rad']) + (joints[1] - a['j3_reference_motor_deg'])*self.units[1]
         return shoulder - self.front, elbow
 
     # 把规划好的姿态还原为 J2 反馈角与 J3 电机角，供台架下发 MOVE。
@@ -32,8 +35,8 @@ class Workspace:
         shoulder = pose[0] + self.front - math.degrees(a['shoulder_ref_rad'])
         elbow = pose[1] - math.degrees(a['elbow_ref_rad'])
         # 肘角沿伸直侧展开，避免把穿过完全折叠的短转动当成等价路线。
-        return (a['j2_reference_deg'] + shoulder/(a['j2_scale']*a['j2_sign']),
-                a['j3_reference_motor_deg'] + elbow*a['j3_ratio']/a['j3_sign'])
+        return (a['j2_reference_deg'] + shoulder/self.units[0],
+                a['j3_reference_motor_deg'] + elbow/self.units[1])
 
     # 两段臂长和当前肘角决定另一组逆解，它的肘角反号，吸头指向同一 XY。
     def opposite(self, pose):

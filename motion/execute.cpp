@@ -8,6 +8,8 @@ namespace scara
 //---------执行数据区---------
 constexpr double PositionToleranceDeg = .12;
 constexpr double StoppedSpeedDegS = .05;
+constexpr uint64_t SettledMs = 250;
+constexpr double ArrivalAllowanceSeconds = 5;
 
 static bool moveAxes(const PickStep &step, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
                      DriveFeedback &feedback, AxisValues &commanded);
@@ -89,12 +91,12 @@ static bool moveAxes(const PickStep &step, const MotionLimits &limits, const vol
     hold.position = target;
     // stableSince 记录连续合格样本的起始时刻，任一轴偏离都会重新计时。
     uint64_t stableSince = feedback.timeMs;
-    const double holdDeadline = trajectory.seconds + 5;
+    const double holdDeadline = trajectory.seconds + ArrivalAllowanceSeconds;
     while (running && (feedback.timeMs - start) * .001 <= holdDeadline)
     {
         if (!Drive_write(hold)) return false;
         bool there = onTarget(feedback, target);
-        if (there && feedback.timeMs - stableSince >= 250)
+        if (there && feedback.timeMs - stableSince >= SettledMs)
         {
             // 反馈已经连续停稳，才把本段终点交给下一段作为起点。
             commanded = target;

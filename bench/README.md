@@ -11,7 +11,7 @@
 | [12](12-camera.cmd) | 取现场相机的一张新原图，显示分辨率 | `12-camera.cmd --url rtsp://板子地址/live/0 --show` |
 | [13](13-electrical.cmd) | 新板单轴电角标定，保存并回读该轴零点与方向 | `13-electrical.cmd J2` 查看；`13-electrical.cmd J2 --run` 才通电标定。已有有效标定的板可跳过 |
 | [14](14-reference.cmd) | 三轴失能且实物已对准已知标记时，写回并逐轴回读机械参考 | `14-reference.cmd --angles J1角 J2角 J3角` 查看；实物已对准保存的观察姿态时用 `14-reference.cmd --at-park --write` |
-| [15](15-site.cmd) | 把已实际对中的三组像素和关节角、Z 示教值制成本机安装记录 | `15-site.cmd --template 测量.txt`；填好后 `15-site.cmd 测量.txt` 演算，加 `--install` 生成本机 C++ 表，再运行 `01-build.cmd` |
+| [15](15-site.cmd) | 把三组对中读数和 Z 示教角保存为本机 TOML | `15-site.cmd --template 测量.txt` 生成采点表。填好后运行 `15-site.cmd 测量.txt --install` |
 | [20](20-grid90.cmd) | **实机定位**。空吸头蛇形扫 90 个交点，约在已示教棋子顶面上方 2 mm 记录，再全高横移，结束回观察位 | `20-grid90.cmd`；`20-grid90.cmd --plan` 离线规划 |
 | [21](21-pick90.cmd) | **实机取放**。空盘仅放一颗样子在指定起点，逐格搬运，最后把棋子送回起点、机械臂回观察位 | `21-pick90.cmd --start 3 4`；离线加 `--plan` |
 | [30](30-vision-replay.cmd) | 用保存的图像、NPU 输出检查 C++ 预处理、解码和检测结果 | `30-vision-replay.cmd` |
@@ -24,7 +24,9 @@
 
 SWD 使用雅特力 OpenOCD 的 `interface/cmsis-dap.cfg` 和 `target/at32m416xx.cfg`。它可以在 PATH 中，也可以通过 `--openocd` 指定。脚本校验选定 HEX、轴记录和应用 CRC，核对 MCU，编程后校验写入内容并比对最后 4 KiB 电角标定区。四块新板的电角零点分别在各自实板上标定，已有标定随板保留。默认包为 [9fc6a5de](../images/common-20261123-9fc6a5de/joint-app-manifest.json)，可用 `--package` 选择教师验收的其他同格式版本。J1～J3 有此版板上回读，J4 的此版完成离线镜像校验，本次状态帧回读为 `41f870bf`。
 
-现场使用 ADB 时可用 `SCARA_ADB` 指定工具路径，多块 RV1106 用 `ANDROID_SERIAL` 选板，多只 USB-CAN 用 `SCARA_CAN_SERIAL` 选适配器。对局把 `config/site/installation.hpp` 编入程序。CMake 可用 `SCARA_INSTALLATION_HEADER` 指定另一份实测 C++ 表。独立的 20/21 巡点工具仍可通过 `--site` 指定 `.site` 或旧 JSON。单机同时只由一个控制程序持有 USB-CAN。
+现场使用 ADB 时可用 `SCARA_ADB` 指定工具路径，多块 RV1106 用 `ANDROID_SERIAL` 选板，多只 USB-CAN 用 `SCARA_CAN_SERIAL` 选适配器。对局与巡点共用 `config/site/installation.toml`，也可用 `SCARA_SITE` 指定其他现场表。20/21 可用 `--site` 单次指定。旧 `.site` 可用 `15-site.cmd 安装.site --install` 迁移，历史 JSON 保留给旧台架工具。单机同时只由一个控制程序持有 USB-CAN。
+
+`15-site.cmd --template 实测表.txt` 生成采点表。J2、J3 各填一个带方向的换算系数。J1 直接填吸取、搬运与可选释放角。20 号空吸头定位还需实测的 `hover`，保存为 `[z].hover_deg`。旧表里的行程毫米数只在导入时用于恢复原下探角。
 
 ## 每项测试的约定
 

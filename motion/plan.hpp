@@ -16,13 +16,9 @@ struct ArmGeometry
     // 同一示教姿态下的 J2 反馈角与 J3 电机角，单位度。
     double j2ReferenceDeg = 0;
     double j3ReferenceMotorDeg = 0;
-    //示教得到的J2反馈角到关节角比例
-    double j2Scale = 1;
-    //J3电机角到肘轴角的传动比
-    double j3Ratio = 1;
-    // 两个方向符号把驱动正方向换成机械关节的正方向。
-    double j2Sign = 1;
-    double j3Sign = 1;
+    // 每一度驱动读数对应的关节角度。负号表示转向相反。
+    double j2JointPerDrive = 1;
+    double j3JointPerDrive = 1;
     // 同一示教姿态下，大臂相对基座、小臂相对大臂的实际角度，单位弧度。
     double shoulderReferenceRad = 0;
     double elbowReferenceRad = 0;

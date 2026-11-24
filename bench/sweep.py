@@ -1,19 +1,22 @@
 """按正式 C++ 格点走台架。20 只定位，21 搬同一颗测试棋子绕盘一圈。"""
 
 import json
+from pathlib import Path
 import subprocess
 import time
+import tomllib
 
 from drive import Drive
 from quick import check, sample
-from run_game import Bench, Magnet
+from run_game import Bench, Magnet, field_limits
 
 
 # ---------取得 90 个目标区---------
 # 调用正式 C++ 格点工具，将每个（行,列）关联到基座毫米和关节角。
-def read_points(tool, site):
+def read_points(tool, site, installation=None):
     reply = subprocess.run(
-        [str(tool), site.name], cwd=site.parent, capture_output=True, encoding='utf-8', errors='replace'
+        [str(tool), '-' if installation is not None else site.name], cwd=site.parent,
+        input=installation, capture_output=True, encoding='utf-8', errors='replace'
     )
     if reply.returncode:
         raise ValueError(reply.stderr.strip() or "C++ 格点规划失败")
@@ -30,9 +33,14 @@ def read_points(tool, site):
 def plan(bench, points, start_pose, first, carry):
     z = bench.heights['z']
     high, low = z['travel_deg'], z['pickup_deg']
-    deg_mm = (high - low) / z['operator_estimated_rise_mm']
-    grip = low + deg_mm * z.get('pickup_gap_mm', 0)
-    release = low + deg_mm * z.get('release_offset_mm', 0)
+    grip, release, hover = low, z.get('release_deg', low), z.get('hover_deg')
+    if 'operator_estimated_rise_mm' in z:  # 历史夹具导入，正式 TOML 使用角度。
+        deg_mm = (high - low) / z['operator_estimated_rise_mm']
+        grip = low + deg_mm * z.get('pickup_gap_mm', 0)
+        release = low + deg_mm * z.get('release_offset_mm', 0)
+        hover = low + 2 * deg_mm
+    if not carry and (hover is None or not 0 < (hover-low)/(high-low) <= 1):
+        raise ValueError('20 号巡点需要在取子与搬运层之间实测 z.hover_deg')
     # 按行折返遍历棋盘，再旋转顺序，让操作者指定的格子排在第一位。
     order = [(r, c) for r in range(10) for c in (range(9) if r % 2 == 0 else reversed(range(9)))]
     cut = order.index(first)
@@ -62,12 +70,23 @@ def plan(bench, points, start_pose, first, carry):
     else:
         for cell in order:
             horizontal(points[cell][1])
-            actions.extend([('z', low + 2 * deg_mm), ('record', cell), ('z', high)])
+            actions.extend([('z', hover), ('record', cell), ('z', high)])
     horizontal(bench.config['park_joints_deg'], fixed=True)
     return actions
 
 
-def measured_config(site):
+def measured_config(site, installation=None):
+    if site.suffix.lower() == '.toml':
+        setup = tomllib.loads(installation if installation is not None else site.read_text(encoding='utf-8-sig'))
+        arm, motion = setup['arm'], setup['motion']
+        j2, j3 = arm['reference_drive_deg']
+        shoulder, elbow = arm['reference_joint_rad']
+        return dict(arm_lengths_mm=arm['lengths_mm'], j2_reference_deg=j2, j3_reference_motor_deg=j3,
+                    shoulder_ref_rad=shoulder, elbow_ref_rad=elbow, joint_per_drive=arm['joint_per_drive'],
+                    z=setup['z'], park_joints_deg=motion['park_deg'],
+                    joint_velocity_deg_s=motion['velocity_deg_s'], joint_acceleration_deg_s2=motion['acceleration_deg_s2'],
+                    camera_url=setup['vision'].get('camera_url'), pickup_at_rest_ms=setup['z'].get('grip_dwell_ms', 420),
+                    **field_limits(str(Path(__file__).resolve().parent/'reference/workspace.npz')))
     # 独立巡点命令也能导入早期分文件的实测夹具。
     config = json.loads(site.read_text(encoding='utf-8'))
     for key in ('arm_file', 'heights_file'):
@@ -84,8 +103,13 @@ def measured_config(site):
 
 # ---------巡点执行与记录区---------
 def sweep(args, site, tool, log):
-    points = read_points(tool, site)
-    bench = Bench(measured_config(site))
+    # 格点与台架动作使用同一份 TOML 快照。
+    installation = site.read_text(encoding='utf-8-sig') if site.suffix.lower() == '.toml' else None
+    points = read_points(tool, site, installation)
+    config = measured_config(site, installation)
+    if not args.plan and site.suffix.lower() == '.toml' and not config.get('camera_url'):
+        raise ValueError('实机台架请选择含现场相机地址的 TOML')
+    bench = Bench(config)
     drive = None
     bridge = None
     active = False

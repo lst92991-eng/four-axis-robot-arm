@@ -1,0 +1,64 @@
+{
+  "base": "8690c9b",
+  "reference_cells": 90,
+  "max_xy_mm": 0.0,
+  "max_ik_deg": 9.947598300641403e-14,
+  "max_fk_mm": 0,
+  "scenes": 26,
+  "steps": 459,
+  "endpoint_checks": 61,
+  "max_action_deg": 2.842170943040401e-14,
+  "same_sample_counts": true,
+  "migrated_90cell_max_delta": 0.0,
+  "offline_plans": {
+    "grid90": {
+      "z": 181,
+      "xy": 93,
+      "record": 90
+    },
+    "pick90": {
+      "z": 361,
+      "xy": 94,
+      "magnet": 180,
+      "record": 90
+    }
+  },
+  "rejects_zero_joint_factor": true,
+  "date": "2026-11-24",
+  "verification": "offline Windows x64",
+  "ctest_passed": 14,
+  "bench_tests_passed": 6,
+  "classroom_nloc": {
+    "before": 1825,
+    "after": 1965
+  },
+  "signed_joint_factors": {
+    "before": 4,
+    "after": 2
+  },
+  "current_entry_demo_passed": true,
+  "source_lf_sha256": {
+    "app/game.cpp": "4d4cb6e52c946773df92d0f8680f5a46714cf391ea91ee74b7fa31de7a676884",
+    "app/game.hpp": "29710dc3e2c5096be0693e440e9b21d1c66ffbdc93708a06ad5e8a357a5a446f",
+    "app/game_main.cpp": "8612e1d606b3e95c05085bf45a6808c8f99089ec03f6a25531accb77a25908a9",
+    "app/rv1106.cpp": "4bcda608f8c6a2205a49d094ff504d0cf6379cc551b30fd64dc7e65bbdba025b",
+    "app/site.cpp": "4498afbf4000b155a1eedfdf2474fcf5bf0d2fd754b9e0624b858f747cb9e9ae",
+    "app/site.hpp": "adf70d104a04c5a62567c7a4618f19f1f26c5fd37318185909ee3fe6ced3f7c0",
+    "app/vision_main.cpp": "a282baac666936b4e6f046879032193cd4bb18a61dd039f910daed7d3921ac50",
+    "vision/capture.cpp": "f995b1fc89100681a204ec9cf8ce54bf57a9315389af5fb35f56f265fc876097",
+    "vision/capture.hpp": "75443302a972c501fd6174637f4fa79e319f5ec69a2601ed5ede6d1d805fc52e",
+    "vision/geometry.cpp": "3160d9a13e055f28177d6d86d9f37323de74423f6a774b245063111ae9e23426",
+    "vision/geometry.hpp": "11513f3fa4382cf761ec6cb8bb71b989ac3ef27526446e20d6f294f573b37925",
+    "vision/yolo.cpp": "63bb3bbb579af979f8d77ded25fb26b2074fb0b42dcdd9475c29bd397945623c",
+    "vision/yolo.hpp": "aac3a45b313bfefd67d99d85a46e0b7c221179b0b0d4ec8dc6319ec986bd6dad",
+    "vision/yolo_npu.cpp": "de03c4753eb47af278a98779e8966e38ca0036cbc377df11950e09603f9f2cdc",
+    "motion/execute.cpp": "2bc086ba249e4435866df110d85606612a7b7068450c2b46892006236b46f96c",
+    "motion/execute.hpp": "d7f80fe746c932835cdae5ca50e26b0f504f4c0d09da79d28e2768c8fd10a3ea",
+    "motion/plan.cpp": "10ef0425d0c17ff1a62b3ac23bcb57d133e1754e1e1640017e2176f9f0eea7d5",
+    "motion/plan.hpp": "a59620a48b22b996cf1fd4559a2cf7c4a15302b49d5d645418f7f5422368ea60",
+    "chess/board.cpp": "b38786a4a7a8115e90084d3fd677aaab2c9e6de1336b07fa4f24dffe6bb9ac5b",
+    "chess/board.hpp": "272f777c576f36f1e14789f70f317a98502fc2a16d13637e7fbb07943fb2c9d2",
+    "chess/pikafish.cpp": "182e88e99c28db80a9c41e64233a1068f157ef30390d96123d0c688547c1c9c6",
+    "chess/pikafish.hpp": "8c4f903afda64d2f2bcebc0627cc3370cb9065a9440f30f7c719c4648cbd5c02"
+  }
+}

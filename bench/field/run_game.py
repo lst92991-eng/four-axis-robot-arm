@@ -247,23 +247,26 @@ FIELD_Z = {'game_speed_deg_s': 4800,
  'release_acceleration_deg_s2': 5700,
  'z_settle_gain_milli': 24000}
 
+def field_limits(samples):
+    # 台架实测的可达区及驱动调校，独立于对局与示教参数。
+    return dict(cad_workspace=dict(samples=samples, neutral_shoulder_deg=-92.,
+                                   registration_uncertainty_deg=2.5, transfer_shoulder_deg=-85.,
+                                   transfer_speed_deg_s=[18, 60]),
+                motion_tuning=dict(base=FIELD_BASE, z=FIELD_Z))
 
 # ---------安装数据交接区---------
 # 把 DLL 给出的参考角、工作层和 CAD 数据转成台架查路、发指令时使用的配置。
 def compiled_config(site):
-    j2, j3, scale, shoulder, elbow, j2_sign, j3_sign, j3_ratio = site['arm']
+    j2, j3, shoulder, elbow, k2, k3 = site['arm']
     pickup, travel, release = site['z']
-    return dict(j2_reference_deg=j2, j3_reference_motor_deg=j3, j2_scale=scale,
-                shoulder_ref_rad=shoulder, elbow_ref_rad=elbow, j2_sign=j2_sign, j3_sign=j3_sign, j3_ratio=j3_ratio,
+    return dict(j2_reference_deg=j2, j3_reference_motor_deg=j3, joint_per_drive=[k2, k3],
+                shoulder_ref_rad=shoulder, elbow_ref_rad=elbow,
                 arm_lengths_mm=site['arm_lengths_mm'],
                 park_joints_deg=list(site['park']), joint_velocity_deg_s=list(site['velocity']),
                 joint_acceleration_deg_s2=list(site['acceleration']), pickup_at_rest_ms=site['grip_ms'],
                 z=dict(pickup_deg=pickup, clearance_deg=travel, travel_deg=travel, release_deg=release),
-                cad_workspace=dict(samples=io.BytesIO(site['cad']), neutral_shoulder_deg=-92.,
-                                   registration_uncertainty_deg=2.5, transfer_shoulder_deg=-85.,
-                                   transfer_speed_deg_s=[18,60]),
-                engine_directory='/userdata/scara-live-match-20261117/engine', think_ms=650,
-                motion_tuning=dict(base=FIELD_BASE, z=FIELD_Z))
+                engine_directory=site['engine_directory'], think_ms=site['think_ms'],
+                **field_limits(io.BytesIO(site['cad'])))
 
 
 # ---------台架对局会话区---------
@@ -705,15 +708,21 @@ class Bench:
 
 # ---------Windows 对局入口区---------
 def main():
+    sys.path.insert(0, str(ROOT/'bench'))
+    from teach import default_site, field_config
+
+    selected = os.environ.get('SCARA_SITE')
+    path = field_config(Path(selected).resolve() if selected else default_site())
+    site_text = path.read_bytes()
     binary_dir = Path(os.environ.get('SCARA_BENCH_BIN', ROOT/'build/bench/bin')).resolve()
     os.environ['OPENCV_FFMPEG_CAPTURE_OPTIONS'] = 'rtsp_transport;tcp'
     with os.add_dll_directory(str(binary_dir)):
         dll = ctypes.PyDLL(str(binary_dir/'scara_usb_game.dll'))
+        dll.usb_installation.argtypes = ctypes.c_char_p, ctypes.c_size_t
         dll.usb_installation.restype = ctypes.py_object
-        # 先从 DLL 取出编入的安装值，最后把使用这份配置的 Bench 交给同一个 DLL 开局。
-        site = dll.usb_installation()
+        site = dll.usb_installation(site_text, len(site_text))
         run = dll.run_usb_game
-        run.argtypes = ctypes.py_object, ctypes.c_char_p
+        run.argtypes = ctypes.py_object, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t
         run.restype = ctypes.c_int
         args = sys.argv[1:]
         checkpoint = json.loads(os.environ['SCARA_MATCH_RESUME']) if 'SCARA_MATCH_RESUME' in os.environ else None
@@ -728,7 +737,7 @@ def main():
         plies = -1 if full else 10 if args in (['self-play'], ['self-play-resume']) else 0
         bench = Bench(current_position=args == ['current'] and checkpoint is None, checkpoint=checkpoint,
                       self_play=plies, config=compiled_config(site))
-        return run(bench, MODEL.encode())
+        return run(bench, MODEL.encode(), site_text, len(site_text))
 
 
 if __name__ == '__main__':

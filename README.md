@@ -18,7 +18,7 @@
 
 在项目根目录运行 `bench\01-build.cmd` 构建 Windows 台架。双击 `bench\START.cmd` 可选测试。命令行用 `bench\20-grid90.cmd --plan` 查看 90 点定位，用 `bench\21-pick90.cmd --plan --start 3 4` 规划从第 3 行第 4 列开始的整盘取放，用 `bench\40-game-sim.cmd --all` 运行 C++ 对局回归。
 
-固定后用 `bench\15-site.cmd 实测表.txt --install` 生成本机 C++ 数值表，再运行 `bench\01-build.cmd`。坐标、工作高度和观察位都随程序编译。没有另选本机表时，构建采用仓库已有的实测数值。[Setup_game](app/installation.hpp) 中直接填写这些数值。`bench\50-game.cmd` 打开的面板从内存接收棋局和相机画面。同一面板进程支持“接续上局”，退出面板进程会清空棋谱。
+固定后用 `bench\15-site.cmd 实测表.txt --install` 保存 `config/site/installation.toml`。安装参数在对局启动时读取，修改后重开对局即可。首次构建自动获取固定版本的 toml++。已归档实测机位见 [installation.toml](config/installation.toml)，仿真使用 [独立夹具](tests/fixtures/game-app/installation.toml)。`bench\50-game.cmd` 的面板从内存接收棋局与画面，同一面板进程支持“接续上局”。
 
 ## 运行边界
 

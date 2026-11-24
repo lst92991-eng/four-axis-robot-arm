@@ -3,7 +3,7 @@
 #include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
-#include <installation.hpp>
+#include "app/site.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <poll.h>
 #include <cstring>
@@ -142,7 +142,7 @@ int main()
         using namespace scara;
         GameConfig config;
         Session session;
-        Setup_game(config, session);
+        Site_loadFile("config/installation.toml", config, session);
         config.cameraUrl = "fake-stream";
         config.engineDir = "fake-engine";
         Runtime_open(config, "fake-model", session);

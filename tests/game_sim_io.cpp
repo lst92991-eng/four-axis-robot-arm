@@ -1,5 +1,6 @@
 // 离线对局后端。场景提供相机、引擎和驱动反馈，运行与实机共用的对局主流程。
 #include "app/game.hpp"
+#include "app/site.hpp"
 #include "bench/legacy_site.hpp"
 #include <filesystem>
 #include "motion/execute.hpp"
@@ -273,16 +274,25 @@ static void readBoard(const cv::FileNode &rows)
 // 载入几何和场景脚本后，把同一份 Session 交给正式对局入口。
 int main(int argc, char **argv)
 {
-    if (argc != 2) return 2;
+    if (argc != 2 && argc != 3) return 2;
     try
     {
         scara::GameConfig config;
         scara::Session session;
-        scara::Bench_load(argv[1], config, session);
-        cv::FileStorage input(argv[1], cv::FileStorage::READ);
-        auto dir = std::filesystem::u8path(argv[1]).parent_path();
-        auto file = dir / std::filesystem::u8path(std::string(input["simulation_file"]));
-        if (!scara::script.open(file.u8string(), cv::FileStorage::READ)) return 2;
+        std::string scenario;
+        if (argc == 3)
+        {
+            scara::Site_loadFile(argv[1], config, session);
+            scenario = argv[2];
+        }
+        else
+        {
+            scara::Bench_load(argv[1], config, session);
+            cv::FileStorage input(argv[1], cv::FileStorage::READ);
+            auto dir = std::filesystem::u8path(argv[1]).parent_path();
+            scenario = (dir / std::filesystem::u8path(std::string(input["simulation_file"]))).u8string();
+        }
+        if (!scara::script.open(scenario, cv::FileStorage::READ)) return 2;
         return scara::Match_run(config, session, "");
     }
     catch (const std::exception &error)

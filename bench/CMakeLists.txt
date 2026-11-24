@@ -9,7 +9,7 @@ target_link_libraries(scara_legacy_site PUBLIC scara_motion)
 add_executable(scara_geometry_tool ../tools/geometry_tool.cpp)
 target_link_libraries(scara_geometry_tool PRIVATE scara_legacy_site)
 add_executable(scara_game_sim ../tests/game_sim_io.cpp)
-target_link_libraries(scara_game_sim PRIVATE scara_match scara_legacy_site)
+target_link_libraries(scara_game_sim PRIVATE scara_site scara_legacy_site)
 
 if(WIN32 AND TARGET opencv_world)
   foreach(tool scara_geometry_tool scara_game_sim)

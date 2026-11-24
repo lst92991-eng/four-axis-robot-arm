@@ -70,19 +70,22 @@ bool Arm_load(const std::string &path, ArmGeometry &arm)
         measured.forearmMm = double(lengths[1]);
     }
     // J2 的比例和 J3 的传动比分别用于肩关节和肘关节的角度换算。
-    cv::read(file["j3_ratio"], measured.j3Ratio, 3.0);
-    cv::read(file["j2_sign"], measured.j2Sign, 1.0);
-    cv::read(file["j3_sign"], measured.j3Sign, -1.0);
+    double j3Ratio, j2Sign, j3Sign;
+    cv::read(file["j3_ratio"], j3Ratio, 3.0);
+    cv::read(file["j2_sign"], j2Sign, 1.0);
+    cv::read(file["j3_sign"], j3Sign, -1.0);
     for (const char *key : {"j2_reference_deg", "j3_reference_motor_deg", "j2_scale", "shoulder_ref_rad", "elbow_ref_rad"})
         if ((!file[key].isReal() && !file[key].isInt()) || !std::isfinite(double(file[key]))) return false;
     measured.j2ReferenceDeg = double(file["j2_reference_deg"]);
     measured.j3ReferenceMotorDeg = double(file["j3_reference_motor_deg"]);
-    measured.j2Scale = double(file["j2_scale"]);
+    double j2Scale = double(file["j2_scale"]);
     measured.shoulderReferenceRad = double(file["shoulder_ref_rad"]);
     measured.elbowReferenceRad = double(file["elbow_ref_rad"]);
-    if (!(measured.upperMm > 0 && measured.forearmMm > 0 && measured.j2Scale > 0 && measured.j3Ratio > 0) ||
-        !std::isfinite(measured.upperMm + measured.forearmMm + measured.j3Ratio) ||
-        std::abs(measured.j2Sign) != 1 || std::abs(measured.j3Sign) != 1) return false;
+    if (!(measured.upperMm > 0 && measured.forearmMm > 0 && j2Scale > 0 && j3Ratio > 0) ||
+        !std::isfinite(measured.upperMm + measured.forearmMm + j3Ratio) ||
+        std::abs(j2Sign) != 1 || std::abs(j3Sign) != 1) return false;
+    measured.j2JointPerDrive = j2Scale * j2Sign;
+    measured.j3JointPerDrive = j3Sign / j3Ratio;
     // 臂长、传动比和方向通过核对后，整组参数一次写回。
     arm = measured;
     return true;

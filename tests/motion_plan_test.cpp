@@ -18,7 +18,7 @@ int main()
         scara::WorkHeights heights;
         check(scara::Arm_load("tests/fixtures/upper-app/arm-registration.json", arm), "Arm configuration failed");
         check(scara::WorkHeights_load("tests/fixtures/upper-app/pick-plan.json", heights), "Work heights failed");
-        check(arm.upperMm == 275 && arm.forearmMm == 275 && arm.j2Scale == .8 && arm.j3Ratio == 3,
+        check(arm.upperMm == 275 && arm.forearmMm == 275 && arm.j2JointPerDrive == .8 && arm.j3JointPerDrive == -1.0/3,
               "Saved arm scales were replaced");
         cv::FileStorage reference;
         reference.open("tests/fixtures/upper-app/kinematic-reference.json", cv::FileStorage::READ);

@@ -12,7 +12,7 @@ set(SCARA_WITH_RKNN OFF CACHE BOOL "" FORCE)
 add_subdirectory(../.. scara-core)
 add_subdirectory(.. scara-tools)
 add_executable(scara_bench_points ../points.cpp)
-target_link_libraries(scara_bench_points PRIVATE scara_match scara_legacy_site)
+target_link_libraries(scara_bench_points PRIVATE scara_site scara_legacy_site)
 add_executable(scara_bench_vision ../../tests/vision_replay.cpp)
 target_link_libraries(scara_bench_vision PRIVATE scara_vision_core)
 set(cad "${CMAKE_CURRENT_SOURCE_DIR}/../reference/workspace.npz")
@@ -24,7 +24,7 @@ file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/scara_cad.hpp" CONTENT "stati
 # USB 对局 DLL 同时链接 C++ 对局、视觉和 Python 回调接口。
 add_library(scara_usb_game SHARED usb_io.cpp)
 target_include_directories(scara_usb_game PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(scara_usb_game PRIVATE scara_match scara_vision_core Python3::Python)
+target_link_libraries(scara_usb_game PRIVATE scara_site scara_vision_core Python3::Python)
 if(WIN32 AND TARGET opencv_world)
   foreach(tool scara_usb_game scara_bench_points scara_bench_vision)
     add_custom_command(TARGET ${tool} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different

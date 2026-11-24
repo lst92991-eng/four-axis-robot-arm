@@ -35,14 +35,16 @@ class Entries(unittest.TestCase):
             try:
                 os.chdir(tmp)
                 dll = ctypes.PyDLL(str(bins/'scara_usb_game.dll'))
+                site = (ROOT/'config/installation.toml').read_bytes()
+                dll.usb_installation.argtypes = ctypes.c_char_p, ctypes.c_size_t
                 dll.usb_installation.restype = ctypes.py_object
-                cfg = run_game.compiled_config(dll.usb_installation())
+                cfg = run_game.compiled_config(dll.usb_installation(site, len(site)))
                 workspace = run_game.Bench(config=cfg).workspace
                 self.assertGreater(len(workspace.angles), 0)
                 park = workspace.angles_of(cfg['park_joints_deg'])
                 self.assertAlmostEqual(workspace.opposite(park)[1], -park[1])
                 run = dll.run_usb_game
-                run.argtypes = ctypes.py_object, ctypes.c_char_p
+                run.argtypes = ctypes.py_object, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t
                 run.restype = ctypes.c_int
                 for history, code, interrupted in [
                     ('', 0, None), ('a3a4', 0, None), ('a3a4 xxxx', 1, None),
@@ -55,7 +57,7 @@ class Entries(unittest.TestCase):
                         field.command.return_value = 'quit'
                         field.command.side_effect = interrupted
                         field.close.return_value = True
-                        self.assertEqual(run(field, b'mock-model'), code)
+                        self.assertEqual(run(field, b'mock-model', site, len(site)), code)
                         field.execute.assert_not_called()
                         field.infer.assert_not_called()
                         field.close.assert_called_once()
@@ -66,7 +68,7 @@ class Entries(unittest.TestCase):
                         if code:
                             self.assertIn('xxxx',message)
                 field.close.return_value = False
-                self.assertEqual(run(field, b'mock-model'), 1)
+                self.assertEqual(run(field, b'mock-model', site, len(site)), 1)
                 self.assertIn('机械停止', field.state.call_args.args[1])
                 self.assertEqual(list(Path(tmp).iterdir()), [])
             finally:

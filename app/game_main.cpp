@@ -1,16 +1,26 @@
-// RV1106 对局入口，从编入程序的安装表建立本局坐标。
-#include <installation.hpp>
+#include "site.hpp"
+#include <iostream>
+#include <stdexcept>
 
 //---------对局启动区---------
 int main(int argc, char **argv)
 {
     using namespace scara;
-    if (argc != 2) return 2; // 唯一参数是 RKNN 模型。
+    if (argc != 2) return 2; // RKNN 模型路径。SCARA_SITE 可指定安装文件。
     const char *modelPath = argv[1];
     GameConfig config;
     Session session;
 
-    // 先装入本机三点、机械参考和取放高度，再进入整局循环。
-    Setup_game(config, session);
+    // 安装参数完整后才开始连接设备。
+    try
+    {
+        Site_loadFile(Site_path(), config, session);
+        if (config.cameraUrl.empty()) throw std::runtime_error("缺少 vision.camera_url");
+    }
+    catch (const std::exception &error)
+    {
+        std::cerr << "安装配置 " << error.what() << '\n';
+        return 2;
+    }
     return Match_run(config, session, modelPath);
 }

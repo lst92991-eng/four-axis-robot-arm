@@ -36,7 +36,7 @@ struct GameConfig
     // 原图上的推理区域，依次为左上角 x、y 和宽、高，单位像素。
     cv::Rect visionRoi{300, 70, 650, 600};
     //Pikafish程序及配套NNUE所在目录
-    std::string engineDir;
+    std::string engineDir = "engine/pikafish-2023-03-05";
     //J1/J2/J3共用时间规划，各轴使用自己的速度和加速度上限
     MotionLimits motion;
     // humanRed 决定玩家执哪一方，redToMove 指定开局时轮到哪一方。

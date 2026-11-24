@@ -1,7 +1,7 @@
 // Windows USB-CAN 台架接入。C++ 负责视觉解码与对局，Python 持有 USB-CAN 和 ADB 连接。
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
-#include <installation.hpp>
+#include "app/site.hpp"
 #include "scara_cad.hpp"
 #include "vision/capture.hpp"
 #include "vision/yolo.hpp"
@@ -326,29 +326,37 @@ bool Robot_execute(const std::string &purpose, const chess::Move &move, const st
 } // namespace scara
 
 //---------DLL 入口区---------
-// 安装数字与 CAD 工作区从同一 DLL 交给 USB 驱动端。正常对局不再寻找参数文件。
-extern "C" __declspec(dllexport) PyObject *usb_installation()
+static void loadFieldSite(const char *text, size_t size, scara::GameConfig &config, scara::Session &session)
+{
+    config.thinkMs = 650;
+    config.engineDir = "/userdata/scara-live-match-20261117/engine";
+    scara::Site_parse(std::string_view(text, size), config, session);
+    if (config.cameraUrl.empty()) throw std::runtime_error("缺少 vision.camera_url");
+}
+
+// 两个入口接收同一份 TOML 快照，防止开局前编辑文件导致驱动端参数不一致。
+extern "C" __declspec(dllexport) PyObject *usb_installation(const char *text, size_t size)
 {
     using namespace scara;
     GameConfig cfg;
     Session s;
-    // 调用编入 DLL 的同一份 Setup_game，让 Python 得到规划采用的参考与限幅。
-    try { Setup_game(cfg, s); }
+    try { loadFieldSite(text, size, cfg, s); }
     catch (const std::exception &error) { PyErr_SetString(PyExc_ValueError, error.what()); return nullptr; }
     // 交付机械参考与臂长、Z 工作层、观察位、三轴限幅、吸合时间和 CAD 采样数据。
-    return Py_BuildValue("{s:(dddddddd),s:(dd),s:(ddd),s:(dd),s:(ddd),s:(ddd),s:i,s:y#}",
-        "arm", s.arm.j2ReferenceDeg, s.arm.j3ReferenceMotorDeg, s.arm.j2Scale, s.arm.shoulderReferenceRad, s.arm.elbowReferenceRad,
-        s.arm.j2Sign, s.arm.j3Sign, s.arm.j3Ratio,
+    return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:s}",
+        "arm", s.arm.j2ReferenceDeg, s.arm.j3ReferenceMotorDeg, s.arm.shoulderReferenceRad, s.arm.elbowReferenceRad,
+        s.arm.j2JointPerDrive, s.arm.j3JointPerDrive,
         "arm_lengths_mm", s.arm.upperMm, s.arm.forearmMm,
         "z", s.heights.pickupDeg, s.heights.travelDeg, s.heights.releaseDeg,
         "park", s.park.j2Deg, s.park.j3MotorDeg,
         "velocity", cfg.motion.velocity[0], cfg.motion.velocity[1], cfg.motion.velocity[2],
         "acceleration", cfg.motion.acceleration[0], cfg.motion.acceleration[1], cfg.motion.acceleration[2],
-        "grip_ms", s.heights.gripDwellMs, "cad", cadSamples, Py_ssize_t(sizeof(cadSamples)));
+        "grip_ms", s.heights.gripDwellMs, "cad", cadSamples, Py_ssize_t(sizeof(cadSamples)),
+        "think_ms", cfg.thinkMs, "engine_directory", cfg.engineDir.c_str());
 }
 
 // Python 传入本局设备对象与模型路径，DLL 使用与板端相同的 Match_run。
-extern "C" __declspec(dllexport) int run_usb_game(PyObject *callbacks, const char *modelPath)
+extern "C" __declspec(dllexport) int run_usb_game(PyObject *callbacks, const char *modelPath, const char *text, size_t size)
 {
     scara::GameConfig config;
     scara::Session session;
@@ -356,7 +364,7 @@ extern "C" __declspec(dllexport) int run_usb_game(PyObject *callbacks, const cha
     int result = 1;
     try
     {
-        scara::Setup_game(config, session);
+        loadFieldSite(text, size, config, session);
         result = scara::Match_run(config, session, modelPath);
     }
     catch (const std::exception &error) { PyErr_SetString(PyExc_RuntimeError, error.what()); }

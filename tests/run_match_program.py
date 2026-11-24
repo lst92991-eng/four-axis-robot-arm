@@ -2,7 +2,7 @@
 import copy
 import json
 from pathlib import Path
-import shutil
+import tomllib
 import subprocess
 import sys
 import tempfile
@@ -10,7 +10,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 EXE = Path(sys.argv[1]).resolve()
 BASE = json.loads((ROOT / 'tests/fixtures/game-app/two-rounds.json').read_text(encoding='utf-8'))
-TEMPLATE = json.loads((ROOT / 'tests/fixtures/game-app/simulation.json').read_text(encoding='utf-8'))
+TEMPLATE = (ROOT / 'tests/fixtures/game-app/installation.toml').read_text(encoding='utf-8')
 INITIAL = BASE['initial_board']
 AFTER_HUMAN = BASE['commands'][2]['board']
 AFTER_ROBOT = BASE['executions'][1]['board']
@@ -54,23 +54,16 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, place
     global passed
     with tempfile.TemporaryDirectory(prefix='scara_match_') as directory:
         work = Path(directory)
-        config = copy.deepcopy(TEMPLATE)
-        for key in ('layout_file', 'arm_file', 'heights_file'):
-            source = (ROOT / 'tests/fixtures/game-app' / config[key]).resolve()
-            fixture = work / f'{key}.json'
-            shutil.copyfile(source, fixture)
-            config[key] = str(fixture)
+        text = TEMPLATE
         if placement_offsets is not None:
-            layout_file = Path(config['layout_file'])
-            layout = json.loads(layout_file.read_text(encoding='utf-8'))
-            layout['placement_offsets_mm'] = placement_offsets
-            layout_file.write_text(json.dumps(layout), encoding='utf-8')
-        config['work_directory'] = str(work / 'runtime')
-        config['simulation_file'] = str(work / 'scenario.json')
-        config.update(settings or {})
+            offsets = [[9-row, col, x, y] for col, row, x, y in placement_offsets]
+            text = text.replace('[game]', f'target_offsets_mm = {json.dumps(offsets)}\n\n[game]')
+        for key, value in (settings or {}).items():
+            text += f'\n{key} = {json.dumps(bool(value))}\n'
+        config = tomllib.loads(text)
         (work / 'scenario.json').write_text(json.dumps(scenario), encoding='utf-8')
-        (work / 'config.json').write_text(json.dumps(config), encoding='utf-8')
-        result = subprocess.run([str(EXE), str(work / 'config.json')], cwd=ROOT,
+        (work / 'installation.toml').write_text(text, encoding='utf-8')
+        result = subprocess.run([str(EXE), str(work / 'installation.toml'), str(work / 'scenario.json')], cwd=ROOT,
                                 capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=8)
         assert result.returncode == exit_code, (name, result.returncode, result.stdout[-2000:], result.stderr)
         line = next(line for line in result.stdout.splitlines() if line.startswith('SIM_RESULT\t'))
@@ -88,8 +81,8 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, place
         assert all(execution['simulated'] == 1 for execution in executions)
         assert [step['action'] for step in executions[0]['steps']] == ['release', 'move', 'move']
         assert executions[0]['steps'][1]['axes'] == 1
-        heights = json.loads(Path(config['heights_file']).read_text(encoding='utf-8'))['z']
-        park = [heights['travel_deg'], *config['park_joints_deg']]
+        heights = config['z']
+        park = [heights['travel_deg'], *config['motion']['park_deg']]
         for execution in executions[1:]:
             assert execution['steps'][-1] == dict(action='move', axes=7, target_deg=park)
             assert execution['end_joint_deg'] == park

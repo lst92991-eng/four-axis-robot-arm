@@ -27,16 +27,18 @@ def binary(name):
 
 # 优先选显式指定的安装记录，离线规划可用保存的参考夹具。
 def site_file(args):
+    from teach import INSTALLATION, field_config
+
     named = args.site or os.environ.get('SCARA_SITE')
-    site = Path(named).resolve() if named else ROOT / 'config/site/installation.site'
+    site = Path(named).resolve() if named else INSTALLATION
+    if not named and not site.exists() and site.with_suffix('.site').exists():
+        site = site.with_suffix('.site')
     if not named and not site.exists() and args.plan:
         site = REFERENCE
     if not site.is_file():
         raise FileNotFoundError(f"缺少本机安装记录 {site}，请用 15-site 保存，或以 --site 指定现有记录")
     if site == REFERENCE and not args.plan:
         raise ValueError("历史扫描夹具只用于 --plan。实机请选择固定后已校验的安装配置。")
-    from teach import field_config
-
     return field_config(site)
 
 
@@ -161,11 +163,9 @@ def main():
                 angles=args.angles
                 if args.at_park:
                     site=site_file(args)
-                    cfg=json.loads(site.read_text(encoding='utf-8'))
-                    heights=cfg
-                    if cfg.get('heights_file'):
-                        heights=json.loads((site.parent/cfg['heights_file']).read_text(encoding='utf-8'))
-                    angles=[heights['z']['travel_deg'],*cfg['park_joints_deg']]
+                    from sweep import measured_config
+                    cfg = measured_config(site)
+                    angles = [cfg['z']['travel_deg'], *cfg['park_joints_deg']]
                 print("实物对准的 J1/J2/J3 参考角",*angles,flush=True)
                 log('reference_request',angles_deg=angles,write=args.write)
                 if args.write:
@@ -182,7 +182,8 @@ def main():
 
                 url = args.url
                 if not url:
-                    url = json.loads(site_file(args).read_text(encoding='utf-8'))['camera_url']
+                    from sweep import measured_config
+                    url = measured_config(site_file(args))['camera_url']
                 camera = cv2.VideoCapture(
                     url,
                     cv2.CAP_FFMPEG,
@@ -208,7 +209,7 @@ def main():
                 cmd = (
                     [sys.executable, str(ROOT / 'tests/run_match_program.py'), exe]
                     if args.all
-                    else [exe, str(ROOT / 'tests/fixtures/game-app/event-demo-config.json')]
+                    else [exe, 'tests/fixtures/game-app/installation.toml', 'tests/fixtures/game-app/two-rounds.json']
                 )
                 subprocess.run(cmd, cwd=ROOT, check=True)
             # 逐帧回放原图和保存的张量，核对 RGB 输入、类别、分数及框的位置。

@@ -84,9 +84,9 @@ void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d 
 
     // 从示教读数算转角差，应用方向和传动比例，再加回示教时的实际关节角。
     shoulder =
-        arm.shoulderReferenceRad + (joints.j2Deg - arm.j2ReferenceDeg) * arm.j2Scale * arm.j2Sign * RadiansPerDegree;
+        arm.shoulderReferenceRad + (joints.j2Deg - arm.j2ReferenceDeg) * arm.j2JointPerDrive * RadiansPerDegree;
     elbow = arm.elbowReferenceRad +
-            (joints.j3MotorDeg - arm.j3ReferenceMotorDeg) * arm.j3Sign / arm.j3Ratio * RadiansPerDegree;
+            (joints.j3MotorDeg - arm.j3ReferenceMotorDeg) * arm.j3JointPerDrive * RadiansPerDegree;
     // 小臂相对基座的方向是 shoulder + elbow。两段臂在 X、Y 上的投影相加。
     baseMm.x = arm.upperMm * std::cos(shoulder) + arm.forearmMm * std::cos(shoulder + elbow);
     baseMm.y = arm.upperMm * std::sin(shoulder) + arm.forearmMm * std::sin(shoulder + elbow);
@@ -99,7 +99,8 @@ bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints
     // 基座原点到目标的距离平方和两段臂长，组成求肘角的三角形。
     double radiusSquared = baseMm.dot(baseMm);
     double upper = arm.upperMm, lower = arm.forearmMm;
-    if (!(upper > 0 && lower > 0 && arm.j2Scale > 0 && arm.j3Ratio > 0)) return false;
+    if (!(upper > 0 && lower > 0) || !std::isfinite(arm.j2JointPerDrive) ||
+        !std::isfinite(arm.j3JointPerDrive) || arm.j2JointPerDrive == 0 || arm.j3JointPerDrive == 0) return false;
     // 用余弦定理求肘角。余弦超出 [-1,1] 时，两段臂够不到这个点。
     double cosine = (radiusSquared - upper*upper - lower*lower) / (2*upper*lower);
     if (!(cosine >= -1 && cosine <= 1)) return false;
@@ -110,8 +111,8 @@ bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints
     double shoulderDelta = std::remainder(shoulder-arm.shoulderReferenceRad, 2*CV_PI) * DegreesPerRadian;
     double elbowDelta = std::remainder(elbow-arm.elbowReferenceRad, 2*CV_PI) * DegreesPerRadian;
     JointTarget target;
-    target.j2Deg = arm.j2ReferenceDeg + shoulderDelta / (arm.j2Scale*arm.j2Sign);
-    target.j3MotorDeg = arm.j3ReferenceMotorDeg + elbowDelta * arm.j3Ratio / arm.j3Sign;
+    target.j2Deg = arm.j2ReferenceDeg + shoulderDelta / arm.j2JointPerDrive;
+    target.j3MotorDeg = arm.j3ReferenceMotorDeg + elbowDelta / arm.j3JointPerDrive;
     if (!std::isfinite(target.j2Deg) || !std::isfinite(target.j3MotorDeg)) return false;
     joints = target;
     return true;
