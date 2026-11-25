@@ -33,8 +33,8 @@ struct GameConfig
 {
     //相机RTSP地址
     std::string cameraUrl;
-    // 原图上的推理区域，依次为左上角 x、y 和宽、高，单位像素。
-    cv::Rect visionRoi{300, 70, 650, 600};
+    // 模型输入裁剪框在原图中的左上角，单位像素。
+    cv::Point visionCropOrigin = DefaultCropOrigin;
     //Pikafish程序及配套NNUE所在目录
     std::string engineDir = "engine/pikafish-2023-03-05";
     //J1/J2/J3共用时间规划，各轴使用自己的速度和加速度上限

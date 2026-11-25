@@ -3,6 +3,7 @@
 
 #include <array>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace chess
@@ -28,8 +29,8 @@ bool operator==(const Move &left, const Move &right);
 bool validSquares(const Move &move);
 using MoveList = std::vector<Move>;
 //---------盘面操作区---------
-// 把 32 枚棋子按标准开局写入 board。
-void initialBoard(Board &board);
+// 返回黑方在上、红方在下的标准开局。
+Board initialBoard();
 // 开局时核对棋子编码、数量上限以及将帅所在的九宫。
 bool validBoard(const Board &board);
 // 外部走法先核对坐标、起点和目标。已确认的走法直接在数组上搬一枚棋子。
@@ -80,7 +81,7 @@ void Game_judge(Game &game, const MoveList &legal);
 
 //---------引擎和棋谱的格式转换区---------
 // 在 UCI 的四字符走法与两个数字交点之间转换。
-bool parseMove(const std::string &text, Move &move);
-bool uci(const Move &move, std::string &text);
+bool parseMove(std::string_view text, Move &move);
+std::string uci(const Move &move);
 
 } // namespace chess

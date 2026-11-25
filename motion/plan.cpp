@@ -11,13 +11,21 @@ constexpr double RadiansPerDegree = CV_PI / 180.0;
 constexpr double DegreesPerRadian = 180.0 / CV_PI;
 
 //---------取放步骤区---------
+WorkHeights WorkHeights_fromContact(double contactDeg, double liftCm)
+{
+    // 这台 J1 的历史记录：驱动角增加 2006.1005°，吸头估计抬高 4.3 cm。
+    if (!std::isfinite(contactDeg) || !(liftCm > 0)) throw std::runtime_error("需要有效贴子角和正抬升距离");
+    WorkHeights z;
+    z.pickupDeg = z.releaseDeg = contactDeg;
+    z.travelDeg = z.clearanceDeg = contactDeg + (liftCm / 4.3) * 2006.1005;
+    if (!std::isfinite(z.travelDeg)) throw std::runtime_error("抬升目标超出范围");
+    return z;
+}
+
 // 把一个目标姿态追加到 steps。三个位置依次是 J1、J2 和 J3 驱动角。
 void Plan_move(JointTarget xy, double zDeg, std::vector<PickStep> &steps)
 {
-    PickStep step;
-    step.action = PickAction::Move;
-    step.target = {zDeg, xy.j2Deg, xy.j3MotorDeg};
-    steps.push_back(step);
+    steps.push_back({PickAction::Move, {zDeg, xy.j2Deg, xy.j3MotorDeg}});
 }
 
 // 取子先到棋子上方，再竖直下降吸合，最后抬到允许横移的高度。
@@ -42,13 +50,6 @@ static void Plan_place(const WorkHeights &z, const JointTarget &target, std::vec
     Plan_move(target, z.clearanceDeg, steps);
 }
 
-// 弃子点在盘外，计划在搬运高度关断磁铁。
-static void Plan_discard(const WorkHeights &z, const JointTarget &bin, std::vector<PickStep> &steps)
-{
-    Plan_move(bin, z.travelDeg, steps);
-    steps.push_back({PickAction::ReleaseOffBoard});
-}
-
 void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, cv::Point2d targetMm,
                const cv::Point2d *discardMm, const JointTarget &park, std::vector<PickStep> &steps)
 {
@@ -63,7 +64,8 @@ void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceM
     if (discardMm)
     {
         Plan_pick(z, target, steps);
-        Plan_discard(z, bin, steps);
+        Plan_move(bin, z.travelDeg, steps); // 盘外在搬运高度关断磁铁。
+        steps.push_back({PickAction::ReleaseOffBoard});
     }
     Plan_pick(z, source, steps);
     Plan_place(z, target, steps);
@@ -72,7 +74,7 @@ void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceM
 
 //---------坐标正逆解区---------
 // 输入 J2、J3 的驱动读数，输出吸头中心相对基座的 XY 毫米。
-void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d &baseMm)
+cv::Point2d Arm_forward(const ArmGeometry &arm, const JointTarget &joints)
 {
     //大臂相对基座、小臂相对大臂的角度，弧度。
     double shoulder, elbow;
@@ -83,8 +85,8 @@ void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d 
     elbow = arm.elbowReferenceRad +
             (joints.j3MotorDeg - arm.j3ReferenceMotorDeg) * arm.j3JointPerDrive * RadiansPerDegree;
     // 小臂相对基座的方向是 shoulder + elbow。两段臂在 X、Y 上的投影相加。
-    baseMm.x = arm.upperMm * std::cos(shoulder) + arm.forearmMm * std::cos(shoulder + elbow);
-    baseMm.y = arm.upperMm * std::sin(shoulder) + arm.forearmMm * std::sin(shoulder + elbow);
+    return {arm.upperMm * std::cos(shoulder) + arm.forearmMm * std::cos(shoulder + elbow),
+            arm.upperMm * std::sin(shoulder) + arm.forearmMm * std::sin(shoulder + elbow)};
 }
 
 // 输入吸头目标 XY，求与示教肘形同侧的一组 J2、J3 目标读数。
@@ -131,7 +133,7 @@ bool Trajectory_plan(const AxisValues &start, const AxisValues &target, const Mo
         double velocityTime = 1.875 * distance / limits.velocity[axis];
         double accelerationTime = std::sqrt((10 / std::sqrt(3.0)) * distance / limits.acceleration[axis]);
         // 取三个轴所有时长要求中的最大值，使三轴能在同一时刻到达。
-        seconds = std::max(seconds, std::max(velocityTime, accelerationTime));
+        seconds = std::max({seconds, velocityTime, accelerationTime});
     }
     if (!std::isfinite(seconds) || seconds > 3600) return false;
     trajectory.start = start;
@@ -140,26 +142,24 @@ bool Trajectory_plan(const AxisValues &start, const AxisValues &target, const Mo
     return true;
 }
 
-void Trajectory_sample(const JointTrajectory &trajectory, double elapsedSeconds, JointReference &reference)
+JointReference Trajectory_sample(const JointTrajectory &trajectory, double elapsedSeconds)
 {
     // 轨迹时间走完，参考位置固定在终点，参考速度置零。实际停稳由执行器查反馈。
     if (!(trajectory.seconds > 0) || elapsedSeconds >= trajectory.seconds)
-    {
-        reference.position = trajectory.target;
-        reference.velocity = {};
-        return;
-    }
+        return {trajectory.target, {}};
 
     // u 是已经用掉的时间比例。五次曲线给出走过的路程比例和每秒变化量。
     double u = std::max(elapsedSeconds, 0.0) / trajectory.seconds;
     double progress = u * u * u * (10 + u * (-15 + 6 * u));
     double progressPerSecond = 30 * u * u * (1 - u) * (1 - u) / trajectory.seconds;
     // 三个轴使用同一个进度，各自乘本轴带方向的行程，得到参考角和参考角速度。
+    JointReference reference;
     for (int axis = 0; axis < 3; ++axis)
     {
         double distance = trajectory.target[axis] - trajectory.start[axis];
         reference.position[axis] = trajectory.start[axis] + distance * progress;
         reference.velocity[axis] = distance * progressPerSecond;
     }
+    return reference;
 }
 } // namespace scara

@@ -35,8 +35,7 @@ int main()
                 check(std::abs(joints.j2Deg - double(item["j2_deg"])) < 1e-9 &&
                           std::abs(joints.j3MotorDeg - double(item["j3_motor_deg"])) < 1e-9,
                       "Joint targets differ from demonstrated Python model");
-                cv::Point2d reconstructed;
-                scara::Arm_forward(arm, joints, reconstructed);
+                cv::Point2d reconstructed = scara::Arm_forward(arm, joints);
                 check(cv::norm(reconstructed - point) < 1e-8, "Forward/inverse coordinates disagree");
             }
             ++count;
@@ -68,7 +67,7 @@ int main()
                   steps[7].action == Action::Move && steps[7].target[0] == heights.clearanceDeg,
               "Release must be at placement height and complete before lifting");
         const scara::AxisValues parkAtTravel{heights.travelDeg, park.j2Deg, park.j3MotorDeg};
-        check(steps[8].action == Action::Move && steps[8].target == parkAtTravel && steps[8].axes == scara::AllAxes,
+        check(steps[8].action == Action::Move && steps[8].target == parkAtTravel,
               "Ordinary move did not finish at the observation pose");
 
         const auto ordinary = steps;
@@ -79,24 +78,29 @@ int main()
                   steps[3].target[0] == heights.clearanceDeg && steps[4].target[0] == heights.travelDeg &&
                   steps[5].action == Action::ReleaseOffBoard && steps[5].durationMs == 0,
               "Capture must pick on the destination pose and release off board at transport height");
-        cv::Point2d discarding;
-        scara::Arm_forward(arm, {steps[4].target[1], steps[4].target[2]}, discarding);
+        cv::Point2d discarding = scara::Arm_forward(arm, {steps[4].target[1], steps[4].target[2]});
         check(cv::norm(discarding - discard) < 1e-8, "Discard used the wrong XY waypoint");
         for (size_t i = 0; i < ordinary.size(); ++i)
         {
             const auto &normal = ordinary[i];
             const auto &capture = steps[6 + i];
             check(capture.action == normal.action && capture.target == normal.target &&
-                      capture.axes == normal.axes && capture.durationMs == normal.durationMs,
+                      capture.durationMs == normal.durationMs,
                   "Capture changed the attacking piece transfer or observation park");
         }
 
         check(heights.clearanceDeg == heights.travelDeg, "Untaught clearance was guessed");
+        auto taught = scara::WorkHeights_fromContact(-20225.7605);
+        check(taught.pickupDeg == taught.releaseDeg && taught.travelDeg == taught.clearanceDeg &&
+                  std::abs(taught.travelDeg - (-18219.66)) < 1e-8,
+              "Historical J1 lift was not relative to the contact reading");
+        auto shifted = scara::WorkHeights_fromContact(123, 2.15);
+        check(std::abs(shifted.travelDeg - (123 + 1003.05025)) < 1e-8, "Lift in cm lost its origin or scale");
         scara::WorkHeights overlap;
         check(scara::WorkHeights_load("tests/fixtures/game-app/work-heights.json", overlap), "Overlap fixture failed");
         scara::Plan_turn(arm, overlap, source, destination, nullptr, park, steps);
         check(steps[3].target[0] == overlap.clearanceDeg && steps[4].target[0] == overlap.travelDeg &&
-                  steps[3].target[0] != steps[4].target[0] && steps[4].axes == scara::AllAxes &&
+                  steps[3].target[0] != steps[4].target[0] && steps[4].action == Action::Move &&
                   steps[3].target[1] != steps[4].target[1] && steps[3].target[2] != steps[4].target[2],
               "Travel segment does not move all three axes together");
         check(std::abs(heights.releaseDeg - (-20053.1425)) < 1e-7 && heights.gripDwellMs == 420,
@@ -146,13 +150,12 @@ int main()
                 longest = std::max(longest, single.seconds);
             }
             check(std::abs(group.seconds - longest) < 1e-12, "Group time is not the slowest axis time");
-            scara::JointReference previous, reference;
-            scara::Trajectory_sample(group, 0, previous);
+            auto previous = scara::Trajectory_sample(group, 0);
             check(previous.position == start && previous.velocity == scara::AxisValues{}, "Nonzero start speed");
             double dt = group.seconds / 1000;
             for (int sample = 1; sample <= 1000; ++sample)
             {
-                scara::Trajectory_sample(group, sample * dt, reference);
+                auto reference = scara::Trajectory_sample(group, sample * dt);
                 double progress = (reference.position[0] - start[0]) / (goal[0] - start[0]);
                 for (int axis = 0; axis < 3; ++axis)
                 {
@@ -164,14 +167,13 @@ int main()
                 }
                 previous = reference;
             }
-            scara::Trajectory_sample(group, group.seconds + 1, reference);
+            auto reference = scara::Trajectory_sample(group, group.seconds + 1);
             check(reference.position == goal && reference.velocity == scara::AxisValues{}, "Endpoint not exact/resting");
         }
         scara::JointTrajectory zero;
         scara::MotionLimits limits{{60,60,60},{100,100,100}};
         check(scara::Trajectory_plan(start, start, limits, zero) && zero.seconds == 0, "Zero-distance path failed");
-        scara::JointReference rest;
-        scara::Trajectory_sample(zero, 0, rest);
+        auto rest = scara::Trajectory_sample(zero, 0);
         check(rest.position == start && rest.velocity == scara::AxisValues{}, "Zero-distance path must hold position");
         limits.velocity[1] = 0;
         check(!scara::Trajectory_plan(start, goal, limits, zero), "Zero speed cap accepted");

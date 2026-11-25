@@ -16,7 +16,7 @@ extern "C" long syscall(long, ...) noexcept;
 namespace fake
 {
 bool camera = false, npu = false, engine = false, failSearch = false, failModel = false;
-bool motionSuccess = true, stopSuccess = true, cancelMotion = false;
+bool motionSuccess = true, stopSuccess = true, cancelMotion = false, failRead = false;
 int executions = 0, stops = 0;
 std::vector<scara::PickStep> receivedSteps;
 std::vector<std::string> events;
@@ -70,14 +70,12 @@ void Camera_open(const std::string &)
     fake::camera = true;
     fake::events.push_back("camera-open");
 }
-void Camera_read(cv::Mat &image, int)
+cv::Mat Camera_read()
 {
     fake::check(fake::camera, "Read without camera");
-    image = cv::Mat(720, 1280, CV_8UC3, cv::Scalar(100, 100, 100));
     fake::events.push_back("read");
-}
-void Camera_stop()
-{
+    if (fake::failRead) return {};
+    return cv::Mat(720, 1280, CV_8UC3, cv::Scalar(100, 100, 100));
 }
 void Camera_close()
 {
@@ -91,30 +89,21 @@ bool Yolo_open(std::string)
     fake::events.push_back("npu-open");
     return !fake::failModel;
 }
-void Yolo_run(const cv::Mat &, YoloHead heads[YoloHeads])
+std::vector<Detection> Yolo_run(const cv::Mat &, cv::Point)
 {
     fake::check(fake::npu, "Run without NPU");
-    for (int i = 0; i < YoloHeads; ++i)
-        heads[i] = {};
     fake::events.push_back("run");
+    return {{13, .9, {100, 100, 20, 20}}};
 }
 void Yolo_close()
 {
     fake::npu = false;
     fake::events.push_back("npu-close");
 }
-void Vision_setup(cv::Size, cv::Rect)
+cv::Mat Vision_prepare(const cv::Mat &, cv::Point)
 {
-}
-void Vision_prepare(const cv::Mat &, cv::Mat &image)
-{
-    image = cv::Mat(640, 640, CV_8UC3);
     fake::events.push_back("prepare");
-}
-void Vision_decode(const YoloHead[YoloHeads], std::vector<Detection> &pieces)
-{
-    pieces = {{13, .9, {100, 100, 20, 20}}};
-    fake::events.push_back("decode");
+    return cv::Mat(640, 640, CV_8UC3);
 }
 } // namespace scara
 extern "C" int poll(pollfd *, unsigned long, int)
@@ -152,11 +141,20 @@ int main()
         chess::MoveList legal;
         Vision_observe(session.layout, frame, pieces);
         fake::check(fake::events ==
-                        std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run", "decode"},
+                        std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run"},
                     "Live observation no longer follows the verified order");
         fake::check(!frame.empty() && pieces.size() == 1 && pieces[0].classId == 13,
                     "Live observation did not return the new frame and detections");
         previous = frame;
+        fake::failRead = true;
+        fake::events.clear();
+        bool readFailed = false;
+        try { Vision_observe(session.layout, frame, pieces); }
+        catch (const std::runtime_error&) { readFailed = true; }
+        fake::check(readFailed && frame == previous && fake::events ==
+                        std::vector<std::string>{"read", "camera-close", "npu-close"},
+                    "Failed read must leave through recovery before inference");
+        fake::failRead = false;
         session.game.humanRed = false;
         Engine_query(session.game, legal, choice);
         fake::check(choice == chess::Move{6,0,5,0} && !fake::camera && !fake::npu && !fake::engine,
@@ -166,8 +164,7 @@ int main()
         fake::check(frame != previous, "Observation identity was reused after search");
 
         PickStep lift, release;
-        lift.action = PickAction::Move;
-        lift.axes = ZAxis;
+        lift.action = PickAction::LiftZ;
         lift.target[0] = 123;
         release.action = PickAction::Release;
         release.durationMs = 0;
@@ -176,7 +173,7 @@ int main()
         completed = Robot_execute("move", {6,0,5,0}, steps);
         fake::check(completed && fake::executions == 1 && fake::receivedSteps.size() == 2,
                     "Direct execution did not receive the action array or return completion");
-        fake::check(fake::receivedSteps[0].target[0] == 123 && fake::receivedSteps[0].axes == ZAxis &&
+        fake::check(fake::receivedSteps[0].target[0] == 123 && fake::receivedSteps[0].action == PickAction::LiftZ &&
                         fake::receivedSteps[1].action == PickAction::Release &&
                         fake::receivedSteps[1].durationMs == 0,
                     "Direct interface changed action units or pulse duration");
@@ -192,9 +189,6 @@ int main()
         fake::check(!completed && fake::executions == executed, "A stopped run started another move");
         fake::cancelMotion = false;
         gameRunning = 1;
-        int stopped = fake::stops;
-        Camera_stop();
-        fake::check(fake::stops == stopped, "Signal callback performed blocking hardware I/O");
         fake::stopSuccess = false;
         fake::check(!Runtime_close(), "Failed stop was reported as confirmed");
         fake::stopSuccess = true;
@@ -249,7 +243,6 @@ int main()
         }
         fake::eof = false;
         gameRunning = 1;
-        Camera_stop();
         fake::check(Runtime_close(), "Live wrapper cleanup failed");
         std::cout
             << "PASS actual live wrapper: vision, engine, direct execution/result/cancellation/stop; external APIs mocked\n";

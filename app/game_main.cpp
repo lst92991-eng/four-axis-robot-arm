@@ -6,8 +6,7 @@
 int main(int argc, char **argv)
 {
     using namespace scara;
-    if (argc != 2) return 2; // RKNN 模型路径。SCARA_SITE 可指定安装文件。
-    const char *modelPath = argv[1];
+    if (argc != 2) return 2; // 唯一参数是 RKNN 模型路径。
     GameConfig config;
     Session session;
 
@@ -22,5 +21,5 @@ int main(int argc, char **argv)
         std::cerr << "安装配置 " << error.what() << '\n';
         return 2;
     }
-    return Match_run(config, session, modelPath);
+    return Match_run(config, session, argv[1]);
 }

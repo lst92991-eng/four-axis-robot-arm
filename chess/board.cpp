@@ -5,36 +5,27 @@
 
 namespace chess
 {
-static void startFen(const Board &board, bool redToMove, std::string &result);
+static std::string startFen(const Board &board, bool redToMove);
 
 //---------初始化区---------
-//填写标准开局，行0为黑方底线
-void initialBoard(Board &board)
+// 标准开局按实盘从黑方底线向红方逐行排。点号表示空交点。
+Board initialBoard()
 {
-    for (auto &rank : board) rank.fill('.');
-    // 底线从左到右是车、马、象、士、将、士、象、马、车。大写为红方。
-    constexpr char blackHome[] = "rnbakabnr", redHome[] = "RNBAKABNR";
-    std::copy_n(blackHome, Columns, board[0].begin());
-    std::copy_n(redHome, Columns, board[Rows - 1].begin());
-    // 两方的炮都在第 1、7 列，分别位于第 2 行和第 7 行。
-    for (int col : {1, 7})
-    {
-        board[2][col] = 'c';
-        board[7][col] = 'C';
-    }
-    // 黑卒、红兵各五枚，从第 0 列起隔一列放一枚。
-    for (int col = 0; col < Columns; col += 2)
-    {
-        board[3][col] = 'p';
-        board[6][col] = 'P';
-    }
+    constexpr char ranks[Rows][Columns+1] = {
+        "rnbakabnr", ".........", ".c.....c.", "p.p.p.p.p", ".........",
+        ".........", "P.P.P.P.P", ".C.....C.", ".........", "RNBAKABNR"
+    };
+    Board board;
+    for (int row = 0; row < Rows; ++row)
+        std::copy_n(ranks[row], Columns, board[row].begin());
+    return board;
 }
 
 //默认构造即建立标准局面，字段初值保存其余回合状态
 Game::Game()
 {
-    initialBoard(board);
-    startFen(board, redToMove, baseFen);
+    board = initialBoard();
+    baseFen = startFen(board, redToMove);
     positions = {board};
 }
 
@@ -48,7 +39,7 @@ bool Game_reset(Game &game, const Board &board, bool redToMove, bool humanRed)
     game.result = Result::Playing;
     game.history.clear();
     // 起始 FEN 留给引擎回放，positions 的第一项是这局的起始盘面。
-    startFen(game.board, redToMove, game.baseFen);
+    game.baseFen = startFen(game.board, redToMove);
     game.positions = {board};
     return true;
 }
@@ -106,7 +97,7 @@ bool validBoard(const Board &board)
             if (index == std::string::npos) return false;
             ++counts[index];
             if (counts[index] > maximum[index % 7]) return false;
-            if (kingInPalace(piece, row, col) == false) return false;
+            if (!kingInPalace(piece, row, col)) return false;
         }
     // 两方还要各有一个将或帅，才能用这张盘面开局。
     return counts[0] == 1 && counts[7] == 1;
@@ -172,13 +163,10 @@ InferredMove inferMove(const Board &before, const Board &after, const MoveList &
 //落子已经确认后，更新权威盘面、完整历史和重复局面记录
 void Game_commit(Game &game, const Move &move)
 {
-    std::string moveText;
-
     movePiece(game.board, move);
     //追加已确认的一步，再交换行棋方，供下一次引擎查询使用
-    uci(move, moveText);
     if (!game.history.empty()) game.history += ' ';
-    game.history += moveText;
+    game.history += uci(move);
     game.redToMove = !game.redToMove;
     // 保存换边后的盘面，供后续按相同行棋方检查重复局面。
     game.positions.push_back(game.board);
@@ -213,7 +201,7 @@ void Game_judge(Game &game, const MoveList &legal)
 
 //---------引擎和棋谱的格式转换区---------
 //输入四字符UCI走法，输出黑方底线起算的数组行列
-bool parseMove(const std::string &text, Move &move)
+bool parseMove(std::string_view text, Move &move)
 {
     // 先把输出置为无效走法，四个字符全部核对后再写回结果。
     move = {};
@@ -230,22 +218,17 @@ bool parseMove(const std::string &text, Move &move)
 }
 
 //输入起点终点行列，输出引擎使用的四字符走法
-bool uci(const Move &move, std::string &text)
+std::string uci(const Move &move)
 {
-    text.clear();
-    //格式转换入口统一核对下标，随后才能访问棋盘数组
-    if (!validSquares(move)) return false;
-    text += char('a' + move.fromCol);
-    text += char('0' + Rows - 1 - move.fromRow);
-    text += char('a' + move.toCol);
-    text += char('0' + Rows - 1 - move.toRow);
-    return true;
+    if (!validSquares(move)) return {};
+    return {char('a' + move.fromCol), char('0' + Rows - 1 - move.fromRow),
+            char('a' + move.toCol), char('0' + Rows - 1 - move.toRow)};
 }
 
 // 开局 FEN 只记录起始盘面和行棋方，随后由 UCI moves 交付棋谱。
-static void startFen(const Board &board, bool redToMove, std::string &result)
+static std::string startFen(const Board &board, bool redToMove)
 {
-    result.clear();
+    std::string result;
     //FEN逐行输出，连续空格压缩为一个数字
     for (int row = 0; row < Rows; ++row)
     {
@@ -270,6 +253,7 @@ static void startFen(const Board &board, bool redToMove, std::string &result)
         if (row + 1 < Rows) result += '/';
     }
     result += redToMove ? " w - - 0 1" : " b - - 0 1";
+    return result;
 }
 
 } // namespace chess

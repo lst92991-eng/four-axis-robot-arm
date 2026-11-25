@@ -1,9 +1,7 @@
 // 从实盘建立棋局，逐手选棋、搬子、核对落点，再把已完成的走法记入棋谱。
 #include "game.hpp"
 #include "motion/execute.hpp"
-#include "vision/capture.hpp"
 #include <algorithm>
-#include <cmath>
 #include <stdexcept>
 
 namespace scara
@@ -14,6 +12,7 @@ static void Match_turn(Session &session);
 static bool parkForObservation(Session &session);
 static bool readEngine(Session &session, chess::MoveList &legal, chess::Move &move);
 static bool selectHumanMove(Session &session, const chess::MoveList &legal, chess::Move &move, bool &moveByRobot);
+static bool carryMove(Session &session, const chess::Move &move);
 static bool discardIsOffBoard(const Session &session);
 static bool executeMove(Session &session, const chess::Move &move, const std::vector<PickStep> &steps);
 
@@ -31,7 +30,6 @@ static void requestStop(int)
 {
     // 信号回调先让各处循环退出，停车和释放资源由 Match_run 收尾。
     gameRunning = 0;
-    Camera_stop();
 }
 
 //---------完整对局入口---------
@@ -130,43 +128,7 @@ static void Match_turn(Session &session)
     else if (std::count(legal.begin(), legal.end(), move) != 1)
         throw std::runtime_error("走法未通过本局合法表核对");
 
-    if (moveByRobot)
-    {
-        const chess::Board &before = game.board;
-        if (!waitBoard(session, before)) return;
-        chess::Board expected = before;
-        chess::movePiece(expected, move);
-
-        // 从标定表取基座 XY（毫米）。吃子还要核对弃子点是否离开棋盘。
-        cv::Point2d source = session.layout.cell[move.fromRow][move.fromCol].xy;
-        cv::Point2d target = session.layout.cell[move.toRow][move.toCol].xy;
-        const cv::Point2d *discard = nullptr;
-        if (before[move.toRow][move.toCol] != '.')
-        {
-            if (!discardIsOffBoard(session)) throw std::runtime_error("弃子点必须在棋盘外");
-            discard = &session.capturePlaceMm;
-        }
-        // 取、放、弃子和回观察位都排好以后，才下发这一手。
-        std::vector<PickStep> steps;
-        Plan_turn(session.arm, session.heights, source, target, discard, session.park, steps);
-
-        while (gameRunning)
-        {
-            bool completed = executeMove(session, move, steps);
-            if (!gameRunning) return;
-
-            if (completed)
-            {
-                Placement result = confirmPlacement(session, before, expected);
-                if (result == Placement::Exited) return;
-                if (result == Placement::Confirmed) break;
-            }
-            else if (!restoreAfterDriveFailure(session, before)) return;
-
-            session.pending = false;
-            Operator_show(session, "原棋局已恢复，重新执行这一手。");
-        }
-    }
+    if (moveByRobot && !carryMove(session, move)) return;
 
     // 人工走棋已核对合法。机械臂代走须确认实盘已到目标局面。
     if (!gameRunning) return;
@@ -216,16 +178,54 @@ static bool selectHumanMove(Session &session, const chess::MoveList &legal, ches
     return false;
 }
 
+//---------执行并核实一手棋---------
+static bool carryMove(Session &session, const chess::Move &move)
+{
+    const chess::Board &before = session.game.board;
+    if (!waitBoard(session, before)) return false;
+    chess::Board expected = before;
+    chess::movePiece(expected, move);
+
+    // 从标定表取基座 XY（毫米）。吃子还要核对弃子点是否离开棋盘。
+    cv::Point2d source = session.layout.cell[move.fromRow][move.fromCol].xy;
+    cv::Point2d target = session.layout.cell[move.toRow][move.toCol].xy;
+    const cv::Point2d *discard = nullptr;
+    if (before[move.toRow][move.toCol] != '.')
+    {
+        if (!discardIsOffBoard(session)) throw std::runtime_error("弃子点必须在棋盘外");
+        discard = &session.capturePlaceMm;
+    }
+    // 取、放、弃子和回观察位都排好以后，才下发这一手。
+    std::vector<PickStep> steps;
+    Plan_turn(session.arm, session.heights, source, target, discard, session.park, steps);
+
+    while (gameRunning)
+    {
+        bool completed = executeMove(session, move, steps);
+        if (!gameRunning) return false;
+
+        if (completed)
+        {
+            Placement result = confirmPlacement(session, before, expected);
+            if (result == Placement::Exited) return false;
+            if (result == Placement::Confirmed) return true;
+        }
+        else if (!restoreAfterDriveFailure(session, before)) return false;
+
+        session.pending = false;
+        Operator_show(session, "原棋局已恢复，重新执行这一手。");
+    }
+    return false;
+}
+
 //---------弃子点核对区---------
 static bool discardIsOffBoard(const Session &session)
 {
     const Geometry &board = session.layout;
-    if (std::abs(board.columnStep.xy.cross(board.rowStep.xy)) < 1e-6) return false;
-    double row, column;
     // 把弃子点的基座毫米换成棋盘行列，才能按半格宽度判断是否已到盘外。
-    Geometry_rowCol(session.capturePlaceMm - board.origin.xy, board.rowStep.xy, board.columnStep.xy, row, column);
+    cv::Point2d cell = Geometry_gridPoint(session.capturePlaceMm - board.origin.xy, board.rowStep.xy, board.columnStep.xy);
     //在外侧格线外至少留半格，避免从搬运高度把棋子放到棋盘边。
-    return column < -.5 || column > Columns - .5 || row < -.5 || row > Rows - .5;
+    return cell.x < -0.5 || cell.x > Columns - 0.5 || cell.y < -0.5 || cell.y > Rows - 0.5;
 }
 
 //---------机械执行区---------
@@ -306,14 +306,13 @@ static bool observe(Session &session, const chess::Board *expected)
             continue;
         }
         if (!gameRunning) return false;
-        chess::Board frame;
-        bool frameValid = Geometry_assign(session.layout, pieces, frame, !frameId.empty());
+        BoardObservation frame = Geometry_assign(session.layout, pieces, !frameId.empty());
         // 复用已经记录的帧号和盘面。同一有效帧不会重复计数或覆盖盘面。
-        if (!frameValid || same == 0 || frameId != session.lastFrameId)
+        if (!frame.valid || same == 0 || frameId != session.lastFrameId)
         {
-            if (!frameValid) same = 0;
-            else same = frame == session.observed ? same + 1 : 1;
-            session.observed = frame;
+            if (!frame.valid) same = 0;
+            else same = frame.cells == session.observed ? same + 1 : 1;
+            session.observed = frame.cells;
         }
         session.lastFrameId = frameId;
         session.observationStable = same == 3;
@@ -369,11 +368,7 @@ static bool waitBoard(Session &session, const chess::Board &expected)
 static bool parkForObservation(Session &session)
 {
     // 准备动作按顺序关断磁铁、单独抬 J1、再让 J2 和 J3 到观察位。
-    PickStep lift;
-    lift.action = PickAction::Move;
-    lift.axes = ZAxis;
-    lift.target[0] = session.heights.travelDeg;
-    std::vector<PickStep> steps = {{PickAction::Release}, lift};
+    std::vector<PickStep> steps = {{PickAction::Release}, {PickAction::LiftZ, {session.heights.travelDeg}}};
     Plan_move(session.park, session.heights.travelDeg, steps);
     return Robot_execute("prepare", {}, steps);
 }

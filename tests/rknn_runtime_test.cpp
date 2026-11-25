@@ -12,6 +12,8 @@ namespace {
 int allocations = 0, alive = 0, failAt = 0;
 int failQuery = -1, failBind = 0, bindings = 0;
 bool contextOpen = false, badOutput = false, failRun = false;
+int rowPadding = 2;
+bool shortOutput = false;
 int runs = 0;
 rknn_tensor_mem *input = nullptr;
 std::array<rknn_tensor_mem *, 3> outputs{};
@@ -28,8 +30,9 @@ bool openFailed()
 }
 
 extern "C" {
-int rknn_init(rknn_context *context, void *, uint32_t, uint32_t, rknn_init_extend *)
+int rknn_init(rknn_context *context, void *model, uint32_t, uint32_t, rknn_init_extend *)
 {
+  if (std::strcmp(static_cast<const char *>(model), "missing.rknn") == 0) return -1;
 #ifdef RKNN_MOCK_ENTRY
   std::cerr << "TEST ONLY: simulated RKNN ABI, one synthetic detection\n";
   const char *failure = std::getenv("SCARA_MOCK_FAILURE");
@@ -70,9 +73,10 @@ int rknn_query(rknn_context, rknn_query_cmd command, void *data, uint32_t)
   attr.fmt = RKNN_TENSOR_NHWC;
   attr.type = badOutput && !isInput ? RKNN_TENSOR_FLOAT32 : RKNN_TENSOR_INT8;
   attr.qnt_type = RKNN_TENSOR_QNT_AFFINE_ASYMMETRIC;
-  attr.w_stride = size+2;
+  attr.w_stride = rowPadding ? size + rowPadding : 0;
   attr.n_elems = size*size*attr.dims[3];
-  attr.size_with_stride = size*(size+2)*attr.dims[3]+32;
+  attr.size_with_stride = size*(size+rowPadding)*attr.dims[3]+32;
+  if (!isInput && shortOutput) attr.size_with_stride = 1;
   attr.scale = 1.f/255;
   attr.zp = -128;
   return 0;
@@ -106,16 +110,16 @@ int rknn_run(rknn_context, rknn_run_extend *)
   {
     for (int x=0; x<640; ++x)
     {
-      size_t offset = (row*642+x)*3;
+      size_t offset = (row*(640+rowPadding)+x)*3;
       check(bytes[offset]==11 && bytes[offset+1]==22 && bytes[offset+2]==33,
             "Input rows were copied with the wrong stride");
     }
-    for (int padding=640*3; padding<642*3; ++padding)
-      check(bytes[row*642*3+padding]==0, "Image copy overwrote the NPU input row padding");
+    for (int padding=640*3; padding<(640+rowPadding)*3; ++padding)
+      check(bytes[row*(640+rowPadding)*3+padding]==0, "Image copy overwrote the NPU input row padding");
   }
 #endif
   for (auto *output : outputs) std::memset(output->virt_addr, 128, output->size);
-  auto *p = static_cast<int8_t *>(outputs[0]->virt_addr)+(20*82+20)*57;
+  auto *p = static_cast<int8_t *>(outputs[0]->virt_addr)+(20*(80+rowPadding)+20)*57;
   p[0] = p[1] = p[2] = p[3] = 0;
   p[4] = p[5+12] = 127;
 #ifdef RKNN_MOCK_ENTRY
@@ -148,10 +152,11 @@ int main()
 {
   try
   {
+    check(!scara::Yolo_open("missing.rknn") && !contextOpen && allocations == 0,
+          "Model load failure continued to buffer setup");
     for (failAt=1; failAt<=4; ++failAt)
     {
       bool failed = openFailed();
-      scara::Yolo_close();
       check(failed && !contextOpen && !alive, "Partial allocation leaked resources");
     }
     failAt = 0;
@@ -159,22 +164,22 @@ int main()
     {
       failQuery = command;
       bool failed = openFailed();
-      scara::Yolo_close();
       check(failed && !contextOpen && !alive, "Query failure was accepted or leaked resources");
     }
     failQuery = -1;
     for (failBind=1; failBind<=4; ++failBind)
     {
       bool failed = openFailed();
-      scara::Yolo_close();
       check(failed && !contextOpen && !alive, "Binding failure was accepted or leaked resources");
     }
     failBind = 0;
     badOutput = true;
     bool failed = openFailed();
-    scara::Yolo_close();
     check(failed && !contextOpen && !alive, "Unsupported output was accepted or leaked resources");
     badOutput = false;
+    shortOutput = true;
+    check(openFailed() && !contextOpen && !alive, "Accepted a buffer shorter than one output row");
+    shortOutput = false;
     check(scara::Yolo_open("mock.rknn"), "Cannot open test model");
     check(scara::Yolo_open("mock.rknn"), "Cannot reopen test model");
     check(contextOpen && alive==4, "Reopening the fixed model leaked its previous buffers");
@@ -182,15 +187,16 @@ int main()
     cv::Mat rgb = storage(cv::Rect(3,4,640,640));
     rgb.setTo(cv::Scalar(11,22,33));
     check(!rgb.isContinuous(), "Stride test unexpectedly used tightly packed source rows");
-    scara::YoloHead heads[scara::YoloHeads];
-    scara::Yolo_run(rgb,heads);
-    scara::Vision_setup({640,640},{0,0,640,640});
-    std::vector<scara::Detection> pieces;
-    scara::Vision_decode(heads,pieces);
+    auto pieces = scara::Yolo_run(rgb, {0,0});
     check(pieces.size()==1 && pieces[0].classId==12, "Native padded output was decoded incorrectly");
+    rowPadding = 0;
+    check(scara::Yolo_open("mock.rknn"), "Could not reopen with packed rows");
+    auto packed = scara::Yolo_run(rgb, {0,0});
+    check(packed.size()==1 && packed[0].classId==pieces[0].classId && packed[0].bbox==pieces[0].bbox &&
+          packed[0].confidence==pieces[0].confidence, "Packed and padded layouts produced different detections");
     failRun = true;
     failed = false;
-    try { scara::Yolo_run(rgb,heads); }
+    try { scara::Yolo_run(rgb); }
     catch (const std::runtime_error&) { failed = true; }
     scara::Yolo_close();
     check(failed && !contextOpen && !alive, "Inference failure cleanup failed");

@@ -80,10 +80,6 @@ static void printResult(const Session &session)
     std::cout << '\t' << lastMessage << '\n';
 }
 
-//仿真没有相机，主入口停止回调仍使用相同的Camera_stop接口
-void Camera_stop()
-{
-}
 bool Runtime_close()
 {
     return Motion_stop();
@@ -247,15 +243,15 @@ bool Robot_execute(const std::string &purpose, const chess::Move &move, const st
     if (executionIndex >= events.size()) throw std::runtime_error("仿真出现了额外的机械执行请求");
     event = events[int(executionIndex)];
     ++executionIndex;
-    std::string moveText;
-    chess::uci(move, moveText);
+    std::string moveText = chess::uci(move);
     // 先核对动作所属阶段与走法，再让三轴参考按真实执行流程采样。
     if ((std::string)event["purpose"] != purpose || (std::string)event["move"] != moveText)
         throw std::runtime_error("仿真动作与预定场景不符");
     //单向打印调用参数，供离线核对动作顺序和数值
     std::cout << "SIM_CALL " << purpose << ' ' << (moveText.empty() ? "-" : moveText) << '\n' << std::setprecision(17);
     for (const PickStep &step : steps)
-        std::cout << "SIM_STEP " << int(step.action) << ' ' << step.axes << ' ' << step.target[0] << ' '
+        std::cout << "SIM_STEP " << int(step.action == PickAction::LiftZ ? PickAction::Move : step.action)
+                  << ' ' << (step.action == PickAction::LiftZ ? 1 : 7) << ' ' << step.target[0] << ' '
                   << step.target[1] << ' ' << step.target[2] << ' ' << step.durationMs << '\n';
     bool executed = Motion_execute(steps, motionLimits, gameRunning);
     std::cout << "SIM_POSE " << driveReference.position[0] << ' ' << driveReference.position[1] << ' '

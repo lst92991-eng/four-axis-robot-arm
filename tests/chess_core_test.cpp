@@ -11,15 +11,13 @@ int main()
 {
     try
     {
-        chess::Board initial, after;
-        chess::initialBoard(initial);
+        chess::Board initial = chess::initialBoard(), after;
         check(!chess::validSquares({0, 9, 1, 0}) && !chess::validSquares({-1, 0, 1, 0}),
               "Invalid coordinates could index the fixed board");
         chess::Move move;
-        std::string text;
 
-        check(!chess::uci(move, text) && text.empty(), "Invalid move retained output text");
-        check(chess::parseMove("a3a4", move) && chess::uci(move, text) && text == "a3a4", "Move conversion failed");
+        check(chess::uci(move).empty(), "Invalid move retained output text");
+        check(chess::parseMove("a3a4", move) && chess::uci(move) == "a3a4", "Move conversion failed");
         check(chess::validTransfer(initial, true, move), "Selected pawn could not move");
         after = initial;
         chess::movePiece(after, move);

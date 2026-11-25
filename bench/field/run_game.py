@@ -264,7 +264,7 @@ def compiled_config(site):
                 arm_lengths_mm=site['arm_lengths_mm'],
                 park_joints_deg=list(site['park']), joint_velocity_deg_s=list(site['velocity']),
                 joint_acceleration_deg_s2=list(site['acceleration']), pickup_at_rest_ms=site['grip_ms'],
-                z=dict(pickup_deg=pickup, clearance_deg=travel, travel_deg=travel, release_deg=release),
+                z=dict(pickup_deg=pickup, clearance_deg=site.get('clearance_deg', travel), travel_deg=travel, release_deg=release),
                 engine_directory=site['engine_directory'], think_ms=site['think_ms'],
                 **field_limits(io.BytesIO(site['cad'])))
 

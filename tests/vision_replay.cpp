@@ -1,6 +1,7 @@
 // 离线回放保存的原图和 NPU 张量，用正式视觉代码对照 RGB 输入、检测结果与预览图。
 #include "vision/yolo.hpp"
 #include "fixture_bytes.hpp"
+#include "legacy_letterbox.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <chrono>
 #include <cmath>
@@ -28,9 +29,8 @@ int main(int argc, char **argv)
       if (source.empty()) throw std::runtime_error("Cannot decode replay image");
       auto roi = item["roi"];
       cv::Rect region = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
-      scara::Vision_setup(source.size(),region);
-      cv::Mat input;
-      scara::Vision_prepare(source,input);
+      bool direct = region.size() == cv::Size(scara::YoloSize, scara::YoloSize);
+      cv::Mat input = direct ? scara::Vision_prepare(source, region.tl()) : LegacyLetterbox(region).input(source);
       scara::writeBytes(prefix+".rgb", {reinterpret_cast<const char *>(input.data), input.total()*input.elemSize()});
       std::vector<scara::Detection> detections;
       double decodeMs = 0;
@@ -68,10 +68,11 @@ int main(int argc, char **argv)
           offset += length;
         }
         if (offset!=packet.size()) throw std::runtime_error("Unexpected tensor tail");
-        scara::Vision_decode(heads,detections);
+        auto decode = [&] { return direct ? scara::Vision_decode(heads, region.tl()) : LegacyLetterbox(region).decode(heads); };
+        detections = decode();
         // 在同一份数据上重复解码 100 次，只用来计算平均耗时。
         auto start = std::chrono::steady_clock::now();
-        for (int i=0; i<100; ++i) scara::Vision_decode(heads,detections);
+        for (int i=0; i<100; ++i) detections = decode();
         decodeMs = std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()/100;
       }
       //---------结果与预览导出区---------
@@ -84,8 +85,7 @@ int main(int argc, char **argv)
                << d.bbox.x << d.bbox.y << d.bbox.x+d.bbox.width << d.bbox.y+d.bbox.height << "]" << "}";
       result << "]";
       scara::writeBytes(prefix+".json", result.releaseAndGetString());
-      cv::Mat preview;
-      scara::Vision_draw(source,detections,preview);
+      cv::Mat preview = scara::Vision_draw(source,detections);
       std::vector<uint8_t> png;
       cv::imencode(".png", preview, png);
       scara::writeBytes(prefix+".png", {png.begin(),png.end()});

@@ -5,6 +5,7 @@
 #include "scara_cad.hpp"
 #include "vision/capture.hpp"
 #include "vision/yolo.hpp"
+#include "models/xiangqi14-local-v3/postprocess.hpp"
 
 #include <opencv2/imgcodecs.hpp>
 #include <algorithm>
@@ -31,6 +32,7 @@ using Ref = std::unique_ptr<PyObject, ReleasePy>;
 // field 是本局传入的 Python 设备对象，接收板端推理、引擎、面板和 USB-CAN 动作的调用。
 PyObject *field = nullptr;
 std::string streamUrl;
+cv::Point cropOrigin;
 bool cameraOpen = false;
 unsigned frameNumber = 0;
 
@@ -75,7 +77,7 @@ void Runtime_open(const GameConfig &config, const std::string &modelPath, Sessio
 {
     // 固定相机地址及本机 ROI 随安装参数传入，Python 准备板端设备。
     streamUrl = config.cameraUrl;
-    Vision_setup({ImageWidth, ImageHeight}, config.visionRoi);
+    cropOrigin = config.visionCropOrigin;
     require(PyObject_CallMethod(field, "open", "s", modelPath.c_str()));
     // 现场台架允许棋子中心偏离交点 0.45 格，随后检查本次是否要接续棋谱。
     session.layout.assignmentTolerance = .45;
@@ -152,22 +154,19 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
     try
     {
         // source 保存 BGR 原图，input 保存送往 NPU 的 640×640 RGB 像素。
-        cv::Mat source, input;
-        try
-        {
-            // 取帧最多等待 5500 毫秒。发生取流异常时重新连接，再取一帧。
-            Camera_read(source, 5500);
-        }
-        catch (const std::runtime_error &)
+        cv::Mat source = Camera_read();
+        // 第一次取图失败时重连一次，再失败就交给对局提示。
+        if (source.empty())
         {
             if (!gameRunning) return;
-            std::cout << "相机取帧超时，正在重新连接。" << std::endl;
+            std::cout << "相机未读到画面，正在重新连接。" << std::endl;
             Camera_open(streamUrl);
-            Camera_read(source, 5500);
+            source = Camera_read();
+            if (source.empty()) throw std::runtime_error("重连后仍未读到画面");
         }
         if (!gameRunning) return;
         // 给本帧分配标识，把 RGB 缓冲和帧号一起送给板端推理。
-        Vision_prepare(source, input);
+        cv::Mat input = Vision_prepare(source, cropOrigin);
         frameId = std::to_string(++frameNumber);
         auto packet = require(PyObject_CallMethod(field, "infer", "y#s", input.ptr<char>(),
                                                    Py_ssize_t(input.total() * input.elemSize()), frameId.c_str()));
@@ -208,10 +207,10 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         }
         if (offset != size_t(size)) throw std::runtime_error("NPU回复有多余数据");
         // 三个尺度的框在原图上解码。左图画类别与分数，右图画固定格点。
-        Vision_decode(heads, pieces);
-        cv::Mat predicted, grid, preview;
-        Vision_draw(source, pieces, predicted);
-        Geometry_draw(source, layout, grid);
+        pieces = Vision_decode(heads, cropOrigin);
+        cv::Mat predicted = Vision_draw(source, pieces);
+        cv::Mat grid = Geometry_draw(source, layout);
+        cv::Mat preview;
         cv::hconcat(predicted, grid, preview);
         // 将双画面压成 JPEG，通过内存回调交给面板。
         std::vector<unsigned char> jpeg;
@@ -221,9 +220,8 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         // 棋盘下沿的弃子落在盘外。保留原检测框供预览，只从盘面归格中移除。
         pieces.erase(std::remove_if(pieces.begin(), pieces.end(), [&](const Detection &piece) {
             const cv::Point2d center(piece.bbox.x + piece.bbox.width / 2, piece.bbox.y + piece.bbox.height / 2);
-            double row, column;
-            Geometry_rowCol(center - layout.origin.pixel, layout.rowStep.pixel, layout.columnStep.pixel, row, column);
-            return column >= Columns - .5 && row >= -.5 && row < Rows - .5;
+            cv::Point2d cell = Geometry_gridPoint(center - layout.origin.pixel, layout.rowStep.pixel, layout.columnStep.pixel);
+            return cell.x >= Columns - 0.5 && cell.y >= -0.5 && cell.y < Rows - 0.5;
         }), pieces.end());
 
     }
@@ -339,13 +337,14 @@ bool Robot_execute(const std::string &purpose, const chess::Move &move, const st
     for (size_t i = 0; i < steps.size(); ++i)
     {
         const PickStep &s = steps[i];
-        auto item = require(Py_BuildValue("(iidddi)", int(s.action), int(s.axes), s.target[0], s.target[1],
+        // 旧台架把抬升编码成 Move + 掩码 1，普通动作沿用掩码 7。
+        bool lift = s.action == PickAction::LiftZ;
+        auto item = require(Py_BuildValue("(iidddi)", int(lift ? PickAction::Move : s.action), lift ? 1 : 7, s.target[0], s.target[1],
                                           s.target[2], s.durationMs));
         PyList_SET_ITEM(actions.get(), i, item.release());
     }
     // 走法文字用于标记这次搬棋，Python 执行的机械目标来自 actions。
-    std::string moveText;
-    chess::uci(move, moveText); // 准备阶段的记录留空。
+    std::string moveText = chess::uci(move); // 准备阶段的记录留空。
     auto done = require(PyObject_CallMethod(field, "execute", "ssO", purpose.c_str(), moveText.c_str(), actions.get()));
     return PyObject_IsTrue(done.get()) == 1;
 }
@@ -369,11 +368,11 @@ extern "C" __declspec(dllexport) PyObject *usb_installation(const char *text, si
     try { loadFieldSite(text, size, cfg, s); }
     catch (const std::exception &error) { PyErr_SetString(PyExc_ValueError, error.what()); return nullptr; }
     // 交付机械参考与臂长、Z 工作层、观察位、三轴限幅、吸合时间和 CAD 采样数据。
-    return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:s}",
+    return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:d,s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:s}",
         "arm", s.arm.j2ReferenceDeg, s.arm.j3ReferenceMotorDeg, s.arm.shoulderReferenceRad, s.arm.elbowReferenceRad,
         s.arm.j2JointPerDrive, s.arm.j3JointPerDrive,
         "arm_lengths_mm", s.arm.upperMm, s.arm.forearmMm,
-        "z", s.heights.pickupDeg, s.heights.travelDeg, s.heights.releaseDeg,
+        "z", s.heights.pickupDeg, s.heights.travelDeg, s.heights.releaseDeg, "clearance_deg", s.heights.clearanceDeg,
         "park", s.park.j2Deg, s.park.j3MotorDeg,
         "velocity", cfg.motion.velocity[0], cfg.motion.velocity[1], cfg.motion.velocity[2],
         "acceleration", cfg.motion.acceleration[0], cfg.motion.acceleration[1], cfg.motion.acceleration[2],

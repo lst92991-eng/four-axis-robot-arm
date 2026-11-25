@@ -3,6 +3,7 @@
 #include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
+#include <cerrno>
 #include <iostream>
 #include <poll.h>
 #include <unistd.h>
@@ -21,10 +22,9 @@ static void closeVision();
 //---------初始化与收尾区---------
 void Runtime_open(const GameConfig &config, const std::string &modelPath, Session &)
 {
-    // 先保存模型路径和相机参数，按本机 ROI 算好送入模型的缩放和补边。
+    // 保存本机参数和模型路径，供对局使用。
     settings = config;
     model = modelPath;
-    Vision_setup({ImageWidth,ImageHeight}, config.visionRoi);
 }
 
 bool Runtime_close()
@@ -39,10 +39,6 @@ bool Runtime_close()
 //---------取流识别区---------
 void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detection> &pieces)
 {
-    cv::Mat source;   // 1280×720 BGR 原图
-    cv::Mat input;    // 640×640 RGB 模型输入
-    YoloHead heads[YoloHeads];
-
     if (!gameRunning) return;
     // 开局第一次观察或上次关闭视觉后，在此重新建立取流和推理。
     if (!visionOpen)
@@ -53,10 +49,11 @@ void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detectio
     }
     try
     {
-        Camera_read(source);
-        Vision_prepare(source, input);
-        Yolo_run(input, heads);
-        Vision_decode(heads, pieces);
+        cv::Mat source = Camera_read(); // 1280×720 BGR 原图
+        if (!gameRunning) return;
+        if (source.empty()) throw std::runtime_error("相机未读到画面");
+        cv::Mat input = Vision_prepare(source, settings.visionCropOrigin);
+        pieces = Yolo_run(input, settings.visionCropOrigin);
     }
     catch (...)
     {
@@ -112,10 +109,7 @@ void Operator_read(const std::string &prompt, Command &command, chess::Move *mov
     //按回车之前输入的命令文本
     std::string line;
     char character;
-    pollfd input;
-
-    input.fd = STDIN_FILENO;
-    input.events = POLLIN;
+    pollfd input{STDIN_FILENO, POLLIN, 0};
     input.revents = 0;
     //EOF或停止时，向调用方报告退出
     command = Command::Quit;
@@ -123,8 +117,12 @@ void Operator_read(const std::string &prompt, Command &command, chess::Move *mov
     // 以 100 毫秒为一轮等键盘，使等候期间也能响应停止标志。
     while (gameRunning)
     {
-        if (poll(&input, 1, 100) <= 0) continue;
-        if (read(STDIN_FILENO, &character, 1) <= 0) break;
+        int ready = poll(&input, 1, 100);
+        if (ready == 0 || (ready < 0 && errno == EINTR)) continue;
+        if (ready < 0) break;
+        auto count = read(STDIN_FILENO, &character, 1);
+        if (count < 0 && errno == EINTR) continue;
+        if (count <= 0) break;
         // 接收字符直到换行。回车符用于兼容 CRLF，解析只在整行到齐时发生。
         if (character == '\n')
         {

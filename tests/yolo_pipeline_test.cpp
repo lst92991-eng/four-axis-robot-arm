@@ -1,6 +1,7 @@
 #include "vision/yolo.hpp"
 #include "vision/capture.hpp"
 #include "fixture_bytes.hpp"
+#include "legacy_letterbox.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/videoio.hpp>
@@ -10,7 +11,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <thread>
-#include <future>
 
 namespace {
 void check(bool passed, const char *message)
@@ -27,9 +27,7 @@ cv::Mat image(const std::string& path, int mode=cv::IMREAD_COLOR)
 
 void sameInput(const cv::Mat& source, cv::Rect roi, const std::string& expected)
 {
-  scara::Vision_setup(source.size(),roi);
-  cv::Mat input;
-  scara::Vision_prepare(source,input);
+  cv::Mat input = LegacyLetterbox(roi).input(source);
   cv::Mat rgb;
   cv::cvtColor(image(expected), rgb, cv::COLOR_BGR2RGB);
   check(cv::norm(input, rgb, cv::NORM_INF)==0, "Preprocessing differs from the verified Python path");
@@ -37,7 +35,6 @@ void sameInput(const cv::Mat& source, cv::Rect roi, const std::string& expected)
 
 void decodeEdges()
 {
-  scara::Vision_setup({640,640},{0,0,640,640});
   std::vector<int8_t> data[3];
   scara::YoloHead heads[3];
   for (int i=0; i<3; ++i)
@@ -49,27 +46,42 @@ void decodeEdges()
   auto *p = data[0].data()+(20*80+20)*57;
   p[0] = p[1] = p[2] = p[3] = 50;
   p[4] = 40; p[5+8] = 126; // 0.40 * 1.26 = 0.504, above the 0.50 threshold.
-  std::vector<scara::Detection> found;
-  scara::Vision_decode(heads,found);
+  auto found = scara::Vision_decode(heads, {0,0});
   check(found.size()==1 && found[0].classId==8, "Early rejection assumed class scores cannot exceed one");
+  auto modelBox = found[0].bbox;
+  auto translated = scara::Vision_decode(heads, {375,8});
+  check(translated.size()==1 && translated[0].bbox == modelBox + cv::Point2d(375,8),
+        "Direct crop must translate boxes into the source image");
   p[5+2] = 126;
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.size()==1 && found[0].classId==2, "Equal class scores did not keep the first class");
   p[5+2] = 0;
   p[4] = 39;
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.empty(), "Below-threshold candidate survived");
   p[2] = p[3] = p[4] = 100; p[5+8] = 0; p[5+2] = 90;
   auto *q = p+19;
   q[0] = q[1] = 50; q[2] = 80; q[3] = 66; q[4] = 100; q[5+5] = 90;
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.size()==1 && found[0].classId==2, "Cross-class NMS or equal-score traversal order changed");
   q[5+5] = 91;
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.size()==1 && found[0].classId==5, "NMS did not keep the highest scoring overlapping box");
   q[4] = 0; p[5+2] = 50;
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.size()==1, "Score exactly 0.50 was rejected");
+
+  // 左边缘的一对重叠框：高分框完全在图外，低分框只有右边一小段可见。
+  std::fill(data[0].begin(),data[0].end(),0);
+  p = data[0].data() + 20*80*57;
+  q = p + 19;
+  p[0] = -10; p[1] = p[2] = p[3] = 50; p[4] = 100; p[5] = 90;
+  q[0] = 5; q[1] = 50; q[2] = 40; q[3] = 33; q[4] = 100; q[5] = 80;
+  check(scara::Vision_decode(heads, {375,8}).empty(), "Edge boxes must be suppressed before clipping");
+  p[4] = 0;
+  found = scara::Vision_decode(heads, {375,8});
+  check(found.size()==1 && found[0].bbox.x==375 && found[0].bbox.width<2,
+        "Visible part of the edge box was not clipped to the crop");
 
   // 三个框依次重叠，第二个被第一个排除后，第三个仍应保留。
   std::fill(data[0].begin(),data[0].end(),0);
@@ -81,7 +93,7 @@ void decodeEdges()
     candidate[4] = 100;
     candidate[5+2] = int8_t(90-i*10);
   }
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.size()==2 && found[1].bbox.x>found[0].bbox.x+25,
         "A discarded middle box suppressed the final candidate");
 
@@ -93,7 +105,7 @@ void decodeEdges()
     std::memcpy(padded.data()+row*rowBytes,data[0].data()+row*80*scara::YoloChannels,80*scara::YoloChannels);
   heads[0].data = padded.data();
   heads[0].rowBytes = rowBytes;
-  scara::Vision_decode(heads,found);
+  found = scara::Vision_decode(heads, {0,0});
   check(found.size()==expected.size(), "Padded tensor changed the detection count");
   for (size_t i=0; i<found.size(); ++i)
     check(found[i].classId==expected[i].classId && found[i].confidence==expected[i].confidence &&
@@ -114,6 +126,15 @@ int main(int argc, char **argv)
     cv::Rect historical = {int(roi[0]),int(roi[1]),int(roi[2]),int(roi[3])};
     sameInput(source, historical, fixture+"historical-input.png");
     sameInput(source, {300,70,650,600}, fixture+"fixed-input.png");
+    cv::Mat expectedRgb;
+    cv::cvtColor(source(cv::Rect(375,8,640,640)), expectedRgb, cv::COLOR_BGR2RGB);
+    auto direct = scara::Vision_prepare(source);
+    check(direct.size()==cv::Size(640,640) && cv::norm(direct,expectedRgb,cv::NORM_INF)==0,
+          "Direct crop changed pixels or channel order");
+    const cv::Rect corner(source.cols - 640, source.rows - 640, 640, 640);
+    cv::cvtColor(source(corner), expectedRgb, cv::COLOR_BGR2RGB);
+    check(cv::norm(scara::Vision_prepare(source, corner.tl()), expectedRgb, cv::NORM_INF)==0,
+          "Direct crop at the bottom-right corner changed pixels");
 
     std::string packet;
 
@@ -133,9 +154,7 @@ int main(int argc, char **argv)
                   int(attr["zero_point"]), float(attr["scale"])};
       offset += bytes;
     }
-    scara::Vision_setup(source.size(),historical);
-    std::vector<scara::Detection> pieces;
-    scara::Vision_decode(heads,pieces);
+    auto pieces = LegacyLetterbox(historical).decode(heads);
     check(pieces.size()==expected["detections"].size(), "Detection count changed");
     double maximum = 0;
     for (size_t i=0; i<pieces.size(); ++i)
@@ -149,18 +168,17 @@ int main(int argc, char **argv)
                           std::abs(b.x+b.width-double(box[2])),std::abs(b.y+b.height-double(box[3]))});
     }
     check(maximum<.0001, "Original-image bounding boxes changed");
-    cv::Mat preview, drawing;
     auto originalSource = source.clone();
-    scara::Vision_draw(source,pieces,preview);
+    cv::Mat preview = scara::Vision_draw(source,pieces);
     check(cv::norm(source,originalSource,cv::NORM_INF)==0, "Drawing modified the source image");
     check(preview.size()==source.size(), "Drawing changed the display field of view");
-    scara::Vision_draw(source,{},drawing);
+    cv::Mat drawing = scara::Vision_draw(source,{});
     check(cv::norm(drawing, source, cv::NORM_INF)==0, "Empty detection altered frame");
-    scara::Vision_draw(source,{{0,.9,{-100,-100,10,10}}},drawing);
+    drawing = scara::Vision_draw(source,{{0,.9,{-100,-100,10,10}}});
     check(cv::norm(drawing,source,cv::NORM_INF)==0,
           "Off-image detection drew a false label at the image origin");
     cv::Mat tiny(12,20,CV_8UC3,cv::Scalar::all(0));
-    scara::Vision_draw(tiny,{{12,.9,{0,0,5,5}}},drawing);
+    drawing = scara::Vision_draw(tiny,{{12,.9,{0,0,5,5}}});
     check(drawing.size()==tiny.size(),
           "Clipped Chinese label changed the image size");
     const char *names[] = {"黑将","黑士","黑象","黑马","黑车","黑炮","黑卒","红帅","红仕","红相","红马","红车","红炮","红兵"};
@@ -169,7 +187,7 @@ int main(int argc, char **argv)
     std::vector<cv::Mat> masks;
     for (int id=0; id<scara::YoloClasses; ++id)
     {
-        scara::Vision_draw(blank,{{id,.93,{30,40,50,45}}},drawing);
+        drawing = scara::Vision_draw(blank,{{id,.93,{30,40,50,45}}});
         cv::Mat label=drawing(cv::Rect(30,15,44,24)), expected=label.clone();
         expected.setTo(id<7 ? cv::Scalar(255,180,65) : cv::Scalar(65,85,245));
         cv::putText(expected,names[id],{2,19},cv::Scalar::all(255),font,18);
@@ -191,49 +209,36 @@ int main(int argc, char **argv)
     {
       scara::Camera_open(argv[1]);
       std::this_thread::sleep_for(std::chrono::milliseconds(300));
-      cv::Mat first, next, resumed;
-      scara::Camera_read(first);
+      cv::Mat first = scara::Camera_read();
       auto saved = first.clone();
-      scara::Camera_read(next);
+      cv::Mat next = scara::Camera_read();
       check(first.size()==source.size() && next.size()==source.size(), "Camera frame size changed");
       check(cv::norm(first,next,cv::NORM_INF)>10, "Camera returned a cached frame again");
       std::this_thread::sleep_for(std::chrono::milliseconds(1200));
-      scara::Camera_read(resumed);
+      cv::Mat resumed = scara::Camera_read();
       check(resumed.size()==source.size(), "Camera did not resume with a new frame");
-      check(cv::norm(first,saved,cv::NORM_INF)==0, "Background capture modified a frame still held by the caller");
+      check(cv::norm(first,saved,cv::NORM_INF)==0, "Another read changed a frame still held by the caller");
       scara::Camera_close();
     }
-    scara::Camera_open(std::string(argv[1])+"/finite");
     cv::Mat frame;
-    auto receiveUntilStopped = [&frame] {
-      try { for (int i=0; i<20; ++i) scara::Camera_read(frame); }
-      catch (const std::runtime_error&) { return frame.empty(); }
-      return false;
-    };
-    auto finite = std::async(std::launch::async,receiveUntilStopped);
-    bool finiteWaited = finite.wait_for(std::chrono::milliseconds(1600))==std::future_status::timeout;
-    scara::Camera_close();
-    check(finiteWaited && finite.get(), "Finished source did not wait until explicitly closed");
-    scara::Camera_open(std::string(argv[1])+"/stall");
-    auto stalled = std::async(std::launch::async,receiveUntilStopped);
-    bool stallWaited = stalled.wait_for(std::chrono::seconds(7))==std::future_status::timeout;
-    auto stopping = std::chrono::steady_clock::now();
-    scara::Camera_stop();
-    bool stopDelivered = stalled.wait_for(std::chrono::seconds(1))==std::future_status::ready;
-    scara::Camera_close();
-    double closeSeconds = std::chrono::duration<double>(std::chrono::steady_clock::now()-stopping).count();
-    check(stallWaited && stopDelivered && stalled.get() && closeSeconds<7,
-          "Stalled stream did not remain waiting or could not stop cleanly");
-    std::cout << "camera_stall_close_s=" << closeSeconds << '\n';
+    // 两个源都在 12 帧后结束，/stall 在断开前再等待 15 秒。
+    for (const char *path : {"/finite", "/stall"})
+    {
+      scara::Camera_open(std::string(argv[1]) + path);
+      int frames = 0;
+      while (frames < 20)
+      {
+        frame = scara::Camera_read();
+        if (frame.empty()) break;
+        ++frames;
+      }
+      check(frames > 0 && frame.empty(), "End of stream returned a stale frame");
+      scara::Camera_close();
+    }
     scara::Camera_open(argv[1]);
-    scara::Camera_read(frame);
+    frame = scara::Camera_read();
     check(frame.size()==source.size(), "Camera retained an old failure after reopening");
     scara::Camera_close();
-    cv::Mat badInput;
-    bool rejected = false;
-    try { scara::Vision_prepare(source(cv::Rect(0,0,320,240)),badInput); }
-    catch (const std::runtime_error&) { rejected = true; }
-    check(rejected, "Unexpected camera size was accepted");
     std::cout << "PASS preprocessing byte equality, " << pieces.size()
               << " recorded NPU detections, max box difference " << maximum
               << " px, display size, camera reopen\n";

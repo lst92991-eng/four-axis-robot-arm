@@ -79,11 +79,12 @@ bool askEngine(Uci &io, const chess::Game &game, int thinkMs, chess::MoveList &l
     while (readLine(io, line))
     {
         std::istringstream reply(line);
-        std::string kind, move;
-        // 回复的第一个词是消息类型，bestmove 后面的第一个走法就是应手。
-        reply >> kind >> move;
-        if (kind == "bestmove") return chess::parseMove(move, best);
-        if (!kind.empty() && kind != "info") return false;
+        std::string kind;
+        if (!(reply >> kind) || kind == "info") continue;
+        if (kind != "bestmove") return false;
+        std::string move;
+        reply >> move;
+        return chess::parseMove(move, best);
     }
     return false;
 }
@@ -98,9 +99,10 @@ bool readLegal(Uci &io, chess::MoveList &legal)
         if (line.empty()) continue;
         // 末行的节点总数必须等于前面收到的走法条数。
         if (line.front() == 'N') return line == "Nodes searched: " + std::to_string(legal.size());
+        std::string_view record(line);
+        if (record.size() != 7 || record.substr(4) != ": 1") return false;
         chess::Move move;
-        if (line.size() != 7 || line.substr(4) != ": 1" || !chess::parseMove(line.substr(0, 4), move))
-            return false;
+        if (!chess::parseMove(record.substr(0, 4), move)) return false;
         if (legal.size() == 256 || std::find(legal.begin(), legal.end(), move) != legal.end()) return false;
         legal.push_back(move);
     }
@@ -140,8 +142,10 @@ bool openEngine(const char *directory)
     engineFd = ends[0];
     // 引擎沉默时每 100 ms 回到主程序，检查取消与本次查询的总时限。
     timeval tick{0, 100000};
-    return enginePid > 0 && setsockopt(engineFd, SOL_SOCKET, SO_RCVTIMEO, &tick, sizeof(tick)) == 0 &&
-           setsockopt(engineFd, SOL_SOCKET, SO_SNDTIMEO, &tick, sizeof(tick)) == 0;
+    if (enginePid < 0) return false;
+    for (int option : {SO_RCVTIMEO, SO_SNDTIMEO})
+        if (setsockopt(engineFd, SOL_SOCKET, option, &tick, sizeof(tick)) != 0) return false;
+    return true;
 }
 
 //---------命令写全，回复逐行读出---------

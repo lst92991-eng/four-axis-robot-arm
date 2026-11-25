@@ -6,12 +6,7 @@
 
 int main()
 {
-#ifdef SCARA_OLD_BOARD_API
     chess::Board initial = chess::initialBoard();
-#else
-    chess::Board initial;
-    chess::initialBoard(initial);
-#endif
     chess::Board sparse{};
     for (auto &row : sparse)
         row.fill('.');

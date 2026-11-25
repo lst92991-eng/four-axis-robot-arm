@@ -41,8 +41,9 @@ int main()
                 if (duplicate) pieces.push_back(piece);
                 const std::string frame = variation == 19 ? "" : "frame";
                 bool sceneClear = variation % 4 != 0 && variation != 17;
-                chess::Board result;
-                bool assigned = scara::Geometry_assign(original, pieces, result, sceneClear && !frame.empty());
+                auto observation = scara::Geometry_assign(original, pieces, sceneClear && !frame.empty());
+                const auto &result = observation.cells;
+                bool assigned = observation.valid;
                 // 独立预期：合格检测位于0.35格内才占格，重叠标成未知
                 bool observed = sceneClear && variation != 19;
                 bool detected = variation < 14 && variation % 3 != 0;

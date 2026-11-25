@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         // 从布局文件所在目录找到当时的相机原图，用同一坐标系绘制交点。
         std::filesystem::path path = std::filesystem::u8path(argv[2]).parent_path();
         path /= std::string(config["image"]);
-        cv::Mat source = cv::imread(path.string()), overlay;
+        cv::Mat source = cv::imread(path.string());
         if (source.size() != cv::Size(scara::ImageWidth, scara::ImageHeight))
             throw std::runtime_error("需要与布局一致的1280×720原图");
         // 报告同时保留标称格点和实际取放目标，方便核对单格毫米修正。
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
         report << "]";
         report.release();
         // 在原图上画出与报告对应的 90 个交点，按报告名加 .png 保存。
-        scara::Geometry_draw(source, geometry, overlay);
+        cv::Mat overlay = scara::Geometry_draw(source, geometry);
         if (!cv::imwrite(std::string(argv[3]) + ".png", overlay)) throw std::runtime_error("无法保存叠图");
         std::cout << "三点对应关系及90点叠图已生成\n";
         return 0;

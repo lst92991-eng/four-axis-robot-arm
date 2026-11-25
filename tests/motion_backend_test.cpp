@@ -109,7 +109,7 @@ int main()
         }
 
         fake::reset(); fake::command.position={3,4,5};
-        auto vertical=move; vertical.axes=ZAxis; vertical.target={13,999,999};
+        auto vertical=move; vertical.action=PickAction::LiftZ; vertical.target={13,999,999};
         success = Motion_execute({vertical},limits,fake::running);
         check(success,"Selected-axis move failed");
         for(const auto &sample:fake::samples)

@@ -16,7 +16,6 @@ static volatile std::sig_atomic_t running = 1;
 static void requestStop(int)
 {
     running = 0;
-    scara::Camera_stop();
 }
 
 //---------模型与相机初始化区---------
@@ -34,7 +33,6 @@ int main(int argc, char **argv)
     int result = 1;
     try
     {
-        Vision_setup();
         std::signal(SIGINT, requestStop);
         std::signal(SIGTERM, requestStop);
         result = Yolo_open(modelPath) ? 0 : 1;
@@ -44,18 +42,12 @@ int main(int argc, char **argv)
         //---------取帧、识别与绘制区---------
         while (running)
         {
-            cv::Mat source;                // 摄像头解码得到的 BGR 原图。
-            cv::Mat input;                 // 裁剪、转 RGB、缩放补边后的 640×640 图。
-            cv::Mat preview;               // 画好框、中文标签和分数的原尺寸预览图。
-            YoloHead heads[YoloHeads];     // NPU 三路输出的地址和格式描述。
-            std::vector<Detection> pieces; // 检测到的棋子：类别、分数、原图位置框。
-
-            // 从相机取得新帧，经预处理、推理、解码后，把检测结果画回原图。
-            Camera_read(source);
-            Vision_prepare(source, input);
-            Yolo_run(input, heads);
-            Vision_decode(heads, pieces);
-            Vision_draw(source, pieces, preview);
+            cv::Mat source = Camera_read(); // 摄像头解码得到的 BGR 原图。
+            if (!running) break;
+            if (source.empty()) throw std::runtime_error("相机未读到画面");
+            cv::Mat input = Vision_prepare(source);
+            std::vector<Detection> pieces = Yolo_run(input);
+            cv::Mat preview = Vision_draw(source, pieces);
             // JPEG 帧直接送给播放器的管道。
             std::vector<unsigned char> jpeg;
             if (!cv::imencode(".jpg", preview, jpeg)) throw std::runtime_error("预览编码失败");
@@ -72,7 +64,7 @@ int main(int argc, char **argv)
         }
     }
     //---------预览收尾区---------
-    // 先等取流线程结束，再释放 NPU 的输入输出内存。
+    // 释放视频流和 NPU 的输入输出内存。
     Camera_close();
     Yolo_close();
     return result;

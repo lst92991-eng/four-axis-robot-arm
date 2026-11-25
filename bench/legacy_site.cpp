@@ -21,9 +21,8 @@ void Bench_geometry(const cv::FileNode &config, Geometry &geometry, cv::Matx23d 
         const double *p = rows.ptr<double>(i);
         points[i] = {{p[0],p[1]}, {p[2],p[3]}};
     }
-    Geometry next;
     // 沿用正式标定入口，先求出整张棋盘的标称坐标。
-    Geometry_calibrate(points[0], points[1], points[2], next);
+    Geometry next = Geometry_calibrate(points[0], points[1], points[2]);
     if (pixelToBase)
     {
         // 矩阵的每行是 [u,v,1]。用三点同时解 X 和 Y 的系数，再转成 2×3。

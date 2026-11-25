@@ -8,5 +8,5 @@ namespace scara
 std::string Site_path();
 void Site_loadFile(const std::string &path, GameConfig &config, Session &session);
 void Site_parse(std::string_view text, GameConfig &config, Session &session);
-void Site_loadArm(const std::string &path, ArmGeometry &arm);
+ArmGeometry Site_loadArm(const std::string &path);
 }

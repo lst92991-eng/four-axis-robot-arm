@@ -26,7 +26,7 @@ SWD 使用雅特力 OpenOCD 的 `interface/cmsis-dap.cfg` 和 `target/at32m416xx
 
 现场使用 ADB 时可用 `SCARA_ADB` 指定工具路径，多块 RV1106 用 `ANDROID_SERIAL` 选板，多只 USB-CAN 用 `SCARA_CAN_SERIAL` 选适配器。对局与巡点共用 `config/site/installation.toml`，也可用 `SCARA_SITE` 指定其他现场表。20/21 可用 `--site` 单次指定。旧 `.site` 可用 `15-site.cmd 安装.site --install` 迁移，历史 JSON 保留给旧台架工具。单机同时只由一个控制程序持有 USB-CAN。
 
-`15-site.cmd --template 实测表.txt` 生成采点表。J2、J3 各填一个带方向的换算系数。J1 直接填吸取、搬运与可选释放角。20 号空吸头定位还需实测的 `hover`，保存为 `[z].hover_deg`。旧表里的行程毫米数只在导入时用于恢复原下探角。
+`15-site.cmd --template 实测表.txt` 生成采点表。J2、J3 各填一个带方向的换算系数。J1 在 `z` 行填主流程取得的贴子角，程序按这台丝杆的历史经验值抬高约 4.3 cm，再把两个驱动角保存到 TOML。已有实测搬运角、释放角的旧表仍使用原值。20 号空吸头定位的独立下探高度来自实测的 `hover`，保存为 `[z].hover_deg`。
 
 ## 每项测试的约定
 

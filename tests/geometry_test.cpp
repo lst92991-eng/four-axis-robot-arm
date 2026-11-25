@@ -34,7 +34,14 @@ void calibrationTests()
     bad=fixture::input(); bad.points=bad.points.colRange(0,3).clone(); rejects(bad);
     bad=fixture::input(); bad.points.convertTo(bad.points,CV_32F); rejects(bad);
     bad=fixture::input(); bad.points.at<double>(0,0)=std::numeric_limits<double>::quiet_NaN(); rejects(bad);
-    bad=fixture::input(); bad.points.col(1).setTo(100); rejects(bad);
+    // 导出旧表的仿射系数时，实际求解遇到奇异输入应报告失败。
+    bad=fixture::input(); bad.points.col(1).setTo(100);
+    cv::FileStorage singular;
+    fixture::storage(bad, singular);
+    bool rejected = false;
+    try { Bench_geometry(singular.root(), geometry, &legacyMatrix); }
+    catch (const std::runtime_error &) { rejected = true; }
+    check(rejected, "Legacy coefficient export accepted a singular system");
 }
 void targetTests()
 {
@@ -57,7 +64,7 @@ void targetTests()
     check(cv::norm(shifted.cell[5][3].xy-cv::Point2d(42,34))<1e-9,
           "Moved board failed to update targets");
     cv::Mat source(720,1280,CV_8UC3,cv::Scalar(0)), image;
-    Geometry_draw(source,geometry,image);
+    image = Geometry_draw(source,geometry);
     check(image.size()==source.size() && cv::norm(image,source)>0,"Grid overlay missing");
     check(cv::norm(source)==0,"Drawing changed the source image");
 }
@@ -67,18 +74,17 @@ void observationTests()
     cv::Point2d center = geometry.cell[4][3].pixel + cv::Point2d(5,-3);
     cv::Point2d fixedTarget = geometry.cell[4][3].xy;
     Detection piece{12,.9,{center.x-12,center.y-12,24,24}};
-    chess::Board result;
-    bool valid = Geometry_assign(geometry, {piece}, result);
-    check(valid && result[4][3]=='C' && result[0][0]=='.', "Single frame assignment failed");
+    auto result = Geometry_assign(geometry, {piece});
+    check(result.valid && result.cells[4][3]=='C' && result.cells[0][0]=='.', "Single frame assignment failed");
     check(geometry.cell[4][3].xy == fixedTarget, "Off-center piece changed the fixed target");
-    valid = Geometry_assign(geometry, {piece,piece}, result);
-    check(!valid && result[4][3]=='?', "Duplicate detection accepted");
-    valid = Geometry_assign(geometry, {piece}, result, false);
-    check(!valid && result[4][3]=='?', "Occlusion exposed a usable observation");
+    result = Geometry_assign(geometry, {piece,piece});
+    check(!result.valid && result.cells[4][3]=='?', "Duplicate detection accepted");
+    result = Geometry_assign(geometry, {piece}, false);
+    check(!result.valid && result.cells[4][3]=='?', "Occlusion exposed a usable observation");
     piece.bbox.x += 48;
-    check(!Geometry_assign(geometry, {piece}, result), "Off-grid center accepted");
-    valid = Geometry_assign(geometry, {}, result);
-    check(valid && result[4][3]=='.', "Empty board retained stale pieces");
+    check(!Geometry_assign(geometry, {piece}).valid, "Off-grid center accepted");
+    result = Geometry_assign(geometry, {});
+    check(result.valid && result.cells[4][3]=='.', "Empty board retained stale pieces");
 }
 void placementOffsetTests()
 {

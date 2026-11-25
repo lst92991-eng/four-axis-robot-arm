@@ -6,8 +6,8 @@
 namespace scara
 {
 //---------执行数据区---------
-constexpr double PositionToleranceDeg = .12;
-constexpr double StoppedSpeedDegS = .05;
+constexpr double PositionToleranceDeg = 0.12;
+constexpr double StoppedSpeedDegS = 0.05;
 constexpr uint64_t SettledMs = 250;
 constexpr double ArrivalAllowanceSeconds = 5;
 
@@ -33,7 +33,7 @@ bool Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limi
             done = running && Drive_read(feedback);
             if (!done) break;
             // Move 运行轨迹，Grip 原地吸持，两种释放动作都关断磁铁。
-            if (step.action == PickAction::Move)
+            if (step.action == PickAction::Move || step.action == PickAction::LiftZ)
                 done = moveAxes(step, limits, running, feedback, commanded);
             else if (step.action == PickAction::Grip)
                 done = gripPiece(step.durationMs, running, feedback, commanded);
@@ -61,14 +61,11 @@ bool Motion_stop()
 static bool moveAxes(const PickStep &step, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
                      DriveFeedback &feedback, AxisValues &commanded)
 {
-    if (!step.axes || (step.axes & ~AllAxes)) return false;
-    // 沿用上段的命令终点，用本步目标替换选中的轴。
-    AxisValues target = commanded;
-    for (int axis = 0; axis < 3; ++axis)
-    {
-        if (std::abs(feedback.velocity[axis]) > StoppedSpeedDegS) return false;
-        if (step.axes & (1u << axis)) target[axis] = step.target[axis];
-    }
+    // 普通运动直接用三个目标角；开局抬升时沿用当前水平姿态。
+    AxisValues target = step.target;
+    if (step.action == PickAction::LiftZ) target = {step.target[0], commanded[1], commanded[2]};
+    for (double speed : feedback.velocity)
+        if (std::abs(speed) > StoppedSpeedDegS) return false;
     // 从上段目标规划到本步目标。零行程且反馈已经到位时直接完成。
     JointTrajectory trajectory;
     if (!Trajectory_plan(commanded, target, limits, trajectory)) return false;
@@ -77,13 +74,12 @@ static bool moveAxes(const PickStep &step, const MotionLimits &limits, const vol
     // 走轨迹。按本段已用时间生成三轴参考，一次下发，再取下一周期反馈。
     uint64_t start = feedback.timeMs;
     double elapsed = 0;
-    JointReference reference;
     while (running && elapsed < trajectory.seconds)
     {
-        Trajectory_sample(trajectory, elapsed, reference);
+        JointReference reference = Trajectory_sample(trajectory, elapsed);
         if (!Drive_write(reference) || !Drive_read(feedback)) return false;
         // 驱动时钟用毫秒，轨迹采样用秒。
-        elapsed = (feedback.timeMs - start) * .001;
+        elapsed = (feedback.timeMs - start) * 0.001;
     }
 
     // 保持目标角。三轴都到位并连续停稳 250 ms 后交给下一步。
@@ -92,7 +88,7 @@ static bool moveAxes(const PickStep &step, const MotionLimits &limits, const vol
     // stableSince 记录连续合格样本的起始时刻，任一轴偏离都会重新计时。
     uint64_t stableSince = feedback.timeMs;
     const double holdDeadline = trajectory.seconds + ArrivalAllowanceSeconds;
-    while (running && (feedback.timeMs - start) * .001 <= holdDeadline)
+    while (running && (feedback.timeMs - start) * 0.001 <= holdDeadline)
     {
         if (!Drive_write(hold)) return false;
         bool there = onTarget(feedback, target);

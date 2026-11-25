@@ -42,11 +42,11 @@ struct WorkHeights
     // 正向吸合后看齐并贴住棋子的时间，单位毫秒。
     int gripDwellMs = 420;
 };
+// 本机主流程取得贴子时的 J1 驱动角后，生成棋面和搬运两档。liftCm 为相对抬升厘米数。
+WorkHeights WorkHeights_fromContact(double contactDeg, double liftCm = 4.3);
 //---------三轴轨迹数据区---------
 //三个元素依次为J1电机角、J2反馈角、J3电机角；J4保持原姿态
 using AxisValues = std::array<double, 3>;
-// 轴选择用位掩码表示，最低位选择 J1，三个低位全置一选择 J1 至 J3。
-constexpr unsigned ZAxis = 1, AllAxes = 7;
 struct MotionLimits
 {
     //每轴的速度和加速度上限，单位为度/秒、度/秒²
@@ -71,15 +71,14 @@ enum class PickAction
     Grip,
     Move,
     Release,
-    ReleaseOffBoard
+    ReleaseOffBoard,
+    LiftZ // 从装置的当前姿态先垂直抬升，保持 J2/J3 的位置。
 };
 // steps 的每一项保存一种动作，执行器按追加顺序读取。
 struct PickStep
 {
     PickAction action = PickAction::Grip;
     AxisValues target{};
-    //位0/1/2选择J1/J2/J3，其余轴使用本段起点位置
-    unsigned axes = AllAxes;
     // 吸合时的原地停留时间，单位毫秒。
     int durationMs = 0;
 };
@@ -93,12 +92,12 @@ void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceM
 
 //---------坐标与轨迹接口区---------
 // 用驱动角算吸头的基座 XY 毫米，供示教采点核对。
-void Arm_forward(const ArmGeometry &arm, const JointTarget &joints, cv::Point2d &baseMm);
+cv::Point2d Arm_forward(const ArmGeometry &arm, const JointTarget &joints);
 // 用基座 XY 毫米算一组关节角，不可达时返回 false。
 bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints);
 // 按最慢轴的速度和加速度约束确定三轴共用时长。
 bool Trajectory_plan(const AxisValues &start, const AxisValues &target, const MotionLimits &limits,
                      JointTrajectory &trajectory);
-// 按本段已用秒数写出一组三轴位置和速度参考。
-void Trajectory_sample(const JointTrajectory &trajectory, double elapsedSeconds, JointReference &reference);
+// 返回这一时刻的三轴位置和速度参考。
+JointReference Trajectory_sample(const JointTrajectory &trajectory, double elapsedSeconds);
 } // namespace scara

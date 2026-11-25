@@ -20,14 +20,16 @@ point 9 8 _ _ _ _
 point 0 0 _ _ _ _
 # J2/J3驱动参考角、肩肘机械参考角（度）、J2/J3有符号换算系数
 ref _ _ _ _ _ _
-# J1吸取角、搬运角、释放角（度）。释放角可省略，默认用吸取角。
-z _ _ _
+# 填主流程测到的贴子角（J1 驱动度），本机默认从此抬升约 4.3 cm。
+# 已实测搬运角时，仍可用旧格式 z 贴子角 搬运角 [释放角]。
+z _
 # 可选。运行20号空吸头定位时，填实测的下探角。
 # hover _
 park _ _
 discard _ _
 camera rtsp://_/live/0
-roi _ _ _ _
+# 原图中 640×640 棋盘区域的左上角 x、y。
+roi _ _ 640 640
 """
 
 
@@ -111,7 +113,7 @@ def field_config(site):
 
 def measurements(sheet):
     values, points = {}, {}
-    lengths = {'ref': (5, 6), 'z': (2, 3, 4), 'hover': (1,), 'park': (2,), 'discard': (2,), 'roi': (4,)}
+    lengths = {'ref': (5, 6), 'z': (1, 2, 3, 4), 'hover': (1,), 'park': (2,), 'discard': (2,), 'roi': (4,)}
     for line in sheet.read_text(encoding='utf-8-sig').splitlines():
         fields = line.partition('#')[0].split()
         if not fields:
@@ -161,6 +163,9 @@ def main(argv, binary):
             text = args.sheet.read_text(encoding='utf-8-sig')
         else:
             values, measured = measurements(args.sheet)
+            if len(values['z']) == 1:
+                travel = subprocess.check_output([str(tool), '--travel-from-contact', str(values['z'][0])], text=True)
+                values['z'].append(float(travel))
             arm, z, motion, vision = make_site(
                 values['ref'], values['z'], values['park'], values['discard'], values['camera'],
                 list(map(int, values['roi'])), [], values.get('hover', [None])[0])
