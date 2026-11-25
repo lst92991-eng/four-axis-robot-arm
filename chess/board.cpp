@@ -5,7 +5,6 @@
 
 namespace chess
 {
-static std::string startFen(const Board &board, bool redToMove);
 
 //---------初始化区---------
 // 标准开局按实盘从黑方底线向红方逐行排。点号表示空交点。
@@ -24,9 +23,7 @@ Board initialBoard()
 //默认构造即建立标准局面，字段初值保存其余回合状态
 Game::Game()
 {
-    board = initialBoard();
-    baseFen = startFen(board, redToMove);
-    positions = {board};
+    Game_reset(*this, initialBoard());
 }
 
 // 以核对过的实盘作为开局，刷新行棋方、起始 FEN 和历史记录。
@@ -62,23 +59,19 @@ bool validSquares(const Move &m)
     return inside(m.fromRow, m.fromCol) && inside(m.toRow, m.toCol) &&
            (m.fromRow != m.toRow || m.fromCol != m.toCol);
 }
-namespace
-{
 // 棋盘字符用大写表示红方，用小写表示黑方。
-bool redPiece(char piece)
+static bool redPiece(char piece)
 {
     return piece >= 'A' && piece <= 'Z';
 }
 // 将帅都在第 3–5 列，黑将限于上三行，红帅限于下三行。
-bool kingInPalace(char piece, int row, int col)
+static bool kingInPalace(char piece, int row, int col)
 {
     bool column = col >= 3 && col <= 5;
     if (piece == 'K') return column && row >= 7;
     if (piece == 'k') return column && row <= 2;
     return true;
 }
-
-} // namespace
 
 //---------开局盘面核对区---------
 // 统计各类棋子，并核对将帅在九宫内。
@@ -111,9 +104,10 @@ bool validTransfer(const Board &board, bool redToMove, const Move &move)
     // 按当前行棋方核对起点颜色，并检查目标格可被占用。
     char piece = board[move.fromRow][move.fromCol];
     char target = board[move.toRow][move.toCol];
-    bool ownPiece = piece != '.' && redPiece(piece) == redToMove;
-    bool openTarget = target == '.' || redPiece(target) != redToMove;
-    return ownPiece && openTarget && target != 'K' && target != 'k' && kingInPalace(piece, move.toRow, move.toCol);
+    if (piece == '.' || redPiece(piece) != redToMove) return false;
+    if (target == 'K' || target == 'k') return false;
+    if (target != '.' && redPiece(target) == redToMove) return false;
+    return kingInPalace(piece, move.toRow, move.toCol);
 }
 
 // 把已核对的走法应用到传入的棋盘。目标格原有的棋子会被覆盖。
@@ -123,40 +117,23 @@ void movePiece(Board &board, const Move &move)
     board[move.fromRow][move.fromCol] = '.';
 }
 
-// 实盘只有起点变空、终点变为所走棋子时，才能推断出一手棋。
-InferredMove inferMove(const Board &before, const Board &after, const MoveList &legal, Move &move)
+// 人手走棋后，把引擎给的每一手在棋盘副本上走一次，找出与相机实盘相同的那一手。
+bool inferMove(const Board &before, const Board &seen, const MoveList &legal, Move &move)
 {
     move = {};
-
-    Move candidate;
-    for (int row = 0; row < Rows; ++row)
-        for (int col = 0; col < Columns; ++col)
-        {
-            char piece = after[row][col];
-            if (before[row][col] == piece) continue;
-            if (piece == '.')
-            {
-                if (candidate.fromRow >= 0) return InferredMove::Invalid;
-                candidate.fromRow = row;
-                candidate.fromCol = col;
-            }
-            else
-            {
-                if (candidate.toRow >= 0) return InferredMove::Invalid;
-                candidate.toRow = row;
-                candidate.toCol = col;
-            }
-        }
-    if (candidate.fromRow < 0 && candidate.toRow < 0) return InferredMove::Unchanged;
-    if (candidate.fromRow < 0 || candidate.toRow < 0) return InferredMove::Invalid;
-
-    // 吃子时终点原有棋子被覆盖，观察到的新棋子仍须与起点原棋子一致。
-    char piece = before[candidate.fromRow][candidate.fromCol];
-    if (after[candidate.toRow][candidate.toCol] != piece) return InferredMove::Invalid;
-    if (std::count(legal.begin(), legal.end(), candidate) != 1) return InferredMove::Invalid;
-
-    move = candidate;
-    return InferredMove::Legal;
+    const Move *match = nullptr;
+    for (const Move &step : legal)
+    {
+        if (!validSquares(step)) continue;
+        Board trial = before;
+        movePiece(trial, step);
+        if (trial != seen) continue;
+        if (match) return false; // 两项都吻合，无法唯一记谱。
+        match = &step;
+    }
+    if (!match || before == seen) return false;
+    move = *match;
+    return true;
 }
 
 //---------回合交接区---------
@@ -197,63 +174,6 @@ void Game_judge(Game &game, const MoveList &legal)
         if (game.positions[step] == game.board) ++repeats;
     // 出现三次相同局面，或记录超过 1024 张盘面时，转入人工裁定。
     if (repeats >= 3 || game.positions.size() > 1024) game.result = Result::ReviewRequired;
-}
-
-//---------引擎和棋谱的格式转换区---------
-//输入四字符UCI走法，输出黑方底线起算的数组行列
-bool parseMove(std::string_view text, Move &move)
-{
-    // 先把输出置为无效走法，四个字符全部核对后再写回结果。
-    move = {};
-    if (text.size() != 4) return false;
-    // UCI从红方底线记作0；棋局数组从黑方底线记作第0行。
-    Move candidate;
-    candidate.fromRow = Rows - 1 - (text[1] - '0');
-    candidate.fromCol = text[0] - 'a';
-    candidate.toRow = Rows - 1 - (text[3] - '0');
-    candidate.toCol = text[2] - 'a';
-    if (!validSquares(candidate)) return false;
-    move = candidate;
-    return true;
-}
-
-//输入起点终点行列，输出引擎使用的四字符走法
-std::string uci(const Move &move)
-{
-    if (!validSquares(move)) return {};
-    return {char('a' + move.fromCol), char('0' + Rows - 1 - move.fromRow),
-            char('a' + move.toCol), char('0' + Rows - 1 - move.toRow)};
-}
-
-// 开局 FEN 只记录起始盘面和行棋方，随后由 UCI moves 交付棋谱。
-static std::string startFen(const Board &board, bool redToMove)
-{
-    std::string result;
-    //FEN逐行输出，连续空格压缩为一个数字
-    for (int row = 0; row < Rows; ++row)
-    {
-        int empty = 0;
-        for (int col = 0; col < Columns; ++col)
-        {
-            if (board[row][col] == '.')
-            {
-                ++empty;
-                continue;
-            }
-            // 遇到棋子先输出前面连续空格的数量，再写棋子字符。
-            if (empty)
-            {
-                result += char('0' + empty);
-                empty = 0;
-            }
-            result += board[row][col];
-        }
-        // 一行末尾的空格也要输出。斜线在 FEN 中划分相邻两行。
-        if (empty) result += char('0' + empty);
-        if (row + 1 < Rows) result += '/';
-    }
-    result += redToMove ? " w - - 0 1" : " b - - 0 1";
-    return result;
 }
 
 } // namespace chess

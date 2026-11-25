@@ -11,6 +11,6 @@ void Bench_load(const std::string &path, GameConfig &config, Session &session);
 bool Arm_load(const std::string &path, ArmGeometry &arm);
 // 将旧 Z 示教记录换算为取子、净空、搬运和释放的 J1 角。
 bool WorkHeights_load(const std::string &path, WorkHeights &heights);
-// 按三个测点建系并应用逐格毫米修正，导出报告时可另取像素到基座的仿射矩阵。
+// 按三个测点生成棋盘坐标，导出报告时可另取像素到基座的仿射矩阵。
 void Bench_geometry(const cv::FileNode &config, Geometry &geometry, cv::Matx23d *pixelToBase = nullptr);
 }

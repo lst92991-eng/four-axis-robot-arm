@@ -24,7 +24,9 @@
 
 SWD 使用雅特力 OpenOCD 的 `interface/cmsis-dap.cfg` 和 `target/at32m416xx.cfg`。它可以在 PATH 中，也可以通过 `--openocd` 指定。脚本校验选定 HEX、轴记录和应用 CRC，核对 MCU，编程后校验写入内容并比对最后 4 KiB 电角标定区。四块新板的电角零点分别在各自实板上标定，已有标定随板保留。默认包为 [9fc6a5de](../images/common-20261123-9fc6a5de/joint-app-manifest.json)，可用 `--package` 选择教师验收的其他同格式版本。J1～J3 有此版板上回读，J4 的此版完成离线镜像校验，本次状态帧回读为 `41f870bf`。
 
-现场使用 ADB 时可用 `SCARA_ADB` 指定工具路径，多块 RV1106 用 `ANDROID_SERIAL` 选板，多只 USB-CAN 用 `SCARA_CAN_SERIAL` 选适配器。对局与巡点共用 `config/site/installation.toml`，也可用 `SCARA_SITE` 指定其他现场表。20/21 可用 `--site` 单次指定。旧 `.site` 可用 `15-site.cmd 安装.site --install` 迁移，历史 JSON 保留给旧台架工具。单机同时只由一个控制程序持有 USB-CAN。
+15 号的新表用 `red_left / red_right / black_left` 标出三个角。每个角记录原图 u、v 和对中时的 J2、J3 读数；默认机型沿用模板中的臂长、传动比例和运动限幅。只填 `z` 贴子角会使用约 4.3 cm 的默认抬升。20 号下探另填实测的 `hover`，21 号搬子使用取放高度。旧示教记录首次导入后沿用实测搬运、净空和释放角。
+
+现场使用 ADB 时可用 `SCARA_ADB` 指定工具路径，多块 RV1106 用 `ANDROID_SERIAL` 选板，多只 USB-CAN 用 `SCARA_CAN_SERIAL` 选适配器。对局与巡点共用 `config/site/installation.toml`，也可用 `SCARA_SITE` 指定其他现场表。20/21 可用 `--site` 单次指定。旧表已在 `config/site/` 默认位置时，运行一次 `15-site.cmd --install`。放在其他位置的 TOML 或 `.site` 使用 `15-site.cmd "旧表路径" --install`。导入通过后直接开局；原地转换会先生成原件的 `.bak` 备份。历史 JSON 继续供离线台架工具使用。单机同时只由一个控制程序持有 USB-CAN。
 
 `15-site.cmd --template 实测表.txt` 生成采点表。J2、J3 各填一个带方向的换算系数。J1 在 `z` 行填主流程取得的贴子角，程序按这台丝杆的历史经验值抬高约 4.3 cm，再把两个驱动角保存到 TOML。已有实测搬运角、释放角的旧表仍使用原值。20 号空吸头定位的独立下探高度来自实测的 `hover`，保存为 `[z].hover_deg`。
 

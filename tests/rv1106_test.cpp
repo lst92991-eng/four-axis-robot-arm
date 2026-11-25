@@ -7,6 +7,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <poll.h>
 #include <cstring>
+#include <fstream>
+#include <iterator>
 #include <iostream>
 #ifdef __linux__
 #include <sys/syscall.h>
@@ -131,7 +133,19 @@ int main()
         using namespace scara;
         GameConfig config;
         Session session;
-        Site_loadFile("config/installation.toml", config, session);
+        // 未导入的旧表应在连接设备前报错。
+        bool needsImport = false;
+        try { Site_loadFile(config, session, "tests/fixtures/game-app/installation-v1.toml"); }
+        catch (const std::runtime_error &error) { needsImport = std::string(error.what()).find("15-site") != std::string::npos; }
+        fake::check(needsImport, "Unconverted installation file did not request import");
+        std::ifstream newInput("config/installation.toml");
+        std::string newText{std::istreambuf_iterator<char>(newInput), {}};
+        auto cameraSection = newText.find("[camera]");
+        auto nextSection = newText.find("\n[", cameraSection);
+        newText.replace(cameraSection, nextSection - cameraSection, "[camera]\ncrop_px = [305, 50]\n");
+        Site_parse(newText, config, session);
+        fake::check(config.visionCropOrigin == cv::Point(305, 50), "Named crop origin changed");
+        Site_loadFile(config, session, "config/installation.toml");
         config.cameraUrl = "fake-stream";
         config.engineDir = "fake-engine";
         Runtime_open(config, "fake-model", session);
@@ -151,10 +165,12 @@ int main()
         bool readFailed = false;
         try { Vision_observe(session.layout, frame, pieces); }
         catch (const std::runtime_error&) { readFailed = true; }
-        fake::check(readFailed && frame == previous && fake::events ==
-                        std::vector<std::string>{"read", "camera-close", "npu-close"},
-                    "Failed read must leave through recovery before inference");
+        fake::check(readFailed && frame == previous && fake::events == std::vector<std::string>{"read"},
+                    "Failed read ran inference or published a new frame");
+        fake::check(Runtime_close() && fake::stops == 1 && !fake::camera && !fake::npu,
+                    "Reset after a camera failure did not stop and close the devices");
         fake::failRead = false;
+        Runtime_open(config, "fake-model", session);
         session.game.humanRed = false;
         Engine_query(session.game, legal, choice);
         fake::check(choice == chess::Move{6,0,5,0} && !fake::camera && !fake::npu && !fake::engine,
@@ -181,9 +197,10 @@ int main()
         completed = Robot_execute("move", {6,0,5,0}, steps);
         fake::check(!completed, "Failed direct execution became success");
         fake::motionSuccess = true;
+        int beforeCancel = fake::stops;
         fake::cancelMotion = true;
         completed = Robot_execute("move", {6,0,5,0}, steps);
-        fake::check(!gameRunning && !completed && fake::stops == 1, "Cancellation did not stop and leave execution");
+        fake::check(!gameRunning && !completed && fake::stops == beforeCancel + 1, "Cancellation did not stop and leave execution");
         int executed = fake::executions;
         completed = Robot_execute("move", {6,0,5,0}, steps);
         fake::check(!completed && fake::executions == executed, "A stopped run started another move");
@@ -219,8 +236,7 @@ int main()
         Runtime_close();
         fake::check(failed && !fake::camera && !fake::npu, "Partially opened model was not released");
         fake::keyboard = "unknown\nready\n";
-        Command command;
-        Operator_read("fixture", command);
+        Command command = Operator_read("fixture");
         fake::check(command == Command::Ready, "Console command parsing failed");
         fake::keyboard = "draw\nready\n";
         fake::check(Operator_prepare(), "Console preparation did not wait for confirmation");
@@ -237,7 +253,7 @@ int main()
             fake::eof = fake::keyboard.empty();
             gameRunning = 1;
             int beforeStop = fake::stops;
-            Operator_read("exit fixture", command);
+            command = Operator_read("exit fixture");
             fake::check(command == Command::Quit && !gameRunning && fake::stops == beforeStop,
                         "Quit/EOF did not leave through nonblocking input shutdown");
         }

@@ -75,18 +75,22 @@ def plan(bench, points, start_pose, first, carry):
     return actions
 
 
-def measured_config(site, installation=None):
+def measured_config(site, installation=None, tool=None):
     if site.suffix.lower() == '.toml':
-        setup = tomllib.loads(installation if installation is not None else site.read_text(encoding='utf-8-sig'))
-        arm, motion = setup['arm'], setup['motion']
-        j2, j3 = arm['reference_drive_deg']
-        shoulder, elbow = arm['reference_joint_rad']
-        return dict(arm_lengths_mm=arm['lengths_mm'], j2_reference_deg=j2, j3_reference_motor_deg=j3,
-                    shoulder_ref_rad=shoulder, elbow_ref_rad=elbow, joint_per_drive=arm['joint_per_drive'],
-                    z=setup['z'], park_joints_deg=motion['park_deg'],
-                    joint_velocity_deg_s=motion['velocity_deg_s'], joint_acceleration_deg_s2=motion['acceleration_deg_s2'],
-                    camera_url=setup['vision'].get('camera_url'), pickup_at_rest_ms=setup['z'].get('grip_dwell_ms', 420),
-                    **field_limits(str(Path(__file__).resolve().parent/'reference/workspace.npz')))
+        # 角度、动作高度和限幅直接取正式 C++ 读表结果。hover 是巡点工具独有的实测值。
+        if tool is None:
+            from run import binary
+            tool = binary('scara_bench_points')
+        text = installation if installation is not None else site.read_text(encoding='utf-8-sig')
+        result = subprocess.run([str(tool), '--settings'], input=text, capture_output=True, encoding='utf-8')
+        if result.returncode:
+            raise ValueError(result.stderr.strip() or '读取安装配置失败')
+        config = json.loads(result.stdout)
+        hover = tomllib.loads(text)['z'].get('hover_deg')
+        if hover is not None:
+            config['z']['hover_deg'] = hover
+        config.update(field_limits(str(Path(__file__).resolve().parent/'reference/workspace.npz')))
+        return config
     # 独立巡点命令也能导入早期分文件的实测夹具。
     config = json.loads(site.read_text(encoding='utf-8'))
     for key in ('arm_file', 'heights_file'):
@@ -106,7 +110,7 @@ def sweep(args, site, tool, log):
     # 格点与台架动作使用同一份 TOML 快照。
     installation = site.read_text(encoding='utf-8-sig') if site.suffix.lower() == '.toml' else None
     points = read_points(tool, site, installation)
-    config = measured_config(site, installation)
+    config = measured_config(site, installation, tool)
     if not args.plan and site.suffix.lower() == '.toml' and not config.get('camera_url'):
         raise ValueError('实机台架请选择含现场相机地址的 TOML')
     bench = Bench(config)

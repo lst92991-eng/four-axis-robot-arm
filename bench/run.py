@@ -27,19 +27,21 @@ def binary(name):
 
 # 优先选显式指定的安装记录，离线规划可用保存的参考夹具。
 def site_file(args):
-    from teach import INSTALLATION, field_config
+    from teach import INSTALLATION
 
     named = args.site or os.environ.get('SCARA_SITE')
     site = Path(named).resolve() if named else INSTALLATION
     if not named and not site.exists() and site.with_suffix('.site').exists():
         site = site.with_suffix('.site')
+    if site.suffix.lower() in ('.site', '.hpp'):
+        raise ValueError(f'请先用 15-site 导入旧安装记录 {site}')
     if not named and not site.exists() and args.plan:
         site = REFERENCE
     if not site.is_file():
         raise FileNotFoundError(f"缺少本机安装记录 {site}，请用 15-site 保存，或以 --site 指定现有记录")
     if site == REFERENCE and not args.plan:
         raise ValueError("历史扫描夹具只用于 --plan。实机请选择固定后已校验的安装配置。")
-    return field_config(site)
+    return site
 
 
 # ---------编号命令分发区---------
@@ -182,8 +184,16 @@ def main():
 
                 url = args.url
                 if not url:
-                    from sweep import measured_config
-                    url = measured_config(site_file(args))['camera_url']
+                    site = site_file(args)
+                    if site.suffix.lower() == '.toml':
+                        import tomllib
+                        setup = tomllib.loads(site.read_text(encoding='utf-8-sig'))
+                        url = setup.get('camera', {}).get('url')
+                    else:
+                        from sweep import measured_config
+                        url = measured_config(site).get('camera_url')
+                    if not url:
+                        raise ValueError('安装表缺少相机地址 camera.url')
                 camera = cv2.VideoCapture(
                     url,
                     cv2.CAP_FFMPEG,

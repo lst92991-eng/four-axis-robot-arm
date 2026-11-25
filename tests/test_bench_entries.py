@@ -25,6 +25,57 @@ import match_panel
 
 
 class Entries(unittest.TestCase):
+    def test_measured_stops_are_in_joint_degrees(self):
+        import teach
+        values = dict(j2=[10, 30, 0.5], j3=[20, -10, -1/3], z=[0], observe=[0, 0],
+                      discard=[100, 100], camera='rtsp://example.invalid/')
+        self.assertNotIn('range_deg', teach.make_site(values, {})['j2'])
+        values.update(j2_stops=[30, -10], j3_stops=[110, -40])
+        result = teach.make_site(values, {})
+        self.assertEqual(result['j2']['range_deg'], [20, 40])
+        self.assertEqual(result['j3']['range_deg'], [-40, 10])
+
+    def test_one_time_site_import(self):
+        import subprocess
+        import tomllib
+        bins = Path(os.environ.get('SCARA_BENCH_BIN', ROOT/'build/bench/bin'))
+        tool = bins/('scara_bench_points.exe' if os.name == 'nt' else 'scara_bench_points')
+        if not tool.is_file():
+            self.skipTest('需要已构建的 C++ 格点工具')
+        fixtures = ROOT/'tests/fixtures/game-app'
+        old = (fixtures/'installation-v1.toml').read_bytes()
+        expected = (fixtures/'installation.toml').read_bytes()
+        cli = [sys.executable, str(ROOT/'bench/run.py'), 'site']
+        def query(flag, data):
+            return subprocess.check_output([str(tool), flag], input=data)
+
+        with tempfile.TemporaryDirectory() as work:
+            installed = Path(work)/'installation.toml'
+            # 使用原文件位置迁移。第二次安装保留文件及唯一的备份。
+            installed.write_bytes(old)
+            args = cli + ['--install', '--output', str(installed)]
+            subprocess.run(args, check=True, capture_output=True)
+            result = installed.read_bytes()
+            self.assertEqual(query('-', result), query('-', expected))
+            self.assertEqual(len(query('-', result).splitlines()), 90)
+            self.assertEqual(query('--settings', result), query('--settings', expected))
+            self.assertEqual(tomllib.loads(result.decode())['game']['think_ms'], 100)
+            stamp = installed.stat().st_mtime_ns
+            subprocess.run(args, check=True, capture_output=True)
+            self.assertEqual(installed.stat().st_mtime_ns, stamp)
+            self.assertEqual([p.read_bytes() for p in Path(work).glob('*.bak')], [old])
+
+            # 旧矩形含奇数宽高时，沿用原来的截断方向计算 640 方框的左上角。
+            source = Path(work)/'older.toml'
+            source.write_bytes(old.replace(b'[vision]', b'[vision]\nroi = [300, 70, 651, 599]'))
+            args = cli + [str(source), '--install', '--output', str(installed)]
+            subprocess.run(args, check=True, capture_output=True)
+            result = installed.read_bytes()
+            self.assertEqual(tomllib.loads(result.decode())['camera']['crop_px'], [305, 50])
+            source.write_bytes(old.replace(b'travel_deg = -19353.34', b'# missing measured height'))
+            self.assertNotEqual(subprocess.run(args, capture_output=True).returncode, 0)
+            self.assertEqual(installed.read_bytes(), result)
+
     @unittest.skipUnless(os.name == 'nt' and sys.version_info[:2] == (3, 13) and
                          (ROOT/'build/bench/bin/scara_usb_game.dll').is_file(), '需要已构建的 Windows 台架和 Python 3.13')
     def test_dll_plays_from_memory_and_emits_state_with_no_files(self):

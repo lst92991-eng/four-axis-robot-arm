@@ -7,21 +7,23 @@
 namespace scara
 {
 //---------机构与示教参数区---------
-// 直接使用实机示教保存的模型；J2反馈角、J3电机角的换算分别保留。
+// 同一示教姿态下的驱动读数、机械角，以及驱动每转一度对应的关节转角。
+struct JointCalibration
+{
+    double driveRefDeg = 0;
+    double jointRefRad = 0;
+    double jointPerDrive = 1; // 负值表示两者转向相反。
+
+    double jointRad(double driveDeg) const;
+    double driveDeg(double jointRad) const;
+};
 struct ArmGeometry
 {
     // 从肩轴到肘轴、从肘轴到吸头中心的两段有效臂长，单位毫米。
     double upperMm = 0;
     double forearmMm = 0;
-    // 同一示教姿态下的 J2 反馈角与 J3 电机角，单位度。
-    double j2ReferenceDeg = 0;
-    double j3ReferenceMotorDeg = 0;
-    // 每一度驱动读数对应的关节角度。负号表示转向相反。
-    double j2JointPerDrive = 1;
-    double j3JointPerDrive = 1;
-    // 同一示教姿态下，大臂相对基座、小臂相对大臂的实际角度，单位弧度。
-    double shoulderReferenceRad = 0;
-    double elbowReferenceRad = 0;
+    // J2 肩角相对基座，J3 肘角相对大臂。
+    JointCalibration shoulder, elbow;
 };
 // 水平目标用驱动可接收的两个角表示，J3 保留电机端读数。
 struct JointTarget
@@ -51,6 +53,7 @@ struct MotionLimits
 {
     //每轴的速度和加速度上限，单位为度/秒、度/秒²
     AxisValues velocity{}, acceleration{};
+    bool valid() const;
 };
 struct JointTrajectory
 {
@@ -85,7 +88,7 @@ struct PickStep
 
 //---------取放动作接口区---------
 // 向本手的动作表追加一个关节目标。
-void Plan_move(JointTarget xy, double zDeg, std::vector<PickStep> &steps);
+void Plan_move(JointTarget joints, double zDeg, std::vector<PickStep> &steps);
 // 先求整手关节目标，再排取放和回观察位。普通走子的弃子点传 nullptr。
 void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, cv::Point2d targetMm,
                const cv::Point2d *discardMm, const JointTarget &park, std::vector<PickStep> &steps);

@@ -1,137 +1,139 @@
 // 按动作表控制三轴和电磁铁，用实测位置与速度确认每段运动完成。
 #include "execute.hpp"
-#include <cmath>
 #include <stdexcept>
 
 namespace scara
 {
 //---------执行数据区---------
-constexpr double PositionToleranceDeg = 0.12;
-constexpr double StoppedSpeedDegS = 0.05;
-constexpr uint64_t SettledMs = 250;
 constexpr double ArrivalAllowanceSeconds = 5;
 
-static bool moveAxes(const PickStep &step, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
+static bool moveAxes(const AxisValues &target, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
                      DriveFeedback &feedback, AxisValues &commanded);
-static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running,
-                      DriveFeedback &feedback, const AxisValues &position);
-static bool onTarget(const DriveFeedback &feedback, const AxisValues &target);
+static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running, const AxisValues &position);
+static const char *stopOutputs();
 
 //---------动作执行区---------
 bool Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limits,
                     const volatile std::sig_atomic_t &running)
 {
-    // 动作表从第一组反馈位置起步，此后用已完成段的 commanded 接续。
-    DriveFeedback feedback;
-    if (!running || !Drive_read(feedback)) return false;
-    AxisValues commanded = feedback.position;
-    bool done = true;
+    if (!running) return false;
     try
     {
-        for (const PickStep &step : steps)
+        // 以实测位置起步。每段到位后，commanded 记住已完成的目标。
+        DriveFeedback feedback;
+        if (!Drive_read(feedback)) return false;
+        AxisValues commanded = feedback.position;
+        size_t completed = 0;
+        while (running && completed < steps.size())
         {
-            done = running && Drive_read(feedback);
-            if (!done) break;
-            // Move 运行轨迹，Grip 原地吸持，两种释放动作都关断磁铁。
-            if (step.action == PickAction::Move || step.action == PickAction::LiftZ)
-                done = moveAxes(step, limits, running, feedback, commanded);
-            else if (step.action == PickAction::Grip)
-                done = gripPiece(step.durationMs, running, feedback, commanded);
-            else
-                done = (step.action == PickAction::Release || step.action == PickAction::ReleaseOffBoard) && Drive_magnet(false);
-            if (!done) break;
+            if (!Drive_read(feedback)) break;
+            if (!running) break; // 等反馈期间，操作员也可以按下停止。
+            const PickStep &step = steps[completed];
+            bool ok = false;
+            switch (step.action)
+            {
+            case PickAction::Move:
+                ok = moveAxes(step.target, limits, running, feedback, commanded);
+                break;
+            case PickAction::LiftZ:
+                ok = moveAxes({step.target[0], commanded[1], commanded[2]}, limits, running, feedback, commanded);
+                break;
+            case PickAction::Grip:
+                ok = gripPiece(step.durationMs, running, commanded);
+                break;
+            case PickAction::Release:
+            case PickAction::ReleaseOffBoard:
+                ok = Drive_magnet(false);
+                break;
+            }
+            if (!ok) break;
+            ++completed;
         }
+        if (completed == steps.size() && running) return true;
     }
-    catch (const std::exception &) { done = false; }
-    if (done && running) return true;
-    // 任一步中断，都经过同一处关磁铁和停车。只有无法确认停车才向上层报告异常。
-    if (!Motion_stop()) throw std::runtime_error("机械臂停稳未确认");
+    catch (...) { /* 驱动抛错也进入下面的停车流程。 */ }
+    if (const char *error = stopOutputs()) throw std::runtime_error(error);
     return false;
 }
 
 //---------停止收尾区---------
 bool Motion_stop()
 {
-    // 分别请求关断磁铁和减速保持，只有两项都得到确认才返回成功。
-    bool gripper = Drive_magnet(false);
-    bool motors = Drive_stop();
-    return gripper && motors;
+    return stopOutputs() == nullptr;
 }
+
+// 两条命令各请求一次。即使关磁铁失败，仍要让三轴停车。
+static const char *stopOutputs()
+{
+    bool magnetOff = false;
+    bool motorsStopped = false;
+    try { magnetOff = Drive_magnet(false); }
+    catch (...) { /* 关断未确认，继续请求停车。 */ }
+    try { motorsStopped = Drive_stop(); }
+    catch (...) { /* 停车未确认，保留前一条命令的结果。 */ }
+
+    if (!magnetOff && !motorsStopped) return "磁铁关断和机械臂停稳均未确认";
+    if (!magnetOff) return "磁铁关断未确认";
+    if (!motorsStopped) return "机械臂停稳未确认";
+    return nullptr;
+}
+
 //---------轨迹执行与终点保持区---------
-static bool moveAxes(const PickStep &step, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
+static bool moveAxes(const AxisValues &target, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
                      DriveFeedback &feedback, AxisValues &commanded)
 {
-    // 普通运动直接用三个目标角；开局抬升时沿用当前水平姿态。
-    AxisValues target = step.target;
-    if (step.action == PickAction::LiftZ) target = {step.target[0], commanded[1], commanded[2]};
-    for (double speed : feedback.velocity)
-        if (std::abs(speed) > StoppedSpeedDegS) return false;
-    // 从上段目标规划到本步目标。零行程且反馈已经到位时直接完成。
+    if (!feedback.stationary) return false;
     JointTrajectory trajectory;
     if (!Trajectory_plan(commanded, target, limits, trajectory)) return false;
-    if (trajectory.seconds == 0 && onTarget(feedback, target)) return true;
+    if (trajectory.seconds == 0 && (feedback.position == target || feedback.reached == target)) return true;
 
-    // 走轨迹。按本段已用时间生成三轴参考，一次下发，再取下一周期反馈。
-    uint64_t start = feedback.timeMs;
+    // 运行联动轨迹，直到发出一次完整的终点参考。
+    const uint64_t start = feedback.timeMs;
     double elapsed = 0;
-    while (running && elapsed < trajectory.seconds)
+    while (running)
     {
-        JointReference reference = Trajectory_sample(trajectory, elapsed);
-        if (!Drive_write(reference) || !Drive_read(feedback)) return false;
-        // 驱动时钟用毫秒，轨迹采样用秒。
+        if (!Drive_write(Trajectory_sample(trajectory, elapsed))) return false;
+        if (elapsed >= trajectory.seconds) break;
+        if (!running || !Drive_read(feedback)) return false;
         elapsed = (feedback.timeMs - start) * 0.001;
+        if (elapsed > trajectory.seconds + ArrivalAllowanceSeconds) return false;
     }
 
-    // 保持目标角。三轴都到位并连续停稳 250 ms 后交给下一步。
-    JointReference hold;
-    hold.position = target;
-    // stableSince 记录连续合格样本的起始时刻，任一轴偏离都会重新计时。
-    uint64_t stableSince = feedback.timeMs;
-    const double holdDeadline = trajectory.seconds + ArrivalAllowanceSeconds;
-    while (running && (feedback.timeMs - start) * 0.001 <= holdDeadline)
+    // 只认终点发出后取到的新回报。上一段、还在走、或过期的反馈都不能交接。
+    while (running && Drive_read(feedback))
     {
-        if (!Drive_write(hold)) return false;
-        bool there = onTarget(feedback, target);
-        if (there && feedback.timeMs - stableSince >= SettledMs)
+        if (!running) return false;
+        if ((feedback.timeMs - start) * 0.001 > trajectory.seconds + ArrivalAllowanceSeconds) return false;
+        if (feedback.stationary && feedback.reached == target)
         {
-            // 反馈已经连续停稳，才把本段终点交给下一段作为起点。
             commanded = target;
             return true;
         }
-        if (!Drive_read(feedback)) return false;
-        // 上个样本有轴偏离，连续停稳从这个新样本起重新计时。
-        if (!there) stableSince = feedback.timeMs;
     }
     return false;
 }
 
 //---------定点吸持区---------
-// 吸合后先在原处停留，持续吸持到落点。释放只需关断 H 桥。
-static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running,
-                      DriveFeedback &feedback, const AxisValues &position)
+// 吸合后在原位停留，磁铁保持通电直到释放动作。
+static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running, const AxisValues &position)
 {
-    if (dwellMs < 0 || !Drive_magnet(true)) return false;
-    // 以驱动反馈的毫秒时间计时，停留期间持续发送当前位置和零速度。
-    const uint64_t start = feedback.timeMs;
-    JointReference hold;
-    hold.position = position;
-    while (feedback.timeMs - start < unsigned(dwellMs))
-        if (!running || !Drive_write(hold) || !Drive_read(feedback))
-            return false;
-    return true;
-}
+    if (dwellMs < 0 || !running) return false;
+    if (!Drive_magnet(true)) return false;
+    if (!running) return false;
+    if (dwellMs == 0) return true;
 
-//---------到位判定区---------
-// 每一轴都要同时满足位置误差与剩余速度要求。
-static bool onTarget(const DriveFeedback &feedback, const AxisValues &target)
-{
-    for (int axis = 0; axis < 3; ++axis)
+    // 从通电确认后的第一帧开始计时，通信等待时间不占用贴合时间。
+    DriveFeedback feedback;
+    if (!Drive_read(feedback)) return false;
+    const uint64_t start = feedback.timeMs;
+    const JointReference hold{position, {}};
+    while (running && feedback.timeMs - start < static_cast<uint64_t>(dwellMs))
     {
-        double error = std::abs(feedback.position[axis] - target[axis]);
-        double speed = std::abs(feedback.velocity[axis]);
-        if (!(error <= PositionToleranceDeg && speed <= StoppedSpeedDegS)) return false;
+        if (!Drive_write(hold)) return false;
+        if (!running) return false;
+        if (!Drive_read(feedback)) return false;
     }
-    return true;
+    return running;
 }
 
 } // namespace scara

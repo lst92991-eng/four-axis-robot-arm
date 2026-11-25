@@ -203,7 +203,7 @@ int main()
         chess::parseMove("a3a4", human);
         chess::Board observed = game.board;
         chess::movePiece(observed, human);
-        check(chess::inferMove(game.board, observed, {{6,0,5,0}}, human) == chess::InferredMove::Legal,
+        check(chess::inferMove(game.board, observed, {{6,0,5,0}}, human),
               "Fixture move confirmation failed");
         chess::Game_commit(game, human);
         check(Pikafish_query("fixture", game, 120, mock::running, legal, best) && best == chess::Move{3,0,4,0}, "Best move decode failed");

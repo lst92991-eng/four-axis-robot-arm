@@ -314,18 +314,16 @@ bool Operator_confirmOpening(const chess::Board &initial)
     return answer.get() == Py_True;
 }
 
-void Operator_read(const std::string &prompt, Command &command, chess::Move *move)
+Command Operator_read(const std::string &prompt, chess::Move *move)
 {
     auto answer = operatorReply(PyObject_CallMethod(field, "command", "si", prompt.c_str(), int(move != nullptr)));
-    if (!answer)
-    {
-        command = Command::Quit;
-        return;
-    }
+    if (!answer) return Command::Quit;
     const char *text = PyUnicode_AsUTF8(answer.get());
     if (!text) require(nullptr);
-    if (!Command_parse(text, command, move)) throw std::runtime_error("未识别的终端命令");
+    Command command = Command_parse(text, move);
+    if (command == Command::Invalid) throw std::runtime_error("未识别的终端命令");
     if (command == Command::Quit) gameRunning = 0;
+    return command;
 }
 
 //---------USB-CAN 动作执行区---------
@@ -356,7 +354,7 @@ static void loadFieldSite(const char *text, size_t size, scara::GameConfig &conf
     config.thinkMs = 650;
     config.engineDir = "/userdata/scara-live-match-20261117/engine";
     scara::Site_parse(std::string_view(text, size), config, session);
-    if (config.cameraUrl.empty()) throw std::runtime_error("缺少 vision.camera_url");
+    if (config.cameraUrl.empty()) throw std::runtime_error("缺少 camera.url");
 }
 
 // 两个入口接收同一份 TOML 快照，防止开局前编辑文件导致驱动端参数不一致。
@@ -369,8 +367,8 @@ extern "C" __declspec(dllexport) PyObject *usb_installation(const char *text, si
     catch (const std::exception &error) { PyErr_SetString(PyExc_ValueError, error.what()); return nullptr; }
     // 交付机械参考与臂长、Z 工作层、观察位、三轴限幅、吸合时间和 CAD 采样数据。
     return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:d,s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:s}",
-        "arm", s.arm.j2ReferenceDeg, s.arm.j3ReferenceMotorDeg, s.arm.shoulderReferenceRad, s.arm.elbowReferenceRad,
-        s.arm.j2JointPerDrive, s.arm.j3JointPerDrive,
+        "arm", s.arm.shoulder.driveRefDeg, s.arm.elbow.driveRefDeg, s.arm.shoulder.jointRefRad, s.arm.elbow.jointRefRad,
+        s.arm.shoulder.jointPerDrive, s.arm.elbow.jointPerDrive,
         "arm_lengths_mm", s.arm.upperMm, s.arm.forearmMm,
         "z", s.heights.pickupDeg, s.heights.travelDeg, s.heights.releaseDeg, "clearance_deg", s.heights.clearanceDeg,
         "park", s.park.j2Deg, s.park.j3MotorDeg,

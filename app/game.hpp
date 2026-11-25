@@ -53,12 +53,21 @@ enum class Command
     Draw,
     Quit,
     // 面板选择起点和终点后，由机械臂代走。
-    Move
+    Move,
+    Invalid // 终端输入尚不能组成一条命令。
 };
 extern volatile std::sig_atomic_t gameRunning;
 
 // 从确认开局运行到终局或退出。返回值同时反映设备收尾是否成功。
 int Match_run(const GameConfig &config, Session &session, const std::string &modelPath);
+
+//---------实盘确认区---------
+// 连续三张新帧一致才交付盘面；expected 用来提示偏离的格号。
+bool Observe_board(Session &session, const chess::Board *expected = nullptr);
+// 对局里分别等待走前原盘、走后的预期盘面。
+bool Observe_original(Session &session);
+bool Observe_placement(Session &session, const chess::Board &expected);
+bool Operator_waitReady(const char *prompt);
 
 //---------设备与交互接口区---------
 //同一主程序在链接时选择实机IO或仿真IO
@@ -69,13 +78,13 @@ bool Runtime_close();
 void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces);
 // 用起始 FEN 和已确认历史查询合法表，电脑行棋时还要选出应手。
 void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &choice);
-// 读取命令成功时写入 command。传入 move 可接收选中的走法。
-bool Command_parse(const std::string &text, Command &command, chess::Move *move = nullptr);
+// 识别终端命令。选棋命令同时写出起点和终点。
+Command Command_parse(const std::string &text, chess::Move *move = nullptr);
 // 确认可进入观察位，再核对相机读到的开局盘面。
 bool Operator_prepare();
 bool Operator_confirmOpening(const chess::Board &initial);
 // 读取输入。传入 move 时，也可接收上位机选中的走法。
-void Operator_read(const std::string &prompt, Command &command, chess::Move *move = nullptr);
+Command Operator_read(const std::string &prompt, chess::Move *move = nullptr);
 // 执行排好的动作表，返回本次执行结果。落点由调用方另行核盘。
 bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps);
 // 显示盘面和操作提示。只在请玩家选棋时提供可选走法。

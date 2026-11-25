@@ -7,21 +7,13 @@
 namespace scara
 {
 // 对局入口先开局，再逐手处理。
-static void Match_start(const GameConfig &config, Session &session);
+static bool Match_start(const GameConfig &config, Session &session);
 static void Match_turn(Session &session);
 static bool parkForObservation(Session &session);
-static bool readEngine(Session &session, chess::MoveList &legal, chess::Move &move);
-static bool selectHumanMove(Session &session, const chess::MoveList &legal, chess::Move &move, bool &moveByRobot);
+static bool playHumanMove(Session &session, const chess::MoveList &legal, chess::Move &move);
 static bool carryMove(Session &session, const chess::Move &move);
-static bool discardIsOffBoard(const Session &session);
-static bool executeMove(Session &session, const chess::Move &move, const std::vector<PickStep> &steps);
 
-// 观察结果决定记谱、按原计划重走，或结束对局。
-enum class Placement { Confirmed, OriginalRestored, Exited };
-static bool observe(Session &session, const chess::Board *expected = nullptr);
-static bool waitBoard(Session &session, const chess::Board &expected);
-static Placement confirmPlacement(Session &session, const chess::Board &before, const chess::Board &expected);
-static bool restoreAfterDriveFailure(Session &session, const chess::Board &before);
+static bool restoreAfterDriveFailure(Session &session);
 // 主程序、取流和执行器共用这个停止标志。
 volatile std::sig_atomic_t gameRunning = 1;
 
@@ -46,15 +38,16 @@ int Match_run(const GameConfig &config, Session &session, const std::string &mod
     {
         // 安装参数已在 session 中。打开本次运行资源后，再确认起始盘面。
         Runtime_open(config, modelPath, session);
-        Match_start(config, session);
-        if (gameRunning) Operator_show(session);
-        // 每次 Match_turn 最多提交一手，棋局结果决定是否进入下一轮。
-        while (gameRunning && session.game.result == chess::Result::Playing)
-            Match_turn(session);
+        if (Match_start(config, session))
+        {
+            Operator_show(session);
+            while (gameRunning && session.game.result == chess::Result::Playing)
+                Match_turn(session);
+        }
     }
     catch (const std::exception &error)
     {
-        if (gameRunning) failure = error.what();
+        if (gameRunning) failure = std::string(error.what()) + "。请排除故障后重新开局。";
     }
     // 正常终局、人工退出和异常退出都要确认设备收尾。
     if (!Runtime_close())
@@ -68,44 +61,42 @@ int Match_run(const GameConfig &config, Session &session, const std::string &mod
     return failure.empty() ? 0 : 1;
 }
 
-static bool waitReady(const char *prompt)
+bool Operator_waitReady(const char *prompt)
 {
     while (gameRunning)
     {
-        Command command;
-        Operator_read(prompt, command);
-        if (command == Command::Ready) return gameRunning;
+        if (Operator_read(prompt) == Command::Ready) return gameRunning;
     }
     return false;
 }
 
 //---------开局区---------
-static void Match_start(const GameConfig &config, Session &session)
+static bool Match_start(const GameConfig &config, Session &session)
 {
-    if (!Operator_prepare()) return;
+    if (!Operator_prepare()) return false;
     // 空吸头先升到搬运高度，再回观察位，让相机看全棋盘。
     while (gameRunning && !parkForObservation(session))
-        if (!waitReady("请恢复驱动、清空吸头并确认可运动，回车继续。")) return;
-    while (observe(session))
+        if (!Operator_waitReady("请恢复驱动、清空吸头并确认可运动，回车继续。")) return false;
+    while (gameRunning && Observe_board(session))
     {
         chess::Board initial = session.observed;
-        bool approved = Operator_confirmOpening(initial);
-        if (!gameRunning) return;
-        if (!approved) continue;
+        if (!Operator_confirmOpening(initial)) continue;
+        if (!gameRunning) return false;
         // 回车后重新看盘，防止确认时棋子已经移动。
-        if (!observe(session)) return;
+        if (!Observe_board(session)) return false;
         if (session.observed != initial) continue;
         // 续局保留原来的轮次和棋谱。再次看到同一盘面，才接着走。
         if (!session.game.history.empty())
         {
-            if (initial == session.game.board) return;
+            if (initial == session.game.board) return true;
             if (chess::validBoard(initial))
                 throw std::runtime_error("实拍盘面与已走历史不符");
         }
         // 新局以眼前这张盘面为起点，行棋方和玩家执哪一方取自配置。
-        else if (chess::Game_reset(session.game, initial, config.redToMove, config.humanRed)) return;
+        else if (chess::Game_reset(session.game, initial, config.redToMove, config.humanRed)) return true;
         Operator_show(session, "开局盘面有误，请核对棋子和朝向。");
     }
+    return false;
 }
 
 //---------走一手棋---------
@@ -115,20 +106,25 @@ static void Match_turn(Session &session)
     chess::MoveList legal;
     chess::Move move;
 
-    if (!readEngine(session, legal, move)) return;
+    Engine_query(game, legal, move);
+    if (!gameRunning) return;
+    for (const chess::Move &candidate : legal)
+        if (!chess::validTransfer(game.board, game.redToMove, candidate))
+            throw std::runtime_error("引擎走法与当前盘面不符");
     chess::Game_judge(game, legal);
     if (game.result != chess::Result::Playing) return;
 
     // 电脑直接用引擎应手。只有轮到玩家时才读操作台或等待人工搬棋。
-    bool moveByRobot = true;
     if (game.redToMove == game.humanRed)
     {
-        if (!selectHumanMove(session, legal, move, moveByRobot)) return;
+        if (!playHumanMove(session, legal, move)) return;
     }
-    else if (std::count(legal.begin(), legal.end(), move) != 1)
-        throw std::runtime_error("走法未通过本局合法表核对");
-
-    if (moveByRobot && !carryMove(session, move)) return;
+    else
+    {
+        if (std::count(legal.begin(), legal.end(), move) != 1)
+            throw std::runtime_error("走法未通过本局合法表核对");
+        if (!carryMove(session, move)) return;
+    }
 
     // 人工走棋已核对合法。机械臂代走须确认实盘已到目标局面。
     if (!gameRunning) return;
@@ -138,42 +134,38 @@ static void Match_turn(Session &session)
 }
 
 //---------选棋区---------
-// 写出合法的走法和搬棋方式。认输或和棋时记录整局结果。
-static bool selectHumanMove(Session &session, const chess::MoveList &legal, chess::Move &move, bool &moveByRobot)
+// 面板选棋就让机械臂代走；玩家亲手搬棋就用相机核对。
+static bool playHumanMove(Session &session, const chess::MoveList &legal, chess::Move &move)
 {
     chess::Game &game = session.game;
     while (gameRunning)
     {
-        Command command;
         Operator_show(session, {}, &legal);
-        Operator_read("在上位机选棋，或手动走棋后回车。resign 认输，draw 和棋，quit 退出。", command, &move);
+        Command command = Operator_read("在上位机选棋，或手动走棋后回车。resign 认输，draw 和棋，quit 退出。", &move);
         if (!gameRunning) return false;
-        if (command == Command::Draw || command == Command::Resign)
+        if (command == Command::Draw)
         {
             game.result = chess::Result::Draw;
-            if (command == Command::Resign)
-                game.result = game.humanRed ? chess::Result::BlackWon : chess::Result::RedWon;
             return false;
         }
-
+        if (command == Command::Resign)
+        {
+            game.result = game.humanRed ? chess::Result::BlackWon : chess::Result::RedWon;
+            return false;
+        }
         if (command == Command::Move)
         {
-            if (std::count(legal.begin(), legal.end(), move) == 1) return true;
+            if (std::count(legal.begin(), legal.end(), move) == 1) return carryMove(session, move);
             Operator_show(session, "这步不合法，请重新选棋。");
             continue;
         }
 
         // 回车后从新盘面找出唯一合法的走法。原盘没变化时继续等待。
-        if (!observe(session)) return false;
-        chess::InferredMove inferred = chess::inferMove(game.board, session.observed, legal, move);
-        if (inferred == chess::InferredMove::Unchanged) continue;
-        if (inferred == chess::InferredMove::Legal)
-        {
-            moveByRobot = false;
-            return true;
-        }
+        if (!Observe_board(session)) return false;
+        if (session.observed == game.board) continue;
+        if (chess::inferMove(game.board, session.observed, legal, move)) return true;
         Operator_show(session, "请恢复原棋局后重新走棋。");
-        if (!waitBoard(session, game.board)) return false;
+        if (!Observe_original(session)) return false;
     }
     return false;
 }
@@ -181,18 +173,21 @@ static bool selectHumanMove(Session &session, const chess::MoveList &legal, ches
 //---------执行并核实一手棋---------
 static bool carryMove(Session &session, const chess::Move &move)
 {
-    const chess::Board &before = session.game.board;
-    if (!waitBoard(session, before)) return false;
-    chess::Board expected = before;
+    if (!Observe_original(session)) return false;
+    chess::Board expected = session.game.board;
     chess::movePiece(expected, move);
 
     // 从标定表取基座 XY（毫米）。吃子还要核对弃子点是否离开棋盘。
     cv::Point2d source = session.layout.cell[move.fromRow][move.fromCol].xy;
     cv::Point2d target = session.layout.cell[move.toRow][move.toCol].xy;
     const cv::Point2d *discard = nullptr;
-    if (before[move.toRow][move.toCol] != '.')
+    if (session.game.board[move.toRow][move.toCol] != '.')
     {
-        if (!discardIsOffBoard(session)) throw std::runtime_error("弃子点必须在棋盘外");
+        const Geometry &board = session.layout;
+        cv::Point2d cell = Geometry_gridPoint(session.capturePlaceMm - board.origin.xy, board.rowStep.xy, board.columnStep.xy);
+        // 从最外侧交点起至少半格才算盘外。
+        bool outside = cell.x < -0.5 || cell.x > Columns - 0.5 || cell.y < -0.5 || cell.y > Rows - 0.5;
+        if (!outside) throw std::runtime_error("弃子点必须在棋盘外");
         discard = &session.capturePlaceMm;
     }
     // 取、放、弃子和回观察位都排好以后，才下发这一手。
@@ -201,167 +196,37 @@ static bool carryMove(Session &session, const chess::Move &move)
 
     while (gameRunning)
     {
-        bool completed = executeMove(session, move, steps);
+        session.pending = true;
+        Operator_show(session);
         if (!gameRunning) return false;
+        bool moved = false;
+        try { moved = Robot_execute("move", move, steps); }
+        catch (const std::exception &error) { Operator_show(session, error.what()); }
 
-        if (completed)
+        if (!gameRunning) return false;
+        if (moved)
         {
-            Placement result = confirmPlacement(session, before, expected);
-            if (result == Placement::Exited) return false;
-            if (result == Placement::Confirmed) return true;
+            if (Observe_placement(session, expected)) return true;
         }
-        else if (!restoreAfterDriveFailure(session, before)) return false;
-
+        else if (!restoreAfterDriveFailure(session)) return false;
+        if (!gameRunning) return false;
         session.pending = false;
         Operator_show(session, "原棋局已恢复，重新执行这一手。");
     }
     return false;
 }
 
-//---------弃子点核对区---------
-static bool discardIsOffBoard(const Session &session)
-{
-    const Geometry &board = session.layout;
-    // 把弃子点的基座毫米换成棋盘行列，才能按半格宽度判断是否已到盘外。
-    cv::Point2d cell = Geometry_gridPoint(session.capturePlaceMm - board.origin.xy, board.rowStep.xy, board.columnStep.xy);
-    //在外侧格线外至少留半格，避免从搬运高度把棋子放到棋盘边。
-    return cell.x < -0.5 || cell.x > Columns - 0.5 || cell.y < -0.5 || cell.y > Rows - 0.5;
-}
-
-//---------机械执行区---------
-static bool executeMove(Session &session, const chess::Move &move, const std::vector<PickStep> &steps)
-{
-    // 从下发到落点确认期间，pending 告诉上位机这手棋仍待核实。
-    session.pending = true;
-    Operator_show(session);
-    if (!gameRunning) return false;
-
-    try
-    {
-        return Robot_execute("move", move, steps);
-    }
-    catch (const std::exception &error)
-    {
-        if (gameRunning) Operator_show(session, error.what());
-        return false;
-    }
-}
-
-//---------引擎与恢复区---------
-static bool readEngine(Session &session, chess::MoveList &legal, chess::Move &move)
-{
-    while (gameRunning)
-    {
-        try
-        {
-            // 引擎写回合法走法和本轮应手，先核对候选的坐标、起点棋子和目标格。
-            Engine_query(session.game, legal, move);
-            for (const chess::Move &candidate : legal)
-                if (!chess::validTransfer(session.game.board, session.game.redToMove, candidate))
-                    throw std::runtime_error("引擎走法与当前盘面不符");
-            return gameRunning;
-        }
-        catch (const std::exception &error)
-        {
-            if (!gameRunning) return false;
-            Operator_show(session, error.what());
-            if (!waitReady("处理引擎问题后回车继续当前棋局。输入 quit 退出。")) return false;
-        }
-    }
-    return false;
-}
-
-// 把需要核对的格号写进提示，保留相机实际交付的盘面。
-static void reportBoard(const Session &session, const chess::Board *expected, std::string message)
-{
-    if (expected)
-        for (int row = 0; row < Rows; ++row)
-            for (int col = 0; col < Columns; ++col)
-                if ((*expected)[row][col] != session.observed[row][col])
-                    message += " (" + std::to_string(row) + "," + std::to_string(col) + ")";
-    Operator_show(session, message);
-}
-
-//---------观察与恢复区---------
-static bool observe(Session &session, const chess::Board *expected)
-{
-    // same 计连续相同的新帧，frames 计取图次数，用于控制未看清时的提示频率。
-    int same = 0, frames = 0;
-    session.observationStable = false;
-    Operator_show(session);
-    while (gameRunning && same < 3)
-    {
-        std::string frameId;
-        std::vector<Detection> pieces;
-        try
-        {
-            Vision_observe(session.layout, frameId, pieces);
-        }
-        catch (const std::exception &error)
-        {
-            if (!gameRunning) return false;
-            Operator_show(session, error.what());
-            if (!waitReady("恢复相机画面后回车继续。输入 quit 退出。")) return false;
-            same = 0;
-            continue;
-        }
-        if (!gameRunning) return false;
-        BoardObservation frame = Geometry_assign(session.layout, pieces, !frameId.empty());
-        // 复用已经记录的帧号和盘面。同一有效帧不会重复计数或覆盖盘面。
-        if (!frame.valid || same == 0 || frameId != session.lastFrameId)
-        {
-            if (!frame.valid) same = 0;
-            else same = frame.cells == session.observed ? same + 1 : 1;
-            session.observed = frame.cells;
-        }
-        session.lastFrameId = frameId;
-        session.observationStable = same == 3;
-        if (++frames % 3 == 0 && !session.observationStable)
-            reportBoard(session, expected, "棋子偏离格点或受遮挡，请检查实盘。");
-    }
-    if (!gameRunning) return false;
-    Operator_show(session);
-    return true;
-}
-
-static Placement confirmPlacement(Session &session, const chess::Board &before, const chess::Board &expected)
-{
-    if (!observe(session, &expected)) return Placement::Exited;
-    while (session.observed != expected)
-    {
-        reportBoard(session, &expected, "请核对落点");
-        if (!waitReady("修正落点后回车。若摆回走棋前的局面，回车后重走。"))
-            return Placement::Exited;
-        if (!observe(session, &expected)) return Placement::Exited;
-        if (session.observed == before) return Placement::OriginalRestored;
-    }
-    return Placement::Confirmed;
-}
-
-static bool restoreAfterDriveFailure(Session &session, const chess::Board &before)
+//---------驱动故障后恢复原盘区---------
+static bool restoreAfterDriveFailure(Session &session)
 {
     // 驱动中断后先处理吸头和故障。停车得到确认，才回观察位核对原棋局。
     do
     {
-        if (!waitReady("处理报错、清空吸头并恢复驱动后回车。程序将回观察位并核对原棋局。"))
+        if (!Operator_waitReady("处理报错、清空吸头并恢复驱动后回车。程序将回观察位并核对原棋局。"))
             return false;
     } while (!Motion_stop() || !parkForObservation(session));
 
-    return waitBoard(session, before);
-}
-
-// 只有相机看到的整张盘面与 expected 相同，后续动作才继续。
-static bool waitBoard(Session &session, const chess::Board &expected)
-{
-    if (!observe(session, &expected)) return false;
-    if (session.observed == expected) return true;
-    do
-    {
-        reportBoard(session, &expected, "请恢复原棋局");
-        if (!observe(session, &expected)) return false;
-    } while (session.observed != expected);
-    Operator_show(session, "原棋局已恢复。");
-    return true;
+    return Observe_original(session);
 }
 
 //---------动作准备区---------
@@ -375,30 +240,23 @@ static bool parkForObservation(Session &session)
 
 //---------终端命令区---------
 // 把面板或终端的一行输入解释为命令，选棋时另写出数字起点和终点。
-bool Command_parse(const std::string &text, Command &command, chess::Move *move)
+Command Command_parse(const std::string &text, chess::Move *move)
 {
-    command = Command::Quit;
     if (move) *move = {};
-    if (text.empty() || text == "ready") command = Command::Ready;
-    else if (text == "resign") command = Command::Resign;
-    else if (text == "draw") command = Command::Draw;
-    else if (text != "quit")
+    if (text.empty() || text == "ready") return Command::Ready;
+    if (text == "resign") return Command::Resign;
+    if (text == "draw") return Command::Draw;
+    if (text == "quit") return Command::Quit;
+    if (!move) return Command::Invalid;
+
+    // 面板送来“6,0 5,0”，旧棋谱写作“a3a4”。
+    if (text.size() == 7 && text[1] == ',' && text[3] == ' ' && text[5] == ',')
     {
-        if (!move) return false;
-        chess::Move selected;
-        // 上位机传“6,0 5,0”。同一入口也可读旧棋谱的“a3a4”。
-        if (text.size() == 7 && text[1] == ',' && text[3] == ' ' && text[5] == ',')
-        {
-            selected.fromRow = text[0] - '0';
-            selected.fromCol = text[2] - '0';
-            selected.toRow = text[4] - '0';
-            selected.toCol = text[6] - '0';
-            if (!chess::validSquares(selected)) return false;
-        }
-        else if (!chess::parseMove(text, selected)) return false;
-        command = Command::Move;
+        chess::Move selected{text[0]-'0', text[2]-'0', text[4]-'0', text[6]-'0'};
+        if (!chess::validSquares(selected)) return Command::Invalid;
         *move = selected;
+        return Command::Move;
     }
-    return true;
+    return chess::parseMove(text, *move) ? Command::Move : Command::Invalid;
 }
 } // namespace scara

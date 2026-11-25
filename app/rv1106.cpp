@@ -47,21 +47,12 @@ void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detectio
         Camera_open(settings.cameraUrl);
         visionOpen = true;
     }
-    try
-    {
-        cv::Mat source = Camera_read(); // 1280×720 BGR 原图
-        if (!gameRunning) return;
-        if (source.empty()) throw std::runtime_error("相机未读到画面");
-        cv::Mat input = Vision_prepare(source, settings.visionCropOrigin);
-        pieces = Yolo_run(input, settings.visionCropOrigin);
-    }
-    catch (...)
-    {
-        closeVision();
-        throw;
-    }
-    ++frameNumber;
-    frameId = std::to_string(frameNumber);
+    cv::Mat source = Camera_read();
+    if (!gameRunning) return;
+    if (source.empty()) throw std::runtime_error("相机未读到画面");
+    cv::Mat input = Vision_prepare(source, settings.visionCropOrigin);
+    pieces = Yolo_run(input, settings.visionCropOrigin);
+    frameId = std::to_string(++frameNumber);
 }
 
 //---------引擎查询区---------
@@ -88,31 +79,23 @@ void Operator_show(const Session &session, const std::string &message, const che
 //---------终端输入区---------
 bool Operator_prepare()
 {
-    Command command;
-    do
-    {
-        Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。", command);
-    } while (gameRunning && command != Command::Ready);
-    return gameRunning;
+    while (gameRunning)
+        if (Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。") == Command::Ready) return true;
+    return false;
 }
 
 bool Operator_confirmOpening(const chess::Board &initial)
 {
     printBoard(initial);
-    Command command;
-    Operator_read("核对开局盘面，回车确认。输入 quit 退出。", command);
-    return command == Command::Ready;
+    return Operator_read("核对开局盘面，回车确认。输入 quit 退出。") == Command::Ready;
 }
 
-void Operator_read(const std::string &prompt, Command &command, chess::Move *move)
+Command Operator_read(const std::string &prompt, chess::Move *move)
 {
     //按回车之前输入的命令文本
     std::string line;
     char character;
     pollfd input{STDIN_FILENO, POLLIN, 0};
-    input.revents = 0;
-    //EOF或停止时，向调用方报告退出
-    command = Command::Quit;
     std::cout << prompt << '\n' << std::flush;
     // 以 100 毫秒为一轮等键盘，使等候期间也能响应停止标志。
     while (gameRunning)
@@ -126,13 +109,16 @@ void Operator_read(const std::string &prompt, Command &command, chess::Move *mov
         // 接收字符直到换行。回车符用于兼容 CRLF，解析只在整行到齐时发生。
         if (character == '\n')
         {
-            if (Command_parse(line, command, move)) break;
+            Command command = Command_parse(line, move);
+            if (command == Command::Quit) break;
+            if (command != Command::Invalid) return command;
             std::cout << "请输入提示中的命令，走棋用 起点行,列 终点行,列。\n" << std::flush;
             line.clear();
         }
         else if (character != '\r') line += character;
     }
-    if (command == Command::Quit) gameRunning = 0;
+    gameRunning = 0;
+    return Command::Quit;
 }
 
 //---------机械执行区---------
@@ -155,7 +141,7 @@ static void closeVision()
 // 四个接口目前都返回 false，上层据此知道设备操作尚未完成。
 bool Drive_read(DriveFeedback &feedback)
 {
-    // 清空反馈，待接入驱动后填写同一周期的三轴位置、速度和时间。
+    // SPI-CAN 接入后读取状态帧（目标、到位、静止）；确认属于这次命令后才填写 reached。
     feedback = {};
     return false;
 }

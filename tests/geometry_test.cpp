@@ -1,5 +1,4 @@
 #include "geometry_fixture.hpp"
-#include <functional>
 #include <iostream>
 #include <limits>
 
@@ -86,27 +85,12 @@ void observationTests()
     result = Geometry_assign(geometry, {});
     check(result.valid && result.cells[4][3]=='.', "Empty board retained stale pieces");
 }
-void placementOffsetTests()
-{
-    cv::FileStorage writer("memory",cv::FileStorage::WRITE|cv::FileStorage::MEMORY|cv::FileStorage::FORMAT_JSON);
-    writer << "points" << fixture::input().points;
-    writer << "placement_offsets_mm" << "[" << "[" << 4 << 2 << -5.0 << -2.5 << "]" << "]";
-    cv::FileStorage reader(writer.releaseAndGetString(),cv::FileStorage::READ|cv::FileStorage::MEMORY);
-    Geometry geometry;
-    Bench_geometry(reader.root(),geometry);
-    check(cv::norm((geometry.origin.xy + 7 * geometry.rowStep.xy + 4 * geometry.columnStep.xy)-cv::Point2d(50,48))<1e-9,
-          "Placement trim changed nominal board geometry");
-    check(cv::norm(geometry.cell[7][4].xy-cv::Point2d(45,45.5))<1e-9,
-          "Pick/place target omitted the configured trim");
-    check(cv::norm(geometry.cell[7][5].xy-cv::Point2d(60,48))<1e-9,
-          "Placement trim affected a neighboring square");
-}
 }
 int main()
 {
     try
     {
-        calibrationTests(); targetTests(); observationTests(); placementOffsetTests();
+        calibrationTests(); targetTests(); observationTests();
         std::cout<<"PASS "<<count<<" geometry checks; no hardware linked.\n";
         return 0;
     }

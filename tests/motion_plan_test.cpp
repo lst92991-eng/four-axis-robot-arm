@@ -18,7 +18,7 @@ int main()
         scara::WorkHeights heights;
         check(scara::Arm_load("tests/fixtures/upper-app/arm-registration.json", arm), "Arm configuration failed");
         check(scara::WorkHeights_load("tests/fixtures/upper-app/pick-plan.json", heights), "Work heights failed");
-        check(arm.upperMm == 275 && arm.forearmMm == 275 && arm.j2JointPerDrive == .8 && arm.j3JointPerDrive == -1.0/3,
+        check(arm.upperMm == 275 && arm.forearmMm == 275 && arm.shoulder.jointPerDrive == .8 && arm.elbow.jointPerDrive == -1.0/3,
               "Saved arm scales were replaced");
         cv::FileStorage reference;
         reference.open("tests/fixtures/upper-app/kinematic-reference.json", cv::FileStorage::READ);
@@ -150,6 +150,12 @@ int main()
                 longest = std::max(longest, single.seconds);
             }
             check(std::abs(group.seconds - longest) < 1e-12, "Group time is not the slowest axis time");
+            // 五次曲线在四分之一时间走过 53/512 的行程，中点速度为平均速度的 1.875 倍。
+            auto quarter = scara::Trajectory_sample(group, group.seconds / 4);
+            auto middle = scara::Trajectory_sample(group, group.seconds / 2);
+            double travel = goal[0] - start[0];
+            check(std::abs(quarter.position[0] - (start[0] + travel * 53 / 512)) < 1e-10, "Quarter-point progress changed");
+            check(std::abs(middle.velocity[0] - 1.875 * travel / group.seconds) < 1e-10, "Midpoint speed changed");
             auto previous = scara::Trajectory_sample(group, 0);
             check(previous.position == start && previous.velocity == scara::AxisValues{}, "Nonzero start speed");
             double dt = group.seconds / 1000;

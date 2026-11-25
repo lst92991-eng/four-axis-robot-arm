@@ -1,18 +1,122 @@
+// 从本机安装表取出一次对局需要的数值。旧文件由 15-site 在安装时转换。
 #include "site.hpp"
 #include <toml++/toml.hpp>
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <filesystem>
-#include <iterator>
 #include <stdexcept>
 
 namespace scara
 {
-static void readSite(const toml::table &site, GameConfig &config, Session &session);
-static ArmGeometry readArm(const toml::table &site);
+using View = toml::node_view<const toml::node>;
 
-std::string Site_path()
+//---------输入数值区---------
+static double number(View value, const char *name)
+{
+    double n = value.value<double>().value_or(NAN);
+    if (value.is_number() && std::isfinite(n)) return n;
+    throw std::runtime_error(std::string("需要有限数值：") + name);
+}
+
+template<size_t N>
+static std::array<double, N> numbers(View array, const char *name)
+{
+    if (!array.is_array() || array.as_array()->size() != N) throw std::runtime_error(std::string("数组长度错误：") + name);
+    std::array<double, N> result;
+    for (size_t i = 0; i < N; ++i) result[i] = number(array[i], name);
+    return result;
+}
+
+static int integer(double n, int min, int max, const char *name)
+{
+    if (n >= min && n <= max && n == std::floor(n)) return static_cast<int>(n);
+    throw std::runtime_error(std::string("需要范围内的整数：") + name);
+}
+
+//---------J2、J3 机械参考区---------
+static JointCalibration readJoint(View axis)
+{
+    double drive = number(axis["drive_deg"], "驱动读数");
+    double angle = number(axis["joint_deg"], "机械角");
+    return {drive, angle * (CV_PI / 180.0), number(axis["ratio"], "转角比例")};
+}
+
+static ArmGeometry readArm(const toml::table &site)
+{
+    // 拒绝旧字段，尤其是旧搬运角；现场给过的高度不能被课堂默认值覆盖。
+    for (const char *old : {"arm","vision","z.pickup_deg","z.travel_deg","motion.park_deg","motion.discard_xy_mm",
+                            "motion.velocity_deg_s","motion.acceleration_deg_s2","camera.camera_url","camera.roi",
+                            "board.points"})
+        if (site.at_path(old)) throw std::runtime_error(std::string("请用 15-site 导入旧字段 ") + old);
+    ArmGeometry arm;
+    arm.upperMm = number(site["j2"]["link_mm"], "大臂长度");
+    arm.forearmMm = number(site["j3"]["link_mm"], "小臂长度");
+    arm.shoulder = readJoint(site["j2"]);
+    arm.elbow = readJoint(site["j3"]);
+    if (arm.upperMm <= 0 || arm.forearmMm <= 0) throw std::runtime_error("两段臂长须为正");
+    if (arm.shoulder.jointPerDrive == 0 || arm.elbow.jointPerDrive == 0) throw std::runtime_error("转角比例须非零");
+    return arm;
+}
+
+//---------J1 工作高度区---------
+static WorkHeights readHeights(View z)
+{
+    double touch = number(z["touch_deg"], "贴子角");
+    WorkHeights h = WorkHeights_fromContact(touch);
+    if (z["carry_deg"]) h.travelDeg = number(z["carry_deg"], "搬运角");
+    h.clearanceDeg = z["clearance_deg"] ? number(z["clearance_deg"], "净空角") : h.travelDeg;
+    if (z["release_deg"]) h.releaseDeg = number(z["release_deg"], "释放角");
+    if (auto ms = z["grip_dwell_ms"]) h.gripDwellMs = integer(ms.value_exact<int64_t>().value_or(-1), 0, INT32_MAX, "吸合毫秒");
+    auto travel = std::minmax(touch, h.travelDeg);
+    auto clear = std::minmax(touch, h.clearanceDeg);
+    if (h.clearanceDeg == touch || h.clearanceDeg < travel.first || h.clearanceDeg > travel.second)
+        throw std::runtime_error("净空高度须在贴子与搬运高度之间");
+    if (h.releaseDeg < clear.first || h.releaseDeg > clear.second) throw std::runtime_error("释放高度超出净空范围");
+    return h;
+}
+
+//---------棋盘标定区---------
+static BoardPoint corner(View board, const char *name)
+{
+    auto [u, v, x, y] = numbers<4>(board[name], name);
+    if (u < 0 || u >= ImageWidth || v < 0 || v >= ImageHeight) throw std::runtime_error(std::string("角点超出原图：") + name);
+    return {{u, v}, {x, y}};
+}
+
+//---------完整安装表区---------
+static void readSite(const toml::table &site, GameConfig &config, Session &session)
+{
+    session.arm = readArm(site);
+    session.heights = readHeights(site["z"]);
+    auto board = site["board"];
+    session.layout = Geometry_calibrate(corner(board, "red_left"), corner(board, "red_right"), corner(board, "black_left"));
+
+    auto motion = site["motion"];
+    auto [j2, j3] = numbers<2>(motion["observe_deg"], "观察位");
+    auto [x, y] = numbers<2>(motion["discard_mm"], "弃子点");
+    session.park = {j2, j3};
+    session.capturePlaceMm = {x, y};
+    config.motion.velocity = numbers<3>(motion["speed_deg_s"], "三轴限速");
+    config.motion.acceleration = numbers<3>(motion["accel_deg_s2"], "三轴加速度");
+    if (!config.motion.valid()) throw std::runtime_error("速度和加速度限制须为正");
+
+    auto camera = site["camera"];
+    config.cameraUrl = camera["url"].value_or(std::string{});
+    config.visionCropOrigin = DefaultCropOrigin;
+    if (auto crop = camera["crop_px"])
+    {
+        auto [left, top] = numbers<2>(crop, "取景起点");
+        config.visionCropOrigin = {integer(left, 0, ImageWidth-YoloSize, "取景 X"), integer(top, 0, ImageHeight-YoloSize, "取景 Y")};
+    }
+    auto game = site["game"];
+    config.humanRed = game["human_red"].value_or(config.humanRed);
+    config.redToMove = game["red_to_move"].value_or(config.redToMove);
+    config.engineDir = game["engine_directory"].value_or(config.engineDir);
+    if (auto ms = game["think_ms"]) config.thinkMs = integer(ms.value_exact<int64_t>().value_or(0), 1, 60000, "思考毫秒");
+}
+
+static std::string defaultPath()
 {
     if (const char *path = std::getenv("SCARA_SITE"); path && *path) return path;
     const std::string root = SCARA_CONFIG_DIR;
@@ -24,9 +128,9 @@ std::string Site_path()
     return root + "/installation.toml";
 }
 
-void Site_loadFile(const std::string &path, GameConfig &config, Session &session)
+void Site_loadFile(GameConfig &config, Session &session, const std::string &path)
 {
-    readSite(toml::parse_file(path), config, session);
+    readSite(toml::parse_file(path.empty() ? defaultPath() : path), config, session);
 }
 
 void Site_parse(std::string_view text, GameConfig &config, Session &session)
@@ -38,149 +142,4 @@ ArmGeometry Site_loadArm(const std::string &path)
 {
     return readArm(toml::parse_file(path));
 }
-
-//---------TOML 数值读取区---------
-static double number(const toml::node *node, const char *name)
-{
-    if (node && node->is_number())
-    {
-        double value = node->value<double>().value_or(NAN);
-        if (std::isfinite(value)) return value;
-    }
-    throw std::runtime_error(std::string("需要有限数值 ") + name);
-}
-
-template<class Numbers>
-static void readArray(const toml::node *node, const char *name, Numbers &values)
-{
-    const auto *array = node ? node->as_array() : nullptr;
-    if (!array || array->size() != std::size(values)) throw std::runtime_error(std::string("数组长度错误 ") + name);
-    for (size_t i = 0; i < array->size(); ++i) values[i] = number(array->get(i), name);
-}
-
-static ArmGeometry readArm(const toml::table &site)
-{
-    ArmGeometry arm;
-    const auto section = site["arm"];
-    double lengths[2], drive[2], joint[2], units[2];
-    readArray(section["lengths_mm"].node(), "arm.lengths_mm", lengths);
-    readArray(section["reference_drive_deg"].node(), "arm.reference_drive_deg", drive);
-    readArray(section["reference_joint_rad"].node(), "arm.reference_joint_rad", joint);
-    readArray(section["joint_per_drive"].node(), "arm.joint_per_drive", units);
-    if (lengths[0] <= 0 || lengths[1] <= 0 || units[0] == 0 || units[1] == 0)
-        throw std::runtime_error("臂长须为正，驱动换算系数须非零");
-    arm.upperMm = lengths[0];
-    arm.forearmMm = lengths[1];
-    arm.j2ReferenceDeg = drive[0];
-    arm.j3ReferenceMotorDeg = drive[1];
-    arm.j2JointPerDrive = units[0];
-    arm.j3JointPerDrive = units[1];
-    arm.shoulderReferenceRad = joint[0];
-    arm.elbowReferenceRad = joint[1];
-    return arm;
-}
-
-//---------Z 工作高度区---------
-static WorkHeights readHeights(const toml::table &site)
-{
-    const auto z = site["z"];
-    WorkHeights heights;
-    heights.pickupDeg = number(z["pickup_deg"].node(), "z.pickup_deg");
-    heights.travelDeg = number(z["travel_deg"].node(), "z.travel_deg");
-    heights.releaseDeg = z["release_deg"] ? number(z["release_deg"].node(), "z.release_deg") : heights.pickupDeg;
-    heights.clearanceDeg = z["clearance_deg"] ? number(z["clearance_deg"].node(), "z.clearance_deg") : heights.travelDeg;
-    // 用实际驱动角检查层高顺序，兼容丝杆读数递增或递减。
-    double travel = heights.travelDeg - heights.pickupDeg;
-    double clearance = (heights.clearanceDeg - heights.pickupDeg) / travel;
-    double release = (heights.releaseDeg - heights.pickupDeg) / travel;
-    if (!std::isfinite(travel) || !(clearance > 0 && clearance <= 1 && release >= 0 && release <= clearance))
-        throw std::runtime_error("Z 轴吸取、释放、净空与搬运层顺序错误");
-    if (z["grip_dwell_ms"])
-    {
-        auto dwell = z["grip_dwell_ms"].value_exact<int64_t>().value_or(-1);
-        if (dwell < 0 || dwell > INT32_MAX) throw std::runtime_error("z.grip_dwell_ms 无效");
-        heights.gripDwellMs = static_cast<int>(dwell);
-    }
-    return heights;
-}
-
-//---------棋盘与逐格修正区---------
-static Geometry readBoard(const toml::table &site)
-{
-    const auto vision = site["vision"];
-    const auto *points = vision["points"].as_array();
-    if (!points || points->size() != 3) throw std::runtime_error("vision.points 需要红左、红右、黑左三点");
-    BoardPoint mark[3];
-    for (int i = 0; i < 3; ++i)
-    {
-        double point[4];
-        readArray(points->get(i), "vision.points", point);
-        if (point[0] < 0 || point[0] >= ImageWidth || point[1] < 0 || point[1] >= ImageHeight)
-            throw std::runtime_error("vision.points 像素超出原图");
-        mark[i] = {{point[0], point[1]}, {point[2], point[3]}};
-    }
-    Geometry board = Geometry_calibrate(mark[0], mark[1], mark[2]);
-    if (vision["target_offsets_mm"])
-    {
-        const auto *offsets = vision["target_offsets_mm"].as_array();
-        if (!offsets) throw std::runtime_error("vision.target_offsets_mm 须为数组");
-        for (const auto &node : *offsets)
-        {
-            double offset[4];
-            readArray(&node, "vision.target_offsets_mm", offset);
-            if (offset[0] < 0 || offset[0] >= Rows || offset[1] < 0 || offset[1] >= Columns ||
-                std::floor(offset[0]) != offset[0] || std::floor(offset[1]) != offset[1])
-                throw std::runtime_error("格点修正的行列无效");
-            auto &cell = board.cell[int(offset[0])][int(offset[1])];
-            cell.xy = board.origin.xy + offset[0] * board.rowStep.xy +
-                      offset[1] * board.columnStep.xy + cv::Point2d(offset[2], offset[3]);
-        }
-    }
-    return board;
-}
-
-//---------对局安装入口---------
-static void readSite(const toml::table &site, GameConfig &config, Session &session)
-{
-    session.arm = readArm(site);
-    session.heights = readHeights(site);
-    session.layout = readBoard(site);
-    const auto motion = site["motion"];
-    double park[2], discard[2];
-    readArray(motion["park_deg"].node(), "motion.park_deg", park);
-    readArray(motion["discard_xy_mm"].node(), "motion.discard_xy_mm", discard);
-    session.park = {park[0], park[1]};
-    session.capturePlaceMm = {discard[0], discard[1]};
-    readArray(motion["velocity_deg_s"].node(), "motion.velocity_deg_s", config.motion.velocity);
-    readArray(motion["acceleration_deg_s2"].node(), "motion.acceleration_deg_s2", config.motion.acceleration);
-    for (int axis = 0; axis < 3; ++axis)
-        if (config.motion.velocity[axis] <= 0 || config.motion.acceleration[axis] <= 0)
-            throw std::runtime_error("速度和加速度限制须为正");
-
-    const auto vision = site["vision"];
-    if (vision["roi"])
-    {
-        double roi[4];
-        readArray(vision["roi"].node(), "vision.roi", roi);
-        for (double value : roi)
-            if (value < 0 || value > ImageWidth || std::floor(value) != value)
-                throw std::runtime_error("vision.roi 须为原图内的整数像素区域");
-        if (roi[2] <= 0 || roi[3] <= 0 || roi[0] + roi[2] > ImageWidth || roi[1] + roi[3] > ImageHeight)
-            throw std::runtime_error("vision.roi 超出原图");
-        // 旧矩形以中心换成 640 方框；靠近图像边缘时把方框移入原图。
-        config.visionCropOrigin.x = std::clamp(int(roi[0]) + (int(roi[2]) - YoloSize) / 2, 0, ImageWidth - YoloSize);
-        config.visionCropOrigin.y = std::clamp(int(roi[1]) + (int(roi[3]) - YoloSize) / 2, 0, ImageHeight - YoloSize);
-    }
-    config.cameraUrl = vision["camera_url"].value_or(config.cameraUrl);
-    const auto game = site["game"];
-    config.engineDir = game["engine_directory"].value_or(config.engineDir);
-    config.humanRed = game["human_red"].value_or(config.humanRed);
-    config.redToMove = game["red_to_move"].value_or(config.redToMove);
-    if (game["think_ms"])
-    {
-        auto think = game["think_ms"].value_exact<int64_t>().value_or(0);
-        if (think < 1 || think > 60000) throw std::runtime_error("game.think_ms 须在 1 到 60000");
-        config.thinkMs = static_cast<int>(think);
-    }
-}
-}
+} // namespace scara

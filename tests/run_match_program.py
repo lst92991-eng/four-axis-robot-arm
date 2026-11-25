@@ -50,14 +50,11 @@ def read_calls(output):
     return calls
 
 
-def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, placement_offsets=None):
+def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
     global passed
     with tempfile.TemporaryDirectory(prefix='scara_match_') as directory:
         work = Path(directory)
         text = TEMPLATE
-        if placement_offsets is not None:
-            offsets = [[9-row, col, x, y] for col, row, x, y in placement_offsets]
-            text = text.replace('[game]', f'target_offsets_mm = {json.dumps(offsets)}\n\n[game]')
         for key, value in (settings or {}).items():
             text += f'\n{key} = {json.dumps(bool(value))}\n'
         config = tomllib.loads(text)
@@ -82,18 +79,18 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, place
         assert [step['action'] for step in executions[0]['steps']] == ['release', 'move', 'move']
         assert executions[0]['steps'][1]['axes'] == 1
         heights = config['z']
-        park = [heights['travel_deg'], *config['motion']['park_deg']]
+        park = [heights['carry_deg'], *config['motion']['observe_deg']]
         for execution in executions[1:]:
             assert execution['steps'][-1] == dict(action='move', axes=7, target_deg=park)
             assert execution['end_joint_deg'] == park
             if execution['purpose'] == 'prepare':
                 assert [s['action'] for s in execution['steps']] == ['release', 'move', 'move']
-                assert execution['steps'][1]['axes'] == 1 and execution['steps'][1]['target_deg'][0] == heights['travel_deg']
+                assert execution['steps'][1]['axes'] == 1 and execution['steps'][1]['target_deg'][0] == heights['carry_deg']
                 continue
             for i, step in enumerate(execution['steps']):
                 if step['action'] == 'release':
                     assert execution['steps'][i + 1]['action'] == 'move', name
-                    assert execution['steps'][i + 1]['target_deg'][0] == heights.get('clearance_deg', heights['travel_deg'])
+                    assert execution['steps'][i + 1]['target_deg'][0] == heights.get('clearance_deg', heights['carry_deg'])
         passed += 1
         print('PASS', name)
         return state, executions, result.stdout
@@ -104,12 +101,8 @@ assert state['board'] == BASE['expected_board'] and state['pending'] == 0
 assert [len(execution['steps']) for execution in executions] == [3, 9, 15]
 assert executions[2]['steps'][5]['action'] == 'discard'
 
-_, compensated, _ = run('ordinary pickup, capture and placement use the same grid targets', BASE,
-                         placement_offsets=[[0, 5, 2., -1.5], [0, 6, 2., -1.5], [0, 9, 2., -1.5]])
-ordinary, capture = (e['steps'] for e in compensated[1:])
+ordinary, capture = (e['steps'] for e in executions[1:])
 assert ordinary[4]['target_deg'][1:] == capture[1]['target_deg'][1:] == capture[10]['target_deg'][1:]
-assert ordinary[1] != executions[1]['steps'][1]
-assert capture[7] != executions[2]['steps'][7]
 
 case = copy.deepcopy(BASE)
 after_human_capture = case['commands'][3]['board']
@@ -211,14 +204,25 @@ assert state['pending']==1
 
 case=copy.deepcopy(BASE)
 case['queries'][1]['fail_once']=1
-case['commands'].insert(3,dict(command='ready'))
-_,_,output=run('engine failure is an event and retries the same turn',case)
-assert 'SIM_NOTICE 仿真引擎暂时不可用' in output
+state,_,output=run('engine disconnect stops this match',case,'a3a4',exit_code=1,calls=1)
+assert '仿真引擎暂时不可用' in state['error'] and '重新开局' in state['error']
+assert 'SIM_CALL move' not in output
+
+case=copy.deepcopy(BASE)
+case['camera_fails_at']=2
+state,_,output=run('camera disconnect stops this match',case,'',exit_code=1,calls=1)
+assert '仿真相机断开' in state['error'] and '重新开局' in state['error']
+assert 'SIM_CALL move' not in output
+
+case['camera_fails_at']=13
+state,_,output=run('camera disconnect after moving never commits or reissues the move',case,'a3a4',exit_code=1,calls=2)
+assert state['pending']==1 and '仿真相机断开' in state['error']
+assert output.count('SIM_CALL move a6a5')==1
 
 case=copy.deepcopy(BASE)
 case['queries'][1]['fail']=1
 case['commands'].insert(3,dict(command='quit'))
-state,_,_=run('engine cannot be mistaken for an empty legal list',case,'a3a4',calls=1)
+state,_,_=run('engine cannot be mistaken for an empty legal list',case,'a3a4',exit_code=1,calls=1)
 assert state['result']==0
 
 case=copy.deepcopy(BASE)

@@ -707,10 +707,12 @@ class Bench:
 # ---------Windows 对局入口区---------
 def main():
     sys.path.insert(0, str(ROOT/'bench'))
-    from teach import default_site, field_config
+    from teach import default_site
 
     selected = os.environ.get('SCARA_SITE')
-    path = field_config(Path(selected).resolve() if selected else default_site())
+    path = Path(selected).resolve() if selected else default_site()
+    if path.suffix.lower() != '.toml':
+        raise ValueError(f'请先用 15-site 导入旧安装记录 {path}')
     site_text = path.read_bytes()
     binary_dir = Path(os.environ.get('SCARA_BENCH_BIN', ROOT/'build/bench/bin')).resolve()
     os.environ['OPENCV_FFMPEG_CAPTURE_OPTIONS'] = 'rtsp_transport;tcp'

@@ -25,10 +25,10 @@ int main(int argc, char **argv)
         cv::Mat source = cv::imread(path.string());
         if (source.size() != cv::Size(scara::ImageWidth, scara::ImageHeight))
             throw std::runtime_error("需要与布局一致的1280×720原图");
-        // 报告同时保留标称格点和实际取放目标，方便核对单格毫米修正。
+        // 每个交点导出原图像素和吸头使用的基座毫米坐标。
         if (!report.open(argv[3], cv::FileStorage::WRITE | cv::FileStorage::FORMAT_JSON))
             throw std::runtime_error("无法创建格点报告");
-        report << "schema_version" << 4 << "row_origin" << "black" << "coordinate_order" << "row,column" << "mapping_model" << "affine";
+        report << "schema_version" << 5 << "row_origin" << "black" << "coordinate_order" << "row,column" << "mapping_model" << "affine";
         report << "frame_id" << std::string(config["frame_id"]);
         report << "geometry_valid" << 1 << "orientation_valid" << 1;
         report << "pixel_to_base" << cv::Mat(pixelToBase);
@@ -36,15 +36,10 @@ int main(int argc, char **argv)
         for (int i = 0; i < scara::Cells; ++i)
         {
             int row = i / scara::Columns, column = i % scara::Columns;
-            // pixel 用于原图叠加，base 是按三点步长算出的标称位置。
-            cv::Point2d pixel = geometry.cell[row][column].pixel;
-            cv::Point2d base = geometry.origin.xy + row * geometry.rowStep.xy + column * geometry.columnStep.xy;
+            const auto &cell = geometry.cell[row][column];
             report << "{" << "column" << column << "row" << row;
-            report << "pixel_geometric" << "[" << pixel.x << pixel.y << "]";
-            // target 来自标定表，包含为这个交点配置的取放修正。
-            cv::Point2d target = geometry.cell[row][column].xy;
-            report << "base_xy_valid" << 1 << "base_xy_mm" << "[" << base.x << base.y << "]";
-            report << "target_xy_mm" << "[" << target.x << target.y << "]" << "}";
+            report << "pixel_geometric" << "[" << cell.pixel.x << cell.pixel.y << "]";
+            report << "base_xy_valid" << 1 << "base_xy_mm" << "[" << cell.xy.x << cell.xy.y << "]" << "}";
         }
         report << "]";
         report.release();

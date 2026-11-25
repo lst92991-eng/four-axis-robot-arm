@@ -134,14 +134,6 @@
       -133.70063738059653
     ]
   },
-  "placement_offsets_mm": [
-    [
-      0,
-      0,
-      1.036,
-      3.044
-    ]
-  ],
   "frame_id": "shim43-edge-calibration-20261120",
   "image": "board.jpg",
   "arm_lengths_mm": [

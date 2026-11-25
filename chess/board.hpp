@@ -36,14 +36,8 @@ bool validBoard(const Board &board);
 // 外部走法先核对坐标、起点和目标。已确认的走法直接在数组上搬一枚棋子。
 bool validTransfer(const Board &board, bool redToMove, const Move &move);
 void movePiece(Board &board, const Move &move);
-enum class InferredMove
-{
-    Unchanged,
-    Legal,
-    Invalid
-};
-// 用已确认盘面的两处变化确定起终点，找到唯一的合法走法时写入 move。
-InferredMove inferMove(const Board &before, const Board &after, const MoveList &legal, Move &move);
+// 把合法走法逐一与实盘比对，唯一吻合时写出这一步。
+bool inferMove(const Board &before, const Board &after, const MoveList &legal, Move &move);
 
 //---------棋局结果与历史区---------
 // ReviewRequired 表示暂停并交人工裁定，程序在此结束本轮对弈。
@@ -80,7 +74,8 @@ bool Game_replay(Game &game, const std::string &text);
 void Game_judge(Game &game, const MoveList &legal);
 
 //---------引擎和棋谱的格式转换区---------
-// 在 UCI 的四字符走法与两个数字交点之间转换。
+// 起始盘面按 FEN 格式交给引擎，走法按 UCI 格式记谱。
+std::string startFen(const Board &board, bool redToMove);
 bool parseMove(std::string_view text, Move &move);
 std::string uci(const Move &move);
 

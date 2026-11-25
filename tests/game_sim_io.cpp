@@ -91,7 +91,9 @@ bool Drive_read(DriveFeedback &feedback)
 {
     driveMs += 10;
     feedback.position = driveReference.position;
-    feedback.velocity = driveReference.velocity;
+    feedback.stationary = driveReference.velocity == AxisValues{};
+    feedback.reached.reset();
+    if (feedback.stationary) feedback.reached = driveReference.position;
     feedback.timeMs = driveMs;
     return true;
 }
@@ -121,6 +123,8 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         gameRunning = 0;
         return;
     }
+    if (!script["camera_fails_at"].empty() && frameNumber+1 == unsigned(int(script["camera_fails_at"])))
+        throw std::runtime_error("仿真相机断开");
     // 更新相机看到的棋子，正式对局仍需连续新帧确认。
     if (restorationFrames > 0 && --restorationFrames == 0)
     {
@@ -193,13 +197,13 @@ void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &
 }
 
 //---------预置交互区---------
-void Operator_read(const std::string &prompt, Command &result, chess::Move *move)
+Command Operator_read(const std::string &prompt, chess::Move *move)
 {
     cv::FileNode commands = script["commands"];
     cv::FileNode command;
     std::string name;
 
-    result = Command::Quit;
+    Command result = Command::Quit;
     if (commandIndex < commands.size())
     {
         // 依次消费预置输入。有摆盘操作时先更新相机看到的棋子。
@@ -207,28 +211,26 @@ void Operator_read(const std::string &prompt, Command &result, chess::Move *move
         ++commandIndex;
         if (!command["board"].empty()) readBoard(command["board"]);
         command["command"] >> name;
-        if (!Command_parse(name, result, move)) throw std::runtime_error("未知仿真命令");
+        result = Command_parse(name, move);
+        if (result == Command::Invalid) throw std::runtime_error("未知仿真命令");
         std::cout << "SIM_COMMAND\t" << prompt << '\t' << name << '\n';
     }
     if (result == Command::Quit) gameRunning = 0;
+    return result;
 }
 
 bool Operator_prepare()
 {
     while (gameRunning)
     {
-        Command command;
-        Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。", command);
-        if (command == Command::Ready) return gameRunning;
+        if (Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。") == Command::Ready) return gameRunning;
     }
     return false;
 }
 
 bool Operator_confirmOpening(const chess::Board &)
 {
-    Command command;
-    Operator_read("核对开局盘面，回车确认。输入 quit 退出。", command);
-    return command == Command::Ready;
+    return Operator_read("核对开局盘面，回车确认。输入 quit 退出。") == Command::Ready;
 }
 
 //---------仿真机械执行区---------
@@ -293,7 +295,7 @@ int main(int argc, char **argv)
         std::string scenario;
         if (argc == 3)
         {
-            scara::Site_loadFile(argv[1], config, session);
+            scara::Site_loadFile(config, session, argv[1]);
             scenario = argv[2];
         }
         else

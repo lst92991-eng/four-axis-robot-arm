@@ -6,7 +6,7 @@
 
 namespace scara
 {
-//---------三点标定与格点修正区---------
+//---------三点标定区---------
 void Bench_geometry(const cv::FileNode &config, Geometry &geometry, cv::Matx23d *pixelToBase)
 {
     geometry = {};
@@ -21,8 +21,6 @@ void Bench_geometry(const cv::FileNode &config, Geometry &geometry, cv::Matx23d 
         const double *p = rows.ptr<double>(i);
         points[i] = {{p[0],p[1]}, {p[2],p[3]}};
     }
-    // 沿用正式标定入口，先求出整张棋盘的标称坐标。
-    Geometry next = Geometry_calibrate(points[0], points[1], points[2]);
     if (pixelToBase)
     {
         // 矩阵的每行是 [u,v,1]。用三点同时解 X 和 Y 的系数，再转成 2×3。
@@ -31,25 +29,7 @@ void Bench_geometry(const cv::FileNode &config, Geometry &geometry, cv::Matx23d 
         if (!cv::solve(a, rows.colRange(2,4), coefficients)) throw std::runtime_error("三个标定点不能共线");
         *pixelToBase = cv::Mat(coefficients.t());
     }
-    // 新补偿表用(行,列)。旧表的(列,红方起算行)仅在导入时转换。
-    bool legacy = config["target_offsets_mm"].empty();
-    auto offsets = legacy ? config["placement_offsets_mm"] : config["target_offsets_mm"];
-    for (const auto &v : offsets)
-    {
-        if (!v.isSeq() || v.size() != 4 || !v[0].isInt() || !v[1].isInt())
-            throw std::runtime_error("格点补偿需要两个索引和两个毫米值");
-        int row = legacy ? Rows-1-int(v[1]) : int(v[0]);
-        int col = legacy ? int(v[0]) : int(v[1]);
-        if (col < 0 || col >= Columns || row < 0 || row >= Rows ||
-            !(v[2].isInt() || v[2].isReal()) || !(v[3].isInt() || v[3].isReal()) ||
-            !std::isfinite(double(v[2])) || !std::isfinite(double(v[3])))
-            throw std::runtime_error("落子补偿的交点或毫米值无效");
-        cv::Point2d correction{double(v[2]), double(v[3])};
-        // 以标称 XY 为基础加上该格修正量，像素交点保持在印刷格线上。
-        next.cell[row][col].xy = next.origin.xy + row * next.rowStep.xy + col * next.columnStep.xy + correction;
-    }
-    // 所有修正项读取成功后再交付整张坐标表。
-    geometry = next;
+    geometry = Geometry_calibrate(points[0], points[1], points[2]);
 }
 
 //---------参数读取区---------
@@ -75,16 +55,16 @@ bool Arm_load(const std::string &path, ArmGeometry &arm)
     cv::read(file["j3_sign"], j3Sign, -1.0);
     for (const char *key : {"j2_reference_deg", "j3_reference_motor_deg", "j2_scale", "shoulder_ref_rad", "elbow_ref_rad"})
         if ((!file[key].isReal() && !file[key].isInt()) || !std::isfinite(double(file[key]))) return false;
-    measured.j2ReferenceDeg = double(file["j2_reference_deg"]);
-    measured.j3ReferenceMotorDeg = double(file["j3_reference_motor_deg"]);
+    measured.shoulder.driveRefDeg = double(file["j2_reference_deg"]);
+    measured.elbow.driveRefDeg = double(file["j3_reference_motor_deg"]);
     double j2Scale = double(file["j2_scale"]);
-    measured.shoulderReferenceRad = double(file["shoulder_ref_rad"]);
-    measured.elbowReferenceRad = double(file["elbow_ref_rad"]);
+    measured.shoulder.jointRefRad = double(file["shoulder_ref_rad"]);
+    measured.elbow.jointRefRad = double(file["elbow_ref_rad"]);
     if (!(measured.upperMm > 0 && measured.forearmMm > 0 && j2Scale > 0 && j3Ratio > 0) ||
         !std::isfinite(measured.upperMm + measured.forearmMm + j3Ratio) ||
         std::abs(j2Sign) != 1 || std::abs(j3Sign) != 1) return false;
-    measured.j2JointPerDrive = j2Scale * j2Sign;
-    measured.j3JointPerDrive = j3Sign / j3Ratio;
+    measured.shoulder.jointPerDrive = j2Scale * j2Sign;
+    measured.elbow.jointPerDrive = j3Sign / j3Ratio;
     // 臂长、传动比和方向通过核对后，整组参数一次写回。
     arm = measured;
     return true;
@@ -166,11 +146,11 @@ void Bench_load(const std::string &path, GameConfig &config, Session &session)
     for (int axis = 0; axis < 3; ++axis)
     {
         for (cv::FileNode value : {speed[axis], acceleration[axis]})
-            if ((!value.isReal() && !value.isInt()) || !std::isfinite(double(value)) || double(value) <= 0)
-                throw std::runtime_error("联动限幅需要正的实测配置数值");
+            if (!value.isReal() && !value.isInt()) throw std::runtime_error("联动限幅需要数值");
         config.motion.velocity[axis] = double(speed[axis]);
         config.motion.acceleration[axis] = double(acceleration[axis]);
     }
+    if (!config.motion.valid()) throw std::runtime_error("联动限幅需要正的实测配置数值");
     readPair(file["park_joints_deg"], session.park.j2Deg, session.park.j3MotorDeg);
     readPair(file["capture_place_mm"], session.capturePlaceMm.x, session.capturePlaceMm.y);
     // 相机与引擎取自同一站点配置，执子方和思考时间可覆盖默认值。

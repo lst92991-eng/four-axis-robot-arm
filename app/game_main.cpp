@@ -13,8 +13,8 @@ int main(int argc, char **argv)
     // 安装参数完整后才开始连接设备。
     try
     {
-        Site_loadFile(Site_path(), config, session);
-        if (config.cameraUrl.empty()) throw std::runtime_error("缺少 vision.camera_url");
+        Site_loadFile(config, session);
+        if (config.cameraUrl.empty()) throw std::runtime_error("缺少 camera.url");
     }
     catch (const std::exception &error)
     {
