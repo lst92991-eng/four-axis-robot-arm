@@ -7,21 +7,21 @@
 #include <iterator>
 
 // 14/20/21 读取和对局相同的配置快照，台架直接接收换算后的角度与限幅。
-static void printSetup(const scara::GameConfig &config, const scara::Session &s)
+static void printSetup(const scara::StaticParams &staticParams)
 {
-    const auto &arm = s.arm;
-    const auto &limits = config.motion;
+    const auto &arm = staticParams.arm;
+    const auto &limits = staticParams.motion;
     cv::FileStorage out("site.json", cv::FileStorage::WRITE | cv::FileStorage::MEMORY | cv::FileStorage::FORMAT_JSON);
     out << "arm_lengths_mm" << std::vector<double>{arm.upperMm, arm.forearmMm}
         << "j2_reference_deg" << arm.shoulder.driveRefDeg << "j3_reference_motor_deg" << arm.elbow.driveRefDeg
         << "shoulder_ref_rad" << arm.shoulder.jointRefRad << "elbow_ref_rad" << arm.elbow.jointRefRad
         << "joint_per_drive" << std::vector<double>{arm.shoulder.jointPerDrive, arm.elbow.jointPerDrive}
-        << "park_joints_deg" << std::vector<double>{s.park.j2Deg, s.park.j3MotorDeg}
+        << "park_joints_deg" << std::vector<double>{staticParams.park.j2Deg, staticParams.park.j3MotorDeg}
         << "joint_velocity_deg_s" << std::vector<double>(limits.velocity.begin(), limits.velocity.end())
         << "joint_acceleration_deg_s2" << std::vector<double>(limits.acceleration.begin(), limits.acceleration.end())
-        << "z" << "{" << "pickup_deg" << s.heights.pickupDeg << "travel_deg" << s.heights.travelDeg
-        << "release_deg" << s.heights.releaseDeg << "clearance_deg" << s.heights.clearanceDeg << "}"
-        << "pickup_at_rest_ms" << s.heights.gripDwellMs << "camera_url" << config.cameraUrl;
+        << "z" << "{" << "pickup_deg" << staticParams.heights.pickupDeg << "travel_deg" << staticParams.heights.travelDeg
+        << "release_deg" << staticParams.heights.releaseDeg << "clearance_deg" << staticParams.heights.clearanceDeg << "}"
+        << "pickup_at_rest_ms" << staticParams.heights.gripDwellMs;
     std::cout << out.releaseAndGetString();
 }
 
@@ -53,27 +53,26 @@ int main(int argc, char **argv)
             return 0;
         }
         // 巡点模式加载整张标定表，从第 0 行第 0 列开始逐格求逆解。
-        scara::GameConfig config;
-        scara::Session session;
+        scara::StaticParams staticParams;
         bool setupOnly = std::string_view(argv[1]) == "--settings";
         if (setupOnly || std::string_view(argv[1]) == "-")
         {
             std::string text{std::istreambuf_iterator<char>(std::cin), {}};
-            scara::Site_parse(text, config, session);
+            scara::Site_parse(text, staticParams);
         }
-        else if (toml) scara::Site_loadFile(config, session, path.u8string());
-        else scara::Bench_load(argv[1], config, session);
+        else if (toml) scara::Site_loadFile(staticParams, path.u8string());
+        else scara::Bench_load(argv[1], staticParams);
         if (setupOnly)
         {
-            printSetup(config, session);
+            printSetup(staticParams);
             return 0;
         }
         for (int row = 0; row < scara::Rows; ++row)
             for (int col = 0; col < scara::Columns; ++col)
             {
-                cv::Point2d xy = session.layout.cell[row][col].xy;
+                cv::Point2d xy = staticParams.layout.cell[row][col].xy;
                 scara::JointTarget joints;
-                if (!scara::Arm_inverse(session.arm, xy, joints))
+                if (!scara::Arm_inverse(staticParams.arm, xy, joints))
                 {
                     std::cerr << "格点不可达 " << row << '\t' << col << '\n';
                     return 1;

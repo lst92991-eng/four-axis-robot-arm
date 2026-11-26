@@ -5,7 +5,6 @@ set -eu
 root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 model=${1:-"$root/models/xiangqi14-local-v3-rv1106.rknn"}
 case "$model" in /*) ;; *) model="$PWD/$model" ;; esac
-export OPENCV_FFMPEG_CAPTURE_OPTIONS=rtsp_transport\;tcp
 # 进入安装根目录，使引擎和权重的相对路径能在板端解析。
 cd "$root"
 exec "$root/bin/scara_game" "$model"

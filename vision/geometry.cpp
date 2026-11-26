@@ -2,7 +2,6 @@
 #include "geometry.hpp"
 #include <opencv2/imgproc.hpp>
 #include <cmath>
-#include <optional>
 
 namespace scara
 {
@@ -23,8 +22,8 @@ Geometry Geometry_calibrate(BoardPoint redLeft, BoardPoint redRight, BoardPoint 
         for (int col = 0; col < Columns; ++col)
         {
             BoardPoint &point = board.cell[row][col];
-            point.pixel = blackLeft.pixel + row * board.rowStep.pixel + col * board.columnStep.pixel;
-            point.xy = blackLeft.xy + row * board.rowStep.xy + col * board.columnStep.xy;
+            point.pixel = board.origin.pixel + row * board.rowStep.pixel + col * board.columnStep.pixel;
+            point.xy = board.origin.xy + row * board.rowStep.xy + col * board.columnStep.xy;
         }
     return board;
 }
@@ -37,24 +36,30 @@ cv::Point2d Geometry_gridPoint(cv::Point2d offset, cv::Point2d rowStep, cv::Poin
     return steps.solve(cv::Vec2d(offset.x, offset.y), cv::DECOMP_LU);
 }
 
-//---------从棋子中心找最近的交点---------
-static std::optional<cv::Point> nearestSquare(const Geometry &board, cv::Point2d center)
+//---------从一个检测框找到棋盘交点---------
+static bool findSquare(const Geometry &board, const Detection &piece, cv::Point &square)
 {
+    // 棋子框的中心用原图像素表示。
+    const cv::Rect2d &box = piece.bbox;
+    cv::Point2d center(box.x + box.width / 2, box.y + box.height / 2);
+    const cv::Rect2d image(0, 0, ImageWidth, ImageHeight);
+    bool knownClass = piece.classId >= 0 && piece.classId < YoloClasses;
+    bool validScore = piece.confidence >= 0.5 && piece.confidence <= 1;
+    bool visibleBox = !box.empty() && image.contains(center);
+    if (!knownClass || !validScore || !visibleBox) return false;
+
+    // 先反算带小数的列、行，再四舍五入到最近的整数交点。
     cv::Point2d offset = center - board.origin.pixel;
     cv::Point2d cell = Geometry_gridPoint(offset, board.rowStep.pixel, board.columnStep.pixel);
+    cv::Point2d nearest(std::round(cell.x), std::round(cell.y));
 
-    // 最外一行或一列再往外半格，取整就会落到盘外。
-    bool onColumn = cell.x > -0.5 && cell.x < Columns - 0.5;
-    bool onRow = cell.y > -0.5 && cell.y < Rows - 0.5;
-    if (!onColumn || !onRow)
-        return std::nullopt;
+    // 交点须在盘内，棋子中心与交点的距离以格为单位。
+    const cv::Rect2d grid(0, 0, Columns, Rows);
+    double distance = std::hypot(cell.x - nearest.x, cell.y - nearest.y);
+    if (!grid.contains(nearest) || distance > board.assignmentTolerance) return false;
 
-    int column = static_cast<int>(cell.x + 0.5);
-    int row = static_cast<int>(cell.y + 0.5);
-    double distance = std::hypot(cell.x - column, cell.y - row);
-    if (distance > board.assignmentTolerance)
-        return std::nullopt;
-    return cv::Point(column, row);
+    square = cv::Point(nearest);
+    return true;
 }
 
 //---------将这一帧的棋子填进棋盘---------
@@ -64,25 +69,17 @@ BoardObservation Geometry_assign(const Geometry &board, const std::vector<Detect
     for (auto &rank : frame.cells) rank.fill(visible ? '.' : '?');
     if (!visible) return frame;
 
-    const cv::Rect2d image(0, 0, ImageWidth, ImageHeight);
     for (const Detection &piece : pieces)
     {
-        cv::Point2d center(piece.bbox.x + piece.bbox.width / 2, piece.bbox.y + piece.bbox.height / 2);
-        bool knownClass = piece.classId >= 0 && piece.classId < YoloClasses;
-        bool scoreInRange = piece.confidence >= 0.5 && piece.confidence <= 1;
-        bool visibleBox = !piece.bbox.empty() && image.contains(center);
-        std::optional<cv::Point> cell;
-        if (knownClass && scoreInRange && visibleBox)
-            cell = nearestSquare(board, center);
-
-        // 检测无效或找不到交点，这一帧都不能确认走法。
-        if (!cell)
+        // 找到交点后再写棋盘。失败的检测让整帧继续等待确认。
+        cv::Point cell;
+        if (!findSquare(board, piece, cell))
         {
             frame.valid = false;
             continue;
         }
         // 同格只接受一枚棋子；第二枚落入同格时，标出冲突供操作者恢复。
-        char &square = frame.cells[cell->y][cell->x];
+        char &square = frame.cells[cell.y][cell.x];
         if (square == '.') square = chess::PieceSymbols[piece.classId];
         else
         {
@@ -103,7 +100,7 @@ cv::Mat Geometry_draw(const cv::Mat &source, const Geometry &board)
         {
             // 格号和点都取自标定表，便于逐格核对像素位置。
             cv::Point2d pixel = board.cell[row][col].pixel;
-            std::string label = std::to_string(row) + "," + std::to_string(col);
+            std::string label = cv::format("%d,%d", row, col);
             cv::circle(image, pixel, 3, {0, 255, 255}, -1);
             cv::putText(image, label, pixel + cv::Point2d(4, -4), cv::FONT_HERSHEY_SIMPLEX, 0.32, {0, 0, 255}, 1, cv::LINE_AA);
         }

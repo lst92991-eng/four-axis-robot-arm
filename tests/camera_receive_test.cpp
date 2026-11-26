@@ -5,7 +5,8 @@
 
 namespace mock {
 int reads = 0;
-bool dropFrame = false, decoderError = false;
+cv::Size mode{640, 480};
+bool allowOpen = true, dropFrame = false, decoderError = false;
 }
 
 namespace cv {
@@ -13,7 +14,18 @@ class ScriptedCapture
 {
     bool opened = false;
 public:
-    bool open(const std::string& url) { return opened = url == "scripted"; }
+    bool open(const std::string &device, int backend)
+    {
+        opened = mock::allowOpen && device == "/dev/video11" && backend == CAP_V4L2;
+        return opened;
+    }
+    bool set(int property, double value)
+    {
+        if (!opened) return false;
+        if (property == CAP_PROP_FRAME_WIDTH) mock::mode.width = int(value);
+        else mock::mode.height = int(value);
+        return true;
+    }
     void release() { opened = false; }
     bool read(Mat& frame)
     {
@@ -41,10 +53,13 @@ int main()
     using namespace scara;
     try
     {
-        Camera_open("unavailable");
+        mock::allowOpen = false;
+        Camera_open();
         check(Camera_read().empty(), "Failed open returned stale data");
-        Camera_open("scripted");
+        mock::allowOpen = true;
+        Camera_open();
         check(mock::reads == 1, "Open read ahead of the caller");
+        check(mock::mode == cv::Size(1280, 720), "Open did not set the calibrated capture mode");
         mock::dropFrame = true;
         check(Camera_read().empty() && mock::reads == 2, "Read retried a missing frame");
 
@@ -63,7 +78,7 @@ int main()
         mock::decoderError = false;
         Camera_close();
         check(Camera_read().empty(), "Closed source delivered a frame");
-        Camera_open("scripted");
+        Camera_open();
         check(!Camera_read().empty(), "Reopen did not deliver a frame");
         Camera_close();
         std::cout << "PASS one read per call, failure, recovery, frame lifetime, close and reopen\n";

@@ -24,18 +24,16 @@ struct Detection
 };
 
 //---------图像处理接口区---------
-// 固定机位的缺省裁剪起点；安装文件可指定其他原图位置。
-inline const cv::Point DefaultCropOrigin{375, 8};
 // 教学机位输入为 1280×720 的 8 位 BGR 图，直裁 640×640 后转换为 RGB。
-cv::Mat Vision_prepare(const cv::Mat &bgr, cv::Point origin = DefaultCropOrigin);
-// 在原图副本上画出棋子的框、名称和得分，返回预览图。
-cv::Mat Vision_draw(const cv::Mat &bgr, const std::vector<Detection> &pieces);
+cv::Mat Vision_prepare(const cv::Mat &bgr, cv::Point origin);
+// 将 YOLO 解码后的棋子框、名称和得分画在当前帧上。
+void Vision_draw(cv::Mat &image, const std::vector<Detection> &pieces);
 
 //---------NPU接口区---------
 // 加载模型、准备输入输出缓冲。成功返回 true，准备失败时收回已申请的资源。
 bool Yolo_open(std::string modelPath);
-// 输入 RGB 图，执行 NPU 推理和模型后处理，返回原图坐标下的棋子列表。
-std::vector<Detection> Yolo_run(const cv::Mat &rgb640, cv::Point origin = DefaultCropOrigin);
+// 推理成功时写入原图坐标下的棋子列表。
+bool Yolo_run(const cv::Mat &rgb640, cv::Point origin, std::vector<Detection> &pieces);
 //释放已经分配的张量内存和模型上下文
 void Yolo_close();
 } // namespace scara

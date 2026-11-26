@@ -3,11 +3,11 @@
 #include <Python.h>
 #include "app/site.hpp"
 #include "scara_cad.hpp"
-#include "vision/capture.hpp"
 #include "vision/yolo.hpp"
 #include "models/xiangqi14-local-v3/postprocess.hpp"
 
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/videoio.hpp>
 #include <algorithm>
 #include <cmath>
 #include <cstring>
@@ -32,8 +32,8 @@ using Ref = std::unique_ptr<PyObject, ReleasePy>;
 // field 是本局传入的 Python 设备对象，接收板端推理、引擎、面板和 USB-CAN 动作的调用。
 PyObject *field = nullptr;
 std::string streamUrl;
+cv::VideoCapture camera;
 cv::Point cropOrigin;
-bool cameraOpen = false;
 unsigned frameNumber = 0;
 
 // 把 Python 的返回对象交给 Ref 管理。调用失败则把原因带回 C++ 对局。
@@ -61,27 +61,21 @@ Ref require(PyObject *result)
 // 关闭本机取流连接后，再让 Python 回收板端推理会话。
 void closeVision()
 {
-    if (cameraOpen)
-    {
-        Camera_close();
-        cameraOpen = false;
-    }
+    camera.release();
     require(PyObject_CallMethod(field, "close_vision", nullptr));
 }
 } // namespace
 
-static void readHistory(const GameConfig &config, chess::Game &game);
+static void readHistory(const StaticParams &staticParams, chess::Game &game);
 
 //---------台架启动与收尾区---------
-void Runtime_open(const GameConfig &config, const std::string &modelPath, Session &session)
+void Runtime_open(const StaticParams &staticParams, const std::string &modelPath, DynamicParams &dynamicParams)
 {
-    // 固定相机地址及本机 ROI 随安装参数传入，Python 准备板端设备。
-    streamUrl = config.cameraUrl;
-    cropOrigin = config.visionCropOrigin;
+    // 本机 ROI 随安装参数传入，Python 准备板端设备。
+    cropOrigin = staticParams.visionCropOrigin;
     require(PyObject_CallMethod(field, "open", "s", modelPath.c_str()));
-    // 现场台架允许棋子中心偏离交点 0.45 格，随后检查本次是否要接续棋谱。
-    session.layout.assignmentTolerance = .45;
-    readHistory(config, session.game);
+    // 检查本次是否要接续棋谱。
+    readHistory(staticParams, dynamicParams.game);
 }
 
 bool Runtime_close()
@@ -108,7 +102,7 @@ bool Motion_stop()
 }
 
 //---------接续已确认棋局区---------
-static void readHistory(const GameConfig &config, chess::Game &game)
+static void readHistory(const StaticParams &staticParams, chess::Game &game)
 {
     auto saved = require(PyObject_CallMethod(field, "resume_history", nullptr));
     const char *history = PyUnicode_AsUTF8(saved.get());
@@ -130,7 +124,7 @@ static void readHistory(const GameConfig &config, chess::Game &game)
         if (size != Columns) throw std::runtime_error("续局起始盘面列数有误");
         std::memcpy(start[row].data(), text, Columns);
     }
-    if (!chess::Game_reset(restored, start, config.redToMove, config.humanRed))
+    if (!chess::Game_reset(restored, start, staticParams.redToMove, staticParams.humanRed))
         throw std::runtime_error("续局起始盘面无效");
     std::istringstream moves(history);
     std::string text;
@@ -146,22 +140,19 @@ static void readHistory(const GameConfig &config, chess::Game &game)
 void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces)
 {
     if (!gameRunning) return;
-    if (!cameraOpen)
-    {
-        Camera_open(streamUrl);
-        cameraOpen = true;
-    }
+    if (!camera.isOpened()) camera.open(streamUrl);
     try
     {
         // source 保存 BGR 原图，input 保存送往 NPU 的 640×640 RGB 像素。
-        cv::Mat source = Camera_read();
+        cv::Mat source;
+        camera.read(source);
         // 第一次取图失败时重连一次，再失败就交给对局提示。
         if (source.empty())
         {
             if (!gameRunning) return;
             std::cout << "相机未读到画面，正在重新连接。" << std::endl;
-            Camera_open(streamUrl);
-            source = Camera_read();
+            camera.open(streamUrl);
+            camera.read(source);
             if (source.empty()) throw std::runtime_error("重连后仍未读到画面");
         }
         if (!gameRunning) return;
@@ -206,15 +197,12 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
             offset += bytes;
         }
         if (offset != size_t(size)) throw std::runtime_error("NPU回复有多余数据");
-        // 三个尺度的框在原图上解码。左图画类别与分数，右图画固定格点。
+        // 解码后在当前帧画框、棋名和得分。
         pieces = Vision_decode(heads, cropOrigin);
-        cv::Mat predicted = Vision_draw(source, pieces);
-        cv::Mat grid = Geometry_draw(source, layout);
-        cv::Mat preview;
-        cv::hconcat(predicted, grid, preview);
-        // 将双画面压成 JPEG，通过内存回调交给面板。
+        Vision_draw(source, pieces);
+        // 将带框画面压成 JPEG，通过内存回调交给面板。
         std::vector<unsigned char> jpeg;
-        if (!cv::imencode(".jpg", preview, jpeg)) throw std::runtime_error("无法编码预览");
+        if (!cv::imencode(".jpg", source, jpeg)) throw std::runtime_error("无法编码预览");
         require(PyObject_CallMethod(field, "preview", "y#", jpeg.data(), Py_ssize_t(jpeg.size())));
 
         // 棋盘下沿的弃子落在盘外。保留原检测框供预览，只从盘面归格中移除。
@@ -227,11 +215,7 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
     }
     catch (...)
     {
-        if (cameraOpen)
-        {
-            Camera_close();
-            cameraOpen = false;
-        }
+        camera.release();
         throw;
     }
 }
@@ -271,7 +255,7 @@ static std::string boardText(const chess::Board &board)
 }
 
 // Python 直接取得盘面。玩家选棋时再交付数字合法表。
-void Operator_show(const Session &s, const std::string &message, const chess::MoveList *choices)
+void Operator_show(const DynamicParams &s, const std::string &message, const chess::MoveList *choices)
 {
     std::string board = boardText(s.game.board);
     std::string observed = boardText(s.observed);
@@ -349,46 +333,48 @@ bool Robot_execute(const std::string &purpose, const chess::Move &move, const st
 } // namespace scara
 
 //---------DLL 入口区---------
-static void loadFieldSite(const char *text, size_t size, scara::GameConfig &config, scara::Session &session)
+static void loadFieldSite(const char *text, size_t size, scara::StaticParams &staticParams)
 {
-    config.thinkMs = 650;
-    config.engineDir = "/userdata/scara-live-match-20261117/engine";
-    scara::Site_parse(std::string_view(text, size), config, session);
-    if (config.cameraUrl.empty()) throw std::runtime_error("缺少 camera.url");
+    staticParams.thinkMs = 650;
+    staticParams.engineDir = "/userdata/scara-live-match-20261117/engine";
+    scara::Site_parse(std::string_view(text, size), staticParams);
 }
 
 // 两个入口接收同一份 TOML 快照，防止开局前编辑文件导致驱动端参数不一致。
 extern "C" __declspec(dllexport) PyObject *usb_installation(const char *text, size_t size)
 {
     using namespace scara;
-    GameConfig cfg;
-    Session s;
-    try { loadFieldSite(text, size, cfg, s); }
+    StaticParams staticParams;
+    try { loadFieldSite(text, size, staticParams); }
     catch (const std::exception &error) { PyErr_SetString(PyExc_ValueError, error.what()); return nullptr; }
     // 交付机械参考与臂长、Z 工作层、观察位、三轴限幅、吸合时间和 CAD 采样数据。
     return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:d,s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:s}",
-        "arm", s.arm.shoulder.driveRefDeg, s.arm.elbow.driveRefDeg, s.arm.shoulder.jointRefRad, s.arm.elbow.jointRefRad,
-        s.arm.shoulder.jointPerDrive, s.arm.elbow.jointPerDrive,
-        "arm_lengths_mm", s.arm.upperMm, s.arm.forearmMm,
-        "z", s.heights.pickupDeg, s.heights.travelDeg, s.heights.releaseDeg, "clearance_deg", s.heights.clearanceDeg,
-        "park", s.park.j2Deg, s.park.j3MotorDeg,
-        "velocity", cfg.motion.velocity[0], cfg.motion.velocity[1], cfg.motion.velocity[2],
-        "acceleration", cfg.motion.acceleration[0], cfg.motion.acceleration[1], cfg.motion.acceleration[2],
-        "grip_ms", s.heights.gripDwellMs, "cad", cadSamples, Py_ssize_t(sizeof(cadSamples)),
-        "think_ms", cfg.thinkMs, "engine_directory", cfg.engineDir.c_str());
+        "arm", staticParams.arm.shoulder.driveRefDeg, staticParams.arm.elbow.driveRefDeg, staticParams.arm.shoulder.jointRefRad, staticParams.arm.elbow.jointRefRad,
+        staticParams.arm.shoulder.jointPerDrive, staticParams.arm.elbow.jointPerDrive,
+        "arm_lengths_mm", staticParams.arm.upperMm, staticParams.arm.forearmMm,
+        "z", staticParams.heights.pickupDeg, staticParams.heights.travelDeg, staticParams.heights.releaseDeg, "clearance_deg", staticParams.heights.clearanceDeg,
+        "park", staticParams.park.j2Deg, staticParams.park.j3MotorDeg,
+        "velocity", staticParams.motion.velocity[0], staticParams.motion.velocity[1], staticParams.motion.velocity[2],
+        "acceleration", staticParams.motion.acceleration[0], staticParams.motion.acceleration[1], staticParams.motion.acceleration[2],
+        "grip_ms", staticParams.heights.gripDwellMs, "cad", cadSamples, Py_ssize_t(sizeof(cadSamples)),
+        "think_ms", staticParams.thinkMs, "engine_directory", staticParams.engineDir.c_str());
 }
 
 // Python 传入本局设备对象与模型路径，DLL 使用与板端相同的 Match_run。
-extern "C" __declspec(dllexport) int run_usb_game(PyObject *callbacks, const char *modelPath, const char *text, size_t size)
+extern "C" __declspec(dllexport) int run_usb_game(PyObject *callbacks, const char *modelPath,
+                                                const char *text, size_t size, const char *cameraUrl)
 {
-    scara::GameConfig config;
-    scara::Session session;
+    scara::StaticParams staticParams;
+    scara::DynamicParams dynamicParams;
     scara::field = callbacks;
     int result = 1;
     try
     {
-        loadFieldSite(text, size, config, session);
-        result = scara::Match_run(config, session, modelPath);
+        loadFieldSite(text, size, staticParams);
+        scara::streamUrl = cameraUrl;
+        // 现场台架允许棋子中心偏离交点 0.45 格。
+        staticParams.layout.assignmentTolerance = .45;
+        result = scara::Match_run(staticParams, dynamicParams, modelPath);
     }
     catch (const std::exception &error) { PyErr_SetString(PyExc_RuntimeError, error.what()); }
     // 对局结束后解除设备对象与本次调用的关联。

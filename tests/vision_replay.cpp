@@ -85,9 +85,9 @@ int main(int argc, char **argv)
                << d.bbox.x << d.bbox.y << d.bbox.x+d.bbox.width << d.bbox.y+d.bbox.height << "]" << "}";
       result << "]";
       scara::writeBytes(prefix+".json", result.releaseAndGetString());
-      cv::Mat preview = scara::Vision_draw(source,detections);
+      scara::Vision_draw(source, detections);
       std::vector<uint8_t> png;
-      cv::imencode(".png", preview, png);
+      cv::imencode(".png", source, png);
       scara::writeBytes(prefix+".png", {png.begin(),png.end()});
       std::cout << id << ": " << detections.size() << " detections\n";
     }

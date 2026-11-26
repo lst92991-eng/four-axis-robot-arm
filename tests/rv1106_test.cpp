@@ -18,7 +18,8 @@ extern "C" long syscall(long, ...) noexcept;
 namespace fake
 {
 bool camera = false, npu = false, engine = false, failSearch = false, failModel = false;
-bool motionSuccess = true, stopSuccess = true, cancelMotion = false, failRead = false;
+bool motionSuccess = true, stopSuccess = true, cancelMotion = false;
+cv::Size frameSize{1280, 720};
 int executions = 0, stops = 0;
 std::vector<scara::PickStep> receivedSteps;
 std::vector<std::string> events;
@@ -67,7 +68,7 @@ bool Motion_stop()
     ++fake::stops;
     return fake::stopSuccess;
 }
-void Camera_open(const std::string &)
+void Camera_open()
 {
     fake::camera = true;
     fake::events.push_back("camera-open");
@@ -76,8 +77,7 @@ cv::Mat Camera_read()
 {
     fake::check(fake::camera, "Read without camera");
     fake::events.push_back("read");
-    if (fake::failRead) return {};
-    return cv::Mat(720, 1280, CV_8UC3, cv::Scalar(100, 100, 100));
+    return cv::Mat(fake::frameSize, CV_8UC3, cv::Scalar(100, 100, 100));
 }
 void Camera_close()
 {
@@ -91,11 +91,12 @@ bool Yolo_open(std::string)
     fake::events.push_back("npu-open");
     return !fake::failModel;
 }
-std::vector<Detection> Yolo_run(const cv::Mat &, cv::Point)
+bool Yolo_run(const cv::Mat &, cv::Point, std::vector<Detection> &pieces)
 {
     fake::check(fake::npu, "Run without NPU");
     fake::events.push_back("run");
-    return {{13, .9, {100, 100, 20, 20}}};
+    pieces = {{13, .9, {100, 100, 20, 20}}};
+    return true;
 }
 void Yolo_close()
 {
@@ -131,11 +132,11 @@ int main()
     try
     {
         using namespace scara;
-        GameConfig config;
-        Session session;
+        StaticParams staticParams;
+        DynamicParams dynamicParams;
         // 未导入的旧表应在连接设备前报错。
         bool needsImport = false;
-        try { Site_loadFile(config, session, "tests/fixtures/game-app/installation-v1.toml"); }
+        try { Site_loadFile(staticParams, "tests/fixtures/game-app/installation-v1.toml"); }
         catch (const std::runtime_error &error) { needsImport = std::string(error.what()).find("15-site") != std::string::npos; }
         fake::check(needsImport, "Unconverted installation file did not request import");
         std::ifstream newInput("config/installation.toml");
@@ -143,40 +144,42 @@ int main()
         auto cameraSection = newText.find("[camera]");
         auto nextSection = newText.find("\n[", cameraSection);
         newText.replace(cameraSection, nextSection - cameraSection, "[camera]\ncrop_px = [305, 50]\n");
-        Site_parse(newText, config, session);
-        fake::check(config.visionCropOrigin == cv::Point(305, 50), "Named crop origin changed");
-        Site_loadFile(config, session, "config/installation.toml");
-        config.cameraUrl = "fake-stream";
-        config.engineDir = "fake-engine";
-        Runtime_open(config, "fake-model", session);
+        Site_parse(newText, staticParams);
+        fake::check(staticParams.visionCropOrigin == cv::Point(305, 50), "Named crop origin changed");
+        Site_loadFile(staticParams, "config/installation.toml");
+        staticParams.engineDir = "fake-engine";
+        Runtime_open(staticParams, "fake-model", dynamicParams);
         std::string frame, previous;
         chess::Move choice;
         std::vector<Detection> pieces;
         chess::MoveList legal;
-        Vision_observe(session.layout, frame, pieces);
+        Vision_observe(staticParams.layout, frame, pieces);
         fake::check(fake::events ==
                         std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run"},
                     "Live observation no longer follows the verified order");
         fake::check(!frame.empty() && pieces.size() == 1 && pieces[0].classId == 13,
                     "Live observation did not return the new frame and detections");
         previous = frame;
-        fake::failRead = true;
-        fake::events.clear();
-        bool readFailed = false;
-        try { Vision_observe(session.layout, frame, pieces); }
-        catch (const std::runtime_error&) { readFailed = true; }
-        fake::check(readFailed && frame == previous && fake::events == std::vector<std::string>{"read"},
-                    "Failed read ran inference or published a new frame");
+        for (cv::Size size : {cv::Size{}, cv::Size(640, 480)})
+        {
+            fake::frameSize = size;
+            fake::events.clear();
+            bool readFailed = false;
+            try { Vision_observe(staticParams.layout, frame, pieces); }
+            catch (const std::runtime_error&) { readFailed = true; }
+            fake::check(readFailed && frame == previous && fake::events == std::vector<std::string>{"read"},
+                        "An invalid frame reached inference or was published");
+        }
         fake::check(Runtime_close() && fake::stops == 1 && !fake::camera && !fake::npu,
                     "Reset after a camera failure did not stop and close the devices");
-        fake::failRead = false;
-        Runtime_open(config, "fake-model", session);
-        session.game.humanRed = false;
-        Engine_query(session.game, legal, choice);
+        fake::frameSize = {1280, 720};
+        Runtime_open(staticParams, "fake-model", dynamicParams);
+        dynamicParams.game.humanRed = false;
+        Engine_query(dynamicParams.game, legal, choice);
         fake::check(choice == chess::Move{6,0,5,0} && !fake::camera && !fake::npu && !fake::engine,
                     "Search retained overlapping resources");
         fake::check(legal == chess::MoveList{{6,0,5,0}}, "GUI selected a different numeric move");
-        Vision_observe(session.layout, frame, pieces);
+        Vision_observe(staticParams.layout, frame, pieces);
         fake::check(frame != previous, "Observation identity was reused after search");
 
         PickStep lift, release;
@@ -215,7 +218,7 @@ int main()
         bool failed = false;
         try
         {
-            Engine_query(session.game, legal, choice);
+            Engine_query(dynamicParams.game, legal, choice);
         }
         catch (const std::exception &)
         {
@@ -227,7 +230,7 @@ int main()
         failed = false;
         try
         {
-            Vision_observe(session.layout, frame, pieces);
+            Vision_observe(staticParams.layout, frame, pieces);
         }
         catch (const std::exception &)
         {
@@ -241,11 +244,11 @@ int main()
         fake::keyboard = "draw\nready\n";
         fake::check(Operator_prepare(), "Console preparation did not wait for confirmation");
         fake::keyboard = "ready\n";
-        fake::check(Operator_confirmOpening(session.observed), "Console opening confirmation did not read the operator input");
+        fake::check(Operator_confirmOpening(dynamicParams.observed), "Console opening confirmation did not read the operator input");
         fake::keyboard = "draw\n";
-        fake::check(!Operator_confirmOpening(session.observed) && gameRunning, "Draw approved the opening");
+        fake::check(!Operator_confirmOpening(dynamicParams.observed) && gameRunning, "Draw approved the opening");
         fake::keyboard = "quit\n";
-        fake::check(!Operator_confirmOpening(session.observed) && !gameRunning, "Opening quit did not stop the game");
+        fake::check(!Operator_confirmOpening(dynamicParams.observed) && !gameRunning, "Opening quit did not stop the game");
         //退出命令和EOF均由输入入口设置停止标志，机械收尾仍交给主程序
         for (const char *input : {"quit\n", ""})
         {

@@ -46,7 +46,7 @@ static ArmGeometry readArm(const toml::table &site)
 {
     // 拒绝旧字段，尤其是旧搬运角；现场给过的高度不能被课堂默认值覆盖。
     for (const char *old : {"arm","vision","z.pickup_deg","z.travel_deg","motion.park_deg","motion.discard_xy_mm",
-                            "motion.velocity_deg_s","motion.acceleration_deg_s2","camera.camera_url","camera.roi",
+                            "motion.velocity_deg_s","motion.acceleration_deg_s2","camera.roi",
                             "board.points"})
         if (site.at_path(old)) throw std::runtime_error(std::string("请用 15-site 导入旧字段 ") + old);
     ArmGeometry arm;
@@ -84,36 +84,47 @@ static BoardPoint corner(View board, const char *name)
     return {{u, v}, {x, y}};
 }
 
-//---------完整安装表区---------
-static void readSite(const toml::table &site, GameConfig &config, Session &session)
+//---------相机裁剪区---------
+static cv::Point cropPoint(View crop)
 {
-    session.arm = readArm(site);
-    session.heights = readHeights(site["z"]);
+    auto [left, top] = numbers<2>(crop, "camera.crop_px");
+    int x = integer(left, 0, ImageWidth - YoloSize, "取景 X");
+    int y = integer(top, 0, ImageHeight - YoloSize, "取景 Y");
+    return {x, y};
+}
+
+static cv::Point readCrop(const toml::table &site)
+{
+    if (auto crop = site["camera"]["crop_px"]) return cropPoint(crop);
+
+    // 旧安装表省略裁剪坐标时，从随项目安装的 TOML 读固定机位值。
+    const auto defaults = toml::parse_file(SCARA_CONFIG_DIR "/installation.toml");
+    return cropPoint(defaults["camera"]["crop_px"]);
+}
+
+//---------完整安装表区---------
+static void readSite(const toml::table &site, StaticParams &staticParams)
+{
+    staticParams.arm = readArm(site);
+    staticParams.heights = readHeights(site["z"]);
     auto board = site["board"];
-    session.layout = Geometry_calibrate(corner(board, "red_left"), corner(board, "red_right"), corner(board, "black_left"));
+    staticParams.layout = Geometry_calibrate(corner(board, "red_left"), corner(board, "red_right"), corner(board, "black_left"));
 
     auto motion = site["motion"];
     auto [j2, j3] = numbers<2>(motion["observe_deg"], "观察位");
     auto [x, y] = numbers<2>(motion["discard_mm"], "弃子点");
-    session.park = {j2, j3};
-    session.capturePlaceMm = {x, y};
-    config.motion.velocity = numbers<3>(motion["speed_deg_s"], "三轴限速");
-    config.motion.acceleration = numbers<3>(motion["accel_deg_s2"], "三轴加速度");
-    if (!config.motion.valid()) throw std::runtime_error("速度和加速度限制须为正");
+    staticParams.park = {j2, j3};
+    staticParams.capturePlaceMm = {x, y};
+    staticParams.motion.velocity = numbers<3>(motion["speed_deg_s"], "三轴限速");
+    staticParams.motion.acceleration = numbers<3>(motion["accel_deg_s2"], "三轴加速度");
+    if (!staticParams.motion.valid()) throw std::runtime_error("速度和加速度限制须为正");
 
-    auto camera = site["camera"];
-    config.cameraUrl = camera["url"].value_or(std::string{});
-    config.visionCropOrigin = DefaultCropOrigin;
-    if (auto crop = camera["crop_px"])
-    {
-        auto [left, top] = numbers<2>(crop, "取景起点");
-        config.visionCropOrigin = {integer(left, 0, ImageWidth-YoloSize, "取景 X"), integer(top, 0, ImageHeight-YoloSize, "取景 Y")};
-    }
+    staticParams.visionCropOrigin = readCrop(site);
     auto game = site["game"];
-    config.humanRed = game["human_red"].value_or(config.humanRed);
-    config.redToMove = game["red_to_move"].value_or(config.redToMove);
-    config.engineDir = game["engine_directory"].value_or(config.engineDir);
-    if (auto ms = game["think_ms"]) config.thinkMs = integer(ms.value_exact<int64_t>().value_or(0), 1, 60000, "思考毫秒");
+    staticParams.humanRed = game["human_red"].value_or(staticParams.humanRed);
+    staticParams.redToMove = game["red_to_move"].value_or(staticParams.redToMove);
+    staticParams.engineDir = game["engine_directory"].value_or(staticParams.engineDir);
+    if (auto ms = game["think_ms"]) staticParams.thinkMs = integer(ms.value_exact<int64_t>().value_or(0), 1, 60000, "思考毫秒");
 }
 
 static std::string defaultPath()
@@ -128,18 +139,23 @@ static std::string defaultPath()
     return root + "/installation.toml";
 }
 
-void Site_loadFile(GameConfig &config, Session &session, const std::string &path)
+void Site_loadFile(StaticParams &staticParams, const std::string &path)
 {
-    readSite(toml::parse_file(path.empty() ? defaultPath() : path), config, session);
+    readSite(toml::parse_file(path.empty() ? defaultPath() : path), staticParams);
 }
 
-void Site_parse(std::string_view text, GameConfig &config, Session &session)
+void Site_parse(std::string_view text, StaticParams &staticParams)
 {
-    readSite(toml::parse(text), config, session);
+    readSite(toml::parse(text), staticParams);
 }
 
 ArmGeometry Site_loadArm(const std::string &path)
 {
     return readArm(toml::parse_file(path));
+}
+
+cv::Point Site_loadCrop()
+{
+    return readCrop(toml::parse_file(defaultPath()));
 }
 } // namespace scara

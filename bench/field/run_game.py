@@ -17,6 +17,7 @@ import subprocess
 import sys
 import threading
 import time
+import tomllib
 import zlib
 
 from drive import BUILDS, CLEAR, Drive, PROFILE, ROOT, SET_SPEED_GAINS, apply_rotary_tuning
@@ -714,6 +715,9 @@ def main():
     if path.suffix.lower() != '.toml':
         raise ValueError(f'请先用 15-site 导入旧安装记录 {path}')
     site_text = path.read_bytes()
+    camera_url = tomllib.loads(site_text.decode('utf-8-sig')).get('camera', {}).get('url')
+    if not camera_url:
+        raise ValueError('电脑台架缺少 camera.url')
     binary_dir = Path(os.environ.get('SCARA_BENCH_BIN', ROOT/'build/bench/bin')).resolve()
     os.environ['OPENCV_FFMPEG_CAPTURE_OPTIONS'] = 'rtsp_transport;tcp'
     with os.add_dll_directory(str(binary_dir)):
@@ -722,7 +726,7 @@ def main():
         dll.usb_installation.restype = ctypes.py_object
         site = dll.usb_installation(site_text, len(site_text))
         run = dll.run_usb_game
-        run.argtypes = ctypes.py_object, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t
+        run.argtypes = ctypes.py_object, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p
         run.restype = ctypes.c_int
         args = sys.argv[1:]
         checkpoint = json.loads(os.environ['SCARA_MATCH_RESUME']) if 'SCARA_MATCH_RESUME' in os.environ else None
@@ -737,7 +741,7 @@ def main():
         plies = -1 if full else 10 if args in (['self-play'], ['self-play-resume']) else 0
         bench = Bench(current_position=args == ['current'] and checkpoint is None, checkpoint=checkpoint,
                       self_play=plies, config=compiled_config(site))
-        return run(bench, MODEL.encode(), site_text, len(site_text))
+        return run(bench, MODEL.encode(), site_text, len(site_text), camera_url.encode())
 
 
 if __name__ == '__main__':

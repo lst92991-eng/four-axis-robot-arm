@@ -111,35 +111,33 @@ static void readPair(const cv::FileNode &node, double &first, double &second);
 //---------初始化区---------
 //读取一次布局配置，Geometry_calibrate完成标定和90点缓存
 // 继续读取关节参考、工作层和三轴限幅，具体格点在规划时做逆解。
-void Bench_load(const std::string &path, GameConfig &config, Session &session)
+void Bench_load(const std::string &path, StaticParams &staticParams)
 {
     //对局设置、固定棋盘设置
     cv::FileStorage file, layout;
     std::filesystem::path configDirectory;
     std::string layoutPath, armPath, heightsPath;
 
-    for (auto &row : session.observed)
-        row.fill('?');
     if (!file.open(path, cv::FileStorage::READ)) throw std::runtime_error("无法打开现场配置 " + path);
     configDirectory = std::filesystem::u8path(path).parent_path();
     // 一台机器可把三点、机械参考和高度写在同一份现场记录里。
     if (file["layout_file"].empty())
-        Bench_geometry(file.root(), session.layout);
+        Bench_geometry(file.root(), staticParams.layout);
     else
     {
         layoutPath = filePath(configDirectory, file["layout_file"]);
         if (!layout.open(layoutPath, cv::FileStorage::READ)) throw std::runtime_error("无法打开棋盘标定 " + layoutPath);
-        Bench_geometry(layout.root(), session.layout);
+        Bench_geometry(layout.root(), staticParams.layout);
     }
     // 机械和高度记录可以在主配置中，也可以通过相对路径分别提供。
     armPath = filePath(configDirectory, file["arm_file"]);
     heightsPath = filePath(configDirectory, file["heights_file"]);
     if (armPath.empty()) armPath = path;
     if (heightsPath.empty()) heightsPath = path;
-    if (!Arm_load(armPath, session.arm) || !WorkHeights_load(heightsPath, session.heights))
+    if (!Arm_load(armPath, staticParams.arm) || !WorkHeights_load(heightsPath, staticParams.heights))
         throw std::runtime_error("机械参考或工作高度尚未示教");
-    cv::read(file["pickup_at_rest_ms"], session.heights.gripDwellMs, session.heights.gripDwellMs);
-    if (session.heights.gripDwellMs < 0) throw std::runtime_error("吸合时间无效");
+    cv::read(file["pickup_at_rest_ms"], staticParams.heights.gripDwellMs, staticParams.heights.gripDwellMs);
+    if (staticParams.heights.gripDwellMs < 0) throw std::runtime_error("吸合时间无效");
     //限幅顺序固定为J1/J2/J3，单位对应各驱动的角度口径
     cv::FileNode speed = file["joint_velocity_deg_s"], acceleration = file["joint_acceleration_deg_s2"];
     if (speed.size() != 3 || acceleration.size() != 3) throw std::runtime_error("需要三轴速度和加速度上限");
@@ -147,18 +145,17 @@ void Bench_load(const std::string &path, GameConfig &config, Session &session)
     {
         for (cv::FileNode value : {speed[axis], acceleration[axis]})
             if (!value.isReal() && !value.isInt()) throw std::runtime_error("联动限幅需要数值");
-        config.motion.velocity[axis] = double(speed[axis]);
-        config.motion.acceleration[axis] = double(acceleration[axis]);
+        staticParams.motion.velocity[axis] = double(speed[axis]);
+        staticParams.motion.acceleration[axis] = double(acceleration[axis]);
     }
-    if (!config.motion.valid()) throw std::runtime_error("联动限幅需要正的实测配置数值");
-    readPair(file["park_joints_deg"], session.park.j2Deg, session.park.j3MotorDeg);
-    readPair(file["capture_place_mm"], session.capturePlaceMm.x, session.capturePlaceMm.y);
+    if (!staticParams.motion.valid()) throw std::runtime_error("联动限幅需要正的实测配置数值");
+    readPair(file["park_joints_deg"], staticParams.park.j2Deg, staticParams.park.j3MotorDeg);
+    readPair(file["capture_place_mm"], staticParams.capturePlaceMm.x, staticParams.capturePlaceMm.y);
     // 相机与引擎取自同一站点配置，执子方和思考时间可覆盖默认值。
-    file["camera_url"] >> config.cameraUrl;
-    config.engineDir = filePath(configDirectory, file["engine_directory"]);
-    if (!file["human_red"].empty()) config.humanRed = int(file["human_red"]) != 0;
-    if (!file["red_to_move"].empty()) config.redToMove = int(file["red_to_move"]) != 0;
-    if (!file["think_ms"].empty()) config.thinkMs = int(file["think_ms"]);
+    staticParams.engineDir = filePath(configDirectory, file["engine_directory"]);
+    if (!file["human_red"].empty()) staticParams.humanRed = int(file["human_red"]) != 0;
+    if (!file["red_to_move"].empty()) staticParams.redToMove = int(file["red_to_move"]) != 0;
+    if (!file["think_ms"].empty()) staticParams.thinkMs = int(file["think_ms"]);
 }
 //---------配置字段读取区---------
 // 配置中引用的相对路径，从对应配置文件所在目录解析。

@@ -53,27 +53,33 @@ def main():
     url = f'http://127.0.0.1:{server.server_port}/stream.mjpg'
     command = [args.executable, url]
     if args.entry:
-        command = [args.executable, 'mock.rknn', url]
+        command = [args.executable, 'mock.rknn']
     try:
         if args.entry:
             # 在空目录中运行，只从管道接收 JPEG，故障时仍回收 SDK 资源。
-            with tempfile.TemporaryDirectory() as cwd:
-                def entry(cmd, code, runs, env=None):
-                    result = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, timeout=20)
+            with tempfile.TemporaryDirectory() as folder:
+                case = Path(folder)
+                cwd = case/'run'
+                cwd.mkdir()
+                (case/'installation.toml').write_bytes((ROOT/'config/installation.toml').read_bytes())
+                fixture = dict(os.environ, SCARA_MOCK_CAMERA_URL=url,
+                               SCARA_SITE='../installation.toml')
+                def entry(code, runs, env=fixture):
+                    result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, timeout=20)
                     expected = f'TEST cleanup: allocations=0 runs={runs}'.encode()
                     if result.returncode != code or expected not in result.stderr:
                         raise AssertionError((result.returncode, result.stderr[-600:]))
-                    assert not list(Path(cwd).iterdir()), 'Vision wrote files in the working directory'
+                    assert not list(cwd.iterdir()), 'Vision wrote files in the working directory'
                     return result.stdout
-                entry([command[0], command[1], url+'/not-a-stream'], 1, 0)
+                entry(1, 0, dict(fixture, SCARA_MOCK_CAMERA_URL=url+'/not-a-stream'))
                 for stage in ('query','allocate','bind','run'):
-                    env = dict(os.environ, SCARA_MOCK_FAILURE=stage)
+                    env = dict(fixture, SCARA_MOCK_FAILURE=stage)
                     result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, timeout=15)
                     assert result.returncode == 1 and b'TEST cleanup: allocations=0' in result.stderr, stage
-                frames = entry(command, 0, 3)
+                frames = entry(0, 3)
                 assert frames.startswith(b'\xff\xd8') and frames.endswith(b'\xff\xd9')
                 assert frames.count(b'\xff\xd8') == frames.count(b'\xff\xd9') == 3
-                entry(command, 0, 0, dict(os.environ, SCARA_MOCK_CANCEL_INIT='1'))
+                entry(0, 0, dict(fixture, SCARA_MOCK_CANCEL_INIT='1'))
             return 0
         return subprocess.run(command, cwd=ROOT, timeout=30).returncode
     finally:

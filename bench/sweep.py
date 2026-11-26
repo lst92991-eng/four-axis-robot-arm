@@ -86,7 +86,9 @@ def measured_config(site, installation=None, tool=None):
         if result.returncode:
             raise ValueError(result.stderr.strip() or '读取安装配置失败')
         config = json.loads(result.stdout)
-        hover = tomllib.loads(text)['z'].get('hover_deg')
+        site_table = tomllib.loads(text)
+        config['camera_url'] = site_table.get('camera', {}).get('url')
+        hover = site_table['z'].get('hover_deg')
         if hover is not None:
             config['z']['hover_deg'] = hover
         config.update(field_limits(str(Path(__file__).resolve().parent/'reference/workspace.npz')))

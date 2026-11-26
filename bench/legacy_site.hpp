@@ -6,7 +6,7 @@ namespace scara
 {
 //---------台架安装数据接口区---------
 // 从台架配置及其引用的记录中取得格点、机械参考、工作高度和对局参数。
-void Bench_load(const std::string &path, GameConfig &config, Session &session);
+void Bench_load(const std::string &path, StaticParams &staticParams);
 // 从旧装配记录读取臂长、参考角、方向和传动比例。
 bool Arm_load(const std::string &path, ArmGeometry &arm);
 // 将旧 Z 示教记录换算为取子、净空、搬运和释放的 J1 角。

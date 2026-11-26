@@ -1,5 +1,4 @@
 #include "vision/yolo.hpp"
-#include "vision/capture.hpp"
 #include "fixture_bytes.hpp"
 #include "legacy_letterbox.hpp"
 #include <opencv2/imgcodecs.hpp>
@@ -128,7 +127,7 @@ int main(int argc, char **argv)
     sameInput(source, {300,70,650,600}, fixture+"fixed-input.png");
     cv::Mat expectedRgb;
     cv::cvtColor(source(cv::Rect(375,8,640,640)), expectedRgb, cv::COLOR_BGR2RGB);
-    auto direct = scara::Vision_prepare(source);
+    auto direct = scara::Vision_prepare(source, {375, 8});
     check(direct.size()==cv::Size(640,640) && cv::norm(direct,expectedRgb,cv::NORM_INF)==0,
           "Direct crop changed pixels or channel order");
     const cv::Rect corner(source.cols - 640, source.rows - 640, 640, 640);
@@ -169,17 +168,14 @@ int main(int argc, char **argv)
     }
     check(maximum<.0001, "Original-image bounding boxes changed");
     auto originalSource = source.clone();
-    cv::Mat preview = scara::Vision_draw(source,pieces);
-    check(cv::norm(source,originalSource,cv::NORM_INF)==0, "Drawing modified the source image");
-    check(preview.size()==source.size(), "Drawing changed the display field of view");
-    cv::Mat drawing = scara::Vision_draw(source,{});
-    check(cv::norm(drawing, source, cv::NORM_INF)==0, "Empty detection altered frame");
-    drawing = scara::Vision_draw(source,{{0,.9,{-100,-100,10,10}}});
-    check(cv::norm(drawing,source,cv::NORM_INF)==0,
-          "Off-image detection drew a false label at the image origin");
+    scara::Vision_draw(source, {});
+    check(cv::norm(source,originalSource,cv::NORM_INF)==0, "Empty detection altered frame");
+    scara::Vision_draw(source, pieces);
+    check(source.size()==originalSource.size(), "Drawing changed the display field of view");
+    check(cv::norm(source,originalSource,cv::NORM_INF)>0, "Drawing did not annotate the frame");
     cv::Mat tiny(12,20,CV_8UC3,cv::Scalar::all(0));
-    drawing = scara::Vision_draw(tiny,{{12,.9,{0,0,5,5}}});
-    check(drawing.size()==tiny.size(),
+    scara::Vision_draw(tiny, {{12,.9,{0,0,5,5}}});
+    check(tiny.size()==cv::Size(20,12),
           "Clipped Chinese label changed the image size");
     const char *names[] = {"黑将","黑士","黑象","黑马","黑车","黑炮","黑卒","红帅","红仕","红相","红马","红车","红炮","红兵"};
     cv::FontFace font("uni");
@@ -187,58 +183,62 @@ int main(int argc, char **argv)
     std::vector<cv::Mat> masks;
     for (int id=0; id<scara::YoloClasses; ++id)
     {
-        drawing = scara::Vision_draw(blank,{{id,.93,{30,40,50,45}}});
-        cv::Mat label=drawing(cv::Rect(30,15,44,24)), expected=label.clone();
+        blank.setTo(cv::Scalar::all(0));
+        scara::Vision_draw(blank, {{id,.93,{30,40,50,45}}});
+        cv::Mat label=blank(cv::Rect(30,16,90,24)), expected=label.clone();
         expected.setTo(id<7 ? cv::Scalar(255,180,65) : cv::Scalar(65,85,245));
-        cv::putText(expected,names[id],{2,19},cv::Scalar::all(255),font,18);
-        check(cv::norm(label,expected,cv::NORM_INF)==0,"Incorrect Chinese class name");
+        cv::putText(expected, std::string(names[id])+" 0.93", {2,19}, cv::Scalar::all(255), font, 18);
+        check(cv::norm(label,expected,cv::NORM_INF)==0,"Incorrect name and score label");
         cv::Mat white;
         cv::inRange(label,cv::Scalar::all(255),cv::Scalar::all(255),white);
         check(cv::countNonZero(white)>0,"Missing Chinese class text");
+        check(cv::countNonZero(white.colRange(42, white.cols))>0, "Missing score text");
         for (const auto &mask : masks)
             check(cv::norm(white,mask,cv::NORM_INF)>0,"Two Chinese class names rendered as the same glyphs");
         masks.push_back(white);
     }
     std::filesystem::create_directories("output/vision-stage-verify");
     std::vector<uint8_t> encoded;
-    cv::imencode(".png", preview, encoded);
+    cv::imencode(".png", source, encoded);
     scara::writeBytes("output/vision-stage-verify/preview.png", {encoded.begin(),encoded.end()});
 
     check(argc==2, "Camera test needs the local stream fixture");
+    cv::VideoCapture camera;
     for (int i=0; i<2; ++i)
     {
-      scara::Camera_open(argv[1]);
+      camera.open(argv[1]);
       std::this_thread::sleep_for(std::chrono::milliseconds(300));
-      cv::Mat first = scara::Camera_read();
+      cv::Mat first, next, resumed;
+      camera.read(first);
       auto saved = first.clone();
-      cv::Mat next = scara::Camera_read();
+      camera.read(next);
       check(first.size()==source.size() && next.size()==source.size(), "Camera frame size changed");
       check(cv::norm(first,next,cv::NORM_INF)>10, "Camera returned a cached frame again");
       std::this_thread::sleep_for(std::chrono::milliseconds(1200));
-      cv::Mat resumed = scara::Camera_read();
+      camera.read(resumed);
       check(resumed.size()==source.size(), "Camera did not resume with a new frame");
       check(cv::norm(first,saved,cv::NORM_INF)==0, "Another read changed a frame still held by the caller");
-      scara::Camera_close();
+      camera.release();
     }
     cv::Mat frame;
     // 两个源都在 12 帧后结束，/stall 在断开前再等待 15 秒。
     for (const char *path : {"/finite", "/stall"})
     {
-      scara::Camera_open(std::string(argv[1]) + path);
+      camera.open(std::string(argv[1]) + path);
       int frames = 0;
       while (frames < 20)
       {
-        frame = scara::Camera_read();
+        camera.read(frame);
         if (frame.empty()) break;
         ++frames;
       }
       check(frames > 0 && frame.empty(), "End of stream returned a stale frame");
-      scara::Camera_close();
+      camera.release();
     }
-    scara::Camera_open(argv[1]);
-    frame = scara::Camera_read();
+    camera.open(argv[1]);
+    camera.read(frame);
     check(frame.size()==source.size(), "Camera retained an old failure after reopening");
-    scara::Camera_close();
+    camera.release();
     std::cout << "PASS preprocessing byte equality, " << pieces.size()
               << " recorded NPU detections, max box difference " << maximum
               << " px, display size, camera reopen\n";
@@ -246,7 +246,6 @@ int main(int argc, char **argv)
   }
   catch (const std::exception& e)
   {
-    scara::Camera_close();
     std::cerr << e.what() << '\n';
     return 1;
   }

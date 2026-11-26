@@ -11,7 +11,7 @@
 namespace scara
 {
 //---------板端运行数据区---------
-static GameConfig settings;
+static StaticParams settings;
 static std::string model;
 // 首次观察时打开相机和模型。每次完成识别递增帧号。
 static bool visionOpen = false;
@@ -20,10 +20,10 @@ static unsigned frameNumber = 0;
 static void closeVision();
 
 //---------初始化与收尾区---------
-void Runtime_open(const GameConfig &config, const std::string &modelPath, Session &)
+void Runtime_open(const StaticParams &staticParams, const std::string &modelPath, DynamicParams &)
 {
     // 保存本机参数和模型路径，供对局使用。
-    settings = config;
+    settings = staticParams;
     model = modelPath;
 }
 
@@ -44,14 +44,16 @@ void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detectio
     if (!visionOpen)
     {
         if (!Yolo_open(model)) throw std::runtime_error("无法打开NPU模型");
-        Camera_open(settings.cameraUrl);
+        Camera_open();
         visionOpen = true;
     }
     cv::Mat source = Camera_read();
     if (!gameRunning) return;
-    if (source.empty()) throw std::runtime_error("相机未读到画面");
+    if (source.size() != cv::Size(ImageWidth, ImageHeight))
+        throw std::runtime_error("相机未返回 1280×720 原图");
     cv::Mat input = Vision_prepare(source, settings.visionCropOrigin);
-    pieces = Yolo_run(input, settings.visionCropOrigin);
+    if (!Yolo_run(input, settings.visionCropOrigin, pieces))
+        throw std::runtime_error("NPU 推理失败");
     frameId = std::to_string(++frameNumber);
 }
 
@@ -70,10 +72,10 @@ static void printBoard(const chess::Board &board)
     for (const auto &row : board) std::cout << std::string(row.begin(), row.end()) << '\n';
 }
 
-void Operator_show(const Session &session, const std::string &message, const chess::MoveList *choices)
+void Operator_show(const DynamicParams &dynamicParams, const std::string &message, const chess::MoveList *choices)
 {
     if (!message.empty()) std::cout << message << '\n';
-    if (choices || session.game.result != chess::Result::Playing) printBoard(session.game.board);
+    if (choices || dynamicParams.game.result != chess::Result::Playing) printBoard(dynamicParams.game.board);
 }
 
 //---------终端输入区---------

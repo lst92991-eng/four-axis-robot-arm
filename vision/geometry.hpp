@@ -1,6 +1,7 @@
 // 交点用 (行,列) 索引。pixel 为原图像素，xy 为基座毫米。
 #pragma once
 #include "chess/board.hpp"
+#include "capture.hpp"
 #include "yolo.hpp"
 
 namespace scara
@@ -9,7 +10,6 @@ namespace scara
 using chess::Rows;
 using chess::Columns;
 constexpr int Cells = Rows * Columns;
-constexpr int ImageWidth = 1280, ImageHeight = 720;
 
 // 同一印刷交点在相机中的位置和在机械臂基座平面中的位置成对保存。
 struct BoardPoint { cv::Point2d pixel, xy; };

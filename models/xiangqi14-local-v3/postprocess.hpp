@@ -31,5 +31,5 @@ struct YoloHead
 };
 
 // 用本帧的裁剪起点，把三路模型输出还原成原图上的棋子框。
-std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads], cv::Point origin = DefaultCropOrigin);
+std::vector<Detection> Vision_decode(const YoloHead heads[YoloHeads], cv::Point origin);
 } // namespace scara

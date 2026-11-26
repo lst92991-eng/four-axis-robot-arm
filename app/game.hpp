@@ -1,4 +1,4 @@
-// 对局主程序共用的数据和接口。Session 保存这一局，GameConfig 提供启动参数。
+// StaticParams 在开局前准备，DynamicParams 随对局更新。
 #pragma once
 #include "chess/board.hpp"
 #include "vision/geometry.hpp"
@@ -7,34 +7,19 @@
 
 namespace scara
 {
-//---------对局会话数据区---------
-//整局共用的机械参数、观测结果和已确认棋局
-struct Session
+//---------静态参数区---------
+struct StaticParams
 {
-    // 正式棋局和固定棋盘的坐标表，分别用于判棋与查找毫米目标。
-    chess::Game game;
+    // 固定棋盘的 90 个格点坐标，用于视觉归格和查找取放位置。
     Geometry layout;
     // 平面关节参考和 J1 的取放高度，交给运动规划。
     ArmGeometry arm;
     WorkHeights heights;
     JointTarget park;           // 观察位的 J2 反馈角和 J3 电机角，单位度。
-    // 最近一次归格的盘面。连续三张不同的有效帧相同，盘面才算确认。
-    chess::Board observed{};
-    bool observationStable = false;
-    // 观察环节比较帧号，统计连续相同的新画面。
-    std::string lastFrameId;
     // 被吃棋子的盘外放置点，使用机械臂基座 XY，单位毫米。
     cv::Point2d capturePlaceMm;
-    //供画面表示这一手尚未确认，控制顺序由当前回合函数负责
-    bool pending = false;
-};
-//---------启动参数区---------
-struct GameConfig
-{
-    //相机RTSP地址
-    std::string cameraUrl;
     // 模型输入裁剪框在原图中的左上角，单位像素。
-    cv::Point visionCropOrigin = DefaultCropOrigin;
+    cv::Point visionCropOrigin;
     //Pikafish程序及配套NNUE所在目录
     std::string engineDir = "engine/pikafish-2023-03-05";
     //J1/J2/J3共用时间规划，各轴使用自己的速度和加速度上限
@@ -43,6 +28,19 @@ struct GameConfig
     bool humanRed = true, redToMove = true;
     //每步思考时间，毫秒
     int thinkMs = 1000;
+};
+//---------动态参数区---------
+struct DynamicParams
+{
+    // 已确认盘面、轮次、对局结果和棋谱。
+    chess::Game game;
+    // 最近一次归格的盘面。连续三张不同的有效帧相同，盘面才算确认。
+    chess::Board observed{};
+    bool observationStable = false;
+    // 观察环节比较帧号，统计连续相同的新画面。
+    std::string lastFrameId;
+    //供画面表示这一手尚未确认，控制顺序由当前回合函数负责
+    bool pending = false;
 };
 //---------操作员命令区---------
 enum class Command
@@ -59,19 +57,19 @@ enum class Command
 extern volatile std::sig_atomic_t gameRunning;
 
 // 从确认开局运行到终局或退出。返回值同时反映设备收尾是否成功。
-int Match_run(const GameConfig &config, Session &session, const std::string &modelPath);
+int Match_run(const StaticParams &staticParams, DynamicParams &dynamicParams, const std::string &modelPath);
 
 //---------实盘确认区---------
 // 连续三张新帧一致才交付盘面；expected 用来提示偏离的格号。
-bool Observe_board(Session &session, const chess::Board *expected = nullptr);
+bool Observe_board(const Geometry &layout, DynamicParams &dynamicParams, const chess::Board *expected = nullptr);
 // 对局里分别等待走前原盘、走后的预期盘面。
-bool Observe_original(Session &session);
-bool Observe_placement(Session &session, const chess::Board &expected);
+bool Observe_original(const Geometry &layout, DynamicParams &dynamicParams);
+bool Observe_placement(const Geometry &layout, DynamicParams &dynamicParams, const chess::Board &expected);
 bool Operator_waitReady(const char *prompt);
 
 //---------设备与交互接口区---------
 //同一主程序在链接时选择实机IO或仿真IO
-void Runtime_open(const GameConfig &config, const std::string &modelPath, Session &session);
+void Runtime_open(const StaticParams &staticParams, const std::string &modelPath, DynamicParams &dynamicParams);
 // 结束本次运行，回报停车及资源回收是否成功。
 bool Runtime_close();
 // 交付本帧的检测框与帧号。显示由需要画面的设备入口处理。
@@ -88,5 +86,5 @@ Command Operator_read(const std::string &prompt, chess::Move *move = nullptr);
 // 执行排好的动作表，返回本次执行结果。落点由调用方另行核盘。
 bool Robot_execute(const std::string &purpose, const chess::Move &move, const std::vector<PickStep> &steps);
 // 显示盘面和操作提示。只在请玩家选棋时提供可选走法。
-void Operator_show(const Session &session, const std::string &message = {}, const chess::MoveList *choices = nullptr);
+void Operator_show(const DynamicParams &dynamicParams, const std::string &message = {}, const chess::MoveList *choices = nullptr);
 } // namespace scara

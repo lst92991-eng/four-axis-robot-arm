@@ -12,7 +12,7 @@ namespace scara
 {
 //---------场景、盘面与虚拟驱动状态区---------
 static cv::FileStorage script;
-// world 是场景中相机能看到的棋盘。session.game.board 由正式对局在确认后更新。
+// world 是场景中相机能看到的棋盘。dynamicParams.game.board 由正式对局在确认后更新。
 static chess::Board world;
 static size_t commandIndex = 0, executionIndex = 0;
 static unsigned frameNumber = 0;
@@ -30,21 +30,21 @@ static uint64_t driveMs = 0, referenceCount = 0;
 static void readBoard(const cv::FileNode &rows);
 
 //---------仿真初始化与收尾区---------
-void Runtime_open(const GameConfig &config, const std::string &, Session &session)
+void Runtime_open(const StaticParams &staticParams, const std::string &, DynamicParams &dynamicParams)
 {
     readBoard(script["initial_board"]);
     // 续局先在内存棋局中重放既有走法，随后由主流程核对 world 中的实盘。
     if (!script["resume_moves"].empty())
     {
-        chess::Game &game = session.game;
-        chess::Game_reset(game, game.board, config.redToMove, config.humanRed);
+        chess::Game &game = dynamicParams.game;
+        chess::Game_reset(game, game.board, staticParams.redToMove, staticParams.humanRed);
         for (const auto &item : script["resume_moves"])
         {
             if (!chess::Game_replay(game, std::string(item))) throw std::runtime_error("无效的仿真续局走法");
         }
     }
     queryUsed.assign(script["queries"].size(), false);
-    motionLimits = config.motion;
+    motionLimits = staticParams.motion;
     // 按 J1、J2、J3 装入虚拟驱动的初始角度，再从零速度、零时刻开始。
     cv::FileNode initial = script["initial_joints_deg"];
     if (initial.size() != 3) throw std::runtime_error("仿真需要三个初始驱动角度");
@@ -55,7 +55,7 @@ void Runtime_open(const GameConfig &config, const std::string &, Session &sessio
 }
 
 // 记录实际提示。场景可以指定看到哪条提示后动手复位。
-void Operator_show(const Session &, const std::string &message, const chess::MoveList *)
+void Operator_show(const DynamicParams &, const std::string &message, const chess::MoveList *)
 {
     lastMessage = message;
     if (message.empty()) return;
@@ -70,13 +70,13 @@ void Operator_show(const Session &, const std::string &message, const chess::Mov
 }
 
 // 对局完全退出后，核对记谱盘面、观察盘面以及最后的提示。
-static void printResult(const Session &session)
+static void printResult(const DynamicParams &dynamicParams)
 {
-    std::cout << "SIM_RESULT\t" << int(session.game.result) << '\t' << session.pending
-              << '\t' << session.observationStable << '\t' << session.lastFrameId << '\t' << session.game.history << '\t';
-    for (const auto &row : session.game.board) std::cout.write(row.data(), row.size());
+    std::cout << "SIM_RESULT\t" << int(dynamicParams.game.result) << '\t' << dynamicParams.pending
+              << '\t' << dynamicParams.observationStable << '\t' << dynamicParams.lastFrameId << '\t' << dynamicParams.game.history << '\t';
+    for (const auto &row : dynamicParams.game.board) std::cout.write(row.data(), row.size());
     std::cout << '\t';
-    for (const auto &row : session.observed) std::cout.write(row.data(), row.size());
+    for (const auto &row : dynamicParams.observed) std::cout.write(row.data(), row.size());
     std::cout << '\t' << lastMessage << '\n';
 }
 
@@ -284,30 +284,30 @@ static void readBoard(const cv::FileNode &rows)
 } // namespace scara
 
 //---------离线场景入口区---------
-// 载入几何和场景脚本后，把同一份 Session 交给正式对局入口。
+// 载入几何和场景脚本后，把同一份 DynamicParams 交给正式对局入口。
 int main(int argc, char **argv)
 {
     if (argc != 2 && argc != 3) return 2;
     try
     {
-        scara::GameConfig config;
-        scara::Session session;
+        scara::StaticParams staticParams;
+        scara::DynamicParams dynamicParams;
         std::string scenario;
         if (argc == 3)
         {
-            scara::Site_loadFile(config, session, argv[1]);
+            scara::Site_loadFile(staticParams, argv[1]);
             scenario = argv[2];
         }
         else
         {
-            scara::Bench_load(argv[1], config, session);
+            scara::Bench_load(argv[1], staticParams);
             cv::FileStorage input(argv[1], cv::FileStorage::READ);
             auto dir = std::filesystem::u8path(argv[1]).parent_path();
             scenario = (dir / std::filesystem::u8path(std::string(input["simulation_file"]))).u8string();
         }
         if (!scara::script.open(scenario, cv::FileStorage::READ)) return 2;
-        int result = scara::Match_run(config, session, "");
-        scara::printResult(session);
+        int result = scara::Match_run(staticParams, dynamicParams, "");
+        scara::printResult(dynamicParams);
         return result;
     }
     catch (const std::exception &error)

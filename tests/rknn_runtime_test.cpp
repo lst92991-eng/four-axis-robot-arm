@@ -8,6 +8,34 @@
 #include <iostream>
 #include <stdexcept>
 
+#ifdef RKNN_MOCK_ENTRY
+#include "vision/capture.hpp"
+#include <opencv2/videoio.hpp>
+
+namespace scara
+{
+static cv::VideoCapture camera;
+
+void Camera_open()
+{
+  const char *fixture = std::getenv("SCARA_MOCK_CAMERA_URL");
+  if (fixture) camera.open(fixture);
+}
+
+cv::Mat Camera_read()
+{
+  cv::Mat frame;
+  camera.read(frame);
+  return frame;
+}
+
+void Camera_close()
+{
+  camera.release();
+}
+}
+#endif
+
 namespace {
 int allocations = 0, alive = 0, failAt = 0;
 int failQuery = -1, failBind = 0, bindings = 0;
@@ -187,17 +215,17 @@ int main()
     cv::Mat rgb = storage(cv::Rect(3,4,640,640));
     rgb.setTo(cv::Scalar(11,22,33));
     check(!rgb.isContinuous(), "Stride test unexpectedly used tightly packed source rows");
-    auto pieces = scara::Yolo_run(rgb, {0,0});
+    std::vector<scara::Detection> pieces;
+    check(scara::Yolo_run(rgb, {0,0}, pieces), "Inference with padded rows failed");
     check(pieces.size()==1 && pieces[0].classId==12, "Native padded output was decoded incorrectly");
     rowPadding = 0;
     check(scara::Yolo_open("mock.rknn"), "Could not reopen with packed rows");
-    auto packed = scara::Yolo_run(rgb, {0,0});
+    std::vector<scara::Detection> packed;
+    check(scara::Yolo_run(rgb, {0,0}, packed), "Inference with packed rows failed");
     check(packed.size()==1 && packed[0].classId==pieces[0].classId && packed[0].bbox==pieces[0].bbox &&
           packed[0].confidence==pieces[0].confidence, "Packed and padded layouts produced different detections");
     failRun = true;
-    failed = false;
-    try { scara::Yolo_run(rgb); }
-    catch (const std::runtime_error&) { failed = true; }
+    failed = !scara::Yolo_run(rgb, {0,0}, packed);
     scara::Yolo_close();
     check(failed && !contextOpen && !alive, "Inference failure cleanup failed");
     std::cout << "PASS RKNN input/output strides, failure propagation and cleanup; simulated ABI\n";

@@ -198,7 +198,7 @@ button:disabled{opacity:.42;cursor:default} input{vertical-align:middle} #start{
 <div class="controls">
 <button id="start">开局</button><label><input id="current" type="checkbox" checked>用当前盘面开局</label>
 <button id="continueGame" disabled>接续上局</button><button id="resume" disabled>确认</button><button id="stop" disabled>结束对局</button>
-</div><details id="camera"><summary>相机双画面</summary><img id="preview" alt="识别框与棋盘交点" style="max-width:100%"></details><p id="history">棋谱：—</p><p id="message" role="status"></p></main>
+</div><details id="camera"><summary>棋子识别画面</summary><img id="preview" alt="带棋子识别框的画面" style="max-width:100%"></details><p id="history">棋谱：—</p><p id="message" role="status"></p></main>
 <script>
 const token = "__TOKEN__";
 const opening = __OPENING__;
