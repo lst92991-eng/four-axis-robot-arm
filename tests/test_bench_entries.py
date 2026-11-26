@@ -95,8 +95,9 @@ class Entries(unittest.TestCase):
                 park = workspace.angles_of(cfg['park_joints_deg'])
                 self.assertAlmostEqual(workspace.opposite(park)[1], -park[1])
                 run = dll.run_usb_game
-                run.argtypes = ctypes.py_object, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t
+                run.argtypes = ctypes.py_object, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p
                 run.restype = ctypes.c_int
+                camera_url = b'rtsp://example.invalid/live/0'
                 for history, code, interrupted in [
                     ('', 0, None), ('a3a4', 0, None), ('a3a4 xxxx', 1, None),
                     ('a3a4', 0, EOFError), ('a3a4', 0, KeyboardInterrupt), ('', 0, None),
@@ -109,7 +110,7 @@ class Entries(unittest.TestCase):
                         field.command.return_value = 'quit'
                         field.command.side_effect = interrupted
                         field.close.return_value = True
-                        self.assertEqual(run(field, b'mock-model', site, len(site)), code)
+                        self.assertEqual(run(field, b'mock-model', site, len(site), camera_url), code)
                         if code:
                             field.execute.assert_not_called()
                         else:
@@ -124,7 +125,7 @@ class Entries(unittest.TestCase):
                         if code:
                             self.assertIn('xxxx',message)
                 field.close.return_value = False
-                self.assertEqual(run(field, b'mock-model', site, len(site)), 1)
+                self.assertEqual(run(field, b'mock-model', site, len(site), camera_url), 1)
                 self.assertIn('机械停止', field.state.call_args.args[0])
                 self.assertEqual(list(Path(tmp).iterdir()), [])
             finally:
@@ -260,6 +261,26 @@ class Entries(unittest.TestCase):
                     self.assertEqual(height, 100)
                 if kind == 'magnet':
                     self.assertEqual(height, 0)
+
+    def test_motion_checks_accept_different_firmware_builds(self):
+        from drive import Drive
+        from quick import check
+
+        drive = Drive.__new__(Drive)
+        drive.states = {
+            node: dict(build=build, state=0, power=False, fault=0, interlocked=False,
+                       configured=True, referenced=True, encoder_valid=True, bus_mv=24000)
+            for node, build in enumerate(('bc2d87b1', '9fc6a5de', '12345678'), 1)
+        }
+        drive.last_update = dict.fromkeys(drive.states, 10.0)
+        check(drive.states, motion=True)
+        with patch('drive.time.monotonic', return_value=10.0):
+            drive.healthy()
+            drive.states[2]['referenced'] = False
+            with self.assertRaisesRegex(RuntimeError, 'J2'):
+                drive.healthy()
+        with self.assertRaisesRegex(RuntimeError, 'J2 需要接续机械参考'):
+            check(drive.states, motion=True)
 
     def test_missing_reference_sends_no_drive_or_magnet_commands(self):
         drive = MagicMock()

@@ -1,7 +1,7 @@
 """一次被动 CAN 采样。独立检查与实机测试共用，返回给调用方的仍是同一连接。"""
 
 from time import monotonic
-from drive import BUILDS, NODES
+from drive import NODES
 
 
 # ---------被动采样区---------
@@ -24,7 +24,7 @@ def sample(drive, four=False):
 
 
 # ---------状态核对区---------
-# 通信检查核对在线和故障，准备运动时还要核对版本、电角配置与机械参考。
+# 通信检查核对在线和故障，准备运动时还要核对电角配置与机械参考。
 def check(states, four=False, motion=False):
     issues = []
     for n in (1, 2, 3, 4) if four else NODES:
@@ -34,9 +34,7 @@ def check(states, four=False, motion=False):
         elif s['fault']:
             issues.append(f"J{n} 故障 {s['fault']}/{s['detail']}")
         elif motion:
-            if n in BUILDS and s['build'] != BUILDS[n]:
-                issues.append(f"J{n} 版本 {s['build']}，当前台架需要 {BUILDS[n]}")
-            elif not s['configured'] or not s['encoder_valid']:
+            if not s['configured'] or not s['encoder_valid']:
                 issues.append(f"J{n} 电角标定或编码器反馈无效")
             elif not s['referenced']:
                 issues.append(f"J{n} 需要接续机械参考")
@@ -53,8 +51,6 @@ def set_reference(drive, states, angles, log):
     check(states)
     for n, angle in zip(NODES, angles):
         s = states[n]
-        if s['build'] != BUILDS[n]:
-            raise RuntimeError(f"J{n} 实板版本与该站点的轴配置不符")
         if s['power'] or s['state'] != 0 or not s['encoder_valid'] or not s['configured']:
             raise RuntimeError(f"J{n} 需要先失能并取得有效电角标定和编码器反馈")
         if not math.isfinite(angle):

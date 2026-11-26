@@ -15,14 +15,12 @@ sys.path.insert(1, str(ROOT / 'manual_control'))
 from stepfoc_candlelight import Candlelight, Frame, is_candlelight_status_report
 from core import CLEAR, MOVE, OFF, PACKET, PING, STOP, ZERO, packet
 
-PROFILE = {'build_id': '9fc6a5de',
- 'saved_travel_deg': -18420.27,
+PROFILE = {'saved_travel_deg': -18420.27,
  'acceleration_deg_s2': 5050,
  'brake_deg_s2': 4400,
  'running_bus_max_mv': 40000,
  'speed_kp_milli': 1480,
  'speed_ki_milli': 100000,
- 'rotary_build_ids': {'2': '9fc6a5de', '3': '9fc6a5de'},
  'rotary_arrival_deg': {'3': 0.65, '2': 0.15},
  'position_hold_start': True,
  'game_speed_deg_s': 4800,
@@ -38,7 +36,6 @@ Z_ORIGIN = PROFILE['saved_travel_deg']
 SET_SPEED_GAINS = 10
 SET_PROFILE = 13
 NODES = (1, 2, 3)
-BUILDS = {1: PROFILE['build_id'], **{n: PROFILE.get('rotary_build_ids', {}).get(str(n), '41f870bf') for n in (2, 3)}}
 SERIAL = os.environ.get('SCARA_CAN_SERIAL', '')
 
 
@@ -183,7 +180,7 @@ class Drive:
             # 旋转轴出力时，板端电流环按实际采样锁存母线故障；使能前核对供电。
             check_supply = n == 1 or not a['power']
             bus_max = PROFILE['running_bus_max_mv']
-            if a['build'] != BUILDS[n] or a['fault'] or a['interlocked'] or not a['configured'] \
+            if a['fault'] or a['interlocked'] or not a['configured'] \
                     or not a['referenced'] or not a['encoder_valid'] or (check_supply and not 10000 <= a['bus_mv'] <= bus_max):
                 raise RuntimeError(f'J{n} state unavailable: {a}')
 
@@ -206,7 +203,7 @@ class Drive:
         for n in NODES:
             axis = self.states[n]
             if (axis['interlocked'] and axis['state'] == 1 and axis['power']
-                    and axis['build'] == BUILDS[n] and axis['configured'] and axis['referenced']
+                    and axis['configured'] and axis['referenced']
                     and axis['encoder_valid'] and not axis['fault'] and (n != 1 or PROFILE.get('position_hold_start'))):
                 self.sync_sequence(n, check=False)
                 self.wait(lambda: self.states[n]['stationary'], 1.2, check=False)
@@ -504,7 +501,7 @@ class Drive:
         def stopped_without_fault():
             return len(self.states) == 3 and all(
                 a['state'] in (0, 1) and a['stationary'] and not a['fault'] and a['referenced']
-                and a['encoder_valid'] and a['build'] == BUILDS[n] for n, a in self.states.items()
+                and a['encoder_valid'] for a in self.states.values()
             )
         self.wait(stopped_without_fault, 3, check=False)
         for n in NODES:

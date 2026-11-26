@@ -20,7 +20,7 @@ import time
 import tomllib
 import zlib
 
-from drive import BUILDS, CLEAR, Drive, PROFILE, ROOT, SET_SPEED_GAINS, apply_rotary_tuning
+from drive import CLEAR, Drive, PROFILE, ROOT, SET_SPEED_GAINS, apply_rotary_tuning
 
 BENCH = Path(__file__).resolve().parent
 ADB = os.environ.get('SCARA_ADB', 'adb')
@@ -558,7 +558,7 @@ class Bench:
         axis = self.drive.states[3]
         if (axis['fault'], axis['detail']) != (5, 4):
             return
-        if (axis['build'] != BUILDS[3] or axis['power'] or not axis['stationary']
+        if (axis['power'] or not axis['stationary']
                 or not axis['referenced'] or not axis['encoder_valid']):
             raise RuntimeError('J3 的当前位置尚不能接续')
         self.drive.sync_sequence(3, check=False)
