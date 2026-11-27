@@ -7,9 +7,11 @@ namespace scara
 //---------执行数据区---------
 constexpr double ArrivalAllowanceSeconds = 5;
 
-static bool moveAxes(const AxisValues &target, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
-                     DriveFeedback &feedback, AxisValues &commanded);
+static bool moveAxes(const AxisValues &start, const AxisValues &target, const MotionLimits &limits,
+                     const volatile std::sig_atomic_t &running, DriveFeedback &feedback);
 static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running, const AxisValues &position);
+static bool runSteps(const std::vector<PickStep> &steps, const MotionLimits &limits,
+                     const volatile std::sig_atomic_t &running, AxisValues held);
 static const char *stopOutputs();
 
 //---------动作执行区---------
@@ -19,41 +21,50 @@ bool Motion_execute(const std::vector<PickStep> &steps, const MotionLimits &limi
     if (!running) return false;
     try
     {
-        // 以实测位置起步。每段到位后，commanded 记住已完成的目标。
+        // 第一次反馈提供三轴起点；持有起点后，执行失败统一关磁铁、停车。
         DriveFeedback feedback;
         if (!Drive_read(feedback)) return false;
-        AxisValues commanded = feedback.position;
-        size_t completed = 0;
-        while (running && completed < steps.size())
-        {
-            if (!Drive_read(feedback)) break;
-            if (!running) break; // 等反馈期间，操作员也可以按下停止。
-            const PickStep &step = steps[completed];
-            bool ok = false;
-            switch (step.action)
-            {
-            case PickAction::Move:
-                ok = moveAxes(step.target, limits, running, feedback, commanded);
-                break;
-            case PickAction::LiftZ:
-                ok = moveAxes({step.target[0], commanded[1], commanded[2]}, limits, running, feedback, commanded);
-                break;
-            case PickAction::Grip:
-                ok = gripPiece(step.durationMs, running, commanded);
-                break;
-            case PickAction::Release:
-            case PickAction::ReleaseOffBoard:
-                ok = Drive_magnet(false);
-                break;
-            }
-            if (!ok) break;
-            ++completed;
-        }
-        if (completed == steps.size() && running) return true;
+        if (runSteps(steps, limits, running, feedback.position)) return true;
     }
     catch (...) { /* 驱动抛错也进入下面的停车流程。 */ }
     if (const char *error = stopOutputs()) throw std::runtime_error(error);
     return false;
+}
+
+// held 是上一个已到达的目标角，原地吸持和单独抬 Z 都沿用这一姿态。
+static bool runSteps(const std::vector<PickStep> &steps, const MotionLimits &limits,
+                     const volatile std::sig_atomic_t &running, AxisValues held)
+{
+    for (const PickStep &step : steps)
+    {
+        DriveFeedback feedback;
+        if (!running) return false;
+        // 等待期间也可能收到停止请求，执行本步前再查一次。
+        if (!Drive_read(feedback) || !running) return false;
+        switch (step.action)
+        {
+        case PickAction::LiftZ:
+        case PickAction::Move:
+        {
+            AxisValues target = step.target;
+            if (step.action == PickAction::LiftZ)
+                target = {target[0], held[1], held[2]};
+            if (!moveAxes(held, target, limits, running, feedback)) return false;
+            held = target;
+            break;
+        }
+        case PickAction::Grip:
+            if (!gripPiece(step.durationMs, running, held)) return false;
+            break;
+        case PickAction::Release:
+        case PickAction::ReleaseOffBoard:
+            if (!Drive_magnet(false)) return false;
+            break;
+        default:
+            return false;
+        }
+    }
+    return running;
 }
 
 //---------停止收尾区---------
@@ -79,36 +90,34 @@ static const char *stopOutputs()
 }
 
 //---------轨迹执行与终点保持区---------
-static bool moveAxes(const AxisValues &target, const MotionLimits &limits, const volatile std::sig_atomic_t &running,
-                     DriveFeedback &feedback, AxisValues &commanded)
+static bool moveAxes(const AxisValues &start, const AxisValues &target, const MotionLimits &limits,
+                     const volatile std::sig_atomic_t &running, DriveFeedback &feedback)
 {
     if (!feedback.stationary) return false;
     JointTrajectory trajectory;
-    if (!Trajectory_plan(commanded, target, limits, trajectory)) return false;
+    if (!Trajectory_plan(start, target, limits, trajectory)) return false;
     if (trajectory.seconds == 0 && (feedback.position == target || feedback.reached == target)) return true;
 
-    // 运行联动轨迹，直到发出一次完整的终点参考。
-    const uint64_t start = feedback.timeMs;
-    double elapsed = 0;
-    while (running)
+    const uint64_t startMs = feedback.timeMs;
+    const double deadlineSeconds = trajectory.seconds + ArrivalAllowanceSeconds;
+    double elapsedSeconds = 0;
+    while (running && elapsedSeconds < trajectory.seconds)
     {
-        if (!Drive_write(Trajectory_sample(trajectory, elapsed))) return false;
-        if (elapsed >= trajectory.seconds) break;
+        JointReference reference = Trajectory_sample(trajectory, elapsedSeconds);
+        if (!Drive_write(reference)) return false;
         if (!running || !Drive_read(feedback)) return false;
-        elapsed = (feedback.timeMs - start) * 0.001;
-        if (elapsed > trajectory.seconds + ArrivalAllowanceSeconds) return false;
+        elapsedSeconds = (feedback.timeMs - startMs) * 0.001;
     }
 
-    // 只认终点发出后取到的新回报。上一段、还在走、或过期的反馈都不能交接。
+    // 发一次终点和零速参考，随后只读反馈，等三轴确认本段目标。
+    if (!running || elapsedSeconds > deadlineSeconds) return false;
+    const JointReference hold{target, {}};
+    if (!Drive_write(hold)) return false;
     while (running && Drive_read(feedback))
     {
-        if (!running) return false;
-        if ((feedback.timeMs - start) * 0.001 > trajectory.seconds + ArrivalAllowanceSeconds) return false;
-        if (feedback.stationary && feedback.reached == target)
-        {
-            commanded = target;
-            return true;
-        }
+        elapsedSeconds = (feedback.timeMs - startMs) * 0.001;
+        if (!running || elapsedSeconds > deadlineSeconds) return false;
+        if (feedback.stationary && feedback.reached == target) return true;
     }
     return false;
 }
@@ -130,8 +139,7 @@ static bool gripPiece(int dwellMs, const volatile std::sig_atomic_t &running, co
     while (running && feedback.timeMs - start < static_cast<uint64_t>(dwellMs))
     {
         if (!Drive_write(hold)) return false;
-        if (!running) return false;
-        if (!Drive_read(feedback)) return false;
+        if (!running || !Drive_read(feedback)) return false;
     }
     return running;
 }

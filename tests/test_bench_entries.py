@@ -25,6 +25,16 @@ import match_panel
 
 
 class Entries(unittest.TestCase):
+    def test_live_default_site_requires_local_teaching(self):
+        import teach
+        with tempfile.TemporaryDirectory() as directory:
+            installed = Path(directory) / 'installation.toml'
+            with patch.object(teach, 'INSTALLATION', installed):
+                with self.assertRaisesRegex(FileNotFoundError, '15-site'):
+                    teach.default_site()
+                installed.touch()
+                self.assertEqual(teach.default_site(), installed)
+
     def test_measured_stops_are_in_joint_degrees(self):
         import teach
         values = dict(j2=[10, 30, 0.5], j3=[20, -10, -1/3], z=[0], observe=[0, 0],
@@ -90,6 +100,22 @@ class Entries(unittest.TestCase):
                 dll.usb_installation.argtypes = ctypes.c_char_p, ctypes.c_size_t
                 dll.usb_installation.restype = ctypes.py_object
                 cfg = run_game.compiled_config(dll.usb_installation(site, len(site)))
+                self.assertEqual(cfg['skill_level'], 20)
+                selected = site.replace(b'skill_level = 20', b'skill_level = 7')
+                selected_cfg = run_game.compiled_config(dll.usb_installation(selected, len(selected)))
+                bench = run_game.Bench(config=selected_cfg)
+                engine = MagicMock()
+                def reply(match, _timeout):
+                    for line in ('a3a4: 1', 'Nodes searched: 1', 'bestmove a3a4'):
+                        result = match(line)
+                        if result is not None:
+                            return result
+                engine.read.side_effect = reply
+                with patch.object(run_game, 'Lines', return_value=engine):
+                    self.assertEqual(bench.engine('/'.join(opening) + ' w - - 0 1', '', True), (['a3a4'], 'a3a4'))
+                commands = [call.args[0] for call in engine.send.call_args_list]
+                self.assertLess(commands.index('setoption name Skill Level value 7'), commands.index('isready'))
+                self.assertIn(f"go movetime {cfg['think_ms']}", commands)
                 workspace = run_game.Bench(config=cfg).workspace
                 self.assertGreater(len(workspace.angles), 0)
                 park = workspace.angles_of(cfg['park_joints_deg'])
@@ -118,12 +144,28 @@ class Entries(unittest.TestCase):
                             self.assertEqual(field.execute.call_args.args[0], 'prepare')
                         field.infer.assert_not_called()
                         field.close.assert_called_once()
-                        message, _, confirmed, board, _, result, pending, _, _ = field.state.call_args.args
+                        message, frame, confirmed, board, observed, result, pending, stable, _ = field.state.call_args.args
+                        self.assertEqual((frame, observed, stable), ('', '?' * 90, 0))
                         self.assertEqual((confirmed, result, pending), ('' if code else history, 0, 0))
                         if history == 'a3a4':
                             self.assertEqual((board[6*9],board[5*9]), ('.','P'))
                         if code:
                             self.assertIn('xxxx',message)
+
+                # 同一个回观察位故障通过 false 或异常上报时，开局处理一致。
+                for drive_error in (None, RuntimeError('mock CAN error')):
+                    field = MagicMock()
+                    field.resume_history.return_value = ''
+                    field.execute.return_value = False
+                    field.execute.side_effect = drive_error
+                    field.command.return_value = 'quit'
+                    field.close.return_value = True
+                    self.assertEqual(run(field, b'mock-model', site, len(site), camera_url), 0)
+                    field.open.assert_called_once_with('mock-model')
+                    field.command.assert_called_once()
+                    field.close.assert_called_once()
+                    if drive_error:
+                        self.assertTrue(any('mock CAN error' in call.args[0] for call in field.state.call_args_list))
                 field.close.return_value = False
                 self.assertEqual(run(field, b'mock-model', site, len(site), camera_url), 1)
                 self.assertIn('机械停止', field.state.call_args.args[0])
@@ -192,7 +234,7 @@ class Entries(unittest.TestCase):
         def z(target, **_):
             drive.states[1]["position"] = target
 
-        def xy(j2, j3, *_):
+        def xy(j2, j3, *_, force_sync=False):
             self.assertEqual(drive.states[1]["position"], high)
             drive.states[2]["position"] = j2
             drive.states[3]["position"] = j3
@@ -250,6 +292,8 @@ class Entries(unittest.TestCase):
             self.assertEqual(len(cells), 90)
             self.assertEqual(set(cells), set(points))
             self.assertEqual(cells[-1] if carry else cells[0], first)
+            if not carry:
+                self.assertEqual(cells[1], (4, 4))
             self.assertEqual(actions.count(('magnet', 'hold')), 90 if carry else 0)
             self.assertEqual(actions.count(('magnet', 'off')), 90 if carry else 0)
             self.assertEqual(actions[-1][1][1], (-1, -1))
@@ -261,6 +305,44 @@ class Entries(unittest.TestCase):
                     self.assertEqual(height, 100)
                 if kind == 'magnet':
                     self.assertEqual(height, 0)
+
+    def test_field_profile_uses_installed_axis_limits(self):
+        tuning = run_game.field_limits('unused', (4800, 72, 216), (5700, 220, 360))['motion_tuning']
+        self.assertEqual(tuning['base'][2:8], [72, 216, 220, 360, 75, 125])
+        self.assertEqual(tuning['z']['game_speed_deg_s'], 4800)
+        self.assertEqual(tuning['z']['acceleration_deg_s2'], 5700)
+
+    def test_synchronized_crossing_checks_the_whole_direct_path(self):
+        import numpy as np
+        from workspace import Workspace
+
+        arm = dict(j2_reference_deg=0, j3_reference_motor_deg=0, joint_per_drive=[1, 1],
+                   shoulder_ref_rad=0, elbow_ref_rad=0, arm_lengths_mm=[275, 275])
+        angles = np.arange(-5., 6.)
+        free = np.ones((len(angles), len(angles)), dtype=bool)
+        free[1, 8] = False
+        with tempfile.TemporaryDirectory() as directory:
+            samples = Path(directory) / 'workspace.npz'
+            np.savez(samples, angles=angles, connected=free)
+            workspace = Workspace(arm, dict(samples=samples, neutral_shoulder_deg=0,
+                                            registration_uncertainty_deg=0, transfer_shoulder_deg=-3,
+                                            transfer_speed_deg_s=[18, 60]))
+        start, goal = (-4., -4.), (4., 4.)
+        self.assertFalse(workspace.free_box(start, goal))
+        self.assertEqual(workspace.route(start, goal, fixed=True), ([goal], False))
+        bench = run_game.Bench(dict(arm, joint_velocity_deg_s=[4800, 42, 106],
+                                   joint_acceleration_deg_s2=[5700, 110, 180]))
+        bench.workspace = workspace
+        bench.drive = MagicMock()
+        bench.move_xy(start, goal, False)
+        bench.drive.xy.assert_called_once_with(*goal, 42, 106, force_sync=True)
+
+        # 直达通道中间被占用时，经伸直姿态绕行。
+        workspace.free[5, 5] = False
+        route, transfer = workspace.route(start, goal, fixed=True)
+        self.assertTrue(transfer)
+        self.assertIn((-3., 0.), route[:-1])
+        self.assertEqual(route[-1], goal)
 
     def test_motion_checks_accept_different_firmware_builds(self):
         from drive import Drive

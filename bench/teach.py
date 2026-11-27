@@ -202,7 +202,7 @@ def default_site():
         raise ValueError(f'旧示教表请先执行 15-site.cmd "{old}" --install')
     if INSTALLATION.with_suffix('.hpp').exists():
         raise ValueError('现场只有旧 C++ 示教表，请将其实测值填入 installation.toml')
-    return ROOT / 'config/installation.toml'
+    raise FileNotFoundError(f'缺少本机安装表 {INSTALLATION}，请用 15-site.cmd --install 保存三点和 Z 示教')
 
 
 def measurements(sheet):

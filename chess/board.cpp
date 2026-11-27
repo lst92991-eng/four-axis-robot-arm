@@ -1,26 +1,29 @@
 // 用数字行列保存中国象棋盘面，在引擎协议和棋谱边界转换走法。
 #include "board.hpp"
 
-#include <algorithm>
-
 namespace chess
 {
 
 //---------初始化区---------
-// 标准开局按实盘从黑方底线向红方逐行排。点号表示空交点。
+// 标准开局先摆两条底线，再摆炮和兵卒。行 0 靠黑方，行 9 靠红方。
 Board initialBoard()
 {
-    constexpr char ranks[Rows][Columns+1] = {
-        "rnbakabnr", ".........", ".c.....c.", "p.p.p.p.p", ".........",
-        ".........", "P.P.P.P.P", ".C.....C.", ".........", "RNBAKABNR"
-    };
     Board board;
-    for (int row = 0; row < Rows; ++row)
-        std::copy_n(ranks[row], Columns, board[row].begin());
+    for (auto &rank : board) rank.fill('.');
+    // 两条底线从左到右都是车、马、象、士、将帅、士、象、马、车。
+    board[0] = {'r', 'n', 'b', 'a', 'k', 'a', 'b', 'n', 'r'};
+    board[9] = {'R', 'N', 'B', 'A', 'K', 'A', 'B', 'N', 'R'};
+    board[2][1] = board[2][7] = 'c';
+    board[7][1] = board[7][7] = 'C';
+    for (int col = 0; col < Columns; col += 2)
+    {
+        board[3][col] = 'p';
+        board[6][col] = 'P';
+    }
     return board;
 }
 
-//默认构造即建立标准局面，字段初值保存其余回合状态
+// 默认开局由红方先走。
 Game::Game()
 {
     Game_reset(*this, initialBoard());
@@ -43,10 +46,18 @@ bool Game_reset(Game &game, const Board &board, bool redToMove, bool humanRed)
 
 //---------搬子数据核对区---------
 // 起点、终点的行列四项全部相同，两条走法才相等。
-bool operator==(const Move &left, const Move &right)
+bool sameMove(const Move &left, const Move &right)
 {
     return left.fromRow == right.fromRow && left.fromCol == right.fromCol &&
            left.toRow == right.toRow && left.toCol == right.toCol;
+}
+
+int countMove(const MoveList &moves, const Move &selected)
+{
+    int count = 0;
+    for (const Move &move : moves)
+        if (sameMove(move, selected)) ++count;
+    return count;
 }
 // 检查数组下标时，行的范围是 0–9，列的范围是 0–8。
 static bool inside(int row, int col)
@@ -117,31 +128,42 @@ void movePiece(Board &board, const Move &move)
     board[move.fromRow][move.fromCol] = '.';
 }
 
-// 人手走棋后，把引擎给的每一手在棋盘副本上走一次，找出与相机实盘相同的那一手。
+// 走子只有两格变化：原格变空，落点变成刚离开原格的棋子。吃子时落点原先有对方棋子。
 bool inferMove(const Board &before, const Board &seen, const MoveList &legal, Move &move)
 {
     move = {};
-    const Move *match = nullptr;
-    for (const Move &step : legal)
-    {
-        if (!validSquares(step)) continue;
-        Board trial = before;
-        movePiece(trial, step);
-        if (trial != seen) continue;
-        if (match) return false; // 两项都吻合，无法唯一记谱。
-        match = &step;
-    }
-    if (!match || before == seen) return false;
-    move = *match;
+    Move observed;
+    for (int row = 0; row < Rows; ++row)
+        for (int col = 0; col < Columns; ++col)
+        {
+            if (before[row][col] == seen[row][col]) continue;
+            if (seen[row][col] == '.')
+            {
+                if (observed.fromRow >= 0) return false;
+                observed.fromRow = row;
+                observed.fromCol = col;
+            }
+            else
+            {
+                if (observed.toRow >= 0) return false;
+                observed.toRow = row;
+                observed.toCol = col;
+            }
+        }
+    if (observed.fromRow < 0 || observed.toRow < 0) return false;
+    char piece = before[observed.fromRow][observed.fromCol];
+    if (piece != seen[observed.toRow][observed.toCol]) return false;
+    if (countMove(legal, observed) != 1) return false;
+    move = observed;
     return true;
 }
 
 //---------回合交接区---------
-//落子已经确认后，更新权威盘面、完整历史和重复局面记录
+// 落子已经确认后，更新盘面、棋谱和重复局面记录。
 void Game_commit(Game &game, const Move &move)
 {
     movePiece(game.board, move);
-    //追加已确认的一步，再交换行棋方，供下一次引擎查询使用
+    // 追加一步 UCI 棋谱，再交换行棋方。
     if (!game.history.empty()) game.history += ' ';
     game.history += uci(move);
     game.redToMove = !game.redToMove;
@@ -158,7 +180,7 @@ bool Game_replay(Game &game, const std::string &text)
     return true;
 }
 
-//合法表为空时本方负，重复局面交人工裁定
+// 合法表为空时本方负，重复局面交人工裁定。
 void Game_judge(Game &game, const MoveList &legal)
 {
     // 已有终局结果时保留判定。当前行棋方无合法着法时，对方获胜。

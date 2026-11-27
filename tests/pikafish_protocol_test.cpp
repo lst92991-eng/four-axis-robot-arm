@@ -197,8 +197,12 @@ int main()
         mock::reset();
         mock::interruptSend = true;
         mock::interruptRead = true;
-        check(Pikafish_query("fixture", game, 120, mock::running, legal, best) && legal == chess::MoveList{{6,0,5,0},{6,2,5,2}},
+        check(Pikafish_query("fixture", game, 7, 120, mock::running, legal, best) && legal.size() == 2 &&
+              chess::sameMove(legal[0], {6,0,5,0}) && chess::sameMove(legal[1], {6,2,5,2}),
               "Perft decode failed");
+        auto skill = std::find(mock::commands.begin(), mock::commands.end(), "setoption name Skill Level value 7");
+        auto ready = std::find(mock::commands.begin(), mock::commands.end(), "isready");
+        check(skill < ready && ready != mock::commands.end(), "Skill level was not set before isready");
         chess::Move human;
         chess::parseMove("a3a4", human);
         chess::Board observed = game.board;
@@ -206,7 +210,10 @@ int main()
         check(chess::inferMove(game.board, observed, {{6,0,5,0}}, human),
               "Fixture move confirmation failed");
         chess::Game_commit(game, human);
-        check(Pikafish_query("fixture", game, 120, mock::running, legal, best) && best == chess::Move{3,0,4,0}, "Best move decode failed");
+        check(Pikafish_query("fixture", game, 7, 120, mock::running, legal, best) &&
+              chess::sameMove(best, {3,0,4,0}), "Best move decode failed");
+        check(std::count(mock::commands.begin(), mock::commands.end(), "go movetime 120") == 1,
+              "Setting skill changed the thinking time");
         check(mock::position == "position fen " + fen + " moves a3a4", "Full FEN/history was not sent");
         check(std::count(mock::commands.begin(), mock::commands.end(), mock::position) == 1,
               "One engine reply sent the position twice");
@@ -214,31 +221,31 @@ int main()
 
         mock::reset();
         mock::perft = "a3a4: 1\nNodes searched: 2\n";
-        check(!Pikafish_query("fixture", game, 20, mock::running, legal, best) && legal.empty() && mock::openFds == 0,
+        check(!Pikafish_query("fixture", game, 7, 20, mock::running, legal, best) && legal.empty() && mock::openFds == 0,
               "Count mismatch accepted");
         mock::reset();
         mock::perft = "a3a4: 1\na3a4: 1\nNodes searched: 2\n";
-        check(!Pikafish_query("fixture", game, 20, mock::running, legal, best) && legal.empty(), "Duplicate move accepted");
+        check(!Pikafish_query("fixture", game, 7, 20, mock::running, legal, best) && legal.empty(), "Duplicate move accepted");
         mock::reset();
         mock::search = "bestmove invalid\n";
-        check(!Pikafish_query("fixture", game, 20, mock::running, legal, best), "Invalid bestmove accepted");
+        check(!Pikafish_query("fixture", game, 7, 20, mock::running, legal, best), "Invalid bestmove accepted");
         mock::reset();
         auto corrupt = game;
         corrupt.baseFen += "\nquit";
-        check(!Pikafish_query("fixture", corrupt, 20, mock::running, legal, best) && mock::openFds == 0,
+        check(!Pikafish_query("fixture", corrupt, 7, 20, mock::running, legal, best) && mock::openFds == 0,
               "Multiline FEN was sent to the engine");
         mock::reset();
         mock::forkFails = true;
-        check(!Pikafish_query("fixture", game, 20, mock::running, legal, best) && mock::openFds == 0, "Failed start leaked descriptors");
+        check(!Pikafish_query("fixture", game, 7, 20, mock::running, legal, best) && mock::openFds == 0, "Failed start leaked descriptors");
         mock::reset();
         mock::silent = true;
         mock::cancelAfterReads = 8;
-        check(!Pikafish_query("fixture", game, 20, mock::running, legal, best) && mock::openFds == 0, "Cancellation did not stop/reap the engine");
+        check(!Pikafish_query("fixture", game, 7, 20, mock::running, legal, best) && mock::openFds == 0, "Cancellation did not stop/reap the engine");
         mock::reset();
-        check(Pikafish_query("fixture", game, 20, mock::running, legal, best), "Restart after cancellation failed");
+        check(Pikafish_query("fixture", game, 7, 20, mock::running, legal, best), "Restart after cancellation failed");
         mock::eof = true;
         mock::silent = true;
-        check(!Pikafish_query("fixture", game, 20, mock::running, legal, best) && mock::openFds == 0, "EOF did not stop the query");
+        check(!Pikafish_query("fixture", game, 7, 20, mock::running, legal, best) && mock::openFds == 0, "EOF did not stop the query");
         std::cout
             << "PASS UCI handshake, partial I/O, full history, perft, bestmove, cancellation and cleanup; simulated POSIX\n";
         return 0;

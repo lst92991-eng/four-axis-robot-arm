@@ -50,17 +50,22 @@ cv::Point2d Arm_forward(const ArmGeometry &arm, const JointTarget &joints)
 bool Arm_inverse(const ArmGeometry &arm, cv::Point2d xy, JointTarget &joints)
 {
     joints = {};
-    double upper = arm.upperMm, lower = arm.forearmMm;
+    double upper = arm.upperMm;
+    double lower = arm.forearmMm;
     if (!(upper > 0 && lower > 0)) return false;
 
     // 余弦定理求肘角，沿用示教时肘部弯曲的方向。
-    double cosElbow = (xy.dot(xy) - upper * upper - lower * lower) / (2 * upper * lower);
+    double radiusSquared = xy.dot(xy);
+    double cosElbow = (radiusSquared - upper * upper - lower * lower) / (2 * upper * lower);
     if (!(std::abs(cosElbow) <= 1)) return false;
     double elbow = std::copysign(std::acos(cosElbow), arm.elbow.jointRefRad);
 
     // 从目标方位角减去目标连线相对大臂的偏角，得到肩角。
-    double offset = std::atan2(lower * std::sin(elbow), upper + lower * std::cos(elbow));
-    double shoulder = std::atan2(xy.y, xy.x) - offset;
+    double alongUpper = upper + lower * std::cos(elbow);
+    double acrossUpper = lower * std::sin(elbow);
+    double offset = std::atan2(acrossUpper, alongUpper);
+    double bearing = std::atan2(xy.y, xy.x);
+    double shoulder = bearing - offset;
 
     double j2 = arm.shoulder.driveDeg(shoulder);
     double j3 = arm.elbow.driveDeg(elbow);
@@ -119,16 +124,17 @@ JointReference Trajectory_sample(const JointTrajectory &trajectory, double elaps
     // u 从 0 走到 1。路程比例 s = 10u³ − 15u⁴ + 6u⁵，两端的速度和加速度均为零。
     double u = std::max(elapsedSeconds, 0.0) / trajectory.seconds;
     double u2 = u * u;
-    double progress = u2 * u * (10 - 15 * u + 6 * u2);
+    double u3 = u2 * u;
+    double progress = u3 * (10 - 15 * u + 6 * u2);
     // s 对时间求导，得到每秒走过的路程比例。
     double progressPerSecond = 30 * u2 * (1 - u) * (1 - u) / trajectory.seconds;
     // 三个轴使用同一个进度，各自乘本轴带方向的行程，得到参考角和参考角速度。
     JointReference reference;
     for (int axis = 0; axis < 3; ++axis)
     {
-        double distance = trajectory.target[axis] - trajectory.start[axis];
-        reference.position[axis] = trajectory.start[axis] + distance * progress;
-        reference.velocity[axis] = distance * progressPerSecond;
+        double travelDeg = trajectory.target[axis] - trajectory.start[axis];
+        reference.position[axis] = trajectory.start[axis] + travelDeg * progress;
+        reference.velocity[axis] = travelDeg * progressPerSecond;
     }
     return reference;
 }

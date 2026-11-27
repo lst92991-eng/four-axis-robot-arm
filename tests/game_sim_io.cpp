@@ -2,6 +2,7 @@
 #include "app/game.hpp"
 #include "app/site.hpp"
 #include "bench/legacy_site.hpp"
+#include "bench/operator_command.hpp"
 #include <filesystem>
 #include "motion/execute.hpp"
 #include <algorithm>
@@ -12,10 +13,11 @@ namespace scara
 {
 //---------场景、盘面与虚拟驱动状态区---------
 static cv::FileStorage script;
+static const Geometry *boardLayout;
 // world 是场景中相机能看到的棋盘。dynamicParams.game.board 由正式对局在确认后更新。
 static chess::Board world;
 static size_t commandIndex = 0, executionIndex = 0;
-static unsigned frameNumber = 0;
+static uint64_t frameNumber = 0;
 static std::string lastMessage;
 // 人看到提示后，场景在指定帧数之后更新实盘。
 static size_t restorationIndex = 0;
@@ -29,29 +31,14 @@ static uint64_t driveMs = 0, referenceCount = 0;
 
 static void readBoard(const cv::FileNode &rows);
 
-//---------仿真初始化与收尾区---------
-void Runtime_open(const StaticParams &staticParams, const std::string &, DynamicParams &dynamicParams)
+//---------离线续局输入区---------
+static void readHistory(const StaticParams &site, chess::Game &game)
 {
-    readBoard(script["initial_board"]);
-    // 续局先在内存棋局中重放既有走法，随后由主流程核对 world 中的实盘。
-    if (!script["resume_moves"].empty())
-    {
-        chess::Game &game = dynamicParams.game;
-        chess::Game_reset(game, game.board, staticParams.redToMove, staticParams.humanRed);
-        for (const auto &item : script["resume_moves"])
-        {
-            if (!chess::Game_replay(game, std::string(item))) throw std::runtime_error("无效的仿真续局走法");
-        }
-    }
-    queryUsed.assign(script["queries"].size(), false);
-    motionLimits = staticParams.motion;
-    // 按 J1、J2、J3 装入虚拟驱动的初始角度，再从零速度、零时刻开始。
-    cv::FileNode initial = script["initial_joints_deg"];
-    if (initial.size() != 3) throw std::runtime_error("仿真需要三个初始驱动角度");
-    for (int axis = 0; axis < 3; ++axis) driveReference.position[axis] = double(initial[axis]);
-    driveReference.velocity = {};
-    driveMs = referenceCount = 0;
-    std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
+    auto moves = script["resume_moves"];
+    if (moves.empty()) return;
+    chess::Game_reset(game, game.board, site.redToMove, site.humanRed);
+    for (const auto &item : moves)
+        if (!chess::Game_replay(game, std::string(item))) throw std::runtime_error("无效的仿真续局走法");
 }
 
 // 记录实际提示。场景可以指定看到哪条提示后动手复位。
@@ -73,10 +60,15 @@ void Operator_show(const DynamicParams &, const std::string &message, const ches
 static void printResult(const DynamicParams &dynamicParams)
 {
     std::cout << "SIM_RESULT\t" << int(dynamicParams.game.result) << '\t' << dynamicParams.pending
-              << '\t' << dynamicParams.observationStable << '\t' << dynamicParams.lastFrameId << '\t' << dynamicParams.game.history << '\t';
+              << '\t' << dynamicParams.stable << '\t';
+    if (dynamicParams.lastFrameId) std::cout << dynamicParams.lastFrameId;
+    std::cout << '\t' << dynamicParams.game.history << '\t';
     for (const auto &row : dynamicParams.game.board) std::cout.write(row.data(), row.size());
     std::cout << '\t';
-    for (const auto &row : dynamicParams.observed) std::cout.write(row.data(), row.size());
+    if (!dynamicParams.lastFrameId)
+        std::cout << std::string(Rows * Columns, '?');
+    else
+        for (const auto &row : dynamicParams.observed) std::cout.write(row.data(), row.size());
     std::cout << '\t' << lastMessage << '\n';
 }
 
@@ -116,14 +108,14 @@ bool Drive_stop()
 }
 
 //---------场景观察区---------
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces)
+void Vision_observe(uint64_t &frameId, std::vector<Detection> &pieces)
 {
-    if (!script["cancel_after_frames"].empty() && frameNumber >= unsigned(int(script["cancel_after_frames"])))
+    if (!script["cancel_after_frames"].empty() && frameNumber >= uint64_t(int(script["cancel_after_frames"])))
     {
         gameRunning = 0;
         return;
     }
-    if (!script["camera_fails_at"].empty() && frameNumber+1 == unsigned(int(script["camera_fails_at"])))
+    if (!script["camera_fails_at"].empty() && frameNumber+1 == uint64_t(int(script["camera_fails_at"])))
         throw std::runtime_error("仿真相机断开");
     // 更新相机看到的棋子，正式对局仍需连续新帧确认。
     if (restorationFrames > 0 && --restorationFrames == 0)
@@ -139,7 +131,13 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
     // 通常每帧使用递增编号。场景也能提供重复或空帧号，检查三帧确认流程。
     ++frameNumber;
     auto ids = script["frame_ids"];
-    frameId = frameNumber <= ids.size() ? std::string(ids[int(frameNumber-1)]) : std::to_string(frameNumber);
+    frameId = frameNumber;
+    if (frameNumber <= ids.size())
+    {
+        std::string id = ids[int(frameNumber - 1)];
+        frameId = id.empty() ? 0 : std::stoull(id);
+    }
+    const Geometry &layout = *boardLayout;
     pieces.clear();
     for (int row = 0; row < 10; ++row)
         for (int col = 0; col < 9; ++col)
@@ -221,6 +219,16 @@ Command Operator_read(const std::string &prompt, chess::Move *move)
 
 bool Operator_prepare()
 {
+    readBoard(script["initial_board"]);
+    queryUsed.assign(script["queries"].size(), false);
+    // 按 J1、J2、J3 装入虚拟驱动的初始角度，再从零速度、零时刻开始。
+    cv::FileNode initial = script["initial_joints_deg"];
+    if (initial.size() != 3) throw std::runtime_error("仿真需要三个初始驱动角度");
+    for (int axis = 0; axis < 3; ++axis) driveReference.position[axis] = double(initial[axis]);
+    driveReference.velocity = {};
+    driveMs = referenceCount = 0;
+    std::cout << "SIMULATION：不会加载相机、NPU、引擎或控制硬件。\n";
+
     while (gameRunning)
     {
         if (Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。") == Command::Ready) return gameRunning;
@@ -306,7 +314,13 @@ int main(int argc, char **argv)
             scenario = (dir / std::filesystem::u8path(std::string(input["simulation_file"]))).u8string();
         }
         if (!scara::script.open(scenario, cv::FileStorage::READ)) return 2;
-        int result = scara::Match_run(staticParams, dynamicParams, "");
+        scara::boardLayout = &staticParams.layout;
+        scara::motionLimits = staticParams.motion;
+        std::string failure;
+        try { scara::readHistory(staticParams, dynamicParams.game); }
+        catch (const std::exception &error) { failure = error.what(); }
+        int result = failure.empty() ? scara::Match_run(staticParams, dynamicParams)
+                                     : scara::Match_finish(dynamicParams, failure);
         scara::printResult(dynamicParams);
         return result;
     }

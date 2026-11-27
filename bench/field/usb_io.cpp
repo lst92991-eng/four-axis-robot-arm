@@ -2,14 +2,13 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "app/site.hpp"
+#include "bench/operator_command.hpp"
 #include "scara_cad.hpp"
 #include "vision/yolo.hpp"
 #include "models/xiangqi14-local-v3/postprocess.hpp"
 
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/videoio.hpp>
-#include <algorithm>
-#include <cmath>
 #include <cstring>
 #include <iostream>
 #include <memory>
@@ -34,7 +33,7 @@ PyObject *field = nullptr;
 std::string streamUrl;
 cv::VideoCapture camera;
 cv::Point cropOrigin;
-unsigned frameNumber = 0;
+uint64_t frameNumber = 0;
 
 // 把 Python 的返回对象交给 Ref 管理。调用失败则把原因带回 C++ 对局。
 Ref require(PyObject *result)
@@ -66,18 +65,7 @@ void closeVision()
 }
 } // namespace
 
-static void readHistory(const StaticParams &staticParams, chess::Game &game);
-
-//---------台架启动与收尾区---------
-void Runtime_open(const StaticParams &staticParams, const std::string &modelPath, DynamicParams &dynamicParams)
-{
-    // 本机 ROI 随安装参数传入，Python 准备板端设备。
-    cropOrigin = staticParams.visionCropOrigin;
-    require(PyObject_CallMethod(field, "open", "s", modelPath.c_str()));
-    // 检查本次是否要接续棋谱。
-    readHistory(staticParams, dynamicParams.game);
-}
-
+//---------台架收尾区---------
 bool Runtime_close()
 {
     try
@@ -136,8 +124,53 @@ static void readHistory(const StaticParams &staticParams, chess::Game &game)
     game = std::move(restored);
 }
 
+//---------板端推理回复区---------
+// RGB 和帧号发给板端；解码时 packet 仍持有三路 INT8 数据。
+static void inferPieces(const cv::Mat &input, const std::string &frameId, std::vector<Detection> &pieces)
+{
+    auto packet = require(PyObject_CallMethod(field, "infer", "y#s", input.ptr<char>(),
+                                               Py_ssize_t(input.total() * input.elemSize()), frameId.c_str()));
+    char *data = nullptr;
+    Py_ssize_t size = 0;
+    if (PyBytes_AsStringAndSize(packet.get(), &data, &size) < 0)
+        require(nullptr);
+    // 回复的前 4 字节是元数据长度，随后是元数据文本和三段 INT8 张量。
+    uint32_t headerSize = 0;
+    if (size < 4) throw std::runtime_error("NPU回复不完整");
+    std::memcpy(&headerSize, data, sizeof(headerSize));
+    if (headerSize == 0 || headerSize > 16384 || size_t(size) < 4 + size_t(headerSize))
+        throw std::runtime_error("NPU元数据长度错误");
+    cv::FileStorage meta(std::string(data + 4, headerSize), cv::FileStorage::READ | cv::FileStorage::MEMORY);
+    // 先核对回复帧号和输出个数，确保三个张量都来自本次请求。
+    if (std::string(meta["frame_id"]) != frameId || meta["outputs"].size() != YoloHeads)
+        throw std::runtime_error("NPU回复帧号或输出数不符");
+    size_t offset = 4 + headerSize;
+    YoloHead heads[YoloHeads];
+    for (int i = 0; i < YoloHeads; ++i)
+    {
+        const int width = YoloGrid[i];
+        auto attr = meta["outputs"][i];
+        auto shape = attr["dims"];
+        const int stride = int(attr["w_stride"]);
+        const float scale = float(attr["scale"]);
+        const size_t bytes = size_t(width) * width * YoloChannels;
+        // 核对 NHWC 形状、INT8 类型、行宽和有效字节数，再把数据交给解码器。
+        if (shape.size() != 4 || int(shape[0]) != 1 || int(shape[1]) != width ||
+            int(shape[2]) != width || int(shape[3]) != YoloChannels || int(attr["type"]) != 2 ||
+            int(attr["fmt"]) != 1 || bytes > size_t(size) - offset ||
+            (stride != 0 && stride != width) || !(scale > 0))
+            throw std::runtime_error("NPU张量格式不符");
+        // 输出描述直接引用 packet 中的数据，本次解码在 packet 释放前完成。
+        heads[i] = {reinterpret_cast<const int8_t *>(data + offset), size_t(width) * YoloChannels,
+                    int(attr["zero_point"]), scale};
+        offset += bytes;
+    }
+    if (offset != size_t(size)) throw std::runtime_error("NPU回复有多余数据");
+    pieces = Vision_decode(heads, cropOrigin);
+}
+
 //---------取帧、推理与预览区---------
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces)
+void Vision_observe(uint64_t &frameId, std::vector<Detection> &pieces)
 {
     if (!gameRunning) return;
     if (!camera.isOpened()) camera.open(streamUrl);
@@ -158,59 +191,13 @@ void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<De
         if (!gameRunning) return;
         // 给本帧分配标识，把 RGB 缓冲和帧号一起送给板端推理。
         cv::Mat input = Vision_prepare(source, cropOrigin);
-        frameId = std::to_string(++frameNumber);
-        auto packet = require(PyObject_CallMethod(field, "infer", "y#s", input.ptr<char>(),
-                                                   Py_ssize_t(input.total() * input.elemSize()), frameId.c_str()));
-        char *data = nullptr;
-        Py_ssize_t size = 0;
-        if (PyBytes_AsStringAndSize(packet.get(), &data, &size) < 0)
-            require(nullptr);
-        // 回复的前 4 字节是元数据长度，随后是元数据文本和三段 INT8 张量。
-        uint32_t headerSize = 0;
-        if (size < 4) throw std::runtime_error("NPU回复不完整");
-        std::memcpy(&headerSize, data, sizeof(headerSize));
-        if (headerSize == 0 || headerSize > 16384 || size_t(size) < 4 + size_t(headerSize))
-            throw std::runtime_error("NPU元数据长度错误");
-        cv::FileStorage meta(std::string(data + 4, headerSize), cv::FileStorage::READ | cv::FileStorage::MEMORY);
-        // 先核对回复帧号和输出个数，确保三个张量都来自本次请求。
-        if (std::string(meta["frame_id"]) != frameId || meta["outputs"].size() != YoloHeads)
-            throw std::runtime_error("NPU回复帧号或输出数不符");
-        size_t offset = 4 + headerSize;
-        YoloHead heads[YoloHeads];
-        for (int i = 0; i < YoloHeads; ++i)
-        {
-            const int width = YoloGrid[i];
-            auto attr = meta["outputs"][i];
-            auto shape = attr["dims"];
-            const int stride = int(attr["w_stride"]);
-            const float scale = float(attr["scale"]);
-            const size_t bytes = size_t(width) * width * YoloChannels;
-            // 核对 NHWC 形状、INT8 类型、行宽和有效字节数，再把数据交给解码器。
-            if (shape.size() != 4 || int(shape[0]) != 1 || int(shape[1]) != width ||
-                int(shape[2]) != width || int(shape[3]) != YoloChannels || int(attr["type"]) != 2 ||
-                int(attr["fmt"]) != 1 || bytes > size_t(size) - offset ||
-                (stride != 0 && stride != width) || !(scale > 0))
-                throw std::runtime_error("NPU张量格式不符");
-            // 输出描述直接引用 packet 中的数据，本次解码在 packet 释放前完成。
-            heads[i] = {reinterpret_cast<const int8_t *>(data + offset), size_t(width) * YoloChannels,
-                        int(attr["zero_point"]), scale};
-            offset += bytes;
-        }
-        if (offset != size_t(size)) throw std::runtime_error("NPU回复有多余数据");
-        // 解码后在当前帧画框、棋名和得分。
-        pieces = Vision_decode(heads, cropOrigin);
+        frameId = ++frameNumber;
+        inferPieces(input, std::to_string(frameId), pieces);
         Vision_draw(source, pieces);
         // 将带框画面压成 JPEG，通过内存回调交给面板。
         std::vector<unsigned char> jpeg;
         if (!cv::imencode(".jpg", source, jpeg)) throw std::runtime_error("无法编码预览");
         require(PyObject_CallMethod(field, "preview", "y#", jpeg.data(), Py_ssize_t(jpeg.size())));
-
-        // 棋盘下沿的弃子落在盘外。保留原检测框供预览，只从盘面归格中移除。
-        pieces.erase(std::remove_if(pieces.begin(), pieces.end(), [&](const Detection &piece) {
-            const cv::Point2d center(piece.bbox.x + piece.bbox.width / 2, piece.bbox.y + piece.bbox.height / 2);
-            cv::Point2d cell = Geometry_gridPoint(center - layout.origin.pixel, layout.rowStep.pixel, layout.columnStep.pixel);
-            return cell.x >= Columns - 0.5 && cell.y >= -0.5 && cell.y < Rows - 0.5;
-        }), pieces.end());
 
     }
     catch (...)
@@ -258,7 +245,9 @@ static std::string boardText(const chess::Board &board)
 void Operator_show(const DynamicParams &s, const std::string &message, const chess::MoveList *choices)
 {
     std::string board = boardText(s.game.board);
-    std::string observed = boardText(s.observed);
+    // 等待第一帧时只填面板占位内容。
+    std::string frame = s.lastFrameId ? std::to_string(s.lastFrameId) : "";
+    std::string observed = frame.empty() ? std::string(Rows * Columns, '?') : boardText(s.observed);
     auto legal = require(PyList_New(choices ? choices->size() : 0));
     if (choices)
         for (size_t i = 0; i < choices->size(); ++i)
@@ -267,9 +256,9 @@ void Operator_show(const DynamicParams &s, const std::string &message, const che
             auto item = require(Py_BuildValue("((ii)(ii))", m.fromRow, m.fromCol, m.toRow, m.toCol));
             PyList_SET_ITEM(legal.get(), i, item.release());
         }
-    require(PyObject_CallMethod(field, "state", "sssssiiiO", message.c_str(), s.lastFrameId.c_str(),
+    require(PyObject_CallMethod(field, "state", "sssssiiiO", message.c_str(), frame.c_str(),
                                 s.game.history.c_str(), board.c_str(), observed.c_str(), int(s.game.result),
-                                int(s.pending), int(s.observationStable), legal.get()));
+                                int(s.pending), int(s.stable), legal.get()));
 }
 
 // 输入结束或被打断时，由对局统一收尾。
@@ -286,7 +275,6 @@ static Ref operatorReply(PyObject *value)
 
 bool Operator_prepare()
 {
-    // Windows 台架开局由操作者从面板或命令行启动。
     return gameRunning;
 }
 
@@ -348,7 +336,7 @@ extern "C" __declspec(dllexport) PyObject *usb_installation(const char *text, si
     try { loadFieldSite(text, size, staticParams); }
     catch (const std::exception &error) { PyErr_SetString(PyExc_ValueError, error.what()); return nullptr; }
     // 交付机械参考与臂长、Z 工作层、观察位、三轴限幅、吸合时间和 CAD 采样数据。
-    return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:d,s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:s}",
+    return Py_BuildValue("{s:(dddddd),s:(dd),s:(ddd),s:d,s:(dd),s:(ddd),s:(ddd),s:i,s:y#,s:i,s:i,s:s}",
         "arm", staticParams.arm.shoulder.driveRefDeg, staticParams.arm.elbow.driveRefDeg, staticParams.arm.shoulder.jointRefRad, staticParams.arm.elbow.jointRefRad,
         staticParams.arm.shoulder.jointPerDrive, staticParams.arm.elbow.jointPerDrive,
         "arm_lengths_mm", staticParams.arm.upperMm, staticParams.arm.forearmMm,
@@ -357,7 +345,8 @@ extern "C" __declspec(dllexport) PyObject *usb_installation(const char *text, si
         "velocity", staticParams.motion.velocity[0], staticParams.motion.velocity[1], staticParams.motion.velocity[2],
         "acceleration", staticParams.motion.acceleration[0], staticParams.motion.acceleration[1], staticParams.motion.acceleration[2],
         "grip_ms", staticParams.heights.gripDwellMs, "cad", cadSamples, Py_ssize_t(sizeof(cadSamples)),
-        "think_ms", staticParams.thinkMs, "engine_directory", staticParams.engineDir.c_str());
+        "skill_level", staticParams.skillLevel, "think_ms", staticParams.thinkMs,
+        "engine_directory", staticParams.engineDir.c_str());
 }
 
 // Python 传入本局设备对象与模型路径，DLL 使用与板端相同的 Match_run。
@@ -372,9 +361,22 @@ extern "C" __declspec(dllexport) int run_usb_game(PyObject *callbacks, const cha
     {
         loadFieldSite(text, size, staticParams);
         scara::streamUrl = cameraUrl;
+        scara::cropOrigin = staticParams.visionCropOrigin;
         // 现场台架允许棋子中心偏离交点 0.45 格。
         staticParams.layout.assignmentTolerance = .45;
-        result = scara::Match_run(staticParams, dynamicParams, modelPath);
+
+        // 接续棋谱属于台架入口。对局收到的 game 已包含完整历史。
+        scara::gameRunning = 1;
+        std::string failure;
+        try
+        {
+            scara::readHistory(staticParams, dynamicParams.game);
+            // 准备 NPU 会话。机械动作随后由对局完成格点计算后发出。
+            scara::require(PyObject_CallMethod(scara::field, "open", "s", modelPath));
+        }
+        catch (const std::exception &error) { if (scara::gameRunning) failure = error.what(); }
+        result = scara::gameRunning && failure.empty() ? scara::Match_run(staticParams, dynamicParams)
+                                                       : scara::Match_finish(dynamicParams, failure);
     }
     catch (const std::exception &error) { PyErr_SetString(PyExc_RuntimeError, error.what()); }
     // 对局结束后解除设备对象与本次调用的关联。

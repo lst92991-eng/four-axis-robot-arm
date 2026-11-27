@@ -11,7 +11,7 @@ void Plan_move(JointTarget joints, double zDeg, std::vector<PickStep> &steps)
     steps.push_back({PickAction::Move, {zDeg, joints.j2Deg, joints.j3MotorDeg}});
 }
 
-// 取子先到棋子上方，再竖直下降吸合，最后抬到允许横移的高度。
+// 取子先到棋子上方，再竖直下降吸合，最后抬到搬运全高。
 static void Plan_pick(const WorkHeights &z, const JointTarget &source, std::vector<PickStep> &steps)
 {
     Plan_move(source, z.travelDeg, steps);
@@ -21,7 +21,7 @@ static void Plan_pick(const WorkHeights &z, const JointTarget &source, std::vect
     grip.action = PickAction::Grip;
     grip.durationMs = z.gripDwellMs;
     steps.push_back(grip);
-    Plan_move(source, z.clearanceDeg, steps);
+    Plan_move(source, z.travelDeg, steps);
 }
 
 // 落子先到目标格上方，下降到释放高度，关断磁铁后抬起。
@@ -30,25 +30,20 @@ static void Plan_place(const WorkHeights &z, const JointTarget &target, std::vec
     Plan_move(target, z.travelDeg, steps);
     Plan_move(target, z.releaseDeg, steps);
     steps.push_back({PickAction::Release});
-    Plan_move(target, z.clearanceDeg, steps);
+    Plan_move(target, z.travelDeg, steps);
 }
 
-void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, cv::Point2d targetMm,
-               const cv::Point2d *discardMm, const JointTarget &park, std::vector<PickStep> &steps)
+void Plan_turn(const WorkHeights &z, const JointTarget &source, const JointTarget &target,
+               const JointTarget *discard, const JointTarget &park, std::vector<PickStep> &steps)
 {
     steps.clear();
     if (z.pickupDeg == z.travelDeg) throw std::runtime_error("吸取和搬运高度尚未示教");
-    JointTarget source, target;
-    if (!Arm_inverse(arm, sourceMm, source)) throw std::runtime_error("取子位置不可达");
-    if (!Arm_inverse(arm, targetMm, target)) throw std::runtime_error("落子位置不可达");
 
     // 吃子先移走目标格上的对方棋子，在弃子区上方松开。
-    if (discardMm)
+    if (discard)
     {
-        JointTarget bin;
-        if (!Arm_inverse(arm, *discardMm, bin)) throw std::runtime_error("弃子位置不可达");
         Plan_pick(z, target, steps);
-        Plan_move(bin, z.travelDeg, steps);
+        Plan_move(*discard, z.travelDeg, steps);
         steps.push_back({PickAction::ReleaseOffBoard});
     }
     // 把己方棋子搬到目标格，再回观察位。

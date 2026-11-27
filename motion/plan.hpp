@@ -34,39 +34,18 @@ struct JointTarget
 // Z 的工作层保存 J1 丝杆电机的示教角，单位度。
 struct WorkHeights
 {
-    //J1吸取层的已示教角度
-    double pickupDeg = 0;
-    // 开始横移前要达到的 J1 净空角，当前安装表在这里使用搬运高度。
-    double clearanceDeg = 0;
-    //搬运层与释放层的已示教角度
-    double travelDeg = 0;
-    double releaseDeg = 0;
+    double pickupDeg = 0;     // 在棋子上方吸合的高度。
+    double clearanceDeg = 0;  // 保留示教净空层，用于核对释放高度。
+    double travelDeg = 0;     // 搬运棋子的高度。
+    double releaseDeg = 0;    // 在目标格断开磁铁的高度。
     // 正向吸合后看齐并贴住棋子的时间，单位毫秒。
     int gripDwellMs = 420;
 };
 // 本机主流程取得贴子时的 J1 驱动角后，生成棋面和搬运两档。liftCm 为相对抬升厘米数。
 WorkHeights WorkHeights_fromContact(double contactDeg, double liftCm = 4.3);
-//---------三轴轨迹数据区---------
-//三个元素依次为J1电机角、J2反馈角、J3电机角；J4保持原姿态
+// 三个元素依次为 J1 丝杆驱动角、J2 反馈角和 J3 电机角，单位度。
 using AxisValues = std::array<double, 3>;
-struct MotionLimits
-{
-    //每轴的速度和加速度上限，单位为度/秒、度/秒²
-    AxisValues velocity{}, acceleration{};
-    bool valid() const;
-};
-struct JointTrajectory
-{
-    //同一段三轴的起点、终点和公共时长，秒
-    AxisValues start{}, target{};
-    double seconds = 0;
-};
-// 一次采样产生同一时刻的角度和角速度，分别用度、度/秒。
-struct JointReference
-{
-    //同一时刻同时交给三个驱动的参考
-    AxisValues position{}, velocity{};
-};
+
 //---------取放动作数据区---------
 // Grip 使磁铁吸持，Release 和 ReleaseOffBoard 分别标记盘上与盘外的关断。
 enum class PickAction
@@ -89,15 +68,31 @@ struct PickStep
 //---------取放动作接口区---------
 // 向本手的动作表追加一个关节目标。
 void Plan_move(JointTarget joints, double zDeg, std::vector<PickStep> &steps);
-// 先求整手关节目标，再排取放和回观察位。普通走子的弃子点传 nullptr。
-void Plan_turn(const ArmGeometry &arm, const WorkHeights &z, cv::Point2d sourceMm, cv::Point2d targetMm,
-               const cv::Point2d *discardMm, const JointTarget &park, std::vector<PickStep> &steps);
+// 用已算好的关节目标排取放和回观察位。普通走子的弃子目标传 nullptr。
+void Plan_turn(const WorkHeights &z, const JointTarget &source, const JointTarget &target,
+               const JointTarget *discard, const JointTarget &park, std::vector<PickStep> &steps);
 
-//---------坐标与轨迹接口区---------
+//---------吸头坐标与关节角区---------
 // 用驱动角算吸头的基座 XY 毫米，供示教采点核对。
 cv::Point2d Arm_forward(const ArmGeometry &arm, const JointTarget &joints);
 // 用基座 XY 毫米算一组关节角，不可达时返回 false。
 bool Arm_inverse(const ArmGeometry &arm, cv::Point2d baseMm, JointTarget &joints);
+
+//---------三轴共同轨迹区---------
+struct MotionLimits
+{
+    AxisValues velocity{}, acceleration{}; // 各轴最大速度（度/秒）和加速度（度/秒²）。
+    bool valid() const;
+};
+struct JointTrajectory
+{
+    AxisValues start{}, target{};
+    double seconds = 0; // 三轴共用的运动时间。
+};
+struct JointReference
+{
+    AxisValues position{}, velocity{}; // 同一时刻发给三轴的位置（度）和速度（度/秒）。
+};
 // 按最慢轴的速度和加速度约束确定三轴共用时长。
 bool Trajectory_plan(const AxisValues &start, const AxisValues &target, const MotionLimits &limits,
                      JointTrajectory &trajectory);

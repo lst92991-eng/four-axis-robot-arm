@@ -1,17 +1,30 @@
+#include "rv1106.hpp"
 #include "site.hpp"
-
+#include <exception>
+#include <iostream>
 
 //---------对局启动区---------
-int main(int, char **argv)
+int main(int argc, char **argv)
 {
     using namespace scara;
-    StaticParams staticParams;
+    if (argc < 2)
+    {
+        std::cerr << "请提供 RKNN 模型路径。\n";
+        return 2;
+    }
 
-    // 从本机 TOML 读取安装参数。
-    Site_loadFile(staticParams);
-    DynamicParams dynamicParams;
-
-    int exitcode = Match_run(staticParams, dynamicParams, argv[1]);
-
-    return exitcode;
+    StaticParams site;
+    DynamicParams match;
+    try
+    {
+        Site_loadFile(site);
+        RV1106_configure(argv[1], site.visionCropOrigin, site.engineDir,
+                         site.skillLevel, site.thinkMs, site.motion);
+    }
+    catch (const std::exception &error)
+    {
+        std::cerr << error.what() << '\n';
+        return 1;
+    }
+    return Match_run(site, match);
 }

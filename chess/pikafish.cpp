@@ -1,6 +1,5 @@
 // RV1106 通过 UCI 查询皮卡鱼。一轮查询使用同一局面取得合法表和电脑应手。
 #include "pikafish.hpp"
-#include <algorithm>
 #include <cerrno>
 #include <chrono>
 #include <poll.h>
@@ -24,27 +23,33 @@ struct Uci
     Clock::time_point deadline;
     std::string buffer;
 
+    bool open(const char *directory, int skillLevel);
+    bool legalMoves(const std::string &position, chess::MoveList &legal);
+    bool bestMove(int thinkMs, chess::Move &best);
+    bool handshake(const std::string &command, const char *reply);
     bool writeText(const std::string &text);
     bool readLine(std::string &line);
-    bool handshake(const char *command, const char *reply);
-    bool readLegal(chess::MoveList &legal);
-    bool query(const chess::Game &game, int thinkMs, chess::MoveList &legal, chess::Move &best);
 };
-bool openEngine(const char *directory);
 } // namespace
 
 //---------查询入口与结果交接区---------
-bool Pikafish_query(const char *directory, const chess::Game &game, int thinkMs,
+bool Pikafish_query(const char *directory, const chess::Game &game, int skillLevel, int thinkMs,
                     const volatile std::sig_atomic_t &running, chess::MoveList &legal, chess::Move &best)
 {
     legal.clear();
     best = {};
-    // 先回收上次的引擎进程，再检查 FEN 和历史中的换行符，保证 position 是一条命令。
     if (!Pikafish_close() || !running || !directory || !*directory) return false;
-    if (game.baseFen.empty() || game.baseFen.find_first_of("\r\n") != std::string::npos ||
-        game.history.find_first_of("\r\n") != std::string::npos) return false;
+
+    // 同一个起始 FEN 和完整已确认棋谱只组成一条 position 命令。
+    std::string position = "position fen " + game.baseFen;
+    if (!game.history.empty()) position += " moves " + game.history;
+    if (game.baseFen.empty() || position.find_first_of("\r\n") != std::string::npos) return false;
+
+    // 建立连接后先取本回合合法表。电脑执棋且仍有走法时，再向同一个引擎索取应手。
     Uci io{running, Clock::now() + std::chrono::seconds(5), {}};
-    bool ok = openEngine(directory) && io.query(game, thinkMs, legal, best);
+    bool ok = io.open(directory, skillLevel) && io.legalMoves(position, legal);
+    if (ok && !legal.empty() && game.redToMove != game.humanRed)
+        ok = io.bestMove(thinkMs, best);
     // 子进程已回收且查询成功，合法表和应手才交给对局。
     if (Pikafish_close() && ok) return true;
     legal.clear();
@@ -54,46 +59,12 @@ bool Pikafish_query(const char *directory, const chess::Game &game, int thinkMs,
 
 namespace
 {
-//---------一手棋与引擎的对话---------
-bool Uci::query(const chess::Game &game, int thinkMs, chess::MoveList &legal, chess::Move &best)
-{
-    // 先用 uciok 确认协议，再设为单线程、4 MiB 哈希表，等引擎回复 readyok。
-    if (!handshake("uci\n", "uciok")) return false;
-    if (!handshake("setoption name Threads value 1\nsetoption name Hash value 4\nisready\n", "readyok"))
-        return false;
-
-    // 局面由起始 FEN 和已确认棋谱组成，本回合只发一次。
-    std::string position = "position fen " + game.baseFen;
-    if (!game.history.empty()) position += " moves " + game.history;
-    deadline = Clock::now() + std::chrono::seconds(3);
-    // go perft 1 列出当前所有合法走法，readLegal 把各行转成数字起终点。
-    if (!writeText(position + "\ngo perft 1\n") || !readLegal(legal)) return false;
-    // 玩家回合只需要高亮可走位置。合法表为空时，交给棋局判负。
-    if (legal.empty() || game.redToMove == game.humanRed) return true;
-
-    // 轮到电脑，读取 bestmove 后的起点和终点。
-    // 等待 bestmove 的时限包含指定的思考时间和 2 秒通信余量。
-    deadline = Clock::now() + std::chrono::milliseconds(thinkMs + 2000);
-    if (!writeText("go movetime " + std::to_string(thinkMs) + "\n")) return false;
-    std::string line;
-    while (readLine(line))
-    {
-        std::istringstream reply(line);
-        std::string kind;
-        reply >> kind;
-        if (kind.empty() || kind == "info") continue;
-        if (kind != "bestmove") return false;
-        std::string move;
-        reply >> move;
-        return chess::parseMove(move, best);
-    }
-    return false;
-}
-
-//---------合法表与握手回复区---------
+//---------一手棋的两笔问答区---------
 // perft 1 为每一手输出一行，例如 a3a4: 1，末行给出总数。
-bool Uci::readLegal(chess::MoveList &legal)
+bool Uci::legalMoves(const std::string &position, chess::MoveList &legal)
 {
+    deadline = Clock::now() + std::chrono::seconds(3);
+    if (!writeText(position + "\ngo perft 1\n")) return false;
     std::string line;
     while (readLine(line))
     {
@@ -104,24 +75,31 @@ bool Uci::readLegal(chess::MoveList &legal)
         if (record.size() != 7 || record.substr(4) != ": 1") return false;
         chess::Move move;
         if (!chess::parseMove(record.substr(0, 4), move)) return false;
-        if (legal.size() == 256 || std::find(legal.begin(), legal.end(), move) != legal.end()) return false;
+        if (legal.size() == 256 || chess::countMove(legal, move) != 0) return false;
         legal.push_back(move);
     }
     return false;
 }
 
-// 发送握手命令，逐行跳过引擎自述，直到看到这一步约定的回复。
-bool Uci::handshake(const char *command, const char *reply)
+// 思考时间后留两秒通信余量。跳过搜索进度，读出 bestmove 后面的走法。
+bool Uci::bestMove(int thinkMs, chess::Move &best)
 {
-    if (!writeText(command)) return false;
+    deadline = Clock::now() + std::chrono::milliseconds(thinkMs + 2000);
+    if (!writeText("go movetime " + std::to_string(thinkMs) + "\n")) return false;
     std::string line;
     while (readLine(line))
-        if (line == reply) return true;
+    {
+        std::istringstream reply(line);
+        std::string kind, move;
+        reply >> kind >> move;
+        if (kind == "bestmove") return chess::parseMove(move, best);
+        if (!kind.empty() && kind != "info") return false;
+    }
     return false;
 }
 
 //---------启动进程，与标准输入输出相连---------
-bool openEngine(const char *directory)
+bool Uci::open(const char *directory, int skillLevel)
 {
     int ends[2];
     // 通信对的一端留在主程序，另一端接到引擎的标准输入和输出。
@@ -146,7 +124,20 @@ bool openEngine(const char *directory)
     if (enginePid < 0) return false;
     for (int option : {SO_RCVTIMEO, SO_SNDTIMEO})
         if (setsockopt(engineFd, SOL_SOCKET, option, &tick, sizeof(tick)) != 0) return false;
-    return true;
+    // 等引擎确认 UCI，再交付内存限制与本局棋力档。
+    if (!handshake("uci\n", "uciok")) return false;
+    std::string options = "setoption name Threads value 1\nsetoption name Hash value 4\n";
+    options += "setoption name Skill Level value " + std::to_string(skillLevel) + "\n";
+    return handshake(options + "isready\n", "readyok");
+}
+
+bool Uci::handshake(const std::string &command, const char *reply)
+{
+    if (!writeText(command)) return false;
+    std::string line;
+    while (readLine(line))
+        if (line == reply) return true;
+    return false;
 }
 
 //---------命令写全，回复逐行读出---------

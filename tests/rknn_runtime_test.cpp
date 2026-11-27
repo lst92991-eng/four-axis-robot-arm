@@ -2,39 +2,10 @@
 #include "vision/yolo.hpp"
 #include <rknn_api.h>
 #include <array>
-#include <csignal>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
-
-#ifdef RKNN_MOCK_ENTRY
-#include "vision/capture.hpp"
-#include <opencv2/videoio.hpp>
-
-namespace scara
-{
-static cv::VideoCapture camera;
-
-void Camera_open()
-{
-  const char *fixture = std::getenv("SCARA_MOCK_CAMERA_URL");
-  if (fixture) camera.open(fixture);
-}
-
-cv::Mat Camera_read()
-{
-  cv::Mat frame;
-  camera.read(frame);
-  return frame;
-}
-
-void Camera_close()
-{
-  camera.release();
-}
-}
-#endif
 
 namespace {
 int allocations = 0, alive = 0, failAt = 0;
@@ -42,7 +13,6 @@ int failQuery = -1, failBind = 0, bindings = 0;
 bool contextOpen = false, badOutput = false, failRun = false;
 int rowPadding = 2;
 bool shortOutput = false;
-int runs = 0;
 rknn_tensor_mem *input = nullptr;
 std::array<rknn_tensor_mem *, 3> outputs{};
 
@@ -61,25 +31,10 @@ extern "C" {
 int rknn_init(rknn_context *context, void *model, uint32_t, uint32_t, rknn_init_extend *)
 {
   if (std::strcmp(static_cast<const char *>(model), "missing.rknn") == 0) return -1;
-#ifdef RKNN_MOCK_ENTRY
-  std::cerr << "TEST ONLY: simulated RKNN ABI, one synthetic detection\n";
-  const char *failure = std::getenv("SCARA_MOCK_FAILURE");
-  if (failure)
-  {
-    if (std::strcmp(failure,"query")==0) failQuery = RKNN_QUERY_NATIVE_INPUT_ATTR;
-    if (std::strcmp(failure,"allocate")==0) failAt = 2;
-    if (std::strcmp(failure,"bind")==0) failBind = 3;
-    if (std::strcmp(failure,"run")==0) failRun = true;
-  }
-#endif
   *context = 1;
   contextOpen = true;
   allocations = 0;
   bindings = 0;
-  runs = 0;
-#ifdef RKNN_MOCK_ENTRY
-  if (std::getenv("SCARA_MOCK_CANCEL_INIT")) std::raise(SIGINT);
-#endif
   return 0;
 }
 
@@ -130,9 +85,7 @@ int rknn_set_io_mem(rknn_context, rknn_tensor_mem *memory, rknn_tensor_attr *att
 
 int rknn_run(rknn_context, rknn_run_extend *)
 {
-  ++runs;
   if (failRun) return -7;
-#ifndef RKNN_MOCK_ENTRY
   const auto *bytes = static_cast<const uint8_t *>(input->virt_addr);
   for (int row=0; row<640; ++row)
   {
@@ -145,15 +98,10 @@ int rknn_run(rknn_context, rknn_run_extend *)
     for (int padding=640*3; padding<(640+rowPadding)*3; ++padding)
       check(bytes[row*(640+rowPadding)*3+padding]==0, "Image copy overwrote the NPU input row padding");
   }
-#endif
   for (auto *output : outputs) std::memset(output->virt_addr, 128, output->size);
   auto *p = static_cast<int8_t *>(outputs[0]->virt_addr)+(20*(80+rowPadding)+20)*57;
   p[0] = p[1] = p[2] = p[3] = 0;
   p[4] = p[5+12] = 127;
-#ifdef RKNN_MOCK_ENTRY
-  // 测试驱动自行结束连续程序，产品入口不再保留运行N帧的分支。
-  if (runs==3) std::raise(SIGINT);
-#endif
   return 0;
 }
 
@@ -168,14 +116,10 @@ int rknn_destroy_mem(rknn_context, rknn_tensor_mem *memory)
 int rknn_destroy(rknn_context)
 {
   contextOpen = false;
-#ifdef RKNN_MOCK_ENTRY
-  std::cerr << "TEST cleanup: allocations=" << alive << " runs=" << runs << '\n';
-#endif
   return 0;
 }
 }
 
-#ifndef RKNN_MOCK_ENTRY
 int main()
 {
   try
@@ -238,4 +182,3 @@ int main()
     return 1;
   }
 }
-#endif

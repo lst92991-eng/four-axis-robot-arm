@@ -9,6 +9,4 @@ namespace scara
 void Site_loadFile(StaticParams &staticParams, const std::string &path = {});
 void Site_parse(std::string_view text, StaticParams &staticParams);
 ArmGeometry Site_loadArm(const std::string &path);
-// 独立视觉预览只读安装表的裁剪起点。
-cv::Point Site_loadCrop();
 }

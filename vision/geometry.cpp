@@ -10,7 +10,6 @@ namespace scara
 Geometry Geometry_calibrate(BoardPoint redLeft, BoardPoint redRight, BoardPoint blackLeft)
 {
     Geometry board;
-    board.origin = blackLeft;
     // 红方底线横跨 8 格，从黑方底线到红方底线跨 9 格。
     board.rowStep.pixel = (redLeft.pixel - blackLeft.pixel) / (Rows - 1);
     board.rowStep.xy = (redLeft.xy - blackLeft.xy) / (Rows - 1);
@@ -22,8 +21,8 @@ Geometry Geometry_calibrate(BoardPoint redLeft, BoardPoint redRight, BoardPoint 
         for (int col = 0; col < Columns; ++col)
         {
             BoardPoint &point = board.cell[row][col];
-            point.pixel = board.origin.pixel + row * board.rowStep.pixel + col * board.columnStep.pixel;
-            point.xy = board.origin.xy + row * board.rowStep.xy + col * board.columnStep.xy;
+            point.pixel = blackLeft.pixel + row * board.rowStep.pixel + col * board.columnStep.pixel;
+            point.xy = blackLeft.xy + row * board.rowStep.xy + col * board.columnStep.xy;
         }
     return board;
 }
@@ -37,7 +36,15 @@ cv::Point2d Geometry_gridPoint(cv::Point2d offset, cv::Point2d rowStep, cv::Poin
 }
 
 //---------从一个检测框找到棋盘交点---------
-static bool findSquare(const Geometry &board, const Detection &piece, cv::Point &square)
+cv::Point Geometry_boardSide(cv::Point2d cell)
+{
+    int columnSide = int(cell.x > Columns - 0.5) - int(cell.x < -0.5);
+    int rowSide = int(cell.y > Rows - 0.5) - int(cell.y < -0.5);
+    return {columnSide, rowSide};
+}
+
+static bool findSquare(const Geometry &board, const Detection &piece, cv::Point &square,
+                       cv::Point &side)
 {
     // 棋子框的中心用原图像素表示。
     const cv::Rect2d &box = piece.bbox;
@@ -49,8 +56,9 @@ static bool findSquare(const Geometry &board, const Detection &piece, cv::Point 
     if (!knownClass || !validScore || !visibleBox) return false;
 
     // 先反算带小数的列、行，再四舍五入到最近的整数交点。
-    cv::Point2d offset = center - board.origin.pixel;
+    cv::Point2d offset = center - board.cell[0][0].pixel;
     cv::Point2d cell = Geometry_gridPoint(offset, board.rowStep.pixel, board.columnStep.pixel);
+    side = Geometry_boardSide(cell);
     cv::Point2d nearest(std::round(cell.x), std::round(cell.y));
 
     // 交点须在盘内，棋子中心与交点的距离以格为单位。
@@ -63,7 +71,8 @@ static bool findSquare(const Geometry &board, const Detection &piece, cv::Point 
 }
 
 //---------将这一帧的棋子填进棋盘---------
-BoardObservation Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces, bool visible)
+BoardObservation Geometry_assign(const Geometry &board, const std::vector<Detection> &pieces,
+                                 bool visible, cv::Point discardSide)
 {
     BoardObservation frame{{}, visible};
     for (auto &rank : frame.cells) rank.fill(visible ? '.' : '?');
@@ -73,8 +82,11 @@ BoardObservation Geometry_assign(const Geometry &board, const std::vector<Detect
     {
         // 找到交点后再写棋盘。失败的检测让整帧继续等待确认。
         cv::Point cell;
-        if (!findSquare(board, piece, cell))
+        cv::Point side;
+        if (!findSquare(board, piece, cell, side))
         {
+            // 只忽略已示教的弃子侧，棋盘内偏位和同格冲突仍需核对。
+            if (side != cv::Point{} && side == discardSide) continue;
             frame.valid = false;
             continue;
         }

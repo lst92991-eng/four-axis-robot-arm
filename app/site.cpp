@@ -1,7 +1,6 @@
 // 从本机安装表取出一次对局需要的数值。旧文件由 15-site 在安装时转换。
 #include "site.hpp"
 #include <toml++/toml.hpp>
-#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <filesystem>
@@ -44,11 +43,6 @@ static JointCalibration readJoint(View axis)
 
 static ArmGeometry readArm(const toml::table &site)
 {
-    // 拒绝旧字段，尤其是旧搬运角；现场给过的高度不能被课堂默认值覆盖。
-    for (const char *old : {"arm","vision","z.pickup_deg","z.travel_deg","motion.park_deg","motion.discard_xy_mm",
-                            "motion.velocity_deg_s","motion.acceleration_deg_s2","camera.roi",
-                            "board.points"})
-        if (site.at_path(old)) throw std::runtime_error(std::string("请用 15-site 导入旧字段 ") + old);
     ArmGeometry arm;
     arm.upperMm = number(site["j2"]["link_mm"], "大臂长度");
     arm.forearmMm = number(site["j3"]["link_mm"], "小臂长度");
@@ -68,11 +62,11 @@ static WorkHeights readHeights(View z)
     h.clearanceDeg = z["clearance_deg"] ? number(z["clearance_deg"], "净空角") : h.travelDeg;
     if (z["release_deg"]) h.releaseDeg = number(z["release_deg"], "释放角");
     if (auto ms = z["grip_dwell_ms"]) h.gripDwellMs = integer(ms.value_exact<int64_t>().value_or(-1), 0, INT32_MAX, "吸合毫秒");
-    auto travel = std::minmax(touch, h.travelDeg);
-    auto clear = std::minmax(touch, h.clearanceDeg);
-    if (h.clearanceDeg == touch || h.clearanceDeg < travel.first || h.clearanceDeg > travel.second)
+    // 本机 J1 驱动角增大是抬升。三个工作层须位于贴子角的上方或贴子层。
+    if (!(touch < h.clearanceDeg && h.clearanceDeg <= h.travelDeg))
         throw std::runtime_error("净空高度须在贴子与搬运高度之间");
-    if (h.releaseDeg < clear.first || h.releaseDeg > clear.second) throw std::runtime_error("释放高度超出净空范围");
+    if (!(touch <= h.releaseDeg && h.releaseDeg <= h.clearanceDeg))
+        throw std::runtime_error("释放高度超出净空范围");
     return h;
 }
 
@@ -105,10 +99,22 @@ static cv::Point readCrop(const toml::table &site)
 //---------完整安装表区---------
 static void readSite(const toml::table &site, StaticParams &staticParams)
 {
+    // 旧整表先经 15-site 迁移，尤其是现场示教的搬运高度。
+    for (const char *old : {"arm","vision","z.pickup_deg","z.travel_deg","motion.park_deg","motion.discard_xy_mm",
+                            "motion.velocity_deg_s","motion.acceleration_deg_s2","camera.roi","board.points"})
+        if (site.at_path(old)) throw std::runtime_error(std::string("请用 15-site 导入旧字段 ") + old);
     staticParams.arm = readArm(site);
     staticParams.heights = readHeights(site["z"]);
     auto board = site["board"];
-    staticParams.layout = Geometry_calibrate(corner(board, "red_left"), corner(board, "red_right"), corner(board, "black_left"));
+    BoardPoint redLeft = corner(board, "red_left");
+    BoardPoint redRight = corner(board, "red_right");
+    BoardPoint blackLeft = corner(board, "black_left");
+    // 三点在像素和基座两个平面中都必须展开成棋盘。
+    double pixelArea = (redRight.pixel - redLeft.pixel).cross(blackLeft.pixel - redLeft.pixel);
+    double baseArea = (redRight.xy - redLeft.xy).cross(blackLeft.xy - redLeft.xy);
+    if (pixelArea == 0 || baseArea == 0 || !std::isfinite(baseArea))
+        throw std::runtime_error("三点标定退化，请重新示教红左、红右、黑左");
+    staticParams.layout = Geometry_calibrate(redLeft, redRight, blackLeft);
 
     auto motion = site["motion"];
     auto [j2, j3] = numbers<2>(motion["observe_deg"], "观察位");
@@ -124,6 +130,8 @@ static void readSite(const toml::table &site, StaticParams &staticParams)
     staticParams.humanRed = game["human_red"].value_or(staticParams.humanRed);
     staticParams.redToMove = game["red_to_move"].value_or(staticParams.redToMove);
     staticParams.engineDir = game["engine_directory"].value_or(staticParams.engineDir);
+    if (auto level = game["skill_level"])
+        staticParams.skillLevel = integer(level.value_exact<int64_t>().value_or(-1), 0, 20, "Pikafish 棋力档");
     if (auto ms = game["think_ms"]) staticParams.thinkMs = integer(ms.value_exact<int64_t>().value_or(0), 1, 60000, "思考毫秒");
 }
 
@@ -136,7 +144,7 @@ static std::string defaultPath()
     if (std::filesystem::exists(std::filesystem::u8path(root + "/site/installation.site")) ||
         std::filesystem::exists(std::filesystem::u8path(root + "/site/installation.hpp")))
         throw std::runtime_error("请先用 15-site 将原示教迁移为 installation.toml");
-    return root + "/installation.toml";
+    throw std::runtime_error("缺少本机安装表，请用 15-site --install 保存三点和 Z 示教");
 }
 
 void Site_loadFile(StaticParams &staticParams, const std::string &path)
@@ -154,8 +162,4 @@ ArmGeometry Site_loadArm(const std::string &path)
     return readArm(toml::parse_file(path));
 }
 
-cv::Point Site_loadCrop()
-{
-    return readCrop(toml::parse_file(defaultPath()));
-}
 } // namespace scara

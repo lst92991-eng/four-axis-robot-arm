@@ -4,6 +4,7 @@
 #include "vision/geometry.hpp"
 #include "motion/plan.hpp"
 #include <csignal>
+#include <cstdint>
 
 namespace scara
 {
@@ -26,6 +27,7 @@ struct StaticParams
     MotionLimits motion;
     // humanRed 决定玩家执哪一方，redToMove 指定开局时轮到哪一方。
     bool humanRed = true, redToMove = true;
+    int skillLevel = 20; // Pikafish 棋力档，0–20。
     //每步思考时间，毫秒
     int thinkMs = 1000;
 };
@@ -36,9 +38,8 @@ struct DynamicParams
     chess::Game game;
     // 最近一次归格的盘面。连续三张不同的有效帧相同，盘面才算确认。
     chess::Board observed{};
-    bool observationStable = false;
-    // 观察环节比较帧号，统计连续相同的新画面。
-    std::string lastFrameId;
+    bool stable = false;
+    uint64_t lastFrameId = 0; // 最近接收的帧号。同一局的帧号递增。
     //供画面表示这一手尚未确认，控制顺序由当前回合函数负责
     bool pending = false;
 };
@@ -57,27 +58,17 @@ enum class Command
 extern volatile std::sig_atomic_t gameRunning;
 
 // 从确认开局运行到终局或退出。返回值同时反映设备收尾是否成功。
-int Match_run(const StaticParams &staticParams, DynamicParams &dynamicParams, const std::string &modelPath);
-
-//---------实盘确认区---------
-// 连续三张新帧一致才交付盘面；expected 用来提示偏离的格号。
-bool Observe_board(const Geometry &layout, DynamicParams &dynamicParams, const chess::Board *expected = nullptr);
-// 对局里分别等待走前原盘、走后的预期盘面。
-bool Observe_original(const Geometry &layout, DynamicParams &dynamicParams);
-bool Observe_placement(const Geometry &layout, DynamicParams &dynamicParams, const chess::Board &expected);
-bool Operator_waitReady(const char *prompt);
+int Match_run(const StaticParams &site, DynamicParams &match);
+// 对局或入口准备失败时，统一停车、回收设备并发布最终结果。
+int Match_finish(const DynamicParams &match, std::string failure);
 
 //---------设备与交互接口区---------
-//同一主程序在链接时选择实机IO或仿真IO
-void Runtime_open(const StaticParams &staticParams, const std::string &modelPath, DynamicParams &dynamicParams);
 // 结束本次运行，回报停车及资源回收是否成功。
 bool Runtime_close();
 // 交付本帧的检测框与帧号。显示由需要画面的设备入口处理。
-void Vision_observe(const Geometry &layout, std::string &frameId, std::vector<Detection> &pieces);
+void Vision_observe(uint64_t &frameId, std::vector<Detection> &pieces);
 // 用起始 FEN 和已确认历史查询合法表，电脑行棋时还要选出应手。
 void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &choice);
-// 识别终端命令。选棋命令同时写出起点和终点。
-Command Command_parse(const std::string &text, chess::Move *move = nullptr);
 // 确认可进入观察位，再核对相机读到的开局盘面。
 bool Operator_prepare();
 bool Operator_confirmOpening(const chess::Board &initial);

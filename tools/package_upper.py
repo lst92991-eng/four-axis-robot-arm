@@ -28,7 +28,7 @@ def main():
         files.add(Path(entry['file']))
     files.update(Path(name) for name in (
         'README.md', 'AGENTS.md', 'CMakeLists.txt', '.vscode/settings.json', 'cmake/rv1106.cmake',
-        'tools/run-vision.sh', 'tools/upper_review.py', 'tools/fixed_review.py', 'tools/package_upper.py',
+        'tools/upper_review.py', 'tools/fixed_review.py', 'tools/package_upper.py',
         'docs/项目收敛与下棋闭环_2026-11-09.md', 'docs/棋局与视觉接口_2026-11-09.md'))
     files.add(review / 'check_vision.py')
     if args.review.startswith('game-'):

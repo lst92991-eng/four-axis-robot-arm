@@ -236,24 +236,23 @@ class Magnet:
                 self.port = None
 
 
-FIELD_BASE = [1.65, 18, 42, 106, 110, 180, 75, 125, True, 0, 0, 16]
-FIELD_Z = {'game_speed_deg_s': 4800,
- 'speed_kp_milli': 1480,
+FIELD_Z = {'speed_kp_milli': 1480,
  'speed_ki_milli': 100000,
  'voltage_limit_mv': 40000,
- 'acceleration_deg_s2': 5700,
  'brake_deg_s2': 5200,
  'descent_brake_deg_s2': 5000,
  'descent_brake_ki_permille': 950,
  'release_acceleration_deg_s2': 5700,
  'z_settle_gain_milli': 24000}
 
-def field_limits(samples):
-    # 台架实测的可达区及驱动调校，独立于对局与示教参数。
+def field_limits(samples, velocity, acceleration):
+    # CAN 按安装表的限速和起动斜率运行，复用台架实测的制动和速度环参数。
+    rotary = [1.65, 18, *velocity[1:], *acceleration[1:], 75, 125, True, 0, 0, 16]
+    vertical = dict(FIELD_Z, game_speed_deg_s=velocity[0], acceleration_deg_s2=acceleration[0])
     return dict(cad_workspace=dict(samples=samples, neutral_shoulder_deg=-92.,
                                    registration_uncertainty_deg=2.5, transfer_shoulder_deg=-85.,
                                    transfer_speed_deg_s=[18, 60]),
-                motion_tuning=dict(base=FIELD_BASE, z=FIELD_Z))
+                motion_tuning=dict(base=rotary, z=vertical))
 
 # ---------安装数据交接区---------
 # 把 DLL 给出的参考角、工作层和 CAD 数据转成台架查路、发指令时使用的配置。
@@ -266,8 +265,8 @@ def compiled_config(site):
                 park_joints_deg=list(site['park']), joint_velocity_deg_s=list(site['velocity']),
                 joint_acceleration_deg_s2=list(site['acceleration']), pickup_at_rest_ms=site['grip_ms'],
                 z=dict(pickup_deg=pickup, clearance_deg=site.get('clearance_deg', travel), travel_deg=travel, release_deg=release),
-                engine_directory=site['engine_directory'], think_ms=site['think_ms'],
-                **field_limits(io.BytesIO(site['cad'])))
+                engine_directory=site['engine_directory'], skill_level=site['skill_level'], think_ms=site['think_ms'],
+                **field_limits(io.BytesIO(site['cad']), site['velocity'], site['acceleration']))
 
 
 # ---------台架对局会话区---------
@@ -340,6 +339,18 @@ class Bench:
                    (*references[source], *references[destination]))):
                 return apply_rotary_tuning(settings)
         return apply_rotary_tuning(self.tuning['base'])
+
+    # 换肘直达按同一进度发给两轴，经过中间姿态后在目标角停稳。
+    def move_xy(self, origin, target, transfer):
+        rates = self.xy_speed(origin, target)
+        force_sync = False
+        if transfer:
+            rates = [min(rate, limit) for rate, limit in zip(rates, self.workspace.transfer_speed)]
+        elif self.workspace:
+            start_elbow = self.workspace.angles_of(origin)[1]
+            target_elbow = self.workspace.angles_of(target)[1]
+            force_sync = start_elbow * target_elbow < 0
+        self.drive.xy(*target, *rates, force_sync=force_sync)
 
     def resume_history(self):
         return self.saved['history'] if self.saved else ''
@@ -423,6 +434,7 @@ class Bench:
                 self.pikafish.expect('uciok', 8)
                 self.pikafish.send('setoption name Threads value 1')
                 self.pikafish.send('setoption name Hash value 4')
+                self.pikafish.send(f"setoption name Skill Level value {self.config['skill_level']}")
                 self.pikafish.send('isready')
                 self.pikafish.expect('readyok', 8)
             engine = self.pikafish
@@ -639,10 +651,7 @@ class Bench:
                     if transfer:
                         self.drive.note('elbow_transfer',move=move,waypoints=route)
                     for waypoint in route:
-                        rates = self.xy_speed(reached, waypoint)
-                        if transfer:
-                            rates = [min(rate,limit) for rate,limit in zip(rates,self.workspace.transfer_speed)]
-                        self.drive.xy(*waypoint,*rates)
+                        self.move_xy(reached, waypoint, transfer)
                         reached = waypoint
                     previous_goal = goal
                 # 横移结束后，含 J1 的动作才执行本步指定的目标高度。

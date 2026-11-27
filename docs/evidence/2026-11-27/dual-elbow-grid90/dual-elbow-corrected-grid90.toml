@@ -1,0 +1,37 @@
+# XY recomputed from the three saved corner samples after dual-elbow calibration. Visual pixels retained. Grid test only.
+# 大臂。drive_deg 和 joint_deg 是同一姿态的驱动读数和机械角；ratio 是关节转角 / 驱动转角。可选 range_deg 记录相对基座的实测端点。
+[j2]
+link_mm = 275.0
+drive_deg = -107.534
+joint_deg = -90.0
+ratio = 0.8057443040091145
+
+# 小臂。机械角相对大臂，负比例表示转向相反。可选 range_deg 记录该关节的实测端点。
+[j3]
+link_mm = 275.0
+drive_deg = -600.127
+joint_deg = 90.0
+ratio = -0.3333333333333333
+
+# J1 贴子角。缺省从这里抬升约 4.3 cm，有实测搬运角时用 carry_deg。
+[z]
+touch_deg = -20225.761
+carry_deg = -17427.851
+hover_deg = -19665.919
+
+# 观察位为 J2/J3 驱动角，弃子点为基座毫米，速度与加速度按 J1/J2/J3 排列。
+[motion]
+observe_deg = [-133.087, -760.033]
+discard_mm = [134.674369535048, -108.816785644876]
+speed_deg_s = [4800, 72, 216]
+accel_deg_s2 = [5700, 220, 360]
+
+# crop_px 是 640×640 取景框的左上角像素。
+[camera]
+url = "rtsp://127.0.0.1:20731/live/0"
+
+# 从红方看，每个点依次是图像 u、v 像素和基座 X、Y 毫米。
+[board]
+red_left = [522.9, 611.63, 136.187043410262, -361.581090655008]
+red_right = [519.89, 117.44, -103.692001790976, -367.10564262583]
+black_left = [1028.05, 600.44, 134.674369535048, -108.816785644876]

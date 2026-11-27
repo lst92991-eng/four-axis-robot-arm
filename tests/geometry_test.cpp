@@ -82,6 +82,13 @@ void observationTests()
     check(!result.valid && result.cells[4][3]=='?', "Occlusion exposed a usable observation");
     piece.bbox.x += 48;
     check(!Geometry_assign(geometry, {piece}).valid, "Off-grid center accepted");
+    // 盘内偏位仍拒绝，只有配置的同侧盘外棋子不参与核盘。
+    check(!Geometry_assign(geometry, {piece}, true, {1,0}).valid, "Discard filter hid a board error");
+    check(Geometry_boardSide({Columns - 0.5, 4}) == cv::Point{}, "Board edge was accepted as a discard point");
+    auto besideBoard = geometry.cell[4][Columns - 1].pixel + geometry.columnStep.pixel;
+    Detection discarded{12, .9, {besideBoard.x - 12, besideBoard.y - 12, 24, 24}};
+    check(Geometry_assign(geometry, {discarded}, true, {1,0}).valid, "Taught discard side blocks board confirmation");
+    check(!Geometry_assign(geometry, {discarded}, true, {-1,0}).valid, "Untaught side was ignored");
     result = Geometry_assign(geometry, {});
     check(result.valid && result.cells[4][3]=='.', "Empty board retained stale pieces");
 }

@@ -87,12 +87,15 @@ class Workspace:
         for end in candidates:
             if not self.free_box(end, end):
                 continue
-            if start[1]*end[1] >= 0:
-                if self.free_box(start, end):
-                    return [nominal if end == goal else self.joints_of(end)], False
-                path = self.segment(start, end)
-                if path is not None:
-                    return [self.joints_of(p) for p in path], True
+            target = nominal if end == goal else self.joints_of(end)
+            if self.free_box(start, end):
+                return [target], False
+            path = self.segment(start, end)
+            if path is not None:
+                # 换肘时分段核对共同进度路线，运动只发终点。
+                if start[1]*end[1] < 0:
+                    return [target], False
+                return [self.joints_of(p) for p in path], True
             # 两侧连通时，先到指定的伸直姿态，再从伸直到目标。
             incoming = self.segment(start, self.straight)
             outgoing = self.segment(self.straight, end)

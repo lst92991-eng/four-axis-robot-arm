@@ -1,0 +1,64 @@
+{
+  "time": "2026-11-27T20:26:50.217324+08:00",
+  "side": "teaching_side",
+  "cell": [
+    3,
+    4
+  ],
+  "axes": {
+    "3": {
+      "position": -744.564,
+      "target": -746.401,
+      "velocity": 0.0,
+      "counts": 14365,
+      "uptime": 1570600,
+      "build": "bc2d87b1",
+      "state": 0,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24124,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true
+    },
+    "1": {
+      "position": -19665.81,
+      "target": -19665.919,
+      "velocity": 0.0,
+      "counts": -97506,
+      "uptime": 1570600,
+      "build": "bc2d87b1",
+      "state": 0,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24343,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true
+    },
+    "2": {
+      "position": -187.905,
+      "target": -187.0,
+      "velocity": 0.0,
+      "counts": -38360,
+      "uptime": 1570600,
+      "build": "bc2d87b1",
+      "state": 0,
+      "fault": 0,
+      "detail": 0,
+      "bus_mv": 24188,
+      "referenced": true,
+      "interlocked": false,
+      "configured": true,
+      "encoder_valid": true,
+      "power": false,
+      "stationary": true
+    }
+  }
+}

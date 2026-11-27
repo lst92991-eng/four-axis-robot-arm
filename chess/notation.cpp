@@ -4,29 +4,32 @@
 namespace chess
 {
 //---------引擎和棋谱的格式转换区---------
-//输入四字符UCI走法，输出黑方底线起算的数组行列
+// 输入四字符 UCI 走法，输出黑方底线起算的数组行列。
 bool parseMove(std::string_view text, Move &move)
 {
-    // 先把输出置为无效走法，四个字符全部核对后再写回结果。
+    if (text.size() == 4)
+    {
+        // UCI 从红方底线记作 0；棋局数组从黑方底线记作行 0。
+        move.fromRow = Rows - 1 - (text[1] - '0');
+        move.fromCol = text[0] - 'a';
+        move.toRow = Rows - 1 - (text[3] - '0');
+        move.toCol = text[2] - 'a';
+        if (validSquares(move)) return true;
+    }
     move = {};
-    if (text.size() != 4) return false;
-    // UCI从红方底线记作0；棋局数组从黑方底线记作第0行。
-    Move candidate;
-    candidate.fromRow = Rows - 1 - (text[1] - '0');
-    candidate.fromCol = text[0] - 'a';
-    candidate.toRow = Rows - 1 - (text[3] - '0');
-    candidate.toCol = text[2] - 'a';
-    if (!validSquares(candidate)) return false;
-    move = candidate;
-    return true;
+    return false;
 }
 
-//输入起点终点行列，输出引擎使用的四字符走法
+// 输入起点终点行列，展开成引擎棋谱的两对列、行字符。
 std::string uci(const Move &move)
 {
     if (!validSquares(move)) return {};
-    return {char('a' + move.fromCol), char('0' + Rows - 1 - move.fromRow),
-            char('a' + move.toCol), char('0' + Rows - 1 - move.toRow)};
+    std::string text;
+    text += char('a' + move.fromCol);
+    text += char('0' + Rows - 1 - move.fromRow);
+    text += char('a' + move.toCol);
+    text += char('0' + Rows - 1 - move.toRow);
+    return text;
 }
 
 // 开局 FEN 只记录起始盘面和行棋方，随后由 UCI moves 交付棋谱。

@@ -27,7 +27,7 @@ int main()
         const chess::Move pawnMove{6, 0, 5, 0};
         const chess::MoveList legal{pawnMove, {6, 2, 5, 2}};
         chess::Board seen = after;
-        check(chess::inferMove(initial, seen, legal, move) && move == pawnMove,
+        check(chess::inferMove(initial, seen, legal, move) && chess::sameMove(move, pawnMove),
               "Board difference did not identify the moved piece");
         seen[6][2] = '.';
         seen[5][2] = 'P';
@@ -52,7 +52,7 @@ int main()
         seen = beforeCapture;
         seen[5][0] = 'P';
         seen[6][0] = '.';
-        check(chess::inferMove(beforeCapture, seen, legal, move) && move == pawnMove,
+        check(chess::inferMove(beforeCapture, seen, legal, move) && chess::sameMove(move, pawnMove),
               "The landing piece was not matched when it covered a captured piece");
         chess::Board invalid = initial;
         invalid[0][0] = '?';

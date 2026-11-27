@@ -1,19 +1,14 @@
 // 在桌面测试 RV1106 对接代码，用替身提供相机、NPU、引擎和驱动反馈。
 #include "app/game.hpp"
+#include "app/rv1106.hpp"
 #include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
 #include "app/site.hpp"
 #include <opencv2/imgcodecs.hpp>
-#include <poll.h>
-#include <cstring>
 #include <fstream>
 #include <iterator>
 #include <iostream>
-#ifdef __linux__
-#include <sys/syscall.h>
-extern "C" long syscall(long, ...) noexcept;
-#endif
 
 namespace fake
 {
@@ -21,21 +16,21 @@ bool camera = false, npu = false, engine = false, failSearch = false, failModel 
 bool motionSuccess = true, stopSuccess = true, cancelMotion = false;
 cv::Size frameSize{1280, 720};
 int executions = 0, stops = 0;
+int receivedSkill = -1;
 std::vector<scara::PickStep> receivedSteps;
 std::vector<std::string> events;
-std::string keyboard;
-bool eof = false;
 void check(bool value, const char *message)
 {
     if (!value) throw std::runtime_error(message);
 }
 } // namespace fake
 
-bool Pikafish_query(const char *, const chess::Game &, int, const volatile std::sig_atomic_t &,
+bool Pikafish_query(const char *, const chess::Game &, int skillLevel, int, const volatile std::sig_atomic_t &,
                     chess::MoveList &legal, chess::Move &choice)
 {
     fake::check(!fake::camera && !fake::npu, "Engine started while vision still held resources");
     fake::events.push_back("engine-open");
+    fake::receivedSkill = skillLevel;
     legal = {{6,0,5,0}};
     choice = {6,0,5,0};
     return !fake::failSearch;
@@ -109,23 +104,6 @@ cv::Mat Vision_prepare(const cv::Mat &, cv::Point)
     return cv::Mat(640, 640, CV_8UC3);
 }
 } // namespace scara
-extern "C" int poll(pollfd *, unsigned long, int)
-{
-    if (fake::eof) return 1;
-    if (fake::keyboard.empty()) scara::gameRunning = 0;
-    return fake::keyboard.empty() ? 0 : 1;
-}
-extern "C" std::ptrdiff_t read(int descriptor, void *buffer, size_t size)
-{
-#ifdef __linux__
-    // 只替换终端输入，其余读取仍交给系统。
-    if (descriptor != 0) return syscall(SYS_read, descriptor, buffer, size);
-#endif
-    if (fake::keyboard.empty()) return 0;
-    *static_cast<char *>(buffer) = fake::keyboard.front();
-    fake::keyboard.erase(0, 1);
-    return 1;
-}
 
 int main()
 {
@@ -146,18 +124,34 @@ int main()
         newText.replace(cameraSection, nextSection - cameraSection, "[camera]\ncrop_px = [305, 50]\n");
         Site_parse(newText, staticParams);
         fake::check(staticParams.visionCropOrigin == cv::Point(305, 50), "Named crop origin changed");
-        Site_loadFile(staticParams, "config/installation.toml");
+        StaticParams defaultSite;
+        Site_loadFile(defaultSite, "tests/fixtures/game-app/installation.toml");
+        fake::check(defaultSite.skillLevel == 20, "An installation without a skill level lost the default");
+        const size_t skill = newText.find("skill_level = 20");
+        fake::check(skill != std::string::npos, "The example installation is missing its skill level");
+        for (const char *invalid : {"21", "-1", "4.5"})
+        {
+            std::string invalidSite = newText;
+            invalidSite.replace(skill, sizeof("skill_level = 20") - 1, std::string("skill_level = ") + invalid);
+            bool rejected = false;
+            try { Site_parse(invalidSite, staticParams); }
+            catch (const std::runtime_error&) { rejected = true; }
+            fake::check(rejected, "Invalid Pikafish skill level was accepted");
+        }
+        newText.replace(skill, sizeof("skill_level = 20") - 1, "skill_level = 0");
+        Site_parse(newText, staticParams);
         staticParams.engineDir = "fake-engine";
-        Runtime_open(staticParams, "fake-model", dynamicParams);
-        std::string frame, previous;
+        RV1106_configure("fake-model", staticParams.visionCropOrigin, staticParams.engineDir,
+                         staticParams.skillLevel, staticParams.thinkMs, staticParams.motion);
+        uint64_t frame = 0, previous = 0;
         chess::Move choice;
         std::vector<Detection> pieces;
         chess::MoveList legal;
-        Vision_observe(staticParams.layout, frame, pieces);
+        Vision_observe(frame, pieces);
         fake::check(fake::events ==
                         std::vector<std::string>{"npu-open", "camera-open", "read", "prepare", "run"},
                     "Live observation no longer follows the verified order");
-        fake::check(!frame.empty() && pieces.size() == 1 && pieces[0].classId == 13,
+        fake::check(frame && pieces.size() == 1 && pieces[0].classId == 13,
                     "Live observation did not return the new frame and detections");
         previous = frame;
         for (cv::Size size : {cv::Size{}, cv::Size(640, 480)})
@@ -165,7 +159,7 @@ int main()
             fake::frameSize = size;
             fake::events.clear();
             bool readFailed = false;
-            try { Vision_observe(staticParams.layout, frame, pieces); }
+            try { Vision_observe(frame, pieces); }
             catch (const std::runtime_error&) { readFailed = true; }
             fake::check(readFailed && frame == previous && fake::events == std::vector<std::string>{"read"},
                         "An invalid frame reached inference or was published");
@@ -173,13 +167,15 @@ int main()
         fake::check(Runtime_close() && fake::stops == 1 && !fake::camera && !fake::npu,
                     "Reset after a camera failure did not stop and close the devices");
         fake::frameSize = {1280, 720};
-        Runtime_open(staticParams, "fake-model", dynamicParams);
+        RV1106_configure("fake-model", staticParams.visionCropOrigin, staticParams.engineDir,
+                         staticParams.skillLevel, staticParams.thinkMs, staticParams.motion);
         dynamicParams.game.humanRed = false;
         Engine_query(dynamicParams.game, legal, choice);
-        fake::check(choice == chess::Move{6,0,5,0} && !fake::camera && !fake::npu && !fake::engine,
+        fake::check(fake::receivedSkill == 0, "RV1106 did not send the configured skill to Pikafish");
+        fake::check(chess::sameMove(choice, {6,0,5,0}) && !fake::camera && !fake::npu && !fake::engine,
                     "Search retained overlapping resources");
-        fake::check(legal == chess::MoveList{{6,0,5,0}}, "GUI selected a different numeric move");
-        Vision_observe(staticParams.layout, frame, pieces);
+        fake::check(legal.size() == 1 && chess::sameMove(legal[0], {6,0,5,0}), "GUI selected a different numeric move");
+        Vision_observe(frame, pieces);
         fake::check(frame != previous, "Observation identity was reused after search");
 
         PickStep lift, release;
@@ -230,7 +226,7 @@ int main()
         failed = false;
         try
         {
-            Vision_observe(staticParams.layout, frame, pieces);
+            Vision_observe(frame, pieces);
         }
         catch (const std::exception &)
         {
@@ -238,31 +234,13 @@ int main()
         }
         Runtime_close();
         fake::check(failed && !fake::camera && !fake::npu, "Partially opened model was not released");
-        fake::keyboard = "unknown\nready\n";
-        Command command = Operator_read("fixture");
-        fake::check(command == Command::Ready, "Console command parsing failed");
-        fake::keyboard = "draw\nready\n";
-        fake::check(Operator_prepare(), "Console preparation did not wait for confirmation");
-        fake::keyboard = "ready\n";
-        fake::check(Operator_confirmOpening(dynamicParams.observed), "Console opening confirmation did not read the operator input");
-        fake::keyboard = "draw\n";
-        fake::check(!Operator_confirmOpening(dynamicParams.observed) && gameRunning, "Draw approved the opening");
-        fake::keyboard = "quit\n";
-        fake::check(!Operator_confirmOpening(dynamicParams.observed) && !gameRunning, "Opening quit did not stop the game");
-        //退出命令和EOF均由输入入口设置停止标志，机械收尾仍交给主程序
-        for (const char *input : {"quit\n", ""})
-        {
-            fake::keyboard = input;
-            fake::eof = fake::keyboard.empty();
-            gameRunning = 1;
-            int beforeStop = fake::stops;
-            command = Operator_read("exit fixture");
-            fake::check(command == Command::Quit && !gameRunning && fake::stops == beforeStop,
-                        "Quit/EOF did not leave through nonblocking input shutdown");
-        }
-        fake::eof = false;
-        gameRunning = 1;
-        fake::check(Runtime_close(), "Live wrapper cleanup failed");
+        // 扩展板按钮接入之前，完整开局也不能下发准备动作。
+        fake::failModel = false;
+        int beforeOpening = fake::executions;
+        int beforeClose = fake::stops;
+        fake::check(Match_run(staticParams, dynamicParams) == 1 &&
+                    fake::executions == beforeOpening && fake::stops == beforeClose + 1,
+                    "Missing button input allowed motion or skipped cleanup");
         std::cout
             << "PASS actual live wrapper: vision, engine, direct execution/result/cancellation/stop; external APIs mocked\n";
         return 0;

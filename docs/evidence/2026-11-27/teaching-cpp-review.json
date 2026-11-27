@@ -1,0 +1,266 @@
+{
+  "baseline": "987860c",
+  "comparison": "SHA256 of raw stdout and raw stderr plus process exit code",
+  "identical_scenarios": 28,
+  "direct_calls": 61,
+  "steps": 435,
+  "cases": [
+    {
+      "code": 0,
+      "stdout": "2983bee3818851b5f852f99b88c0d1bfc5b4ebdeb8159cc8dd41fc2159234537",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 3,
+      "steps": 27,
+      "scenario": "two rounds with robot capture"
+    },
+    {
+      "code": 0,
+      "stdout": "b1a3434fb65311afba046fa9dcf974d61d3bede4fc117162838973adaaa640f5",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 5,
+      "steps": 51,
+      "scenario": "panel plays both sides, rejects illegal selection and handles a capture"
+    },
+    {
+      "code": 0,
+      "stdout": "bec0d5c6de3a1fd073b875a6219064521050e4667869bb42f8386e5c6310ef53",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 3,
+      "steps": 27,
+      "scenario": "swap while thinking restores before moving"
+    },
+    {
+      "code": 0,
+      "stdout": "a99bb7f98e6ab09ad1625fbf7b9ded59c5ff240ee5b1f41d841267065677ff3c",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 3,
+      "steps": 27,
+      "scenario": "missing king is a board event rather than victory"
+    },
+    {
+      "code": 0,
+      "stdout": "9b5211038ae700a4087c25c12bc25a2293094d1ea5f787cbe4c4387238d8fcc4",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "unrestored board never starts robot movement"
+    },
+    {
+      "code": 0,
+      "stdout": "9193d59dff3c2393f4fee279a7a9722aae97047bbc266dc36cc14152ee65b1ab",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 3,
+      "steps": 27,
+      "scenario": "illegal human change restores before next attempt"
+    },
+    {
+      "code": 0,
+      "stdout": "cd9e44759fff52bf59ab267dd8ac97b72959a75f915cc2cdaa5ca1751820f83d",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 5,
+      "steps": 39,
+      "scenario": "motion failure still requires hardware recovery"
+    },
+    {
+      "code": 0,
+      "stdout": "6d4a9a6de956fc03373534babfefc78fe9075f7c2c4660323bc9ef96142022b4",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 4,
+      "steps": 36,
+      "scenario": "restored board retries without re-parking"
+    },
+    {
+      "code": 0,
+      "stdout": "94b9be578f17f9fa9e450d168cc72f85d3d9b369b231307bab32ffb31b984129",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 3,
+      "steps": 27,
+      "scenario": "visually corrected placement commits without repeating movement"
+    },
+    {
+      "code": 0,
+      "stdout": "428aa6dbef91f4252de38c9456f89efe3440544f8585a16f24159307780595d2",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 2,
+      "steps": 12,
+      "scenario": "quit during placement recovery does not retry the move"
+    },
+    {
+      "code": 0,
+      "stdout": "b302655106864f75f552564d3beece0bb9890642e3c76a4ec992d717b0e1de82",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 3,
+      "steps": 27,
+      "scenario": "off-grid rook recheck continues once centered"
+    },
+    {
+      "code": 0,
+      "stdout": "e37416b14d4aaccd0aa7233df6c3307d792f0c7f0d4710bef445a8d9c9e93e15",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 2,
+      "steps": 12,
+      "scenario": "persistent off-grid rook cannot commit or restart movement"
+    },
+    {
+      "code": 0,
+      "stdout": "3f509dad03fefbc854c40f70189ef296c4faf18a04ae37757c6f1b36bd5bf619",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 2,
+      "steps": 12,
+      "scenario": "quit preserves the last confirmed history"
+    },
+    {
+      "code": 1,
+      "stdout": "8c7c54c618db6585eadf74bb672eb11b28e475cb2fd947753e6e13698935864d",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "engine disconnect stops this match"
+    },
+    {
+      "code": 1,
+      "stdout": "debc8d570b4df9a215795d7f3b664da536948691d1f7ca73103a2249dd1f4211",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "camera disconnect stops this match"
+    },
+    {
+      "code": 1,
+      "stdout": "0c1ce17cf43e8d62fe83b9addeddff9ed82e23334f0157b903a97f2fa37e539c",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 2,
+      "steps": 12,
+      "scenario": "camera disconnect after moving never commits or reissues the move"
+    },
+    {
+      "code": 1,
+      "stdout": "a1279cf8bac7395d4be9b78b61bf555eace79e4bedbbc328b5b4bfa039ec457d",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "engine cannot be mistaken for an empty legal list"
+    },
+    {
+      "code": 1,
+      "stdout": "2539c8e769800dde0af66c340bc1946c740923295837bde02f44012a420610ad",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "illegal engine choice issues no movement"
+    },
+    {
+      "code": 0,
+      "stdout": "aca7f73768f837d76a882043bb589cd2dc515e2c6be8a0102c6606c35c0db88d",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "terminal signal"
+    },
+    {
+      "code": 0,
+      "stdout": "1334eed356efaa8028bcbced97569f5c78e8826d171ba5800036b2927b65114b",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "preparation failure cannot start a game"
+    },
+    {
+      "code": 0,
+      "stdout": "3f8f21061c2c531148de5d9b4cd9c3c7b08a31b6e38925a3e96b8ae5a52bda8e",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "human resignation"
+    },
+    {
+      "code": 0,
+      "stdout": "3b815a5b4daaf7141560a7165fe8d7c298befe25609c5207f4048b01b3d0c6c6",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 2,
+      "steps": 12,
+      "scenario": "robot can play red first"
+    },
+    {
+      "code": 0,
+      "stdout": "2f7905a7f18900e8f8cc3c729e3c7e3c58079df2491e72f89275cf8e6247c0a3",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "changed initial board is confirmed again"
+    },
+    {
+      "code": 0,
+      "stdout": "17878211065a6bff3adcd51dcbc2c5e17847610127c22123ba41ace31d197660",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 5,
+      "steps": 39,
+      "scenario": "repetition requires adjudication"
+    },
+    {
+      "code": 0,
+      "stdout": "7c44e63b1bf77500afd5d8e14008b1bd249a1c470f81fac2f6f80c81b15bb452",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 2,
+      "steps": 12,
+      "scenario": "resume preserves black turn and appends the reply"
+    },
+    {
+      "code": 1,
+      "stdout": "d310d0af298c155a9859e967ebdcab678068e998992ef26d356384776853f102",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "resume mismatch preserves history and sends no chess move"
+    },
+    {
+      "code": 0,
+      "stdout": "ccaf12677bb159d0effbe6b3cfeb3a17cae1e3c62b697330f8a0a8d28df5452e",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "repeated camera frames"
+    },
+    {
+      "code": 0,
+      "stdout": "89b39cfc01e7511fc3540d93cf2c95f82390e3b2602b1eda5a60193350a1563c",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "calls": 1,
+      "steps": 3,
+      "scenario": "missing frame resets confirmation"
+    }
+  ],
+  "scope": "Windows C++ offline, mocked device and UCI boundaries. No physical movement.",
+  "ctest": {
+    "passed": 14,
+    "total": 14
+  },
+  "bench_unit_tests_passed": 11,
+  "vision_replay": {
+    "frames": 16,
+    "saved_detections": 152
+  },
+  "geometry_assignment": {
+    "cases": 14400,
+    "digest_old_and_new": "c666b208efec5823"
+  },
+  "chess": {
+    "observed_move_comparisons": 11959,
+    "observed_digest_old_and_new": "19a17071310a1c6d",
+    "transfer_cases": 48600,
+    "transfer_digest_old_and_new": "e924eb6e9e21b1cb"
+  },
+  "motion": {
+    "kinematic_cases": 98,
+    "trajectory_samples": 2000,
+    "planner_output_sha256_old_and_new": "c2c0aee000717b550bf9ab471cb54d271f4ea279e1a1ffb4a862c7e6ec2f1f8d",
+    "execution_scenarios": 23,
+    "execution_output_sha256_old_and_new": "a840a9df8a7c9cf3a5da1a9bc0256ce75d5e24683d1ff15dbab36bef5f85a50f"
+  },
+  "plans": {
+    "site": "docs/evidence/2026-11-26/grid90/grid90-empty-pick-place.toml",
+    "before_and_after_20_actions": 361,
+    "before_and_after_21_actions": 723,
+    "all_actions_equal": true
+  }
+}

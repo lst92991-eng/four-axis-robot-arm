@@ -350,7 +350,7 @@ class Drive:
         return fresh and a['state'] == 0 and not a['power'] and a['stationary'] and abs(a['velocity']) <= .05
 
     # ---------J2 与 J3 横移区---------
-    def xy(self, shoulder_goal, elbow_goal, shoulder_speed, elbow_speed=30.0):
+    def xy(self, shoulder_goal, elbow_goal, shoulder_speed, elbow_speed=30.0, *, force_sync=False):
         """Give both rotary drives an absolute target, then leave them in HOLD."""
         nodes = (2, 3)
         goals = {2: round(shoulder_goal * 1000), 3: round(elbow_goal * 1000)}
@@ -363,7 +363,7 @@ class Drive:
         at_previous_target = {n:initial[n]['state'] == 1 and initial[n]['power']
                               and abs(initial[n]['target'] - initial[n]['position']) <= tolerance[n] for n in nodes}
         changed = [n for n in nodes if not (at_previous_target[n] and round(initial[n]['target'] * 1000) == goals[n])]
-        synchronize = PROFILE.get('synchronize_xy')
+        synchronize = force_sync or PROFILE.get('synchronize_xy')
         if synchronize:
             # 让两轴按同一进度起步和制动，较短的一轴按行程比例取速度、斜率。
             distance = {n: abs(goals[n] / 1000 - initial[n]['target' if at_previous_target[n] else 'position']) for n in nodes}
@@ -372,7 +372,7 @@ class Drive:
                 ramps = PROFILE['rotary_ramps']
                 velocity = min(speeds[n] / distance[n] for n in moving)
                 synced_elbow_speed = velocity * distance[3]
-                if (len(changed) == 2 and len(moving) == 2 and at_previous_target[3]
+                if (not force_sync and len(changed) == 2 and len(moving) == 2 and at_previous_target[3]
                         and synced_elbow_speed < min(3., elbow_speed)):
                     # 肘轴行程很短时用各自的斜率，同时发两个目标，肘轴先到就保持。
                     synchronize = False

@@ -47,16 +47,20 @@ int main()
         cv::Point2d destination{double(to[0]), double(to[1])};
         const scara::JointTarget park{12, 34};
         const cv::Point2d discard{300, 0};
+        scara::JointTarget sourceJoints, targetJoints, discardJoints;
+        check(scara::Arm_inverse(arm, source, sourceJoints), "Taught source is unreachable");
+        check(scara::Arm_inverse(arm, destination, targetJoints), "Taught destination is unreachable");
+        check(scara::Arm_inverse(arm, discard, discardJoints), "Taught discard is unreachable");
         std::vector<scara::PickStep> steps;
         using Action = scara::PickAction;
-        scara::Plan_turn(arm, heights, source, destination, nullptr, park, steps);
+        scara::Plan_turn(heights, sourceJoints, targetJoints, nullptr, park, steps);
         check(steps.size() == 9, "Pick/place/park plan is incomplete");
         check(steps[0].action == Action::Move && steps[0].target[0] == heights.travelDeg &&
                   std::abs(steps[0].target[1] - double(plan["source"]["j2_deg"])) < 1e-9 &&
                   std::abs(steps[0].target[2] - double(plan["source"]["j3_motor_deg"])) < 1e-9 &&
                   steps[1].action == Action::Move && steps[1].target[0] == heights.pickupDeg &&
                   steps[2].action == Action::Grip && steps[2].durationMs == heights.gripDwellMs &&
-                  steps[3].target[0] == heights.clearanceDeg,
+                  steps[3].target[0] == heights.travelDeg,
               "Pick-up must approach, lower, hold and lift");
         // 棋子已在吸头上，放子段从搬运层直接移到目标格，不再次取子。
         check(steps[4].action == Action::Move && steps[4].target[0] == heights.travelDeg &&
@@ -64,18 +68,18 @@ int main()
                   std::abs(steps[4].target[2] - double(plan["destination"]["j3_motor_deg"])) < 1e-9 &&
                   steps[5].action == Action::Move && steps[5].target[0] == heights.releaseDeg &&
                   steps[6].action == Action::Release && steps[6].durationMs == 0 &&
-                  steps[7].action == Action::Move && steps[7].target[0] == heights.clearanceDeg,
+                  steps[7].action == Action::Move && steps[7].target[0] == heights.travelDeg,
               "Release must be at placement height and complete before lifting");
         const scara::AxisValues parkAtTravel{heights.travelDeg, park.j2Deg, park.j3MotorDeg};
         check(steps[8].action == Action::Move && steps[8].target == parkAtTravel,
               "Ordinary move did not finish at the observation pose");
 
         const auto ordinary = steps;
-        scara::Plan_turn(arm, heights, source, destination, &discard, park, steps);
+        scara::Plan_turn(heights, sourceJoints, targetJoints, &discardJoints, park, steps);
         check(steps.size() == 15, "Capture did not rebuild a complete plan");
         check(steps[0].target == steps[10].target && steps[1].target[0] == heights.pickupDeg &&
                   steps[2].action == Action::Grip && steps[2].durationMs == heights.gripDwellMs &&
-                  steps[3].target[0] == heights.clearanceDeg && steps[4].target[0] == heights.travelDeg &&
+                  steps[3].target[0] == heights.travelDeg && steps[4].target[0] == heights.travelDeg &&
                   steps[5].action == Action::ReleaseOffBoard && steps[5].durationMs == 0,
               "Capture must pick on the destination pose and release off board at transport height");
         cv::Point2d discarding = scara::Arm_forward(arm, {steps[4].target[1], steps[4].target[2]});
@@ -98,11 +102,23 @@ int main()
         check(std::abs(shifted.travelDeg - (123 + 1003.05025)) < 1e-8, "Lift in cm lost its origin or scale");
         scara::WorkHeights overlap;
         check(scara::WorkHeights_load("tests/fixtures/game-app/work-heights.json", overlap), "Overlap fixture failed");
-        scara::Plan_turn(arm, overlap, source, destination, nullptr, park, steps);
-        check(steps[3].target[0] == overlap.clearanceDeg && steps[4].target[0] == overlap.travelDeg &&
-                  steps[3].target[0] != steps[4].target[0] && steps[4].action == Action::Move &&
-                  steps[3].target[1] != steps[4].target[1] && steps[3].target[2] != steps[4].target[2],
-              "Travel segment does not move all three axes together");
+        scara::Plan_turn(overlap, sourceJoints, targetJoints, nullptr, park, steps);
+        check(overlap.clearanceDeg != overlap.travelDeg, "Fixture must contain distinct clearance and travel heights");
+        for (const auto *discardTarget : {static_cast<const scara::JointTarget *>(nullptr),
+                                        static_cast<const scara::JointTarget *>(&discardJoints)})
+        {
+            scara::Plan_turn(overlap, sourceJoints, targetJoints, discardTarget, park, steps);
+            scara::AxisValues previous = parkAtTravel;
+            previous[0] = overlap.travelDeg;
+            for (const auto &step : steps)
+            {
+                if (step.action != Action::Move) continue;
+                if (step.target[1] != previous[1] || step.target[2] != previous[2])
+                    check(previous[0] == overlap.travelDeg && step.target[0] == overlap.travelDeg,
+                          "XY transfer started before the full Z lift");
+                previous = step.target;
+            }
+        }
         check(std::abs(heights.releaseDeg - (-20053.1425)) < 1e-7 && heights.gripDwellMs == 420,
               "Taught height or stored pulse was changed");
 
@@ -113,17 +129,10 @@ int main()
             try { plan(); } catch (const std::runtime_error &) { failed = true; }
             check(failed && steps.empty(), message);
         };
-        const cv::Point2d unreachable{1000, 1000};
-        requireEmptyOnError([&] { scara::Plan_turn(arm, heights, unreachable, destination, &discard, park, steps); },
-                            "Unreachable attacker retained a capture plan");
-        requireEmptyOnError([&] { scara::Plan_turn(arm, heights, source, unreachable, nullptr, park, steps); },
-                            "Unreachable destination retained an old plan");
-        requireEmptyOnError([&] { scara::Plan_turn(arm, heights, source, destination, &unreachable, park, steps); },
-                            "Unreachable discard retained the pick-up steps");
         scara::WorkHeights missingHeights = heights;
         check(!scara::WorkHeights_load("tests/fixtures/upper-app/missing-heights.json", missingHeights),
               "Missing taught pickup height was silently replaced by zero");
-        requireEmptyOnError([&] { scara::Plan_turn(arm, missingHeights, source, destination, nullptr, park, steps); },
+        requireEmptyOnError([&] { scara::Plan_turn(missingHeights, sourceJoints, targetJoints, nullptr, park, steps); },
                             "Unconfigured work heights generated a movement plan");
         scara::ArmGeometry missingArm = arm;
         check(!scara::Arm_load("tests/fixtures/upper-app/missing-arm-reference.json", missingArm),
@@ -184,7 +193,7 @@ int main()
         limits.velocity[1] = 0;
         check(!scara::Trajectory_plan(start, goal, limits, zero), "Zero speed cap accepted");
         std::cout << "PASS " << count
-                  << " saved kinematic cases, taught heights, ordinary/capture plans and unreachable targets\n";
+                  << " saved kinematic cases, taught heights and ordinary/capture plans\n";
         return 0;
     }
     catch (const std::exception &error)

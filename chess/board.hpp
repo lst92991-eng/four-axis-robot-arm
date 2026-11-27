@@ -24,10 +24,11 @@ struct Move
     int toRow = -1;
     int toCol = -1;
 };
-// 合法表按起点和终点的四个下标查找选中的走法。
-bool operator==(const Move &left, const Move &right);
-bool validSquares(const Move &move);
 using MoveList = std::vector<Move>;
+// 一手棋由两个格子确定。查合法表时，只有一次匹配才允许执行。
+bool validSquares(const Move &move);
+bool sameMove(const Move &left, const Move &right);
+int countMove(const MoveList &moves, const Move &selected);
 //---------盘面操作区---------
 // 返回黑方在上、红方在下的标准开局。
 Board initialBoard();
@@ -36,7 +37,7 @@ bool validBoard(const Board &board);
 // 外部走法先核对坐标、起点和目标。已确认的走法直接在数组上搬一枚棋子。
 bool validTransfer(const Board &board, bool redToMove, const Move &move);
 void movePiece(Board &board, const Move &move);
-// 把合法走法逐一与实盘比对，唯一吻合时写出这一步。
+// 对照新旧盘面找出棋子离开和到达的格子，再用本回合合法表核实。
 bool inferMove(const Board &before, const Board &after, const MoveList &legal, Move &move);
 
 //---------棋局结果与历史区---------

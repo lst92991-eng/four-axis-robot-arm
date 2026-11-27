@@ -41,8 +41,11 @@ def plan(bench, points, start_pose, first, carry):
         hover = low + 2 * deg_mm
     if not carry and (hover is None or not 0 < (hover-low)/(high-low) <= 1):
         raise ValueError('20 号巡点需要在取子与搬运层之间实测 z.hover_deg')
-    # 按行折返遍历棋盘，再旋转顺序，让操作者指定的格子排在第一位。
-    order = [(r, c) for r in range(10) for c in (range(9) if r % 2 == 0 else reversed(range(9)))]
+    # 空吸头按列折返，减少左右肘形之间的往返；带棋保持按行搬运。
+    if carry:
+        order = [(r, c) for r in range(10) for c in (range(9) if r % 2 == 0 else reversed(range(9)))]
+    else:
+        order = [(r, c) for c in range(9) for r in (range(10) if c % 2 == 0 else reversed(range(10)))]
     cut = order.index(first)
     order = order[cut:] + order[:cut]
     actions = []
@@ -91,7 +94,8 @@ def measured_config(site, installation=None, tool=None):
         hover = site_table['z'].get('hover_deg')
         if hover is not None:
             config['z']['hover_deg'] = hover
-        config.update(field_limits(str(Path(__file__).resolve().parent/'reference/workspace.npz')))
+        config.update(field_limits(str(Path(__file__).resolve().parent/'reference/workspace.npz'),
+                                   config['joint_velocity_deg_s'], config['joint_acceleration_deg_s2']))
         return config
     # 独立巡点命令也能导入早期分文件的实测夹具。
     config = json.loads(site.read_text(encoding='utf-8'))
@@ -150,10 +154,7 @@ def sweep(args, site, tool, log):
                 drive.z(value, high=high, speed_limit=speed)
             elif kind == 'xy':
                 origin, target, transfer = value
-                rates = bench.xy_speed(origin, target)
-                if transfer:
-                    rates = [min(a, b) for a, b in zip(rates, bench.workspace.transfer_speed)]
-                drive.xy(*target, *rates)
+                bench.move_xy(origin, target, transfer)
             elif kind == 'magnet':
                 bench.bridge_command(value)
                 if value == 'hold':

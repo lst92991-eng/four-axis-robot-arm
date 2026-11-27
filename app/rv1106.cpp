@@ -1,30 +1,42 @@
-// RV1106 上使用的相机、NPU、棋力引擎、终端和机械臂接口。
+// RV1106 上的相机、NPU、棋力引擎和扩展板接口。
 #include "app/game.hpp"
+#include "app/rv1106.hpp"
 #include "motion/execute.hpp"
 #include "chess/pikafish.hpp"
 #include "vision/capture.hpp"
-#include <cerrno>
 #include <iostream>
-#include <poll.h>
-#include <unistd.h>
+#include <stdexcept>
 
 namespace scara
 {
 //---------板端运行数据区---------
-static StaticParams settings;
 static std::string model;
+static cv::Point visionCrop;
+static std::string engineDirectory;
+static int engineSkill, engineThinkMs;
+static MotionLimits motionLimits;
 // 首次观察时打开相机和模型。每次完成识别递增帧号。
 static bool visionOpen = false;
-static unsigned frameNumber = 0;
+static uint64_t frameNumber = 0;
 
-static void closeVision();
+static void closeVision()
+{
+    Camera_close();
+    Yolo_close();
+    visionOpen = false;
+}
 
 //---------初始化与收尾区---------
-void Runtime_open(const StaticParams &staticParams, const std::string &modelPath, DynamicParams &)
+void RV1106_configure(const std::string &modelPath, cv::Point cropOrigin,
+                      const std::string &engineDir, int skillLevel, int thinkMs,
+                      const MotionLimits &limits)
 {
-    // 保存本机参数和模型路径，供对局使用。
-    settings = staticParams;
     model = modelPath;
+    visionCrop = cropOrigin;
+    engineDirectory = engineDir;
+    engineSkill = skillLevel;
+    engineThinkMs = thinkMs;
+    motionLimits = limits;
 }
 
 bool Runtime_close()
@@ -37,7 +49,7 @@ bool Runtime_close()
 }
 
 //---------取流识别区---------
-void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detection> &pieces)
+void Vision_observe(uint64_t &frameId, std::vector<Detection> &pieces)
 {
     if (!gameRunning) return;
     // 开局第一次观察或上次关闭视觉后，在此重新建立取流和推理。
@@ -51,10 +63,10 @@ void Vision_observe(const Geometry &, std::string &frameId, std::vector<Detectio
     if (!gameRunning) return;
     if (source.size() != cv::Size(ImageWidth, ImageHeight))
         throw std::runtime_error("相机未返回 1280×720 原图");
-    cv::Mat input = Vision_prepare(source, settings.visionCropOrigin);
-    if (!Yolo_run(input, settings.visionCropOrigin, pieces))
+    cv::Mat input = Vision_prepare(source, visionCrop);
+    if (!Yolo_run(input, visionCrop, pieces))
         throw std::runtime_error("NPU 推理失败");
-    frameId = std::to_string(++frameNumber);
+    frameId = ++frameNumber;
 }
 
 //---------引擎查询区---------
@@ -62,63 +74,31 @@ void Engine_query(const chess::Game &game, chess::MoveList &legal, chess::Move &
 {
     // 搜索前释放相机和 NPU 缓冲，为 RV1106 上的引擎和权重腾出内存。
     closeVision();
-    if (!Pikafish_query(settings.engineDir.c_str(), game, settings.thinkMs, gameRunning, legal, choice) && gameRunning)
+    if (!Pikafish_query(engineDirectory.c_str(), game, engineSkill, engineThinkMs,
+                        gameRunning, legal, choice) && gameRunning)
         throw std::runtime_error("皮卡鱼查询失败，请检查引擎和配套权重。");
 }
 
-//---------终端显示区---------
-static void printBoard(const chess::Board &board)
+//---------对局日志区---------
+void Operator_show(const DynamicParams &, const std::string &message, const chess::MoveList *)
 {
-    for (const auto &row : board) std::cout << std::string(row.begin(), row.end()) << '\n';
+    if (!message.empty()) std::cerr << message << '\n';
 }
 
-void Operator_show(const DynamicParams &dynamicParams, const std::string &message, const chess::MoveList *choices)
-{
-    if (!message.empty()) std::cout << message << '\n';
-    if (choices || dynamicParams.game.result != chess::Result::Playing) printBoard(dynamicParams.game.board);
-}
-
-//---------终端输入区---------
+//---------扩展板按钮接入区---------
 bool Operator_prepare()
 {
-    while (gameRunning)
-        if (Operator_read("确认空吸头已抬离棋盘、手已移开，回车进入观察位。输入 quit 退出。") == Command::Ready) return true;
+    // 开局确认由扩展板按钮提供。
+    throw std::runtime_error("扩展板按钮尚未接入，无法确认开局");
+}
+
+bool Operator_confirmOpening(const chess::Board &)
+{
     return false;
 }
 
-bool Operator_confirmOpening(const chess::Board &initial)
+Command Operator_read(const std::string &, chess::Move *)
 {
-    printBoard(initial);
-    return Operator_read("核对开局盘面，回车确认。输入 quit 退出。") == Command::Ready;
-}
-
-Command Operator_read(const std::string &prompt, chess::Move *move)
-{
-    //按回车之前输入的命令文本
-    std::string line;
-    char character;
-    pollfd input{STDIN_FILENO, POLLIN, 0};
-    std::cout << prompt << '\n' << std::flush;
-    // 以 100 毫秒为一轮等键盘，使等候期间也能响应停止标志。
-    while (gameRunning)
-    {
-        int ready = poll(&input, 1, 100);
-        if (ready == 0 || (ready < 0 && errno == EINTR)) continue;
-        if (ready < 0) break;
-        auto count = read(STDIN_FILENO, &character, 1);
-        if (count < 0 && errno == EINTR) continue;
-        if (count <= 0) break;
-        // 接收字符直到换行。回车符用于兼容 CRLF，解析只在整行到齐时发生。
-        if (character == '\n')
-        {
-            Command command = Command_parse(line, move);
-            if (command == Command::Quit) break;
-            if (command != Command::Invalid) return command;
-            std::cout << "请输入提示中的命令，走棋用 起点行,列 终点行,列。\n" << std::flush;
-            line.clear();
-        }
-        else if (character != '\r') line += character;
-    }
     gameRunning = 0;
     return Command::Quit;
 }
@@ -128,14 +108,7 @@ bool Robot_execute(const std::string &, const chess::Move &, const std::vector<P
 {
     // 关闭视觉后按 steps 执行三轴与磁铁动作，执行期间继续检查停止标志。
     closeVision();
-    return Motion_execute(steps, settings.motion, gameRunning);
-}
-//---------视觉资源收尾区---------
-static void closeVision()
-{
-    Camera_close();
-    Yolo_close();
-    visionOpen = false;
+    return Motion_execute(steps, motionLimits, gameRunning);
 }
 
 //---------驱动收发区---------

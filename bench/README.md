@@ -12,7 +12,7 @@
 | [13](13-electrical.cmd) | 新板单轴电角标定，保存并回读该轴零点与方向 | `13-electrical.cmd J2` 查看；`13-electrical.cmd J2 --run` 才通电标定。已有有效标定的板可跳过 |
 | [14](14-reference.cmd) | 三轴失能且实物已对准已知标记时，写回并逐轴回读机械参考 | `14-reference.cmd --angles J1角 J2角 J3角` 查看；实物已对准保存的观察姿态时用 `14-reference.cmd --at-park --write` |
 | [15](15-site.cmd) | 把三组对中读数和 Z 示教角保存为本机 TOML | `15-site.cmd --template 测量.txt` 生成采点表。填好后运行 `15-site.cmd 测量.txt --install` |
-| [20](20-grid90.cmd) | **实机定位**。空吸头蛇形扫 90 个交点，约在已示教棋子顶面上方 2 mm 记录，再全高横移，结束回观察位 | `20-grid90.cmd`；`20-grid90.cmd --plan` 离线规划 |
+| [20](20-grid90.cmd) | **实机定位**。空吸头按列折返扫 90 个交点，在示教的 `hover_deg` 高度记录，再全高横移，结束回观察位 | `20-grid90.cmd`；`20-grid90.cmd --plan` 离线规划 |
 | [21](21-pick90.cmd) | **实机取放**。空盘仅放一颗样子在指定起点，逐格搬运，最后把棋子送回起点、机械臂回观察位 | `21-pick90.cmd --start 3 4`；离线加 `--plan` |
 | [30](30-vision-replay.cmd) | 用保存的图像、NPU 输出检查 C++ 预处理、解码和检测结果 | `30-vision-replay.cmd` |
 | [40](40-game-sim.cmd) | 运行正式 C++ main，使用模拟相机、引擎与驱动 | `40-game-sim.cmd` 演示两回合；`40-game-sim.cmd --all` 完整场景回归 |

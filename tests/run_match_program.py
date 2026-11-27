@@ -50,11 +50,11 @@ def read_calls(output):
     return calls
 
 
-def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
+def run(name, scenario, history=None, exit_code=0, calls=3, settings=None, installation=TEMPLATE):
     global passed
     with tempfile.TemporaryDirectory(prefix='scara_match_') as directory:
         work = Path(directory)
-        text = TEMPLATE
+        text = installation
         for key, value in (settings or {}).items():
             text += f'\n{key} = {json.dumps(bool(value))}\n'
         config = tomllib.loads(text)
@@ -76,8 +76,9 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
         assert not list((work / 'runtime').glob('motion-*.json')), 'Retired motion protocol is still active'
         assert not list((work / 'runtime').glob('request-*.json')), 'Simulation still uses request files'
         assert all(execution['simulated'] == 1 for execution in executions)
-        assert [step['action'] for step in executions[0]['steps']] == ['release', 'move', 'move']
-        assert executions[0]['steps'][1]['axes'] == 1
+        if executions:
+            assert [step['action'] for step in executions[0]['steps']] == ['release', 'move', 'move']
+            assert executions[0]['steps'][1]['axes'] == 1
         heights = config['z']
         park = [heights['carry_deg'], *config['motion']['observe_deg']]
         for execution in executions[1:]:
@@ -90,7 +91,7 @@ def run(name, scenario, history=None, exit_code=0, calls=3, settings=None):
             for i, step in enumerate(execution['steps']):
                 if step['action'] == 'release':
                     assert execution['steps'][i + 1]['action'] == 'move', name
-                    assert execution['steps'][i + 1]['target_deg'][0] == heights.get('clearance_deg', heights['carry_deg'])
+                    assert execution['steps'][i + 1]['target_deg'][0] == heights['carry_deg']
         passed += 1
         print('PASS', name)
         return state, executions, result.stdout
@@ -197,10 +198,10 @@ assert state['pending'] == 1 and state['observation_valid'] == 0 and state['obse
 assert 'SIM_NOTICE 棋子偏离格点或受遮挡，请检查实盘。 (9,8)' in output
 
 case=copy.deepcopy(BASE)
-case['executions'][1].update(success=0,board=AFTER_HUMAN)
+case['executions'][1].update(success=0,board=AFTER_ROBOT)
 case['commands'].insert(3,dict(command='quit'))
 state,_,_=run('quit preserves the last confirmed history',case,'a3a4',calls=2)
-assert state['pending']==1
+assert state['pending']==1 and state['observation_valid']==0 and state['observed']==AFTER_HUMAN
 
 case=copy.deepcopy(BASE)
 case['queries'][1]['fail_once']=1
@@ -302,6 +303,7 @@ assert state['board'] == AFTER_HUMAN and state['pending'] == 0 and '实拍盘面
 
 # Three distinct consecutive frames belong to observation, independently of the fixed grid.
 for name, ids in [('repeated camera frames', ['1','1','2','2']),
+                  ('older frame cannot count again', ['1','2','1']),
                   ('missing frame resets confirmation', ['1','2','','3','4'])]:
     case = copy.deepcopy(BASE)
     case['frame_ids'] = ids
@@ -310,5 +312,37 @@ for name, ids in [('repeated camera frames', ['1','1','2','2']),
     case['executions'] = case['executions'][:1]
     state, _, output = run(name, case, '', calls=1)
     assert state['observation_valid'] == 0 and 'SIM_COMMAND\t核对开局盘面' not in output
+
+left = tomllib.loads(TEMPLATE)['board']['red_left']
+right_line = next(line for line in TEMPLATE.splitlines() if line.startswith('red_right ='))
+right = tomllib.loads(TEMPLATE)['board']['red_right']
+
+for installation, error in [
+    (TEMPLATE.replace(right_line, f'red_right = {left[:2] + right[2:]}'), '三点标定退化'),
+    (TEMPLATE.replace(right_line, f'red_right = {right[:2] + left[2:]}'), '三点标定退化'),
+    (TEMPLATE.replace('carry_deg = -19353.34', 'carry_deg = -21219.48')
+             .replace('clearance_deg = -19819.875', 'clearance_deg = -20752.945')
+             .replace('release_deg = -20053.1425', 'release_deg = -20519.6775'), '净空高度'),
+]:
+    with tempfile.TemporaryDirectory(prefix='scara_invalid_site_') as directory:
+        path = Path(directory) / 'installation.toml'
+        path.write_text(installation, encoding='utf-8')
+        result = subprocess.run([str(EXE), str(path), str(ROOT / 'tests/fixtures/game-app/two-rounds.json')],
+                                cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=8)
+        assert result.returncode == 1 and 'SIM_CALL' not in result.stdout and error in result.stderr, result
+
+bad_corner = TEMPLATE.replace(
+    'black_left = [921.7767074892333, 161.8813968026232, -96.24258141692992, -170.75763428231494]',
+    'black_left = [921.7767074892333, 161.8813968026232, 1000, 1000]')
+state, _, _ = run('unreachable board fails before any robot action', BASE, '', exit_code=1, calls=0,
+                  installation=bad_corner)
+assert '安装表的格点不可达 (0,0)' in state['error']
+
+for discard in ('[-1000, -1000]', '[-96.24258141692992, -170.75763428231494]'):
+    bad_discard = TEMPLATE.replace('discard_mm = [-200, -250]', f'discard_mm = {discard}')
+    state, executions, _ = run('bad discard keeps the ordinary move and blocks capture', BASE,
+                               'a3a4 a6a5 a4a5', exit_code=1, calls=2, installation=bad_discard)
+    assert executions[1]['move'] == 'a6a5'
+    assert '吃子需要示教棋盘外可达的弃子点' in state['error']
 
 print(f'PASS {passed} actual-main scenarios; scripted perception/engine/execution, no hardware.')
